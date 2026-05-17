@@ -1,0 +1,1469 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<meta name="theme-color" content="#04040a">
+<title>KARMA v2</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700;800;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<style>
+:root{
+  --bg:#04040a;--c1:#0c0c16;--c2:#141420;--c3:#1c1c2c;--c4:#262636;
+  --line:rgba(255,255,255,.07);--line2:rgba(255,255,255,.13);
+  --t1:#ededf8;--t2:#6868a0;--t3:#363658;
+  --g:#00ff88;--g2:#00cc6a;--b:#4488ff;--pk:#ff3377;--y:#ffcc00;
+  --p:#aa66ff;--r:#ff4455;--o:#ff8844;--tl:#00ddcc;
+  --ff:'DM Sans',sans-serif;--mono:'Space Mono',monospace;
+  --sab:env(safe-area-inset-bottom,0px);
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+html,body{height:100%;width:100%;overflow:hidden;background:var(--bg);font-family:var(--ff);color:var(--t1);overscroll-behavior:none;-webkit-font-smoothing:antialiased;}
+.app{width:100%;height:100%;max-width:430px;margin:0 auto;display:none;flex-direction:column;}
+
+/* TOPBAR */
+.tb{height:50px;display:flex;align-items:center;padding:0 14px;gap:8px;flex-shrink:0;background:rgba(4,4,10,.96);backdrop-filter:blur(20px);border-bottom:1px solid var(--line);z-index:100;}
+.logo{font-size:20px;font-weight:900;letter-spacing:-1px;flex-shrink:0;font-family:var(--mono);}
+.logo-k{color:var(--g);text-shadow:0 0 20px rgba(0,255,136,.5);}
+.pills{display:flex;gap:5px;flex:1;overflow:hidden;}
+.pill{padding:4px 9px;border-radius:20px;font-size:11px;font-weight:700;display:flex;align-items:center;gap:3px;white-space:nowrap;background:var(--c2);border:1px solid var(--line);font-family:var(--mono);}
+.pill-y{border-color:rgba(255,204,0,.3);color:var(--y);}
+.pill-r{border-color:rgba(255,68,85,.3);color:var(--r);}
+.pill-g{border-color:rgba(0,255,136,.3);color:var(--g);}
+.mw{position:relative;flex-shrink:0;}
+.ham{width:34px;height:34px;background:var(--c2);border:1px solid var(--line);border-radius:9px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;cursor:pointer;}
+.ham span{display:block;width:14px;height:2px;background:var(--t1);border-radius:1px;transition:all .2s;}
+.ham.open span:nth-child(1){transform:rotate(45deg) translate(4px,4px);}
+.ham.open span:nth-child(2){opacity:0;}
+.ham.open span:nth-child(3){transform:rotate(-45deg) translate(4px,-4px);}
+.dd{position:fixed;top:58px;right:12px;z-index:999;width:210px;background:var(--c1);border:1px solid var(--line2);border-radius:16px;box-shadow:0 20px 60px rgba(0,0,0,.9);overflow:hidden;opacity:0;pointer-events:none;transform:translateY(-6px) scale(.97);transform-origin:top right;transition:all .16s;}
+.dd.open{opacity:1;pointer-events:all;transform:none;}
+.dd-head{padding:11px 14px 9px;border-bottom:1px solid var(--line);}
+.dd-nm{font-size:13px;font-weight:800;}
+.dd-sb{font-size:10px;color:var(--t3);}
+.dd-sec{padding:4px 0;border-bottom:1px solid var(--line);}
+.dd-sec:last-child{border-bottom:none;}
+.ddr{display:flex;align-items:center;gap:9px;padding:9px 14px;cursor:pointer;font-size:13px;font-weight:600;transition:background .1s;}
+.ddr:active{background:var(--c2);}
+.ddr-i{font-size:15px;width:20px;text-align:center;}
+.dd-bdg{margin-left:auto;background:var(--r);color:#fff;font-size:9px;font-weight:900;padding:2px 5px;border-radius:4px;}
+.main{flex:1;overflow:hidden;position:relative;}
+.view{position:absolute;inset:0;overflow-y:auto;overflow-x:hidden;display:none;flex-direction:column;scrollbar-width:none;background:var(--bg);}
+.view::-webkit-scrollbar{display:none;}
+.view.active{display:flex;}
+.vend{height:76px;flex-shrink:0;}
+.bnav{display:flex;align-items:center;background:rgba(4,4,10,.98);backdrop-filter:blur(24px);border-top:1px solid var(--line);padding:6px 0;padding-bottom:calc(6px + var(--sab));flex-shrink:0;z-index:100;}
+.nb{flex:1;background:none;border:none;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:2px;padding:4px;}
+.nb .ni{font-size:22px;transition:transform .15s;}
+.nb .nl{font-size:9px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:.3px;}
+.nb.on .ni{transform:scale(1.12);filter:drop-shadow(0 0 8px var(--g));}
+.nb.on .nl{color:var(--g);}
+.nb-flash{flex:1;background:none;border:none;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:2px;}
+.flash-btn{width:54px;height:54px;border-radius:16px;background:linear-gradient(135deg,var(--pk),var(--p));display:flex;align-items:center;justify-content:center;font-size:24px;margin-top:-18px;box-shadow:0 8px 24px rgba(255,51,119,.4);transition:all .12s;}
+.nb-flash:active .flash-btn{transform:scale(.88);}
+.flash-lbl{font-size:9px;font-weight:700;color:var(--pk);text-transform:uppercase;letter-spacing:.3px;}
+.pc{position:fixed;right:12px;bottom:calc(80px + var(--sab));z-index:48;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:2px;}
+.pc-b{width:52px;height:52px;border-radius:14px;background:var(--c2);border:2px solid var(--g);display:flex;align-items:center;justify-content:center;font-size:26px;position:relative;box-shadow:0 4px 18px rgba(0,255,136,.18);animation:pcfl 3s ease-in-out infinite;}
+@keyframes pcfl{0%,100%{transform:translateY(0);}50%{transform:translateY(-4px);}}
+.pc-b.hungry{border-color:var(--r);animation:pcsh .3s ease infinite alternate;}
+@keyframes pcsh{from{transform:translateX(-2px);}to{transform:translateX(2px);}}
+.pc-b.happy{border-color:var(--y);}
+.pc-mood{position:absolute;bottom:-7px;left:50%;transform:translateX(-50%);background:var(--c1);border:1px solid var(--line);border-radius:7px;padding:1px 5px;font-size:10px;white-space:nowrap;}
+.pc-lv{font-size:9px;font-weight:800;color:var(--g);font-family:var(--mono);}
+.card{background:var(--c1);border:1px solid var(--line);border-radius:14px;overflow:hidden;}
+.tag{display:inline-flex;align-items:center;gap:3px;padding:2px 8px;border-radius:20px;font-size:10px;font-weight:800;border:1px solid;}
+.tg{background:rgba(0,255,136,.09);border-color:rgba(0,255,136,.28);color:var(--g);}
+.tb2{background:rgba(68,136,255,.09);border-color:rgba(68,136,255,.28);color:var(--b);}
+.tp{background:rgba(170,102,255,.09);border-color:rgba(170,102,255,.28);color:var(--p);}
+.ty{background:rgba(255,204,0,.09);border-color:rgba(255,204,0,.28);color:var(--y);}
+.tr{background:rgba(255,68,85,.09);border-color:rgba(255,68,85,.28);color:var(--r);}
+.to{background:rgba(255,136,68,.09);border-color:rgba(255,136,68,.28);color:var(--o);}
+.tpk{background:rgba(255,51,119,.09);border-color:rgba(255,51,119,.28);color:var(--pk);}
+.ttl{background:rgba(0,221,204,.09);border-color:rgba(0,221,204,.28);color:var(--tl);}
+.btn{font-family:var(--ff);font-weight:700;border-radius:10px;cursor:pointer;border:none;transition:all .12s;display:inline-flex;align-items:center;justify-content:center;gap:5px;font-size:13px;}
+.btn:active{transform:scale(.95);}
+.btn-g{background:linear-gradient(135deg,var(--g),var(--tl));color:var(--bg);font-weight:800;}
+.btn-pk{background:linear-gradient(135deg,var(--pk),var(--p));color:#fff;font-weight:800;}
+.btn-y{background:var(--y);color:var(--bg);font-weight:800;}
+.btn-ghost{background:var(--c2);color:var(--t1);border:1px solid var(--line);}
+.btn-sm{padding:7px 13px;font-size:12px;}
+.btn-lg{padding:13px 22px;font-size:14px;font-weight:800;}
+.btn-full{width:100%;}
+.inp{width:100%;background:var(--c2);border:1px solid var(--line);border-radius:11px;padding:11px 13px;color:var(--t1);font-family:var(--ff);font-size:14px;outline:none;margin-bottom:10px;transition:border-color .15s;}
+.inp:focus{border-color:rgba(0,255,136,.45);}
+.inp::placeholder{color:var(--t3);}
+textarea.inp{resize:none;min-height:68px;}
+.lbl{font-size:10px;font-weight:700;color:var(--t3);letter-spacing:.8px;text-transform:uppercase;margin-bottom:5px;display:block;}
+.sh{display:flex;align-items:center;justify-content:space-between;padding:12px 14px 7px;}
+.sh-t{font-size:11px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:.8px;}
+.sh-a{font-size:12px;font-weight:700;color:var(--g);cursor:pointer;}
+.r2{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-bottom:10px;}
+.r2 .inp{margin-bottom:0;}
+.tabs{display:flex;overflow-x:auto;scrollbar-width:none;border-bottom:1px solid var(--line);flex-shrink:0;background:var(--c1);}
+.tabs::-webkit-scrollbar{display:none;}
+.tab{padding:10px 13px;font-size:11px;font-weight:800;cursor:pointer;color:var(--t3);border-bottom:2px solid transparent;white-space:nowrap;flex-shrink:0;transition:all .15s;}
+.tab.on{color:var(--g);border-bottom-color:var(--g);}
+.toast{position:fixed;bottom:88px;left:50%;transform:translateX(-50%) translateY(8px);background:var(--c2);border:1px solid var(--line2);border-radius:11px;padding:9px 18px;font-size:13px;font-weight:700;z-index:9999;white-space:nowrap;opacity:0;transition:all .22s;pointer-events:none;max-width:calc(100vw - 28px);text-align:center;}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+.toast.g{border-color:rgba(0,255,136,.5);color:var(--g);}
+.toast.r{border-color:rgba(255,68,85,.5);color:var(--r);}
+.toast.y{border-color:rgba(255,204,0,.5);color:var(--y);}
+.toast.p{border-color:rgba(170,102,255,.5);color:var(--p);}
+.toast.pk{border-color:rgba(255,51,119,.5);color:var(--pk);}
+@keyframes cpop{0%{opacity:1;transform:translateY(0) translateX(-50%);}100%{opacity:0;transform:translateY(-50px) translateX(-50%);}}
+.cpop{position:fixed;pointer-events:none;z-index:9999;font-size:14px;font-weight:900;color:var(--y);animation:cpop .7s ease-out forwards;font-family:var(--mono);}
+.modal{position:fixed;inset:0;z-index:800;background:rgba(0,0,0,.8);backdrop-filter:blur(8px);display:flex;align-items:flex-end;opacity:0;pointer-events:none;transition:opacity .2s;}
+.modal.open{opacity:1;pointer-events:all;}
+.ms{width:100%;max-width:430px;margin:0 auto;background:var(--c1);border-radius:20px 20px 0 0;border:1px solid var(--line2);border-bottom:none;padding:13px 15px calc(28px + var(--sab));max-height:92svh;overflow-y:auto;scrollbar-width:none;transform:translateY(100%);transition:transform .28s cubic-bezier(.32,.72,0,1);}
+.ms::-webkit-scrollbar{display:none;}
+.modal.open .ms{transform:translateY(0);}
+.mh{width:34px;height:4px;background:var(--c4);border-radius:2px;margin:0 auto 14px;}
+.mt{font-size:17px;font-weight:800;margin-bottom:14px;display:flex;align-items:center;justify-content:space-between;}
+.mx{width:28px;height:28px;background:var(--c2);border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:14px;cursor:pointer;color:var(--t2);border:1px solid var(--line);}
+.trow{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px;}
+.topt{padding:6px 13px;border-radius:20px;background:var(--c2);border:1px solid var(--line);font-size:11px;font-weight:700;cursor:pointer;color:var(--t2);white-space:nowrap;transition:all .15s;}
+.topt.on{background:var(--g);color:var(--bg);border-color:var(--g);}
+.fsw{position:fixed;inset:0;z-index:700;background:var(--bg);display:flex;flex-direction:column;transform:translateX(100%);transition:transform .28s cubic-bezier(.32,.72,0,1);}
+.fsw.open{transform:translateX(0);}
+.fsh{height:50px;display:flex;align-items:center;padding:0 14px;gap:10px;border-bottom:1px solid var(--line);flex-shrink:0;background:rgba(4,4,10,.97);}
+.fbk{background:none;border:none;color:var(--t2);font-size:22px;cursor:pointer;}
+.ftl{font-size:15px;font-weight:800;flex:1;}
+.fbd{flex:1;overflow-y:auto;scrollbar-width:none;}
+.fbd::-webkit-scrollbar{display:none;}
+.splash{position:fixed;inset:0;z-index:900;background:rgba(4,4,10,.97);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;opacity:0;pointer-events:none;transition:opacity .2s;}
+.splash.show{opacity:1;pointer-events:all;}
+@keyframes spop{from{transform:scale(.15) rotate(-12deg);}to{transform:scale(1) rotate(0);}}
+.sp-ico{font-size:80px;margin-bottom:12px;animation:spop .45s cubic-bezier(.34,1.56,.64,1);}
+.sp-title{font-size:30px;font-weight:900;text-align:center;margin-bottom:6px;}
+.sp-sub{font-size:14px;color:var(--t2);text-align:center;margin-bottom:12px;}
+.sp-row{display:flex;gap:9px;flex-wrap:wrap;justify-content:center;margin:10px 0 18px;}
+.sp-r{background:var(--c2);border:1px solid var(--line);border-radius:12px;padding:10px 16px;text-align:center;min-width:74px;}
+.sp-rv{font-size:20px;font-weight:900;}
+.sp-rl{font-size:10px;color:var(--t3);margin-top:2px;}
+
+/* ONBOARDING */
+.ob{position:fixed;inset:0;z-index:9999;background:var(--bg);display:flex;flex-direction:column;align-items:center;overflow-y:auto;padding:50px 20px calc(40px + var(--sab));}
+.ob-logo{font-size:56px;font-weight:900;letter-spacing:-3px;margin-bottom:5px;font-family:var(--mono);}
+.ob-tag{font-size:11px;color:var(--t3);letter-spacing:3px;text-transform:uppercase;margin-bottom:42px;}
+.ob-step{width:100%;max-width:340px;}
+.ob-prog{display:flex;gap:5px;margin-bottom:20px;}
+.ob-d{height:3px;flex:1;border-radius:2px;background:var(--c3);transition:background .3s;}
+.ob-d.on{background:var(--g);}
+.ob-h{font-size:28px;font-weight:900;margin-bottom:8px;}
+.ob-p{font-size:14px;color:var(--t2);line-height:1.65;margin-bottom:20px;}
+.ob-pets{display:flex;gap:9px;flex-wrap:wrap;justify-content:center;margin-bottom:16px;}
+.obp{font-size:36px;cursor:pointer;padding:10px;background:var(--c2);border:2px solid var(--line);border-radius:14px;transition:all .15s;}
+.obp.sel{border-color:var(--g);background:rgba(0,255,136,.08);transform:scale(1.1);}
+.ob-loop{background:var(--c2);border:1px solid var(--line);border-radius:14px;padding:14px;margin-bottom:20px;}
+.ob-lr{display:flex;align-items:center;gap:11px;padding:8px 0;border-bottom:1px solid var(--line);}
+.ob-lr:last-child{border-bottom:none;}
+.ob-n{width:28px;height:28px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:900;flex-shrink:0;}
+
+/* PET HOME */
+.pet-hero{margin:12px;background:linear-gradient(145deg,var(--c1),rgba(0,255,136,.04));border:1px solid var(--line);border-radius:20px;padding:17px;position:relative;overflow:hidden;}
+.pet-hero::before{content:'';position:absolute;width:220px;height:220px;border-radius:50%;background:rgba(0,255,136,.06);filter:blur(50px);top:-70px;right:-40px;pointer-events:none;}
+.ph-row{display:flex;align-items:flex-end;gap:13px;margin-bottom:13px;}
+.pet3{width:110px;height:110px;flex-shrink:0;border-radius:20px;background:var(--c2);border:2px solid var(--line);display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;cursor:pointer;}
+.p3g{position:absolute;inset:0;background:radial-gradient(circle at 50% 80%,rgba(0,255,136,.12),transparent 60%);animation:gp 2.5s ease-in-out infinite;}
+@keyframes gp{0%,100%{opacity:.5;}50%{opacity:1;}}
+.p3e{font-size:62px;z-index:2;position:relative;animation:pf 3s ease-in-out infinite;}
+@keyframes pf{0%,100%{transform:translateY(0);}50%{transform:translateY(-5px);}}
+.p3gr{position:absolute;bottom:5px;right:5px;font-size:16px;z-index:3;}
+.p3st{position:absolute;bottom:4px;left:50%;transform:translateX(-50%);font-size:8px;font-weight:800;color:var(--g);background:rgba(4,4,10,.85);padding:2px 7px;border-radius:5px;white-space:nowrap;font-family:var(--mono);}
+.pet-name{font-size:22px;font-weight:900;line-height:1;margin-bottom:2px;}
+.pet-species{font-size:11px;color:var(--t3);margin-bottom:8px;font-family:var(--mono);}
+.pet-lv{display:inline-flex;align-items:center;gap:4px;background:linear-gradient(135deg,var(--g),var(--tl));color:var(--bg);border-radius:7px;padding:4px 11px;font-size:12px;font-weight:900;margin-bottom:5px;font-family:var(--mono);}
+.pet-evol{font-size:10px;color:var(--y);font-weight:700;font-family:var(--mono);}
+.xpt{height:8px;background:var(--c3);border-radius:100px;overflow:hidden;margin-top:10px;}
+.xpf{height:100%;background:linear-gradient(90deg,var(--g),var(--tl));border-radius:100px;transition:width .7s cubic-bezier(.34,1.56,.64,1);}
+.xp-top{display:flex;justify-content:space-between;font-size:10px;color:var(--t3);margin-bottom:4px;font-family:var(--mono);}
+.stats-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin:0 12px 10px;}
+.st-box{background:var(--c1);border:1px solid var(--line);border-radius:12px;padding:10px 8px;text-align:center;}
+.st-num{font-size:26px;font-weight:900;line-height:1;font-family:var(--mono);}
+.st-num.a{color:var(--r);}
+.st-num.c{color:var(--y);}
+.st-num.s{color:var(--b);}
+.st-bar{height:3px;background:var(--c3);border-radius:2px;overflow:hidden;margin-top:4px;}
+.st-bf{height:100%;border-radius:2px;transition:width .5s;}
+.st-bf.a{background:var(--r);}
+.st-bf.c{background:var(--y);}
+.st-bf.s{background:var(--b);}
+.st-lbl{font-size:9px;color:var(--t3);text-transform:uppercase;letter-spacing:.7px;margin-top:3px;}
+.vitals-card{margin:0 12px 10px;}
+.vr{display:flex;align-items:center;gap:8px;margin-bottom:8px;}
+.vr:last-child{margin-bottom:0;}
+.vi{font-size:14px;width:18px;text-align:center;flex-shrink:0;}
+.vn{font-size:10px;font-weight:700;color:var(--t3);width:48px;flex-shrink:0;text-transform:uppercase;font-family:var(--mono);}
+.vt{flex:1;height:6px;background:var(--c3);border-radius:100px;overflow:hidden;}
+.vf{height:100%;border-radius:100px;transition:width .5s;}
+.vv{font-size:10px;font-weight:700;width:28px;text-align:right;flex-shrink:0;font-family:var(--mono);}
+.care-row{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:0 12px 10px;}
+.cb{background:var(--c1);border:1px solid var(--line);border-radius:13px;padding:11px 6px;text-align:center;cursor:pointer;transition:all .15s;}
+.cb:active{transform:scale(.91);}
+.cbi{font-size:22px;display:block;margin-bottom:3px;}
+.cbl{font-size:11px;font-weight:700;display:block;}
+.cbc{font-size:9px;color:var(--t3);display:block;margin-top:1px;font-family:var(--mono);}
+/* Streak hero */
+.streak-hero{margin:0 12px 10px;background:var(--c1);border:1px solid var(--line);border-radius:14px;padding:13px;display:flex;align-items:center;gap:12px;}
+.streak-ring-big{width:58px;height:58px;border-radius:50%;padding:3px;background:conic-gradient(var(--c3),var(--c3));flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:all .3s;}
+.streak-ring-big.on{background:conic-gradient(var(--g),var(--tl),var(--g));}
+.streak-inner-big{width:50px;height:50px;border-radius:50%;background:var(--c2);display:flex;flex-direction:column;align-items:center;justify-content:center;}
+.streak-n{font-size:18px;font-weight:900;line-height:1;color:var(--t3);font-family:var(--mono);}
+.streak-n.on{color:var(--g);}
+.streak-lbl-sm{font-size:7px;color:var(--t3);text-transform:uppercase;font-family:var(--mono);}
+/* Minigame */
+.mg-wrap{margin:0 12px 10px;background:var(--c1);border:1px solid var(--line);border-radius:18px;padding:18px;text-align:center;}
+.mg-score-disp{font-size:44px;font-weight:900;color:var(--g);margin-bottom:12px;font-family:var(--mono);}
+.mg-btn{width:90px;height:90px;border-radius:50%;border:none;background:linear-gradient(135deg,var(--g),var(--tl));display:flex;align-items:center;justify-content:center;font-size:40px;cursor:pointer;margin:0 auto;box-shadow:0 8px 30px rgba(0,255,136,.35);transition:all .1s;}
+.mg-btn:active{transform:scale(.82);}
+.mg-combo{font-size:11px;font-weight:800;color:var(--y);margin-top:8px;font-family:var(--mono);min-height:16px;}
+/* Flash */
+.flash-top{background:var(--c1);border-bottom:1px solid var(--line);flex-shrink:0;}
+.flash-title-row{display:flex;align-items:center;justify-content:space-between;padding:12px 14px 8px;}
+.flash-title{font-size:22px;font-weight:900;font-family:var(--mono);}
+.flash-sub{font-size:12px;color:var(--t2);padding:0 14px 10px;}
+.streak-circles{display:flex;gap:10px;overflow-x:auto;scrollbar-width:none;padding:0 14px 12px;}
+.streak-circles::-webkit-scrollbar{display:none;}
+.sc{display:flex;flex-direction:column;align-items:center;gap:4px;cursor:pointer;flex-shrink:0;}
+.sc-ring{width:60px;height:60px;border-radius:50%;padding:2.5px;display:flex;align-items:center;justify-content:center;}
+.sc-ring.active{background:conic-gradient(var(--pk),var(--p),var(--g),var(--pk));}
+.sc-ring.done{background:conic-gradient(var(--g),var(--tl),var(--g));}
+.sc-ring.empty{background:conic-gradient(var(--c3),var(--c3));}
+.sc-ring.live{background:conic-gradient(var(--r),var(--y),var(--r));animation:lring 1.5s infinite;}
+@keyframes lring{0%,100%{box-shadow:0 0 0 0 rgba(255,68,85,.4);}50%{box-shadow:0 0 0 5px rgba(255,68,85,0);}}
+.sc-inner{width:53px;height:53px;border-radius:50%;background:var(--c2);display:flex;align-items:center;justify-content:center;font-size:26px;}
+.sc-name{font-size:9px;color:var(--t2);max-width:60px;text-align:center;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.sc-streak{font-size:9px;color:var(--r);font-weight:800;font-family:var(--mono);}
+.flash-feed{flex:1;overflow-y:scroll;scroll-snap-type:y mandatory;scrollbar-width:none;}
+.flash-feed::-webkit-scrollbar{display:none;}
+.fv{scroll-snap-align:start;min-height:100svh;display:flex;flex-direction:column;background:var(--bg);border-bottom:1px solid var(--line);position:relative;}
+.fv-media{flex:1;min-height:55svh;background:var(--c1);display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;}
+.fv-bg{font-size:110px;opacity:.04;}
+.fv-right{position:absolute;right:12px;bottom:60px;display:flex;flex-direction:column;align-items:center;gap:18px;z-index:10;}
+.fv-action{display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer;}
+.fv-action-ico{font-size:30px;transition:transform .15s;}
+.fv-action:active .fv-action-ico{transform:scale(.78);}
+.fv-action-cnt{font-size:11px;font-weight:700;color:#fff;font-family:var(--mono);}
+.fv-tl{position:absolute;top:10px;left:10px;display:flex;flex-direction:column;gap:5px;z-index:5;}
+.fv-bl{position:absolute;bottom:10px;left:10px;right:60px;z-index:5;}
+.flash-stamp{display:inline-block;background:linear-gradient(135deg,var(--pk),var(--p));color:#fff;font-size:9px;font-weight:900;padding:3px 9px;border-radius:20px;letter-spacing:1px;font-family:var(--mono);}
+.live-pill{background:var(--r);color:#fff;font-size:9px;font-weight:900;padding:3px 8px;border-radius:5px;display:inline-flex;align-items:center;gap:4px;}
+.ldot{width:5px;height:5px;border-radius:50%;background:#fff;animation:blink .8s infinite;}
+@keyframes blink{0%,100%{opacity:1;}50%{opacity:.3;}}
+.xp-pill{background:rgba(0,255,136,.15);border:1px solid rgba(0,255,136,.4);color:var(--g);font-size:11px;font-weight:800;padding:3px 9px;border-radius:20px;font-family:var(--mono);}
+.fv-info{padding:12px 14px;}
+.fv-ur{display:flex;align-items:center;gap:9px;margin-bottom:7px;}
+.fv-ava{width:38px;height:38px;border-radius:11px;background:var(--c2);border:2px solid var(--line);display:flex;align-items:center;justify-content:center;font-size:19px;flex-shrink:0;}
+.fv-un{font-size:14px;font-weight:800;}
+.fv-ref{font-size:10px;color:var(--y);}
+.fv-cap{font-size:13px;line-height:1.55;margin-bottom:9px;}
+.fv-acts{display:flex;gap:7px;flex-wrap:wrap;}
+.fa{padding:6px 13px;border-radius:20px;background:var(--c2);border:1px solid var(--line);font-size:12px;font-weight:700;cursor:pointer;display:flex;align-items:center;gap:4px;color:var(--t2);transition:all .12s;}
+.fa:active{transform:scale(.94);}
+/* Circles */
+.circle-card{margin:0 12px 10px;border-radius:16px;overflow:hidden;cursor:pointer;transition:all .15s;position:relative;}
+.circle-card:active{transform:scale(.98);}
+.cc-banner{height:80px;display:flex;align-items:center;padding:0 16px;position:relative;overflow:hidden;}
+.cc-banner-bg{position:absolute;inset:0;}
+.cc-emoji{font-size:38px;z-index:2;margin-right:12px;}
+.cc-name{font-size:17px;font-weight:900;z-index:2;}
+.cc-sub{font-size:11px;color:rgba(255,255,255,.7);z-index:2;}
+.cc-members{position:absolute;top:10px;right:12px;z-index:2;}
+.cc-tag{font-size:10px;font-weight:800;background:rgba(0,0,0,.5);padding:3px 8px;border-radius:20px;color:#fff;}
+.cc-body{background:var(--c1);border:1px solid var(--line);border-top:none;padding:11px 14px;}
+.cc-preview{font-size:12px;color:var(--t2);margin-bottom:8px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.cc-stats{display:flex;align-items:center;gap:10px;}
+.cc-streak-ring{width:36px;height:36px;border-radius:50%;padding:2px;background:conic-gradient(var(--r),var(--y),var(--r));display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.cc-streak-inner{width:30px;height:30px;border-radius:50%;background:var(--c1);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:900;color:var(--r);font-family:var(--mono);}
+/* Circle window */
+.circ-win{position:fixed;inset:0;z-index:700;background:var(--bg);display:flex;flex-direction:column;transform:translateX(100%);transition:transform .28s cubic-bezier(.32,.72,0,1);}
+.circ-win.open{transform:translateX(0);}
+.cw-hdr{height:54px;display:flex;align-items:center;padding:0 13px;gap:10px;border-bottom:1px solid var(--line);flex-shrink:0;}
+.cw-bk{background:none;border:none;color:var(--t2);font-size:22px;cursor:pointer;}
+.cw-nm{font-size:15px;font-weight:800;flex:1;}
+.cw-st{font-size:10px;color:var(--g);font-family:var(--mono);}
+.circle-flash-bar{padding:10px 13px;border-bottom:1px solid var(--line);flex-shrink:0;display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;}
+.circle-flash-bar::-webkit-scrollbar{display:none;}
+.cfb-member{display:flex;flex-direction:column;align-items:center;gap:3px;flex-shrink:0;cursor:pointer;}
+.cfb-ring{width:46px;height:46px;border-radius:50%;padding:2px;display:flex;align-items:center;justify-content:center;}
+.cfb-ring.done{background:conic-gradient(var(--g),var(--tl),var(--g));}
+.cfb-ring.missing{background:conic-gradient(var(--r),var(--r));animation:ms 1s infinite;}
+@keyframes ms{0%,100%{opacity:1;}50%{opacity:.5;}}
+.cfb-ring.pending{background:conic-gradient(var(--c3),var(--c3));}
+.cfb-inner{width:40px;height:40px;border-radius:50%;background:var(--c2);display:flex;align-items:center;justify-content:center;font-size:20px;}
+.cfb-name{font-size:8px;color:var(--t2);max-width:46px;text-align:center;}
+.cw-msgs{flex:1;overflow-y:auto;padding:12px 13px;display:flex;flex-direction:column;gap:8px;scrollbar-width:none;}
+.cw-msgs::-webkit-scrollbar{display:none;}
+.msg{max-width:80%;padding:9px 13px;border-radius:14px;font-size:14px;line-height:1.5;}
+.msg.me{align-self:flex-end;background:linear-gradient(135deg,var(--g),var(--tl));color:var(--bg);font-weight:600;border-bottom-right-radius:4px;}
+.msg.them{align-self:flex-start;background:var(--c2);border:1px solid var(--line);border-bottom-left-radius:4px;}
+.msg-t{font-size:9px;color:var(--t3);margin-top:2px;font-family:var(--mono);}
+.msg-name{font-size:10px;color:var(--t2);margin-bottom:3px;font-weight:700;}
+.cw-inp-row{padding:9px 12px;border-top:1px solid var(--line);display:flex;gap:7px;align-items:center;background:var(--bg);padding-bottom:calc(9px + var(--sab));}
+.cw-inp{flex:1;background:var(--c2);border:1px solid var(--line);border-radius:22px;padding:10px 14px;color:var(--t1);font-family:var(--ff);font-size:14px;outline:none;}
+.cw-inp:focus{border-color:rgba(0,255,136,.38);}
+.cw-snd{width:40px;height:40px;background:linear-gradient(135deg,var(--g),var(--tl));border:none;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:17px;cursor:pointer;flex-shrink:0;color:var(--bg);transition:transform .12s;}
+.cw-snd:active{transform:scale(.88);}
+/* Uppdrag */
+.uppdrag-hdr{padding:13px 14px 11px;background:var(--c1);border-bottom:1px solid var(--line);flex-shrink:0;}
+.uppdrag-title{font-size:22px;font-weight:900;font-family:var(--mono);}
+.uppdrag-title-r{display:flex;align-items:center;justify-content:space-between;margin-bottom:5px;}
+.ufilters{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;padding:8px 14px;border-bottom:1px solid var(--line);flex-shrink:0;}
+.ufilters::-webkit-scrollbar{display:none;}
+.uf{padding:6px 12px;border-radius:20px;background:var(--c2);border:1px solid var(--line);font-size:11px;font-weight:700;cursor:pointer;color:var(--t2);white-space:nowrap;transition:all .15s;flex-shrink:0;}
+.uf.on{background:var(--g);color:var(--bg);border-color:var(--g);}
+.uc{margin:0 12px 10px;background:var(--c1);border:1px solid var(--line);border-radius:16px;overflow:hidden;cursor:pointer;transition:all .15s;}
+.uc:active{transform:scale(.98);}
+.uc.verified-gold{border-color:rgba(255,204,0,.35);}
+.uc.verified-co{border-color:rgba(0,255,136,.32);}
+.uc-co{display:flex;align-items:center;gap:9px;padding:9px 12px;border-bottom:1px solid var(--line);}
+.uc-co-logo{width:30px;height:30px;border-radius:8px;background:var(--c2);display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0;}
+.uc-co-name{font-size:12px;font-weight:800;display:flex;align-items:center;gap:5px;}
+.uc-co-type{font-size:10px;color:var(--t3);}
+.ver-g{display:inline-flex;align-items:center;gap:3px;background:rgba(0,255,136,.12);border:1px solid rgba(0,255,136,.35);color:var(--g);font-size:9px;font-weight:800;padding:2px 6px;border-radius:20px;}
+.ver-y{background:rgba(255,204,0,.12);border-color:rgba(255,204,0,.35);color:var(--y);}
+.uc-body{padding:11px 12px;}
+.uc-top{display:flex;align-items:flex-start;justify-content:space-between;gap:8px;margin-bottom:5px;}
+.uc-title{font-size:14px;font-weight:800;line-height:1.3;flex:1;}
+.uc-desc{font-size:12px;color:var(--t2);line-height:1.55;margin-bottom:7px;}
+.uc-req{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:7px;}
+.uc-loc{font-size:11px;color:var(--b);margin-bottom:9px;}
+.uc-bot{display:flex;align-items:center;justify-content:space-between;}
+.uc-rewards{display:flex;gap:6px;align-items:center;}
+.uc-sek{background:linear-gradient(135deg,var(--g),var(--tl));color:var(--bg);font-size:13px;font-weight:900;padding:5px 12px;border-radius:7px;font-family:var(--mono);}
+.uc-coins{background:rgba(255,204,0,.1);border:1px solid rgba(255,204,0,.28);color:var(--y);font-size:12px;font-weight:800;padding:4px 10px;border-radius:7px;font-family:var(--mono);}
+.uc-xp{background:rgba(0,255,136,.07);border:1px solid rgba(0,255,136,.22);color:var(--g);font-size:10px;font-weight:800;padding:4px 8px;border-radius:6px;font-family:var(--mono);}
+.uc-prog-wrap{padding:0 12px 8px;}
+.uc-prog-bar{height:3px;background:var(--c3);border-radius:100px;overflow:hidden;}
+.uc-prog-fill{height:100%;background:linear-gradient(90deg,var(--g),var(--tl));border-radius:100px;}
+.uc-foot{padding:7px 12px;border-top:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;}
+.uc-spots{font-size:10px;color:var(--t3);font-family:var(--mono);}
+.uc-dead{font-size:10px;color:var(--o);font-weight:700;font-family:var(--mono);}
+/* Shop */
+.shop-hdr{padding:12px 13px 10px;background:var(--c1);border-bottom:1px solid var(--line);flex-shrink:0;}
+.shop-title-r{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;}
+.shop-title{font-size:22px;font-weight:900;font-family:var(--mono);}
+.shop-srch{display:flex;align-items:center;gap:9px;background:var(--c2);border:1px solid var(--line);border-radius:12px;padding:0 13px;}
+.shop-srch input{flex:1;background:none;border:none;outline:none;padding:10px 0;color:var(--t1);font-family:var(--ff);font-size:14px;}
+.shop-srch input::placeholder{color:var(--t3);}
+.src-row{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;padding:7px 12px;border-bottom:1px solid var(--line);flex-shrink:0;}
+.src-row::-webkit-scrollbar{display:none;}
+.src{flex-shrink:0;padding:5px 11px;border-radius:20px;background:var(--c2);border:1px solid var(--line);font-size:11px;font-weight:700;cursor:pointer;color:var(--t2);transition:all .15s;white-space:nowrap;}
+.src.on{background:var(--g);color:var(--bg);border-color:var(--g);}
+.pgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:12px;}
+.pcard{background:var(--c1);border:1px solid var(--line);border-radius:14px;overflow:hidden;cursor:pointer;transition:all .15s;}
+.pcard:active{transform:scale(.97);}
+.pc-img{height:128px;background:var(--c2);display:flex;align-items:center;justify-content:center;font-size:52px;position:relative;}
+.pc-badge{position:absolute;top:7px;left:7px;font-size:9px;font-weight:900;padding:2px 7px;border-radius:5px;font-family:var(--mono);}
+.pc-badge.new{background:var(--g);color:var(--bg);}
+.pc-badge.hot{background:var(--r);color:#fff;}
+.pc-badge.sale{background:var(--y);color:var(--bg);}
+.pc-info{padding:9px 11px 11px;}
+.pc-name{font-size:12px;font-weight:700;line-height:1.3;margin-bottom:2px;}
+.pc-src{font-size:10px;color:var(--t3);margin-bottom:4px;}
+.pc-price{font-size:15px;font-weight:900;color:var(--g);font-family:var(--mono);}
+.pc-orig{font-size:10px;color:var(--t3);text-decoration:line-through;margin-left:4px;}
+.pc-stars{font-size:10px;color:var(--y);margin-top:2px;}
+.lr-row{display:flex;gap:11px;padding:12px 13px;border-bottom:1px solid var(--line);cursor:pointer;}
+.lr-row:active{background:var(--c1);}
+.lr-img{width:68px;height:68px;border-radius:12px;background:var(--c2);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:32px;}
+.lr-title{font-size:13px;font-weight:700;margin-bottom:2px;}
+.lr-desc{font-size:11px;color:var(--t3);line-height:1.4;margin-bottom:5px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.lr-meta{display:flex;align-items:center;gap:7px;}
+.lr-price{font-size:16px;font-weight:900;color:var(--g);font-family:var(--mono);}
+.lr-age{font-size:10px;color:var(--t3);margin-left:auto;}
+.cmp-wrap{padding:12px;display:flex;flex-direction:column;gap:12px;}
+.cmp-card{background:var(--c1);border:1px solid var(--line);border-radius:14px;overflow:hidden;}
+.cmp-prod{padding:12px 13px 9px;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:10px;}
+.cmp-row{display:flex;align-items:center;padding:11px 13px;border-bottom:1px solid var(--line);cursor:pointer;transition:background .1s;}
+.cmp-row:last-child{border-bottom:none;}
+.cmp-row.best{background:rgba(0,255,136,.04);}
+.cmp-row:active{background:var(--c2);}
+.cmp-store{flex:1;display:flex;align-items:center;gap:8px;font-size:13px;font-weight:600;}
+.cmp-price{font-size:14px;font-weight:900;font-family:var(--mono);}
+.cmp-price.best{color:var(--g);}
+.cmp-best{background:rgba(0,255,136,.1);color:var(--g);font-size:9px;font-weight:800;padding:2px 7px;border-radius:4px;margin-left:7px;}
+.brand-card{margin:0 12px 10px;background:var(--c1);border:1px solid var(--line);border-radius:14px;overflow:hidden;cursor:pointer;transition:all .15s;}
+.brand-card:active{transform:scale(.98);}
+.brand-banner{height:68px;display:flex;align-items:center;justify-content:center;font-size:40px;}
+.brand-info{padding:10px 12px 12px;}
+.brand-name{font-size:15px;font-weight:900;margin-bottom:2px;}
+.brand-creator{font-size:11px;color:var(--t3);margin-bottom:7px;}
+.brand-stats-r{display:flex;gap:11px;}
+.bs{font-size:11px;color:var(--t2);}
+.bs b{font-weight:800;color:var(--t1);}
+.gear-shop-grid{padding:12px;display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.gear-item{background:var(--c1);border:1px solid var(--line);border-radius:14px;padding:13px;text-align:center;cursor:pointer;transition:all .15s;}
+.gear-item:active{transform:scale(.96);}
+.gear-item.owned{border-color:var(--g);}
+.gear-em{font-size:38px;display:block;margin-bottom:4px;}
+.gear-nm{font-size:12px;font-weight:700;margin-bottom:2px;}
+.gear-st{font-size:10px;color:var(--t3);margin-bottom:5px;}
+.gear-pr{font-size:13px;font-weight:900;font-family:var(--mono);}
+/* Map */
+#view-map{padding:0;}
+.map-wrap{display:flex;flex-direction:column;height:100%;}
+.map-canvas-wrap{flex:1;position:relative;min-height:280px;}
+#realMap{width:100%;height:100%;}
+.leaflet-container{background:#0c0c16!important;}
+.leaflet-tile-pane{filter:brightness(.78) saturate(.85) hue-rotate(180deg) invert(1) hue-rotate(185deg) brightness(.62);}
+.map-top{position:absolute;top:12px;left:0;right:0;z-index:500;display:flex;align-items:flex-start;justify-content:space-between;padding:0 12px;pointer-events:none;}
+.map-top>*{pointer-events:all;}
+.share-tog{display:flex;background:rgba(4,4,10,.92);border:1px solid var(--line2);border-radius:10px;overflow:hidden;}
+.sh-o{padding:7px 11px;font-size:10px;font-weight:700;cursor:pointer;color:var(--t3);transition:all .15s;white-space:nowrap;}
+.sh-o.fo{background:var(--g);color:var(--bg);}
+.sh-o.po{background:var(--b);color:#fff;}
+.map-ctrls{display:flex;flex-direction:column;gap:5px;}
+.mctrl{width:36px;height:36px;background:rgba(4,4,10,.92);border:1px solid var(--line2);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:700;color:var(--t1);cursor:pointer;transition:all .12s;}
+.mctrl:active{background:var(--c2);}
+.mctrl.on{background:var(--g);color:var(--bg);}
+.gps-bar{padding:9px 14px;background:var(--c1);border-top:1px solid var(--line);border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;flex-shrink:0;}
+.gps-st{display:flex;align-items:center;gap:7px;font-size:12px;font-weight:600;font-family:var(--mono);}
+.gps-dot{width:8px;height:8px;border-radius:50%;background:var(--t3);}
+.gps-dot.active{background:var(--g);box-shadow:0 0 6px var(--g);animation:gp2 1.5s infinite;}
+.gps-dot.searching{background:var(--y);animation:gp2 .8s infinite;}
+@keyframes gp2{0%,100%{opacity:1;}50%{opacity:.4;}}
+.map-leg{padding:7px 14px;display:flex;gap:12px;overflow-x:auto;scrollbar-width:none;border-bottom:1px solid var(--line);}
+.map-leg::-webkit-scrollbar{display:none;}
+.leg{display:flex;align-items:center;gap:4px;font-size:10px;color:var(--t3);white-space:nowrap;flex-shrink:0;}
+.leg-dot{width:9px;height:9px;border-radius:50%;border:2px solid;flex-shrink:0;}
+.nearby-list{max-height:170px;overflow-y:auto;scrollbar-width:none;}
+.nearby-list::-webkit-scrollbar{display:none;}
+.nbr{display:flex;align-items:center;gap:10px;padding:9px 13px;border-bottom:1px solid var(--line);cursor:pointer;transition:background .1s;}
+.nbr:active{background:var(--c1);}
+.nbr:last-child{border-bottom:none;}
+.nbr-ico{width:30px;height:30px;border-radius:8px;background:var(--c2);display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;}
+.nbr-title{font-size:12px;font-weight:700;}
+.nbr-loc{font-size:10px;color:var(--t3);}
+.nbr-rwd{font-size:14px;font-weight:900;color:var(--y);font-family:var(--mono);}
+.nbr-dist{font-size:9px;color:var(--t3);font-family:var(--mono);}
+/* Leaderboard */
+.lb-podium{display:flex;align-items:flex-end;justify-content:center;gap:8px;padding:18px 14px 14px;background:linear-gradient(180deg,rgba(0,255,136,.04),transparent);border-bottom:1px solid var(--line);}
+.pod{display:flex;flex-direction:column;align-items:center;}
+.pod-av{width:52px;height:52px;border-radius:14px;background:var(--c2);border:2px solid;display:flex;align-items:center;justify-content:center;font-size:28px;margin-bottom:4px;}
+.pod-rk{font-size:20px;font-weight:900;line-height:1;font-family:var(--mono);}
+.pod-nm{font-size:11px;font-weight:700;text-align:center;max-width:76px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.pod-vl{font-size:11px;color:var(--t2);font-family:var(--mono);}
+.pod-pl{border-radius:7px 7px 0 0;width:80px;display:flex;flex-direction:column;align-items:center;padding:6px 4px 0;}
+.pod-pl.g{background:rgba(255,204,0,.1);border:1px solid rgba(255,204,0,.2);border-bottom:none;}
+.pod-pl.s{background:rgba(160,160,180,.07);border:1px solid rgba(160,160,180,.14);border-bottom:none;}
+.pod-pl.b{background:rgba(200,120,60,.07);border:1px solid rgba(200,120,60,.14);border-bottom:none;}
+.ph1{height:72px;}.ph2{height:54px;}.ph3{height:40px;}
+.lb-list{padding:0 13px;}
+.lb-row{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--line);}
+.lb-row:last-child{border-bottom:none;}
+.lb-row.you{background:rgba(0,255,136,.05);border:1px solid rgba(0,255,136,.14)!important;border-radius:11px;margin:5px 0;padding:10px 10px!important;}
+.lb-rk{font-size:18px;font-weight:900;color:var(--t3);width:26px;text-align:center;flex-shrink:0;font-family:var(--mono);}
+.lb-av{width:38px;height:38px;border-radius:11px;background:var(--c2);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;}
+.lb-nm{font-size:13px;font-weight:700;flex:1;}
+.lb-sb{font-size:10px;color:var(--t3);}
+.lb-vl{font-size:14px;font-weight:900;text-align:right;font-family:var(--mono);}
+.lb-up{font-size:10px;font-weight:700;color:var(--g);text-align:right;}
+/* Profile */
+.prof-cover{height:84px;background:linear-gradient(135deg,rgba(0,255,136,.08),rgba(68,136,255,.05));position:relative;overflow:hidden;flex-shrink:0;}
+.prof-cover-pat{position:absolute;inset:0;background:repeating-linear-gradient(45deg,transparent,transparent 20px,rgba(0,255,136,.025) 20px,rgba(0,255,136,.025) 21px);}
+.prof-ava-wr{position:absolute;bottom:-27px;left:13px;}
+.prof-ava{width:70px;height:70px;border-radius:18px;background:var(--c2);border:3px solid var(--bg);display:flex;align-items:center;justify-content:center;font-size:36px;position:relative;}
+.prof-trust{position:absolute;bottom:-2px;right:-2px;background:var(--g);border:2px solid var(--bg);border-radius:7px;padding:1px 5px;font-size:8px;font-weight:900;color:var(--bg);font-family:var(--mono);}
+.prof-content{padding:34px 13px 11px;flex-shrink:0;}
+.prof-name{font-size:22px;font-weight:900;}
+.prof-handle{font-size:12px;color:var(--t3);margin-bottom:9px;font-family:var(--mono);}
+.prof-stats{display:flex;border:1px solid var(--line);border-radius:12px;overflow:hidden;background:var(--c1);}
+.ps{flex:1;text-align:center;padding:10px 5px;border-right:1px solid var(--line);}
+.ps:last-child{border-right:none;}
+.ps-v{font-size:18px;font-weight:900;font-family:var(--mono);}
+.ps-l{font-size:9px;color:var(--t3);text-transform:uppercase;letter-spacing:.8px;margin-top:1px;}
+.trust-card{margin:0 13px 10px;background:rgba(0,255,136,.04);border:1px solid rgba(0,255,136,.18);border-radius:16px;padding:14px;}
+.trust-big{font-size:54px;font-weight:900;color:var(--g);line-height:1;font-family:var(--mono);}
+.tr-row{display:flex;align-items:center;gap:9px;margin-bottom:5px;}
+.tr-lbl{font-size:10px;color:var(--t3);width:84px;flex-shrink:0;}
+.tr-track{flex:1;height:4px;background:var(--c3);border-radius:100px;overflow:hidden;}
+.tr-fill{height:100%;border-radius:100px;background:linear-gradient(90deg,var(--g),var(--tl));transition:width .7s;}
+.tr-val{font-size:10px;font-weight:700;color:var(--g);width:28px;text-align:right;flex-shrink:0;font-family:var(--mono);}
+.badge-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;}
+.badge{background:var(--c1);border:1px solid var(--line);border-radius:12px;padding:10px 5px;text-align:center;cursor:pointer;transition:all .15s;}
+.badge.earned{border-color:rgba(255,204,0,.38);background:rgba(255,204,0,.04);}
+.badge-e{font-size:22px;margin-bottom:3px;}
+.badge-l{font-size:8px;font-weight:700;color:var(--t3);}
+.badge.earned .badge-l{color:var(--y);}
+.hist-item{display:flex;align-items:center;gap:9px;padding:9px 13px;border-bottom:1px solid var(--line);}
+.hist-item:last-child{border-bottom:none;}
+.hdot{width:6px;height:6px;border-radius:50%;flex-shrink:0;}
+.htxt{flex:1;font-size:12px;line-height:1.4;}
+.htime{font-size:9px;color:var(--t3);font-family:var(--mono);}
+/* Launch */
+.launch-card{margin:12px;background:linear-gradient(135deg,rgba(255,51,119,.1),rgba(170,102,255,.06));border:1px solid rgba(255,51,119,.25);border-radius:16px;padding:16px;}
+.launch-title{font-size:16px;font-weight:900;margin-bottom:4px;color:var(--pk);}
+.launch-sub{font-size:12px;color:var(--t2);line-height:1.6;margin-bottom:12px;}
+.launch-steps{display:flex;flex-direction:column;gap:8px;}
+.ls{display:flex;align-items:center;gap:10px;padding:8px 10px;background:var(--c2);border-radius:10px;}
+.ls-n{width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:900;flex-shrink:0;}
+.ls-t{font-size:12px;font-weight:700;flex:1;}
+.ls-s{font-size:10px;font-weight:800;padding:2px 7px;border-radius:5px;}
+</style>
+</head>
+<body>
+<!-- ONBOARDING -->
+<div class="ob" id="ob">
+  <div class="ob-logo"><span style="color:var(--g)">K</span>ARMA</div>
+  <div class="ob-tag">Real Life · Game Engine</div>
+  <div class="ob-step" id="obs0">
+    <div class="ob-prog"><div class="ob-d on"></div><div class="ob-d"></div><div class="ob-d"></div></div>
+    <div class="ob-h">Ditt liv är spelet.</div>
+    <div class="ob-p">Gör grejer IRL. Posta 5-sekunders Flash. Tjäna pengar. Levla din pet.</div>
+    <label class="lbl">DITT NAMN</label>
+    <input class="inp" id="obName" placeholder="Ex: ella_runs / axelsthlm" maxlength="18">
+    <button class="btn btn-g btn-lg btn-full" onclick="obNext(1)">NÄSTA →</button>
+  </div>
+  <div class="ob-step" id="obs1" style="display:none">
+    <div class="ob-prog"><div class="ob-d on"></div><div class="ob-d on"></div><div class="ob-d"></div></div>
+    <div class="ob-h">Välj din pet.</div>
+    <div class="ob-p">Din pet levlar när du gör grejer IRL.</div>
+    <div class="ob-pets" id="obPetGrid"></div>
+    <label class="lbl">PET-NAMN</label>
+    <input class="inp" id="obPetName" placeholder="Ex: Eldrake / Luna / Shadow">
+    <button class="btn btn-g btn-lg btn-full" onclick="obNext(2)">NÄSTA →</button>
+  </div>
+  <div class="ob-step" id="obs2" style="display:none">
+    <div class="ob-prog"><div class="ob-d on"></div><div class="ob-d on"></div><div class="ob-d on"></div></div>
+    <div class="ob-h">Karma Loop.</div>
+    <div class="ob-loop">
+      <div class="ob-lr"><div class="ob-n" style="background:var(--pk);color:#fff">⚡</div><div style="font-size:13px;font-weight:700">Daglig 1-5 sek <b>FLASH</b> video</div></div>
+      <div class="ob-lr"><div class="ob-n" style="background:var(--p);color:#fff">⭕</div><div style="font-size:13px;font-weight:700">Dela i din <b>Karma Circle</b></div></div>
+      <div class="ob-lr"><div class="ob-n" style="background:var(--g);color:var(--bg)">🗺</div><div style="font-size:13px;font-weight:700">Se uppdrag på <b>GPS-kartan</b></div></div>
+      <div class="ob-lr" style="border-bottom:none"><div class="ob-n" style="background:var(--y);color:var(--bg)">💸</div><div style="font-size:13px;font-weight:800;color:var(--y)">Tjäna pengar + XP = legend!</div></div>
+    </div>
+    <button class="btn btn-g btn-lg btn-full" onclick="finishOB()">⚡ STARTA KARMA</button>
+  </div>
+</div>
+
+<!-- APP -->
+<div class="app" id="app">
+  <div class="tb">
+    <div class="logo"><span class="logo-k">K</span>ARMA</div>
+    <div class="pills">
+      <div class="pill pill-y">⚡<b id="hCoins">500</b></div>
+      <div class="pill pill-r">🔥<b id="hStreak">0</b>d</div>
+      <div class="pill pill-g">✅<b id="hTrust">42</b></div>
+    </div>
+    <div class="mw">
+      <div class="ham" id="hamBtn" onclick="toggleMenu()"><span></span><span></span><span></span></div>
+      <div class="dd" id="dd">
+        <div class="dd-head"><div class="dd-nm" id="ddName">–</div><div class="dd-sb" id="ddSub">Level 1</div></div>
+        <div class="dd-sec">
+          <div class="ddr" onclick="cM();nav('home')"><div class="ddr-i">🐾</div>Din Pet</div>
+          <div class="ddr" onclick="cM();nav('flash')"><div class="ddr-i">⚡</div>Flash Feed</div>
+          <div class="ddr" onclick="cM();nav('circles')"><div class="ddr-i">⭕</div>Karma Circles<div class="dd-bdg" id="circleDot" style="display:none">!</div></div>
+          <div class="ddr" onclick="cM();nav('uppdrag')"><div class="ddr-i">🎯</div>Uppdrag</div>
+          <div class="ddr" onclick="cM();nav('shop')"><div class="ddr-i">🛍️</div>Marketplace</div>
+          <div class="ddr" onclick="cM();nav('map')"><div class="ddr-i">🗺️</div>Live Karta</div>
+        </div>
+        <div class="dd-sec">
+          <div class="ddr" onclick="cM();nav('lb')"><div class="ddr-i">🏆</div>Leaderboard</div>
+          <div class="ddr" onclick="cM();nav('profile')"><div class="ddr-i">👤</div>Profil</div>
+          <div class="ddr" onclick="cM();oWin('aiWin')"><div class="ddr-i">🤖</div>KARMA AI</div>
+          <div class="ddr" onclick="cM();nav('launch')"><div class="ddr-i">🚀</div>Launch Plan</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="pc" id="petComp" onclick="nav('home')">
+    <div class="pc-b" id="pcBody"><span id="pcEm">🐉</span><div class="pc-mood" id="pcMood">😊</div></div>
+    <div class="pc-lv" id="pcLv">LV1</div>
+  </div>
+
+  <div class="main">
+    <!-- HOME -->
+    <div class="view active" id="view-home">
+      <div class="pet-hero">
+        <div class="ph-row">
+          <div class="pet3" onclick="pcPlay()">
+            <div class="p3g"></div><div class="p3e" id="p3em">🐉</div>
+            <div class="p3gr" id="p3gear"></div><div class="p3st" id="p3stage">STAGE 1</div>
+          </div>
+          <div style="flex:1">
+            <div class="pet-name" id="petName">–</div>
+            <div class="pet-species" id="petSpecies">–</div>
+            <div class="pet-lv">LV <span id="petLvlN">1</span></div>
+            <div class="pet-evol" id="petEvol">NEXT EVOL: LV5</div>
+          </div>
+        </div>
+        <div class="xp-top"><span>XP</span><span id="xpNums">0/100</span></div>
+        <div class="xpt"><div class="xpf" id="xpFill" style="width:0%"></div></div>
+      </div>
+
+      <!-- Streak hero -->
+      <div class="streak-hero">
+        <div class="streak-ring-big" id="streakRingBig">
+          <div class="streak-inner-big">
+            <div class="streak-n" id="streakN">0</div>
+            <div class="streak-lbl-sm">STREAK</div>
+          </div>
+        </div>
+        <div style="flex:1">
+          <div style="font-size:14px;font-weight:800;margin-bottom:2px">🔥 Flash Streak</div>
+          <div style="font-size:12px;color:var(--t2)" id="streakMsg">Posta din första Flash!</div>
+          <div style="margin-top:6px;display:flex;gap:5px" id="streakWeekDots"></div>
+        </div>
+        <button class="btn btn-pk btn-sm" onclick="openModal('flashModal')">⚡ POST</button>
+      </div>
+
+      <div class="stats-row">
+        <div class="st-box"><div class="st-num a" id="stA">0</div><div class="st-bar"><div class="st-bf a" id="stAb" style="width:0%"></div></div><div class="st-lbl">⚔️ Action</div></div>
+        <div class="st-box"><div class="st-num c" id="stC">0</div><div class="st-bar"><div class="st-bf c" id="stCb" style="width:0%"></div></div><div class="st-lbl">💰 Commerce</div></div>
+        <div class="st-box"><div class="st-num s" id="stS">0</div><div class="st-bar"><div class="st-bf s" id="stSb" style="width:0%"></div></div><div class="st-lbl">⭐ Social</div></div>
+      </div>
+
+      <div class="card vitals-card">
+        <div style="padding:9px 13px 6px;border-bottom:1px solid var(--line)"><div class="sh-t">VITALS</div></div>
+        <div style="padding:12px">
+          <div class="vr"><div class="vi">🍖</div><div class="vn">HUNGER</div><div class="vt"><div class="vf" id="vH" style="width:80%;background:var(--o)"></div></div><div class="vv" id="vHv" style="color:var(--o)">80</div></div>
+          <div class="vr"><div class="vi">⚡</div><div class="vn">ENERGY</div><div class="vt"><div class="vf" id="vE" style="width:100%;background:var(--b)"></div></div><div class="vv" id="vEv" style="color:var(--b)">100</div></div>
+          <div class="vr"><div class="vi">💖</div><div class="vn">MOOD</div><div class="vt"><div class="vf" id="vM" style="width:90%;background:var(--p)"></div></div><div class="vv" id="vMv" style="color:var(--p)">90</div></div>
+          <div class="vr"><div class="vi">🌟</div><div class="vn">TRUST</div><div class="vt"><div class="vf" id="vK" style="width:42%;background:var(--g)"></div></div><div class="vv" id="vKv" style="color:var(--g)">42</div></div>
+        </div>
+      </div>
+
+      <div class="sh"><div class="sh-t">CARE</div></div>
+      <div class="care-row">
+        <div class="cb" onclick="pcFeed()"><span class="cbi">🍖</span><span class="cbl">MATA</span><span class="cbc">−10⚡</span></div>
+        <div class="cb" onclick="pcTrain()"><span class="cbi">🏋️</span><span class="cbl">TRÄNA</span><span class="cbc">+15XP</span></div>
+        <div class="cb" onclick="pcSleep()"><span class="cbi">😴</span><span class="cbl">SOVA</span><span class="cbc">+40E</span></div>
+        <div class="cb" onclick="pcPlay()"><span class="cbi">🎮</span><span class="cbl">LEK</span><span class="cbc">+5⚡</span></div>
+      </div>
+
+      <div class="sh"><div class="sh-t">GEAR</div><div class="sh-a" onclick="nav('shop');switchShop('gear')">SHOP →</div></div>
+      <div id="gearRowHome" style="display:flex;gap:7px;overflow-x:auto;scrollbar-width:none;padding:0 12px"></div>
+
+      <div class="sh" style="margin-top:8px"><div class="sh-t">MINISPEL</div><div class="sh-a" id="mgStreakDisp" style="color:var(--y)"></div></div>
+      <div class="mg-wrap">
+        <div style="font-size:14px;font-weight:800;margin-bottom:3px">🎯 Tryck-spelet</div>
+        <div style="font-size:12px;color:var(--t2);margin-bottom:12px">Var 10 tryck = +5XP · Combo = bonus!</div>
+        <div class="mg-score-disp" id="mgScore">0</div>
+        <button class="mg-btn" onclick="mgTap()" id="mgBtn"><span id="mgEm">🐉</span></button>
+        <div class="mg-combo" id="mgCombo"></div>
+        <div style="margin-top:10px;font-size:12px;color:var(--t3)">Rekord: <span id="mgRec" style="color:var(--g);font-weight:800">0</span></div>
+      </div>
+      <div class="vend"></div>
+    </div>
+
+    <!-- FLASH -->
+    <div class="view" id="view-flash" style="padding:0">
+      <div class="flash-top">
+        <div class="flash-title-row">
+          <div class="flash-title">⚡ Flash</div>
+          <button class="btn btn-pk btn-sm" onclick="openModal('flashModal')">+ Flash</button>
+        </div>
+        <div class="flash-sub">Daglig 1–5 sek video. Miss en dag = streak borta. 🔥</div>
+        <div class="streak-circles" id="streakCircles"></div>
+      </div>
+      <div class="flash-feed" id="flashFeed"></div>
+    </div>
+
+    <!-- CIRCLES -->
+    <div class="view" id="view-circles">
+      <div style="padding:13px 14px 11px;background:var(--c1);border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;flex-shrink:0">
+        <div><div style="font-size:22px;font-weight:900;font-family:var(--mono)">Karma Circles</div><div style="font-size:12px;color:var(--t2)">Privata grupper · Dagliga Flashar · Streak</div></div>
+        <button class="btn btn-pk btn-sm" onclick="openModal('createCircleModal')">+ Skapa</button>
+      </div>
+      <div id="circleList" style="padding-top:10px"></div>
+      <div class="vend"></div>
+    </div>
+
+    <!-- UPPDRAG -->
+    <div class="view" id="view-uppdrag">
+      <div class="uppdrag-hdr">
+        <div class="uppdrag-title-r"><div class="uppdrag-title">Uppdrag</div><button class="btn btn-y btn-sm" onclick="openModal('createUppdragModal')">🏢 Posta</button></div>
+        <div style="display:flex;gap:6px;flex-wrap:wrap"><span class="tag ty">💸 14 aktiva</span><span class="tag tr">🔴 3 LIVE</span><span class="tag tg">✅ 89 klara</span></div>
+      </div>
+      <div class="ufilters" id="ufilters">
+        <div class="uf on" data-uf="all">ALLA</div><div class="uf" data-uf="brand">🏢 BRAND</div>
+        <div class="uf" data-uf="reel">🎬 REEL</div><div class="uf" data-uf="task">🛠️ TASK</div>
+        <div class="uf" data-uf="review">⭐ RECENSION</div><div class="uf" data-uf="mine">📋 MINA</div>
+      </div>
+      <div id="uppdragList" style="padding-top:8px"></div>
+      <div class="vend"></div>
+    </div>
+
+    <!-- SHOP -->
+    <div class="view" id="view-shop" style="padding:0">
+      <div class="shop-hdr">
+        <div class="shop-title-r"><div class="shop-title">Marketplace</div><button class="btn btn-g btn-sm" onclick="openModal('sellModal')">+ Sälj</button></div>
+        <div class="shop-srch"><span style="font-size:17px">🔍</span><input placeholder="Sök produkter..." id="shopInp" oninput="G.shopSearch=this.value.toLowerCase();renderShop()"></div>
+      </div>
+      <div class="tabs" id="shopTabs">
+        <div class="tab on" data-t="shop" onclick="switchShop('shop',this)">🛍️ Shop</div>
+        <div class="tab" data-t="second" onclick="switchShop('second',this)">♻️ Begagnat</div>
+        <div class="tab" data-t="compare" onclick="switchShop('compare',this)">💰 Prislista</div>
+        <div class="tab" data-t="brands" onclick="switchShop('brands',this)">🏢 Brands</div>
+        <div class="tab" data-t="gear" onclick="switchShop('gear',this)">⚡ Gear</div>
+      </div>
+      <div class="src-row" id="srcRow"></div>
+      <div id="shopContent"></div>
+      <div class="vend"></div>
+    </div>
+
+    <!-- MAP -->
+    <div class="view" id="view-map" style="padding:0">
+      <div class="map-wrap">
+        <div class="map-canvas-wrap">
+          <div id="realMap"></div>
+          <div class="map-top">
+            <div class="share-tog"><div class="sh-o fo" id="shF" onclick="setShare('friends')">👥 VÄNNER</div><div class="sh-o" id="shP" onclick="setShare('public')">🌍 ALLA</div></div>
+            <div class="map-ctrls"><div class="mctrl" id="locBtn" onclick="locateMe()">◎</div><div class="mctrl" onclick="nav('uppdrag')">🎯</div></div>
+          </div>
+        </div>
+        <div class="gps-bar">
+          <div class="gps-st"><div class="gps-dot searching" id="gpsDot"></div><span id="gpsText">Tryck ◎ för GPS</span></div>
+          <span class="tag tg" id="shareChip">PRIVAT</span>
+        </div>
+        <div class="map-leg">
+          <div class="leg"><div class="leg-dot" style="border-color:var(--g);background:rgba(0,255,136,.2)"></div>DU</div>
+          <div class="leg"><div class="leg-dot" style="border-color:var(--y);background:rgba(255,204,0,.2)"></div>UPPDRAG</div>
+          <div class="leg"><div class="leg-dot" style="border-color:var(--b);background:rgba(68,136,255,.2)"></div>VÄNNER</div>
+          <div class="leg"><div class="leg-dot" style="border-color:var(--pk);background:rgba(255,51,119,.2)"></div>FLASH</div>
+        </div>
+        <div style="padding:8px 13px;border-top:1px solid var(--line);border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between"><div class="sh-t">UPPDRAG NÄRA DIG</div><div class="sh-a" onclick="nav('uppdrag')">ALLA →</div></div>
+        <div class="nearby-list" id="nearbyList"></div>
+      </div>
+    </div>
+
+    <!-- LEADERBOARD -->
+    <div class="view" id="view-lb">
+      <div class="tabs" id="lbTabs">
+        <div class="tab on" onclick="renderLB('money',this)">💸 PENGAR</div>
+        <div class="tab" onclick="renderLB('xp',this)">⚡ XP</div>
+        <div class="tab" onclick="renderLB('uppdrag',this)">🎯 UPPDRAG</div>
+        <div class="tab" onclick="renderLB('streak',this)">🔥 STREAK</div>
+        <div class="tab" onclick="renderLB('circles',this)">⭕ CIRCLES</div>
+      </div>
+      <div id="lbPodium"></div>
+      <div class="lb-list" id="lbList"></div>
+      <div class="vend"></div>
+    </div>
+
+    <!-- PROFILE -->
+    <div class="view" id="view-profile">
+      <div class="prof-cover"><div class="prof-cover-pat"></div></div>
+      <div class="prof-ava-wr"><div class="prof-ava"><span id="profAvaEm">🐉</span><div class="prof-trust" id="profTrustTag">BRONZE</div></div></div>
+      <div class="prof-content">
+        <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:9px">
+          <div><div class="prof-name" id="profName">–</div><div class="prof-handle" id="profHandle">@–</div></div>
+          <button class="btn btn-ghost btn-sm" onclick="shareProfile()">📤 Dela</button>
+        </div>
+        <div class="prof-stats">
+          <div class="ps"><div class="ps-v" id="pnFlash">0</div><div class="ps-l">FLASH</div></div>
+          <div class="ps"><div class="ps-v" id="pnUppdrag">0</div><div class="ps-l">UPPDRAG</div></div>
+          <div class="ps"><div class="ps-v" id="pnSEK">0</div><div class="ps-l">SEK</div></div>
+          <div class="ps"><div class="ps-v" id="pnLvl">1</div><div class="ps-l">LEVEL</div></div>
+        </div>
+      </div>
+      <div style="padding:0 13px;display:flex;flex-direction:column;gap:11px">
+        <div class="trust-card">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:11px">
+            <div><div class="sh-t" style="margin-bottom:2px">TRUST SCORE</div><div class="trust-big" id="trustBig">42</div></div>
+            <div style="text-align:right"><div class="tag tg" id="trustLvl">BRONZE</div><div style="font-size:10px;color:var(--t3);margin-top:5px">NEXT: SILVER@70</div></div>
+          </div>
+          <div class="tr-row"><div class="tr-lbl">Uppdrag klara</div><div class="tr-track"><div class="tr-fill" id="tr1" style="width:0%"></div></div><div class="tr-val" id="tv1">0</div></div>
+          <div class="tr-row"><div class="tr-lbl">Flash streak</div><div class="tr-track"><div class="tr-fill" id="tr2" style="width:0%"></div></div><div class="tr-val" id="tv2">0d</div></div>
+          <div class="tr-row"><div class="tr-lbl">SEK tjänat</div><div class="tr-track"><div class="tr-fill" id="tr4" style="width:0%"></div></div><div class="tr-val" id="tv4">0</div></div>
+        </div>
+        <div class="card"><div style="padding:9px 13px 6px;border-bottom:1px solid var(--line)"><div class="sh-t">HISTORY</div></div><div id="histList"></div></div>
+        <div><div class="sh-t" style="margin-bottom:8px">BADGES</div><div class="badge-grid" id="badgeGrid"></div></div>
+        <div class="vend"></div>
+      </div>
+    </div>
+
+    <!-- LAUNCH -->
+    <div class="view" id="view-launch">
+      <div style="padding:13px 14px 10px;background:var(--c1);border-bottom:1px solid var(--line);flex-shrink:0">
+        <div style="font-size:22px;font-weight:900;font-family:var(--mono)">🚀 App Launch Plan</div>
+        <div style="font-size:12px;color:var(--t2)">Vägen från demo till live</div>
+      </div>
+      <div style="padding:12px 13px;display:flex;flex-direction:column;gap:11px">
+        <div class="launch-card">
+          <div class="launch-title">Vad behövs för launch?</div>
+          <div class="launch-sub">Appen är en komplett frontend-demo. För att lansera behöver du backend, betalningar och app-stores.</div>
+          <div class="launch-steps">
+            <div class="ls"><div class="ls-n" style="background:var(--g);color:var(--bg)">1</div><div class="ls-t">Backend: Supabase (databas + auth + realtime)</div><span class="ls-s" style="background:rgba(0,255,136,.12);color:var(--g)">GRATIS</span></div>
+            <div class="ls"><div class="ls-n" style="background:var(--b);color:#fff">2</div><div class="ls-t">Video: Cloudflare Stream</div><span class="ls-s" style="background:rgba(68,136,255,.12);color:var(--b)">€5/mån</span></div>
+            <div class="ls"><div class="ls-n" style="background:var(--y);color:var(--bg)">3</div><div class="ls-t">Betalning: Swish API + Stripe Connect</div><span class="ls-s" style="background:rgba(255,204,0,.12);color:var(--y)">1.4%</span></div>
+            <div class="ls"><div class="ls-n" style="background:var(--p);color:#fff">4</div><div class="ls-t">React Native wrapper (iOS + Android)</div><span class="ls-s" style="background:rgba(170,102,255,.12);color:var(--p)">1 vecka</span></div>
+            <div class="ls"><div class="ls-n" style="background:var(--pk);color:#fff">5</div><div class="ls-t">App Store + Google Play submit</div><span class="ls-s" style="background:rgba(255,51,119,.12);color:var(--pk)">$99+€25</span></div>
+            <div class="ls"><div class="ls-n" style="background:var(--o);color:#fff">6</div><div class="ls-t">Beta-test med 50 ungdomar (Tumba?)</div><span class="ls-s" style="background:rgba(255,136,68,.12);color:var(--o)">GRATIS</span></div>
+          </div>
+        </div>
+        <button class="btn btn-pk btn-lg btn-full" onclick="showT('📧 karma@app.se','pk')">📧 Kontakta oss</button>
+        <div class="vend"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="bnav">
+    <button class="nb on" data-v="home"><div class="ni">🐾</div><div class="nl">PET</div></button>
+    <button class="nb" data-v="flash"><div class="ni">⚡</div><div class="nl">FLASH</div></button>
+    <button class="nb-flash" id="flashBtn"><div class="flash-btn">🎬</div><div class="flash-lbl">SKAPA</div></button>
+    <button class="nb" data-v="circles"><div class="ni">⭕</div><div class="nl">CIRCLES</div></button>
+    <button class="nb" data-v="map"><div class="ni">🗺️</div><div class="nl">KARTA</div></button>
+  </div>
+</div>
+
+<!-- CIRCLE WINDOW -->
+<div class="circ-win" id="circleWin">
+  <div class="cw-hdr">
+    <button class="cw-bk" onclick="cWin('circleWin')">←</button>
+    <div style="font-size:22px;flex-shrink:0" id="cwCircleEm">⭕</div>
+    <div style="flex:1"><div class="cw-nm" id="cwCircleName">Circle</div><div class="cw-st" id="cwCircleSt">–</div></div>
+    <button class="btn btn-pk btn-sm" onclick="postFlashToCircle()">⚡ Flash</button>
+  </div>
+  <div class="circle-flash-bar" id="circleFlashBar"></div>
+  <div class="cw-msgs" id="cwCircleMsgs"></div>
+  <div class="cw-inp-row">
+    <span style="font-size:19px;cursor:pointer" onclick="postFlashToCircle()">⚡</span>
+    <input class="cw-inp" id="cwCircleInp" placeholder="Skriv i cirkeln..." onkeydown="if(event.key==='Enter')sendCircleMsg()">
+    <button class="cw-snd" style="background:linear-gradient(135deg,var(--pk),var(--p))" onclick="sendCircleMsg()">→</button>
+  </div>
+</div>
+
+<!-- AI WINDOW -->
+<div class="fsw" id="aiWin">
+  <div class="fsh">
+    <button class="fbk" onclick="cWin('aiWin')">←</button>
+    <div style="width:38px;height:38px;border-radius:11px;background:linear-gradient(135deg,var(--p),var(--b));display:flex;align-items:center;justify-content:center;font-size:19px;flex-shrink:0">🤖</div>
+    <div><div class="ftl" style="font-size:14px">KARMA AI</div><div style="font-size:10px;color:var(--g)">● Online</div></div>
+  </div>
+  <div class="cw-msgs" id="aiMsgs"><div class="msg them">Hej! 👋 Fråga om Flash, Circles, uppdrag, pet eller strategi!</div></div>
+  <div class="cw-inp-row"><input class="cw-inp" id="aiInp" placeholder="Fråga AI..." onkeydown="if(event.key==='Enter')sendAI()"><button class="cw-snd" onclick="sendAI()" style="background:var(--p)">→</button></div>
+</div>
+
+<!-- GEAR WINDOW -->
+<div class="fsw" id="gearWin">
+  <div class="fsh"><button class="fbk" onclick="cWin('gearWin')">←</button><div class="ftl">⚡ Gear Shop</div><div class="pill pill-y">⚡<b id="gcLbl">0</b></div></div>
+  <div class="fbd" style="padding:12px;display:grid;grid-template-columns:1fr 1fr;gap:10px" id="gearGrid"></div>
+</div>
+
+<!-- DETAIL WINDOW -->
+<div class="fsw" id="detailWin">
+  <div class="fsh"><button class="fbk" onclick="cWin('detailWin')">←</button><div class="ftl" id="detailTitle">Detail</div></div>
+  <div class="fbd" style="padding:15px" id="detailBody"></div>
+</div>
+<!-- MODALS -->
+<div class="modal" id="flashModal">
+  <div class="ms">
+    <div class="mh"></div>
+    <div class="mt">⚡ Skapa Flash <div class="mx" onclick="closeModal('flashModal')">✕</div></div>
+    <div style="background:linear-gradient(135deg,rgba(255,51,119,.08),rgba(170,102,255,.05));border:1px solid rgba(255,51,119,.22);border-radius:12px;padding:12px;margin-bottom:14px">
+      <div style="font-size:14px;font-weight:800;color:var(--pk);margin-bottom:4px">⚡ Flash = 1–5 sekunders video</div>
+      <div style="font-size:12px;color:var(--t2);line-height:1.6">Posta varje dag för att hålla streaken!</div>
+    </div>
+    <div id="flashUpArea" style="height:140px;border:2px dashed var(--line);border-radius:13px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:7px;cursor:pointer;margin-bottom:12px;position:relative;overflow:hidden" onclick="$('flashFileIn').click()">
+      <img id="flashPrev" style="position:absolute;inset:0;object-fit:cover;width:100%;height:100%;display:none;border-radius:11px">
+      <div id="flashPH" style="text-align:center"><div style="font-size:34px;opacity:.2;margin-bottom:6px">🎬</div><div style="font-size:13px;font-weight:700;color:var(--t3)">Tryck för VIDEO (1–5 sek)</div></div>
+    </div>
+    <input type="file" id="flashFileIn" accept="image/*,video/*" style="display:none" onchange="handleFlashUpload(this)">
+    <label class="lbl">DELA MED</label>
+    <div class="trow" id="flashShareRow">
+      <div class="topt on" onclick="G.flashShare='circles';sa('#flashShareRow',this)">⭕ Circles</div>
+      <div class="topt" onclick="G.flashShare='all';sa('#flashShareRow',this)">🌍 Alla</div>
+    </div>
+    <label class="lbl">CAPTION</label>
+    <input class="inp" id="flashCaption" placeholder="Vad gör du? #tag">
+    <button class="btn btn-pk btn-lg btn-full" onclick="submitFlash()">⚡ POSTA FLASH</button>
+  </div>
+</div>
+
+<div class="modal" id="createCircleModal">
+  <div class="ms">
+    <div class="mh"></div>
+    <div class="mt">⭕ Skapa Circle <div class="mx" onclick="closeModal('createCircleModal')">✕</div></div>
+    <label class="lbl">CIRCLE-NAMN</label><input class="inp" id="circleNameIn" placeholder="Ex: Tumba Runners">
+    <label class="lbl">EMOJI</label>
+    <div class="trow" id="circleEmoRow">
+      <div class="topt on" onclick="G.circleEm='🔥';sa('#circleEmoRow',this)">🔥</div>
+      <div class="topt" onclick="G.circleEm='⭕';sa('#circleEmoRow',this)">⭕</div>
+      <div class="topt" onclick="G.circleEm='💎';sa('#circleEmoRow',this)">💎</div>
+      <div class="topt" onclick="G.circleEm='⚡';sa('#circleEmoRow',this)">⚡</div>
+      <div class="topt" onclick="G.circleEm='🐉';sa('#circleEmoRow',this)">🐉</div>
+      <div class="topt" onclick="G.circleEm='🏆';sa('#circleEmoRow',this)">🏆</div>
+    </div>
+    <label class="lbl">TEMA-FÄRG</label>
+    <div class="trow" id="circleColRow">
+      <div class="topt on" style="border-color:var(--pk);color:var(--pk)" onclick="G.circleCol='#ff3377';sa('#circleColRow',this)">🩷 Pink</div>
+      <div class="topt" style="border-color:var(--g);color:var(--g)" onclick="G.circleCol='#00ff88';sa('#circleColRow',this)">💚 Grön</div>
+      <div class="topt" style="border-color:var(--b);color:var(--b)" onclick="G.circleCol='#4488ff';sa('#circleColRow',this)">💙 Blå</div>
+      <div class="topt" style="border-color:var(--y);color:var(--y)" onclick="G.circleCol='#ffcc00';sa('#circleColRow',this)">💛 Guld</div>
+    </div>
+    <button class="btn btn-pk btn-lg btn-full" style="margin-top:4px" onclick="submitCircle()">⭕ SKAPA CIRCLE</button>
+  </div>
+</div>
+
+<div class="modal" id="createUppdragModal">
+  <div class="ms">
+    <div class="mh"></div>
+    <div class="mt">🏢 Posta Uppdrag <div class="mx" onclick="closeModal('createUppdragModal')">✕</div></div>
+    <label class="lbl">NAMN / FÖRETAG</label><input class="inp" id="upCo" placeholder="Espresso House / Anna Berg">
+    <label class="lbl">ORG-NUMMER</label><input class="inp" id="upOrg" placeholder="556xxx-xxxx">
+    <label class="lbl">TITEL</label><input class="inp" id="upTitle" placeholder="Vad ska göras?">
+    <label class="lbl">BESKRIVNING</label><textarea class="inp" id="upDesc" placeholder="Detaljer, krav, plats..."></textarea>
+    <label class="lbl">TYP</label>
+    <div class="trow" id="upTypeRow">
+      <div class="topt on" onclick="G.cType='reel';sa('#upTypeRow',this)">🎬 REEL</div>
+      <div class="topt" onclick="G.cType='task';sa('#upTypeRow',this)">🛠️ TASK</div>
+      <div class="topt" onclick="G.cType='photo';sa('#upTypeRow',this)">📸 FOTO</div>
+      <div class="topt" onclick="G.cType='review';sa('#upTypeRow',this)">⭐ RECENSION</div>
+    </div>
+    <label class="lbl">PLATS</label><input class="inp" id="upLoc" placeholder="Ex: Stockholm">
+    <div class="r2">
+      <div><label class="lbl">BELÖNING (KR)</label><input class="inp" id="upSEK" type="number" placeholder="500" style="margin-bottom:0"></div>
+      <div><label class="lbl">MAX VINNARE</label><input class="inp" id="upWin" type="number" placeholder="1" style="margin-bottom:0"></div>
+    </div>
+    <button class="btn btn-y btn-lg btn-full" style="margin-top:12px" onclick="submitUppdrag()">🏢 PUBLICERA (−50⚡)</button>
+  </div>
+</div>
+
+<div class="modal" id="sellModal">
+  <div class="ms">
+    <div class="mh"></div>
+    <div class="mt">📦 Sälj / Lägg ut <div class="mx" onclick="closeModal('sellModal')">✕</div></div>
+    <label class="lbl">PRODUKT</label><input class="inp" id="sellProductName" placeholder="iPhone 13 Pro...">
+    <label class="lbl">BESKRIVNING</label><textarea class="inp" id="sellProductDesc" placeholder="Skick, ålder..."></textarea>
+    <div class="r2">
+      <div><label class="lbl">PRIS (KR)</label><input class="inp" id="sellPrice" type="number" placeholder="2500" style="margin-bottom:0"></div>
+      <div><label class="lbl">PLATS</label><input class="inp" id="sellLoc" placeholder="Stockholm" style="margin-bottom:0"></div>
+    </div>
+    <button class="btn btn-g btn-lg btn-full" style="margin-top:12px" onclick="submitSell()">📦 LÄGG UT</button>
+  </div>
+</div>
+
+<div class="modal" id="createBrandModal">
+  <div class="ms">
+    <div class="mh"></div>
+    <div class="mt">🏢 Skapa Varumärke <div class="mx" onclick="closeModal('createBrandModal')">✕</div></div>
+    <label class="lbl">MÄRKETS NAMN</label><input class="inp" id="brandNameIn" placeholder="Ex: Feffes Jeans">
+    <label class="lbl">EMOJI</label>
+    <div class="trow" id="brandEmoRow">
+      <div class="topt on" onclick="G.bEm='👖';sa('#brandEmoRow',this)">👖</div>
+      <div class="topt" onclick="G.bEm='👟';sa('#brandEmoRow',this)">👟</div>
+      <div class="topt" onclick="G.bEm='👕';sa('#brandEmoRow',this)">👕</div>
+      <div class="topt" onclick="G.bEm='🔥';sa('#brandEmoRow',this)">🔥</div>
+    </div>
+    <label class="lbl">BESKRIVNING</label><textarea class="inp" id="brandDescIn" placeholder="Vad säljer märket?"></textarea>
+    <div style="background:rgba(0,255,136,.05);border:1px solid rgba(0,255,136,.18);border-radius:11px;padding:11px;margin:8px 0;font-size:12px;color:var(--t2)">🎉 <b style="color:var(--g)">+300 coins</b> välkomstbonus</div>
+    <button class="btn btn-g btn-lg btn-full" onclick="submitBrand()">🏢 SKAPA (+300⚡)</button>
+  </div>
+</div>
+
+<!-- SPLASHES -->
+<div class="splash" id="rewardSplash">
+  <div class="sp-ico" id="spIco">⚡</div>
+  <div style="font-size:11px;color:var(--g);letter-spacing:2px;margin-bottom:4px;font-family:var(--mono)" id="spLbl">UPPDRAG TAGET!</div>
+  <div class="sp-title" id="spTitle">Mission!</div>
+  <div class="sp-sub" id="spSub">Gör det. Posta Flash.</div>
+  <div class="sp-row" id="spRewards"></div>
+  <button class="btn btn-g btn-lg" onclick="cSplash('rewardSplash')">KLAR →</button>
+</div>
+<div class="splash" id="lvlSplash">
+  <div style="font-size:80px;margin-bottom:12px;animation:spop .45s cubic-bezier(.34,1.56,.64,1)" id="lvlPet">🐉</div>
+  <div style="font-size:12px;color:var(--g);letter-spacing:2px;margin-bottom:4px;font-family:var(--mono)">LEVEL UP!</div>
+  <div style="font-size:36px;font-weight:900;color:var(--g);font-family:var(--mono)" id="lvlTitle">LEVEL 2!</div>
+  <div style="font-size:14px;color:var(--t2);margin-top:7px;margin-bottom:18px" id="lvlSub">Grattis!</div>
+  <button class="btn btn-g btn-lg" onclick="cSplash('lvlSplash')">SICK! 🔥</button>
+</div>
+<div class="splash" id="flashStreakSplash">
+  <div class="sp-ico">⚡</div>
+  <div style="font-size:12px;color:var(--pk);letter-spacing:2px;margin-bottom:4px;font-family:var(--mono)">FLASH STREAK!</div>
+  <div class="sp-title" id="streakTitle">🔥 7 DAGAR!</div>
+  <div class="sp-sub">Du är on fire!</div>
+  <div class="sp-row">
+    <div class="sp-r"><div class="sp-rv" style="color:var(--r)" id="streakDays">7</div><div class="sp-rl">DAGAR</div></div>
+    <div class="sp-r"><div class="sp-rv" style="color:var(--y)">+50</div><div class="sp-rl">BONUS XP</div></div>
+  </div>
+  <button class="btn btn-pk btn-lg" onclick="cSplash('flashStreakSplash')">🔥 LET'S GO!</button>
+</div>
+
+<div class="toast" id="toast"></div>
+<script>
+const G={
+  name:'',petEmoji:'🐉',petName:'Eldraken',
+  level:1,exp:0,coins:500,streak:0,
+  hunger:80,energy:100,mood:90,
+  actionStat:0,commerceStat:0,socialStat:0,trustScore:42,totalSEK:0,
+  gear:[],equippedGear:null,postCount:0,bountiesDone:0,
+  shareMode:'friends',likedPosts:new Set(),
+  hist:[{c:'var(--g)',t:'Välkommen till KARMA v2! ⚡',time:'just nu'}],
+  brands:[],bEm:'👖',
+  circles:[],circleEm:'🔥',circleCol:'#ff3377',circleReq:'daily',
+  flashShare:'circles',flashImg:null,
+  cType:'reel',shopTab:'shop',shopSource:'all',shopSearch:'',
+  mgScore:0,mgRecord:0,mgTimer:null,mgCombo:0,mgLastTap:0,
+  userLat:null,userLon:null,mapInit:false,lMap:null,uMarker:null,
+  upFilter:'all',myUppdrag:[],currentCircle:null,
+  streakWeek:[false,false,false,false,false,false,false],
+};
+
+const EVOL={
+  '🐉':[{l:1,e:'🐉',s:'BABY DRAGON',g:''},{l:5,e:'🐲',s:'FIRE DRAGON',g:'🔥'},{l:10,e:'🐲',s:'ELDER DRAGON',g:'👑'},{l:20,e:'🐲',s:'LEGEND',g:'⚡'}],
+  '🐺':[{l:1,e:'🐺',s:'PUP',g:''},{l:5,e:'🐺',s:'WOLF',g:'🦴'},{l:10,e:'🐺',s:'ALPHA',g:'👑'},{l:20,e:'🐺',s:'DIRE WOLF',g:'⚡'}],
+  '🦊':[{l:1,e:'🦊',s:'KIT',g:''},{l:5,e:'🦊',s:'SWIFT FOX',g:'🌙'},{l:10,e:'🦊',s:'SPIRIT FOX',g:'👑'},{l:20,e:'🦊',s:'DEMON FOX',g:'⚡'}],
+  '🐱':[{l:1,e:'🐱',s:'KITTEN',g:''},{l:5,e:'😺',s:'STREET CAT',g:'🎀'},{l:10,e:'😼',s:'SHADOW CAT',g:'👑'},{l:20,e:'🐈‍⬛',s:'LEGEND CAT',g:'⚡'}],
+  '🐸':[{l:1,e:'🐸',s:'FROGLET',g:''},{l:5,e:'🐸',s:'LEAP FROG',g:'🍄'},{l:10,e:'🐸',s:'POISON FROG',g:'👑'},{l:20,e:'🐸',s:'GOD FROG',g:'⚡'}],
+  '🦋':[{l:1,e:'🐛',s:'CATERPILLAR',g:''},{l:5,e:'🦋',s:'BUTTERFLY',g:'🌸'},{l:10,e:'🦋',s:'SPIRIT WING',g:'✨'},{l:20,e:'🦋',s:'LEGEND WING',g:'⚡'}],
+  '🐻':[{l:1,e:'🐻',s:'CUB',g:''},{l:5,e:'🐻',s:'GRIZZLY',g:'🍯'},{l:10,e:'🐻‍❄️',s:'POLAR BEAST',g:'👑'},{l:20,e:'🐻',s:'SPIRIT BEAR',g:'⚡'}],
+  '🦁':[{l:1,e:'🦁',s:'CUB',g:''},{l:5,e:'🦁',s:'LION',g:''},{l:10,e:'🦁',s:'KING',g:'👑'},{l:20,e:'🦁',s:'GOD LION',g:'⚡'}],
+  '🐯':[{l:1,e:'🐯',s:'TIGER CUB',g:''},{l:5,e:'🐯',s:'TIGER',g:'🔥'},{l:10,e:'🐯',s:'WHITE TIGER',g:'👑'},{l:20,e:'🐯',s:'DEMON TIGER',g:'⚡'}],
+  '🐨':[{l:1,e:'🐨',s:'JOEY',g:''},{l:5,e:'🐨',s:'KOALA',g:'🍃'},{l:10,e:'🐨',s:'SPIRIT KOALA',g:'👑'},{l:20,e:'🐨',s:'GOD KOALA',g:'⚡'}],
+};
+const PETS=['🐉','🐺','🦊','🐱','🐸','🦋','🐻','🦁','🐯','🐨'];
+const gS=()=>{const t=EVOL[G.petEmoji]||EVOL['🐉'];let s=t[0];for(const x of t)if(G.level>=x.l)s=x;return s;};
+const gNE=()=>{const t=EVOL[G.petEmoji]||EVOL['🐉'];for(const x of t)if(G.level<x.l)return x.l;return null;};
+const xpN=l=>{const b=[100,100,150,150,200,200,250,300,350,400];return l<=10?b[Math.min(l-1,9)]:Math.floor(400*Math.pow(1.3,l-10));};
+
+const UPPDRAG_DATA=[
+  {id:'u1',type:'brand',cType:'reel',co:'Espresso House',coEm:'☕',verified:true,verLevel:'gold',title:'Filma reel med Mocca Tea @ Plattan',desc:'30 sek Flash-reel när du dricker vår nya Mocca Tea. Tagga @espressohouse.',req:['🎬 FLASH/REEL','📍 PLATS'],loc:'Sergels Torg, Stockholm',sek:150,coins:120,xp:80,winners:5,claimed:1,deadline:'10 maj',live:true,featured:true},
+  {id:'u2',type:'task',cType:'task',co:'Anna Berg',coEm:'👤',verified:false,verLevel:'none',title:'Hämta mitt skräp @ Tumba',desc:'Sjuk och behöver hjälp. 2 påsar skräp utanför dörren → container 200m bort.',req:['📍 TUMBA','📸 FOTO BEVIS'],loc:'Tumba, Stockholm',sek:500,coins:50,xp:40,winners:1,claimed:0,deadline:'Idag',live:false,featured:false},
+  {id:'u3',type:'brand',cType:'reel',co:'Stadium',coEm:'👟',verified:true,verLevel:'premium',title:'Nike Air Flash @ Stadium',desc:'15–60 sek Flash med Stadiums Nike Air. Taggar du @stadium? +100 SEK bonus!',req:['🎬 FLASH','👟 STADIUM'],loc:'Valfri Stadium-butik',sek:500,coins:200,xp:150,winners:1,claimed:0,deadline:'18 maj',live:false,featured:true},
+  {id:'u4',type:'task',cType:'task',co:'Marcus L.',coEm:'👤',verified:false,verLevel:'none',title:'Plocka äpplen i min trädgård',desc:'Ca 2 timmar arbete. Betalar + lunch.',req:['📍 SOLLENTUNA','⏱ CA 2H'],loc:'Sollentuna, Stockholm',sek:300,coins:60,xp:50,winners:1,claimed:0,deadline:'12 maj',live:false,featured:false},
+  {id:'u5',type:'review',cType:'review',co:'Webhallen',coEm:'🎮',verified:true,verLevel:'gold',title:'Flash-recensera nytt spel',desc:'Köp spel, spela 2h, posta 30 sek Flash-recension.',req:['⭐ FLASH RECENSION'],loc:'Webhallen',sek:100,coins:80,xp:60,winners:10,claimed:3,deadline:'15 maj',live:false,featured:false},
+];
+
+const FLASH_POSTS=[
+  {id:'f1',user:'ella_sthlm',pet:'🐉',lvl:9,up:'Mocca Tea @ Plattan',cap:'Faktiskt gott ☕ + 150 SEK direkt Swish 🙏',xp:'+80 XP',likes:347,live:false,streak:7},
+  {id:'f2',user:'maxruns',pet:'🐺',lvl:11,up:'Nike Air Flash @ Stadium',cap:'LEVEL 11 ACTIVATED 💀',xp:'+150 XP',likes:1204,live:true,streak:14},
+  {id:'f3',user:'sagas_world',pet:'🦋',lvl:7,up:'Daglig Flash #24',cap:'Thrift haul + vintage vibes 🤌',xp:'+20 XP',likes:567,live:false,streak:24},
+  {id:'f4',user:'carlos_leo',pet:'🦊',lvl:5,up:'Graffiti mural hunt',cap:'Hittade denna jätten på Hornstull 😭',xp:'+45 XP',likes:189,live:false,streak:3},
+];
+
+const STREAK_USERS=[
+  {user:'Lägg till',em:'➕',add:true,status:'empty'},
+  {user:'ella_sthlm',em:'🐉',live:true,streak:7,status:'active'},
+  {user:'maxruns',em:'🐺',streak:14,status:'done'},
+  {user:'sagas',em:'🦋',streak:24,status:'done'},
+  {user:'carlos',em:'🦊',streak:3,status:'active'},
+  {user:'linnea',em:'🐱',streak:0,status:'missing'},
+];
+
+const CIRCLES_DATA=[
+  {id:'c1',name:'Tumba Runners',em:'🏃',col:'#00ff88',members:['🐉','🐺','🦊','🐱','🦋'],memberNames:['Du','ella_sthlm','maxruns','sagas','carlos'],streak:7,desc:'Daglig Flash + löpning',lastMsg:'ella_sthlm: STREAK 7 DAGAR! 🔥',missedToday:1,msgs:[
+    {from:'ella_sthlm',em:'🐉',txt:'STREAK 7 DAGAR! 🔥',t:'08:30',me:false},
+    {from:'maxruns',em:'🐺',txt:'Lets goo!! 💪',t:'08:35',me:false},
+    {from:'Du',em:null,txt:'Postade Flash! 5 sek löpning 😂',t:'09:10',me:true},
+    {from:'sagas',em:'🦋',txt:'Jag missar idag sorry 😭',t:'09:45',me:false},
+  ]},
+  {id:'c2',name:'STHLM DROPS',em:'⚡',col:'#ff3377',members:['🐉','🐸','🐻'],memberNames:['Du','sagas','linnea'],streak:3,desc:'Fashion + vibes',lastMsg:'sagas: ny flash! 👑',missedToday:0,msgs:[
+    {from:'sagas',em:'🐸',txt:'Ny flash! 👑',t:'10:00',me:false},
+  ]},
+];
+
+const AI_REPLIES=[
+  '💡 Flash-streaks är nyckeln! Posta varje dag kl 08 = pet +2 XP/dag bonus.',
+  '⭕ Karma Circles med 5+ vänner = group streak bonus × 1.5 XP!',
+  '💸 Nike Air uppdraget ger 500 SEK! En 30 sek Flash räcker.',
+  '🐾 Din pet behöver Action-XP. Uppdrag ger mest.',
+  '✅ Trust Score 70+ = Silver badge. Gör 5 uppdrag till.',
+  '🏆 ella_sthlm leder med 2 450 SEK. Gör 3 uppdrag idag!',
+  '🏢 Skapa ett varumärke! +300 coins direkt.',
+  '🎯 Combo-tryck i minispelet ger bonus XP!',
+  '🗺️ Kolla kartan! Det finns uppdrag nära dig just nu.',
+];
+
+const SHOP_P={
+  shop:[
+    {name:'Nike Air Max 2025',price:'1 299 kr',orig:'1 899 kr',em:'👟',badge:'sale',src:'Stadium',stars:'★★★★☆'},
+    {name:'AirPods Pro 3',price:'2 199 kr',em:'🎧',badge:'hot',src:'Amazon',stars:'★★★★★'},
+    {name:'Champion Hoodie',price:'449 kr',orig:'699 kr',em:'👕',badge:'sale',src:'Zalando',stars:'★★★☆☆'},
+    {name:'PlayStation 5',price:'5 499 kr',em:'🎮',badge:'hot',src:'Webhallen',stars:'★★★★★'},
+    {name:'iPhone 16 Pro',price:'13 999 kr',em:'📱',badge:'new',src:'Apple',stars:'★★★★★'},
+    {name:'Vans Old Skool',price:'699 kr',em:'👟',badge:'',src:'Vans',stars:'★★★★☆'},
+  ],
+  second:[
+    {name:'iPhone 13 Pro',price:'5 200 kr',desc:'Bra skick. Inkl. laddare.',em:'📱',loc:'Stockholm',age:'2 dagar',src:'Blocket'},
+    {name:'Jordan 1 High OG',price:'2 800 kr',desc:'Strl 43, använda 3 ggr.',em:'👟',loc:'Göteborg',age:'5 dagar',src:'Tradera'},
+    {name:'Champion Reverse',price:'380 kr',desc:'S, vintage 90-tal.',em:'👕',loc:'Malmö',age:'1 dag',src:'Vinted'},
+    {name:'MacBook Air M2',price:'9 500 kr',desc:'Knappt använd.',em:'💻',loc:'Uppsala',age:'3 timmar',src:'Blocket'},
+  ],
+  compare:[
+    {product:'Nike Air Force 1',em:'👟',stores:[{n:'Amazon',i:'📦',p:'1 289 kr',best:true},{n:'Stadium',i:'🏟️',p:'1 299 kr',best:false},{n:'Zalando',i:'👗',p:'1 399 kr',best:false}]},
+    {product:'iPhone 16 Pro',em:'📱',stores:[{n:'Amazon',i:'📦',p:'13 299 kr',best:true},{n:'Elgiganten',i:'⚡',p:'13 495 kr',best:false},{n:'Webhallen',i:'🎮',p:'13 799 kr',best:false}]},
+  ],
+  gear:[
+    {id:'g1',em:'👑',nm:'ROYAL CROWN',cost:300,st:'+10 Social'},
+    {id:'g2',em:'🔥',nm:'FIRE AURA',cost:500,st:'+15 Action'},
+    {id:'g3',em:'🕶️',nm:'DARK SHADES',cost:200,st:'+5 Social'},
+    {id:'g4',em:'⚡',nm:'LIGHTNING',cost:400,st:'+12 Action'},
+    {id:'g5',em:'💎',nm:'DIAMOND',cost:800,st:'+20 Commerce'},
+    {id:'g6',em:'🎩',nm:'TOP HAT',cost:350,st:'+8 Social'},
+    {id:'g7',em:'🌙',nm:'MOON HALO',cost:450,st:'+14 Social'},
+    {id:'g8',em:'🐉',nm:'DRAGON WINGS',cost:1200,st:'+30 All'},
+  ],
+};
+const GEAR=SHOP_P.gear;
+const SOURCES=[{id:'all',n:'🌐 ALLA'},{id:'amazon',n:'📦 Amazon'},{id:'blocket',n:'🏠 Blocket'},{id:'tradera',n:'🔨 Tradera'},{id:'vinted',n:'👗 Vinted'}];
+const LB={
+  money:[{rank:1,name:'ella_sthlm',pet:'🐉',val:'2 450 SEK',ch:'+150',trust:95},{rank:2,name:'maxruns',pet:'🐺',val:'1 890 SEK',ch:'+80',trust:88},{rank:3,name:'sagas_world',pet:'🦋',val:'1 200 SEK',ch:'-20',trust:72},{rank:4,isYou:true,val:'0 SEK',ch:'0',trust:42}],
+  xp:[{rank:1,name:'maxruns',pet:'🐺',val:'12 400 XP',ch:'+200',trust:88},{rank:2,name:'ella_sthlm',pet:'🐉',val:'9 200 XP',ch:'+180',trust:95},{rank:3,name:'sagas',pet:'🦋',val:'6 800 XP',ch:'+90',trust:72},{rank:4,isYou:true,val:'0 XP',ch:'0',trust:42}],
+  uppdrag:[{rank:1,name:'sagas_world',pet:'🦋',val:'34',ch:'+3',trust:72},{rank:2,name:'ella_sthlm',pet:'🐉',val:'28',ch:'+2',trust:95},{rank:3,name:'maxruns',pet:'🐺',val:'22',ch:'+1',trust:88},{rank:4,isYou:true,val:'0',ch:'0',trust:42}],
+  streak:[{rank:1,name:'sagas',pet:'🦋',val:'24 dagar 🔥',ch:'↑',trust:72},{rank:2,name:'maxruns',pet:'🐺',val:'14 dagar',ch:'↑',trust:88},{rank:3,name:'ella_sthlm',pet:'🐉',val:'7 dagar',ch:'↑',trust:95},{rank:4,isYou:true,val:'0 dagar',ch:'↑',trust:42}],
+  circles:[{rank:1,name:'Tumba Runners',pet:'🏃',val:'🔥 7 dagar',ch:'+1',trust:88},{rank:2,name:'STHLM DROPS',pet:'⚡',val:'🔥 3 dagar',ch:'+1',trust:75},{rank:3,name:'Göteborg Crew',pet:'🌊',val:'🔥 2 dagar',ch:'↑',trust:60},{rank:4,isYou:true,name:'Din Circle',pet:'⭕',val:'Skapa en!',ch:'',trust:0}],
+};
+const BADGES_DEF=[
+  {e:'⚡',l:'First Flash',ok:()=>G.streak>=1},
+  {e:'🔥',l:'7-Day Streak',ok:()=>G.streak>=7},
+  {e:'💸',l:'100 SEK',ok:()=>G.totalSEK>=100},
+  {e:'💰',l:'1000 Coins',ok:()=>G.coins>=1000},
+  {e:'⭐',l:'100 Social',ok:()=>G.socialStat>=100},
+  {e:'⚔️',l:'100 Action',ok:()=>G.actionStat>=100},
+  {e:'👑',l:'Level 10',ok:()=>G.level>=10},
+  {e:'✅',l:'Trusted 70+',ok:()=>G.trustScore>=70},
+  {e:'🌟',l:'Evolved',ok:()=>G.level>=5},
+  {e:'⭕',l:'Circle Leader',ok:()=>G.circles&&G.circles.length>0},
+  {e:'🗺️',l:'GPS Found',ok:()=>G.userLat!==null},
+  {e:'🏆',l:'Legend Lv20',ok:()=>G.level>=20},
+];
+
+// ── HELPERS ──
+const $=id=>document.getElementById(id);
+let tT;
+function showT(m,t='g'){const e=$('toast');e.textContent=m;e.className=`toast show ${t}`;clearTimeout(tT);tT=setTimeout(()=>e.className='toast',2800);}
+function vibe(p=30){try{navigator.vibrate&&navigator.vibrate(p);}catch(e){}}
+function addH(t,c='var(--g)'){G.hist.unshift({c,t,time:'just nu'});if(G.hist.length>30)G.hist.pop();}
+function closeModal(id){$(id)&&$(id).classList.remove('open');}
+function openModal(id){$(id)&&$(id).classList.add('open');}
+function cWin(id){$(id)&&$(id).classList.remove('open');}
+function oWin(id){$(id)&&$(id).classList.add('open');}
+function cSplash(id){$(id)&&$(id).classList.remove('show');}
+function cp(n){const d=document.createElement('div');d.className='cpop';d.textContent=`+${n}💰`;d.style.cssText='left:50%;top:35%';document.body.appendChild(d);setTimeout(()=>d.remove(),800);}
+function sa(sel,el){document.querySelectorAll(sel+' .topt').forEach(x=>x.className='topt');el.classList.add('on');}
+function dist(la1,lo1,la2,lo2){const R=6371e3,f1=la1*Math.PI/180,f2=la2*Math.PI/180,df=(la2-la1)*Math.PI/180,dl=(lo2-lo1)*Math.PI/180;const a=Math.sin(df/2)**2+Math.cos(f1)*Math.cos(f2)*Math.sin(dl/2)**2;return R*2*Math.atan2(Math.sqrt(a),Math.sqrt(1-a));}
+function fmtD(m){return m<1000?Math.round(m)+'m':+(m/1000).toFixed(1)+'km';}
+function save(){try{const d={n:G.name,p:G.petEmoji,pn:G.petName,l:G.level,c:G.coins,st:G.streak,x:G.exp,as:G.actionStat,cs:G.commerceStat,ss:G.socialStat,g:JSON.stringify(G.gear),eg:G.equippedGear||'',sek:G.totalSEK,ts:G.trustScore,posts:G.postCount,b:G.bountiesDone,hu:G.hunger,en:G.energy,mo:G.mood,brands:JSON.stringify(G.brands),circles:JSON.stringify(G.circles),sw:JSON.stringify(G.streakWeek)};for(const k in d)localStorage.setItem('kv8_'+k,d[k]);}catch(e){}}
+
+// ── GAME ──
+function gainCoins(n){G.coins+=n;updateHUD();if(n>0){cp(n);vibe(20);}}
+function gainXP(n,stat){
+  G.exp+=n;
+  if(stat==='action')G.actionStat+=Math.ceil(n/4);
+  else if(stat==='commerce')G.commerceStat+=Math.ceil(n/4);
+  else if(stat==='social')G.socialStat+=Math.ceil(n/4);
+  G.trustScore=Math.min(100,G.trustScore+Math.ceil(n/20));
+  if(G.exp>=xpN(G.level)){G.exp-=xpN(G.level);G.level++;triggerLvlUp();}
+  updateHUD();updatePetView();
+}
+function triggerLvlUp(){
+  vibe([50,30,100,30,80]);
+  const s=gS();
+  $('lvlPet').textContent=s.e;
+  $('lvlTitle').textContent='LEVEL '+G.level+'!';
+  $('lvlSub').textContent=G.petName+' — '+s.s;
+  $('lvlSplash').classList.add('show');
+  pcReact('happy');addH('⬆️ Level '+G.level+'!');
+}
+function pcFeed(){if(G.coins<10){showT('❌ Need 10 coins!','r');return;}G.coins-=10;G.hunger=Math.min(100,G.hunger+30);G.mood=Math.min(100,G.mood+5);pcReact('happy');showT('🍖 +30 HUNGER','g');updateHUD();updatePetView();}
+function pcTrain(){if(G.energy<20){showT('❌ Låg energi! Sova först.','r');return;}G.energy-=20;gainXP(15,'action');pcReact('happy');showT('🏋️ +15 XP','g');}
+function pcSleep(){G.energy=Math.min(100,G.energy+40);G.mood=Math.min(100,G.mood+10);showT('😴 +40 ENERGY','g');updateHUD();updatePetView();}
+function pcPlay(){if(G.energy<10){showT('❌ Behöver energi!','r');return;}G.energy-=10;G.mood=Math.min(100,G.mood+25);gainCoins(5);gainXP(5,'social');pcReact('happy');showT('🎮 +5⚡ +5XP','g');}
+function pcReact(m){
+  const b=$('pcBody');
+  if(m==='happy'){b.className='pc-b happy';$('pcMood').textContent='🤩';}
+  else if(m==='hungry'){b.className='pc-b hungry';$('pcMood').textContent='😢';}
+  else{b.className='pc-b';$('pcMood').textContent=G.mood>70?'😊':G.mood>40?'😐':'😕';}
+  if(m!=='hungry')setTimeout(()=>{b.className='pc-b';},3000);
+}
+
+// ── UPDATE ──
+function updateHUD(){
+  $('hCoins').textContent=G.coins.toLocaleString('sv');
+  $('hStreak').textContent=G.streak;
+  $('hTrust').textContent=G.trustScore;
+  $('gcLbl').textContent=G.coins.toLocaleString('sv');
+  const s=gS();
+  $('pcEm').textContent=s.e+(G.equippedGear||s.g||'');
+  $('pcLv').textContent='LV'+G.level;
+  if(G.hunger<25)pcReact('hungry');
+  $('ddName').textContent=G.name||'–';
+  $('ddSub').textContent='Level '+G.level+' · 🔥'+G.streak+'d';
+  $('profAvaEm').textContent=s.e;
+  $('profName').textContent=G.name;
+  $('profHandle').textContent='@'+(G.name||'').toLowerCase().replace(/\s+/g,'_');
+  $('pnFlash').textContent=G.postCount;$('pnUppdrag').textContent=G.bountiesDone;$('pnSEK').textContent=G.totalSEK;$('pnLvl').textContent=G.level;
+  const tl=G.trustScore>=90?'GOLD':G.trustScore>=70?'SILVER':'BRONZE';
+  $('profTrustTag').textContent=tl;$('trustBig').textContent=G.trustScore;$('trustLvl').textContent=tl;
+  $('tr1').style.width=Math.min(100,G.bountiesDone*3)+'%';$('tv1').textContent=G.bountiesDone;
+  $('tr2').style.width=Math.min(100,G.streak*4)+'%';$('tv2').textContent=G.streak+'d';
+  $('tr4').style.width=Math.min(100,G.totalSEK/20)+'%';$('tv4').textContent=G.totalSEK;
+  // Streak ring
+  $('streakN').textContent=G.streak;
+  $('streakN').className='streak-n'+(G.streak>0?' on':'');
+  $('streakRingBig').className='streak-ring-big'+(G.streak>0?' on':'');
+  $('streakMsg').textContent=G.streak===0?'Posta din första Flash!':G.streak<7?`${7-G.streak} dagar kvar till 7d bonus!`:'🔥 '+G.streak+' dagar — sjukt bra!';
+  // Week dots
+  const wd=$('streakWeekDots');
+  if(wd){const days=['M','T','O','T','F','L','S'];wd.innerHTML=days.map((d,i)=>`<div style="width:20px;height:20px;border-radius:5px;background:${G.streakWeek[i]?'var(--g)':'var(--c3)'};display:flex;align-items:center;justify-content:center;font-size:8px;font-weight:800;color:${G.streakWeek[i]?'var(--bg)':'var(--t3)'}">${d}</div>`).join('');}
+  save();
+}
+function updatePetView(){
+  const s=gS();const need=xpN(G.level);const pct=Math.min(100,(G.exp/need)*100);
+  $('p3em').textContent=s.e;$('p3gear').textContent=G.equippedGear||s.g||'';$('p3stage').textContent=s.s;
+  $('petName').textContent=G.petName;$('petSpecies').textContent=s.s;$('petLvlN').textContent=G.level;
+  const ne=gNE();$('petEvol').textContent=ne?'NEXT EVOL: LV'+ne:'MAX EVOLUTION ⚡';
+  $('xpFill').style.width=pct+'%';$('xpNums').textContent=G.exp+'/'+need;
+  $('stA').textContent=G.actionStat;$('stAb').style.width=Math.min(100,G.actionStat)+'%';
+  $('stC').textContent=G.commerceStat;$('stCb').style.width=Math.min(100,G.commerceStat)+'%';
+  $('stS').textContent=G.socialStat;$('stSb').style.width=Math.min(100,G.socialStat)+'%';
+  $('vH').style.width=G.hunger+'%';$('vHv').textContent=G.hunger;
+  $('vE').style.width=G.energy+'%';$('vEv').textContent=G.energy;
+  $('vM').style.width=G.mood+'%';$('vMv').textContent=G.mood;
+  $('vK').style.width=G.trustScore+'%';$('vKv').textContent=G.trustScore;
+  $('mgEm').textContent=s.e;
+  renderGearHome();renderBadges();renderHistList();
+}
+
+// ── GEAR ──
+function renderGearHome(){
+  const el=$('gearRowHome');if(!el)return;
+  if(G.gear.length){
+    el.innerHTML=G.gear.map(gid=>{const g=GEAR.find(x=>x.id===gid);if(!g)return'';return`<div style="width:52px;height:52px;border-radius:13px;background:var(--c1);border:2px solid ${G.equippedGear===g.em?'var(--g)':'var(--line)'};display:flex;align-items:center;justify-content:center;font-size:26px;cursor:pointer;flex-shrink:0;position:relative" onclick="equipGear('${g.em}','${g.id}')">${g.em}${G.equippedGear===g.em?'<div style="position:absolute;top:-5px;right:-5px;background:var(--g);color:var(--bg);font-size:7px;font-weight:900;padding:1px 4px;border-radius:4px">ON</div>':''}</div>`;}).join('')+`<div style="width:52px;height:52px;border-radius:13px;background:var(--c1);border:2px solid var(--line);display:flex;align-items:center;justify-content:center;font-size:18px;cursor:pointer;flex-shrink:0;opacity:.3" onclick="nav('shop');switchShop('gear')">+</div>`;
+  }else{el.innerHTML=`<div style="width:52px;height:52px;border-radius:13px;background:var(--c1);border:2px dashed var(--line);display:flex;align-items:center;justify-content:center;font-size:18px;cursor:pointer;flex-shrink:0;opacity:.3" onclick="nav('shop');switchShop('gear')">+</div><span style="font-size:12px;color:var(--t3);display:flex;align-items:center;padding-left:10px">Inget gear ännu</span>`;}
+}
+function equipGear(em,id){G.equippedGear=G.equippedGear===em?null:em;updateHUD();updatePetView();showT(G.equippedGear?`⚡ ${em} EQUIPPED!`:'GEAR REMOVED','g');vibe(30);}
+function openGearShop(){
+  $('gearGrid').innerHTML=GEAR.map(g=>`<div style="background:var(--c2);border:2px solid ${G.gear.includes(g.id)?'var(--g)':'var(--line)'};border-radius:14px;padding:13px;text-align:center;cursor:pointer;transition:all .15s" onclick="buyGear('${g.id}')"><div style="font-size:34px;margin-bottom:5px">${g.em}</div><div style="font-size:12px;font-weight:700">${g.nm}</div><div style="font-size:10px;color:var(--t3);margin:2px 0">${g.st}</div><div style="font-size:13px;font-weight:900;font-family:var(--mono);color:${G.gear.includes(g.id)?'var(--g)':'var(--y)'}">${G.gear.includes(g.id)?'✓ ÄGER':g.cost+'⚡'}</div></div>`).join('');
+  oWin('gearWin');
+}
+function buyGear(id){if(G.gear.includes(id)){showT('Äger redan!','y');return;}const g=GEAR.find(x=>x.id===id);if(!g)return;if(G.coins<g.cost){showT(`❌ Behöver ${g.cost-G.coins} mer`,'r');return;}G.coins-=g.cost;G.gear.push(id);G.equippedGear=g.em;gainXP(10,'commerce');vibe([30,20,60]);showT(`⚡ ${g.em} UNLOCKED!`,'g');openGearShop();updateHUD();updatePetView();}
+
+// ── MINIGAME ──
+function mgTap(){
+  const now=Date.now();const delta=now-G.mgLastTap;G.mgLastTap=now;
+  G.mgCombo=delta<600?G.mgCombo+1:1;
+  G.mgScore++;
+  $('mgScore').textContent=G.mgScore;
+  if(G.mgScore>G.mgRecord){G.mgRecord=G.mgScore;$('mgRec').textContent=G.mgRecord;}
+  const combo=$('mgCombo');
+  if(G.mgCombo>=5){combo.textContent='🔥 COMBO x'+G.mgCombo+'!';combo.style.color='var(--r)';}
+  else if(G.mgCombo>=3){combo.textContent='⚡ COMBO x'+G.mgCombo;combo.style.color='var(--y)';}
+  else combo.textContent='';
+  $('mgStreakDisp').textContent=G.mgCombo>=3?'🔥 x'+G.mgCombo:'';
+  const btn=$('mgBtn');btn.style.transform='scale(.82)';setTimeout(()=>btn.style.transform='scale(1)',80);
+  if(G.mgScore%10===0){const bonus=Math.max(1,Math.floor(G.mgCombo/3));gainXP(5*bonus,'action');gainCoins(bonus);showT(`🎯 +${5*bonus}XP${bonus>1?' COMBO!':''}`,bonus>1?'pk':'g');vibe([20,10,40]);}
+  clearTimeout(G.mgTimer);
+  G.mgTimer=setTimeout(()=>{if(G.mgScore>0)showT('Rekord: '+G.mgRecord,'y');G.mgScore=0;G.mgCombo=0;$('mgScore').textContent='0';$('mgCombo').textContent='';$('mgStreakDisp').textContent='';},1800);
+}
+
+// ── FLASH ──
+function renderFlashFeed(){
+  $('streakCircles').innerHTML=STREAK_USERS.map(s=>`<div class="sc" onclick="showT('${s.add?'📸 Lägg till':'⚡ '+s.user}','pk')"><div class="sc-ring ${s.add?'empty':s.status==='done'?'done':s.status==='missing'?'empty':s.live?'live':'active'}"><div class="sc-inner">${s.em}</div></div><div class="sc-name">${s.user}</div>${s.streak?`<div class="sc-streak">🔥${s.streak}</div>`:''}</div>`).join('');
+  $('flashFeed').innerHTML=FLASH_POSTS.map(p=>`<div class="fv"><div class="fv-media"><div class="fv-bg">${p.pet}</div><div class="fv-right"><div class="fv-action" onclick="likeFlash('${p.id}')"><div class="fv-action-ico" id="fli${p.id}" style="color:${G.likedPosts.has(p.id)?'var(--pk)':'#fff'}">${G.likedPosts.has(p.id)?'❤️':'🤍'}</div><div class="fv-action-cnt" id="flc${p.id}">${p.likes}</div></div><div class="fv-action" onclick="showT('💬 Snart!','p')"><div class="fv-action-ico">💬</div><div class="fv-action-cnt">${~~(p.likes/8)}</div></div><div class="fv-action" onclick="doShare('${p.id}')"><div class="fv-action-ico">↗️</div><div class="fv-action-cnt">Dela</div></div></div><div class="fv-tl"><span class="flash-stamp">⚡ FLASH</span>${p.live?'<span class="live-pill"><div class="ldot"></div>LIVE</span>':''}${p.streak>=7?`<span style="background:rgba(255,68,85,.15);border:1px solid var(--r);color:var(--r);font-size:9px;font-weight:800;padding:2px 7px;border-radius:20px;font-family:var(--mono)">🔥 ${p.streak}d</span>`:''}</div><div class="fv-bl"><span class="xp-pill">${p.xp}</span></div></div><div style="padding:10px 14px;background:var(--c1);border-top:1px solid var(--line);display:flex;gap:7px"><button style="padding:6px 12px;border-radius:20px;background:rgba(255,51,119,.1);border:1px solid rgba(255,51,119,.3);color:var(--pk);font-size:11px;font-weight:800;cursor:pointer;font-family:var(--ff)" onclick="likeFlash('${p.id}')">❤️ Like</button><button style="padding:6px 12px;border-radius:20px;background:var(--c2);border:1px solid var(--line);color:var(--t2);font-size:11px;font-weight:800;cursor:pointer;font-family:var(--ff)" onclick="doShare('${p.id}')">↗ Dela</button><button style="padding:6px 12px;border-radius:20px;background:rgba(170,102,255,.1);border:1px solid rgba(170,102,255,.3);color:var(--p);font-size:11px;font-weight:800;cursor:pointer;font-family:var(--ff)" onclick="showT('⭕ Delat till Circle!','p')">⭕ Circle</button></div><div class="fv-info"><div class="fv-ur"><div class="fv-ava">${p.pet}</div><div><div class="fv-un">${p.user}</div><div class="fv-ref">🎯 ${p.up}</div></div><div style="margin-left:auto"><span class="tag tg">LV ${p.lvl}</span></div></div><div class="fv-cap">${p.cap}</div></div></div>`).join('');
+}
+function likeFlash(id){const p=FLASH_POSTS.find(x=>x.id===id);if(!p)return;if(G.likedPosts.has(id)){G.likedPosts.delete(id);p.likes--;}else{G.likedPosts.add(id);p.likes++;gainXP(2,'social');vibe(15);}$('fli'+id).textContent=G.likedPosts.has(id)?'❤️':'🤍';$('fli'+id).style.color=G.likedPosts.has(id)?'var(--pk)':'#fff';$('flc'+id).textContent=p.likes;}
+function doShare(id){const p=FLASH_POSTS.find(x=>x.id===id);if(!p)return;const txt='⚡ KARMA Flash av '+p.user+'\n'+p.cap;if(navigator.share)navigator.share({title:'KARMA',text:txt});else{navigator.clipboard?.writeText(txt);showT('📋 Kopierat!','g');}}
+function handleFlashUpload(input){const f=input.files[0];if(!f)return;const r=new FileReader();r.onload=e=>{G.flashImg=e.target.result;$('flashPrev').src=G.flashImg;$('flashPrev').style.display='block';$('flashPH').style.display='none';$('flashUpArea').style.borderColor='var(--pk)';};r.readAsDataURL(f);}
+function submitFlash(){
+  const cap=$('flashCaption').value.trim();if(!G.flashImg&&!cap){showT('❌ Lägg till video eller text','r');return;}
+  G.streak++;G.postCount++;
+  const day=new Date().getDay();G.streakWeek[day===0?6:day-1]=true;
+  FLASH_POSTS.unshift({id:'fl'+Date.now(),user:G.name||'Du',pet:gS().e,lvl:G.level,up:'Daglig Flash #'+G.postCount,cap:cap||'⚡ Flash! '+new Date().toLocaleTimeString('sv',{hour:'2-digit',minute:'2-digit'}),xp:'+20 XP',likes:0,live:false,streak:G.streak});
+  gainXP(20,'social');gainCoins(10);
+  G.flashImg=null;$('flashCaption').value='';$('flashPrev').style.display='none';$('flashPH').style.display='';$('flashUpArea').style.borderColor='';
+  closeModal('flashModal');renderFlashFeed();updateHUD();updatePetView();vibe([30,20,80]);
+  addH('⚡ Flash #'+G.streak+' postad!','var(--pk)');
+  showT('⚡ FLASH POSTAD! 🔥 '+G.streak+'d STREAK','pk');
+  if(G.streak%7===0){$('streakDays').textContent=G.streak;$('streakTitle').textContent='🔥 '+G.streak+' DAGAR!';$('flashStreakSplash').classList.add('show');gainXP(50,'social');gainCoins(50);}
+  nav('flash');
+}
+function postFlashToCircle(){openModal('flashModal');G.flashShare='circles';}
+
+// ── CIRCLES ──
+function renderCircles(){
+  const all=[...CIRCLES_DATA,...G.circles];
+  $('circleList').innerHTML=all.length?all.map(c=>`<div class="circle-card" onclick="openCircle('${c.id}')"><div class="cc-banner"><div class="cc-banner-bg" style="background:linear-gradient(135deg,${c.col}33,${c.col}11)"></div><div class="cc-emoji">${c.em}</div><div><div class="cc-name">${c.name}</div><div class="cc-sub">${c.desc||''}</div></div><div class="cc-members"><span class="cc-tag">${c.members.length} 👥</span></div></div><div class="cc-body"><div class="cc-preview">${c.lastMsg||'Ingen aktivitet'}</div><div class="cc-stats"><div class="cc-streak-ring"><div class="cc-streak-inner">${c.streak}</div></div><div style="font-size:11px;color:var(--t2)">🔥 <b>${c.streak}d</b></div>${c.missedToday?`<span class="tag tr" style="margin-left:auto;font-size:9px">⚠️ ${c.missedToday} missar</span>`:'<span class="tag tg" style="margin-left:auto;font-size:9px">✅ Alla aktiva</span>'}<div style="display:flex;margin-left:8px">${c.members.slice(0,4).map(m=>`<div style="width:22px;height:22px;border-radius:50%;background:var(--c2);border:2px solid var(--bg);display:flex;align-items:center;justify-content:center;font-size:12px;margin-right:-6px">${m}</div>`).join('')}</div></div></div></div>`).join(''):`<div style="text-align:center;padding:50px 20px"><div style="font-size:52px;opacity:.15;margin-bottom:12px">⭕</div><div style="font-size:15px;font-weight:800;margin-bottom:6px">Inga circles ännu</div><div style="font-size:13px;color:var(--t2);margin-bottom:20px">Skapa en privat grupp!</div><button class="btn btn-pk btn-md" onclick="openModal('createCircleModal')">⭕ Skapa din första Circle</button></div>`;
+}
+function openCircle(id){
+  const c=[...CIRCLES_DATA,...G.circles].find(x=>x.id===id);if(!c)return;G.currentCircle=id;
+  $('cwCircleEm').textContent=c.em;$('cwCircleName').textContent=c.name;$('cwCircleSt').textContent=c.members.length+' members · 🔥 '+c.streak+'d streak';
+  $('circleFlashBar').innerHTML=c.memberNames.map((nm,i)=>{const statuses=['done','done','pending','done','missing'];const st=statuses[i%5];return`<div class="cfb-member" onclick="showT('${nm}: ${st==='done'?'✅ Flash klar':st==='missing'?'❌ Missade':'⏳ Ej postat'}','${st==='done'?'g':st==='missing'?'r':'y'}')"><div class="cfb-ring ${st}"><div class="cfb-inner">${c.members[i]||'👤'}</div></div><div class="cfb-name">${nm}</div></div>`;}).join('');
+  $('cwCircleMsgs').innerHTML=(c.msgs||[]).map(m=>`<div>${m.me?'':m.em?`<div class="msg-name">${m.em} ${m.from}</div>`:''}<div class="msg ${m.me?'me':'them'}">${m.txt}</div><div class="msg-t" style="text-align:${m.me?'right':'left'}">${m.t}</div></div>`).join('');
+  $('cwCircleMsgs').scrollTop=$('cwCircleMsgs').scrollHeight;oWin('circleWin');
+}
+function sendCircleMsg(){
+  const inp=$('cwCircleInp');const txt=inp.value.trim();if(!txt)return;inp.value='';
+  const c=[...CIRCLES_DATA,...G.circles].find(x=>x.id===G.currentCircle);if(c){if(!c.msgs)c.msgs=[];c.msgs.push({from:G.name,em:gS().e,txt,t:'nu',me:true});c.lastMsg='Du: '+txt;}
+  const d=document.createElement('div');d.innerHTML=`<div><div class="msg me">${txt}</div><div class="msg-t" style="text-align:right">nu</div></div>`;
+  $('cwCircleMsgs').appendChild(d);$('cwCircleMsgs').scrollTop=$('cwCircleMsgs').scrollHeight;vibe(15);gainXP(1,'social');
+  const replies=['🔥 Yes!','Haha 😂','🔥🔥🔥','GG!','⚡⚡⚡','Snyggt!! 👑','Alltid 💪'];
+  setTimeout(()=>{const d2=document.createElement('div');d2.innerHTML=`<div><div class="msg-name">🐉 ella_sthlm</div><div class="msg them">${replies[~~(Math.random()*replies.length)]}</div><div class="msg-t">nu</div></div>`;$('cwCircleMsgs').appendChild(d2);$('cwCircleMsgs').scrollTop=$('cwCircleMsgs').scrollHeight;},600+Math.random()*1000);
+}
+function submitCircle(){
+  const name=$('circleNameIn').value.trim();if(!name){showT('❌ Ange namn','r');return;}
+  G.circles.push({id:'circ_'+Date.now(),name,em:G.circleEm,col:G.circleCol,members:[gS().e],memberNames:[G.name],streak:0,desc:'Ny circle!',lastMsg:'Du skapade cirkeln!',missedToday:0,msgs:[]});
+  closeModal('createCircleModal');$('circleNameIn').value='';
+  renderCircles();vibe([30,20,60]);addH('⭕ Skapade: '+name,'var(--pk)');showT('⭕ '+name+' skapad!','pk');
+}
+
+// ── UPPDRAG ──
+function verBadge(u){if(u.verLevel==='premium')return'<span class="ver-g ver-y">⭐ PREMIUM</span>';if(u.verLevel==='gold')return'<span class="ver-g">✓ VERIFIERAD</span>';return'<span style="font-size:10px;color:var(--t3)">⏳ Ej verifierad</span>';}
+function renderUppdrag(){
+  const all=[...UPPDRAG_DATA,...G.myUppdrag];
+  const src=G.upFilter==='mine'?G.myUppdrag:G.upFilter==='all'?all:all.filter(u=>u.type===G.upFilter||u.cType===G.upFilter);
+  $('uppdragList').innerHTML=src.length?src.map(u=>`<div class="uc ${u.verified?'verified-co':''} ${u.featured?'verified-gold':''}" onclick="openUppdragDetail('${u.id}')"><div class="uc-co"><div class="uc-co-logo">${u.coEm||'👤'}</div><div style="flex:1"><div class="uc-co-name">${u.co} ${verBadge(u)}</div><div class="uc-co-type">${u.verLevel==='premium'?'⭐ Premium':u.verLevel==='gold'?'✓ Verifierat':'Ej verifierat'}</div></div>${u.live?'<span class="tag tr" style="font-size:9px">🔴 LIVE</span>':''}${u.featured?'<span class="tag ty" style="font-size:9px;margin-left:4px">⭐ TOP</span>':''}</div><div class="uc-body"><div class="uc-top"><div class="uc-title">${u.title}</div><span class="tag ${u.cType==='reel'?'tr':u.cType==='task'?'tp':u.cType==='review'?'ty':'tb2'}" style="font-size:9px">${{reel:'🎬',task:'🛠️',photo:'📸',review:'⭐'}[u.cType]||'🎯'}</span></div><div class="uc-desc">${u.desc.substring(0,90)}${u.desc.length>90?'...':''}</div><div class="uc-req">${u.req.map(r=>`<span class="tag tb2" style="font-size:9px">${r}</span>`).join('')}</div>${u.loc?`<div class="uc-loc">📍 ${u.loc}</div>`:''}<div class="uc-bot"><div class="uc-rewards">${u.sek?`<div class="uc-sek">💸 ${u.sek} SEK</div>`:''}<div class="uc-coins">⚡ ${u.coins}</div><div class="uc-xp">+${u.xp}XP</div></div><button class="btn btn-g btn-sm" onclick="event.stopPropagation();claimUppdrag('${u.id}')">TA →</button></div></div><div class="uc-prog-wrap"><div class="uc-prog-bar"><div class="uc-prog-fill" style="width:${Math.min(100,(u.claimed/u.winners)*100)}%"></div></div></div><div class="uc-foot"><div class="uc-spots">🏆 ${u.claimed}/${u.winners>=999?'∞':u.winners}</div><div class="uc-dead">⏱ ${u.deadline}</div></div></div>`).join(''):`<div style="text-align:center;padding:40px 20px"><div style="font-size:44px;opacity:.2;margin-bottom:10px">🎯</div><div style="font-size:14px;color:var(--t3)">Inga uppdrag.</div></div>`;
+}
+document.querySelectorAll('#ufilters .uf').forEach(f=>f.addEventListener('click',()=>{document.querySelectorAll('#ufilters .uf').forEach(x=>x.classList.remove('on'));f.classList.add('on');G.upFilter=f.dataset.uf;renderUppdrag();}));
+function openUppdragDetail(id){
+  const u=[...UPPDRAG_DATA,...G.myUppdrag].find(x=>x.id===id);if(!u)return;
+  $('detailTitle').textContent='Uppdrag';
+  $('detailBody').innerHTML=`<div style="display:flex;align-items:center;gap:12px;padding:12px;background:var(--c2);border-radius:12px;margin-bottom:14px"><div style="font-size:28px">${u.coEm||'👤'}</div><div><div style="font-size:15px;font-weight:800">${u.co}</div><div style="margin-top:3px">${verBadge(u)}</div></div></div><div style="font-size:20px;font-weight:900;margin-bottom:6px">${u.title}</div><div style="font-size:13px;color:var(--t2);line-height:1.65;margin-bottom:10px">${u.desc}</div><div style="display:flex;gap:5px;flex-wrap:wrap;margin-bottom:10px">${u.req.map(r=>`<span class="tag tb2">${r}</span>`).join('')}</div>${u.loc?`<div style="font-size:12px;color:var(--b);margin-bottom:12px">📍 ${u.loc}</div>`:''}<div style="display:flex;gap:7px;flex-wrap:wrap;margin-bottom:14px">${u.sek?`<div class="uc-sek">💸 ${u.sek} SEK</div>`:''}<div class="uc-coins">⚡ ${u.coins}</div><div class="uc-xp">+${u.xp} XP</div></div><div style="background:var(--c2);border-radius:11px;padding:11px;font-size:12px;color:var(--t3);margin-bottom:14px">🏆 ${u.winners} platser · ${u.claimed} tagna · ⏱ ${u.deadline}</div><div style="display:grid;grid-template-columns:1fr 1fr;gap:10px"><button class="btn btn-g btn-lg" onclick="claimUppdrag('${u.id}')">⚡ TA UPPDRAGET</button><button class="btn btn-ghost btn-lg" onclick="cWin('detailWin')">STÄNG</button></div>`;
+  oWin('detailWin');
+}
+function claimUppdrag(id){
+  const u=[...UPPDRAG_DATA,...G.myUppdrag].find(x=>x.id===id);if(!u)return;
+  vibe([50,30,100,30,80]);
+  $('spIco').textContent='🎯';$('spLbl').textContent='UPPDRAG TAGET!';$('spTitle').textContent=u.title.substring(0,36);$('spSub').textContent='Gör det. Posta Flash.';
+  $('spRewards').innerHTML=`${u.sek?`<div class="sp-r"><div class="sp-rv" style="color:var(--g)">💸${u.sek}</div><div class="sp-rl">SEK</div></div>`:''}<div class="sp-r"><div class="sp-rv" style="color:var(--y)">⚡${u.coins}</div><div class="sp-rl">COINS</div></div><div class="sp-r"><div class="sp-rv" style="color:var(--g)">+${u.xp}</div><div class="sp-rl">XP</div></div>`;
+  $('rewardSplash').classList.add('show');pcReact('happy');addH('🎯 Tog uppdrag: '+u.title.substring(0,28));cWin('detailWin');
+}
+function submitUppdrag(){
+  const title=$('upTitle').value.trim();if(!title){showT('❌ Ange titel','r');return;}
+  if(G.coins<50){showT('❌ Behöver 50 coins','r');return;}
+  G.coins-=50;const org=$('upOrg').value.trim();const verified=org.length>5;
+  const nu={id:'nu'+Date.now(),type:G.cType||'task',cType:G.cType||'task',co:$('upCo').value||G.name,coEm:'👤',verified,verLevel:verified?'gold':'none',title,desc:$('upDesc').value||'',req:[G.cType?.toUpperCase()||'TASK'],loc:$('upLoc').value||'',sek:parseInt($('upSEK').value)||0,coins:100,xp:60,winners:parseInt($('upWin').value)||1,claimed:0,deadline:'Snart',live:false,featured:false};
+  G.myUppdrag.unshift(nu);UPPDRAG_DATA.unshift(nu);closeModal('createUppdragModal');
+  ['upTitle','upDesc','upCo','upOrg','upLoc','upSEK','upWin'].forEach(id=>{const el=$(id);if(el)el.value='';});
+  renderUppdrag();updateHUD();vibe([30,20,50]);showT(verified?'✓ VERIFIERAT & LIVE!':'🏢 PUBLICERAT! −50⚡','g');
+}
+
+// ── SHOP ──
+function renderSrcFilter(){$('srcRow').innerHTML=SOURCES.map(s=>`<div class="src ${G.shopSource===s.id?'on':''}" onclick="G.shopSource='${s.id}';renderSrcFilter();renderShop()">${s.n}</div>`).join('');}
+function switchShop(tab,el){G.shopTab=tab;document.querySelectorAll('#shopTabs .tab').forEach(x=>x.classList.remove('on'));if(el)el.classList.add('on');else{const t=document.querySelector(`#shopTabs .tab[data-t="${tab}"]`);if(t)t.classList.add('on');}renderShop();}
+function renderShop(){
+  const c=$('shopContent'),q=G.shopSearch;
+  if(G.shopTab==='shop'){c.innerHTML=`<div class="pgrid">${SHOP_P.shop.filter(p=>!q||p.name.toLowerCase().includes(q)).map(p=>`<div class="pcard" onclick="showT('🛍️ ${p.name}!','g')"><div class="pc-img"><div style="font-size:50px">${p.em}</div>${p.badge?`<div class="pc-badge ${p.badge}">${p.badge==='new'?'NY':p.badge==='hot'?'🔥':'REA'}</div>`:''}</div><div class="pc-info"><div class="pc-name">${p.name}</div><div class="pc-src">📦 ${p.src}</div><div><span class="pc-price">${p.price}</span>${p.orig?`<span class="pc-orig">${p.orig}</span>`:''}</div><div class="pc-stars">${p.stars}</div></div></div>`).join('')}</div>`;}
+  else if(G.shopTab==='second'){c.innerHTML=SHOP_P.second.filter(p=>!q||p.name.toLowerCase().includes(q)).map(p=>`<div class="lr-row" onclick="showT('📦 Kontakta!','g')"><div class="lr-img">${p.em}</div><div style="flex:1;min-width:0"><div class="lr-title">${p.name}</div><div class="lr-desc">${p.desc}</div><div class="lr-meta"><div class="lr-price">${p.price}</div><span class="tag tb2" style="font-size:9px">${p.src}</span><div class="lr-age">${p.age}</div></div><div style="font-size:11px;color:var(--t3);margin-top:3px">📍 ${p.loc}</div></div></div>`).join('');}
+  else if(G.shopTab==='compare'){c.innerHTML=`<div class="cmp-wrap">${SHOP_P.compare.map(comp=>`<div class="cmp-card"><div class="cmp-prod"><span style="font-size:32px">${comp.em}</span><div><div style="font-size:14px;font-weight:800">${comp.product}</div></div></div>${comp.stores.map(st=>`<div class="cmp-row ${st.best?'best':''}" onclick="showT('🔗 Öppnar!','g')"><div class="cmp-store">${st.i} ${st.n}${st.best?'<span class="cmp-best">BÄST</span>':''}</div><div class="cmp-price ${st.best?'best':''}">${st.p}</div></div>`).join('')}</div>`).join('')}</div>`;}
+  else if(G.shopTab==='brands'){
+    const list=G.brands.length?G.brands:[{id:'d1',nm:'STHLM DROPS',em:'⚡',color:'#00ff88',creator:'karma_official',desc:'Premium streetwear',followers:234,products:12,revenue:4500},{id:'d2',nm:'FEFFES JEANS',em:'👖',color:'#aa66ff',creator:'feffe_g',desc:'Sjuka jeans',followers:412,products:8,revenue:9200}];
+    c.innerHTML=`<div style="padding:12px"><div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px"><div style="font-size:13px;color:var(--t2)">${list.length} brands</div><button class="btn btn-g btn-sm" onclick="openModal('createBrandModal')">+ Skapa</button></div>${list.map(b=>`<div class="brand-card" onclick="showT('🏢 ${b.nm||b.name}!','g')"><div class="brand-banner" style="background:linear-gradient(135deg,${b.color||'#00ff88'}22,${b.color||'#00ff88'}08)"><span style="font-size:40px">${b.em}</span></div><div class="brand-info"><div class="brand-name">${b.nm||b.name}</div><div class="brand-creator">av @${b.creator}</div><div style="font-size:12px;color:var(--t2);margin-bottom:7px">${b.desc}</div><div class="brand-stats-r"><div class="bs">👥 <b>${b.followers}</b></div><div class="bs">📦 <b>${b.products}</b></div><div class="bs" style="color:var(--g)">💸 <b>${b.revenue} kr</b></div></div></div></div>`).join('')}</div>`;
+  }else if(G.shopTab==='gear'){c.innerHTML=`<div class="gear-shop-grid">${GEAR.map(g=>`<div class="gear-item ${G.gear.includes(g.id)?'owned':''}" onclick="buyGear('${g.id}')"><span class="gear-em">${g.em}</span><div class="gear-nm">${g.nm}</div><div class="gear-st">${g.st}</div><div class="gear-pr" style="color:${G.gear.includes(g.id)?'var(--g)':'var(--y)'}">${G.gear.includes(g.id)?'✓ ÄGER':g.cost+'⚡'}</div></div>`).join('')}</div>`;}
+}
+function submitBrand(){const name=$('brandNameIn').value.trim();if(!name){showT('❌ Ange namn','r');return;}G.brands.push({id:'b'+Date.now(),nm:name,name,em:G.bEm,color:'#00ff88',creator:G.name,desc:$('brandDescIn').value||'',followers:1,products:[],revenue:0});gainCoins(300);gainXP(20,'commerce');closeModal('createBrandModal');$('brandNameIn').value='';$('brandDescIn').value='';vibe([30,20,60]);showT('🎉 '+name+' live! +300⚡','g');renderShop();}
+function submitSell(){const name=$('sellProductName').value.trim();if(!name){showT('❌ Ange namn','r');return;}showT('✅ Annons publicerad!','g');closeModal('sellModal');addH('📦 Lade ut: '+name,'var(--y)');gainXP(10,'commerce');}
+
+// ── MAP ──
+function initMap(lat,lon){
+  if(G.mapInit)return;G.mapInit=true;
+  const m=L.map('realMap',{zoomControl:false,attributionControl:false}).setView([lat,lon],15);G.lMap=m;
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:19}).addTo(m);
+  const yIco=L.divIcon({html:`<div style="width:46px;height:46px;background:rgba(0,255,136,.2);border:3px solid #00ff88;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:20px;box-shadow:0 0 0 8px rgba(0,255,136,.1)">${gS().e}</div>`,className:'',iconAnchor:[23,23]});
+  G.uMarker=L.marker([lat,lon],{icon:yIco}).addTo(m).bindPopup(`<b>${G.name||'Du'}</b><br>LV${G.level}`);
+  [{em:'☕',nm:'Espresso House',lat:lat+.003,lon:lon+.004,sek:150,id:'u1'},{em:'👤',nm:'Anna Berg',lat:lat+.001,lon:lon-.003,sek:500,id:'u2'},{em:'👟',nm:'Stadium Nike',lat:lat-.005,lon:lon+.006,sek:500,id:'u3'}].forEach(p=>{
+    const ico=L.divIcon({html:`<div style="position:relative"><div style="width:36px;height:36px;background:rgba(255,204,0,.2);border:2px solid #ffcc00;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:16px">${p.em}</div><div style="position:absolute;top:-13px;right:-8px;background:#ffcc00;color:#04040a;font-size:9px;font-weight:900;padding:1px 4px;border-radius:3px">${p.sek}SEK</div><div style="width:0;height:0;border-left:5px solid transparent;border-right:5px solid transparent;border-top:6px solid #ffcc00;margin:0 auto"></div></div>`,className:'',iconAnchor:[18,42]});
+    L.marker([p.lat,p.lon],{icon:ico}).addTo(m).bindPopup(`<b>${p.nm}</b>`).on('click',()=>openUppdragDetail(p.id));
+  });
+  [{em:'🐉',nm:'ella_sthlm',lat:lat+.006,lon:lon-.002},{em:'🐺',nm:'maxruns',lat:lat-.003,lon:lon+.007}].forEach(f=>{
+    const ico=L.divIcon({html:`<div style="width:34px;height:34px;background:rgba(0,255,136,.1);border:2px solid #00ff88;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:16px">${f.em}</div>`,className:'',iconAnchor:[17,17]});
+    L.marker([f.lat,f.lon],{icon:ico}).addTo(m).bindPopup(`<b>${f.nm}</b>`);
+  });
+  renderNearby(lat,lon);
+}
+function locateMe(){
+  const btn=$('locBtn'),dot=$('gpsDot'),txt=$('gpsText');
+  btn.classList.add('on');btn.textContent='⌛';dot.className='gps-dot searching';txt.textContent='Söker GPS...';
+  const fallback=()=>{dot.className='gps-dot';txt.textContent='Visar Stockholm';btn.textContent='◎';btn.classList.remove('on');const lat=59.3293,lon=18.0686;G.userLat=lat;G.userLon=lon;if(!G.mapInit)initMap(lat,lon);renderNearby(lat,lon);showT('⚠️ GPS nekad – visar Stockholm','y');};
+  if(!navigator.geolocation){fallback();return;}
+  navigator.geolocation.getCurrentPosition(pos=>{
+    const lat=pos.coords.latitude,lon=pos.coords.longitude;G.userLat=lat;G.userLon=lon;
+    dot.className='gps-dot active';txt.textContent='📍 '+lat.toFixed(4)+', '+lon.toFixed(4);
+    btn.textContent='◎';btn.classList.remove('on');showT('📍 Position hittad!','g');vibe(30);
+    if(!G.mapInit){initMap(lat,lon);}else if(G.lMap){G.lMap.setView([lat,lon],16);if(G.uMarker)G.uMarker.setLatLng([lat,lon]);}
+    renderNearby(lat,lon);addH('📍 GPS hittad');
+  },fallback,{timeout:10000,enableHighAccuracy:true});
+}
+function renderNearby(lat,lon){
+  if(!lat)lat=G.userLat||59.3293;if(!lon)lon=G.userLon||18.0686;
+  const sorted=UPPDRAG_DATA.map(u=>({...u,d:dist(lat,lon,lat+(Math.random()-.5)*.015,lon+(Math.random()-.5)*.015)})).sort((a,b)=>a.d-b.d);
+  $('nearbyList').innerHTML=sorted.slice(0,5).map(u=>`<div class="nbr" onclick="openUppdragDetail('${u.id}')"><div class="nbr-ico">${u.coEm||'🎯'}</div><div style="flex:1;min-width:0"><div class="nbr-title">${u.title.substring(0,30)}${u.title.length>30?'...':''}</div><div class="nbr-loc">${u.co||''}</div></div><div style="text-align:right;flex-shrink:0"><div class="nbr-rwd">${u.sek?u.sek+' SEK':u.coins+'⚡'}</div><div class="nbr-dist">${fmtD(u.d)}</div></div></div>`).join('');
+}
+function setShare(m){G.shareMode=m;$('shF').className='sh-o'+(m==='friends'?' fo':'');$('shP').className='sh-o'+(m==='public'?' po':'');if(m==='public'){$('shareChip').textContent='PUBLIK';$('shareChip').className='tag tpk';showT('🌍 PUBLIK!','y');}else{$('shareChip').textContent='PRIVAT';$('shareChip').className='tag tg';showT('👥 Privat','g');}}
+
+// ── LEADERBOARD ──
+function renderLB(cat,el){
+  document.querySelectorAll('#lbTabs .tab').forEach(x=>x.classList.remove('on'));if(el)el.classList.add('on');
+  const data=LB[cat]||LB.money;const top3=data.slice(0,3);
+  $('lbPodium').innerHTML=`<div class="lb-podium">${top3[1]?`<div class="pod"><div class="pod-av" style="border-color:#c0c0c8">${top3[1].isYou?gS().e:top3[1].pet||'?'}</div><div class="pod-rk" style="color:#c0c0c8">2</div><div class="pod-nm">${top3[1].isYou?G.name:top3[1].name}</div><div class="pod-vl">${top3[1].val}</div><div class="pod-pl s ph2"></div></div>`:''}${top3[0]?`<div class="pod"><div class="pod-av" style="border-color:var(--y)">${top3[0].isYou?gS().e:top3[0].pet||'?'}</div><div class="pod-rk" style="color:var(--y)">1</div><div class="pod-nm">${top3[0].isYou?G.name:top3[0].name}</div><div class="pod-vl" style="color:var(--y)">${top3[0].val}</div><div class="pod-pl g ph1"></div></div>`:''}${top3[2]?`<div class="pod"><div class="pod-av" style="border-color:#cd7f32">${top3[2].isYou?gS().e:top3[2].pet||'?'}</div><div class="pod-rk" style="color:#cd7f32">3</div><div class="pod-nm">${top3[2].isYou?G.name:top3[2].name}</div><div class="pod-vl">${top3[2].val}</div><div class="pod-pl b ph3"></div></div>`:''}</div>`;
+  $('lbList').innerHTML=data.map(r=>`<div class="lb-row ${r.isYou?'you':''}"><div class="lb-rk">${r.rank}</div><div class="lb-av">${r.isYou?gS().e:r.pet||'?'}</div><div style="flex:1"><div class="lb-nm">${r.isYou?G.name:r.name||'?'} ${r.isYou?'<span class="tag tg" style="font-size:9px">YOU</span>':''}</div><div class="lb-sb">Trust ${r.trust||42}</div></div><div><div class="lb-vl" style="color:${r.isYou?'var(--g)':'var(--t1)'}">${r.isYou&&cat==='money'?G.totalSEK+' SEK':r.isYou&&cat==='streak'?G.streak+' dagar':r.val}</div><div class="lb-up">${r.ch||''}</div></div></div>`).join('');
+}
+
+// ── PROFILE ──
+function renderHistList(){if(!$('histList'))return;$('histList').innerHTML=G.hist.slice(0,12).map(h=>`<div class="hist-item"><div class="hdot" style="background:${h.c}"></div><div class="htxt">${h.t}</div><div class="htime">${h.time}</div></div>`).join('');}
+function renderBadges(){if(!$('badgeGrid'))return;$('badgeGrid').innerHTML=BADGES_DEF.map(b=>`<div class="badge ${b.ok()?'earned':''}" onclick="showT('${b.ok()?'✅ '+b.l:'🔒 '+b.l}','${b.ok()?'g':'r'}')"><div class="badge-e" style="${!b.ok()?'filter:grayscale(1) opacity(.2)':''}">${b.e}</div><div class="badge-l">${b.l}</div></div>`).join('');}
+function shareProfile(){const txt='⚡ '+G.name+' on KARMA!\n'+gS().s+' · LV'+G.level+'\n🔥 '+G.streak+'d streak · 💸 '+G.totalSEK+' SEK\nReal life. Game engine.';if(navigator.share)navigator.share({title:'KARMA',text:txt});else{navigator.clipboard?.writeText(txt);showT('📋 Kopierat!','g');}}
+
+// ── AI ──
+function sendAI(){
+  const inp=$('aiInp');const txt=inp.value.trim();if(!txt)return;inp.value='';
+  const m=$('aiMsgs');const d=document.createElement('div');d.innerHTML=`<div class="msg me">${txt}</div>`;m.appendChild(d);m.scrollTop=m.scrollHeight;
+  const typing=document.createElement('div');typing.innerHTML=`<div class="msg them" style="color:var(--t3)">✦ tänker...</div>`;m.appendChild(typing);m.scrollTop=m.scrollHeight;
+  setTimeout(()=>{typing.innerHTML=`<div class="msg them">${AI_REPLIES[~~(Math.random()*AI_REPLIES.length)]}</div>`;m.scrollTop=m.scrollHeight;},600+Math.random()*800);
+}
+
+// ── NAV ──
+function nav(name){
+  document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
+  document.querySelectorAll('.nb[data-v]').forEach(b=>b.classList.remove('on'));
+  const v=$('view-'+name);if(v)v.classList.add('active');
+  const btn=document.querySelector('.nb[data-v="'+name+'"]');if(btn)btn.classList.add('on');
+  vibe(8);
+  ({home:updatePetView,flash:renderFlashFeed,circles:renderCircles,uppdrag:renderUppdrag,shop:()=>{renderSrcFilter();renderShop();},map:()=>{setTimeout(()=>{if(!G.mapInit)locateMe();},200);renderNearby();},lb:()=>renderLB('money',document.querySelector('#lbTabs .tab')),profile:()=>{updateHUD();renderHistList();renderBadges();},launch:()=>{}}[name]||(() => {}))();
+}
+document.querySelectorAll('.nb[data-v]').forEach(b=>b.addEventListener('click',()=>nav(b.dataset.v)));
+$('flashBtn').addEventListener('click',()=>openModal('flashModal'));
+
+// ── MENU ──
+function toggleMenu(){const d=$('dd'),h=$('hamBtn'),o=d.classList.contains('open');d.classList.toggle('open',!o);h.classList.toggle('open',!o);if(!o)setTimeout(()=>document.addEventListener('click',oOut,{once:true,capture:true}),100);}
+function oOut(e){if(!e.target.closest('.mw'))cM();}
+function cM(){$('dd').classList.remove('open');$('hamBtn').classList.remove('open');}
+
+// ── ONBOARDING ──
+let obPet='🐉';
+$('obPetGrid').innerHTML=PETS.map(p=>`<div class="obp ${p===obPet?'sel':''}" data-p="${p}" onclick="pickPet(this)">${p}</div>`).join('');
+function pickPet(el){document.querySelectorAll('.obp').forEach(x=>x.classList.remove('sel'));el.classList.add('sel');obPet=el.dataset.p;vibe(15);}
+function obNext(step){
+  if(step===1){const n=$('obName').value.trim();if(!n){showT('❌ Skriv ditt namn','r');return;}G.name=n;}
+  if(step===2){const pn=$('obPetName').value.trim();if(!pn){showT('❌ Ge din pet ett namn','r');return;}G.petName=pn;G.petEmoji=obPet;}
+  document.querySelectorAll('.ob-step').forEach(s=>s.style.display='none');$('obs'+step).style.display='block';vibe(20);
+}
+function finishOB(){
+  $('ob').style.display='none';$('app').style.display='flex';
+  save();updateHUD();nav('home');
+  vibe([50,30,100,30,80]);showT('⚡ WELCOME '+(G.name||'').toUpperCase()+'!','g');
+  addH('🎮 '+G.name+' joined KARMA v2!');
+  setTimeout(()=>$('circleDot').style.display='inline-block',2000);
+}
+
+// ── LOAD ──
+try{
+  const sn=localStorage.getItem('kv8_n');
+  if(sn){
+    G.name=sn;G.petEmoji=localStorage.getItem('kv8_p')||'🐉';G.petName=localStorage.getItem('kv8_pn')||'Eldraken';
+    G.level=parseInt(localStorage.getItem('kv8_l')||'1');G.coins=parseInt(localStorage.getItem('kv8_c')||'500');
+    G.streak=parseInt(localStorage.getItem('kv8_st')||'0');G.exp=parseInt(localStorage.getItem('kv8_x')||'0');
+    G.actionStat=parseInt(localStorage.getItem('kv8_as')||'0');G.commerceStat=parseInt(localStorage.getItem('kv8_cs')||'0');G.socialStat=parseInt(localStorage.getItem('kv8_ss')||'0');
+    try{G.gear=JSON.parse(localStorage.getItem('kv8_g')||'[]');}catch(e){G.gear=[];}
+    G.equippedGear=localStorage.getItem('kv8_eg')||null;
+    G.totalSEK=parseInt(localStorage.getItem('kv8_sek')||'0');G.trustScore=parseInt(localStorage.getItem('kv8_ts')||'42');
+    G.postCount=parseInt(localStorage.getItem('kv8_posts')||'0');G.bountiesDone=parseInt(localStorage.getItem('kv8_b')||'0');
+    G.hunger=parseInt(localStorage.getItem('kv8_hu')||'80');G.energy=parseInt(localStorage.getItem('kv8_en')||'100');G.mood=parseInt(localStorage.getItem('kv8_mo')||'90');
+    try{G.brands=JSON.parse(localStorage.getItem('kv8_brands')||'[]');}catch(e){G.brands=[];}
+    try{G.circles=JSON.parse(localStorage.getItem('kv8_circles')||'[]');}catch(e){G.circles=[];}
+    try{G.streakWeek=JSON.parse(localStorage.getItem('kv8_sw')||'[false,false,false,false,false,false,false]');}catch(e){G.streakWeek=[false,false,false,false,false,false,false];}
+    $('ob').style.display='none';$('app').style.display='flex';updateHUD();nav('home');
+    setTimeout(()=>$('circleDot').style.display='inline-block',1500);
+  }
+}catch(e){}
+
+// ── TIMERS ──
+setInterval(()=>{if(!G.name)return;G.hunger=Math.max(0,G.hunger-2);G.energy=Math.max(0,G.energy-1);if(G.hunger<20&&G.hunger>0)showT('⚠️ '+G.petName+' är hungrig!','r');updateHUD();if(document.querySelector('#view-home.active'))updatePetView();},120000);
+setInterval(save,8000);
+</script>
+</body>
+</html>
