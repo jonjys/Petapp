@@ -10,11 +10,11 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
 <style>
 :root{
-  --bg:#04040a;--c1:#0c0c16;--c2:#141420;--c3:#1c1c2c;--c4:#262636;
-  --line:rgba(255,255,255,.07);--line2:rgba(255,255,255,.13);
-  --t1:#ededf8;--t2:#6868a0;--t3:#363658;
-  --g:#00ff88;--g2:#00cc6a;--b:#4488ff;--pk:#ff3377;--y:#ffcc00;
-  --p:#aa66ff;--r:#ff4455;--o:#ff8844;--tl:#00ddcc;
+  --bg:#000000;--c1:#0d0d0d;--c2:#141414;--c3:#1c1c1c;--c4:#242424;
+  --line:rgba(255,255,255,.1);--line2:rgba(255,255,255,.22);
+  --t1:#ffffff;--t2:#888888;--t3:#444444;
+  --g:#39FF14;--g2:#2acc10;--b:#00D9FF;--pk:#FF2D55;--y:#FFE600;
+  --p:#BF5FFF;--r:#FF2D55;--o:#FF9F0A;--tl:#00D9FF;
   --ff:'DM Sans',sans-serif;--mono:'Space Mono',monospace;
   --sab:env(safe-area-inset-bottom,0px);
 }
@@ -81,12 +81,12 @@ html,body{height:100%;width:100%;overflow:hidden;background:var(--bg);font-famil
 .to{background:rgba(255,136,68,.09);border-color:rgba(255,136,68,.28);color:var(--o);}
 .tpk{background:rgba(255,51,119,.09);border-color:rgba(255,51,119,.28);color:var(--pk);}
 .ttl{background:rgba(0,221,204,.09);border-color:rgba(0,221,204,.28);color:var(--tl);}
-.btn{font-family:var(--ff);font-weight:700;border-radius:10px;cursor:pointer;border:none;transition:all .12s;display:inline-flex;align-items:center;justify-content:center;gap:5px;font-size:13px;}
-.btn:active{transform:scale(.95);}
-.btn-g{background:linear-gradient(135deg,var(--g),var(--tl));color:var(--bg);font-weight:800;}
-.btn-pk{background:linear-gradient(135deg,var(--pk),var(--p));color:#fff;font-weight:800;}
-.btn-y{background:var(--y);color:var(--bg);font-weight:800;}
-.btn-ghost{background:var(--c2);color:var(--t1);border:1px solid var(--line);}
+.btn{font-family:var(--ff);font-weight:900;border-radius:8px;cursor:pointer;border:none;transition:all .08s;display:inline-flex;align-items:center;justify-content:center;gap:5px;font-size:13px;text-transform:uppercase;letter-spacing:.4px;}
+.btn:active{transform:scale(.93);}
+.btn-g{background:var(--g);color:#000;font-weight:900;box-shadow:0 0 18px rgba(57,255,20,.4);}
+.btn-pk{background:var(--pk);color:#fff;font-weight:900;box-shadow:0 0 18px rgba(255,45,85,.4);}
+.btn-y{background:var(--y);color:#000;font-weight:900;box-shadow:0 0 14px rgba(255,230,0,.35);}
+.btn-ghost{background:var(--c2);color:var(--t1);border:1px solid var(--line2);}
 .btn-sm{padding:7px 13px;font-size:12px;}
 .btn-lg{padding:13px 22px;font-size:14px;font-weight:800;}
 .btn-full{width:100%;}
@@ -501,6 +501,45 @@ textarea.inp{resize:none;min-height:68px;}
 .ls-n{width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:900;flex-shrink:0;}
 .ls-t{font-size:12px;font-weight:700;flex:1;}
 .ls-s{font-size:10px;font-weight:800;padding:2px 7px;border-radius:5px;}
+/* ── NEO-BRUTALIST ADDITIONS ── */
+/* DNA Badge */
+.dna-badge{display:inline-flex;align-items:center;gap:4px;padding:4px 10px;border-radius:5px;font-size:9px;font-weight:900;text-transform:uppercase;letter-spacing:.9px;font-family:var(--mono);margin-bottom:6px;}
+.dna-base{background:rgba(57,255,20,.1);border:1px solid rgba(57,255,20,.35);color:var(--g);}
+.dna-action{background:rgba(255,45,85,.12);border:1px solid rgba(255,45,85,.45);color:var(--pk);}
+.dna-social{background:rgba(191,95,255,.12);border:1px solid rgba(191,95,255,.45);color:var(--p);}
+.dna-commerce{background:rgba(255,230,0,.12);border:1px solid rgba(255,230,0,.45);color:var(--y);}
+/* Mood Pill */
+.mood-pill{display:inline-flex;align-items:center;gap:3px;font-size:10px;font-weight:800;font-family:var(--mono);margin-top:5px;color:var(--t2);}
+/* Segmented XP Bar */
+.xpt-seg{display:flex;gap:2px;height:9px;margin-top:4px;border-radius:5px;overflow:hidden;}
+.seg-p{flex:1;background:var(--c3);transition:background .35s,box-shadow .35s;}
+.seg-p.on{background:var(--g);box-shadow:0 0 6px var(--g);}
+@keyframes segFlash{0%,100%{background:var(--g);}50%{background:#fff;box-shadow:0 0 18px #fff;}}
+.seg-p.flash{animation:segFlash .45s ease-out;}
+/* Pet Aura */
+.pet-aura{position:absolute;inset:-10px;border-radius:50%;pointer-events:none;opacity:0;transition:opacity .6s;}
+.pet-aura.active{opacity:1;animation:auraGlow 2.2s ease-in-out infinite;}
+@keyframes auraGlow{0%,100%{box-shadow:0 0 22px currentColor,0 0 44px currentColor;}50%{box-shadow:0 0 38px currentColor,0 0 76px currentColor;}}
+.aura-action{color:var(--pk);}.aura-social{color:var(--p);}.aura-commerce{color:var(--y);}.aura-legend{color:var(--g);}
+/* Drop Notification */
+.drop-notif{position:fixed;top:68px;left:50%;transform:translateX(-50%);z-index:9998;background:var(--y);color:#000;border-radius:10px;padding:11px 22px;font-size:13px;font-weight:900;font-family:var(--mono);letter-spacing:.5px;animation:dropIn .45s cubic-bezier(.34,1.56,.64,1);pointer-events:none;white-space:nowrap;box-shadow:0 4px 24px rgba(255,230,0,.55),0 0 60px rgba(255,230,0,.2);}
+@keyframes dropIn{from{transform:translateX(-50%) scale(0) translateY(-20px);}to{transform:translateX(-50%) scale(1) translateY(0);}}
+/* Screen Shake */
+@keyframes screenShake{0%,100%{transform:translate(0,0);}10%,30%,50%,70%,90%{transform:translate(-5px,2px);}20%,40%,60%,80%{transform:translate(5px,-2px);}}
+.shake{animation:screenShake .45s ease-in-out;}
+/* Earn Panel */
+.earn-panel{background:var(--c1);border:1px solid var(--line2);border-radius:14px;overflow:hidden;margin:0 12px 10px;}
+.earn-row{display:flex;align-items:center;gap:10px;padding:9px 13px;border-bottom:1px solid var(--line);}
+.earn-row:last-child{border-bottom:none;}
+.earn-ico{font-size:18px;width:26px;text-align:center;flex-shrink:0;}
+.earn-txt{flex:1;font-size:12px;font-weight:700;}
+.earn-val{font-size:11px;font-weight:900;color:var(--y);font-family:var(--mono);}
+/* Stat boxes neon */
+.st-num.a{color:var(--pk);}.st-bf.a{background:var(--pk);}
+.st-num.c{color:var(--y);}.st-bf.c{background:var(--y);}
+.st-num.s{color:var(--p);}.st-bf.s{background:var(--p);}
+/* Neon XP fill */
+.xpf{background:linear-gradient(90deg,var(--g),var(--b));box-shadow:0 0 8px var(--g);}
 /* PET CANVAS SYSTEM */
 .pet-av-wrap{width:160px;height:160px;flex-shrink:0;position:relative;cursor:pointer;-webkit-tap-highlight-color:transparent;}
 .pet-emote{position:absolute;top:-14px;right:-14px;font-size:28px;opacity:0;pointer-events:none;z-index:5;transition:opacity .25s,transform .25s;transform:scale(0);}
@@ -589,19 +628,22 @@ textarea.inp{resize:none;min-height:68px;}
       <div class="pet-hero">
         <div class="ph-row">
           <div class="pet-av-wrap" id="petAvWrap" onclick="onPetTap(event)">
-            <canvas id="petCanvas" width="320" height="320" style="width:160px;height:160px;filter:drop-shadow(0 10px 28px rgba(0,0,0,.55))"></canvas>
+            <div class="pet-aura" id="petAura"></div>
+            <canvas id="petCanvas" width="320" height="320" style="width:160px;height:160px;filter:drop-shadow(0 12px 32px rgba(0,0,0,.7))"></canvas>
             <div class="pet-emote" id="petEmote"></div>
-            <button class="pet-edit-btn" onclick="event.stopPropagation();openPetDesigner()">🎨 EDIT</button>
+            <button class="pet-edit-btn" onclick="event.stopPropagation();openPetDesigner()">🎨</button>
           </div>
           <div style="flex:1">
+            <div class="dna-badge dna-base" id="dnaBadge">🧬 BASE</div>
             <div class="pet-name" id="petName">–</div>
             <div class="pet-species" id="petSpecies">–</div>
             <div class="pet-lv">LV <span id="petLvlN">1</span></div>
             <div class="pet-evol" id="petEvol">NEXT EVOL: LV5</div>
+            <div class="mood-pill" id="moodPill">😊 CHILL</div>
           </div>
         </div>
         <div class="xp-top"><span>XP</span><span id="xpNums">0/100</span></div>
-        <div class="xpt"><div class="xpf" id="xpFill" style="width:0%"></div></div>
+        <div class="xpt-seg" id="xpSegBar"></div>
       </div>
 
       <!-- Streak hero -->
@@ -620,10 +662,20 @@ textarea.inp{resize:none;min-height:68px;}
         <button class="btn btn-pk btn-sm" onclick="openModal('flashModal')">⚡ POST</button>
       </div>
 
+      <div class="sh"><div class="sh-t">💎 TJÄNA KARMA COINS</div><div class="sh-a" style="font-size:9px;color:var(--y)">5% DROP CHANS</div></div>
+      <div class="earn-panel">
+        <div class="earn-row"><div class="earn-ico">⚡</div><div class="earn-txt">Daglig Flash (varje dag)</div><div class="earn-val">+10 💎</div></div>
+        <div class="earn-row"><div class="earn-ico">🎯</div><div class="earn-txt">Klara bounty</div><div class="earn-val">50–500 SEK</div></div>
+        <div class="earn-row"><div class="earn-ico">🔥</div><div class="earn-txt">7-dagars streak</div><div class="earn-val">+50 💎</div></div>
+        <div class="earn-row"><div class="earn-ico">🎮</div><div class="earn-txt">Minispel combo x5+</div><div class="earn-val">+1–5 💎</div></div>
+        <div class="earn-row"><div class="earn-ico">📦</div><div class="earn-txt">Random drop (5% chans)</div><div class="earn-val">+100–200 💎</div></div>
+        <div class="earn-row"><div class="earn-ico">⭕</div><div class="earn-txt">Circle streak bonus</div><div class="earn-val">+20 💎</div></div>
+      </div>
+
       <div class="stats-row">
-        <div class="st-box"><div class="st-num a" id="stA">0</div><div class="st-bar"><div class="st-bf a" id="stAb" style="width:0%"></div></div><div class="st-lbl">⚔️ Action</div></div>
-        <div class="st-box"><div class="st-num c" id="stC">0</div><div class="st-bar"><div class="st-bf c" id="stCb" style="width:0%"></div></div><div class="st-lbl">💰 Commerce</div></div>
-        <div class="st-box"><div class="st-num s" id="stS">0</div><div class="st-bar"><div class="st-bf s" id="stSb" style="width:0%"></div></div><div class="st-lbl">⭐ Social</div></div>
+        <div class="st-box"><div class="st-num a" id="stA">0</div><div class="st-bar"><div class="st-bf a" id="stAb" style="width:0%"></div></div><div class="st-lbl">⚔️ ACTION</div></div>
+        <div class="st-box"><div class="st-num c" id="stC">0</div><div class="st-bar"><div class="st-bf c" id="stCb" style="width:0%"></div></div><div class="st-lbl">💰 COMMERCE</div></div>
+        <div class="st-box"><div class="st-num s" id="stS">0</div><div class="st-bar"><div class="st-bf s" id="stSb" style="width:0%"></div></div><div class="st-lbl">⭐ SOCIAL</div></div>
       </div>
 
       <div class="card vitals-card">
@@ -1172,6 +1224,79 @@ function dist(la1,lo1,la2,lo2){const R=6371e3,f1=la1*Math.PI/180,f2=la2*Math.PI/
 function fmtD(m){return m<1000?Math.round(m)+'m':+(m/1000).toFixed(1)+'km';}
 function save(){try{const d={n:G.name,p:G.petEmoji,pn:G.petName,l:G.level,c:G.coins,st:G.streak,x:G.exp,as:G.actionStat,cs:G.commerceStat,ss:G.socialStat,g:JSON.stringify(G.gear),eg:G.equippedGear||'',sek:G.totalSEK,ts:G.trustScore,posts:G.postCount,b:G.bountiesDone,hu:G.hunger,en:G.energy,mo:G.mood,brands:JSON.stringify(G.brands),circles:JSON.stringify(G.circles),sw:JSON.stringify(G.streakWeek),petCfg:JSON.stringify(G.petConfig)};for(const k in d)localStorage.setItem('kv8_'+k,d[k]);}catch(e){}}
 
+// ── DNA + MOOD SYSTEM ──
+function getPetDNA(){
+  const a=G.actionStat,s=G.socialStat,c=G.commerceStat,tot=a+s+c;
+  if(tot<30)return 'base';
+  const maxV=Math.max(a,s,c);
+  if(tot>120&&maxV/tot<0.45)return 'legend';
+  if(a>=s&&a>=c){if(s>=c*1.4)return 'street';return 'action';}
+  if(s>=a&&s>=c){if(c>=a*1.4)return 'mogul';return 'social';}
+  if(c>=a&&c>=s){if(a>=s*1.4)return 'ganger';return 'commerce';}
+  return 'base';
+}
+const DNA_INFO={
+  base:{lbl:'🧬 BASE',cls:'dna-base',aura:'',col:'#39FF14'},
+  action:{lbl:'⚔️ ACTION CLASS',cls:'dna-action',aura:'aura-action',col:'#FF2D55'},
+  social:{lbl:'⭐ SOCIAL CLASS',cls:'dna-social',aura:'aura-social',col:'#BF5FFF'},
+  commerce:{lbl:'💰 COMMERCE CLASS',cls:'dna-commerce',aura:'aura-commerce',col:'#FFE600'},
+  street:{lbl:'🔥 STREET LEGEND',cls:'dna-action',aura:'aura-action',col:'#FF2D55'},
+  mogul:{lbl:'👑 MOGUL',cls:'dna-commerce',aura:'aura-commerce',col:'#FFE600'},
+  ganger:{lbl:'💀 GANGER',cls:'dna-action',aura:'aura-action',col:'#FF9F0A'},
+  legend:{lbl:'⚡ LEGEND CLASS',cls:'dna-base',aura:'aura-legend',col:'#39FF14'},
+};
+function getPetMood(){
+  if(G.hunger<15)return{id:'angry',em:'😡',lbl:'HUNGRY'};
+  if(G.energy<10)return{id:'tired',em:'😴',lbl:'TIRED'};
+  const dna=getPetDNA();
+  if(G.coins>2000||dna==='commerce'||dna==='mogul')return{id:'rich',em:'🤑',lbl:'LOADED'};
+  if(G.streak>=3&&G.mood>75)return{id:'hype',em:'🔥',lbl:'HYPED'};
+  if(G.mood<40)return{id:'sad',em:'😞',lbl:'SAD'};
+  return{id:'idle',em:'😊',lbl:'CHILL'};
+}
+function updateDNABadge(){
+  const dna=getPetDNA();const info=DNA_INFO[dna]||DNA_INFO.base;
+  const el=$('dnaBadge');const aura=$('petAura');
+  if(el){el.textContent=info.lbl;el.className='dna-badge '+info.cls;}
+  if(aura){aura.className='pet-aura'+(info.aura?' '+info.aura+' active':'');}
+  const mood=getPetMood();
+  const mp=$('moodPill');if(mp)mp.textContent=mood.em+' '+mood.lbl;
+  if(petAnimState.mood!=='sleeping')petAnimState.mood=mood.id;
+}
+function renderSegXPBar(){
+  const el=$('xpSegBar');if(!el)return;
+  const segs=20;const pct=G.exp/xpN(G.level);const filled=Math.min(segs,Math.floor(pct*segs));
+  el.innerHTML=Array(segs).fill(0).map((_,i)=>`<div class="seg-p ${i<filled?'on':''}"></div>`).join('');
+}
+function flashXPBar(){
+  const el=$('xpSegBar');if(!el)return;
+  el.querySelectorAll('.seg-p.on').forEach(p=>{p.classList.add('flash');setTimeout(()=>p.classList.remove('flash'),500);});
+}
+function checkRandomDrop(){
+  if(Math.random()<0.05){
+    const drops=[
+      {em:'📦',lbl:'MYSTERY CRATE!',type:'coins',val:100},
+      {em:'⚡',lbl:'XP SURGE!',type:'xp',val:80},
+      {em:'💎',lbl:'COIN RAIN!',type:'coins',val:200},
+      {em:'🔥',lbl:'RARE DROP!',type:'coins',val:150},
+    ];
+    const d=drops[~~(Math.random()*drops.length)];
+    showDropNotification(d.em+' '+d.lbl);
+    if(d.type==='coins')gainCoins(d.val);
+    else gainXP(d.val,'action');
+    vibe([20,10,40,10,80]);
+  }
+}
+function showDropNotification(txt){
+  const el=document.createElement('div');
+  el.className='drop-notif';el.textContent=txt;
+  document.body.appendChild(el);setTimeout(()=>el.remove(),2400);
+}
+function shakeScreen(){
+  const app=document.querySelector('.app');if(!app)return;
+  app.classList.add('shake');setTimeout(()=>app.classList.remove('shake'),450);
+}
+
 // ── PET CANVAS SYSTEM ──
 const PET_COLORS=['#00e87a','#4488ff','#ff3399','#aa44ff','#ff8844','#00ddcc','#ffcc00','#ff4455','#c8c8e8'];
 const PET_EARS=[{id:'cat',lbl:'🐱 Cat'},{id:'bear',lbl:'🐻 Bear'},{id:'rabbit',lbl:'🐰 Bunny'},{id:'dog',lbl:'🐶 Dog'},{id:'dragon',lbl:'🐉 Dragon'},{id:'none',lbl:'– None'}];
@@ -1198,6 +1323,18 @@ function drawPetFrame(canvas,cfg,state){
   const sqX=1+state.squish*0.28;
   const sqY=1-state.squish*0.2;
   const finalCY=cy+floatY+state.jumpY;
+  // DNA/Streak glow beneath pet
+  const dna=typeof getPetDNA==='function'?getPetDNA():'base';
+  const dnaInfo=(typeof DNA_INFO!=='undefined'&&DNA_INFO[dna])||{col:'#39FF14'};
+  if(dna!=='base'||(G&&G.streak>=3)){
+    const glowCol=G&&G.streak>=7?'#39FF14':dnaInfo.col;
+    ctx.beginPath();ctx.ellipse(cx,finalCY,44,44,0,0,Math.PI*2);
+    ctx.fillStyle='transparent';
+    ctx.shadowColor=glowCol;ctx.shadowBlur=28+Math.sin(state.t)*8;
+    ctx.beginPath();ctx.ellipse(cx,finalCY,40,40,0,0,Math.PI*2);
+    ctx.strokeStyle=glowCol+'33';ctx.lineWidth=2;ctx.stroke();
+    ctx.shadowBlur=0;
+  }
   // Shadow
   const shAlpha=Math.max(0.06,0.22-Math.abs(state.jumpY)*0.006);
   const shW=Math.max(16,34-Math.abs(state.jumpY)*0.4);
@@ -1424,6 +1561,7 @@ function gainXP(n,stat){
   else if(stat==='commerce')G.commerceStat+=Math.ceil(n/4);
   else if(stat==='social')G.socialStat+=Math.ceil(n/4);
   G.trustScore=Math.min(100,G.trustScore+Math.ceil(n/20));
+  flashXPBar();
   if(G.exp>=xpN(G.level)){G.exp-=xpN(G.level);G.level++;triggerLvlUp();}
   updateHUD();updatePetView();
 }
@@ -1434,7 +1572,10 @@ function triggerLvlUp(){
   $('lvlTitle').textContent='LEVEL '+G.level+'!';
   $('lvlSub').textContent=G.petName+' — '+s.s;
   $('lvlSplash').classList.add('show');
-  pcReact('happy');showPetEmote('🤩');petAnimState.jumpVY=-10;addH('⬆️ Level '+G.level+'!');
+  pcReact('happy');showPetEmote('🤩');petAnimState.jumpVY=-12;shakeScreen();
+  setTimeout(()=>spawnParticles(window.innerWidth/2,window.innerHeight*.4,'stars'),100);
+  setTimeout(()=>spawnParticles(window.innerWidth/2,window.innerHeight*.4,'stars'),300);
+  addH('⬆️ Level '+G.level+'!');
 }
 function pcFeed(){if(G.coins<10){showT('❌ Need 10 coins!','r');return;}G.coins-=10;G.hunger=Math.min(100,G.hunger+30);G.mood=Math.min(100,G.mood+5);pcReact('happy');showPetEmote('😋');showT('🍖 +30 HUNGER','g');updateHUD();updatePetView();}
 function pcTrain(){if(G.energy<20){showT('❌ Låg energi! Sova först.','r');return;}G.energy-=20;gainXP(15,'action');pcReact('happy');showPetEmote('💪');showT('🏋️ +15 XP','g');}
@@ -1481,10 +1622,8 @@ function updateHUD(){
 }
 function updatePetView(){
   const s=gS();const need=xpN(G.level);const pct=Math.min(100,(G.exp/need)*100);
-  // Update canvas pet mood based on vitals
-  if(petAnimState.mood!=='sleeping'){
-    petAnimState.mood=G.hunger<25?'hungry':G.mood>70?'happy':'idle';
-  }
+  updateDNABadge();
+  renderSegXPBar();
   redrawPetCanvas();
   $('petName').textContent=G.petName;$('petSpecies').textContent=s.s;$('petLvlN').textContent=G.level;
   const ne=gNE();$('petEvol').textContent=ne?'NEXT EVOL: LV'+ne:'MAX EVOLUTION ⚡';
@@ -1601,7 +1740,8 @@ function claimUppdrag(id){
   vibe([50,30,100,30,80]);
   $('spIco').textContent='🎯';$('spLbl').textContent='UPPDRAG TAGET!';$('spTitle').textContent=u.title.substring(0,36);$('spSub').textContent='Gör det. Posta Flash.';
   $('spRewards').innerHTML=`${u.sek?`<div class="sp-r"><div class="sp-rv" style="color:var(--g)">💸${u.sek}</div><div class="sp-rl">SEK</div></div>`:''}<div class="sp-r"><div class="sp-rv" style="color:var(--y)">⚡${u.coins}</div><div class="sp-rl">COINS</div></div><div class="sp-r"><div class="sp-rv" style="color:var(--g)">+${u.xp}</div><div class="sp-rl">XP</div></div>`;
-  $('rewardSplash').classList.add('show');pcReact('happy');addH('🎯 Tog uppdrag: '+u.title.substring(0,28));cWin('detailWin');
+  $('rewardSplash').classList.add('show');pcReact('happy');showPetEmote('🤑');addH('🎯 Tog uppdrag: '+u.title.substring(0,28));cWin('detailWin');
+  setTimeout(checkRandomDrop, 600);
 }
 function submitUppdrag(){
   const title=$('upTitle').value.trim();if(!title){showT('❌ Ange titel','r');return;}
