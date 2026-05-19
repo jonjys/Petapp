@@ -541,7 +541,7 @@ textarea.inp{resize:none;min-height:68px;}
 /* Neon XP fill */
 .xpf{background:linear-gradient(90deg,var(--g),var(--b));box-shadow:0 0 8px var(--g);}
 /* PET CANVAS SYSTEM */
-.pet-av-wrap{width:160px;height:160px;flex-shrink:0;position:relative;cursor:pointer;-webkit-tap-highlight-color:transparent;}
+.pet-av-wrap{width:190px;height:190px;flex-shrink:0;position:relative;cursor:pointer;-webkit-tap-highlight-color:transparent;background:radial-gradient(circle at 50% 55%,rgba(0,232,122,.12) 0%,transparent 68%);}
 .pet-emote{position:absolute;top:-14px;right:-14px;font-size:28px;opacity:0;pointer-events:none;z-index:5;transition:opacity .25s,transform .25s;transform:scale(0);}
 .pet-emote.pop{opacity:1;transform:scale(1);animation:emPop .5s cubic-bezier(.34,1.56,.64,1);}
 @keyframes emPop{0%{transform:scale(0) rotate(-20deg);}60%{transform:scale(1.25) rotate(5deg);}100%{transform:scale(1) rotate(0);}}
@@ -549,6 +549,49 @@ textarea.inp{resize:none;min-height:68px;}
 .pet-edit-btn{position:absolute;bottom:4px;right:4px;background:rgba(12,12,22,.88);border:1px solid var(--line);border-radius:8px;padding:4px 8px;font-size:10px;font-weight:800;cursor:pointer;color:var(--t2);z-index:5;border:none;-webkit-tap-highlight-color:transparent;}
 .pc-swatch{width:34px;height:34px;border-radius:50%;cursor:pointer;border:3px solid transparent;transition:all .12s;flex-shrink:0;}
 .pc-swatch.sel{border-color:white;box-shadow:0 0 0 3px rgba(255,255,255,.35);}
+/* Enhanced pet hero */
+.pet-hero-bg{position:absolute;inset:0;background:radial-gradient(ellipse at 35% 40%,rgba(0,232,122,.07) 0%,transparent 65%),radial-gradient(ellipse at 70% 70%,rgba(0,217,255,.04) 0%,transparent 50%);pointer-events:none;}
+@keyframes petPulse{0%,100%{transform:scale(1);opacity:.4;}50%{transform:scale(1.06);opacity:.7;}}
+.pet-ring{position:absolute;inset:-8px;border-radius:50%;border:1.5px solid rgba(0,232,122,.22);pointer-events:none;animation:petPulse 3s ease-in-out infinite;}
+.pet-ring2{position:absolute;inset:-18px;border-radius:50%;border:1px solid rgba(0,232,122,.1);pointer-events:none;animation:petPulse 3s ease-in-out infinite .8s;}
+/* Social/Friends/Chat */
+.soc-hdr{background:var(--c1);border-bottom:1px solid var(--line);flex-shrink:0;}
+.friend-card{display:flex;align-items:center;gap:12px;padding:12px 14px;border-bottom:1px solid var(--line);cursor:pointer;transition:background .12s;-webkit-tap-highlight-color:transparent;}
+.friend-card:active{background:var(--c1);}
+.f-av{width:50px;height:50px;border-radius:14px;background:var(--c2);border:2px solid var(--line);display:flex;align-items:center;justify-content:center;font-size:26px;flex-shrink:0;position:relative;}
+.f-dot{position:absolute;bottom:2px;right:2px;width:10px;height:10px;border-radius:50%;border:2.5px solid var(--c1);}
+.f-dot.on{background:var(--g);}
+.f-dot.off{background:var(--c3);}
+.f-name{font-size:14px;font-weight:800;margin-bottom:2px;}
+.f-sub{font-size:11px;color:var(--t3);}
+.f-right{margin-left:auto;text-align:right;flex-shrink:0;}
+.activity-item{display:flex;align-items:flex-start;gap:12px;padding:12px 14px;border-bottom:1px solid var(--line);}
+.ai-av{width:44px;height:44px;border-radius:13px;background:var(--c2);border:1px solid var(--line);display:flex;align-items:center;justify-content:center;font-size:24px;flex-shrink:0;}
+.ai-body{flex:1;min-width:0;}
+.ai-txt{font-size:13px;font-weight:600;line-height:1.45;margin-bottom:2px;}
+.ai-txt b{color:var(--g);}
+.ai-sub{font-size:11px;color:var(--t2);margin-bottom:3px;}
+.ai-time{font-size:10px;color:var(--t3);}
+.shout-bubble{background:rgba(255,230,0,.1);border:1px solid rgba(255,230,0,.3);border-radius:10px;padding:7px 10px;margin-top:5px;font-size:12px;color:var(--y);font-style:italic;}
+.dm-thread{display:flex;align-items:center;gap:12px;padding:12px 14px;border-bottom:1px solid var(--line);cursor:pointer;transition:background .12s;}
+.dm-thread:active{background:var(--c1);}
+.dm-unread{background:var(--pk);color:#fff;font-size:10px;font-weight:900;padding:2px 7px;border-radius:20px;min-width:20px;text-align:center;font-family:var(--mono);margin-left:auto;flex-shrink:0;}
+/* DM window */
+.dm-win{position:fixed;inset:0;z-index:710;background:var(--bg);display:flex;flex-direction:column;transform:translateX(100%);transition:transform .28s cubic-bezier(.32,.72,0,1);}
+.dm-win.open{transform:translateX(0);}
+.dm-hdr{height:56px;display:flex;align-items:center;padding:0 13px;gap:10px;border-bottom:1px solid var(--line);flex-shrink:0;background:var(--c1);}
+.dm-msgs{flex:1;overflow-y:auto;padding:12px 14px;display:flex;flex-direction:column;gap:8px;scrollbar-width:none;}
+.dm-msgs::-webkit-scrollbar{display:none;}
+.dm-msg{max-width:80%;padding:10px 13px;font-size:13px;line-height:1.5;word-break:break-word;}
+.dm-msg.me{align-self:flex-end;background:linear-gradient(135deg,var(--g),var(--tl));color:#000;font-weight:700;border-radius:16px 16px 4px 16px;}
+.dm-msg.them{align-self:flex-start;background:var(--c2);color:var(--t1);border-radius:16px 16px 16px 4px;}
+.dm-inp-row{display:flex;gap:8px;padding:10px 13px;padding-bottom:calc(12px + var(--sab));border-top:1px solid var(--line);background:var(--c1);flex-shrink:0;}
+.dm-inp{flex:1;background:var(--c2);border:1px solid var(--line);border-radius:22px;padding:10px 16px;color:var(--t1);font-family:var(--ff);font-size:13px;outline:none;}
+.dm-inp:focus{border-color:rgba(0,232,122,.4);}
+.dm-snd{width:42px;height:42px;border-radius:50%;background:linear-gradient(135deg,var(--pk),var(--p));border:none;font-size:19px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;box-shadow:0 4px 14px rgba(255,45,85,.35);}
+.shout-quick-row{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px;}
+.sqb{padding:6px 13px;border-radius:20px;border:1px solid var(--line);background:var(--c2);font-size:11px;font-weight:700;color:var(--t2);cursor:pointer;white-space:nowrap;}
+.sqb:active{background:var(--c3);}
 </style>
 </head>
 <body>
@@ -627,11 +670,12 @@ textarea.inp{resize:none;min-height:68px;}
   <div class="main">
     <!-- HOME -->
     <div class="view active" id="view-home">
-      <div class="pet-hero">
+      <div class="pet-hero"><div class="pet-hero-bg"></div>
         <div class="ph-row">
           <div class="pet-av-wrap" id="petAvWrap" onclick="onPetTap(event)">
             <div class="pet-aura" id="petAura"></div>
-            <canvas id="petCanvas" width="320" height="320" style="width:160px;height:160px;filter:drop-shadow(0 12px 32px rgba(0,0,0,.7))"></canvas>
+            <div class="pet-ring"></div><div class="pet-ring2"></div>
+            <canvas id="petCanvas" width="320" height="320" style="width:190px;height:190px;filter:drop-shadow(0 12px 40px rgba(0,232,122,.25))"></canvas>
             <div class="pet-emote" id="petEmote"></div>
             <button class="pet-edit-btn" onclick="event.stopPropagation();openPetDesigner()">🎨</button>
           </div>
@@ -815,6 +859,24 @@ textarea.inp{resize:none;min-height:68px;}
       <div class="vend"></div>
     </div>
 
+    <!-- SOCIAL -->
+    <div class="view" id="view-social" style="padding:0">
+      <div class="soc-hdr">
+        <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 14px 0">
+          <div style="font-size:22px;font-weight:900;font-family:var(--mono)">💬 Social</div>
+          <button class="btn btn-pk btn-sm" onclick="openModal('shoutoutModal')">📣 Shoutout</button>
+        </div>
+        <div class="tabs" id="socialTabs">
+          <div class="tab on" onclick="switchSocial('activity',this)">🔥 Feed</div>
+          <div class="tab" onclick="switchSocial('friends',this)">👥 Vänner</div>
+          <div class="tab" onclick="switchSocial('dm',this)">💬 DMs</div>
+          <div class="tab" onclick="switchSocial('circles',this)">⭕ Circles</div>
+        </div>
+      </div>
+      <div id="socialContent" style="flex:1;overflow-y:auto;scrollbar-width:none"></div>
+      <div class="vend"></div>
+    </div>
+
     <!-- PROFILE -->
     <div class="view" id="view-profile">
       <div class="prof-cover"><div class="prof-cover-pat"></div></div>
@@ -876,7 +938,7 @@ textarea.inp{resize:none;min-height:68px;}
     <button class="nb on" data-v="home"><div class="ni">🐾</div><div class="nl">PET</div></button>
     <button class="nb" data-v="flash"><div class="ni">⚡</div><div class="nl">FLASH</div></button>
     <button class="nb-flash" id="flashBtn"><div class="flash-btn">🎬</div><div class="flash-lbl">SKAPA</div></button>
-    <button class="nb" data-v="circles"><div class="ni">⭕</div><div class="nl">CIRCLES</div></button>
+    <button class="nb" data-v="social"><div class="ni">💬</div><div class="nl">SOCIAL</div></button>
     <button class="nb" data-v="map"><div class="ni">🗺️</div><div class="nl">KARTA</div></button>
   </div>
 </div>
@@ -895,6 +957,21 @@ textarea.inp{resize:none;min-height:68px;}
     <span style="font-size:19px;cursor:pointer" onclick="postFlashToCircle()">⚡</span>
     <input class="cw-inp" id="cwCircleInp" placeholder="Skriv i cirkeln..." onkeydown="if(event.key==='Enter')sendCircleMsg()">
     <button class="cw-snd" style="background:linear-gradient(135deg,var(--pk),var(--p))" onclick="sendCircleMsg()">→</button>
+  </div>
+</div>
+
+<!-- DM WINDOW -->
+<div class="dm-win" id="dmWin">
+  <div class="dm-hdr">
+    <button style="background:none;border:none;color:var(--t2);font-size:22px;cursor:pointer;padding:4px" onclick="cWin('dmWin')">←</button>
+    <div style="font-size:24px;flex-shrink:0" id="dmWinPet">🐉</div>
+    <div style="flex:1"><div style="font-size:15px;font-weight:800" id="dmWinName">friend</div><div style="font-size:10px;font-family:var(--mono)" id="dmWinStatus" style="color:var(--g)">online</div></div>
+    <button class="btn btn-y btn-sm" onclick="quickShoutout(_currentDM?.user||'')">📣</button>
+  </div>
+  <div class="dm-msgs" id="dmMsgs"></div>
+  <div class="dm-inp-row">
+    <input class="dm-inp" id="dmInp" placeholder="Skriv..." onkeydown="if(event.key==='Enter')sendDM()">
+    <button class="dm-snd" onclick="sendDM()">→</button>
   </div>
 </div>
 
@@ -1084,6 +1161,26 @@ textarea.inp{resize:none;min-height:68px;}
   </div>
 </div>
 
+<!-- SHOUTOUT MODAL -->
+<div class="modal" id="shoutoutModal">
+  <div class="ms">
+    <div class="mh"></div>
+    <div class="mt">📣 Skicka Shoutout <div class="mx" onclick="closeModal('shoutoutModal')">✕</div></div>
+    <label class="lbl">TILL (@användare)</label>
+    <input class="inp" id="shoutTarget" placeholder="@ella_sthlm (eller lämna tomt)">
+    <label class="lbl">SHOUT IT</label>
+    <textarea class="inp" id="shoutMsg" placeholder="Skriv ditt shoutout..." style="min-height:72px"></textarea>
+    <div class="shout-quick-row">
+      <div class="sqb" onclick="$('shoutMsg').value='INSANE STREAK! 🔥'">INSANE STREAK! 🔥</div>
+      <div class="sqb" onclick="$('shoutMsg').value='GG EZ 💀'">GG EZ 💀</div>
+      <div class="sqb" onclick="$('shoutMsg').value='LEGEND STATUS ⚡'">LEGEND STATUS ⚡</div>
+      <div class="sqb" onclick="$('shoutMsg').value='Välkommen! 🎉'">Välkommen! 🎉</div>
+      <div class="sqb" onclick="$('shoutMsg').value='TOP TIER PET! 🐾'">TOP TIER PET! 🐾</div>
+    </div>
+    <button class="btn btn-pk btn-lg btn-full" onclick="submitShoutout()">📣 SHOUT IT OUT! +5XP</button>
+  </div>
+</div>
+
 <!-- SPLASHES -->
 <div class="splash" id="rewardSplash">
   <div class="sp-ico" id="spIco">⚡</div>
@@ -1175,6 +1272,32 @@ const STREAK_USERS=[
   {user:'linnea',em:'🐱',streak:0,status:'missing'},
 ];
 
+const FRIENDS_DATA=[
+  {id:'f1',user:'ella_sthlm',pet:'🐉',lvl:9,streak:7,status:'online',trust:78,bio:'Stockholm vibes ⚡',msgs:[
+    {me:false,txt:'Hallå! Flash idag?',t:'08:30'},
+    {me:true,txt:'Ja! Just gjort 🔥',t:'09:15'},
+    {me:false,txt:'SICK! Streak x7 nu 💪',t:'09:16'},
+  ]},
+  {id:'f2',user:'maxruns',pet:'🐺',lvl:11,streak:14,status:'online',trust:85,bio:'ALPHA mode 💀',msgs:[
+    {me:false,txt:'BRO LEVEL 11 😤',t:'15:00'},
+    {me:true,txt:'Grattis!! 🔥🔥',t:'15:10'},
+  ]},
+  {id:'f3',user:'sagas_world',pet:'🦋',lvl:7,streak:24,status:'offline',trust:62,bio:'Fashion + vintage 🌸',msgs:[
+    {me:false,txt:'Kolla min nya flash!',t:'1d'},
+  ]},
+  {id:'f4',user:'carlos_leo',pet:'🦊',lvl:5,streak:3,status:'online',trust:45,bio:'GTA vibes 🦊',msgs:[]},
+  {id:'f5',user:'linnea_k',pet:'🐱',lvl:3,streak:0,status:'offline',trust:30,bio:'',msgs:[]},
+];
+const ACTIVITY_FEED=[
+  {id:'a1',type:'shoutout',from:'maxruns',pet:'🐺',target:'Du',msg:'INSANE STREAK BRO!! 🔥',t:'2 min'},
+  {id:'a2',type:'levelup',from:'ella_sthlm',pet:'🐉',lvl:9,t:'15 min'},
+  {id:'a3',type:'post',from:'sagas_world',pet:'🦋',cap:'Thrift haul + vintage vibes 🤌',likes:12,t:'1h'},
+  {id:'a4',type:'streak',from:'maxruns',pet:'🐺',streak:14,t:'2h'},
+  {id:'a5',type:'bounty',from:'carlos_leo',pet:'🦊',bounty:'Nike Air Flash',sek:500,t:'3h'},
+  {id:'a6',type:'shoutout',from:'ella_sthlm',pet:'🐉',target:'Du',msg:'Välkommen till KARMA! 🎉',t:'1d'},
+  {id:'a7',type:'evolved',from:'sagas_world',pet:'🦋',stage:'BUTTERFLY',t:'2d'},
+];
+let _currentDM=null;
 const CIRCLES_DATA=[
   {id:'c1',name:'Tumba Runners',em:'🏃',col:'#00ff88',members:['🐉','🐺','🦊','🐱','🦋'],memberNames:['Du','ella_sthlm','maxruns','sagas','carlos'],streak:7,desc:'Daglig Flash + löpning',lastMsg:'ella_sthlm: STREAK 7 DAGAR! 🔥',missedToday:1,msgs:[
     {from:'ella_sthlm',em:'🐉',txt:'STREAK 7 DAGAR! 🔥',t:'08:30',me:false},
@@ -1391,6 +1514,8 @@ function drawPetFrame(canvas,cfg,state){
   const color=cfg.color||'#00e87a';
   const tummy=lightenHex(color,90);
   drawEarsOnCtx(ctx,cfg.earStyle||'cat',color);
+  // Tail (behind body)
+  {const ts=Math.sin(state.t*4.5)*0.6;ctx.save();ctx.translate(32,10);ctx.rotate(ts);ctx.beginPath();ctx.ellipse(0,20,8,24,-0.2,0,Math.PI*2);ctx.fillStyle=color;ctx.fill();ctx.beginPath();ctx.arc(Math.sin(ts)*12,38,8,0,Math.PI*2);ctx.fillStyle=lightenHex(color,55);ctx.fill();ctx.restore();}
   // Body
   ctx.beginPath();ctx.ellipse(0,0,40,42,0,0,Math.PI*2);
   ctx.fillStyle=color;ctx.fill();
