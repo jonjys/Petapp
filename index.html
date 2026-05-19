@@ -646,7 +646,7 @@ textarea.inp{resize:none;min-height:68px;}
         <div class="dd-sec">
           <div class="ddr" onclick="cM();nav('home')"><div class="ddr-i">🐾</div>Din Pet</div>
           <div class="ddr" onclick="cM();nav('flash')"><div class="ddr-i">⚡</div>Flash Feed</div>
-          <div class="ddr" onclick="cM();nav('circles')"><div class="ddr-i">⭕</div>Karma Circles<div class="dd-bdg" id="circleDot" style="display:none">!</div></div>
+          <div class="ddr" onclick="cM();nav('social')"><div class="ddr-i">💬</div>Social & Chat<div class="dd-bdg" id="circleDot" style="display:none">!</div></div>
           <div class="ddr" onclick="cM();nav('uppdrag')"><div class="ddr-i">🎯</div>Uppdrag</div>
           <div class="ddr" onclick="cM();nav('shop')"><div class="ddr-i">🛍️</div>Marketplace</div>
           <div class="ddr" onclick="cM();nav('map')"><div class="ddr-i">🗺️</div>Live Karta</div>
@@ -1527,7 +1527,15 @@ function drawPetFrame(canvas,cfg,state){
   const blink=state.blinking;
   drawEyesOnCtx(ctx,cfg.eyeStyle||'happy',state.mood,blink);
   drawAccessoryOnCtx(ctx,cfg.accessory||'none',color);
+  // Blush cheeks when well fed
+  if(typeof G!=='undefined'&&G.hunger>55){const ba=(G.hunger-55)/120;ctx.beginPath();ctx.ellipse(-27,9,10,7,0,0,Math.PI*2);ctx.fillStyle=`rgba(255,100,150,${ba*0.55})`;ctx.fill();ctx.beginPath();ctx.ellipse(27,9,10,7,0,0,Math.PI*2);ctx.fill();}
+  // Sleeping Zzz
+  if(state.mood==='sleeping'){ctx.save();const zt=state.t;ctx.font='bold 15px sans-serif';ctx.fillStyle='rgba(100,180,255,0.85)';ctx.globalAlpha=Math.abs(Math.sin(zt))*0.7+0.3;ctx.fillText('z',30+Math.sin(zt)*4,-32+Math.cos(zt)*8);ctx.font='bold 10px sans-serif';ctx.globalAlpha=Math.abs(Math.sin(zt+1.2))*0.7+0.3;ctx.fillText('z',42+Math.sin(zt+1.2)*3,-46);ctx.globalAlpha=1;ctx.restore();}
   ctx.restore();
+  // Sparkle orbit (level >= 8)
+  if(typeof G!=='undefined'&&G.level>=8){const cnt=Math.min(8,2+Math.floor((G.level-8)/4));const oy=finalCY-6;const cols=['#FFE600','#FF2D55','#00D9FF','#39FF14','#BF5FFF','#FF9F0A','#fff','#FF2D55'];for(let i=0;i<cnt;i++){const a=state.t*1.7+(i/cnt)*Math.PI*2;const sx=cx+Math.cos(a)*(62+Math.sin(state.t*.7+i)*4);const sy=oy+Math.sin(a)*(40+Math.cos(state.t*.5+i)*3);const sc=cols[i%cols.length];const sr=2.5+Math.sin(state.t*2.5+i)*.8;ctx.beginPath();ctx.arc(sx,sy,sr,0,Math.PI*2);ctx.fillStyle=sc;ctx.shadowColor=sc;ctx.shadowBlur=7;ctx.fill();ctx.shadowBlur=0;}}
+  // Rainbow trail when jumping high
+  if(state.jumpY<-12){const tc=['#FF2D55','#FF9F0A','#FFE600','#39FF14','#00D9FF','#BF5FFF'];for(let i=1;i<=5;i++){const ty=finalCY+i*13;const al=(0.28-i*0.04)*Math.min(1,-state.jumpY/35);if(al<=0)continue;ctx.beginPath();ctx.ellipse(cx,ty,10-i*1.5,4,0,0,Math.PI*2);ctx.fillStyle=tc[i%6];ctx.globalAlpha=al;ctx.fill();}ctx.globalAlpha=1;}
 }
 
 function drawEarsOnCtx(ctx,style,color){
@@ -1940,6 +1948,95 @@ function submitUppdrag(){
   renderUppdrag();updateHUD();vibe([30,20,50]);showT(verified?'✓ VERIFIERAT & LIVE!':'🏢 PUBLICERAT! −50⚡','g');
 }
 
+// ── SOCIAL ──
+function switchSocial(tab,el){
+  document.querySelectorAll('#socialTabs .tab').forEach(t=>t.classList.remove('on'));
+  if(el)el.classList.add('on');
+  if(tab==='activity')renderActivity();
+  else if(tab==='friends')renderFriends();
+  else if(tab==='dm')renderDMList();
+  else if(tab==='circles'){const c=$('socialContent');if(c){c.innerHTML='';renderCircles();const cl=$('circleList');if(cl){const clone=cl.cloneNode(true);c.appendChild(clone);}}}
+}
+function renderActivity(){
+  const c=$('socialContent');if(!c)return;
+  c.innerHTML=ACTIVITY_FEED.map(item=>{
+    let icon='🔔',title='',sub='';
+    if(item.type==='shoutout'){icon='📣';title=`<b>${item.from}</b> shoutade <b>${item.target}</b>`;sub=`<div class="shout-bubble">"${item.msg}"</div>`;}
+    else if(item.type==='levelup'){icon='⬆️';title=`<b>${item.from}</b> nådde <b style="color:var(--y)">LV${item.lvl}</b>! 🎉`;}
+    else if(item.type==='post'){icon='⚡';title=`<b>${item.from}</b> postade en Flash`;sub=`<div class="ai-sub">"${item.cap}" · ❤️ ${item.likes}</div>`;}
+    else if(item.type==='streak'){icon='🔥';title=`<b>${item.from}</b> nådde <b style="color:var(--r)">${item.streak} dagars streak</b>!`;}
+    else if(item.type==='bounty'){icon='💰';title=`<b>${item.from}</b> klarade bounty`;sub=`<div class="ai-sub" style="color:var(--y)">${item.bounty} · +${item.sek} SEK</div>`;}
+    else if(item.type==='evolved'){icon='✨';title=`<b>${item.from}</b>s pet evolvade till <b>${item.stage}</b>!`;}
+    return `<div class="activity-item"><div class="ai-av">${item.pet}</div><div class="ai-body"><div class="ai-txt">${title}</div>${sub||''}<div class="ai-time">${item.t} sedan</div></div></div>`;
+  }).join('');
+}
+function renderFriends(){
+  const c=$('socialContent');if(!c)return;
+  const online=FRIENDS_DATA.filter(f=>f.status==='online').length;
+  c.innerHTML=`<div style="padding:10px 14px 6px;font-size:10px;font-weight:700;color:var(--t3);letter-spacing:.8px">${online} ONLINE · ${FRIENDS_DATA.length} VÄNNER</div>`+FRIENDS_DATA.map(f=>`
+    <div class="friend-card" onclick="openDM('${f.id}')">
+      <div class="f-av">${f.pet}<div class="f-dot ${f.status==='online'?'on':'off'}"></div></div>
+      <div style="flex:1;min-width:0"><div class="f-name">${f.user}</div><div class="f-sub">${f.bio||'LV'+f.lvl+' · Trust '+f.trust}</div></div>
+      <div class="f-right">${f.streak>0?`<div style="font-size:11px;font-weight:800;color:var(--r);font-family:var(--mono)">🔥 ${f.streak}d</div>`:`<div style="font-size:11px;color:var(--t3)">--</div>`}<div style="font-size:10px;color:var(--t3)">LV${f.lvl}</div></div>
+      <button style="background:none;border:1px solid var(--line);border-radius:20px;padding:5px 10px;font-size:11px;font-weight:700;color:var(--t2);cursor:pointer;margin-left:8px;flex-shrink:0" onclick="event.stopPropagation();quickShoutout('${f.user}')">📣</button>
+    </div>`).join('');
+}
+function renderDMList(){
+  const c=$('socialContent');if(!c)return;
+  c.innerHTML=FRIENDS_DATA.map(f=>{
+    const last=f.msgs.length>0?f.msgs[f.msgs.length-1]:{txt:'Säg hej! 👋',t:''};
+    const unread=f.status==='online'&&f.msgs.filter(m=>!m.me).length>0?f.msgs.filter(m=>!m.me).length:0;
+    return `<div class="dm-thread" onclick="openDM('${f.id}')">
+      <div class="f-av">${f.pet}<div class="f-dot ${f.status==='online'?'on':'off'}"></div></div>
+      <div style="flex:1;min-width:0">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:2px">
+          <div style="font-size:14px;font-weight:800">${f.user}</div>
+          <div style="font-size:10px;color:var(--t3)">${last.t||''}</div>
+        </div>
+        <div style="font-size:12px;color:var(--t2);overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${last.txt}</div>
+      </div>
+      ${unread>0?`<div class="dm-unread">${unread}</div>`:''}
+    </div>`;
+  }).join('');
+}
+function openDM(fid){
+  const f=FRIENDS_DATA.find(x=>x.id===fid);if(!f)return;
+  _currentDM=f;
+  $('dmWinPet').textContent=f.pet;
+  $('dmWinName').textContent=f.user;
+  $('dmWinStatus').textContent=f.status==='online'?'🟢 Online nu':'⚫ Offline';
+  $('dmWinStatus').style.color=f.status==='online'?'var(--g)':'var(--t3)';
+  renderDMChat();
+  oWin('dmWin');
+}
+function renderDMChat(){
+  const msgs=$('dmMsgs');if(!msgs||!_currentDM)return;
+  if(!_currentDM.msgs||_currentDM.msgs.length===0){msgs.innerHTML=`<div style="text-align:center;padding:50px 20px;color:var(--t3);font-size:13px">Säg hej till ${_currentDM.user}! 👋</div>`;return;}
+  msgs.innerHTML=_currentDM.msgs.map(m=>`<div class="dm-msg ${m.me?'me':'them'}">${m.txt}</div>`).join('');
+  setTimeout(()=>{msgs.scrollTop=msgs.scrollHeight;},50);
+}
+function sendDM(){
+  const inp=$('dmInp');const txt=inp?.value?.trim();
+  if(!txt||!_currentDM)return;
+  inp.value='';vibe(15);
+  _currentDM.msgs.push({me:true,txt,t:'Nu'});
+  renderDMChat();
+  gainXP(1,'social');
+  const replies=['Haha 😂','🔥🔥🔥','Säker!','LFG! 💀','Kul!','INSANE 😤','Visste det!','🐾','FR FR 💯','Går bra!'];
+  setTimeout(()=>{if(_currentDM){_currentDM.msgs.push({me:false,txt:replies[Math.floor(Math.random()*replies.length)],t:'Nu'});renderDMChat();}},700+Math.random()*1000);
+}
+function quickShoutout(user){$('shoutTarget').value=user;openModal('shoutoutModal');}
+function submitShoutout(){
+  const target=$('shoutTarget').value.trim();
+  const msg=$('shoutMsg').value.trim();
+  if(!msg){showT('❌ Skriv ett shoutout!','r');return;}
+  ACTIVITY_FEED.unshift({id:'s'+Date.now(),type:'shoutout',from:G.name||'Du',pet:gS().e,target:target||'alla',msg,t:'Nu'});
+  gainXP(5,'social');gainCoins(5);
+  closeModal('shoutoutModal');$('shoutMsg').value='';$('shoutTarget').value='';
+  showT('📣 Shoutout skickad! +5XP','g');vibe([20,10,40]);
+  if($('view-social')?.classList.contains('active'))switchSocial('activity',document.querySelector('#socialTabs .tab'));
+}
+
 // ── SHOP ──
 function renderSrcFilter(){$('srcRow').innerHTML=SOURCES.map(s=>`<div class="src ${G.shopSource===s.id?'on':''}" onclick="G.shopSource='${s.id}';renderSrcFilter();renderShop()">${s.n}</div>`).join('');}
 function switchShop(tab,el){G.shopTab=tab;document.querySelectorAll('#shopTabs .tab').forEach(x=>x.classList.remove('on'));if(el)el.classList.add('on');else{const t=document.querySelector(`#shopTabs .tab[data-t="${tab}"]`);if(t)t.classList.add('on');}renderShop();}
@@ -2021,7 +2118,7 @@ function nav(name){
   const v=$('view-'+name);if(v)v.classList.add('active');
   const btn=document.querySelector('.nb[data-v="'+name+'"]');if(btn)btn.classList.add('on');
   vibe(8);
-  ({home:updatePetView,flash:renderFlashFeed,circles:renderCircles,uppdrag:renderUppdrag,shop:()=>{renderSrcFilter();renderShop();},map:()=>{setTimeout(()=>{if(!G.mapInit)locateMe();},200);renderNearby();},lb:()=>renderLB('money',document.querySelector('#lbTabs .tab')),profile:()=>{updateHUD();renderHistList();renderBadges();},launch:()=>{}}[name]||(() => {}))();
+  ({home:updatePetView,flash:renderFlashFeed,circles:renderCircles,social:()=>switchSocial('activity',document.querySelector('#socialTabs .tab')),uppdrag:renderUppdrag,shop:()=>{renderSrcFilter();renderShop();},map:()=>{setTimeout(()=>{if(!G.mapInit)locateMe();},200);renderNearby();},lb:()=>renderLB('money',document.querySelector('#lbTabs .tab')),profile:()=>{updateHUD();renderHistList();renderBadges();},launch:()=>{}}[name]||(() => {}))();
 }
 document.querySelectorAll('.nb[data-v]').forEach(b=>b.addEventListener('click',()=>nav(b.dataset.v)));
 $('flashBtn').addEventListener('click',()=>openModal('flashModal'));
