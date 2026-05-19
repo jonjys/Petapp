@@ -592,7 +592,64 @@ textarea.inp{resize:none;min-height:68px;}
 .shout-quick-row{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px;}
 .sqb{padding:6px 13px;border-radius:20px;border:1px solid var(--line);background:var(--c2);font-size:11px;font-weight:700;color:var(--t2);cursor:pointer;white-space:nowrap;}
 .sqb:active{background:var(--c3);}
+/* ACHIEVEMENT BANNER */
+@keyframes achIn{from{transform:translateX(110%);opacity:0;}to{transform:translateX(0);opacity:1;}}
+@keyframes achOut{from{transform:translateX(0);opacity:1;}to{transform:translateX(110%);opacity:0;}}
+.ach-banner{position:fixed;top:60px;right:10px;z-index:9800;width:270px;background:linear-gradient(135deg,#1a1400,#0d0d0d);border:1.5px solid var(--y);border-radius:16px;padding:11px 14px;display:flex;align-items:center;gap:11px;pointer-events:none;opacity:0;transform:translateX(110%);box-shadow:0 0 30px rgba(255,230,0,.2),0 12px 40px rgba(0,0,0,.8);}
+.ach-banner.show{animation:achIn .38s cubic-bezier(.34,1.56,.64,1) forwards;}
+.ach-banner.hide{animation:achOut .28s ease-in forwards;}
+.ach-ico{font-size:34px;filter:drop-shadow(0 0 8px rgba(255,230,0,.5));}
+.ach-lbl{font-size:8px;font-weight:900;color:var(--y);letter-spacing:2px;text-transform:uppercase;font-family:var(--mono);}
+.ach-nm{font-size:13px;font-weight:800;color:var(--t1);margin-top:2px;}
+/* FLOATING NUMBERS */
+@keyframes floatUp{0%{opacity:1;transform:translateX(-50%) translateY(0) scale(1);}100%{opacity:0;transform:translateX(-50%) translateY(-70px) scale(1.4);}}
+.float-num{position:fixed;pointer-events:none;z-index:9900;font-family:var(--mono);font-weight:900;animation:floatUp .95s ease-out forwards;text-shadow:0 2px 8px rgba(0,0,0,.8);}
+/* LIVE EVENT BANNER */
+@keyframes leIn{from{transform:translateY(-100%);}to{transform:translateY(0);}}
+.live-event{position:fixed;top:0;left:50%;transform:translateX(-50%) translateY(-100%);z-index:9700;max-width:430px;width:100%;background:linear-gradient(135deg,var(--y),var(--o));color:#000;padding:10px 20px;padding-top:calc(10px + env(safe-area-inset-top,0px));text-align:center;font-size:12px;font-weight:900;letter-spacing:.5px;font-family:var(--mono);display:flex;align-items:center;justify-content:center;gap:8px;}
+.live-event.show{animation:leIn .4s cubic-bezier(.34,1.56,.64,1) forwards;}
+/* DAILY QUESTS */
+.quest-card{background:var(--c1);border:1px solid var(--line);border-radius:16px;overflow:hidden;margin:0 12px 10px;}
+.quest-item{display:flex;align-items:center;gap:11px;padding:12px 14px;border-bottom:1px solid var(--line);}
+.quest-item:last-child{border-bottom:none;}
+.quest-ico{font-size:26px;width:34px;text-align:center;flex-shrink:0;}
+.quest-bar{height:4px;background:var(--c3);border-radius:2px;overflow:hidden;margin-top:5px;}
+.quest-bf{height:100%;background:linear-gradient(90deg,var(--g),var(--tl));border-radius:2px;transition:width .6s cubic-bezier(.34,1.56,.64,1);}
+/* BATTLE ARENA */
+@keyframes baHit{0%{transform:scale(1.2) translateX(-10px);}50%{transform:scale(.9) translateX(5px);}100%{transform:scale(1) translateX(0);}}
+@keyframes baShk{0%,100%{transform:translateX(0);}20%,60%{transform:translateX(-8px);}40%,80%{transform:translateX(8px);}}
+@keyframes eEntry{from{transform:translateY(-30px) scale(0.5);opacity:0;}to{transform:translateY(0) scale(1);opacity:1;}}
+.battle-arena{position:fixed;inset:0;z-index:750;background:radial-gradient(ellipse at 50% 30%,rgba(255,45,85,.08) 0%,var(--bg) 60%);display:flex;flex-direction:column;transform:translateY(100%);transition:transform .32s cubic-bezier(.32,.72,0,1);}
+.battle-arena.open{transform:translateY(0);}
+.ba-hdr{height:54px;display:flex;align-items:center;padding:0 14px;gap:10px;border-bottom:1px solid rgba(255,45,85,.3);flex-shrink:0;background:rgba(255,45,85,.06);}
+.ba-field{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:16px;gap:16px;}
+.ba-hp-wrap{width:220px;}
+.ba-hp-bar{height:12px;border-radius:6px;background:var(--c2);overflow:hidden;border:1px solid var(--line);}
+.ba-hp-fill{height:100%;border-radius:6px;transition:width .4s ease;}
+.ba-enemy-em{font-size:72px;line-height:1;filter:drop-shadow(0 0 20px rgba(255,45,85,.4));}
+.ba-enemy-em.hit{animation:baHit .3s ease-out;}
+.ba-player-lbl.shk{animation:baShk .3s ease-out;}
+.ba-atk-row{display:flex;gap:10px;}
+.ba-btn{padding:11px 22px;border-radius:22px;border:2px solid;font-size:13px;font-weight:900;cursor:pointer;font-family:var(--ff);transition:all .08s;letter-spacing:.5px;}
+.ba-btn:active{transform:scale(.88);}
+.ba-btn-atk{border-color:var(--pk);background:rgba(255,45,85,.12);color:var(--pk);box-shadow:0 0 20px rgba(255,45,85,.2);}
+.ba-btn-atk:active{box-shadow:0 0 40px rgba(255,45,85,.6);}
+.ba-btn-dg{border-color:var(--b);background:rgba(0,217,255,.08);color:var(--b);}
+.ba-btn-bl{border-color:var(--p);background:rgba(191,95,255,.08);color:var(--p);}
+.ba-log{font-size:12px;color:var(--t2);font-family:var(--mono);text-align:center;min-height:22px;padding:0 20px;}
+/* COMBO METER */
+@keyframes comboPop{0%{transform:scale(1.5);}100%{transform:scale(1);}}
+.combo-meter{position:fixed;top:62px;left:12px;z-index:801;background:rgba(0,0,0,.9);border:1.5px solid var(--y);border-radius:22px;padding:5px 13px;display:none;align-items:center;gap:5px;box-shadow:0 0 20px rgba(255,230,0,.2);}
+.combo-meter.show{display:flex;}
+.combo-n{font-size:20px;font-weight:900;color:var(--y);font-family:var(--mono);}
+.combo-n.pop{animation:comboPop .2s ease-out;}
+/* SCAN LINES on pet */
+.pet-scanlines{position:absolute;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(0,0,0,.08) 3px,rgba(0,0,0,.08) 4px);pointer-events:none;border-radius:50%;z-index:4;}
+/* NEON FLICKER */
+@keyframes nFlick{0%,98%,100%{opacity:1;}99%{opacity:.7;}}
+.logo{animation:nFlick 8s infinite;}
 </style>
+
 </head>
 <body>
 <!-- ONBOARDING -->
@@ -676,6 +733,7 @@ textarea.inp{resize:none;min-height:68px;}
             <div class="pet-aura" id="petAura"></div>
             <div class="pet-ring"></div><div class="pet-ring2"></div>
             <canvas id="petCanvas" width="320" height="320" style="width:190px;height:190px;filter:drop-shadow(0 12px 40px rgba(0,232,122,.25))"></canvas>
+            <div class="pet-scanlines"></div>
             <div class="pet-emote" id="petEmote"></div>
             <button class="pet-edit-btn" onclick="event.stopPropagation();openPetDesigner()">🎨</button>
           </div>
@@ -708,6 +766,8 @@ textarea.inp{resize:none;min-height:68px;}
         <button class="btn btn-pk btn-sm" onclick="openModal('flashModal')">⚡ POST</button>
       </div>
 
+      <div class="sh"><div class="sh-t">⚔️ DAGLIGA QUESTS</div><div class="sh-a" onclick="openBattle()" style="color:var(--pk);font-size:11px">⚔️ BATTLE →</div></div>
+      <div class="quest-card" id="questCard"></div>
       <div class="sh"><div class="sh-t">💎 TJÄNA KARMA COINS</div><div class="sh-a" style="font-size:9px;color:var(--y)">5% DROP CHANS</div></div>
       <div class="earn-panel">
         <div class="earn-row"><div class="earn-ico">⚡</div><div class="earn-txt">Daglig Flash (varje dag)</div><div class="earn-val">+10 💎</div></div>
@@ -1210,6 +1270,40 @@ textarea.inp{resize:none;min-height:68px;}
 </div>
 
 <div class="toast" id="toast"></div>
+<!-- ACHIEVEMENT BANNER -->
+<div class="ach-banner" id="achBanner">
+  <div class="ach-ico" id="achIco">🏆</div>
+  <div><div class="ach-lbl">🏆 Achievement Unlocked</div><div class="ach-nm" id="achNm">First Flash!</div></div>
+</div>
+<!-- LIVE EVENT -->
+<div class="live-event" id="liveEvent">⚡ EVENT</div>
+<!-- COMBO METER -->
+<div class="combo-meter" id="comboMeter"><div style="font-size:10px;color:var(--t2);font-weight:900">x</div><div class="combo-n" id="comboCnt">5</div><div style="font-size:10px;color:var(--y);font-weight:900">COMBO 🔥</div></div>
+<!-- BATTLE ARENA -->
+<div class="battle-arena" id="battleArena">
+  <div class="ba-hdr">
+    <button style="background:none;border:none;color:var(--t2);font-size:22px;cursor:pointer;padding:4px" onclick="closeBattle()">←</button>
+    <div style="font-size:16px;font-weight:900;color:var(--pk);flex:1;text-align:center;letter-spacing:1px;font-family:var(--mono)">⚔️ BATTLE ARENA</div>
+    <div id="baWave" style="font-size:11px;color:var(--t3);font-family:var(--mono);flex-shrink:0">WAVE 1</div>
+  </div>
+  <div class="ba-field">
+    <div class="ba-hp-wrap" style="text-align:center">
+      <div style="font-size:11px;color:var(--t3);margin-bottom:6px;font-family:var(--mono)" id="baEnemyName">ENEMY</div>
+      <div class="ba-hp-bar"><div class="ba-hp-fill" id="baEnemyHp" style="background:var(--pk);width:100%"></div></div>
+    </div>
+    <div class="ba-enemy-em" id="baEnemyEm">👾</div>
+    <div class="ba-log" id="baLog">Tryck ATTACK för att slåss!</div>
+    <div class="ba-hp-wrap" style="text-align:center">
+      <div class="ba-hp-bar"><div class="ba-hp-fill" id="baPlayerHp" style="background:var(--g);width:100%"></div></div>
+      <div style="font-size:11px;color:var(--t3);margin-top:5px;font-family:var(--mono)" id="baPlayerLbl">DIN PET</div>
+    </div>
+    <div class="ba-atk-row">
+      <button class="ba-btn ba-btn-atk" onclick="battleAttack()">⚔️ ATTACK</button>
+      <button class="ba-btn ba-btn-dg" onclick="battleDodge()">🌀 DODGE</button>
+      <button class="ba-btn ba-btn-bl" onclick="battleBlock()">🛡️ BLOCK</button>
+    </div>
+  </div>
+</div>
 <script>
 const G={
   name:'',petEmoji:'🐉',petName:'Eldraken',
@@ -1381,6 +1475,199 @@ const $=id=>document.getElementById(id);
 let tT;
 function showT(m,t='g'){const e=$('toast');e.textContent=m;e.className=`toast show ${t}`;clearTimeout(tT);tT=setTimeout(()=>e.className='toast',2800);}
 function vibe(p=30){try{navigator.vibrate&&navigator.vibrate(p);}catch(e){}}
+
+// ── SFX ENGINE (Web Audio API) ──
+const SFX={
+  _ctx:null,
+  _get(){if(!this._ctx)try{this._ctx=new(window.AudioContext||window.webkitAudioContext)();}catch(e){}return this._ctx;},
+  _play(freq,dur=0.1,type='sine',vol=0.28,delay=0){
+    const ctx=this._get();if(!ctx)return;
+    try{
+      const o=ctx.createOscillator(),g=ctx.createGain();
+      o.connect(g);g.connect(ctx.destination);
+      o.type=type;o.frequency.setValueAtTime(freq,ctx.currentTime+delay);
+      g.gain.setValueAtTime(vol,ctx.currentTime+delay);
+      g.gain.exponentialRampToValueAtTime(0.001,ctx.currentTime+delay+dur+0.02);
+      o.start(ctx.currentTime+delay);o.stop(ctx.currentTime+delay+dur+0.05);
+    }catch(e){}
+  },
+  coin(){this._play(880,.07,'sine',.22);this._play(1320,.09,'sine',.18,.07);},
+  xp(){this._play(660,.08,'sine',.2);this._play(880,.1,'sine',.16,.09);},
+  tap(){this._play(520,.04,'square',.12);},
+  click(){this._play(600,.04,'sine',.14);},
+  error(){this._play(160,.18,'sawtooth',.2);},
+  lvlup(){[523,659,784,1047,1319].forEach((f,i)=>this._play(f,.18,'sine',.28,i*.12));},
+  win(){[784,880,1047,1319].forEach((f,i)=>this._play(f,.15,'sine',.26,i*.1));},
+  battle(){this._play(220,.08,'sawtooth',.24);this._play(180,.1,'sawtooth',.2,.07);},
+  hit(){this._play(180,.1,'sawtooth',.22);},
+  shout(){this._play(880,.06,'sine',.2);this._play(1100,.08,'sine',.18,.07);this._play(1320,.1,'sine',.16,.15);},
+};
+
+// ── FLOATING NUMBERS ──
+function floatNum(txt,x,y,color='var(--g)',size=16){
+  const d=document.createElement('div');d.className='float-num';d.textContent=txt;
+  d.style.cssText=`left:${x}px;top:${y}px;color:${color};font-size:${size}px;`;
+  document.body.appendChild(d);setTimeout(()=>d.remove(),1050);
+}
+
+// ── ACHIEVEMENT SYSTEM ──
+const ACHIEVEMENTS=[
+  {id:'first_post',ico:'⚡',nm:'First Flash!',check:()=>G.postCount>=1},
+  {id:'streak3',ico:'🔥',nm:'3 Dagars Streak!',check:()=>G.streak>=3},
+  {id:'streak7',ico:'💀',nm:'7 Dagar Straight!',check:()=>G.streak>=7},
+  {id:'streak30',ico:'🌟',nm:'30 Dagars LEGEND!',check:()=>G.streak>=30},
+  {id:'lv5',ico:'⬆️',nm:'Level 5 Reached!',check:()=>G.level>=5},
+  {id:'lv10',ico:'👑',nm:'Level 10! Legend!',check:()=>G.level>=10},
+  {id:'lv20',ico:'🌟',nm:'Level 20! GOD!',check:()=>G.level>=20},
+  {id:'lv50',ico:'💫',nm:'Level 50! IMMORTAL!',check:()=>G.level>=50},
+  {id:'coins1k',ico:'💰',nm:'1000 Coins!',check:()=>G.coins>=1000},
+  {id:'coins10k',ico:'💎',nm:'10 000 Coins! RICH!',check:()=>G.coins>=10000},
+  {id:'bounty1',ico:'🎯',nm:'First Bounty Done!',check:()=>G.bountiesDone>=1},
+  {id:'bounty10',ico:'🏆',nm:'10 Bounties!',check:()=>G.bountiesDone>=10},
+  {id:'premium',ico:'👑',nm:'KARMA PRO Member!',check:()=>G.premium},
+  {id:'trust70',ico:'✅',nm:'Silver Trust Badge!',check:()=>G.trustScore>=70},
+  {id:'trust90',ico:'🥇',nm:'GOLD TRUST!',check:()=>G.trustScore>=90},
+  {id:'battle1',ico:'⚔️',nm:'First Battle Won!',check:()=>(G.battlesWon||0)>=1},
+  {id:'battle5',ico:'💀',nm:'5 Battles Won!',check:()=>(G.battlesWon||0)>=5},
+];
+let _earnedAchs=new Set(JSON.parse(localStorage.getItem('kv8_achs')||'[]'));
+let _achTimer=null;
+function checkAchievements(){
+  ACHIEVEMENTS.forEach(a=>{if(!_earnedAchs.has(a.id)&&a.check()){_earnedAchs.add(a.id);localStorage.setItem('kv8_achs',JSON.stringify([..._earnedAchs]));showAchievement(a.ico,a.nm);}});
+}
+function showAchievement(ico,nm){
+  const b=$('achBanner');if(!b)return;
+  $('achIco').textContent=ico;$('achNm').textContent=nm;
+  clearTimeout(_achTimer);
+  b.classList.remove('hide');void b.offsetWidth;b.classList.add('show');
+  SFX.win();vibe([20,10,50]);
+  _achTimer=setTimeout(()=>{b.classList.remove('show');b.classList.add('hide');setTimeout(()=>b.classList.remove('hide','show'),400);},3800);
+}
+
+// ── DAILY QUESTS ──
+const QUEST_DEFS=[
+  {id:'post',ico:'⚡',txt:'Posta en Flash',goal:1,reward:{xp:50,coins:30}},
+  {id:'train',ico:'🏋️',txt:'Träna 3 gånger',goal:3,reward:{xp:80,coins:50}},
+  {id:'feed',ico:'🍖',txt:'Mata peten 2 gånger',goal:2,reward:{xp:30,coins:20}},
+  {id:'taps',ico:'🎯',txt:'50 tryck i minispelet',goal:50,reward:{xp:60,coins:40}},
+  {id:'dm',ico:'💬',txt:'Skicka 3 DMs',goal:3,reward:{xp:40,coins:25}},
+  {id:'play',ico:'🎮',txt:'Lek med peten',goal:1,reward:{xp:25,coins:15}},
+  {id:'sleep',ico:'😴',txt:'Sov 2 gånger',goal:2,reward:{xp:35,coins:15}},
+  {id:'shout',ico:'📣',txt:'Skicka ett shoutout',goal:1,reward:{xp:30,coins:20}},
+  {id:'battle',ico:'⚔️',txt:'Vinn en battle',goal:1,reward:{xp:90,coins:60}},
+  {id:'coins',ico:'💰',txt:'Tjäna 200 coins',goal:200,reward:{xp:70,coins:0}},
+];
+let _quests=[];
+function initQuests(){
+  const today=new Date().toDateString();const saved=localStorage.getItem('kv8_quests');const savedDate=localStorage.getItem('kv8_qdate');
+  if(saved&&savedDate===today){try{_quests=JSON.parse(saved);renderQuests();return;}catch(e){}}
+  const shuffled=[...QUEST_DEFS].sort(()=>Math.random()-.5);
+  _quests=shuffled.slice(0,3).map(q=>({...q,progress:0,done:false}));
+  localStorage.setItem('kv8_qdate',today);saveQuests();renderQuests();
+}
+function saveQuests(){localStorage.setItem('kv8_quests',JSON.stringify(_quests));}
+function advanceQuest(id,amt=1){
+  const q=_quests.find(x=>x.id===id);if(!q||q.done)return;
+  q.progress=Math.min(q.goal,q.progress+amt);
+  if(q.progress>=q.goal){q.done=true;gainXP(q.reward.xp,'action');if(q.reward.coins>0)gainCoins(q.reward.coins);showAchievement('✅','Quest klar: '+q.txt);showT('✅ QUEST KLAR! +'+q.reward.xp+'XP','g');SFX.win();}
+  saveQuests();renderQuests();
+}
+function renderQuests(){
+  const el=$('questCard');if(!el)return;
+  el.innerHTML=_quests.map(q=>{const pct=Math.min(100,(q.progress/q.goal)*100);return`<div class="quest-item"><div class="quest-ico">${q.ico}</div><div style="flex:1"><div style="font-size:12px;font-weight:700;color:${q.done?'var(--g)':'var(--t1)'}">${q.txt}</div><div class="quest-bar"><div class="quest-bf" style="width:${pct}%"></div></div><div style="font-size:10px;color:var(--t3);font-family:var(--mono);margin-top:2px">${q.progress}/${q.goal}</div></div>${q.done?'<div style="font-size:11px;font-weight:900;color:var(--g);font-family:var(--mono)">✅ KLAR</div>':`<div style="font-size:10px;color:var(--y);font-family:var(--mono);text-align:right;flex-shrink:0">+${q.reward.xp}XP<br>+${q.reward.coins}💰</div>`}</div>`;}).join('');
+}
+
+// ── LIVE EVENTS ──
+const LIVE_EVENTS=['⚡ DOUBLE XP — 5 min! Posta nu!','💰 COIN RAIN — Nästa bounty +50% coins!','🔥 STREAK ALERT — Tappa inte din streak!','🎯 BOUNTY BLITZ — 3× XP på uppdrag nu!','💎 RARE DROP — 15% chans nästa 10 min!','🐾 PET POWER HOUR — +25% stats nu!','👑 KARMA RUSH — Alla actions ger bonus!'];
+let _leShowing=false;
+function triggerLiveEvent(){
+  if(_leShowing)return;_leShowing=true;
+  const ev=LIVE_EVENTS[Math.floor(Math.random()*LIVE_EVENTS.length)];
+  const el=$('liveEvent');if(!el)return;
+  el.textContent='🔴 LIVE: '+ev;el.classList.add('show');SFX.shout();vibe([20,10,30]);
+  setTimeout(()=>{el.classList.remove('show');_leShowing=false;},5500);
+}
+function scheduleEvents(){setTimeout(()=>{if(G.name)triggerLiveEvent();scheduleEvents();},(180+Math.random()*240)*1000);}
+
+// ── COMBO METER ──
+function updateComboMeter(n){
+  const m=$('comboMeter'),c=$('comboCnt');if(!m||!c)return;
+  if(n>=3){m.classList.add('show');c.textContent=n;c.classList.remove('pop');void c.offsetWidth;c.classList.add('pop');}
+  else m.classList.remove('show');
+}
+
+// ── BATTLE ARENA ──
+const BATTLE_ENEMIES=[
+  {em:'👾',name:'PIXEL BEAST',maxHp:60,dmg:[5,14],reward:{xp:40,coins:25}},
+  {em:'🤖',name:'CYBER BOT',maxHp:90,dmg:[8,18],reward:{xp:60,coins:40}},
+  {em:'🐲',name:'SHADOW DRAGON',maxHp:130,dmg:[12,26],reward:{xp:90,coins:65}},
+  {em:'💀',name:'SKULL LORD',maxHp:170,dmg:[16,32],reward:{xp:130,coins:90}},
+  {em:'⚡',name:'THUNDER GOD',maxHp:220,dmg:[20,42],reward:{xp:180,coins:130}},
+  {em:'🌑',name:'VOID KING',maxHp:300,dmg:[28,55],reward:{xp:250,coins:200}},
+];
+let _bt={active:false,wave:1,eHp:60,eMax:60,pHp:100,pMax:100,blocking:false,dodging:false,enemy:null};
+function openBattle(){
+  _bt.wave=1;_bt.pHp=100;_bt.pMax=100;startBattleWave();
+  $('battleArena').classList.add('open');SFX.battle();vibe([20,10,20]);
+}
+function closeBattle(){$('battleArena').classList.remove('open');_bt.active=false;}
+function startBattleWave(){
+  const e=BATTLE_ENEMIES[Math.min(_bt.wave-1,BATTLE_ENEMIES.length-1)];
+  _bt.enemy=e;_bt.eHp=e.maxHp;_bt.eMax=e.maxHp;_bt.active=true;_bt.blocking=false;_bt.dodging=false;
+  $('baWave').textContent='WAVE '+_bt.wave;
+  $('baEnemyEm').textContent=e.em;$('baEnemyName').textContent=e.name;
+  updateBattleUI();$('baLog').textContent='Wave '+_bt.wave+': '+e.name+' dök upp!';
+}
+function battleAttack(){
+  if(!_bt.active)return;
+  SFX.battle();vibe([20,10,30]);
+  const myDmg=8+Math.floor(Math.random()*18)+Math.floor(G.actionStat/8);
+  _bt.eHp=Math.max(0,_bt.eHp-myDmg);
+  $('baLog').textContent='⚔️ Du dealar '+myDmg+' damage!';
+  const em=$('baEnemyEm');em.classList.remove('hit');void em.offsetWidth;em.classList.add('hit');
+  if(_bt.eHp<=0){battleWin();return;}
+  setTimeout(()=>{
+    if(!_bt.active)return;
+    const e=_bt.enemy;const raw=e.dmg[0]+Math.floor(Math.random()*(e.dmg[1]-e.dmg[0]));
+    let dmg=raw;let logTxt='';
+    if(_bt.blocking){dmg=Math.floor(dmg*.25);logTxt='🛡️ BLOCK! Reducerat till '+dmg+' dmg!';}
+    else if(_bt.dodging){dmg=0;logTxt='🌀 DODGE! Miss!';}
+    else logTxt='👾 '+e.name+' dealar '+dmg+' dmg!';
+    _bt.blocking=false;_bt.dodging=false;
+    if(dmg>0){_bt.pHp=Math.max(0,_bt.pHp-dmg);SFX.hit();const pl=$('baPlayerLbl');pl.classList.remove('shk');void pl.offsetWidth;pl.classList.add('shk');vibe(15);}
+    $('baLog').textContent=logTxt;
+    if(_bt.pHp<=0){battleLose();return;}
+    updateBattleUI();
+  },450);
+  updateBattleUI();
+}
+function battleDodge(){_bt.dodging=true;_bt.blocking=false;SFX.tap();showT('🌀 DODGE redo!','b');vibe(15);}
+function battleBlock(){_bt.blocking=true;_bt.dodging=false;SFX.tap();showT('🛡️ BLOCK redo!','p');vibe(15);}
+function battleWin(){
+  const e=_bt.enemy;_bt.active=false;SFX.win();vibe([30,20,100,20,80]);
+  gainXP(e.reward.xp,'action');gainCoins(e.reward.coins);
+  G.battlesWon=(G.battlesWon||0)+1;save();
+  advanceQuest('battle');checkAchievements();
+  $('baLog').textContent='🏆 SEGER! +'+e.reward.xp+'XP +'+e.reward.coins+'💰';
+  spawnParticles(window.innerWidth/2,window.innerHeight*.5,'stars');
+  setTimeout(()=>{
+    _bt.wave++;
+    if(_bt.wave>BATTLE_ENEMIES.length){$('baLog').textContent='👑 ALLA WAVES KLARADE! KARMA LEGEND!';showAchievement('👑','BATTLE MASTER!');setTimeout(closeBattle,3000);}
+    else startBattleWave();
+  },2200);
+}
+function battleLose(){
+  _bt.active=false;SFX.error();vibe([50,30,100]);
+  $('baLog').textContent='💀 Förlorade! Försök igen... +15XP';
+  gainXP(15,'action');
+  setTimeout(()=>{_bt.pHp=_bt.pMax;_bt.wave=Math.max(1,_bt.wave-1);startBattleWave();},2500);
+}
+function updateBattleUI(){
+  const ep=Math.max(0,(_bt.eHp/_bt.eMax)*100),pp=Math.max(0,(_bt.pHp/_bt.pMax)*100);
+  $('baEnemyHp').style.width=ep+'%';$('baPlayerHp').style.width=pp+'%';
+  $('baPlayerHp').style.background=pp<30?'var(--pk)':pp<60?'var(--y)':'var(--g)';
+}
+
 function addH(t,c='var(--g)'){G.hist.unshift({c,t,time:'just nu'});if(G.hist.length>30)G.hist.pop();}
 function closeModal(id){$(id)&&$(id).classList.remove('open');}
 function openModal(id){$(id)&&$(id).classList.add('open');}
@@ -1733,7 +2020,7 @@ function savePetDesign(){
 }
 
 // ── GAME ──
-function gainCoins(n){G.coins+=n;updateHUD();if(n>0){cp(n);vibe(20);}}
+function gainCoins(n){G.coins+=n;updateHUD();if(n>0){cp(n);vibe(20);SFX.coin();advanceQuest('coins',n);}}
 function gainXP(n,stat){
   if(G.premium){n=Math.round(n*(G.premiumTier>=2?2.5:G.premiumTier>=1?1.75:1.25));}
   G.exp+=n;
@@ -1741,22 +2028,24 @@ function gainXP(n,stat){
   else if(stat==='commerce')G.commerceStat+=Math.ceil(n/4);
   else if(stat==='social')G.socialStat+=Math.ceil(n/4);
   G.trustScore=Math.min(100,G.trustScore+Math.ceil(n/20));
-  flashXPBar();
+  flashXPBar();SFX.xp();
+  // Floating XP number
+  const petEl=$('petAvWrap');if(petEl){const r=petEl.getBoundingClientRect();floatNum('+'+n+'XP',r.left+r.width/2,r.top+10,'var(--g)',14);}
   let lvlUps=0;while(G.exp>=xpN(G.level)&&lvlUps<10){G.exp-=xpN(G.level);G.level++;lvlUps++;}
   if(lvlUps>0)triggerLvlUp();
+  checkAchievements();
   updateHUD();updatePetView();
 }
 function triggerLvlUp(){
-  vibe([50,30,100,30,80]);
+  vibe([50,30,100,30,80]);SFX.lvlup();
   const s=gS();
   $('lvlPet').textContent=s.e;
   $('lvlTitle').textContent='LEVEL '+G.level+'!';
   const pmMult=G.premium?(G.premiumTier>=3?'3×':G.premiumTier>=2?'2.5×':'1.75×'):'';
   $('lvlSub').textContent=G.petName+' — '+s.s+(pmMult?' ('+pmMult+' XP BOOST)':'');
   $('lvlSplash').classList.add('show');
-  pcReact('happy');showPetEmote('🤩');petAnimState.jumpVY=-12;shakeScreen();
-  setTimeout(()=>spawnParticles(window.innerWidth/2,window.innerHeight*.4,'stars'),100);
-  setTimeout(()=>spawnParticles(window.innerWidth/2,window.innerHeight*.4,'stars'),300);
+  pcReact('happy');showPetEmote('🤩');petAnimState.jumpVY=-16;shakeScreen();
+  for(let i=0;i<5;i++)setTimeout(()=>spawnParticles(window.innerWidth*(.2+Math.random()*.6),window.innerHeight*(.2+Math.random()*.5),'stars'),i*120);
   addH('⬆️ Level '+G.level+'!');
 }
 function buyPremium(tier){
@@ -1771,10 +2060,10 @@ function buyPremium(tier){
   setTimeout(()=>{spawnParticles(window.innerWidth/2,window.innerHeight*.4,'stars');},300);
   addH('👑 Uppgraderade till '+names[tier]+'!','var(--y)');
 }
-function pcFeed(){if(G.coins<10){showT('❌ Need 10 coins!','r');return;}G.coins-=10;G.hunger=Math.min(100,G.hunger+30);G.mood=Math.min(100,G.mood+5);pcReact('happy');showPetEmote('😋');showT('🍖 +30 HUNGER','g');updateHUD();updatePetView();}
-function pcTrain(){if(G.energy<20){showT('❌ Låg energi! Sova först.','r');return;}G.energy-=20;gainXP(15,'action');pcReact('happy');showPetEmote('💪');showT('🏋️ +15 XP','g');}
-function pcSleep(){G.energy=Math.min(100,G.energy+40);G.mood=Math.min(100,G.mood+10);petAnimState.mood='sleeping';showPetEmote('💤');showT('😴 +40 ENERGY','g');updateHUD();updatePetView();setTimeout(()=>{petAnimState.mood='idle';},4000);}
-function pcPlay(){if(G.energy<10){showT('❌ Behöver energi!','r');return;}G.energy-=10;G.mood=Math.min(100,G.mood+25);gainCoins(5);gainXP(5,'social');pcReact('happy');showPetEmote('🎉');showT('🎮 +5⚡ +5XP','g');}
+function pcFeed(){if(G.coins<10){showT('❌ Need 10 coins!','r');SFX.error();return;}G.coins-=10;G.hunger=Math.min(100,G.hunger+30);G.mood=Math.min(100,G.mood+5);pcReact('happy');showPetEmote('😋');showT('🍖 +30 HUNGER','g');SFX.click();advanceQuest('feed');updateHUD();updatePetView();}
+function pcTrain(){if(G.energy<20){showT('❌ Låg energi! Sova först.','r');SFX.error();return;}G.energy-=20;gainXP(15,'action');pcReact('happy');showPetEmote('💪');showT('🏋️ +15 XP','g');SFX.click();advanceQuest('train');}
+function pcSleep(){G.energy=Math.min(100,G.energy+40);G.mood=Math.min(100,G.mood+10);petAnimState.mood='sleeping';showPetEmote('💤');showT('😴 +40 ENERGY','g');SFX.click();advanceQuest('sleep');updateHUD();updatePetView();setTimeout(()=>{petAnimState.mood='idle';},4000);}
+function pcPlay(){if(G.energy<10){showT('❌ Behöver energi!','r');SFX.error();return;}G.energy-=10;G.mood=Math.min(100,G.mood+25);gainCoins(5);gainXP(5,'social');pcReact('happy');showPetEmote('🎉');showT('🎮 +5⚡ +5XP','g');SFX.click();advanceQuest('play');}
 function pcReact(m){
   const b=$('pcBody');
   if(m==='happy'){b.className='pc-b happy';$('pcMood').textContent='🤩';}
@@ -1852,7 +2141,7 @@ function buyGear(id){if(G.gear.includes(id)){showT('Äger redan!','y');return;}c
 function mgTap(){
   const now=Date.now();const delta=now-G.mgLastTap;G.mgLastTap=now;
   G.mgCombo=delta<600?G.mgCombo+1:1;
-  G.mgScore++;
+  G.mgScore++;SFX.tap();advanceQuest('taps');
   $('mgScore').textContent=G.mgScore;
   if(G.mgScore>G.mgRecord){G.mgRecord=G.mgScore;$('mgRec').textContent=G.mgRecord;}
   const combo=$('mgCombo');
@@ -1860,8 +2149,9 @@ function mgTap(){
   else if(G.mgCombo>=3){combo.textContent='⚡ COMBO x'+G.mgCombo;combo.style.color='var(--y)';}
   else combo.textContent='';
   $('mgStreakDisp').textContent=G.mgCombo>=3?'🔥 x'+G.mgCombo:'';
+  updateComboMeter(G.mgCombo);
   const btn=$('mgBtn');btn.style.transform='scale(.82)';setTimeout(()=>btn.style.transform='scale(1)',80);
-  if(G.mgScore%10===0){const bonus=Math.max(1,Math.floor(G.mgCombo/3));gainXP(5*bonus,'action');gainCoins(bonus);showT(`🎯 +${5*bonus}XP${bonus>1?' COMBO!':''}`,bonus>1?'pk':'g');vibe([20,10,40]);}
+  if(G.mgScore%10===0){const bonus=Math.max(1,Math.floor(G.mgCombo/3));gainXP(5*bonus,'action');gainCoins(bonus);showT(`🎯 +${5*bonus}XP${bonus>1?' COMBO!':''}`,bonus>1?'pk':'g');vibe([20,10,40]);if(bonus>1)SFX.win();}
   clearTimeout(G.mgTimer);
   G.mgTimer=setTimeout(()=>{if(G.mgScore>0)showT('Rekord: '+G.mgRecord,'y');G.mgScore=0;G.mgCombo=0;$('mgScore').textContent='0';$('mgCombo').textContent='';$('mgStreakDisp').textContent='';},1800);
 }
@@ -1881,7 +2171,8 @@ function submitFlash(){
   FLASH_POSTS.unshift({id:'fl'+Date.now(),user:G.name||'Du',pet:gS().e,lvl:G.level,up:'Daglig Flash #'+G.postCount,cap:cap||'⚡ Flash! '+new Date().toLocaleTimeString('sv',{hour:'2-digit',minute:'2-digit'}),xp:'+20 XP',likes:0,live:false,streak:G.streak});
   gainXP(20,'social');gainCoins(10);
   G.flashImg=null;$('flashCaption').value='';$('flashPrev').style.display='none';$('flashPH').style.display='';$('flashUpArea').style.borderColor='';
-  closeModal('flashModal');renderFlashFeed();updateHUD();updatePetView();vibe([30,20,80]);
+  closeModal('flashModal');renderFlashFeed();updateHUD();updatePetView();vibe([30,20,80]);SFX.win();
+  advanceQuest('post');checkAchievements();
   addH('⚡ Flash #'+G.streak+' postad!','var(--pk)');
   showT('⚡ FLASH POSTAD! 🔥 '+G.streak+'d STREAK','pk');
   if(G.streak%7===0){$('streakDays').textContent=G.streak;$('streakTitle').textContent='🔥 '+G.streak+' DAGAR!';$('flashStreakSplash').classList.add('show');gainXP(50,'social');gainCoins(50);}
@@ -2018,10 +2309,10 @@ function renderDMChat(){
 function sendDM(){
   const inp=$('dmInp');const txt=inp?.value?.trim();
   if(!txt||!_currentDM)return;
-  inp.value='';vibe(15);
+  inp.value='';vibe(15);SFX.click();
   _currentDM.msgs.push({me:true,txt,t:'Nu'});
   renderDMChat();
-  gainXP(1,'social');
+  gainXP(1,'social');advanceQuest('dm');
   const replies=['Haha 😂','🔥🔥🔥','Säker!','LFG! 💀','Kul!','INSANE 😤','Visste det!','🐾','FR FR 💯','Går bra!'];
   setTimeout(()=>{if(_currentDM){_currentDM.msgs.push({me:false,txt:replies[Math.floor(Math.random()*replies.length)],t:'Nu'});renderDMChat();}},700+Math.random()*1000);
 }
@@ -2029,11 +2320,11 @@ function quickShoutout(user){$('shoutTarget').value=user;openModal('shoutoutModa
 function submitShoutout(){
   const target=$('shoutTarget').value.trim();
   const msg=$('shoutMsg').value.trim();
-  if(!msg){showT('❌ Skriv ett shoutout!','r');return;}
+  if(!msg){showT('❌ Skriv ett shoutout!','r');SFX.error();return;}
   ACTIVITY_FEED.unshift({id:'s'+Date.now(),type:'shoutout',from:G.name||'Du',pet:gS().e,target:target||'alla',msg,t:'Nu'});
   gainXP(5,'social');gainCoins(5);
   closeModal('shoutoutModal');$('shoutMsg').value='';$('shoutTarget').value='';
-  showT('📣 Shoutout skickad! +5XP','g');vibe([20,10,40]);
+  showT('📣 Shoutout skickad! +5XP','g');vibe([20,10,40]);SFX.shout();advanceQuest('shout');
   if($('view-social')?.classList.contains('active'))switchSocial('activity',document.querySelector('#socialTabs .tab'));
 }
 
@@ -2144,6 +2435,7 @@ function finishOB(){
   addH('🎮 '+G.name+' joined KARMA v2!');
   setTimeout(()=>$('circleDot').style.display='inline-block',2000);
   setTimeout(startPetAnim,100);
+  setTimeout(initQuests,500);setTimeout(scheduleEvents,10000);SFX.lvlup();
 }
 
 // ── LOAD ──
@@ -2169,12 +2461,16 @@ try{
     $('ob').style.display='none';$('app').style.display='flex';updateHUD();nav('home');
     setTimeout(()=>$('circleDot').style.display='inline-block',1500);
     setTimeout(startPetAnim,150);
+    setTimeout(initQuests,300);
+    setTimeout(scheduleEvents,8000);
   }
 }catch(e){}
 
 // ── TIMERS ──
-setInterval(()=>{if(!G.name)return;G.hunger=Math.max(0,G.hunger-2);G.energy=Math.max(0,G.energy-1);if(G.hunger<20&&G.hunger>0)showT('⚠️ '+G.petName+' är hungrig!','r');updateHUD();if(document.querySelector('#view-home.active'))updatePetView();},120000);
+setInterval(()=>{if(!G.name)return;G.hunger=Math.max(0,G.hunger-2);G.energy=Math.max(0,G.energy-1);if(G.hunger<20&&G.hunger>0){showT('⚠️ '+G.petName+' är hungrig!','r');SFX.error();}updateHUD();if(document.querySelector('#view-home.active'))updatePetView();},120000);
 setInterval(save,8000);
+// Init quests for new users too
+if(!localStorage.getItem('kv8_n')){}else{setTimeout(initQuests,500);}
 </script>
 </body>
 </html>
