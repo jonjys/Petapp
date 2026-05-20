@@ -160,10 +160,14 @@ textarea.inp{resize:none;min-height:68px;}
 .ob-lr:last-child{border-bottom:none;}
 .ob-n{width:28px;height:28px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:900;flex-shrink:0;}
 
-/* PET HOME */
-.pet-hero{margin:12px;background:linear-gradient(145deg,var(--c1),rgba(0,255,136,.04));border:1px solid var(--line);border-radius:20px;padding:17px;position:relative;overflow:hidden;}
-.pet-hero::before{content:'';position:absolute;width:220px;height:220px;border-radius:50%;background:rgba(0,255,136,.06);filter:blur(50px);top:-70px;right:-40px;pointer-events:none;}
-.ph-row{display:flex;align-items:flex-end;gap:13px;margin-bottom:13px;}
+/* PET HOME — TAMAGOTCHI HERO STYLE */
+.pet-hero{margin:0;background:linear-gradient(180deg,#07040f 0%,#030d07 50%,#040a09 100%);border:none;border-bottom:1px solid var(--line);padding:14px 0 10px;position:relative;overflow:hidden;}
+.pet-hero::before{content:'';position:absolute;width:380px;height:380px;border-radius:50%;background:radial-gradient(circle,rgba(0,232,122,.08) 0%,transparent 65%);top:-120px;left:50%;transform:translateX(-50%);pointer-events:none;}
+.pet-hero::after{content:'';position:absolute;bottom:72px;left:10%;right:10%;height:1px;background:linear-gradient(90deg,transparent,rgba(0,232,122,.18),transparent);pointer-events:none;}
+.ph-row{display:flex;flex-direction:column;align-items:center;margin-bottom:0;}
+.ph-top{display:flex;align-items:center;justify-content:space-between;padding:0 16px 8px;width:100%;}
+.ph-info{text-align:center;padding:8px 0 4px;}
+.xp-wrap{padding:4px 16px 8px;}
 .pet3{width:110px;height:110px;flex-shrink:0;border-radius:20px;background:var(--c2);border:2px solid var(--line);display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;cursor:pointer;}
 .p3g{position:absolute;inset:0;background:radial-gradient(circle at 50% 80%,rgba(0,255,136,.12),transparent 60%);animation:gp 2.5s ease-in-out infinite;}
 @keyframes gp{0%,100%{opacity:.5;}50%{opacity:1;}}
@@ -171,9 +175,9 @@ textarea.inp{resize:none;min-height:68px;}
 @keyframes pf{0%,100%{transform:translateY(0);}50%{transform:translateY(-5px);}}
 .p3gr{position:absolute;bottom:5px;right:5px;font-size:16px;z-index:3;}
 .p3st{position:absolute;bottom:4px;left:50%;transform:translateX(-50%);font-size:8px;font-weight:800;color:var(--g);background:rgba(4,4,10,.85);padding:2px 7px;border-radius:5px;white-space:nowrap;font-family:var(--mono);}
-.pet-name{font-size:22px;font-weight:900;line-height:1;margin-bottom:2px;}
-.pet-species{font-size:11px;color:var(--t3);margin-bottom:8px;font-family:var(--mono);}
-.pet-lv{display:inline-flex;align-items:center;gap:4px;background:linear-gradient(135deg,var(--g),var(--tl));color:var(--bg);border-radius:7px;padding:4px 11px;font-size:12px;font-weight:900;margin-bottom:5px;font-family:var(--mono);}
+.pet-name{font-size:26px;font-weight:900;line-height:1;margin-bottom:2px;text-align:center;}
+.pet-species{font-size:11px;color:var(--t3);margin-bottom:4px;font-family:var(--mono);text-align:center;}
+.pet-lv{display:inline-flex;align-items:center;gap:4px;background:linear-gradient(135deg,var(--g),var(--tl));color:var(--bg);border-radius:7px;padding:4px 11px;font-size:12px;font-weight:900;margin-bottom:0;font-family:var(--mono);}
 .pet-evol{font-size:10px;color:var(--y);font-weight:700;font-family:var(--mono);}
 .xpt{height:8px;background:var(--c3);border-radius:100px;overflow:hidden;margin-top:10px;}
 .xpf{height:100%;background:linear-gradient(90deg,var(--g),var(--tl));border-radius:100px;transition:width .7s cubic-bezier(.34,1.56,.64,1);}
@@ -190,7 +194,25 @@ textarea.inp{resize:none;min-height:68px;}
 .st-bf.c{background:var(--y);}
 .st-bf.s{background:var(--b);}
 .st-lbl{font-size:9px;color:var(--t3);text-transform:uppercase;letter-spacing:.7px;margin-top:3px;}
-.vitals-card{margin:0 12px 10px;}
+/* Compact vitals inside pet hero */
+.vitals-row{display:flex;gap:8px;padding:0 16px 6px;}
+.vr-mini{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;}
+.vr-ico{font-size:14px;}
+.vr-bar-wrap{width:100%;height:5px;background:var(--c3);border-radius:100px;overflow:hidden;}
+.vr-bar-fill{height:100%;border-radius:100px;transition:width .5s;}
+.vr-val{font-size:9px;font-weight:700;font-family:var(--mono);color:var(--t3);}
+/* CARE HERO — big game buttons */
+.care-hero{display:grid;grid-template-columns:repeat(4,1fr);gap:9px;margin:0 12px 10px;}
+.chb{background:var(--c1);border:1.5px solid var(--line);border-radius:18px;padding:14px 6px;text-align:center;cursor:pointer;transition:all .1s;-webkit-tap-highlight-color:transparent;position:relative;overflow:hidden;}
+.chb:active{transform:scale(.86);}
+.chb-ico{font-size:30px;display:block;margin-bottom:4px;}
+.chb-lbl{font-size:11px;font-weight:800;display:block;}
+.chb-val{font-size:9px;color:var(--t3);display:block;margin-top:2px;font-family:var(--mono);}
+.chb-feed{border-color:rgba(255,159,10,.45);}.chb-feed .chb-lbl{color:var(--o);}
+.chb-train{border-color:rgba(255,45,85,.38);}.chb-train .chb-lbl{color:var(--pk);}
+.chb-sleep{border-color:rgba(0,217,255,.32);}.chb-sleep .chb-lbl{color:var(--b);}
+.chb-play{border-color:rgba(191,95,255,.38);}.chb-play .chb-lbl{color:var(--p);}
+/* Keep legacy vitals classes in case referenced elsewhere */
 .vr{display:flex;align-items:center;gap:8px;margin-bottom:8px;}
 .vr:last-child{margin-bottom:0;}
 .vi{font-size:14px;width:18px;text-align:center;flex-shrink:0;}
@@ -198,12 +220,6 @@ textarea.inp{resize:none;min-height:68px;}
 .vt{flex:1;height:6px;background:var(--c3);border-radius:100px;overflow:hidden;}
 .vf{height:100%;border-radius:100px;transition:width .5s;}
 .vv{font-size:10px;font-weight:700;width:28px;text-align:right;flex-shrink:0;font-family:var(--mono);}
-.care-row{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:0 12px 10px;}
-.cb{background:var(--c1);border:1px solid var(--line);border-radius:13px;padding:11px 6px;text-align:center;cursor:pointer;transition:all .15s;}
-.cb:active{transform:scale(.91);}
-.cbi{font-size:22px;display:block;margin-bottom:3px;}
-.cbl{font-size:11px;font-weight:700;display:block;}
-.cbc{font-size:9px;color:var(--t3);display:block;margin-top:1px;font-family:var(--mono);}
 /* Streak hero */
 .streak-hero{margin:0 12px 10px;background:var(--c1);border:1px solid var(--line);border-radius:14px;padding:13px;display:flex;align-items:center;gap:12px;}
 .streak-ring-big{width:58px;height:58px;border-radius:50%;padding:3px;background:conic-gradient(var(--c3),var(--c3));flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:all .3s;}
@@ -541,7 +557,7 @@ textarea.inp{resize:none;min-height:68px;}
 /* Neon XP fill */
 .xpf{background:linear-gradient(90deg,var(--g),var(--b));box-shadow:0 0 8px var(--g);}
 /* PET CANVAS SYSTEM */
-.pet-av-wrap{width:190px;height:190px;flex-shrink:0;position:relative;cursor:pointer;-webkit-tap-highlight-color:transparent;background:radial-gradient(circle at 50% 55%,rgba(0,232,122,.12) 0%,transparent 68%);}
+.pet-av-wrap{width:256px;height:256px;flex-shrink:0;position:relative;cursor:pointer;-webkit-tap-highlight-color:transparent;background:radial-gradient(circle at 50% 55%,rgba(0,232,122,.1) 0%,transparent 65%);margin:0 auto;}
 .pet-emote{position:absolute;top:-14px;right:-14px;font-size:28px;opacity:0;pointer-events:none;z-index:5;transition:opacity .25s,transform .25s;transform:scale(0);}
 .pet-emote.pop{opacity:1;transform:scale(1);animation:emPop .5s cubic-bezier(.34,1.56,.64,1);}
 @keyframes emPop{0%{transform:scale(0) rotate(-20deg);}60%{transform:scale(1.25) rotate(5deg);}100%{transform:scale(1) rotate(0);}}
@@ -728,26 +744,51 @@ textarea.inp{resize:none;min-height:68px;}
     <!-- HOME -->
     <div class="view active" id="view-home">
       <div class="pet-hero"><div class="pet-hero-bg"></div>
+        <!-- badge + mood row -->
+        <div class="ph-top">
+          <div class="dna-badge dna-base" id="dnaBadge">🧬 BASE</div>
+          <div class="mood-pill" id="moodPill">😊 CHILL</div>
+        </div>
+        <!-- BIG CENTERED PET -->
         <div class="ph-row">
           <div class="pet-av-wrap" id="petAvWrap" onclick="onPetTap(event)">
             <div class="pet-aura" id="petAura"></div>
             <div class="pet-ring"></div><div class="pet-ring2"></div>
-            <canvas id="petCanvas" width="320" height="320" style="width:190px;height:190px;box-shadow:0 0 32px rgba(0,232,122,.28);border-radius:50%"></canvas>
+            <canvas id="petCanvas" width="320" height="320" style="width:256px;height:256px;box-shadow:0 0 48px rgba(0,232,122,.3);border-radius:50%"></canvas>
             <div class="pet-scanlines"></div>
             <div class="pet-emote" id="petEmote"></div>
             <button class="pet-edit-btn" onclick="event.stopPropagation();openPetDesigner()">🎨</button>
           </div>
-          <div style="flex:1">
-            <div class="dna-badge dna-base" id="dnaBadge">🧬 BASE</div>
-            <div class="pet-name" id="petName">–</div>
-            <div class="pet-species" id="petSpecies">–</div>
+        </div>
+        <!-- name + level centered -->
+        <div class="ph-info">
+          <div class="pet-name" id="petName">–</div>
+          <div class="pet-species" id="petSpecies">–</div>
+          <div style="display:flex;align-items:center;justify-content:center;gap:8px;margin-top:5px">
             <div class="pet-lv">LV <span id="petLvlN">1</span></div>
             <div class="pet-evol" id="petEvol">NEXT EVOL: LV5</div>
-            <div class="mood-pill" id="moodPill">😊 CHILL</div>
           </div>
         </div>
-        <div class="xp-top"><span>XP</span><span id="xpNums">0/100</span></div>
-        <div class="xpt-seg" id="xpSegBar"></div>
+        <!-- XP -->
+        <div class="xp-wrap">
+          <div class="xp-top"><span>XP</span><span id="xpNums">0/100</span></div>
+          <div class="xpt-seg" id="xpSegBar"></div>
+        </div>
+        <!-- compact vitals -->
+        <div class="vitals-row">
+          <div class="vr-mini"><span class="vr-ico">🍖</span><div class="vr-bar-wrap"><div class="vr-bar-fill" id="vH" style="width:80%;background:var(--o)"></div></div><span class="vr-val" id="vHv">80</span></div>
+          <div class="vr-mini"><span class="vr-ico">⚡</span><div class="vr-bar-wrap"><div class="vr-bar-fill" id="vE" style="width:100%;background:var(--b)"></div></div><span class="vr-val" id="vEv">100</span></div>
+          <div class="vr-mini"><span class="vr-ico">💖</span><div class="vr-bar-wrap"><div class="vr-bar-fill" id="vM" style="width:90%;background:var(--p)"></div></div><span class="vr-val" id="vMv">90</span></div>
+          <div class="vr-mini"><span class="vr-ico">🌟</span><div class="vr-bar-wrap"><div class="vr-bar-fill" id="vK" style="width:42%;background:var(--g)"></div></div><span class="vr-val" id="vKv">42</span></div>
+        </div>
+      </div>
+
+      <!-- CARE HERO BUTTONS — right below pet for direct interaction -->
+      <div class="care-hero">
+        <div class="chb chb-feed" onclick="pcFeed()"><span class="chb-ico">🍖</span><span class="chb-lbl">MATA</span><span class="chb-val">+HUNGER</span></div>
+        <div class="chb chb-train" onclick="pcTrain()"><span class="chb-ico">🏋️</span><span class="chb-lbl">TRÄNA</span><span class="chb-val">+15XP</span></div>
+        <div class="chb chb-sleep" onclick="pcSleep()"><span class="chb-ico">😴</span><span class="chb-lbl">SOVA</span><span class="chb-val">+40E</span></div>
+        <div class="chb chb-play" onclick="pcPlay()"><span class="chb-ico">🎮</span><span class="chb-lbl">LEK</span><span class="chb-val">+MOOD</span></div>
       </div>
 
       <!-- Streak hero -->
@@ -768,15 +809,6 @@ textarea.inp{resize:none;min-height:68px;}
 
       <div class="sh"><div class="sh-t">⚔️ DAGLIGA QUESTS</div><div class="sh-a" onclick="openBattle()" style="color:var(--pk);font-size:11px">⚔️ BATTLE →</div></div>
       <div class="quest-card" id="questCard"></div>
-      <div class="sh"><div class="sh-t">💎 TJÄNA KARMA COINS</div><div class="sh-a" style="font-size:9px;color:var(--y)">5% DROP CHANS</div></div>
-      <div class="earn-panel">
-        <div class="earn-row"><div class="earn-ico">⚡</div><div class="earn-txt">Daglig Flash (varje dag)</div><div class="earn-val">+10 💎</div></div>
-        <div class="earn-row"><div class="earn-ico">🎯</div><div class="earn-txt">Klara bounty</div><div class="earn-val">50–500 SEK</div></div>
-        <div class="earn-row"><div class="earn-ico">🔥</div><div class="earn-txt">7-dagars streak</div><div class="earn-val">+50 💎</div></div>
-        <div class="earn-row"><div class="earn-ico">🎮</div><div class="earn-txt">Minispel combo x5+</div><div class="earn-val">+1–5 💎</div></div>
-        <div class="earn-row"><div class="earn-ico">📦</div><div class="earn-txt">Random drop (5% chans)</div><div class="earn-val">+100–200 💎</div></div>
-        <div class="earn-row"><div class="earn-ico">⭕</div><div class="earn-txt">Circle streak bonus</div><div class="earn-val">+20 💎</div></div>
-      </div>
 
       <div class="stats-row">
         <div class="st-box"><div class="st-num a" id="stA">0</div><div class="st-bar"><div class="st-bf a" id="stAb" style="width:0%"></div></div><div class="st-lbl">⚔️ ACTION</div></div>
@@ -784,38 +816,9 @@ textarea.inp{resize:none;min-height:68px;}
         <div class="st-box"><div class="st-num s" id="stS">0</div><div class="st-bar"><div class="st-bf s" id="stSb" style="width:0%"></div></div><div class="st-lbl">⭐ SOCIAL</div></div>
       </div>
 
-      <div class="card vitals-card">
-        <div style="padding:9px 13px 6px;border-bottom:1px solid var(--line)"><div class="sh-t">VITALS</div></div>
-        <div style="padding:12px">
-          <div class="vr"><div class="vi">🍖</div><div class="vn">HUNGER</div><div class="vt"><div class="vf" id="vH" style="width:80%;background:var(--o)"></div></div><div class="vv" id="vHv" style="color:var(--o)">80</div></div>
-          <div class="vr"><div class="vi">⚡</div><div class="vn">ENERGY</div><div class="vt"><div class="vf" id="vE" style="width:100%;background:var(--b)"></div></div><div class="vv" id="vEv" style="color:var(--b)">100</div></div>
-          <div class="vr"><div class="vi">💖</div><div class="vn">MOOD</div><div class="vt"><div class="vf" id="vM" style="width:90%;background:var(--p)"></div></div><div class="vv" id="vMv" style="color:var(--p)">90</div></div>
-          <div class="vr"><div class="vi">🌟</div><div class="vn">TRUST</div><div class="vt"><div class="vf" id="vK" style="width:42%;background:var(--g)"></div></div><div class="vv" id="vKv" style="color:var(--g)">42</div></div>
-        </div>
-      </div>
-
-      <div class="sh"><div class="sh-t">CARE</div></div>
-      <div class="care-row">
-        <div class="cb" onclick="pcFeed()"><span class="cbi">🍖</span><span class="cbl">MATA</span><span class="cbc">−10⚡</span></div>
-        <div class="cb" onclick="pcTrain()"><span class="cbi">🏋️</span><span class="cbl">TRÄNA</span><span class="cbc">+15XP</span></div>
-        <div class="cb" onclick="pcSleep()"><span class="cbi">😴</span><span class="cbl">SOVA</span><span class="cbc">+40E</span></div>
-        <div class="cb" onclick="pcPlay()"><span class="cbi">🎮</span><span class="cbl">LEK</span><span class="cbc">+5⚡</span></div>
-      </div>
-
       <div class="sh"><div class="sh-t">GEAR</div><div class="sh-a" onclick="nav('shop');switchShop('gear')">SHOP →</div></div>
       <div id="gearRowHome" style="display:flex;gap:7px;overflow-x:auto;scrollbar-width:none;padding:0 12px"></div>
 
-      <div class="sh" style="margin-top:6px"><div class="sh-t">MINISPEL</div><div class="sh-a" id="mgStreakDisp" style="color:var(--y)"></div></div>
-      <div style="margin:0 12px 10px;background:var(--c1);border:1px solid var(--line);border-radius:14px;padding:11px 13px;display:flex;align-items:center;gap:13px">
-        <button style="width:60px;height:60px;border-radius:50%;border:none;background:linear-gradient(135deg,var(--g),var(--tl));font-size:26px;cursor:pointer;flex-shrink:0;box-shadow:0 4px 16px rgba(0,255,136,.35);transition:transform .08s;-webkit-tap-highlight-color:transparent" id="mgBtn" onclick="mgTap()" onmousedown="this.style.transform='scale(.82)'" onmouseup="this.style.transform=''" ontouchstart="this.style.transform='scale(.82)'" ontouchend="this.style.transform=''"><span id="mgEm">🎯</span></button>
-        <div style="flex:1;min-width:0">
-          <div style="font-size:11px;font-weight:800;color:var(--t2);margin-bottom:1px">🎯 Tryck-spelet</div>
-          <div class="mg-score-disp" id="mgScore" style="font-size:32px;margin-bottom:0">0</div>
-          <div class="mg-combo" id="mgCombo" style="min-height:13px;font-size:10px"></div>
-          <div style="font-size:10px;color:var(--t3)">Rekord: <span id="mgRec" style="color:var(--g);font-weight:800">0</span></div>
-        </div>
-        <div style="font-size:9px;color:var(--t3);text-align:right;line-height:1.7;flex-shrink:0">Var 10<br>tryck<br>=+5XP<br>Combo<br>=bonus</div>
-      </div>
       <div class="vend"></div>
     </div>
 
@@ -2124,7 +2127,6 @@ function updatePetView(){
   $('vE').style.width=G.energy+'%';$('vEv').textContent=G.energy;
   $('vM').style.width=G.mood+'%';$('vMv').textContent=G.mood;
   $('vK').style.width=G.trustScore+'%';$('vKv').textContent=G.trustScore;
-  $('mgEm').textContent=s.e;
   renderGearHome();renderBadges();renderHistList();
 }
 
@@ -2147,18 +2149,13 @@ function mgTap(){
   const now=Date.now();const delta=now-G.mgLastTap;G.mgLastTap=now;
   G.mgCombo=delta<600?G.mgCombo+1:1;
   G.mgScore++;SFX.tap();advanceQuest('taps');
-  $('mgScore').textContent=G.mgScore;
-  if(G.mgScore>G.mgRecord){G.mgRecord=G.mgScore;$('mgRec').textContent=G.mgRecord;}
-  const combo=$('mgCombo');
-  if(G.mgCombo>=5){combo.textContent='🔥 COMBO x'+G.mgCombo+'!';combo.style.color='var(--r)';}
-  else if(G.mgCombo>=3){combo.textContent='⚡ COMBO x'+G.mgCombo;combo.style.color='var(--y)';}
-  else combo.textContent='';
-  $('mgStreakDisp').textContent=G.mgCombo>=3?'🔥 x'+G.mgCombo:'';
+  if(G.mgScore>G.mgRecord){G.mgRecord=G.mgScore;}
   updateComboMeter(G.mgCombo);
-  const btn=$('mgBtn');btn.style.transform='scale(.82)';setTimeout(()=>btn.style.transform='scale(1)',80);
+  if(G.mgCombo>=5)floatNum('🔥 x'+G.mgCombo,window.innerWidth/2,window.innerHeight*.35,'var(--r)',13);
+  else if(G.mgCombo>=3)floatNum('⚡ x'+G.mgCombo,window.innerWidth/2,window.innerHeight*.35,'var(--y)',12);
   if(G.mgScore%10===0){const bonus=Math.max(1,Math.floor(G.mgCombo/3));gainXP(5*bonus,'action');gainCoins(bonus);showT(`🎯 +${5*bonus}XP${bonus>1?' COMBO!':''}`,bonus>1?'pk':'g');vibe([20,10,40]);if(bonus>1)SFX.win();}
   clearTimeout(G.mgTimer);
-  G.mgTimer=setTimeout(()=>{if(G.mgScore>0)showT('Rekord: '+G.mgRecord,'y');G.mgScore=0;G.mgCombo=0;$('mgScore').textContent='0';$('mgCombo').textContent='';$('mgStreakDisp').textContent='';},1800);
+  G.mgTimer=setTimeout(()=>{if(G.mgScore>0)showT('Rekord: '+G.mgRecord,'y');G.mgScore=0;G.mgCombo=0;},1800);
 }
 
 // ── FLASH ──
