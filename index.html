@@ -1102,6 +1102,84 @@ textarea.inp{resize:none;min-height:68px;}
 .flb-nm{font-size:12px;font-weight:800;flex:1;}
 .flb-val{font-size:12px;font-weight:900;color:var(--y);font-family:var(--mono);}
 .flb-you{color:var(--g) !important;}
+
+/* ═══════════════════════════════════
+   KARMA WORLD — City Builder
+═══════════════════════════════════ */
+#view-world{padding:0;background:#020308;}
+.kw-skyline-wrap{position:relative;flex-shrink:0;overflow:hidden;height:130px;background:linear-gradient(180deg,#010206 0%,#020512 50%,#040a1a 100%);}
+#kwSkyCanvas{width:100%;height:130px;display:block;}
+.kw-sky-overlay{position:absolute;inset:0;pointer-events:none;}
+.kw-wp-pill{position:absolute;top:10px;right:12px;background:rgba(0,0,0,.7);border:1px solid rgba(57,255,20,.4);border-radius:12px;padding:5px 12px;font-size:11px;font-weight:900;color:var(--g);font-family:var(--mono);backdrop-filter:blur(8px);}
+.kw-name-pill{position:absolute;top:10px;left:12px;font-size:13px;font-weight:900;font-family:var(--mono);color:rgba(255,255,255,.8);}
+.kw-scroll{flex:1;overflow-y:auto;scrollbar-width:none;padding:14px;}
+.kw-scroll::-webkit-scrollbar{display:none;}
+.kw-section-ttl{font-size:10px;font-weight:700;color:var(--t3);letter-spacing:1px;text-transform:uppercase;margin-bottom:10px;display:flex;align-items:center;gap:6px;}
+/* District grid */
+.kw-district-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:9px;margin-bottom:14px;}
+.kw-district{border-radius:20px;padding:14px 10px;text-align:center;cursor:pointer;transition:all .15s;-webkit-tap-highlight-color:transparent;position:relative;overflow:hidden;min-height:100px;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;border:2px solid rgba(255,255,255,.06);}
+.kw-district:active{transform:scale(.93);}
+.kw-district.built{border-color:rgba(255,255,255,.2);box-shadow:0 0 20px var(--dc);}
+.kw-district.building{border-color:rgba(255,230,0,.4);animation:kwBuild .8s ease-in-out infinite;}
+@keyframes kwBuild{0%,100%{box-shadow:0 0 0 0 rgba(255,230,0,.2);}50%{box-shadow:0 0 14px 2px rgba(255,230,0,.25);}}
+.kw-d-bg{position:absolute;inset:0;border-radius:18px;transition:opacity .5s;}
+.kw-d-ico{font-size:30px;position:relative;z-index:2;margin-bottom:4px;transition:transform .3s;}
+.kw-district.built .kw-d-ico{filter:drop-shadow(0 0 8px var(--dc));}
+.kw-d-nm{font-size:9px;font-weight:900;color:#fff;position:relative;z-index:2;letter-spacing:.4px;text-transform:uppercase;}
+.kw-d-prog-wrap{width:100%;height:3px;background:rgba(255,255,255,.1);border-radius:100px;overflow:hidden;margin-top:5px;position:relative;z-index:2;}
+.kw-d-prog{height:100%;border-radius:100px;transition:width .6s cubic-bezier(.34,1.56,.64,1);}
+.kw-d-status{position:relative;z-index:2;font-size:8px;font-weight:900;margin-top:3px;letter-spacing:.5px;font-family:var(--mono);}
+.kw-d-new-badge{position:absolute;top:6px;right:6px;background:var(--y);color:#000;font-size:7px;font-weight:900;padding:2px 5px;border-radius:6px;animation:kwNew .6s ease-in-out infinite;z-index:3;}
+@keyframes kwNew{0%,100%{opacity:1;}50%{opacity:.5;}}
+/* Center pet island */
+.kw-center-island{background:linear-gradient(135deg,rgba(0,232,122,.08),rgba(0,217,255,.04));border:2px solid rgba(57,255,20,.25);border-radius:24px;padding:18px;text-align:center;margin-bottom:14px;position:relative;overflow:hidden;}
+.kw-center-pet{font-size:56px;display:block;animation:petBob 2s ease-in-out infinite;filter:drop-shadow(0 0 18px rgba(57,255,20,.5));}
+.kw-center-nm{font-size:16px;font-weight:900;margin:6px 0 2px;}
+.kw-center-sub{font-size:10px;color:var(--t3);font-family:var(--mono);margin-bottom:10px;}
+.kw-island-glow{position:absolute;inset:0;background:radial-gradient(ellipse at 50% 60%,rgba(57,255,20,.08),transparent 60%);pointer-events:none;}
+.kw-territory-bar{height:6px;background:var(--c3);border-radius:100px;overflow:hidden;margin-bottom:6px;}
+.kw-territory-fill{height:100%;background:linear-gradient(90deg,var(--g),var(--tl));border-radius:100px;transition:width .7s cubic-bezier(.34,1.56,.64,1);box-shadow:0 0 8px rgba(57,255,20,.4);}
+.kw-territory-lbl{font-size:10px;font-weight:700;color:var(--t3);display:flex;justify-content:space-between;margin-bottom:8px;}
+/* World stats */
+.kw-stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:14px;}
+.kw-stat{background:var(--c1);border:1px solid var(--line);border-radius:14px;padding:10px 6px;text-align:center;}
+.kw-sv{font-size:18px;font-weight:900;font-family:var(--mono);}
+.kw-sl{font-size:8px;color:var(--t3);text-transform:uppercase;letter-spacing:.4px;margin-top:2px;}
+/* Friend worlds */
+.kw-friends-row{display:flex;gap:10px;overflow-x:auto;scrollbar-width:none;padding-bottom:4px;}
+.kw-friends-row::-webkit-scrollbar{display:none;}
+.kw-friend-world{flex-shrink:0;text-align:center;cursor:pointer;-webkit-tap-highlight-color:transparent;}
+.kw-fw-island{width:70px;height:56px;border-radius:18px;background:var(--c2);border:2px solid var(--line);display:flex;align-items:center;justify-content:center;font-size:26px;margin-bottom:5px;position:relative;transition:transform .15s;}
+.kw-friend-world:active .kw-fw-island{transform:scale(.9);}
+.kw-fw-bridge{position:absolute;bottom:-2px;left:50%;transform:translateX(-50%);width:6px;height:10px;background:linear-gradient(180deg,var(--g),transparent);}
+.kw-fw-nm{font-size:9px;font-weight:700;color:var(--t3);}
+.kw-fw-lv{font-size:8px;font-weight:900;font-family:var(--mono);}
+/* Wild pet encounter */
+.kw-wild-row{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;padding-bottom:4px;}
+.kw-wild-row::-webkit-scrollbar{display:none;}
+.kw-wild-pet{flex-shrink:0;background:linear-gradient(135deg,rgba(255,45,85,.08),rgba(191,95,255,.05));border:1.5px solid rgba(255,45,85,.25);border-radius:18px;padding:12px 14px;display:flex;align-items:center;gap:10px;cursor:pointer;transition:all .15s;-webkit-tap-highlight-color:transparent;min-width:160px;}
+.kw-wild-pet:active{transform:scale(.95);}
+.kw-wild-pet.caught{border-color:rgba(57,255,20,.35);background:rgba(57,255,20,.04);}
+.kw-wp-em{font-size:30px;flex-shrink:0;}
+.kw-wp-nm{font-size:12px;font-weight:800;margin-bottom:2px;}
+.kw-wp-sub{font-size:9px;color:var(--t3);}
+.kw-wp-btn{font-size:9px;font-weight:900;padding:4px 10px;border-radius:8px;border:none;cursor:pointer;font-family:var(--ff);margin-top:4px;}
+.kw-wp-btn.catch{background:var(--pk);color:#fff;}
+.kw-wp-btn.caught{background:var(--g);color:#000;}
+/* Build action bar */
+.kw-build-bar{position:sticky;bottom:0;background:rgba(2,3,8,.97);border-top:1px solid var(--line);padding:12px 14px;display:flex;gap:8px;backdrop-filter:blur(16px);flex-shrink:0;}
+.kw-build-btn{flex:1;padding:12px 8px;border-radius:16px;border:2px solid;font-size:12px;font-weight:900;cursor:pointer;font-family:var(--ff);text-align:center;transition:all .1s;-webkit-tap-highlight-color:transparent;}
+.kw-build-btn:active{transform:scale(.93);}
+/* Skyline building styles */
+.kw-construct-fx{position:fixed;inset:0;z-index:9998;pointer-events:none;display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity .3s;}
+.kw-construct-fx.show{opacity:1;}
+.kw-construct-txt{font-size:24px;font-weight:900;font-family:var(--mono);color:var(--y);text-align:center;text-shadow:0 0 20px rgba(255,230,0,.6);}
+/* Map enhancement */
+.kw-map-overlay{position:absolute;top:8px;left:8px;z-index:999;display:flex;flex-direction:column;gap:6px;}
+.kw-map-badge{background:rgba(0,0,0,.8);border:1px solid rgba(57,255,20,.4);border-radius:10px;padding:5px 10px;font-size:10px;font-weight:900;color:var(--g);font-family:var(--mono);backdrop-filter:blur(8px);white-space:nowrap;}
+.kw-map-badge.pk{border-color:rgba(255,45,85,.5);color:var(--pk);}
+.kw-district.kw-locked{opacity:.5;filter:grayscale(.6);}
+.kw-fw-stats{font-size:8px;color:var(--t3);font-family:var(--mono);}
 </style>
 
 </head>
@@ -1354,6 +1432,16 @@ textarea.inp{resize:none;min-height:68px;}
         <button class="btn btn-pk btn-sm" onclick="openModal('flashModal')">⚡ POST</button>
       </div>
 
+      <!-- WORLD TEASER -->
+      <div style="margin:0 12px 10px;background:linear-gradient(135deg,rgba(0,232,122,.07),rgba(0,217,255,.04));border:1.5px solid rgba(57,255,20,.22);border-radius:20px;padding:14px 16px;cursor:pointer;-webkit-tap-highlight-color:transparent;display:flex;align-items:center;gap:12px" onclick="nav('world')">
+        <span style="font-size:36px;filter:drop-shadow(0 0 8px rgba(57,255,20,.45))">🌍</span>
+        <div style="flex:1">
+          <div style="font-size:13px;font-weight:900;color:var(--g);margin-bottom:2px">DIN KARMA WORLD BYGGERI PÅ SIG</div>
+          <div id="kwHomeSub" style="font-size:10px;color:var(--t3)">Varje action bygger din stad. Tryck för att se.</div>
+        </div>
+        <span style="font-size:20px;color:var(--g)">→</span>
+      </div>
+
       <!-- STREAK MILESTONES -->
       <div class="sh"><div class="sh-t">🏆 STREAK MILESTONES</div></div>
       <div class="streak-milestone" id="streakMilestones"></div>
@@ -1464,7 +1552,11 @@ textarea.inp{resize:none;min-height:68px;}
           <div id="realMap"></div>
           <div class="map-top">
             <div class="share-tog"><div class="sh-o fo" id="shF" onclick="setShare('friends')">👥 VÄNNER</div><div class="sh-o" id="shP" onclick="setShare('public')">🌍 ALLA</div></div>
-            <div class="map-ctrls"><div class="mctrl" id="locBtn" onclick="locateMe()">◎</div><div class="mctrl" onclick="nav('uppdrag')">🎯</div></div>
+            <div class="kw-map-overlay">
+          <div class="kw-map-badge" id="kwTerrBadge">🌍 TERRITORIUM LV1</div>
+          <div class="kw-map-badge pk" id="kwWildBadge" onclick="nav('world')" style="cursor:pointer">🎯 3 WILD PETS HÄR</div>
+        </div>
+        <div class="map-ctrls"><div class="mctrl" id="locBtn" onclick="locateMe()">◎</div><div class="mctrl" onclick="nav('world')">🌍</div><div class="mctrl" onclick="nav('uppdrag')">🎯</div></div>
           </div>
         </div>
         <div class="gps-bar">
@@ -1551,6 +1643,48 @@ textarea.inp{resize:none;min-height:68px;}
       </div>
     </div>
 
+    <!-- KARMA WORLD -->
+    <div class="view" id="view-world">
+      <div class="kw-skyline-wrap">
+        <canvas id="kwSkyCanvas" height="130"></canvas>
+        <div class="kw-name-pill" id="kwNamePill">🌍 KARMA WORLD</div>
+        <div class="kw-wp-pill" id="kwWpPill">⚡ 0 WP</div>
+      </div>
+      <div class="kw-scroll">
+        <!-- Center island / your pet kingdom -->
+        <div class="kw-center-island">
+          <div class="kw-island-glow"></div>
+          <span class="kw-center-pet" id="kwPetEmoji">🐉</span>
+          <div class="kw-center-nm" id="kwPetName">Din Värld</div>
+          <div class="kw-center-sub" id="kwPetSub">LV1 · ROOKIE · 0 WP</div>
+          <div class="kw-territory-lbl"><span>TERRITORIUM</span><span id="kwTerritoryLbl">0% täckt</span></div>
+          <div class="kw-territory-bar"><div class="kw-territory-fill" id="kwTerritoryFill" style="width:0%"></div></div>
+        </div>
+        <!-- World stats -->
+        <div class="kw-stats-row">
+          <div class="kw-stat"><div class="kw-sv" id="kwWpStat" style="color:var(--y)">0</div><div class="kw-sl">World Pts</div></div>
+          <div class="kw-stat"><div class="kw-sv" id="kwBuiltStat" style="color:var(--g)">0</div><div class="kw-sl">Byggt</div></div>
+          <div class="kw-stat"><div class="kw-sv" id="kwWildStat" style="color:var(--pk)">0</div><div class="kw-sl">Wild Pets</div></div>
+          <div class="kw-stat"><div class="kw-sv" id="kwFriendsStat" style="color:var(--b)">3</div><div class="kw-sl">Vänner</div></div>
+        </div>
+        <!-- Districts -->
+        <div class="kw-section-ttl">🏗️ DINA DISTRIKT — BYGGS AV DINA ACTIONS</div>
+        <div class="kw-district-grid" id="kwDistrictGrid"></div>
+        <!-- Wild pets -->
+        <div class="kw-section-ttl">🎯 VILDA PETS NÄRA DIG <span style="color:var(--pk);animation:notifPulse 2s infinite" id="kwWildCount">3 aktiva</span></div>
+        <div class="kw-wild-row" id="kwWildRow"></div>
+        <!-- Friend worlds -->
+        <div class="kw-section-ttl" style="margin-top:14px">🌉 VÄNNERS VÄRLDAR</div>
+        <div class="kw-friends-row" id="kwFriendsRow"></div>
+        <div style="height:80px"></div>
+      </div>
+      <div class="kw-build-bar">
+        <button class="kw-build-btn" style="border-color:rgba(255,230,0,.45);color:var(--y);background:rgba(255,230,0,.06)" onclick="addWorldPoints(20,'manual');vibe(30);showT('⚡ +20 World Points!','y')">⚡ BOOST +20WP</button>
+        <button class="kw-build-btn" style="border-color:rgba(57,255,20,.45);color:var(--g);background:rgba(57,255,20,.06)" onclick="nav('home')">🐾 MIN PET</button>
+        <button class="kw-build-btn" style="border-color:rgba(0,217,255,.45);color:var(--b);background:rgba(0,217,255,.06)" onclick="nav('map')">🗺️ MAP</button>
+      </div>
+    </div>
+
     <!-- LAUNCH -->
     <div class="view" id="view-launch">
       <div style="padding:13px 14px 10px;background:var(--c1);border-bottom:1px solid var(--line);flex-shrink:0">
@@ -1579,6 +1713,16 @@ textarea.inp{resize:none;min-height:68px;}
     <div class="view" id="view-explore">
       <div class="explore-hdr">🔍 Utforska</div>
       <div class="explore-sub">Hitta vänner, trending pets och nya uppdrag</div>
+      <!-- World Builder banner -->
+      <div style="margin:0 14px 12px;background:linear-gradient(135deg,rgba(0,232,122,.1),rgba(0,217,255,.06));border:2px solid rgba(57,255,20,.3);border-radius:22px;padding:16px 18px;cursor:pointer;-webkit-tap-highlight-color:transparent;transition:transform .1s;display:flex;align-items:center;gap:14px" onclick="nav('world')" ontouchstart="">
+        <span style="font-size:42px;filter:drop-shadow(0 0 12px rgba(57,255,20,.5))">🌍</span>
+        <div style="flex:1">
+          <div style="font-size:16px;font-weight:900;color:var(--g);margin-bottom:3px">KARMA WORLD</div>
+          <div style="font-size:12px;color:var(--t2);margin-bottom:6px">Dina actions bygger en hel stad. Som Minecraft — men med ditt liv.</div>
+          <div style="display:flex;gap:6px"><span style="font-size:9px;font-weight:900;background:rgba(57,255,20,.12);border:1px solid rgba(57,255,20,.3);color:var(--g);padding:2px 7px;border-radius:6px;font-family:var(--mono)">LIVE</span><span style="font-size:9px;font-weight:700;color:var(--t3)">Bygg · Utforska · Fånga wild pets</span></div>
+        </div>
+        <span style="font-size:22px;color:var(--g)">→</span>
+      </div>
       <!-- Quick access grid -->
       <div class="explore-grid">
         <div class="eg-card" style="background:linear-gradient(135deg,#FF2D55,#FF6B8A)" onclick="nav('flash')">
@@ -1723,6 +1867,7 @@ textarea.inp{resize:none;min-height:68px;}
       <div class="ld-item" onclick="nav('flash');closeLDrawer()"><div class="ld-ico ld-ico-pk">⚡</div><div class="ld-lbl">Flash Feed</div></div>
       <div class="ld-item" onclick="nav('social');closeLDrawer()"><div class="ld-ico ld-ico-b">💬</div><div class="ld-lbl">Vänner & Chat</div></div>
       <div class="ld-item" onclick="nav('explore');closeLDrawer()"><div class="ld-ico ld-ico-p">🔍</div><div class="ld-lbl">Utforska</div></div>
+      <div class="ld-item" style="background:linear-gradient(135deg,rgba(57,255,20,.05),rgba(0,217,255,.03));border:1px solid rgba(57,255,20,.1)" onclick="nav('world');closeLDrawer()"><div class="ld-ico" style="background:linear-gradient(135deg,rgba(57,255,20,.18),rgba(0,217,255,.12))">🌍</div><div class="ld-lbl" style="color:var(--g)">KARMA WORLD</div></div>
       <div class="ld-item" onclick="openFishingGame();closeLDrawer()"><div class="ld-ico ld-ico-b">🎣</div><div class="ld-lbl">Fiska</div></div>
       <div class="ld-item" onclick="openModal('petShareModal');updateShareCard();closeLDrawer()"><div class="ld-ico ld-ico-g">📤</div><div class="ld-lbl">Dela min Pet</div></div>
       <div class="ld-sep"></div>
@@ -2140,6 +2285,8 @@ const G={
   world:'cosmic',
   todayBond:{flash:false,chat:false,quest:false,market:false},
   bondDate:'',
+  worldPoints:0,builtZones:[],wildPetsCaught:0,
+  wldFlash:0,wldBattle:0,wldMarket:0,wldStreak:0,wldSocial:0,
 };
 
 const EVOL={
@@ -2463,7 +2610,7 @@ function battleBlock(){_bt.blocking=true;_bt.dodging=false;SFX.tap();showT('🛡
 function battleWin(){
   const e=_bt.enemy;_bt.active=false;SFX.win();vibe([30,20,100,20,80]);
   gainXP(e.reward.xp,'action');gainCoins(e.reward.coins);
-  G.battlesWon=(G.battlesWon||0)+1;save();markBond('quest');
+  G.battlesWon=(G.battlesWon||0)+1;save();markBond('quest');addWorldPoints(15,'battle');
   advanceQuest('battle');checkAchievements();
   $('baLog').textContent='🏆 SEGER! +'+e.reward.xp+'XP +'+e.reward.coins+'💰';
   spawnParticles(window.innerWidth/2,window.innerHeight*.5,'stars');
@@ -2495,7 +2642,7 @@ function cp(n){const d=document.createElement('div');d.className='cpop';d.textCo
 function sa(sel,el){document.querySelectorAll(sel+' .topt').forEach(x=>x.className='topt');el.classList.add('on');}
 function dist(la1,lo1,la2,lo2){const R=6371e3,f1=la1*Math.PI/180,f2=la2*Math.PI/180,df=(la2-la1)*Math.PI/180,dl=(lo2-lo1)*Math.PI/180;const a=Math.sin(df/2)**2+Math.cos(f1)*Math.cos(f2)*Math.sin(dl/2)**2;return R*2*Math.atan2(Math.sqrt(a),Math.sqrt(1-a));}
 function fmtD(m){return m<1000?Math.round(m)+'m':+(m/1000).toFixed(1)+'km';}
-function save(){try{const d={n:G.name,p:G.petEmoji,pn:G.petName,l:G.level,c:G.coins,st:G.streak,x:G.exp,as:G.actionStat,cs:G.commerceStat,ss:G.socialStat,g:JSON.stringify(G.gear),eg:G.equippedGear||'',sek:G.totalSEK,ts:G.trustScore,posts:G.postCount,b:G.bountiesDone,hu:G.hunger,en:G.energy,mo:G.mood,brands:JSON.stringify(G.brands),circles:JSON.stringify(G.circles),sw:JSON.stringify(G.streakWeek),petCfg:JSON.stringify(G.petConfig),pm:G.premium?1:0,pt:G.premiumTier,wld:G.world,bond:JSON.stringify(G.todayBond),bdate:G.bondDate};for(const k in d)localStorage.setItem('kv8_'+k,d[k]);}catch(e){}}
+function save(){try{const d={n:G.name,p:G.petEmoji,pn:G.petName,l:G.level,c:G.coins,st:G.streak,x:G.exp,as:G.actionStat,cs:G.commerceStat,ss:G.socialStat,g:JSON.stringify(G.gear),eg:G.equippedGear||'',sek:G.totalSEK,ts:G.trustScore,posts:G.postCount,b:G.bountiesDone,hu:G.hunger,en:G.energy,mo:G.mood,brands:JSON.stringify(G.brands),circles:JSON.stringify(G.circles),sw:JSON.stringify(G.streakWeek),petCfg:JSON.stringify(G.petConfig),pm:G.premium?1:0,pt:G.premiumTier,wld:G.world,bond:JSON.stringify(G.todayBond),bdate:G.bondDate,wp:G.worldPoints,bz:JSON.stringify(G.builtZones),wpc:G.wildPetsCaught,wflash:G.wldFlash,wbattle:G.wldBattle,wmarket:G.wldMarket,wstreak:G.wldStreak,wsocial:G.wldSocial};for(const k in d)localStorage.setItem('kv8_'+k,d[k]);}catch(e){}}
 
 // ── DNA + MOOD SYSTEM ──
 function getPetDNA(){
@@ -3007,13 +3154,14 @@ function submitFlash(){
   G.streak++;G.postCount++;
   const day=new Date().getDay();G.streakWeek[day===0?6:day-1]=true;
   FLASH_POSTS.unshift({id:'fl'+Date.now(),user:G.name||'Du',pet:gS().e,lvl:G.level,up:'Daglig Flash #'+G.postCount,cap:cap||'⚡ Flash! '+new Date().toLocaleTimeString('sv',{hour:'2-digit',minute:'2-digit'}),xp:'+20 XP',likes:0,live:false,streak:G.streak});
-  gainXP(20,'social');gainCoins(10);markBond('flash');
+  gainXP(20,'social');gainCoins(10);markBond('flash');addWorldPoints(10,'flash');
   G.flashImg=null;$('flashCaption').value='';$('flashPrev').style.display='none';$('flashPH').style.display='';$('flashUpArea').style.borderColor='';
   closeModal('flashModal');renderFlashFeed();updateHUD();updatePetView();vibe([30,20,80]);SFX.win();
   advanceQuest('post');checkAchievements();
   addH('⚡ Flash #'+G.streak+' postad!','var(--pk)');
   showT('⚡ FLASH POSTAD! 🔥 '+G.streak+'d STREAK','pk');
-  if(G.streak%7===0){$('streakDays').textContent=G.streak;$('streakTitle').textContent='🔥 '+G.streak+' DAGAR!';$('flashStreakSplash').classList.add('show');gainXP(50,'social');gainCoins(50);}
+  if(G.streak%7===0){$('streakDays').textContent=G.streak;$('streakTitle').textContent='🔥 '+G.streak+' DAGAR!';$('flashStreakSplash').classList.add('show');gainXP(50,'social');gainCoins(50);addWorldPoints(20,'streak');}
+  else if(G.streak>0){addWorldPoints(3,'streak');}
   nav('flash');
 }
 function postFlashToCircle(){openModal('flashModal');G.flashShare='circles';}
@@ -3034,7 +3182,7 @@ function sendCircleMsg(){
   const inp=$('cwCircleInp');const txt=inp.value.trim();if(!txt)return;inp.value='';
   const c=[...CIRCLES_DATA,...G.circles].find(x=>x.id===G.currentCircle);if(c){if(!c.msgs)c.msgs=[];c.msgs.push({from:G.name,em:gS().e,txt,t:'nu',me:true});c.lastMsg='Du: '+txt;}
   const d=document.createElement('div');d.innerHTML=`<div><div class="msg me">${txt}</div><div class="msg-t" style="text-align:right">nu</div></div>`;
-  $('cwCircleMsgs').appendChild(d);$('cwCircleMsgs').scrollTop=$('cwCircleMsgs').scrollHeight;vibe(15);gainXP(1,'social');markBond('chat');
+  $('cwCircleMsgs').appendChild(d);$('cwCircleMsgs').scrollTop=$('cwCircleMsgs').scrollHeight;vibe(15);gainXP(1,'social');markBond('chat');addWorldPoints(5,'social');
   const replies=['🔥 Yes!','Haha 😂','🔥🔥🔥','GG!','⚡⚡⚡','Snyggt!! 👑','Alltid 💪'];
   setTimeout(()=>{const d2=document.createElement('div');d2.innerHTML=`<div><div class="msg-name">🐉 ella_sthlm</div><div class="msg them">${replies[~~(Math.random()*replies.length)]}</div><div class="msg-t">nu</div></div>`;$('cwCircleMsgs').appendChild(d2);$('cwCircleMsgs').scrollTop=$('cwCircleMsgs').scrollHeight;},600+Math.random()*1000);
 }
@@ -3598,6 +3746,7 @@ function nav(name){
     profile:()=>{updateHUD();renderHistList();renderBadges();},
     explore:()=>{const el=$('explorePetLv');if(el)el.textContent='LV'+G.level;renderWeeklyChallenges();renderCraftGrid();},
     market:()=>{renderMkt();},
+    world:()=>{renderKarmaWorld();initKarmaWorld();},
     launch:()=>{}
   }[name]||(() => {}))();
 }
@@ -3843,7 +3992,7 @@ function renderMkt(){
 function buyMktItem(i){
   const items=MKT_ITEMS[_mktTab]||[];const it=items[i];if(!it)return;
   if(G.coins<it.price){showT('❌ Behöver '+it.price+'⚡','r');SFX.error();return;}
-  G.coins-=it.price;it.eff();gainXP(5,'commerce');
+  G.coins-=it.price;it.eff();gainXP(5,'commerce');addWorldPoints(8,'market');
   vibe([20,10,40]);SFX.coin();showT(it.ico+' '+it.nm+' köpt!','g');
   updateHUD();updatePetView();renderMkt();
 }
@@ -3852,6 +4001,236 @@ function sellItem(id,price){
   G.gear.splice(idx,1);if(G.equippedGear===GEAR.find(x=>x.id===id)?.em)G.equippedGear=null;
   G.coins+=price;gainXP(3,'commerce');SFX.coin();
   showT('💰 Sålt för '+price+'⚡','y');updateHUD();renderMkt();
+}
+
+// ── KARMA WORLD ──
+const KW_DISTRICTS=[
+  {id:'social',nm:'Social Hub',ico:'🏙️',col:'#00D9FF',wpReq:0,  statKey:'wldSocial', maxStat:30, desc:'Byggs av chattar & circles'},
+  {id:'flash', nm:'Flash Tower',ico:'📸',col:'#FF2D55',wpReq:20, statKey:'wldFlash',  maxStat:20, desc:'Byggs av Flash-poster'},
+  {id:'battle',nm:'Battle Arena',ico:'⚔️',col:'#FF9F0A',wpReq:50, statKey:'wldBattle', maxStat:15, desc:'Byggs av battle-vinster'},
+  {id:'market',nm:'Market Square',ico:'🏪',col:'#BF5FFF',wpReq:80, statKey:'wldMarket', maxStat:20, desc:'Byggs av köp på market'},
+  {id:'streak',nm:'Streak Tower',ico:'🔥',col:'#FFE600',wpReq:120,statKey:'wldStreak', maxStat:14, desc:'Byggs av streak-dagar'},
+  {id:'palace',nm:'Pet Palace',ico:'🏰',col:'#39FF14',wpReq:200,statKey:'wldFlash',  maxStat:50, desc:'Toppen av ditt rike — kräver 200 WP'},
+];
+
+const KW_WILD_PETS=[
+  {id:'wp1',em:'🦊',nm:'Vild Räv',rarity:'common', cost:30, xpR:25, desc:'Smyger runt Södermalm'},
+  {id:'wp2',em:'🐺',nm:'Urban Wolf',rarity:'rare',   cost:80, xpR:60, desc:'Sedd vid Globen'},
+  {id:'wp3',em:'🦋',nm:'Neon Wing',rarity:'epic',   cost:150,xpR:100,desc:'Glimmar vid vattnet'},
+  {id:'wp4',em:'🐸',nm:'Tunnel Frog',rarity:'common',cost:25, xpR:20, desc:'Lever i tunnelbanan'},
+  {id:'wp5',em:'🐉',nm:'City Dragon',rarity:'legendary',cost:300,xpR:250,desc:'Bevakar Gamla Stan'},
+];
+
+const KW_FRIENDS=[
+  {nm:'ella_sthlm',  em:'🐱',lv:12,wp:340,zones:3,col:'#FF2D55'},
+  {nm:'bjorn99',     em:'🐺',lv:8, wp:180,zones:2,col:'#00D9FF'},
+  {nm:'sofiaK',      em:'🦊',lv:15,wp:510,zones:4,col:'#BF5FFF'},
+];
+
+let _kwRaf=null;
+
+function addWorldPoints(n,source){
+  G.worldPoints+=n;
+  if(source==='flash')  G.wldFlash++;
+  else if(source==='battle') G.wldBattle++;
+  else if(source==='market') G.wldMarket++;
+  else if(source==='streak') G.wldStreak++;
+  else if(source==='social') G.wldSocial++;
+  save();
+  const wp=$('kwWpPill');if(wp)wp.textContent='⚡ '+G.worldPoints+' WP';
+  _updateKwHomeTeaser();
+  if(document.querySelector('#view-world.active'))renderKarmaWorld();
+}
+
+function _updateKwHomeTeaser(){
+  const el=$('kwHomeSub');if(!el)return;
+  const built=G.builtZones.length;
+  el.textContent=G.worldPoints+' WP · '+built+' distrikt byggt'+( built!==1?'a':'')+(G.worldPoints===0?' — posta en Flash för att börja!':'');
+}
+
+function getDistrictProgress(zone){
+  return Math.min(100,Math.floor((G[zone.statKey]||0)/zone.maxStat*100));
+}
+
+function claimDistrict(id){
+  if(G.builtZones.includes(id)){showT('✅ Redan byggt!','y');return;}
+  const zone=KW_DISTRICTS.find(z=>z.id===id);if(!zone)return;
+  if(G.worldPoints<zone.wpReq){showT('❌ Behöver '+zone.wpReq+' WP','r');return;}
+  if(getDistrictProgress(zone)<100){showT('⏳ Fortfarande under konstruktion...','y');return;}
+  G.builtZones.push(id);save();vibe([30,20,80,20,100]);SFX.win();
+  showT(zone.ico+' '+zone.nm+' BYGGT! 🎉','g');
+  spawnParticles(window.innerWidth/2,window.innerHeight*.4,'stars');
+  renderKarmaWorld();
+}
+
+function renderKarmaWorld(){
+  // update pills + center island
+  const s=gS();
+  const e=$('kwPetEmoji');if(e)e.textContent=s.e;
+  const pn=$('kwPetName');if(pn)pn.textContent=G.name||'Din Värld';
+  const ps=$('kwPetSub');if(ps)ps.textContent='LV'+G.level+' · '+getEvolStage().name+' · '+G.worldPoints+' WP';
+  const wp=$('kwWpPill');if(wp)wp.textContent='⚡ '+G.worldPoints+' WP';
+  // territory = worldPoints / 500 capped at 100%
+  const terrPct=Math.min(100,Math.floor(G.worldPoints/500*100));
+  const tf=$('kwTerritoryFill');if(tf)tf.style.width=terrPct+'%';
+  const tl=$('kwTerritoryLbl');if(tl)tl.textContent=terrPct+'% täckt';
+  // stats
+  const ws=$('kwWpStat');if(ws)ws.textContent=G.worldPoints;
+  const bs=$('kwBuiltStat');if(bs)bs.textContent=G.builtZones.length;
+  const wds=$('kwWildStat');if(wds)wds.textContent=G.wildPetsCaught;
+  // map badges
+  const tb=$('kwTerrBadge');if(tb)tb.textContent='🌍 '+terrPct+'% territorium';
+  const wb=$('kwWildBadge');if(wb)wb.textContent='🎯 '+KW_WILD_PETS.filter(p=>!G.builtZones.includes('caught_'+p.id)).length+' WILD PETS HÄR';
+  // districts
+  const dg=$('kwDistrictGrid');
+  if(dg)dg.innerHTML=KW_DISTRICTS.map(z=>{
+    const locked=G.worldPoints<z.wpReq;
+    const built=G.builtZones.includes(z.id);
+    const pct=locked?0:getDistrictProgress(z);
+    const ready=pct>=100&&!built&&!locked;
+    return`<div class="kw-district ${built?'built':locked?'kw-locked':ready?'building':''}" onclick="${locked?`showT('🔒 Behöver ${z.wpReq} WP','r')`:ready?`claimDistrict('${z.id}')`:''}" style="--dc:${z.col}">
+      <div class="kw-d-bg" style="background:radial-gradient(ellipse at 50% 100%,${z.col}22,transparent 70%)"></div>
+      ${locked?`<div class="kw-d-new-badge" style="background:var(--c3);color:var(--t3)">🔒 ${z.wpReq}WP</div>`:''}
+      ${built?`<div class="kw-d-new-badge" style="background:var(--g);color:#000">✅ BYGGT</div>`:''}
+      ${ready?`<div class="kw-d-new-badge" style="background:var(--y);color:#000">BUILD!</div>`:''}
+      <div class="kw-d-ico">${z.ico}</div>
+      <div class="kw-d-nm">${z.nm}</div>
+      <div class="kw-d-prog-wrap"><div class="kw-d-prog" style="width:${pct}%;background:${z.col}"></div></div>
+      <div class="kw-d-status" style="color:${built?'var(--g)':locked?'var(--t3)':'var(--t2)'}">${built?'KOMPLETT':locked?'LÅST':pct+'%'}</div>
+    </div>`;
+  }).join('');
+  // wild pets
+  const wr=$('kwWildRow');
+  if(wr)wr.innerHTML=KW_WILD_PETS.map(p=>{
+    const caught=G.builtZones.includes('caught_'+p.id);
+    const rarCol={common:'var(--t2)',rare:'var(--b)',epic:'var(--p)',legendary:'var(--y)'};
+    return`<div class="kw-wild-pet ${caught?'caught':''}" onclick="${caught?'':  `catchWildPet('${p.id}')`}">
+      <div class="kw-wp-em">${p.em}</div>
+      <div>
+        <div class="kw-wp-nm">${p.nm}</div>
+        <div class="kw-wp-sub" style="color:${rarCol[p.rarity]||'var(--t2)'}">${p.rarity.toUpperCase()}</div>
+        <div class="kw-wp-sub">${p.desc}</div>
+        <button class="kw-wp-btn ${caught?'caught':'catch'}">${caught?'✅ FÅNGAD':p.cost+'⚡ FÅNGA'}</button>
+      </div>
+    </div>`;
+  }).join('');
+  // friend worlds
+  const fr=$('kwFriendsRow');
+  if(fr)fr.innerHTML=KW_FRIENDS.map(f=>`<div class="kw-friend-world" style="width:90px" onclick="showT('🌉 Besöker ${f.nm}s värld...','b')">
+    <div class="kw-fw-island" style="border-color:${f.col}55;background:linear-gradient(135deg,${f.col}18,var(--c2))">
+      <div><span style="font-size:26px">${f.em}</span></div>
+    </div>
+    <div class="kw-fw-nm" style="font-size:9px;color:var(--t3);margin-bottom:2px">${f.nm}</div>
+    <div class="kw-fw-lv" style="color:${f.col}">LV${f.lv} · ${f.wp}WP</div>
+  </div>`).join('');
+  _updateKwHomeTeaser();
+}
+
+function catchWildPet(id){
+  const p=KW_WILD_PETS.find(x=>x.id===id);if(!p)return;
+  if(G.builtZones.includes('caught_'+id)){showT('✅ Redan fångad!','y');return;}
+  if(G.coins<p.cost){showT('❌ Behöver '+p.cost+'⚡','r');SFX.error();return;}
+  G.coins-=p.cost;G.builtZones.push('caught_'+id);G.wildPetsCaught++;
+  gainXP(p.xpR,'action');save();vibe([20,15,60,15,80]);SFX.win();
+  showT(p.em+' '+p.nm+' FÅNGAD! +'+p.xpR+' XP','g');
+  spawnParticles(window.innerWidth/2,window.innerHeight*.5,'stars');
+  renderKarmaWorld();updateHUD();
+}
+
+// ── KARMA WORLD SKYLINE CANVAS ──
+function drawSkyline(canvas){
+  if(!canvas)return;
+  const W=canvas.width,H=canvas.height;
+  const ctx=canvas.getContext('2d');
+  const wp=G.worldPoints;
+  const t=Date.now()/1000;
+  ctx.clearRect(0,0,W,H);
+  // sky gradient
+  const sky=ctx.createLinearGradient(0,0,0,H);
+  sky.addColorStop(0,'#020308');
+  sky.addColorStop(1,'#060d1a');
+  ctx.fillStyle=sky;ctx.fillRect(0,0,W,H);
+  // stars
+  const starCount=Math.min(60,15+Math.floor(wp/10));
+  const rng=(seed,i)=>{let x=Math.sin(seed*9301+(i*49297))*.5+.5;return x;};
+  for(let i=0;i<starCount;i++){
+    const sx=rng(1,i)*W, sy=rng(2,i)*(H*.55);
+    const flicker=.5+.5*Math.sin(t*2.5+i*2.3);
+    ctx.fillStyle=`rgba(255,255,255,${.15+.35*flicker})`;
+    ctx.beginPath();ctx.arc(sx,sy,rng(3,i)*1.2+.3,0,Math.PI*2);ctx.fill();
+  }
+  // moon
+  if(wp>0){
+    ctx.fillStyle='rgba(255,240,200,.85)';
+    ctx.beginPath();ctx.arc(W*.85,22,9,0,Math.PI*2);ctx.fill();
+    ctx.fillStyle='rgba(6,13,26,.7)';
+    ctx.beginPath();ctx.arc(W*.85+5,20,8,0,Math.PI*2);ctx.fill();
+  }
+  // buildings
+  const numBuildings=Math.min(22,4+Math.floor(wp/8));
+  const baseY=H-12;
+  const bldW=Math.floor(W/numBuildings)-2;
+  const colours=['#00D9FF','#FF2D55','#39FF14','#BF5FFF','#FF9F0A','#FFE600'];
+  for(let i=0;i<numBuildings;i++){
+    const seed=i+1;
+    const bx=i*(bldW+2)+2;
+    const maxH=Math.min(H-20,20+Math.floor((wp/500)*80)+Math.floor(rng(seed,4)*30));
+    const bh=Math.max(10,Math.floor(rng(seed,5)*maxH)+10);
+    const col=colours[i%colours.length];
+    // building body
+    const grad=ctx.createLinearGradient(bx,baseY-bh,bx+bldW,baseY);
+    grad.addColorStop(0,col+'44');grad.addColorStop(1,col+'11');
+    ctx.fillStyle=grad;
+    ctx.fillRect(bx,baseY-bh,bldW,bh);
+    // top accent
+    ctx.fillStyle=col+'cc';
+    ctx.fillRect(bx,baseY-bh,bldW,2);
+    // windows
+    const wRows=Math.floor(bh/10);const wCols=Math.max(1,Math.floor(bldW/7));
+    for(let r=1;r<=wRows;r++){
+      for(let c=0;c<wCols;c++){
+        const lit=rng(seed*r,c)>.35;
+        if(!lit)continue;
+        const wx=bx+c*(bldW/wCols)+2;
+        const wy=baseY-bh+r*9;
+        const flicker=Math.sin(t*3+seed*r+c)>.6;
+        ctx.fillStyle=flicker?col+'ee':col+'77';
+        ctx.fillRect(wx,wy,Math.max(2,bldW/wCols-3),4);
+      }
+    }
+    // antenna on tallest buildings
+    if(bh>50&&wp>30){
+      ctx.strokeStyle=col+'88';ctx.lineWidth=1;
+      ctx.beginPath();ctx.moveTo(bx+bldW/2,baseY-bh);ctx.lineTo(bx+bldW/2,baseY-bh-10);ctx.stroke();
+      const blink=Math.sin(t*2+i)>.5;
+      ctx.fillStyle=blink?col:'transparent';
+      ctx.beginPath();ctx.arc(bx+bldW/2,baseY-bh-10,2,0,Math.PI*2);ctx.fill();
+    }
+  }
+  // ground glow
+  const glow=ctx.createLinearGradient(0,baseY-4,0,H);
+  glow.addColorStop(0,'rgba(57,255,20,.12)');
+  glow.addColorStop(1,'rgba(57,255,20,0)');
+  ctx.fillStyle=glow;ctx.fillRect(0,baseY-4,W,16);
+  // WP label
+  if(wp===0){
+    ctx.fillStyle='rgba(255,255,255,.25)';
+    ctx.font='bold 11px Space Mono,monospace';
+    ctx.textAlign='center';
+    ctx.fillText('POSTA EN FLASH FÖR ATT BÖRJA BYGGA',W/2,H*.65);
+  }
+}
+
+function initKarmaWorld(){
+  const canvas=$('kwSkyCanvas');
+  if(!canvas)return;
+  canvas.width=canvas.offsetWidth||canvas.parentElement?.offsetWidth||360;
+  if(_kwRaf)cancelAnimationFrame(_kwRaf);
+  (function loop(){
+    if(!document.querySelector('#view-world.active')){_kwRaf=null;return;}
+    drawSkyline(canvas);
+    _kwRaf=requestAnimationFrame(loop);
+  })();
 }
 
 // ── LOAD ──
@@ -3875,6 +4254,14 @@ try{
     G.world=localStorage.getItem('kv8_wld')||'cosmic';
     G.bondDate=localStorage.getItem('kv8_bdate')||'';
     try{const b=localStorage.getItem('kv8_bond');if(b)G.todayBond=JSON.parse(b);}catch(e){}
+    G.worldPoints=parseInt(localStorage.getItem('kv8_wp')||'0');
+    G.wildPetsCaught=parseInt(localStorage.getItem('kv8_wpc')||'0');
+    G.wldFlash=parseInt(localStorage.getItem('kv8_wflash')||'0');
+    G.wldBattle=parseInt(localStorage.getItem('kv8_wbattle')||'0');
+    G.wldMarket=parseInt(localStorage.getItem('kv8_wmarket')||'0');
+    G.wldStreak=parseInt(localStorage.getItem('kv8_wstreak')||'0');
+    G.wldSocial=parseInt(localStorage.getItem('kv8_wsocial')||'0');
+    try{const bz=localStorage.getItem('kv8_bz');if(bz)G.builtZones=JSON.parse(bz);}catch(e){}
     const _today=new Date().toDateString();const _last=localStorage.getItem('kv8_lastLogin');
     if(_last!==_today){localStorage.setItem('kv8_lastLogin',_today);if(_last){const _b=G.premium?300:75;G.coins+=_b;setTimeout(()=>{showT('🎁 DAILY LOGIN BONUS! +'+_b+' COINS','g');vibe([30,20,60,20,80]);},2500);}}
     $('ob').style.display='none';$('app').style.display='flex';updateHUD();nav('home');
