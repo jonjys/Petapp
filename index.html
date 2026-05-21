@@ -752,41 +752,195 @@ textarea.inp{resize:none;min-height:68px;}
 .pet-sad-alert{display:none;position:absolute;top:8px;left:50%;transform:translateX(-50%);background:rgba(255,45,85,.92);color:#fff;font-size:10px;font-weight:900;padding:4px 12px;border-radius:20px;white-space:nowrap;z-index:10;font-family:var(--mono);letter-spacing:.4px;animation:sadPulse 1.8s ease infinite;}
 @keyframes sadPulse{0%,100%{opacity:1;transform:translateX(-50%) scale(1);}50%{opacity:.75;transform:translateX(-50%) scale(.96);}}
 .pet-sad-alert.show{display:block;}
+
+/* ═══════════════════════════════════
+   CINEMATIC ONBOARDING
+═══════════════════════════════════ */
+.ob{position:fixed;inset:0;background:#04040a;z-index:9999;display:flex;flex-direction:column;overflow:hidden;}
+.ob-bg{position:absolute;inset:0;pointer-events:none;}
+.ob-bg-star{position:absolute;border-radius:50%;background:#fff;animation:obStar var(--dur) ease-in-out infinite var(--del);}
+@keyframes obStar{0%,100%{opacity:.1;}50%{opacity:.85;}}
+.ob-float-em{position:absolute;animation:obFloatUp var(--dur) linear infinite var(--del);font-size:var(--sz);pointer-events:none;}
+@keyframes obFloatUp{0%{transform:translateY(100vh) scale(0);opacity:0;}10%{opacity:.7;}90%{opacity:.5;}100%{transform:translateY(-20vh) scale(1);opacity:0;}}
+.ob-content{position:relative;z-index:2;padding:24px 24px 32px;flex:1;display:flex;flex-direction:column;justify-content:center;overflow-y:auto;scrollbar-width:none;}
+.ob-content::-webkit-scrollbar{display:none;}
+.ob-logo-hero{font-size:52px;font-weight:900;font-family:var(--mono);text-align:center;letter-spacing:-3px;margin-bottom:2px;animation:obLogoIn .75s cubic-bezier(.34,1.56,.64,1);}
+@keyframes obLogoIn{from{transform:scale(0) rotate(-8deg);opacity:0;}to{transform:none;opacity:1;}}
+.ob-logo-hero .ok{color:var(--g);text-shadow:0 0 40px rgba(57,255,20,.7);}
+.ob-tag2{font-size:11px;color:var(--t3);letter-spacing:3px;text-transform:uppercase;text-align:center;margin-bottom:28px;font-family:var(--mono);}
+.ob-prog2{display:flex;gap:6px;margin-bottom:22px;justify-content:center;}
+.ob-d2{height:4px;flex:1;max-width:36px;border-radius:100px;background:rgba(255,255,255,.12);transition:all .35s;}
+.ob-d2.on{background:var(--g);box-shadow:0 0 8px rgba(57,255,20,.6);}
+.ob-h2{font-size:30px;font-weight:900;line-height:1.15;margin-bottom:8px;}
+.ob-p2{font-size:14px;color:var(--t2);line-height:1.65;margin-bottom:20px;}
+/* Step animations */
+.ob-step{animation:stepIn .35s cubic-bezier(.4,0,.2,1);}
+@keyframes stepIn{from{opacity:0;transform:translateX(24px);}to{opacity:1;transform:none;}}
+/* World selection */
+.ob-worlds{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:22px;}
+.ob-world{border-radius:20px;padding:18px 12px;text-align:center;cursor:pointer;border:2px solid rgba(255,255,255,.1);transition:all .18s;-webkit-tap-highlight-color:transparent;background:rgba(255,255,255,.03);}
+.ob-world.sel{border-color:rgba(255,255,255,.55);transform:scale(1.04);background:rgba(255,255,255,.07);}
+.ob-world-ico{font-size:38px;display:block;margin-bottom:6px;animation:petBob 2.5s ease-in-out infinite;}
+@keyframes petBob{0%,100%{transform:translateY(0);}50%{transform:translateY(-6px);}}
+.ob-world-nm{font-size:14px;font-weight:900;color:#fff;display:block;margin-bottom:2px;}
+.ob-world-ds{font-size:10px;color:rgba(255,255,255,.5);}
+/* Pet selection */
+.ob-pet-big{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:18px;}
+.ob-pb{border-radius:20px;padding:14px 6px;text-align:center;cursor:pointer;border:2.5px solid rgba(255,255,255,.08);transition:all .15s;background:rgba(255,255,255,.04);-webkit-tap-highlight-color:transparent;}
+.ob-pb.sel{border-color:var(--g);background:rgba(57,255,20,.09);transform:scale(1.07);box-shadow:0 0 22px rgba(57,255,20,.18);}
+.ob-pb-em{font-size:44px;display:block;margin-bottom:5px;animation:petBob 2s ease-in-out infinite;}
+.ob-pb-nm{font-size:10px;font-weight:700;color:var(--t2);}
+/* Big animated pet preview */
+.ob-pet-preview{font-size:88px;text-align:center;display:block;margin:4px auto 16px;animation:petBob 1.8s ease-in-out infinite;filter:drop-shadow(0 0 28px rgba(57,255,20,.45));}
+/* Tutorial feed action */
+.ob-feed-btn{width:100%;padding:18px 16px;border-radius:22px;background:rgba(255,159,10,.08);border:2px solid rgba(255,159,10,.4);display:flex;align-items:center;gap:14px;cursor:pointer;margin-bottom:14px;-webkit-tap-highlight-color:transparent;transition:all .15s;}
+.ob-feed-btn:active{transform:scale(.95);}
+.ob-feed-btn.done{background:rgba(57,255,20,.08);border-color:rgba(57,255,20,.4);}
+.ob-feed-ico{font-size:38px;flex-shrink:0;}
+.ob-feed-main{font-size:15px;font-weight:900;margin-bottom:3px;}
+.ob-feed-sub{font-size:12px;color:var(--t2);}
+
+/* ═══════════════════════════════════
+   PET ROOM — Neko Atsume style
+═══════════════════════════════════ */
+.pet-room-layer{position:absolute;inset:0;overflow:hidden;pointer-events:none;border-radius:0;}
+.prl-sky{position:absolute;top:0;left:0;right:0;height:60%;}
+.prl-floor{position:absolute;bottom:0;left:0;right:0;height:40%;border-top:1.5px solid rgba(57,255,20,.2);}
+.prl-floor-glow{position:absolute;bottom:0;left:10%;right:10%;height:30px;background:radial-gradient(ellipse,rgba(57,255,20,.1),transparent 70%);}
+.prl-star{position:absolute;border-radius:50%;background:#fff;animation:twk var(--dur) ease-in-out infinite var(--del);}
+@keyframes twk{0%,100%{opacity:.15;}50%{opacity:.9;}}
+.prl-item{position:absolute;font-size:var(--sz);animation:iFloat var(--dur) ease-in-out infinite var(--del);cursor:pointer;-webkit-tap-highlight-color:transparent;z-index:3;pointer-events:auto;}
+@keyframes iFloat{0%,100%{transform:translateY(0);}50%{transform:translateY(-5px);}}
+
+/* ═══════════════════════════════════
+   DAILY BOND BAR
+═══════════════════════════════════ */
+.bond-section{margin:8px 12px 10px;}
+.bond-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;}
+.bond-ttl{font-size:10px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:.8px;}
+.bond-tag{font-size:9px;font-weight:800;padding:3px 8px;border-radius:20px;background:rgba(255,45,85,.12);color:var(--pk);border:1px solid rgba(255,45,85,.25);}
+.bond-row{display:flex;gap:7px;}
+.bond-item{flex:1;background:var(--c1);border:1.5px solid var(--line);border-radius:15px;padding:11px 5px;text-align:center;cursor:pointer;transition:all .1s;-webkit-tap-highlight-color:transparent;position:relative;}
+.bond-item.done{border-color:rgba(57,255,20,.45);background:rgba(57,255,20,.06);}
+.bond-check{position:absolute;top:5px;right:6px;font-size:10px;font-weight:900;color:var(--g);display:none;}
+.bond-item.done .bond-check{display:block;}
+.bond-item:active{transform:scale(.88);}
+.bond-ico{font-size:21px;display:block;margin-bottom:3px;}
+.bond-lbl{font-size:9px;font-weight:800;display:block;margin-bottom:2px;color:var(--t2);}
+.bond-eff{font-size:8px;font-weight:900;font-family:var(--mono);color:var(--g);}
+
+/* ═══════════════════════════════════
+   MARKETPLACE
+═══════════════════════════════════ */
+.mkt-hdr{flex-shrink:0;padding:14px 14px 0;background:var(--bg);}
+.mkt-title{font-size:24px;font-weight:900;font-family:var(--mono);margin-bottom:10px;}
+.mkt-cats{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;padding-bottom:12px;}
+.mkt-cats::-webkit-scrollbar{display:none;}
+.mkt-cat{padding:7px 14px;border-radius:20px;font-size:12px;font-weight:700;cursor:pointer;background:var(--c1);border:1px solid var(--line);white-space:nowrap;flex-shrink:0;-webkit-tap-highlight-color:transparent;transition:all .1s;}
+.mkt-cat.on{background:var(--g);color:var(--bg);border-color:var(--g);}
+.mkt-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:10px 14px;}
+.mkt-card{background:var(--c1);border:1px solid var(--line);border-radius:18px;padding:14px 12px;cursor:pointer;transition:transform .1s;-webkit-tap-highlight-color:transparent;overflow:hidden;}
+.mkt-card:active{transform:scale(.95);}
+.mkt-em{font-size:38px;display:block;margin-bottom:7px;}
+.mkt-nm{font-size:13px;font-weight:800;margin-bottom:2px;}
+.mkt-desc{font-size:10px;color:var(--t3);margin-bottom:8px;}
+.mkt-footer{display:flex;align-items:center;justify-content:space-between;}
+.mkt-price{font-size:13px;font-weight:900;color:var(--y);font-family:var(--mono);}
+.mkt-buy{font-size:10px;font-weight:900;padding:5px 11px;border-radius:8px;background:var(--g);color:var(--bg);border:none;cursor:pointer;font-family:var(--ff);transition:transform .1s;}
+.mkt-buy:active{transform:scale(.88);}
+.mkt-sell-row{display:flex;gap:6px;padding:8px 14px;}
+.mkt-sell-btn{flex:1;padding:11px;border-radius:12px;background:var(--c1);border:1.5px dashed rgba(57,255,20,.35);font-size:13px;font-weight:800;color:var(--g);cursor:pointer;font-family:var(--ff);text-align:center;-webkit-tap-highlight-color:transparent;transition:all .1s;}
+.mkt-sell-btn:active{background:rgba(57,255,20,.06);}
+/* room customize mini-menu */
+.room-mini-menu{position:absolute;bottom:80px;right:12px;z-index:50;display:flex;flex-direction:column;gap:5px;}
+.rmm-btn{width:44px;height:44px;border-radius:14px;background:rgba(9,9,16,.88);border:1px solid var(--line);display:flex;align-items:center;justify-content:center;font-size:20px;cursor:pointer;backdrop-filter:blur(8px);-webkit-tap-highlight-color:transparent;transition:transform .1s;}
+.rmm-btn:active{transform:scale(.88);}
 </style>
 
 </head>
 <body>
 <!-- ONBOARDING -->
 <div class="ob" id="ob">
-  <div class="ob-logo"><span style="color:var(--g)">K</span>ARMA</div>
-  <div class="ob-tag">Real Life · Game Engine</div>
-  <div class="ob-step" id="obs0">
-    <div class="ob-prog"><div class="ob-d on"></div><div class="ob-d"></div><div class="ob-d"></div></div>
-    <div class="ob-h">Ditt liv är spelet.</div>
-    <div class="ob-p">Gör grejer IRL. Posta 5-sekunders Flash. Tjäna pengar. Levla din pet.</div>
-    <label class="lbl">DITT NAMN</label>
-    <input class="inp" id="obName" placeholder="Ex: ella_runs / axelsthlm" maxlength="18">
-    <button class="btn btn-g btn-lg btn-full" onclick="obNext(1)">NÄSTA →</button>
-  </div>
-  <div class="ob-step" id="obs1" style="display:none">
-    <div class="ob-prog"><div class="ob-d on"></div><div class="ob-d on"></div><div class="ob-d"></div></div>
-    <div class="ob-h">Välj din pet.</div>
-    <div class="ob-p">Din pet levlar när du gör grejer IRL.</div>
-    <div class="ob-pets" id="obPetGrid"></div>
-    <label class="lbl">PET-NAMN</label>
-    <input class="inp" id="obPetName" placeholder="Ex: Eldrake / Luna / Shadow">
-    <button class="btn btn-g btn-lg btn-full" onclick="obNext(2)">NÄSTA →</button>
-  </div>
-  <div class="ob-step" id="obs2" style="display:none">
-    <div class="ob-prog"><div class="ob-d on"></div><div class="ob-d on"></div><div class="ob-d on"></div></div>
-    <div class="ob-h">Karma Loop.</div>
-    <div class="ob-loop">
-      <div class="ob-lr"><div class="ob-n" style="background:var(--pk);color:#fff">⚡</div><div style="font-size:13px;font-weight:700">Daglig 1-5 sek <b>FLASH</b> video</div></div>
-      <div class="ob-lr"><div class="ob-n" style="background:var(--p);color:#fff">⭕</div><div style="font-size:13px;font-weight:700">Dela i din <b>Karma Circle</b></div></div>
-      <div class="ob-lr"><div class="ob-n" style="background:var(--g);color:var(--bg)">🗺</div><div style="font-size:13px;font-weight:700">Se uppdrag på <b>GPS-kartan</b></div></div>
-      <div class="ob-lr" style="border-bottom:none"><div class="ob-n" style="background:var(--y);color:var(--bg)">💸</div><div style="font-size:13px;font-weight:800;color:var(--y)">Tjäna pengar + XP = legend!</div></div>
+  <div class="ob-bg" id="obBg"></div>
+
+  <!-- WORLD SELECTION — shown first -->
+  <div class="ob-step" id="obsw">
+    <div class="ob-content">
+      <div class="ob-logo-hero"><span class="ok">K</span>ARMA</div>
+      <div class="ob-tag2">Real Life · Game Engine ⚡</div>
+      <div class="ob-prog2"><div class="ob-d2 on"></div><div class="ob-d2"></div><div class="ob-d2"></div><div class="ob-d2"></div></div>
+      <div class="ob-h2">Välj din värld.</div>
+      <div class="ob-p2">Din värld är hemmet för din pet. Välj den miljö du vill leva i.</div>
+      <div class="ob-worlds">
+        <div class="ob-world sel" data-world="cosmic" onclick="pickWorld(this)">
+          <span class="ob-world-ico">🌌</span>
+          <span class="ob-world-nm">COSMIC</span>
+          <div class="ob-world-ds">Universum & stjärnor</div>
+        </div>
+        <div class="ob-world" data-world="nature" onclick="pickWorld(this)">
+          <span class="ob-world-ico">🌿</span>
+          <span class="ob-world-nm">NATURE</span>
+          <div class="ob-world-ds">Skog & natur</div>
+        </div>
+        <div class="ob-world" data-world="city" onclick="pickWorld(this)">
+          <span class="ob-world-ico">🏙️</span>
+          <span class="ob-world-nm">CITY</span>
+          <div class="ob-world-ds">Neon city vibes</div>
+        </div>
+        <div class="ob-world" data-world="pixel" onclick="pickWorld(this)">
+          <span class="ob-world-ico">🎮</span>
+          <span class="ob-world-nm">PIXEL</span>
+          <div class="ob-world-ds">8-bit retro pixel</div>
+        </div>
+      </div>
+      <button class="btn btn-g btn-lg btn-full" onclick="obNext(0)">VÄLJ VÄRLD →</button>
     </div>
-    <button class="btn btn-g btn-lg btn-full" onclick="finishOB()">⚡ STARTA KARMA</button>
+  </div>
+
+  <!-- STEP 0: Name -->
+  <div class="ob-step" id="obs0" style="display:none">
+    <div class="ob-content">
+      <div class="ob-logo-hero"><span class="ok">K</span>ARMA</div>
+      <div class="ob-tag2">Real Life · Game Engine ⚡</div>
+      <div class="ob-prog2"><div class="ob-d2 on"></div><div class="ob-d2 on"></div><div class="ob-d2"></div><div class="ob-d2"></div></div>
+      <div class="ob-h2">Vad heter du?</div>
+      <div class="ob-p2">Välj ett smeknamn — det är din KARMA-identitet i appen.</div>
+      <label class="lbl">DITT NAMN</label>
+      <input class="inp" id="obName" placeholder="Ex: ella_runs / axelsthlm" maxlength="18" style="font-size:16px;margin-bottom:16px">
+      <button class="btn btn-g btn-lg btn-full" onclick="obNext(1)">NÄSTA →</button>
+    </div>
+  </div>
+
+  <!-- STEP 1: Pet selection -->
+  <div class="ob-step" id="obs1" style="display:none">
+    <div class="ob-content">
+      <div class="ob-prog2"><div class="ob-d2 on"></div><div class="ob-d2 on"></div><div class="ob-d2 on"></div><div class="ob-d2"></div></div>
+      <div class="ob-h2">Välj din pet.</div>
+      <div class="ob-p2">Din pet levlar med dig. Den behöver dig varje dag.</div>
+      <div class="ob-pet-big" id="obPetGrid"></div>
+      <label class="lbl">PET-NAMN</label>
+      <input class="inp" id="obPetName" placeholder="Ex: Eldrake / Luna / Shadow" style="font-size:16px;margin-bottom:16px">
+      <button class="btn btn-g btn-lg btn-full" onclick="obNext(2)">NÄSTA →</button>
+    </div>
+  </div>
+
+  <!-- STEP 2: Tutorial + launch -->
+  <div class="ob-step" id="obs2" style="display:none">
+    <div class="ob-content">
+      <div class="ob-prog2"><div class="ob-d2 on"></div><div class="ob-d2 on"></div><div class="ob-d2 on"></div><div class="ob-d2 on"></div></div>
+      <span id="obBigPet" class="ob-pet-preview">🐉</span>
+      <div class="ob-h2" id="obPetWelcome" style="text-align:center;margin-bottom:6px">Välkommen, Eldraken!</div>
+      <div class="ob-p2" style="text-align:center;font-size:13px">Din pet är hungrig! Mata den nu — det är det första du alltid ska göra. 🍖</div>
+      <div class="ob-feed-btn" id="obFeedBtnEl" onclick="obFeedPet()">
+        <span class="ob-feed-ico">🍖</span>
+        <div style="flex:1">
+          <div class="ob-feed-main">Mata din pet!</div>
+          <div class="ob-feed-sub">Tryck för att ge den mat</div>
+        </div>
+        <span style="font-size:22px;opacity:.6">→</span>
+      </div>
+      <button class="btn btn-g btn-lg btn-full" id="obStartBtn" disabled style="opacity:.35" onclick="finishOB()">⚡ ENTER KARMA WORLD</button>
+    </div>
   </div>
 </div>
 
@@ -832,6 +986,11 @@ textarea.inp{resize:none;min-height:68px;}
     <!-- HOME -->
     <div class="view active" id="view-home">
       <div class="pet-hero"><div class="pet-hero-bg"></div>
+        <!-- animated room layer -->
+        <div class="pet-room-layer" id="petRoomLayer">
+          <div class="prl-sky" id="prlSky"></div>
+          <div class="prl-floor"><div class="prl-floor-glow"></div></div>
+        </div>
         <!-- badge + mood row -->
         <div class="ph-top">
           <div class="dna-badge dna-base" id="dnaBadge">🧬 BASE</div>
@@ -878,6 +1037,20 @@ textarea.inp{resize:none;min-height:68px;}
         <div class="chb chb-train" onclick="pcTrain()"><span class="chb-ico">🏋️</span><span class="chb-lbl">TRÄNA</span><span class="chb-val">+15XP</span></div>
         <div class="chb chb-sleep" onclick="pcSleep()"><span class="chb-ico">😴</span><span class="chb-lbl">SOVA</span><span class="chb-val">+40E</span></div>
         <div class="chb chb-play" onclick="pcPlay()"><span class="chb-ico">🎮</span><span class="chb-lbl">LEK</span><span class="chb-val">+MOOD</span></div>
+      </div>
+
+      <!-- DAILY BOND — social actions feed your pet -->
+      <div class="bond-section">
+        <div class="bond-header">
+          <div class="bond-ttl">💖 IDAG — GÖR DET FÖR DIN PET</div>
+          <div class="bond-tag">PET BEHÖVER DIG</div>
+        </div>
+        <div class="bond-row">
+          <div class="bond-item" id="bond-flash" onclick="nav('flash');openModal('flashModal')"><span class="bond-check">✓</span><span class="bond-ico">⚡</span><span class="bond-lbl">Flash</span><span class="bond-eff">🍖+30</span></div>
+          <div class="bond-item" id="bond-chat" onclick="nav('social')"><span class="bond-check">✓</span><span class="bond-ico">💬</span><span class="bond-lbl">Chatta</span><span class="bond-eff">💖+20</span></div>
+          <div class="bond-item" id="bond-quest" onclick="openBattle()"><span class="bond-check">✓</span><span class="bond-ico">⚔️</span><span class="bond-lbl">Quest</span><span class="bond-eff">+25XP</span></div>
+          <div class="bond-item" id="bond-market" onclick="nav('market')"><span class="bond-check">✓</span><span class="bond-ico">🛍️</span><span class="bond-lbl">Handel</span><span class="bond-eff">+15⚡</span></div>
+        </div>
       </div>
 
       <!-- Streak hero -->
@@ -969,6 +1142,22 @@ textarea.inp{resize:none;min-height:68px;}
         <div><div style="font-size:13px;font-weight:900;color:var(--y)">KARMA PRO</div><div style="font-size:11px;color:var(--t2)">2.5× XP · Mer coins · Exklusiva skins</div></div>
         <div style="margin-left:auto;font-size:11px;font-weight:900;color:var(--y);white-space:nowrap">FRÅN 49 →</div>
       </div>
+      <div class="vend"></div>
+    </div>
+
+    <!-- MARKETPLACE -->
+    <div class="view" id="view-market" style="padding:0">
+      <div class="mkt-hdr">
+        <div class="mkt-title">🛍️ Marketplace</div>
+        <div class="mkt-cats" id="mktCats">
+          <div class="mkt-cat on" onclick="switchMkt('food',this)">🍖 Mat</div>
+          <div class="mkt-cat" onclick="switchMkt('gear',this)">⚔️ Gear</div>
+          <div class="mkt-cat" onclick="switchMkt('deco',this)">🏠 Deko</div>
+          <div class="mkt-cat" onclick="switchMkt('rare',this)">💎 Rare</div>
+          <div class="mkt-cat" onclick="switchMkt('sell',this)">📤 Sälj</div>
+        </div>
+      </div>
+      <div id="mktContent" style="overflow-y:auto;flex:1"></div>
       <div class="vend"></div>
     </div>
 
@@ -1185,7 +1374,8 @@ textarea.inp{resize:none;min-height:68px;}
       <div class="ld-item" onclick="nav('social');closeLDrawer()"><div class="ld-ico ld-ico-b">💬</div><div class="ld-lbl">Vänner & Chat</div></div>
       <div class="ld-item" onclick="nav('explore');closeLDrawer()"><div class="ld-ico ld-ico-p">🔍</div><div class="ld-lbl">Utforska</div></div>
       <div class="ld-sep"></div>
-      <div class="ld-item" onclick="nav('shop');closeLDrawer()"><div class="ld-ico ld-ico-o">🛍️</div><div class="ld-lbl">Marketplace</div></div>
+      <div class="ld-item" onclick="nav('market');closeLDrawer()"><div class="ld-ico ld-ico-o">🛍️</div><div class="ld-lbl">Marketplace</div></div>
+      <div class="ld-item" onclick="nav('shop');closeLDrawer()"><div class="ld-ico ld-ico-tl">👗</div><div class="ld-lbl">Pet Shop</div></div>
       <div class="ld-item" onclick="nav('uppdrag');closeLDrawer()"><div class="ld-ico ld-ico-y">💼</div><div class="ld-lbl">Uppdrag</div></div>
       <div class="ld-item" onclick="nav('map');closeLDrawer()"><div class="ld-ico ld-ico-tl">🗺️</div><div class="ld-lbl">Live Karta</div></div>
       <div class="ld-sep"></div>
@@ -1526,6 +1716,9 @@ const G={
   upFilter:'all',myUppdrag:[],currentCircle:null,
   streakWeek:[false,false,false,false,false,false,false],
   premium:false,premiumTier:0,
+  world:'cosmic',
+  todayBond:{flash:false,chat:false,quest:false,market:false},
+  bondDate:'',
 };
 
 const EVOL={
@@ -1849,7 +2042,7 @@ function battleBlock(){_bt.blocking=true;_bt.dodging=false;SFX.tap();showT('🛡
 function battleWin(){
   const e=_bt.enemy;_bt.active=false;SFX.win();vibe([30,20,100,20,80]);
   gainXP(e.reward.xp,'action');gainCoins(e.reward.coins);
-  G.battlesWon=(G.battlesWon||0)+1;save();
+  G.battlesWon=(G.battlesWon||0)+1;save();markBond('quest');
   advanceQuest('battle');checkAchievements();
   $('baLog').textContent='🏆 SEGER! +'+e.reward.xp+'XP +'+e.reward.coins+'💰';
   spawnParticles(window.innerWidth/2,window.innerHeight*.5,'stars');
@@ -1881,7 +2074,7 @@ function cp(n){const d=document.createElement('div');d.className='cpop';d.textCo
 function sa(sel,el){document.querySelectorAll(sel+' .topt').forEach(x=>x.className='topt');el.classList.add('on');}
 function dist(la1,lo1,la2,lo2){const R=6371e3,f1=la1*Math.PI/180,f2=la2*Math.PI/180,df=(la2-la1)*Math.PI/180,dl=(lo2-lo1)*Math.PI/180;const a=Math.sin(df/2)**2+Math.cos(f1)*Math.cos(f2)*Math.sin(dl/2)**2;return R*2*Math.atan2(Math.sqrt(a),Math.sqrt(1-a));}
 function fmtD(m){return m<1000?Math.round(m)+'m':+(m/1000).toFixed(1)+'km';}
-function save(){try{const d={n:G.name,p:G.petEmoji,pn:G.petName,l:G.level,c:G.coins,st:G.streak,x:G.exp,as:G.actionStat,cs:G.commerceStat,ss:G.socialStat,g:JSON.stringify(G.gear),eg:G.equippedGear||'',sek:G.totalSEK,ts:G.trustScore,posts:G.postCount,b:G.bountiesDone,hu:G.hunger,en:G.energy,mo:G.mood,brands:JSON.stringify(G.brands),circles:JSON.stringify(G.circles),sw:JSON.stringify(G.streakWeek),petCfg:JSON.stringify(G.petConfig),pm:G.premium?1:0,pt:G.premiumTier};for(const k in d)localStorage.setItem('kv8_'+k,d[k]);}catch(e){}}
+function save(){try{const d={n:G.name,p:G.petEmoji,pn:G.petName,l:G.level,c:G.coins,st:G.streak,x:G.exp,as:G.actionStat,cs:G.commerceStat,ss:G.socialStat,g:JSON.stringify(G.gear),eg:G.equippedGear||'',sek:G.totalSEK,ts:G.trustScore,posts:G.postCount,b:G.bountiesDone,hu:G.hunger,en:G.energy,mo:G.mood,brands:JSON.stringify(G.brands),circles:JSON.stringify(G.circles),sw:JSON.stringify(G.streakWeek),petCfg:JSON.stringify(G.petConfig),pm:G.premium?1:0,pt:G.premiumTier,wld:G.world,bond:JSON.stringify(G.todayBond),bdate:G.bondDate};for(const k in d)localStorage.setItem('kv8_'+k,d[k]);}catch(e){}}
 
 // ── DNA + MOOD SYSTEM ──
 function getPetDNA(){
@@ -2383,7 +2576,7 @@ function submitFlash(){
   G.streak++;G.postCount++;
   const day=new Date().getDay();G.streakWeek[day===0?6:day-1]=true;
   FLASH_POSTS.unshift({id:'fl'+Date.now(),user:G.name||'Du',pet:gS().e,lvl:G.level,up:'Daglig Flash #'+G.postCount,cap:cap||'⚡ Flash! '+new Date().toLocaleTimeString('sv',{hour:'2-digit',minute:'2-digit'}),xp:'+20 XP',likes:0,live:false,streak:G.streak});
-  gainXP(20,'social');gainCoins(10);
+  gainXP(20,'social');gainCoins(10);markBond('flash');
   G.flashImg=null;$('flashCaption').value='';$('flashPrev').style.display='none';$('flashPH').style.display='';$('flashUpArea').style.borderColor='';
   closeModal('flashModal');renderFlashFeed();updateHUD();updatePetView();vibe([30,20,80]);SFX.win();
   advanceQuest('post');checkAchievements();
@@ -2410,7 +2603,7 @@ function sendCircleMsg(){
   const inp=$('cwCircleInp');const txt=inp.value.trim();if(!txt)return;inp.value='';
   const c=[...CIRCLES_DATA,...G.circles].find(x=>x.id===G.currentCircle);if(c){if(!c.msgs)c.msgs=[];c.msgs.push({from:G.name,em:gS().e,txt,t:'nu',me:true});c.lastMsg='Du: '+txt;}
   const d=document.createElement('div');d.innerHTML=`<div><div class="msg me">${txt}</div><div class="msg-t" style="text-align:right">nu</div></div>`;
-  $('cwCircleMsgs').appendChild(d);$('cwCircleMsgs').scrollTop=$('cwCircleMsgs').scrollHeight;vibe(15);gainXP(1,'social');
+  $('cwCircleMsgs').appendChild(d);$('cwCircleMsgs').scrollTop=$('cwCircleMsgs').scrollHeight;vibe(15);gainXP(1,'social');markBond('chat');
   const replies=['🔥 Yes!','Haha 😂','🔥🔥🔥','GG!','⚡⚡⚡','Snyggt!! 👑','Alltid 💪'];
   setTimeout(()=>{const d2=document.createElement('div');d2.innerHTML=`<div><div class="msg-name">🐉 ella_sthlm</div><div class="msg them">${replies[~~(Math.random()*replies.length)]}</div><div class="msg-t">nu</div></div>`;$('cwCircleMsgs').appendChild(d2);$('cwCircleMsgs').scrollTop=$('cwCircleMsgs').scrollHeight;},600+Math.random()*1000);
 }
@@ -2634,6 +2827,7 @@ function nav(name){
     lb:()=>renderLB('money',document.querySelector('#lbTabs .tab')),
     profile:()=>{updateHUD();renderHistList();renderBadges();},
     explore:()=>{const el=$('explorePetLv');if(el)el.textContent='LV'+G.level;},
+    market:()=>{renderMkt();},
     launch:()=>{}
   }[name]||(() => {}))();
 }
@@ -2672,21 +2866,222 @@ function cM(){closeLDrawer();}
 
 // ── ONBOARDING ──
 let obPet='🐉';
-$('obPetGrid').innerHTML=PETS.map(p=>`<div class="obp ${p===obPet?'sel':''}" data-p="${p}" onclick="pickPet(this)">${p}</div>`).join('');
-function pickPet(el){document.querySelectorAll('.obp').forEach(x=>x.classList.remove('sel'));el.classList.add('sel');obPet=el.dataset.p;vibe(15);}
+const PET_NAMES={'🐉':'Eldraken','🐺':'ShadowFang','🦊':'FoxKit','🐱':'Luna','🐸':'Ribbit','🦋':'DreamWing','🐻':'BearBear','🦁':'Roar','🐯':'Stripe','🐨':'Kozy'};
+$('obPetGrid').innerHTML=PETS.map(p=>`<div class="ob-pb ${p===obPet?'sel':''}" data-p="${p}" onclick="pickPet(this)"><span class="ob-pb-em">${p}</span><div class="ob-pb-nm">${PET_NAMES[p]||p}</div></div>`).join('');
+function pickPet(el){document.querySelectorAll('.ob-pb').forEach(x=>x.classList.remove('sel'));el.classList.add('sel');obPet=el.dataset.p;vibe(15);}
+// ── ONBOARDING ──
+let obWorld='cosmic';
+let _obFed=false;
+function pickWorld(el){
+  document.querySelectorAll('.ob-world').forEach(x=>x.classList.remove('sel'));
+  el.classList.add('sel');obWorld=el.dataset.world;
+  applyWorldTheme(obWorld,$('obBg'));
+  vibe(15);
+}
+function applyWorldTheme(world,container){
+  const themes={
+    cosmic:{sky:'#07040f,#0d0519',floor:'#0a0410,#060215',accent:'#BF5FFF',stars:['✨','⭐','🌟','💫','🔮']},
+    nature:{sky:'#04100a,#081a06',floor:'#040d02,#060f04',accent:'#39FF14',stars:['🌿','🍃','✨','🌱','🍀']},
+    city:  {sky:'#04080f,#080418',floor:'#020508,#050215',accent:'#00D9FF',stars:['✨','💡','⚡','🌃','💎']},
+    pixel: {sky:'#0a0800,#140c00',floor:'#080600,#0c0800',accent:'#FF9F0A',stars:['⭐','✨','🎮','🕹️','💥']},
+  };
+  const t=themes[world]||themes.cosmic;
+  document.documentElement.style.setProperty('--world-accent',t.accent);
+  if(container){
+    container.innerHTML='';
+    // stars/floating emojis
+    for(let i=0;i<18;i++){
+      const s=document.createElement('div');
+      s.className='ob-bg-star';
+      s.style.cssText=`left:${Math.random()*100}%;top:${Math.random()*100}%;width:${1+Math.random()*2}px;height:${1+Math.random()*2}px;--dur:${2+Math.random()*4}s;--del:${-Math.random()*5}s;opacity:0`;
+      container.appendChild(s);
+    }
+    const emojis=t.stars;
+    for(let i=0;i<8;i++){
+      const e=document.createElement('div');
+      e.className='ob-float-em';
+      e.style.cssText=`left:${5+Math.random()*88}%;--dur:${5+Math.random()*8}s;--del:${-Math.random()*8}s;--sz:${14+Math.random()*18}px`;
+      e.textContent=emojis[Math.floor(Math.random()*emojis.length)];
+      container.appendChild(e);
+    }
+  }
+}
 function obNext(step){
+  if(step===0){G.world=obWorld;applyWorldTheme(obWorld,$('obBg'));}
   if(step===1){const n=$('obName').value.trim();if(!n){showT('❌ Skriv ditt namn','r');return;}G.name=n;}
-  if(step===2){const pn=$('obPetName').value.trim();if(!pn){showT('❌ Ge din pet ett namn','r');return;}G.petName=pn;G.petEmoji=obPet;}
-  document.querySelectorAll('.ob-step').forEach(s=>s.style.display='none');$('obs'+step).style.display='block';vibe(20);
+  if(step===2){
+    const pn=$('obPetName').value.trim();if(!pn){showT('❌ Ge din pet ett namn','r');return;}
+    G.petName=pn;G.petEmoji=obPet;
+    const bp=$('obBigPet');if(bp)bp.textContent=obPet;
+    const pw=$('obPetWelcome');if(pw)pw.textContent='Välkommen, '+pn+'!';
+    _obFed=false;
+  }
+  document.querySelectorAll('.ob-step').forEach(s=>s.style.display='none');
+  $('obs'+step).style.display='block';vibe(20);
+}
+function obFeedPet(){
+  if(_obFed)return;
+  _obFed=true;
+  const fb=$('obFeedBtnEl');if(fb){fb.classList.add('done');fb.innerHTML='<span class="ob-feed-ico">✅</span><div style="flex:1"><div class="ob-feed-main" style="color:var(--g)">Pet matad!</div><div class="ob-feed-sub">🍖 Din pet är glad!</div></div>';}
+  const sb=$('obStartBtn');if(sb){sb.disabled=false;sb.style.opacity='1';sb.style.pointerEvents='';}
+  G.hunger=Math.min(100,G.hunger+30);vibe([20,10,40]);SFX.click();
+  floatNum('🍖+30',window.innerWidth/2,window.innerHeight*.35,'var(--o)',16);
 }
 function finishOB(){
   $('ob').style.display='none';$('app').style.display='flex';
+  G.world=obWorld;
   save();updateHUD();nav('home');
   vibe([50,30,100,30,80]);showT('⚡ WELCOME '+(G.name||'').toUpperCase()+'!','g');
   addH('🎮 '+G.name+' joined KARMA v2!');
-  setTimeout(()=>$('circleDot').style.display='inline-block',2000);
+  setTimeout(()=>{initPetRoom();renderBondBar();},200);
   setTimeout(startPetAnim,100);
   setTimeout(initQuests,500);setTimeout(scheduleEvents,10000);SFX.lvlup();
+}
+// Init onboarding background
+setTimeout(()=>{applyWorldTheme('cosmic',$('obBg'));},100);
+
+// ── PET ROOM ──
+const ROOM_ITEMS=[
+  {ico:'🛋️',lv:1, x:12,y:68,sz:'22px',dur:3.2,del:0},
+  {ico:'🪴',lv:2, x:82,y:58,sz:'20px',dur:4.1,del:-.8},
+  {ico:'🍖',lv:1, x:72,y:74,sz:'16px',dur:2.8,del:-.4},
+  {ico:'🕯️',lv:3, x:88,y:24,sz:'18px',dur:5,  del:-1.2},
+  {ico:'⚽',lv:5, x:22,y:72,sz:'17px',dur:3.5,del:-.6},
+  {ico:'🏆',lv:8, x:50,y:18,sz:'20px',dur:4.5,del:-2},
+  {ico:'💎',lv:12,x:35,y:20,sz:'17px',dur:3.8,del:-1},
+  {ico:'🎮',lv:6, x:60,y:70,sz:'18px',dur:4.2,del:-.5},
+];
+const WORLD_ROOMS={
+  cosmic:{sky:'linear-gradient(180deg,#07030f 0%,#0c0420 60%,#080318 100%)',floor:'linear-gradient(180deg,#06040c,#04030a)',stars:20,emojis:['✨','⭐','💫']},
+  nature:{sky:'linear-gradient(180deg,#020d03 0%,#041808 60%,#030d04 100%)',floor:'linear-gradient(180deg,#030c02,#030a02)',stars:12,emojis:['🌿','🍃','🌱']},
+  city:  {sky:'linear-gradient(180deg,#020510 0%,#04051e 60%,#020416 100%)',floor:'linear-gradient(180deg,#030408,#020306)',stars:24,emojis:['💡','⚡','💎']},
+  pixel: {sky:'linear-gradient(180deg,#0a0800 0%,#120e00 60%,#0a0800 100%)',floor:'linear-gradient(180deg,#080600,#060500)',stars:8, emojis:['🎮','🕹️','⭐']},
+};
+function initPetRoom(){
+  const w=G.world||'cosmic';const rm=WORLD_ROOMS[w]||WORLD_ROOMS.cosmic;
+  const hero=$('petRoomLayer');if(!hero)return;
+  const sky=$('prlSky');if(sky)sky.style.background=rm.sky;
+  const fl=hero.querySelector('.prl-floor');if(fl)fl.style.background=rm.floor;
+  // clear old stars/items
+  hero.querySelectorAll('.prl-star,.prl-item').forEach(e=>e.remove());
+  // generate stars
+  for(let i=0;i<rm.stars;i++){
+    const s=document.createElement('div');s.className='prl-star';
+    const sz=0.8+Math.random()*1.8;
+    s.style.cssText=`left:${Math.random()*100}%;top:${Math.random()*60}%;width:${sz}px;height:${sz}px;--dur:${2+Math.random()*4}s;--del:${-Math.random()*4}s;`;
+    hero.appendChild(s);
+  }
+  // floating emojis (world-specific)
+  for(let i=0;i<3;i++){
+    const e=document.createElement('div');e.className='prl-item';
+    const em=rm.emojis[i%rm.emojis.length];
+    e.style.cssText=`left:${5+i*28}%;top:${20+Math.random()*30}%;--sz:16px;--dur:${3+Math.random()*2}s;--del:${-i*0.8}s;`;
+    e.textContent=em;e.title='Dekor';
+    hero.appendChild(e);
+  }
+  // room items based on level
+  ROOM_ITEMS.filter(it=>G.level>=it.lv).forEach(it=>{
+    const d=document.createElement('div');d.className='prl-item';
+    d.style.cssText=`left:${it.x}%;top:${it.y}%;--sz:${it.sz};--dur:${it.dur}s;--del:${it.del}s;`;
+    d.textContent=it.ico;d.title=it.ico;
+    d.onclick=()=>{floatNum('💖',d.getBoundingClientRect().left,d.getBoundingClientRect().top,'var(--pk)',14);vibe(10);};
+    hero.appendChild(d);
+  });
+  // apply world bg to pet-hero
+  const ph=document.querySelector('.pet-hero');
+  if(ph){const bgs={cosmic:'linear-gradient(180deg,#07040f 0%,#030d07 50%,#040a09 100%)',nature:'linear-gradient(180deg,#030d03 0%,#051205 50%,#040a04 100%)',city:'linear-gradient(180deg,#03040f 0%,#040318 50%,#030412 100%)',pixel:'linear-gradient(180deg,#0a0800 0%,#0c0a00 50%,#0a0800 100%)'};ph.style.background=bgs[w]||bgs.cosmic;}
+}
+
+// ── DAILY BOND ──
+function checkBondDate(){
+  const today=new Date().toDateString();
+  if(G.bondDate!==today){G.bondDate=today;G.todayBond={flash:false,chat:false,quest:false,market:false};}
+}
+function markBond(type){
+  checkBondDate();
+  if(G.todayBond[type])return;
+  G.todayBond[type]=true;
+  const rewards={flash:()=>{G.hunger=Math.min(100,G.hunger+30);showT('⚡ Flash → 🍖+30 din pet är glad!','g');},chat:()=>{G.mood=Math.min(100,G.mood+20);showT('💬 Chat → 💖+20 din pet är lycklig!','p');},quest:()=>{gainXP(25,'action');showT('⚔️ Quest → +25 XP till din pet!','pk');},market:()=>{gainCoins(15);showT('🛍️ Handel → +15 coins!','y');}};
+  (rewards[type]||(() => {}))();
+  renderBondBar();vibe([20,10,30]);updatePetView();
+  // Check if all done
+  if(Object.values(G.todayBond).every(Boolean)){gainXP(50,'social');gainCoins(25);showT('🌟 ALL DAILY BONDS DONE! +50XP +25⚡','g');SFX.win();vibe([30,20,60,20,80]);}
+}
+function renderBondBar(){
+  checkBondDate();
+  ['flash','chat','quest','market'].forEach(k=>{
+    const el=$('bond-'+k);if(el)el.classList.toggle('done',!!G.todayBond[k]);
+  });
+}
+
+// ── MARKETPLACE ──
+const MKT_ITEMS={
+  food:[
+    {ico:'🍖',nm:'Premium Meat',desc:'Hunger +50',price:30,eff:()=>{G.hunger=Math.min(100,G.hunger+50);}},
+    {ico:'🍕',nm:'Pizza Slice',  desc:'Hunger +30, Mood +10',price:18,eff:()=>{G.hunger=Math.min(100,G.hunger+30);G.mood=Math.min(100,G.mood+10);}},
+    {ico:'🍯',nm:'Honey Jar',   desc:'Energy +40',price:22,eff:()=>{G.energy=Math.min(100,G.energy+40);}},
+    {ico:'🧃',nm:'Energy Drink', desc:'Energy +60',price:40,eff:()=>{G.energy=Math.min(100,G.energy+60);}},
+    {ico:'🍰',nm:'Birthday Cake',desc:'All stats +20',price:65,eff:()=>{G.hunger=Math.min(100,G.hunger+20);G.mood=Math.min(100,G.mood+20);G.energy=Math.min(100,G.energy+20);}},
+    {ico:'🎂',nm:'Mega Feast',   desc:'All stats MAX',price:150,eff:()=>{G.hunger=100;G.mood=100;G.energy=100;}},
+  ],
+  gear:[
+    {ico:'⚔️',nm:'Battle Sword',  desc:'+25% battle DMG',price:80,eff:()=>{}},
+    {ico:'🛡️',nm:'Dragon Shield', desc:'-30% battle DMG',price:95,eff:()=>{}},
+    {ico:'👑',nm:'King Crown',    desc:'+10% all XP',   price:200,eff:()=>{}},
+    {ico:'🎒',nm:'Adventure Bag', desc:'+15 coins/quest',price:120,eff:()=>{}},
+    {ico:'🥊',nm:'Power Gloves',  desc:'Combo multiplier',price:140,eff:()=>{}},
+    {ico:'🔮',nm:'Magic Orb',     desc:'+20% mood gain', price:175,eff:()=>{}},
+  ],
+  deco:[
+    {ico:'🛋️',nm:'Cozy Sofa',    desc:'Pet room item',price:45,eff:()=>{}},
+    {ico:'🪴',nm:'Cactus Plant',  desc:'Pet room item',price:35,eff:()=>{}},
+    {ico:'🕯️',nm:'Glowing Candle',desc:'Pet room item',price:28,eff:()=>{}},
+    {ico:'🎨',nm:'Art Canvas',    desc:'Pet room item',price:55,eff:()=>{}},
+    {ico:'🌙',nm:'Moon Lamp',     desc:'Pet room item',price:40,eff:()=>{}},
+    {ico:'🏆',nm:'Trophy Case',   desc:'Pet room item',price:90,eff:()=>{}},
+  ],
+  rare:[
+    {ico:'💎',nm:'Blue Diamond',  desc:'Rare: +500 XP',  price:500,eff:()=>{gainXP(500,'action');}},
+    {ico:'🌟',nm:'Star Fragment', desc:'Rare: +200 coins',price:350,eff:()=>{G.coins+=200;}},
+    {ico:'🧬',nm:'DNA Upgrade',   desc:'Rare: Pet evolve',price:800,eff:()=>{G.level+=1;triggerLvlUp();}},
+    {ico:'🔑',nm:'World Key',     desc:'Unlock new world',price:450,eff:()=>{showT('🔑 New world unlocked!','p');}},
+  ],
+};
+let _mktTab='food';
+function switchMkt(tab,el){
+  _mktTab=tab;
+  document.querySelectorAll('.mkt-cat').forEach(x=>x.classList.remove('on'));
+  if(el)el.classList.add('on');
+  renderMkt();
+}
+function renderMkt(){
+  const el=$('mktContent');if(!el)return;
+  markBond('market');
+  if(_mktTab==='sell'){
+    el.innerHTML=`<div style="padding:16px 14px 8px;font-size:13px;color:var(--t2)">Dina items till salu:</div>
+    <div style="margin:0 14px">
+      ${G.gear.length?G.gear.map(gid=>{const g=GEAR.find(x=>x.id===gid);if(!g)return'';return`<div class="mkt-sell-row"><div style="font-size:28px;width:40px">${g.em}</div><div style="flex:1"><div style="font-size:13px;font-weight:700">${g.nm}</div><div style="font-size:10px;color:var(--t3)">${g.st}</div></div><button class="mkt-sell-btn" style="flex:none;padding:8px 14px" onclick="sellItem('${g.id}',${Math.floor(g.cost*.6)})">Sälj ${Math.floor(g.cost*.6)}⚡</button></div>`;}).join(''):'<div style="text-align:center;padding:40px 20px;color:var(--t3)">Inget att sälja ännu</div>'}
+    </div>
+    <div style="padding:0 14px 12px">
+      <button class="mkt-sell-btn btn-full" style="width:100%" onclick="showT('📸 Foto-funktion kommer snart!','p')">📸 Sälj en IRL-produkt</button>
+    </div>`;
+    return;
+  }
+  const items=MKT_ITEMS[_mktTab]||[];
+  el.innerHTML=`<div class="mkt-grid">${items.map((it,i)=>`<div class="mkt-card" onclick="buyMktItem(${i})"><span class="mkt-em">${it.ico}</span><div class="mkt-nm">${it.nm}</div><div class="mkt-desc">${it.desc}</div><div class="mkt-footer"><span class="mkt-price">${it.price}⚡</span><button class="mkt-buy" onclick="event.stopPropagation();buyMktItem(${i})">KÖP</button></div></div>`).join('')}</div>`;
+}
+function buyMktItem(i){
+  const items=MKT_ITEMS[_mktTab]||[];const it=items[i];if(!it)return;
+  if(G.coins<it.price){showT('❌ Behöver '+it.price+'⚡','r');SFX.error();return;}
+  G.coins-=it.price;it.eff();gainXP(5,'commerce');
+  vibe([20,10,40]);SFX.coin();showT(it.ico+' '+it.nm+' köpt!','g');
+  updateHUD();updatePetView();renderMkt();
+}
+function sellItem(id,price){
+  const idx=G.gear.indexOf(id);if(idx<0)return;
+  G.gear.splice(idx,1);if(G.equippedGear===GEAR.find(x=>x.id===id)?.em)G.equippedGear=null;
+  G.coins+=price;gainXP(3,'commerce');SFX.coin();
+  showT('💰 Sålt för '+price+'⚡','y');updateHUD();renderMkt();
 }
 
 // ── LOAD ──
@@ -2707,6 +3102,9 @@ try{
     try{G.streakWeek=JSON.parse(localStorage.getItem('kv8_sw')||'[false,false,false,false,false,false,false]');}catch(e){G.streakWeek=[false,false,false,false,false,false,false];}
     try{const pc=localStorage.getItem('kv8_petCfg');if(pc)G.petConfig=JSON.parse(pc);}catch(e){}
     G.premium=localStorage.getItem('kv8_pm')==='1';G.premiumTier=parseInt(localStorage.getItem('kv8_pt')||'0');
+    G.world=localStorage.getItem('kv8_wld')||'cosmic';
+    G.bondDate=localStorage.getItem('kv8_bdate')||'';
+    try{const b=localStorage.getItem('kv8_bond');if(b)G.todayBond=JSON.parse(b);}catch(e){}
     const _today=new Date().toDateString();const _last=localStorage.getItem('kv8_lastLogin');
     if(_last!==_today){localStorage.setItem('kv8_lastLogin',_today);if(_last){const _b=G.premium?300:75;G.coins+=_b;setTimeout(()=>{showT('🎁 DAILY LOGIN BONUS! +'+_b+' COINS','g');vibe([30,20,60,20,80]);},2500);}}
     $('ob').style.display='none';$('app').style.display='flex';updateHUD();nav('home');
@@ -2714,6 +3112,7 @@ try{
     setTimeout(startPetAnim,150);
     setTimeout(initQuests,300);
     setTimeout(scheduleEvents,8000);
+    setTimeout(()=>{checkBondDate();initPetRoom();renderBondBar();},400);
   }
 }catch(e){}
 
