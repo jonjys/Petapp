@@ -1180,6 +1180,34 @@ textarea.inp{resize:none;min-height:68px;}
 .kw-map-badge.pk{border-color:rgba(255,45,85,.5);color:var(--pk);}
 .kw-district.kw-locked{opacity:.5;filter:grayscale(.6);}
 .kw-fw-stats{font-size:8px;color:var(--t3);font-family:var(--mono);}
+/* Pet speech bubble */
+.pet-speech-bubble{position:absolute;top:-8px;left:50%;transform:translateX(-50%) translateY(-100%);background:rgba(255,255,255,.97);color:#111;padding:8px 16px;border-radius:18px 18px 18px 5px;font-size:13px;font-weight:900;white-space:nowrap;box-shadow:0 6px 22px rgba(0,0,0,.35);z-index:20;animation:bubblePop .3s cubic-bezier(.34,1.56,.64,1);pointer-events:none;max-width:200px;text-align:center;}
+.pet-speech-bubble::after{content:'';position:absolute;bottom:-8px;left:18px;border:5px solid transparent;border-top-color:rgba(255,255,255,.97);}
+@keyframes bubblePop{from{opacity:0;transform:translateX(-50%) translateY(-100%) scale(.5);}to{opacity:1;transform:translateX(-50%) translateY(-100%) scale(1);}}
+/* Needs row */
+.needs-row{display:flex;justify-content:center;gap:6px;padding:4px 12px 10px;}
+.need-chip{display:flex;align-items:center;gap:4px;padding:4px 10px;border-radius:20px;font-size:10px;font-weight:800;border:1.5px solid;cursor:pointer;-webkit-tap-highlight-color:transparent;transition:all .25s;}
+.need-chip.ok{background:rgba(57,255,20,.06);border-color:rgba(57,255,20,.25);color:var(--g);}
+.need-chip.warn{background:rgba(255,159,10,.08);border-color:rgba(255,159,10,.4);color:var(--o);animation:chipWarn .9s ease-in-out infinite;}
+.need-chip.crit{background:rgba(255,45,85,.1);border-color:rgba(255,45,85,.6);color:var(--pk);animation:chipWarn .45s ease-in-out infinite;}
+@keyframes chipWarn{0%,100%{transform:scale(1);}50%{transform:scale(1.07);}}
+/* Care button urgency */
+.chb.urgent{animation:urgentPulse .75s ease-in-out infinite;}
+@keyframes urgentPulse{0%,100%{box-shadow:0 0 0 0 currentColor;transform:scale(1);}50%{box-shadow:0 0 16px 3px rgba(255,159,10,.2);transform:scale(1.025);}}
+/* Float hearts */
+.float-heart{position:fixed;pointer-events:none;font-size:24px;z-index:9999;animation:floatUp 1.1s ease-out forwards;}
+@keyframes floatUp{0%{opacity:1;transform:translateY(0) scale(1) rotate(-10deg);}100%{opacity:0;transform:translateY(-90px) scale(1.5) rotate(10deg);}}
+/* Fish biting state */
+.fish-cast-btn.biting{border-color:rgba(255,220,0,1) !important;color:#000 !important;background:linear-gradient(135deg,#FFE600,#FF9F0A) !important;font-size:16px !important;letter-spacing:1px !important;animation:bitePulse .32s ease-in-out infinite !important;}
+@keyframes bitePulse{0%,100%{transform:scale(1);box-shadow:0 0 0 0 rgba(255,220,0,.5);}50%{transform:scale(1.04);box-shadow:0 0 24px 6px rgba(255,220,0,.3);}}
+/* Tamagotchi mood face */
+.tama-mood{display:flex;align-items:center;justify-content:center;gap:8px;padding:6px 12px 2px;font-size:11px;font-weight:700;color:var(--t3);}
+.tama-face{font-size:28px;filter:drop-shadow(0 0 8px rgba(57,255,20,.3));animation:tamaBob 2.5s ease-in-out infinite;}
+@keyframes tamaBob{0%,100%{transform:translateY(0);}50%{transform:translateY(-4px);}}
+.tama-state-lbl{font-size:14px;font-weight:900;font-family:var(--mono);letter-spacing:.5px;}
+/* Random pet event toast */
+.pet-event-banner{position:fixed;top:65px;left:50%;transform:translateX(-50%) translateY(-80px);z-index:9000;background:rgba(9,9,16,.97);border:2px solid rgba(57,255,20,.4);border-radius:22px;padding:12px 22px;font-size:13px;font-weight:800;color:var(--g);white-space:nowrap;transition:transform .4s cubic-bezier(.34,1.56,.64,1),opacity .4s;box-shadow:0 8px 30px rgba(0,0,0,.5);opacity:0;font-family:var(--mono);}
+.pet-event-banner.show{transform:translateX(-50%) translateY(0);opacity:1;}
 </style>
 
 </head>
@@ -1377,6 +1405,17 @@ textarea.inp{resize:none;min-height:68px;}
         <div class="chb chb-talk" onclick="pcTalk()"><span class="chb-ico">💬</span><span class="chb-lbl">PRATA</span><span class="chb-val">+BOND</span></div>
       </div>
 
+      <!-- NEEDS INDICATORS -->
+      <div class="needs-row" id="needsRow">
+        <div class="need-chip ok" id="needHunger" onclick="pcFeed()">🍖 <span id="needHungerV">80</span></div>
+        <div class="need-chip ok" id="needEnergy" onclick="pcSleep()">⚡ <span id="needEnergyV">100</span></div>
+        <div class="need-chip ok" id="needMood" onclick="pcPlay()">💖 <span id="needMoodV">90</span></div>
+      </div>
+      <!-- TAMAGOTCHI MOOD -->
+      <div class="tama-mood">
+        <span class="tama-face" id="tamaFace">😊</span>
+        <span class="tama-state-lbl" id="tamaState" style="color:var(--g)">GLAD</span>
+      </div>
       <!-- DAILY BOND — social actions feed your pet -->
       <div class="bond-section">
         <div class="bond-header">
@@ -2167,7 +2206,7 @@ textarea.inp{resize:none;min-height:68px;}
     <div style="font-size:16px;font-weight:900;color:var(--b);flex:1;text-align:center;letter-spacing:1px;font-family:var(--mono)">🎣 FISKA</div>
     <div id="fishScoreTop" style="font-size:12px;font-weight:900;color:var(--y);font-family:var(--mono)">0 FISKAR</div>
   </div>
-  <div class="fish-scene" id="fishScene" onclick="onFishSceneTap(event)">
+  <div class="fish-scene" id="fishScene" onclick="onFishSceneTap(event)" ontouchstart="onFishSceneTap(event)">
     <div class="fish-sky">
       <div style="position:absolute;top:8px;left:18px;font-size:11px;color:rgba(255,255,255,.15);letter-spacing:1px">✦ ✦ ✦</div>
     </div>
@@ -2931,12 +2970,13 @@ function redrawPetCanvas(){
   if(canvas)drawPetFrame(canvas,G.petConfig,petAnimState);
 }
 
-function onPetTap(event){
-  petAnimState.squish=1;
-  petAnimState.jumpVY=-7;
-  vibe(25);
-  spawnParticles(event.clientX,event.clientY,'hearts');
-  mgTap();
+function onPetTap(e){
+  pcReact('happy');const emotes=['💖','⭐','✨','💫','🌟'];
+  showPetEmote(emotes[~~(Math.random()*emotes.length)]);
+  petAnimState.jumpVY=-9;SFX.click();gainXP(1,'social');
+  spawnFloatHeart(e.clientX,e.clientY);
+  const msgs=['Kram! 💖','Peta mig mer! 👉','Hehehe 😊','Jag gillar det! ⭐'];
+  showPetSpeech(msgs[~~(Math.random()*msgs.length)],2000);
 }
 
 function spawnParticles(x,y,type='hearts'){
@@ -3111,6 +3151,7 @@ function updatePetView(){
   else if(G.hunger<20||G.mood<20){petAnimState.mood='hungry';}
   else if(G.energy<15){petAnimState.mood='sleeping';}
   else if(petAnimState.mood!=='idle'&&petAnimState.mood!=='sleeping')petAnimState.mood='idle';
+  updateNeedsRow();updateTamaFace();updateCareUrgency();
 }
 
 // ── GEAR ──
@@ -3593,7 +3634,8 @@ function fishCast(){
 function triggerFishBite(){
   _fishState.biting=true;_fishState.catchWindow=true;
   const bob=$('fishBob');if(bob){bob.classList.add('nibble');bob.style.boxShadow='0 0 18px rgba(255,200,0,.9)';}
-  $('fishStatus').textContent='🐟 NAPP! TAP SNABBT! ';const prompt=$('fishTapPrompt');if(prompt){prompt.style.display='block';}
+  const btn2=$('fishCastBtn');if(btn2){btn2.className='fish-cast-btn biting';btn2.textContent='🐟 RYCK! RYCK! RYCK!';}
+  $('fishStatus').textContent='🐟🐟 NAPP! TRYCK PÅ KNAPPEN NU! 🐟🐟';const prompt=$('fishTapPrompt');if(prompt){prompt.style.display='block';}
   vibe([40,30,60]);
   _fishState.catchTimer=setTimeout(()=>{
     if(_fishState.biting){_fishState.biting=false;_fishState.casting=false;_fishState.catchWindow=false;resetFishState('💨 Fisken rymde! Försök igen...');}
@@ -4003,6 +4045,79 @@ function sellItem(id,price){
   showT('💰 Sålt för '+price+'⚡','y');updateHUD();renderMkt();
 }
 
+// ── TAMAGOTCHI LIFE SYSTEM ──
+const PET_SPEECH_MSGS={
+  hungry:['배고파! 🍖','HUNGRIG!!! 😰','Ge mig mat! 🍖','Magen kurrar... 🍖'],
+  tired:['Sova... 💤','Trött... 😴','Zzzzz... 💤','Behöver vila...'],
+  happy:['Kram! 💖','Jag älskar dig! 💕','YAYYY! 🎉','Leka mer! 🎮','Du är bäst! ⭐'],
+  bored:['Lek med mig... 😑','Tråkigt 😒','Gör nåt! 🙄','...'],
+  idle:['Hej! 👋','Titta på mig! ⭐','*gäspar*','Vad händer? 🤔','Peta mig! 👉'],
+};
+let _speechTimer=null;
+function showPetSpeech(msg,dur=2800){
+  const wrap=$('petAvWrap');if(!wrap)return;
+  const old=wrap.querySelector('.pet-speech-bubble');if(old)old.remove();
+  const bub=document.createElement('div');bub.className='pet-speech-bubble';bub.textContent=msg;
+  wrap.appendChild(bub);setTimeout(()=>{if(bub.parentNode)bub.remove();},dur);
+}
+function schedulePetSpeech(){
+  clearTimeout(_speechTimer);
+  const pool=G.hunger<25?PET_SPEECH_MSGS.hungry:G.energy<20?PET_SPEECH_MSGS.tired:G.mood>75?PET_SPEECH_MSGS.happy:G.mood<30?PET_SPEECH_MSGS.bored:PET_SPEECH_MSGS.idle;
+  showPetSpeech(pool[Math.floor(Math.random()*pool.length)]);
+  _speechTimer=setTimeout(schedulePetSpeech,6000+Math.random()*5000);
+}
+function updateNeedsRow(){
+  const hc=$('needHunger'),ec=$('needEnergy'),mc=$('needMood');
+  const hv=$('needHungerV'),ev=$('needEnergyV'),mv=$('needMoodV');
+  if(hv)hv.textContent=G.hunger;if(ev)ev.textContent=G.energy;if(mv)mv.textContent=G.mood;
+  if(hc)hc.className='need-chip '+(G.hunger<20?'crit':G.hunger<40?'warn':'ok');
+  if(ec)ec.className='need-chip '+(G.energy<15?'crit':G.energy<30?'warn':'ok');
+  if(mc)mc.className='need-chip '+(G.mood<20?'crit':G.mood<40?'warn':'ok');
+}
+function updateTamaFace(){
+  const face=$('tamaFace'),lbl=$('tamaState');if(!face||!lbl)return;
+  if(G.hunger<20||G.mood<20){face.textContent='😢';lbl.textContent='LEDSEN';lbl.style.color='var(--pk)';}
+  else if(G.energy<15){face.textContent='😴';lbl.textContent='TRÖTT';lbl.style.color='var(--b)';}
+  else if(G.hunger>70&&G.mood>70&&G.energy>50){face.textContent='🤩';lbl.textContent='SUPERGLAD';lbl.style.color='var(--y)';}
+  else if(G.mood>60&&G.hunger>50){face.textContent='😊';lbl.textContent='GLAD';lbl.style.color='var(--g)';}
+  else{face.textContent='😑';lbl.textContent='MEH';lbl.style.color='var(--t2)';}
+}
+function updateCareUrgency(){
+  const f=document.querySelector('.chb-feed'),s=document.querySelector('.chb-sleep'),m=document.querySelector('.chb-play');
+  if(f)f.classList.toggle('urgent',G.hunger<35);
+  if(s)s.classList.toggle('urgent',G.energy<30);
+  if(m)m.classList.toggle('urgent',G.mood<30);
+}
+function spawnFloatHeart(x,y){
+  const emojis=['💖','💕','✨','⭐','💫','🌟'];
+  for(let i=0;i<3;i++){
+    setTimeout(()=>{
+      const h=document.createElement('div');h.className='float-heart';
+      h.textContent=emojis[~~(Math.random()*emojis.length)];
+      h.style.cssText='left:'+(x-15+Math.random()*30-15)+'px;top:'+(y-10)+'px';
+      document.body.appendChild(h);setTimeout(()=>h.remove(),1200);
+    },i*120);
+  }
+}
+function showPetEventBanner(msg){
+  let banner=$('petEventBanner');
+  if(!banner){banner=document.createElement('div');banner.id='petEventBanner';banner.className='pet-event-banner';document.body.appendChild(banner);}
+  banner.textContent=msg;banner.classList.add('show');
+  setTimeout(()=>banner.classList.remove('show'),3000);
+}
+const PET_RANDOM_EVENTS=[
+  ()=>{gainCoins(20);showPetEventBanner('🪙 '+G.petName+' hittade 20 coins!');showPetSpeech('Jag hittade pengar! 🪙',3000);},
+  ()=>{G.mood=Math.min(100,G.mood+12);updatePetView();showPetEventBanner('💖 '+G.petName+' mår super bra!');showPetSpeech('Yayyy! 🤩',2500);},
+  ()=>{G.hunger=Math.max(0,G.hunger-10);updatePetView();showPetEventBanner('🍖 '+G.petName+' är hungrig!');showPetSpeech('HUNGRIG! 😰',3000);},
+  ()=>{gainXP(15,'social');showPetEventBanner('⭐ '+G.petName+' lärde sig en ny trick!');showPetSpeech('Titta vad jag kan! ⭐',2500);},
+  ()=>{petAnimState.jumpVY=-12;showPetSpeech('Lek med mig!! 🎮',2500);showPetEventBanner('🎮 '+G.petName+' vill leka!');},
+];
+function schedulePetEvents(){
+  setInterval(()=>{
+    if(!G.name||!document.querySelector('#view-home.active'))return;
+    if(Math.random()<.35){PET_RANDOM_EVENTS[~~(Math.random()*PET_RANDOM_EVENTS.length)]();}
+  },45000);
+}
 // ── KARMA WORLD ──
 const KW_DISTRICTS=[
   {id:'social',nm:'Social Hub',ico:'🏙️',col:'#00D9FF',wpReq:0,  statKey:'wldSocial', maxStat:30, desc:'Byggs av chattar & circles'},
@@ -4270,6 +4385,7 @@ try{
     setTimeout(initQuests,300);
     setTimeout(scheduleEvents,8000);
     setTimeout(()=>{checkBondDate();initPetRoom();renderBondBar();},400);
+    setTimeout(()=>{schedulePetSpeech();schedulePetEvents();},2000);
     setTimeout(()=>{updateEvolBadge();renderSocialPower();renderFriendCarePackages();renderCareNotifs();renderStreakMilestones();renderFriendLB();updatePetStatusRings();},600);
   }
 }catch(e){}
