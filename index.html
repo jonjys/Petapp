@@ -1665,6 +1665,10 @@ textarea.inp{resize:none;min-height:68px;}
         <div style="margin-top:8px"><span class="sp-cta" onclick="nav('lb')">SE ALLA RANKINGS →</span></div>
       </div>
 
+      <!-- DAILY CHALLENGES -->
+      <div class="sh"><div class="sh-t">🎯 DAGLIGA UTMANINGAR</div><div class="sh-a" style="font-size:10px;color:var(--y);font-family:var(--mono)" id="dcResetTimer">Återställs imorgon</div></div>
+      <div style="padding:0 14px" id="dailyChallengesContainer"></div>
+
       <!-- SEASONAL EVENT -->
       <div class="event-banner" id="eventBanner" onclick="openSeasonalEvent()">
         <div class="event-banner-glow"></div>
@@ -3424,7 +3428,7 @@ function pcFeed(){
   const mult=_triggerCombo('+30 HUNGER');
   if(mult===1)showT('🍖 +30 HUNGER','g');
   if(Math.random()<.3)addDiaryEntry(G.petName+' åt mat med stor aptit! Hunger är nu '+Math.min(100,G.hunger)+'%. Mums! 🍖');
-  SFX.click();advanceQuest('feed');updateHUD();updatePetView();
+  SFX.click();advanceQuest('feed');advanceDailyChallenge('feed');updateHUD();updatePetView();
 }
 function pcTrain(){
   if(G.energy<20){showT('❌ Låg energi! Sova först.','r');SFX.error();return;}
@@ -3433,7 +3437,7 @@ function pcTrain(){
   const xp=Math.floor(15*mult2());gainXP(xp,'action');
   pcReact('happy');showPetEmote('💪');
   if(mult===1)showT('🏋️ +15 XP','g');
-  SFX.click();advanceQuest('train');
+  SFX.click();advanceQuest('train');advanceDailyChallenge('train');
 }
 function pcSleep(){
   G.energy=Math.min(100,G.energy+40);G.mood=Math.min(100,G.mood+10);
@@ -3464,7 +3468,7 @@ function pcTalk(){
   const mult=_triggerCombo('💖 PET HAPPY');
   if(mult===1)showT('💬 '+G.petName+' älskar dig! 💖','p');
   setTimeout(()=>{petAnimState.mood='idle';},3000);
-  showPetEmote('💬');SFX.click();markBond('chat');updatePetView();
+  showPetEmote('💬');SFX.click();markBond('chat');advanceDailyChallenge('talk');updatePetView();
 }
 function mult2(){return Math.min(2,1+(_comboCount-1)*0.25);}
 function pcReact(m){
@@ -4234,7 +4238,7 @@ function nav(name){
   const btn=document.querySelector('.nb[data-v="'+name+'"]');if(btn)btn.classList.add('on');
   vibe(8);
   ({
-    home:()=>{updatePetView();renderSocialPower();renderFriendCarePackages();renderCareNotifs();renderStreakMilestones();renderFriendLB();updatePetStatusRings();updatePetWeather();if(!_speechTimer)schedulePetSpeech();const st=$('spinTeaserSub');if(st)st.textContent=G.lastSpin===new Date().toDateString()?'✅ Spinnat idag — kom tillbaka imorgon':'🎰 Gratis spin tillgängligt nu!';},
+    home:()=>{updatePetView();renderSocialPower();renderFriendCarePackages();renderCareNotifs();renderStreakMilestones();renderFriendLB();updatePetStatusRings();updatePetWeather();renderDailyChallenges();if(!_speechTimer)schedulePetSpeech();const st=$('spinTeaserSub');if(st)st.textContent=G.lastSpin===new Date().toDateString()?'✅ Spinnat idag — kom tillbaka imorgon':'🎰 Gratis spin tillgängligt nu!';},
     flash:renderFlashFeed,
     circles:renderCircles,
     social:()=>switchSocial('activity',document.querySelector('#socialTabs .tab')),
@@ -4852,6 +4856,89 @@ try{
     setTimeout(()=>{updateEvolBadge();renderSocialPower();renderFriendCarePackages();renderCareNotifs();renderStreakMilestones();renderFriendLB();updatePetStatusRings();},600);
   }
 }catch(e){}
+
+// ══════════════════════════════════════════
+// ── DAILY CHALLENGE SYSTEM ──
+// ══════════════════════════════════════════
+const _DC_TEMPLATES=[
+  {id:'dc1',ico:'🍖',ttl:'Mätta Monstret',desc:'Mata din pet 3 gånger idag',goal:3,stat:'feed',reward:{coins:75,xp:40},col:'rgba(255,159,10,.15)',border:'rgba(255,159,10,.35)'},
+  {id:'dc2',ico:'💪',ttl:'Träningsproffs',desc:'Träna din pet 2 gånger',goal:2,stat:'train',reward:{coins:60,xp:60},col:'rgba(255,45,85,.12)',border:'rgba(255,45,85,.3)'},
+  {id:'dc3',ico:'⚡',ttl:'Flash Legend',desc:'Posta en Flash idag',goal:1,stat:'flash',reward:{coins:50,xp:30},col:'rgba(0,217,255,.12)',border:'rgba(0,217,255,.28)'},
+  {id:'dc4',ico:'🏋️',ttl:'Streak Warrior',desc:'Håll din streak — posta Flash',goal:1,stat:'streak',reward:{coins:80,xp:50},col:'rgba(57,255,20,.1)',border:'rgba(57,255,20,.28)'},
+  {id:'dc5',ico:'💬',ttl:'Social Butterfly',desc:'Prata med din pet 3 gånger',goal:3,stat:'talk',reward:{coins:40,xp:35},col:'rgba(191,95,255,.12)',border:'rgba(191,95,255,.3)'},
+  {id:'dc6',ico:'🌍',ttl:'World Builder',desc:'Tjäna 20 World Points',goal:20,stat:'wp',reward:{coins:100,xp:70},col:'rgba(57,255,20,.12)',border:'rgba(57,255,20,.3)'},
+];
+let _dailyChallenges=[];
+let _dcProgress={};
+let _dcDate='';
+function initDailyChallenges(){
+  const today=new Date().toDateString();
+  if(_dcDate===today&&_dailyChallenges.length>0)return;
+  _dcDate=today;
+  const rng=new Date().getDate();
+  _dailyChallenges=[];
+  for(let i=0;i<3;i++){_dailyChallenges.push(_DC_TEMPLATES[(rng+i)%_DC_TEMPLATES.length]);}
+  const saved=localStorage.getItem('kv8_dcp_'+today);
+  _dcProgress=saved?JSON.parse(saved):{};
+}
+function advanceDailyChallenge(stat,n){
+  initDailyChallenges();
+  const today=new Date().toDateString();
+  _dailyChallenges.forEach(dc=>{
+    if(dc.stat===stat){
+      if(!_dcProgress[dc.id])_dcProgress[dc.id]=0;
+      if(_dcProgress[dc.id]<dc.goal){
+        _dcProgress[dc.id]=Math.min(dc.goal,(_dcProgress[dc.id]||0)+(n||1));
+        if(_dcProgress[dc.id]>=dc.goal&&!_dcProgress[dc.id+'_done']){
+          _dcProgress[dc.id+'_done']=true;
+          gainCoins(dc.reward.coins);gainXP(dc.reward.xp,'action');
+          SFX.win();vibe([30,20,60,20,100]);
+          showT('🎯 '+dc.ttl+' KLAR! +'+dc.reward.coins+'⚡ +'+dc.reward.xp+' XP','y');
+          spawnParticles(window.innerWidth/2,window.innerHeight*.4,'stars');
+          addDiaryEntry('Klarade daglig utmaning: "'+dc.ttl+'"! Fick '+dc.reward.coins+' coins och '+dc.reward.xp+' XP. 🎯');
+        }
+        localStorage.setItem('kv8_dcp_'+today,JSON.stringify(_dcProgress));
+      }
+    }
+  });
+}
+function renderDailyChallenges(){
+  const ct=$('dailyChallengesContainer');if(!ct)return;
+  initDailyChallenges();
+  ct.innerHTML=_dailyChallenges.map(dc=>{
+    const prog=_dcProgress[dc.id]||0;const done=_dcProgress[dc.id+'_done'];
+    const pct=Math.min(100,Math.floor((prog/dc.goal)*100));
+    return`<div style="background:${done?'rgba(57,255,20,.08)':dc.col};border:1.5px solid ${done?'rgba(57,255,20,.4)':dc.border};border-radius:18px;padding:14px 16px;margin-bottom:10px">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px">
+        <span style="font-size:28px">${dc.ico}</span>
+        <div style="flex:1">
+          <div style="font-size:13px;font-weight:900;color:${done?'var(--g)':'var(--t1)'}">${done?'✅ ':''} ${dc.ttl}</div>
+          <div style="font-size:10px;color:var(--t3)">${dc.desc}</div>
+        </div>
+        <div style="text-align:right;font-size:10px;font-weight:900;font-family:var(--mono);color:var(--y)">${dc.reward.coins}⚡<br>${dc.reward.xp}XP</div>
+      </div>
+      <div style="width:100%;height:6px;background:rgba(255,255,255,.08);border-radius:100px;overflow:hidden">
+        <div style="height:100%;width:${pct}%;background:${done?'var(--g)':'linear-gradient(90deg,var(--pk),var(--p))'};border-radius:100px;transition:width .5s"></div>
+      </div>
+      <div style="font-size:9px;font-weight:900;font-family:var(--mono);color:var(--t3);margin-top:4px">${prog}/${dc.goal} ${done?'— KLAR! 🏆':''}</div>
+    </div>`;
+  }).join('');
+}
+
+// Hook daily challenges into actions
+const _origPcFeed2=pcFeed;
+// Wire up advanceDailyChallenge calls from actions via monkey-patch on submitFlash, etc.
+const _origSubmitFlash=submitFlash;
+submitFlash=function(){
+  _origSubmitFlash();
+  advanceDailyChallenge('flash',1);
+  advanceDailyChallenge('streak',1);
+};
+const _origAddWorldPoints=addWorldPoints;
+addWorldPoints=function(n,source){
+  _origAddWorldPoints(n,source);
+  advanceDailyChallenge('wp',n);
+};
 
 // ══════════════════════════════════════════
 // ── PACK OPENING SYSTEM ──
