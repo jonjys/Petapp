@@ -195,13 +195,22 @@ textarea.inp{resize:none;min-height:68px;}
 .st-bf.c{background:var(--y);}
 .st-bf.s{background:var(--b);}
 .st-lbl{font-size:9px;color:var(--t3);text-transform:uppercase;letter-spacing:.7px;margin-top:3px;}
-/* Compact vitals — 2×2 stat grid, clear and readable */
-.vitals-row{display:grid;grid-template-columns:1fr 1fr;gap:7px;padding:4px 14px 10px;}
-.vr-mini{display:flex;align-items:center;gap:7px;background:var(--c1);border:1px solid var(--line);border-radius:13px;padding:9px 11px;}
-.vr-ico{font-size:16px;flex-shrink:0;}
-.vr-bar-wrap{flex:1;height:8px;background:rgba(255,255,255,.07);border-radius:100px;overflow:hidden;}
+/* ── STATS PANEL — SpawnEngine style: big number + small label ── */
+.vitals-row{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:0 14px 12px;}
+.vr-mini{border-radius:18px;padding:13px 14px 11px;display:flex;flex-direction:column;border:1.5px solid;}
+.vr-ico{font-size:10px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:1px;margin-bottom:5px;display:flex;align-items:center;gap:4px;}
+.vr-big-num{font-size:32px;font-weight:900;font-family:var(--mono);line-height:1;margin-bottom:8px;}
+.vr-bar-wrap{width:100%;height:3px;background:rgba(255,255,255,.1);border-radius:100px;overflow:hidden;}
 .vr-bar-fill{height:100%;border-radius:100px;transition:width .6s cubic-bezier(.34,1.56,.64,1);}
-.vr-val{font-size:12px;font-weight:900;font-family:var(--mono);color:var(--t1);width:24px;text-align:right;flex-shrink:0;}
+.vr-val{display:none;}
+.vr-mini.vr-h{background:rgba(255,159,10,.07);border-color:rgba(255,159,10,.3);}
+.vr-mini.vr-h .vr-big-num{color:var(--o);}
+.vr-mini.vr-e{background:rgba(0,217,255,.06);border-color:rgba(0,217,255,.28);}
+.vr-mini.vr-e .vr-big-num{color:var(--b);}
+.vr-mini.vr-m{background:rgba(191,95,255,.07);border-color:rgba(191,95,255,.3);}
+.vr-mini.vr-m .vr-big-num{color:var(--p);}
+.vr-mini.vr-k{background:rgba(57,255,20,.06);border-color:rgba(57,255,20,.28);}
+.vr-mini.vr-k .vr-big-num{color:var(--g);}
 /* CARE HERO — Tamagotchi big buttons */
 .care-section-lbl{font-size:10px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:1px;padding:4px 14px 6px;display:flex;align-items:center;gap:6px;}
 .care-hero{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:0 14px 8px;}
@@ -725,19 +734,24 @@ textarea.inp{resize:none;min-height:68px;}
 /* ═══════════════════════════════════
    BOTTOM NAV — Color-Coded Per Tab
 ═══════════════════════════════════ */
-.bnav{display:flex;align-items:center;background:rgba(6,6,14,.99);backdrop-filter:blur(28px);-webkit-backdrop-filter:blur(28px);border-top:1px solid rgba(255,255,255,.07);padding:5px 0;padding-bottom:calc(5px + var(--sab));flex-shrink:0;z-index:100;}
-.nb{flex:1;background:none;border:none;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:2px;padding:4px;-webkit-tap-highlight-color:transparent;}
-.nb-inner{position:relative;display:inline-flex;}
-.nb .ni{font-size:22px;transition:transform .15s,filter .15s;}
-.nb .nl{font-size:8px;font-weight:800;color:var(--t3);text-transform:uppercase;letter-spacing:.5px;transition:color .15s;}
-.nb[data-v="home"].on .ni{transform:scale(1.18);filter:drop-shadow(0 0 8px #39FF14);}
+.bnav{display:flex;align-items:center;background:rgba(6,6,14,.99);backdrop-filter:blur(28px);-webkit-backdrop-filter:blur(28px);border-top:1px solid rgba(255,255,255,.07);padding:6px 4px;padding-bottom:calc(6px + var(--sab));flex-shrink:0;z-index:100;}
+.nb{flex:1;background:none;border:none;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:3px;padding:4px 2px;-webkit-tap-highlight-color:transparent;border-radius:12px;transition:background .15s;}
+.nb-inner{position:relative;display:inline-flex;width:36px;height:36px;align-items:center;justify-content:center;border-radius:12px;transition:background .15s;}
+.nb .ni{font-size:20px;transition:transform .15s;}
+.nb .nl{font-size:8px;font-weight:800;color:var(--t3);text-transform:uppercase;letter-spacing:.4px;transition:color .15s;}
+/* SpawnEngine-style: colored bg square on active tab */
+.nb[data-v="home"].on .nb-inner{background:rgba(57,255,20,.22);}
 .nb[data-v="home"].on .nl{color:#39FF14;}
-.nb[data-v="flash"].on .ni{transform:scale(1.18);filter:drop-shadow(0 0 8px #FF2D55);}
+.nb[data-v="home"].on .ni{transform:scale(1.1);}
+.nb[data-v="flash"].on .nb-inner{background:rgba(255,45,85,.22);}
 .nb[data-v="flash"].on .nl{color:#FF2D55;}
-.nb[data-v="social"].on .ni{transform:scale(1.18);filter:drop-shadow(0 0 8px #00D9FF);}
+.nb[data-v="flash"].on .ni{transform:scale(1.1);}
+.nb[data-v="social"].on .nb-inner{background:rgba(0,217,255,.2);}
 .nb[data-v="social"].on .nl{color:#00D9FF;}
-.nb[data-v="explore"].on .ni{transform:scale(1.18);filter:drop-shadow(0 0 8px #BF5FFF);}
+.nb[data-v="social"].on .ni{transform:scale(1.1);}
+.nb[data-v="explore"].on .nb-inner{background:rgba(191,95,255,.2);}
 .nb[data-v="explore"].on .nl{color:#BF5FFF;}
+.nb[data-v="explore"].on .ni{transform:scale(1.1);}
 .nb-notif{position:absolute;top:-1px;right:-3px;width:8px;height:8px;border-radius:50%;background:var(--pk);border:1.5px solid #06060e;animation:notifPulse 2s ease infinite;}
 @keyframes notifPulse{0%,100%{transform:scale(1);}50%{transform:scale(1.4);}}
 .nb-create{flex:1;background:none;border:none;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:2px;-webkit-tap-highlight-color:transparent;}
@@ -1395,12 +1409,32 @@ textarea.inp{resize:none;min-height:68px;}
           <span id="tamaFace"></span><span id="tamaState"></span>
         </div>
       </div>
-      <!-- STATS — 2×2 grid with color bars -->
+      <!-- STATS — SpawnEngine tiles: small label → big colored number → thin bar -->
       <div class="vitals-row">
-        <div class="vr-mini"><span class="vr-ico">🍖</span><div class="vr-bar-wrap"><div class="vr-bar-fill" id="vH" style="width:80%;background:var(--o)"></div></div><span class="vr-val" id="vHv">80</span></div>
-        <div class="vr-mini"><span class="vr-ico">⚡</span><div class="vr-bar-wrap"><div class="vr-bar-fill" id="vE" style="width:100%;background:var(--b)"></div></div><span class="vr-val" id="vEv">100</span></div>
-        <div class="vr-mini"><span class="vr-ico">💖</span><div class="vr-bar-wrap"><div class="vr-bar-fill" id="vM" style="width:90%;background:var(--p)"></div></div><span class="vr-val" id="vMv">90</span></div>
-        <div class="vr-mini"><span class="vr-ico">🌟</span><div class="vr-bar-wrap"><div class="vr-bar-fill" id="vK" style="width:42%;background:var(--g)"></div></div><span class="vr-val" id="vKv">42</span></div>
+        <div class="vr-mini vr-h">
+          <div class="vr-ico">🍖 HUNGER</div>
+          <div class="vr-big-num" id="vHv">80</div>
+          <div class="vr-bar-wrap"><div class="vr-bar-fill" id="vH" style="width:80%;background:var(--o)"></div></div>
+          <span class="vr-val"></span>
+        </div>
+        <div class="vr-mini vr-e">
+          <div class="vr-ico">⚡ ENERGI</div>
+          <div class="vr-big-num" id="vEv">100</div>
+          <div class="vr-bar-wrap"><div class="vr-bar-fill" id="vE" style="width:100%;background:var(--b)"></div></div>
+          <span class="vr-val"></span>
+        </div>
+        <div class="vr-mini vr-m">
+          <div class="vr-ico">💖 MOOD</div>
+          <div class="vr-big-num" id="vMv">90</div>
+          <div class="vr-bar-wrap"><div class="vr-bar-fill" id="vM" style="width:90%;background:var(--p)"></div></div>
+          <span class="vr-val"></span>
+        </div>
+        <div class="vr-mini vr-k">
+          <div class="vr-ico">🌟 KARMA</div>
+          <div class="vr-big-num" id="vKv">42</div>
+          <div class="vr-bar-wrap"><div class="vr-bar-fill" id="vK" style="width:42%;background:var(--g)"></div></div>
+          <span class="vr-val"></span>
+        </div>
       </div>
       <!-- CARE BUTTONS -->
       <div class="care-section-lbl">🎮 SKÖT DIN PET</div>
