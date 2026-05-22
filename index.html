@@ -3513,9 +3513,75 @@ function mgTap(){
 }
 
 // ── FLASH ──
+const _FLASH_GRADIENTS=['linear-gradient(160deg,#0d1a2e,#1a0d2e)','linear-gradient(160deg,#0d2418,#1a2e0d)','linear-gradient(160deg,#2e0d1a,#0d1a2e)','linear-gradient(160deg,#1a160d,#0d1a2e)','linear-gradient(160deg,#0d1a1a,#1a0d0d)'];
+const _REACT_EMOJIS=['🔥','💖','😂','🤯','👑'];
 function renderFlashFeed(){
   $('streakCircles').innerHTML=STREAK_USERS.map(s=>`<div class="sc" onclick="showT('${s.add?'📸 Lägg till':'⚡ '+s.user}','pk')"><div class="sc-ring ${s.add?'empty':s.status==='done'?'done':s.status==='missing'?'empty':s.live?'live':'active'}"><div class="sc-inner">${s.em}</div></div><div class="sc-name">${s.user}</div>${s.streak?`<div class="sc-streak">🔥${s.streak}</div>`:''}</div>`).join('');
-  $('flashFeed').innerHTML=FLASH_POSTS.map(p=>`<div class="fv"><div class="fv-media"><div class="fv-bg">${p.pet}</div><div class="fv-right"><div class="fv-action" onclick="likeFlash('${p.id}')"><div class="fv-action-ico" id="fli${p.id}" style="color:${G.likedPosts.has(p.id)?'var(--pk)':'#fff'}">${G.likedPosts.has(p.id)?'❤️':'🤍'}</div><div class="fv-action-cnt" id="flc${p.id}">${p.likes}</div></div><div class="fv-action" onclick="showT('💬 Snart!','p')"><div class="fv-action-ico">💬</div><div class="fv-action-cnt">${~~(p.likes/8)}</div></div><div class="fv-action" onclick="doShare('${p.id}')"><div class="fv-action-ico">↗️</div><div class="fv-action-cnt">Dela</div></div></div><div class="fv-tl"><span class="flash-stamp">⚡ FLASH</span>${p.live?'<span class="live-pill"><div class="ldot"></div>LIVE</span>':''}${p.streak>=7?`<span style="background:rgba(255,68,85,.15);border:1px solid var(--r);color:var(--r);font-size:9px;font-weight:800;padding:2px 7px;border-radius:20px;font-family:var(--mono)">🔥 ${p.streak}d</span>`:''}</div><div class="fv-bl"><span class="xp-pill">${p.xp}</span></div></div><div style="padding:10px 14px;background:var(--c1);border-top:1px solid var(--line);display:flex;gap:7px"><button style="padding:6px 12px;border-radius:20px;background:rgba(255,51,119,.1);border:1px solid rgba(255,51,119,.3);color:var(--pk);font-size:11px;font-weight:800;cursor:pointer;font-family:var(--ff)" onclick="likeFlash('${p.id}')">❤️ Like</button><button style="padding:6px 12px;border-radius:20px;background:var(--c2);border:1px solid var(--line);color:var(--t2);font-size:11px;font-weight:800;cursor:pointer;font-family:var(--ff)" onclick="doShare('${p.id}')">↗ Dela</button><button style="padding:6px 12px;border-radius:20px;background:rgba(170,102,255,.1);border:1px solid rgba(170,102,255,.3);color:var(--p);font-size:11px;font-weight:800;cursor:pointer;font-family:var(--ff)" onclick="showT('⭕ Delat till Circle!','p')">⭕ Circle</button></div><div class="fv-info"><div class="fv-ur"><div class="fv-ava">${p.pet}</div><div><div class="fv-un">${p.user}</div><div class="fv-ref">🎯 ${p.up}</div></div><div style="margin-left:auto"><span class="tag tg">LV ${p.lvl}</span></div></div><div class="fv-cap">${p.cap}</div></div></div>`).join('');
+  $('flashFeed').innerHTML=FLASH_POSTS.map((p,pi)=>{
+    const grad=_FLASH_GRADIENTS[pi%_FLASH_GRADIENTS.length];
+    const liked=G.likedPosts.has(p.id);
+    return`<div class="fv">
+      <div class="fv-media" style="background:${grad}">
+        <div class="fv-bg" style="opacity:.06;font-size:130px">${p.pet}</div>
+        <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:8px">
+          <div style="font-size:72px;filter:drop-shadow(0 0 30px rgba(255,255,255,.2));animation:petBob 3s ease-in-out infinite">${p.pet}</div>
+          <div style="background:rgba(0,0,0,.5);backdrop-filter:blur(8px);border-radius:20px;padding:8px 16px;text-align:center;max-width:240px">
+            <div style="font-size:14px;font-weight:900;color:#fff;margin-bottom:3px">${p.cap}</div>
+            <div style="font-size:10px;color:rgba(255,255,255,.6)">${p.user} · 🔥${p.streak}d</div>
+          </div>
+        </div>
+        <div class="fv-right">
+          <div class="fv-action" onclick="likeFlash('${p.id}')">
+            <div class="fv-action-ico" id="fli${p.id}" style="color:${liked?'var(--pk)':'#fff'};font-size:34px">${liked?'❤️':'🤍'}</div>
+            <div class="fv-action-cnt" id="flc${p.id}">${p.likes}</div>
+          </div>
+          <div class="fv-action" onclick="flashQuickComment('${p.id}')">
+            <div class="fv-action-ico" style="font-size:34px">💬</div>
+            <div class="fv-action-cnt">${~~(p.likes/6)}</div>
+          </div>
+          <div class="fv-action" onclick="doShare('${p.id}')">
+            <div class="fv-action-ico" style="font-size:34px">↗️</div>
+            <div class="fv-action-cnt">Dela</div>
+          </div>
+          <div class="fv-action" onclick="flashSendGift('${p.id}','${p.pet}','${p.user}')">
+            <div class="fv-action-ico" style="font-size:34px">🎁</div>
+            <div class="fv-action-cnt">Gåva</div>
+          </div>
+        </div>
+        <div class="fv-tl">
+          <span class="flash-stamp">⚡ FLASH</span>
+          ${p.live?'<span class="live-pill"><div class="ldot"></div>LIVE</span>':''}
+          ${p.streak>=7?`<span style="background:rgba(255,68,85,.15);border:1px solid var(--r);color:var(--r);font-size:9px;font-weight:800;padding:2px 7px;border-radius:20px;font-family:var(--mono)">🔥 ${p.streak}d</span>`:''}
+        </div>
+        <div class="fv-bl"><span class="xp-pill">${p.xp}</span></div>
+      </div>
+      <div style="padding:8px 14px;background:var(--c1);border-top:1px solid var(--line);display:flex;align-items:center;gap:8px">
+        <div style="flex:1;display:flex;gap:4px">
+          ${_REACT_EMOJIS.map(em=>`<button style="font-size:20px;background:none;border:none;cursor:pointer;padding:2px 4px;-webkit-tap-highlight-color:transparent" onclick="flashReact('${p.id}','${em}')">${em}</button>`).join('')}
+        </div>
+        <div style="display:flex;gap:6px">
+          <div class="fv-ava" style="width:30px;height:30px;font-size:16px">${p.pet}</div>
+          <div><div class="fv-un" style="font-size:12px">${p.user}</div><div style="font-size:9px;color:var(--t3)">LV ${p.lvl}</div></div>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+}
+function flashReact(id,em){
+  vibe([15,10,25]);SFX.click();gainXP(1,'social');
+  const floater=document.createElement('div');
+  floater.textContent=em;
+  floater.style.cssText='position:fixed;left:50%;bottom:40%;font-size:48px;transform:translateX(-50%);pointer-events:none;z-index:999;animation:spop .5s cubic-bezier(.34,1.56,.64,1) forwards;';
+  document.body.appendChild(floater);setTimeout(()=>floater.remove(),600);
+}
+function flashQuickComment(id){
+  const cmts=['🔥 Sjukt bra!!','❤️ Grymmt!','😂 LOL','👑 Legendary!','🤯 Wow!!'];
+  const cmt=cmts[~~(Math.random()*cmts.length)];
+  showT('💬 "'+cmt+'" +2 XP','p');gainXP(2,'social');vibe([15,10,20]);
+}
+function flashSendGift(id,pet,user){
+  openGiftModal();
+  const fname=user.split('_')[0];showT('🎁 Skickar gåva till '+fname+'!','g');
 }
 function likeFlash(id){const p=FLASH_POSTS.find(x=>x.id===id);if(!p)return;if(G.likedPosts.has(id)){G.likedPosts.delete(id);p.likes--;}else{G.likedPosts.add(id);p.likes++;gainXP(2,'social');vibe(15);}$('fli'+id).textContent=G.likedPosts.has(id)?'❤️':'🤍';$('fli'+id).style.color=G.likedPosts.has(id)?'var(--pk)':'#fff';$('flc'+id).textContent=p.likes;}
 function doShare(id){const p=FLASH_POSTS.find(x=>x.id===id);if(!p)return;const txt='⚡ KARMA Flash av '+p.user+'\n'+p.cap;if(navigator.share)navigator.share({title:'KARMA',text:txt});else{navigator.clipboard?.writeText(txt);showT('📋 Kopierat!','g');}}
