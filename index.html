@@ -60,7 +60,8 @@ html,body{height:100%;width:100%;overflow:hidden;background:var(--bg);font-famil
 .nb.on .ni{transform:scale(1.12);filter:drop-shadow(0 0 8px var(--g));}
 .nb.on .nl{color:var(--g);}
 .nb-flash{flex:1;background:none;border:none;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:2px;}
-.flash-btn{width:54px;height:54px;border-radius:16px;background:linear-gradient(135deg,var(--pk),var(--p));display:flex;align-items:center;justify-content:center;font-size:24px;margin-top:-18px;box-shadow:0 8px 24px rgba(255,51,119,.4);transition:all .12s;}
+.flash-btn{width:58px;height:58px;border-radius:18px;background:linear-gradient(135deg,var(--pk),var(--p));display:flex;align-items:center;justify-content:center;font-size:26px;margin-top:-22px;box-shadow:0 8px 28px rgba(255,51,119,.5);transition:all .12s;animation:flashBtnPulse 3s ease-in-out infinite;}
+@keyframes flashBtnPulse{0%,100%{box-shadow:0 8px 28px rgba(255,51,119,.5);}50%{box-shadow:0 8px 36px rgba(255,51,119,.75),0 0 0 6px rgba(255,51,119,.12);}}
 .nb-flash:active .flash-btn{transform:scale(.88);}
 .flash-lbl{font-size:9px;font-weight:700;color:var(--pk);text-transform:uppercase;letter-spacing:.3px;}
 .pc{position:fixed;right:12px;bottom:calc(80px + var(--sab));z-index:48;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:2px;}
@@ -194,24 +195,38 @@ textarea.inp{resize:none;min-height:68px;}
 .st-bf.c{background:var(--y);}
 .st-bf.s{background:var(--b);}
 .st-lbl{font-size:9px;color:var(--t3);text-transform:uppercase;letter-spacing:.7px;margin-top:3px;}
-/* Compact vitals inside pet hero */
-.vitals-row{display:flex;gap:8px;padding:0 16px 6px;}
-.vr-mini{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;}
-.vr-ico{font-size:14px;}
-.vr-bar-wrap{width:100%;height:5px;background:var(--c3);border-radius:100px;overflow:hidden;}
-.vr-bar-fill{height:100%;border-radius:100px;transition:width .5s;}
-.vr-val{font-size:9px;font-weight:700;font-family:var(--mono);color:var(--t3);}
-/* CARE HERO — big game buttons */
-.care-hero{display:grid;grid-template-columns:repeat(4,1fr);gap:9px;margin:0 12px 10px;}
-.chb{background:var(--c1);border:1.5px solid var(--line);border-radius:18px;padding:14px 6px;text-align:center;cursor:pointer;transition:all .1s;-webkit-tap-highlight-color:transparent;position:relative;overflow:hidden;}
-.chb:active{transform:scale(.86);}
-.chb-ico{font-size:30px;display:block;margin-bottom:4px;}
-.chb-lbl{font-size:11px;font-weight:800;display:block;}
-.chb-val{font-size:9px;color:var(--t3);display:block;margin-top:2px;font-family:var(--mono);}
-.chb-feed{border-color:rgba(255,159,10,.45);}.chb-feed .chb-lbl{color:var(--o);}
-.chb-train{border-color:rgba(255,45,85,.38);}.chb-train .chb-lbl{color:var(--pk);}
-.chb-sleep{border-color:rgba(0,217,255,.32);}.chb-sleep .chb-lbl{color:var(--b);}
-.chb-play{border-color:rgba(191,95,255,.38);}.chb-play .chb-lbl{color:var(--p);}
+/* Compact vitals — 2×2 stat grid, clear and readable */
+.vitals-row{display:grid;grid-template-columns:1fr 1fr;gap:7px;padding:4px 14px 10px;}
+.vr-mini{display:flex;align-items:center;gap:7px;background:var(--c1);border:1px solid var(--line);border-radius:13px;padding:9px 11px;}
+.vr-ico{font-size:16px;flex-shrink:0;}
+.vr-bar-wrap{flex:1;height:8px;background:rgba(255,255,255,.07);border-radius:100px;overflow:hidden;}
+.vr-bar-fill{height:100%;border-radius:100px;transition:width .6s cubic-bezier(.34,1.56,.64,1);}
+.vr-val{font-size:12px;font-weight:900;font-family:var(--mono);color:var(--t1);width:24px;text-align:right;flex-shrink:0;}
+/* CARE HERO — Tamagotchi big buttons */
+.care-section-lbl{font-size:10px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:1px;padding:4px 14px 6px;display:flex;align-items:center;gap:6px;}
+.care-hero{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:0 14px 8px;}
+.care-hero-row2{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:0 14px 14px;}
+.chb{border-radius:22px;padding:16px 8px 14px;text-align:center;cursor:pointer;transition:transform .1s;-webkit-tap-highlight-color:transparent;position:relative;overflow:hidden;border:2px solid;min-height:90px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;}
+.chb:active{transform:scale(.84);}
+.chb-ico{font-size:36px;display:block;line-height:1.1;}
+.chb-lbl{font-size:12px;font-weight:900;display:block;letter-spacing:.2px;}
+.chb-val{font-size:9px;display:block;font-weight:700;opacity:.72;font-family:var(--mono);}
+.chb-feed{background:linear-gradient(155deg,rgba(255,159,10,.22),rgba(255,159,10,.06));border-color:rgba(255,159,10,.5);box-shadow:0 4px 14px rgba(255,159,10,.1);}
+.chb-feed .chb-lbl,.chb-feed .chb-val{color:var(--o);}
+.chb-train{background:linear-gradient(155deg,rgba(255,45,85,.2),rgba(255,45,85,.06));border-color:rgba(255,45,85,.5);box-shadow:0 4px 14px rgba(255,45,85,.1);}
+.chb-train .chb-lbl,.chb-train .chb-val{color:var(--pk);}
+.chb-sleep{background:linear-gradient(155deg,rgba(0,217,255,.18),rgba(0,217,255,.05));border-color:rgba(0,217,255,.45);box-shadow:0 4px 14px rgba(0,217,255,.08);}
+.chb-sleep .chb-lbl,.chb-sleep .chb-val{color:var(--b);}
+.chb-play{background:linear-gradient(155deg,rgba(191,95,255,.2),rgba(191,95,255,.06));border-color:rgba(191,95,255,.45);box-shadow:0 4px 14px rgba(191,95,255,.1);}
+.chb-play .chb-lbl,.chb-play .chb-val{color:var(--p);}
+.chb-bath{background:linear-gradient(155deg,rgba(0,217,255,.14),rgba(57,255,20,.08));border-color:rgba(0,200,180,.4);box-shadow:0 4px 14px rgba(0,200,180,.07);}
+.chb-bath .chb-lbl,.chb-bath .chb-val{color:var(--tl);}
+.chb-talk{background:linear-gradient(155deg,rgba(255,51,119,.18),rgba(191,95,255,.1));border-color:rgba(255,51,119,.4);box-shadow:0 4px 14px rgba(255,51,119,.08);}
+.chb-talk .chb-lbl,.chb-talk .chb-val{color:var(--pk);}
+.chb.urgent{animation:urgentPulse .75s ease-in-out infinite;}
+@keyframes urgentPulse{0%,100%{transform:scale(1);}50%{transform:scale(1.03);}}
+.chb.urgent::after{content:'!';position:absolute;top:8px;right:10px;font-size:12px;font-weight:900;color:var(--r);animation:urgentDot .7s ease-in-out infinite;}
+@keyframes urgentDot{0%,100%{opacity:1;}50%{opacity:.3;}}
 /* Keep legacy vitals classes in case referenced elsewhere */
 .vr{display:flex;align-items:center;gap:8px;margin-bottom:8px;}
 .vr:last-child{margin-bottom:0;}
@@ -713,8 +728,8 @@ textarea.inp{resize:none;min-height:68px;}
 .bnav{display:flex;align-items:center;background:rgba(6,6,14,.99);backdrop-filter:blur(28px);-webkit-backdrop-filter:blur(28px);border-top:1px solid rgba(255,255,255,.07);padding:5px 0;padding-bottom:calc(5px + var(--sab));flex-shrink:0;z-index:100;}
 .nb{flex:1;background:none;border:none;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:2px;padding:4px;-webkit-tap-highlight-color:transparent;}
 .nb-inner{position:relative;display:inline-flex;}
-.nb .ni{font-size:24px;transition:transform .15s,filter .15s;}
-.nb .nl{font-size:9px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:.3px;transition:color .15s;}
+.nb .ni{font-size:22px;transition:transform .15s,filter .15s;}
+.nb .nl{font-size:8px;font-weight:800;color:var(--t3);text-transform:uppercase;letter-spacing:.5px;transition:color .15s;}
 .nb[data-v="home"].on .ni{transform:scale(1.18);filter:drop-shadow(0 0 8px #39FF14);}
 .nb[data-v="home"].on .nl{color:#39FF14;}
 .nb[data-v="flash"].on .ni{transform:scale(1.18);filter:drop-shadow(0 0 8px #FF2D55);}
@@ -868,12 +883,8 @@ textarea.inp{resize:none;min-height:68px;}
 .es4{background:rgba(255,230,0,.1);border:1px solid rgba(255,230,0,.55);color:var(--y);animation:es4Glow 2.2s ease-in-out infinite;}
 @keyframes es4Glow{0%,100%{box-shadow:0 0 8px rgba(255,230,0,.2),0 0 0 0 rgba(255,230,0,.2);}50%{box-shadow:0 0 22px rgba(255,230,0,.5),0 0 40px rgba(255,230,0,.1);}}
 
-/* ── EXPANDED CARE HERO ── */
-.care-hero{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:0 12px 8px;}
-.care-hero-row2{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:0 12px 10px;}
-.chb-bath{border-color:rgba(0,217,255,.38);}.chb-bath .chb-lbl{color:var(--b);}
+/* ── EXPANDED CARE HERO — overridden by base care-hero rules above ── */
 .chb-med{border-color:rgba(57,255,20,.38);}.chb-med .chb-lbl{color:var(--g);}
-.chb-talk{border-color:rgba(191,95,255,.38);}.chb-talk .chb-lbl{color:var(--p);}
 
 /* ── SOCIAL POWER PANEL ── */
 .sp-panel{margin:0 12px 10px;background:var(--c1);border:1.5px solid rgba(0,217,255,.2);border-radius:18px;padding:13px 14px;position:relative;overflow:hidden;}
@@ -1372,28 +1383,27 @@ textarea.inp{resize:none;min-height:68px;}
             <div class="es-badge es1" id="evolStageBadge">ROOKIE</div>
           </div>
         </div>
-        <!-- stat rings row -->
-        <div class="pet-lv-ring" id="petLvRing">
-          <div class="plr-item" onclick="pcFeed()"><div class="plr-ring" id="ringH">🍖</div><div class="plr-lbl">HUNGER</div><div class="plr-val" id="ringHv">80</div></div>
-          <div class="plr-item" onclick="pcSleep()"><div class="plr-ring" id="ringE">⚡</div><div class="plr-lbl">ENERGI</div><div class="plr-val" id="ringEv">100</div></div>
-          <div class="plr-item" onclick="pcPlay()"><div class="plr-ring" id="ringM">💖</div><div class="plr-lbl">MOOD</div><div class="plr-val" id="ringMv">90</div></div>
-          <div class="plr-item" onclick="nav('lb')"><div class="plr-ring full" id="ringK">🌟</div><div class="plr-lbl">KARMA</div><div class="plr-val" id="ringKv">42</div></div>
-        </div>
-        <!-- XP -->
+        <!-- XP bar -->
         <div class="xp-wrap">
           <div class="xp-top"><span>XP</span><span id="xpNums">0/100</span></div>
           <div class="xpt-seg" id="xpSegBar"></div>
         </div>
-        <!-- compact vitals -->
-        <div class="vitals-row">
-          <div class="vr-mini"><span class="vr-ico">🍖</span><div class="vr-bar-wrap"><div class="vr-bar-fill" id="vH" style="width:80%;background:var(--o)"></div></div><span class="vr-val" id="vHv">80</span></div>
-          <div class="vr-mini"><span class="vr-ico">⚡</span><div class="vr-bar-wrap"><div class="vr-bar-fill" id="vE" style="width:100%;background:var(--b)"></div></div><span class="vr-val" id="vEv">100</span></div>
-          <div class="vr-mini"><span class="vr-ico">💖</span><div class="vr-bar-wrap"><div class="vr-bar-fill" id="vM" style="width:90%;background:var(--p)"></div></div><span class="vr-val" id="vMv">90</span></div>
-          <div class="vr-mini"><span class="vr-ico">🌟</span><div class="vr-bar-wrap"><div class="vr-bar-fill" id="vK" style="width:42%;background:var(--g)"></div></div><span class="vr-val" id="vKv">42</span></div>
+        <!-- hidden rings (JS updates these, kept invisible) -->
+        <div style="display:none">
+          <span id="ringH"></span><span id="ringHv"></span><span id="ringE"></span><span id="ringEv"></span><span id="ringM"></span><span id="ringMv"></span><span id="ringK"></span><span id="ringKv"></span>
+          <span id="needHunger"></span><span id="needHungerV"></span><span id="needEnergy"></span><span id="needEnergyV"></span><span id="needMood"></span><span id="needMoodV"></span>
+          <span id="tamaFace"></span><span id="tamaState"></span>
         </div>
       </div>
-
-      <!-- CARE HERO BUTTONS — 2 rows, 3 each -->
+      <!-- STATS — 2×2 grid with color bars -->
+      <div class="vitals-row">
+        <div class="vr-mini"><span class="vr-ico">🍖</span><div class="vr-bar-wrap"><div class="vr-bar-fill" id="vH" style="width:80%;background:var(--o)"></div></div><span class="vr-val" id="vHv">80</span></div>
+        <div class="vr-mini"><span class="vr-ico">⚡</span><div class="vr-bar-wrap"><div class="vr-bar-fill" id="vE" style="width:100%;background:var(--b)"></div></div><span class="vr-val" id="vEv">100</span></div>
+        <div class="vr-mini"><span class="vr-ico">💖</span><div class="vr-bar-wrap"><div class="vr-bar-fill" id="vM" style="width:90%;background:var(--p)"></div></div><span class="vr-val" id="vMv">90</span></div>
+        <div class="vr-mini"><span class="vr-ico">🌟</span><div class="vr-bar-wrap"><div class="vr-bar-fill" id="vK" style="width:42%;background:var(--g)"></div></div><span class="vr-val" id="vKv">42</span></div>
+      </div>
+      <!-- CARE BUTTONS -->
+      <div class="care-section-lbl">🎮 SKÖT DIN PET</div>
       <div class="care-hero">
         <div class="chb chb-feed" onclick="pcFeed()"><span class="chb-ico">🍖</span><span class="chb-lbl">MATA</span><span class="chb-val">+HUNGER</span></div>
         <div class="chb chb-train" onclick="pcTrain()"><span class="chb-ico">🏋️</span><span class="chb-lbl">TRÄNA</span><span class="chb-val">+15XP</span></div>
@@ -1403,18 +1413,6 @@ textarea.inp{resize:none;min-height:68px;}
         <div class="chb chb-play" onclick="pcPlay()"><span class="chb-ico">🎮</span><span class="chb-lbl">LEK</span><span class="chb-val">+MOOD</span></div>
         <div class="chb chb-bath" onclick="pcBath()"><span class="chb-ico">🛁</span><span class="chb-lbl">BADA</span><span class="chb-val">+KARMA</span></div>
         <div class="chb chb-talk" onclick="pcTalk()"><span class="chb-ico">💬</span><span class="chb-lbl">PRATA</span><span class="chb-val">+BOND</span></div>
-      </div>
-
-      <!-- NEEDS INDICATORS -->
-      <div class="needs-row" id="needsRow">
-        <div class="need-chip ok" id="needHunger" onclick="pcFeed()">🍖 <span id="needHungerV">80</span></div>
-        <div class="need-chip ok" id="needEnergy" onclick="pcSleep()">⚡ <span id="needEnergyV">100</span></div>
-        <div class="need-chip ok" id="needMood" onclick="pcPlay()">💖 <span id="needMoodV">90</span></div>
-      </div>
-      <!-- TAMAGOTCHI MOOD -->
-      <div class="tama-mood">
-        <span class="tama-face" id="tamaFace">😊</span>
-        <span class="tama-state-lbl" id="tamaState" style="color:var(--g)">GLAD</span>
       </div>
       <!-- DAILY BOND — social actions feed your pet -->
       <div class="bond-section">
@@ -1883,7 +1881,7 @@ textarea.inp{resize:none;min-height:68px;}
   </div>
 
   <div class="bnav">
-    <button class="nb on" data-v="home"><div class="nb-inner"><div class="ni">🐾</div></div><div class="nl">PET</div></button>
+    <button class="nb on" data-v="home"><div class="nb-inner"><div class="ni">🐾</div></div><div class="nl">MIN PET</div></button>
     <button class="nb" data-v="flash"><div class="nb-inner"><div class="ni">⚡</div><div class="nb-notif"></div></div><div class="nl">FLASH</div></button>
     <button class="nb-create" id="flashBtn"><div class="create-btn">＋</div><div class="create-lbl">SKAPA</div></button>
     <button class="nb" data-v="social"><div class="nb-inner"><div class="ni">💬</div><div class="nb-notif"></div></div><div class="nl">CHAT</div></button>
