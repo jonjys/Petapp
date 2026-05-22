@@ -1249,27 +1249,41 @@ textarea.inp{resize:none;min-height:68px;}
 .pack-card-desc{font-size:12px;opacity:.7;margin-bottom:10px;}
 .pack-card-price{font-size:13px;font-weight:900;font-family:var(--mono);}
 .pack-card-rarity{position:absolute;top:12px;right:14px;font-size:9px;font-weight:900;letter-spacing:1px;opacity:.6;}
-.pack-open-scene{position:fixed;inset:0;z-index:950;background:#000;display:flex;flex-direction:column;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .4s;}
+/* ── CS:GO CASE OPENING ── */
+.pack-open-scene{position:fixed;inset:0;z-index:950;background:radial-gradient(ellipse at 50% 30%,#0a0e1a 0%,#000 100%);display:flex;flex-direction:column;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .4s;overflow:hidden;}
 .pack-open-scene.active{opacity:1;pointer-events:all;}
-.pack-reveal-cards{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;max-width:340px;padding:10px;}
-.pack-reveal-card{width:90px;height:120px;border-radius:18px;perspective:600px;cursor:pointer;-webkit-tap-highlight-color:transparent;}
-.prc-inner{width:100%;height:100%;position:relative;transform-style:preserve-3d;transition:transform .6s cubic-bezier(.4,0,.2,1);}
-.prc-inner.flipped{transform:rotateY(180deg);}
-.prc-front,.prc-back{position:absolute;inset:0;border-radius:18px;backface-visibility:hidden;display:flex;flex-direction:column;align-items:center;justify-content:center;}
-.prc-front{background:linear-gradient(135deg,#1a1a2e,#16213e);border:2px solid rgba(255,255,255,.15);}
-.prc-front-ico{font-size:28px;opacity:.4;}
-.prc-back{transform:rotateY(180deg);border:2px solid;}
-.prc-back-em{font-size:32px;margin-bottom:4px;}
-.prc-back-nm{font-size:8px;font-weight:800;text-align:center;padding:0 4px;line-height:1.3;}
-.prc-back-rar{font-size:7px;font-weight:900;letter-spacing:.8px;margin-top:4px;opacity:.75;}
-.prc-back.common{background:rgba(0,217,255,.12);border-color:rgba(0,217,255,.4);}
-.prc-back.rare{background:rgba(191,95,255,.15);border-color:rgba(191,95,255,.5);}
-.prc-back.epic{background:rgba(255,159,10,.18);border-color:rgba(255,159,10,.55);}
-.prc-back.legendary{background:linear-gradient(135deg,rgba(255,230,0,.2),rgba(255,159,10,.15));border-color:rgba(255,230,0,.7);animation:legendGlow 1s ease-in-out infinite;}
-@keyframes legendGlow{0%,100%{box-shadow:0 0 12px rgba(255,230,0,.4);}50%{box-shadow:0 0 30px rgba(255,230,0,.8),0 0 60px rgba(255,159,10,.3);}}
-.pack-reveal-ttl{font-size:22px;font-weight:900;font-family:var(--mono);color:var(--y);margin-bottom:8px;text-align:center;}
-.pack-reveal-sub{font-size:12px;color:var(--t2);margin-bottom:20px;text-align:center;}
-.pack-done-btn{margin-top:20px;width:calc(100% - 28px);max-width:340px;}
+.case-back-btn{position:absolute;top:16px;left:16px;background:none;border:none;color:rgba(255,255,255,.4);font-size:24px;cursor:pointer;padding:8px;-webkit-tap-highlight-color:transparent;z-index:10;}
+.case-back-btn:active{color:#fff;}
+.case-title{font-size:18px;font-weight:900;font-family:var(--mono);color:var(--y);margin-bottom:8px;text-align:center;letter-spacing:2px;}
+.case-subtitle{font-size:11px;color:rgba(255,255,255,.45);margin-bottom:28px;text-align:center;}
+/* The reel viewport — shows 5 items wide, center item is the winner */
+.case-reel-viewport{width:100%;max-width:400px;height:110px;overflow:hidden;position:relative;margin-bottom:24px;}
+.case-reel-viewport::before,.case-reel-viewport::after{content:'';position:absolute;top:0;bottom:0;width:80px;z-index:5;pointer-events:none;}
+.case-reel-viewport::before{left:0;background:linear-gradient(90deg,#000 0%,transparent 100%);}
+.case-reel-viewport::after{right:0;background:linear-gradient(270deg,#000 0%,transparent 100%);}
+/* Center pointer line */
+.case-pointer{position:absolute;left:50%;top:0;bottom:0;width:3px;transform:translateX(-50%);background:linear-gradient(180deg,transparent,var(--y),var(--y),transparent);z-index:10;pointer-events:none;}
+.case-pointer::before,.case-pointer::after{content:'▼';position:absolute;left:50%;transform:translateX(-50%);font-size:14px;color:var(--y);line-height:1;}
+.case-pointer::before{top:-2px;}
+.case-pointer::after{content:'▲';bottom:-2px;}
+/* The rolling strip */
+.case-reel-strip{display:flex;gap:6px;padding:0 calc(50% - 57px);will-change:transform;transition:transform 0s;}
+.case-reel-strip.rolling{transition:transform 4.5s cubic-bezier(.12,.85,.25,1);}
+.case-reel-item{width:108px;height:108px;flex-shrink:0;border-radius:16px;display:flex;flex-direction:column;align-items:center;justify-content:center;border:2px solid rgba(255,255,255,.12);background:rgba(255,255,255,.04);position:relative;transition:border-color .3s,box-shadow .3s;}
+.case-reel-item.common{background:rgba(0,217,255,.08);border-color:rgba(0,217,255,.3);}
+.case-reel-item.rare{background:rgba(191,95,255,.12);border-color:rgba(191,95,255,.45);}
+.case-reel-item.epic{background:rgba(255,159,10,.14);border-color:rgba(255,159,10,.5);}
+.case-reel-item.legendary{background:linear-gradient(135deg,rgba(255,230,0,.18),rgba(255,159,10,.12));border-color:rgba(255,230,0,.7);animation:legendGlow 1s ease-in-out infinite;}
+.case-reel-item.winner{transform:scale(1.08);z-index:2;}
+.case-reel-item.winner.common{box-shadow:0 0 30px rgba(0,217,255,.5);}
+.case-reel-item.winner.rare{box-shadow:0 0 30px rgba(191,95,255,.6);}
+.case-reel-item.winner.epic{box-shadow:0 0 40px rgba(255,159,10,.7);}
+.case-reel-item.winner.legendary{box-shadow:0 0 60px rgba(255,230,0,.9),0 0 120px rgba(255,159,10,.4);}
+.cri-em{font-size:36px;margin-bottom:4px;}
+.cri-nm{font-size:8px;font-weight:900;text-align:center;padding:0 4px;line-height:1.2;}
+.cri-rar{font-size:7px;font-weight:900;letter-spacing:.8px;margin-top:2px;opacity:.8;}
+.case-result-box{text-align:center;min-height:80px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;}
+.case-bg-glow{position:absolute;width:300px;height:300px;border-radius:50%;top:30%;left:50%;transform:translate(-50%,-50%);background:radial-gradient(circle,rgba(255,230,0,.06),transparent 70%);pointer-events:none;transition:background .5s;}
 /* Pack section in explore */
 .pack-shop-section{margin:0 14px 14px;}
 .pack-mini-card{border-radius:18px;padding:14px 16px;display:flex;align-items:center;gap:12px;cursor:pointer;border:1.5px solid;margin-bottom:8px;transition:transform .1s;-webkit-tap-highlight-color:transparent;}
@@ -2456,12 +2470,26 @@ textarea.inp{resize:none;min-height:68px;}
   </div>
   <div class="pack-scroll" id="packScrollArea"></div>
 </div>
-<!-- PACK REVEAL SCENE -->
+<!-- CS:GO CASE OPEN SCENE -->
 <div class="pack-open-scene" id="packOpenScene">
-  <div class="pack-reveal-ttl" id="packRevealTtl">🎁 ÖPPNAR...</div>
-  <div class="pack-reveal-sub" id="packRevealSub">Tryck på korten för att avslöja!</div>
-  <div class="pack-reveal-cards" id="packRevealCards"></div>
-  <button class="btn btn-g btn-lg pack-done-btn" id="packDoneBtn" style="display:none" onclick="closePackReveal()">✅ KLAR — SE DITT BYTE</button>
+  <div class="case-bg-glow" id="caseBgGlow"></div>
+  <button class="case-back-btn" onclick="forceClosePackReveal()">✕</button>
+  <div class="case-title" id="packRevealTtl">🎁 STARTER PACK</div>
+  <div class="case-subtitle" id="packRevealSub">Öppnar...</div>
+  <!-- REEL -->
+  <div class="case-reel-viewport">
+    <div class="case-pointer"></div>
+    <div class="case-reel-strip" id="caseReelStrip"></div>
+  </div>
+  <!-- Result box (shown after spin) -->
+  <div class="case-result-box" id="caseResultBox"></div>
+  <!-- Multi-item results list (shown after all spins) -->
+  <div id="caseAllResults" style="display:none;width:calc(100% - 28px);max-width:360px;max-height:220px;overflow-y:auto;scrollbar-width:none;margin-bottom:14px"></div>
+  <!-- Navigation buttons -->
+  <div style="display:flex;gap:10px;width:calc(100% - 28px);max-width:360px;flex-direction:column">
+    <button class="btn btn-y btn-lg btn-full" id="caseNextBtn" onclick="spinNextItem()" style="display:none">⚡ NÄSTA ITEM →</button>
+    <button class="btn btn-g btn-lg btn-full" id="packDoneBtn" style="display:none" onclick="closePackReveal()">✅ KLAR — SE ALLT BYTE</button>
+  </div>
 </div>
 <!-- GACHA WHEEL -->
 <div class="gacha-modal" id="gachaModal">
@@ -3125,23 +3153,50 @@ function drawPetFrame(canvas,cfg,state){
   bg.addColorStop(0,'rgba(0,50,30,.18)');bg.addColorStop(1,'rgba(0,0,0,0)');
   ctx.fillStyle=bg;ctx.fillRect(0,0,W,H);
   const cx=W/2,cy=H/2+10;
-  const floatY=Math.sin(state.t*1.8)*4;
-  const breathSX=1+Math.sin(state.t*1.8)*0.016;
-  const breathSY=1-Math.sin(state.t*1.8)*0.013;
+  const floatY=Math.sin(state.t*1.8)*5;
+  const breathSX=1+Math.sin(state.t*1.8)*0.022;
+  const breathSY=1-Math.sin(state.t*1.8)*0.018;
   const sqX=1+state.squish*0.28;
   const sqY=1-state.squish*0.2;
   const finalCY=cy+floatY+state.jumpY;
+  const color2=cfg.color||'#00e87a';
+  // ── Tamagotchi-style ambient glow ring ──
+  const auraR=62+Math.sin(state.t*2.2)*4;
+  const auraGrd=ctx.createRadialGradient(cx,finalCY,auraR*.4,cx,finalCY,auraR);
+  auraGrd.addColorStop(0,color2+'22');auraGrd.addColorStop(1,'transparent');
+  ctx.beginPath();ctx.arc(cx,finalCY,auraR,0,Math.PI*2);ctx.fillStyle=auraGrd;ctx.fill();
+  // Pulsing ring
+  ctx.beginPath();ctx.arc(cx,finalCY,auraR*.85,0,Math.PI*2);
+  ctx.strokeStyle=color2+'28';ctx.lineWidth=1.5+Math.sin(state.t*3)*.5;ctx.stroke();
+  // ── Happy floating sparkles (mood>70) ──
+  if(typeof G!=='undefined'&&G.mood>70){
+    const sparkCount=Math.floor((G.mood-70)/10)+1;
+    for(let i=0;i<sparkCount;i++){
+      const sa=state.t*1.2+(i/sparkCount)*Math.PI*2;
+      const sr=50+Math.cos(state.t*.8+i)*10;
+      const sy2=finalCY-30+Math.sin(state.t*1.5+i*1.3)*20;
+      const sx2=cx+Math.cos(sa)*sr;
+      const sparkles=['✦','✧','★','◆'];const sp=sparkles[(i+Math.floor(state.t))%sparkles.length];
+      const sa2=(0.6+0.4*Math.sin(state.t*2+i));
+      ctx.globalAlpha=sa2*.7;ctx.fillStyle=color2;ctx.font=`${8+Math.sin(state.t+i)*2}px serif`;ctx.textAlign='center';ctx.textBaseline='middle';
+      ctx.fillText(sp,sx2,sy2);ctx.globalAlpha=1;
+    }
+  }
   // DNA/Streak glow beneath pet
   const dna=typeof getPetDNA==='function'?getPetDNA():'base';
   const dnaInfo=(typeof DNA_INFO!=='undefined'&&DNA_INFO[dna])||{col:'#39FF14'};
   if(dna!=='base'||(G&&G.streak>=3)){
     const glowCol=G&&G.streak>=7?'#39FF14':dnaInfo.col;
-    ctx.beginPath();ctx.ellipse(cx,finalCY,44,44,0,0,Math.PI*2);
-    ctx.fillStyle='transparent';
     ctx.shadowColor=glowCol;ctx.shadowBlur=28+Math.sin(state.t)*8;
     ctx.beginPath();ctx.ellipse(cx,finalCY,40,40,0,0,Math.PI*2);
     ctx.strokeStyle=glowCol+'33';ctx.lineWidth=2;ctx.stroke();
     ctx.shadowBlur=0;
+  }
+  // ── Heart floating up when happy ──
+  if(state.mood==='happy'&&typeof G!=='undefined'&&G.mood>80){
+    const ht=(state.t*.7)%1;
+    const hx=cx+Math.sin(state.t*2)*22;const hy=finalCY-60-ht*35;
+    ctx.globalAlpha=(1-ht)*.85;ctx.font='16px serif';ctx.textAlign='center';ctx.fillText('💖',hx,hy);ctx.globalAlpha=1;
   }
   // Shadow
   const shAlpha=Math.max(0.06,0.22-Math.abs(state.jumpY)*0.006);
@@ -3155,10 +3210,14 @@ function drawPetFrame(canvas,cfg,state){
   drawEarsOnCtx(ctx,cfg.earStyle||'cat',color);
   // Tail (behind body)
   {const ts=Math.sin(state.t*4.5)*0.6;ctx.save();ctx.translate(32,10);ctx.rotate(ts);ctx.beginPath();ctx.ellipse(0,20,8,24,-0.2,0,Math.PI*2);ctx.fillStyle=color;ctx.fill();ctx.beginPath();ctx.arc(Math.sin(ts)*12,38,8,0,Math.PI*2);ctx.fillStyle=lightenHex(color,55);ctx.fill();ctx.restore();}
-  // Body
+  // Body with Tamagotchi-style pop outline
   ctx.beginPath();ctx.ellipse(0,0,40,42,0,0,Math.PI*2);
   ctx.fillStyle=color;ctx.fill();
-  ctx.strokeStyle='rgba(0,0,0,0.1)';ctx.lineWidth=2;ctx.stroke();
+  // Bright outline for pop effect
+  ctx.strokeStyle=lightenHex(color,70)+'aa';ctx.lineWidth=2.5;ctx.stroke();
+  // Inner highlight shimmer
+  ctx.beginPath();ctx.ellipse(-8,-12,16,12,-.5,0,Math.PI*2);
+  ctx.fillStyle='rgba(255,255,255,.12)';ctx.fill();
   // Tummy
   ctx.beginPath();ctx.ellipse(0,14,23,21,0,0,Math.PI*2);
   ctx.fillStyle=tummy;ctx.fill();
@@ -5021,47 +5080,151 @@ function buyPack(id,free){
   addDiaryEntry('Öppnade ett '+pk.nm+' och fick: '+items.map(i=>i.em).join('')+'!');
   showPackReveal(pk,items);save();updateHUD();
 }
+// ── CS:GO STYLE CASE OPENING ──
+const _RAR_COL={common:'#00D9FF',rare:'#BF5FFF',epic:'#FF9F0A',legendary:'#FFE600'};
+const _ITEM_STRIP_LEN=32; // total items in the reel strip
+let _caseItems=[];let _caseIdx=0;let _caseWonItems=[];let _caseSpinning=false;
+
+function _buildReelStrip(items,winnerIdx,targetSlot){
+  // targetSlot = which slot in the strip (0-indexed) ends up at center
+  // We want strip[targetSlot] = items[winnerIdx]
+  // Fill the rest randomly from pool
+  const pool=PACK_ITEMS_POOL.filter(x=>x);
+  const strip=[];
+  for(let i=0;i<_ITEM_STRIP_LEN;i++){
+    if(i===targetSlot)strip.push(items[winnerIdx]);
+    else strip.push(pool[Math.floor(Math.random()*pool.length)]);
+  }
+  return strip;
+}
+
+function _renderReelStrip(strip){
+  const el=$('caseReelStrip');if(!el)return;
+  el.innerHTML=strip.map((item,i)=>`<div class="case-reel-item ${item.rar}" id="cri${i}">
+    <div class="cri-em">${item.em}</div>
+    <div class="cri-nm" style="color:${_RAR_COL[item.rar]}">${item.nm}</div>
+    <div class="cri-rar" style="color:${_RAR_COL[item.rar]}">${item.rar.toUpperCase()}</div>
+  </div>`).join('');
+}
+
 function showPackReveal(pk,items){
   const scene=$('packOpenScene');if(!scene)return;
   scene.classList.add('active');
+  _caseItems=items;_caseIdx=0;_caseWonItems=[];_caseSpinning=false;
   const ttl=$('packRevealTtl');if(ttl)ttl.textContent='🎁 '+pk.nm.toUpperCase();
-  const sub=$('packRevealSub');if(sub)sub.textContent='Tryck på korten för att avslöja!';
+  const res=$('caseResultBox');if(res)res.innerHTML='';
+  const all=$('caseAllResults');if(all){all.style.display='none';all.innerHTML='';}
   const doneBtn=$('packDoneBtn');if(doneBtn)doneBtn.style.display='none';
-  const cards=$('packRevealCards');if(!cards)return;
-  const rarCol={common:'var(--b)',rare:'var(--p)',epic:'var(--o)',legendary:'var(--y)'};
-  cards.innerHTML=items.map((item,i)=>`<div class="pack-reveal-card" onclick="flipPackCard(${i})" id="prc${i}">
-    <div class="prc-inner" id="prci${i}">
-      <div class="prc-front"><div class="prc-front-ico">🎁</div></div>
-      <div class="prc-back ${item.rar}">
-        <div class="prc-back-em">${item.em}</div>
-        <div class="prc-back-nm" style="color:${rarCol[item.rar]}">${item.nm}</div>
-        <div class="prc-back-rar" style="color:${rarCol[item.rar]}">${item.rar.toUpperCase()}</div>
-      </div>
-    </div>
-  </div>`).join('');
-  window._packRevealItems=items;window._packRevealFlipped=0;
+  const nextBtn=$('caseNextBtn');if(nextBtn)nextBtn.style.display='none';
+  const glow=$('caseBgGlow');if(glow)glow.style.background='radial-gradient(circle,rgba(255,230,0,.06),transparent 70%)';
+  // start first spin
+  spinCaseItem();
 }
-function flipPackCard(i){
-  const inner=$('prci'+i);if(!inner||inner.classList.contains('flipped'))return;
-  inner.classList.add('flipped');
-  const item=(window._packRevealItems||[])[i];
-  if(item){
+
+function spinCaseItem(){
+  if(_caseIdx>=_caseItems.length)return;
+  _caseSpinning=true;
+  const item=_caseItems[_caseIdx];
+  const sub=$('packRevealSub');if(sub)sub.textContent='Item '+ (_caseIdx+1)+' av '+_caseItems.length+'  — öppnar...';
+  const res=$('caseResultBox');if(res)res.innerHTML='';
+  const nextBtn=$('caseNextBtn');if(nextBtn)nextBtn.style.display='none';
+  const doneBtn=$('packDoneBtn');if(doneBtn)doneBtn.style.display='none';
+
+  // Build strip: winner at slot 24 (near end, gives nice scrolling feel)
+  const targetSlot=24;
+  const strip=_buildReelStrip(_caseItems,_caseIdx,targetSlot);
+  _renderReelStrip(strip);
+
+  // Item width = 108 + 6 gap = 114px
+  // Center of viewport is at 50% screen width
+  // We want strip[targetSlot] center at viewport center
+  // Strip starts at padding = calc(50% - 57px) from left
+  // So strip[targetSlot] left edge = targetSlot * 114
+  // Its center = targetSlot*114 + 57
+  // We want its center at 0 (since strip is translated from 0)
+  // transform = -(targetSlot * 114)px
+  const ITEM_W=114;
+  const offset=-(targetSlot*ITEM_W);
+
+  const strip_el=$('caseReelStrip');if(!strip_el)return;
+  // Reset without transition
+  strip_el.classList.remove('rolling');
+  strip_el.style.transform='translateX(0px)';
+  // Force reflow
+  strip_el.getBoundingClientRect();
+  // Animate to target
+  strip_el.classList.add('rolling');
+  strip_el.style.transform=`translateX(${offset}px)`;
+
+  SFX.click();vibe([10,5,15,5,20,5,25,5,30]);
+
+  setTimeout(()=>{
+    _caseSpinning=false;
+    // Highlight winner
+    const winEl=$('cri'+targetSlot);
+    if(winEl){winEl.classList.add('winner');winEl.scrollIntoView({block:'nearest'});}
+    // Glow behind scene
+    const glowBg=$('caseBgGlow');
+    if(glowBg){const gc=_RAR_COL[item.rar];glowBg.style.background=`radial-gradient(circle,${gc}20,transparent 70%)`;}
+    // Show result
+    const res=$('caseResultBox');
+    if(res)res.innerHTML=`<div style="font-size:52px;animation:spop .5s cubic-bezier(.34,1.56,.64,1)">${item.em}</div>
+      <div style="font-size:16px;font-weight:900;color:${_RAR_COL[item.rar]};font-family:var(--mono)">${item.nm}</div>
+      <div style="font-size:10px;font-weight:900;color:${_RAR_COL[item.rar]};letter-spacing:1px">${item.rar.toUpperCase()}</div>`;
+    // Apply effect + save collectible
     item.ef();
     if(!G.collectibles)G.collectibles=[];
     G.collectibles.push({id:item.id,nm:item.nm,em:item.em,rar:item.rar,ts:Date.now()});
-    if(item.rar==='legendary'){SFX.win();vibe([50,30,100,30,150,30,200]);spawnParticles(window.innerWidth/2,window.innerHeight/2,'stars');}
-    else if(item.rar==='epic'){SFX.win();vibe([50,30,80]);}
-    else SFX.click();
+    _caseWonItems.push(item);
+    // SFX based on rarity
+    if(item.rar==='legendary'){SFX.win();vibe([50,30,100,30,150,30,200]);spawnParticles(window.innerWidth/2,window.innerHeight*.45,'stars');spawnParticles(window.innerWidth*.3,window.innerHeight*.4,'stars');spawnParticles(window.innerWidth*.7,window.innerHeight*.4,'stars');}
+    else if(item.rar==='epic'){SFX.win();vibe([50,30,80,30,100]);spawnParticles(window.innerWidth/2,window.innerHeight*.45,'stars');}
+    else if(item.rar==='rare'){SFX.win();vibe([30,20,60]);}
+    else{SFX.click();vibe([20]);}
     save();
-  }
-  window._packRevealFlipped=(window._packRevealFlipped||0)+1;
-  if(window._packRevealFlipped>=(window._packRevealItems||[]).length){
-    setTimeout(()=>{const btn=$('packDoneBtn');if(btn)btn.style.display='block';},400);
-  }
+    _caseIdx++;
+    // Show next or done
+    if(_caseIdx<_caseItems.length){
+      const nb=$('caseNextBtn');if(nb){nb.style.display='block';nb.textContent='⚡ NÄSTA ITEM ('+ (_caseIdx+1)+'/'+_caseItems.length+') →';}
+    } else {
+      _showAllWon();
+    }
+  },4700);
 }
+
+function spinNextItem(){spinCaseItem();}
+
+function _showAllWon(){
+  const all=$('caseAllResults');if(!all)return;
+  all.style.display='block';
+  all.innerHTML=`<div style="font-size:11px;font-weight:900;color:var(--t3);letter-spacing:1px;margin-bottom:8px">🎁 DITT BYTE (${_caseWonItems.length} ITEMS)</div>`+
+    _caseWonItems.map(it=>`<div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid rgba(255,255,255,.06)">
+      <span style="font-size:24px">${it.em}</span>
+      <div style="flex:1"><div style="font-size:12px;font-weight:900;color:${_RAR_COL[it.rar]}">${it.nm}</div><div style="font-size:9px;color:var(--t3)">${it.rar.toUpperCase()}</div></div>
+    </div>`).join('');
+  const doneBtn=$('packDoneBtn');if(doneBtn)doneBtn.style.display='block';
+  const nextBtn=$('caseNextBtn');if(nextBtn)nextBtn.style.display='none';
+  const sub=$('packRevealSub');if(sub)sub.textContent='Alla items öppnade! 🎉';
+}
+
 function closePackReveal(){
   const scene=$('packOpenScene');if(scene)scene.classList.remove('active');
-  window._packRevealItems=[];window._packRevealFlipped=0;
+  _caseItems=[];_caseIdx=0;_caseWonItems=[];_caseSpinning=false;
+  openPackShop();
+}
+function forceClosePackReveal(){
+  // Apply any unapplied items if interrupted mid-spin
+  if(_caseSpinning&&_caseIdx<_caseItems.length){
+    for(let i=_caseIdx;i<_caseItems.length;i++){
+      const item=_caseItems[i];if(!item)continue;
+      try{item.ef();}catch(e){}
+      if(!G.collectibles)G.collectibles=[];
+      G.collectibles.push({id:item.id,nm:item.nm,em:item.em,rar:item.rar,ts:Date.now()});
+    }
+    save();
+  }
+  const scene=$('packOpenScene');if(scene)scene.classList.remove('active');
+  _caseItems=[];_caseIdx=0;_caseWonItems=[];_caseSpinning=false;
   openPackShop();
 }
 
