@@ -1310,6 +1310,33 @@ textarea.inp{resize:none;min-height:68px;}
 .gacha-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:60px;height:60px;border-radius:50%;background:var(--bg);border:3px solid rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center;font-size:26px;z-index:5;}
 .gacha-result{text-align:center;padding:0 10px;}
 .gacha-spin-btn{width:100%;max-width:280px;margin-top:14px;}
+/* ── ROOM DECO ── */
+.room-modal{position:fixed;inset:0;z-index:860;background:#04050c;display:flex;flex-direction:column;opacity:0;pointer-events:none;transition:opacity .3s;}
+.room-modal.open{opacity:1;pointer-events:all;}
+.room-preview{width:100%;height:200px;position:relative;overflow:hidden;flex-shrink:0;background:linear-gradient(180deg,#060d1a 0%,#0d1a2e 60%,#1a2a1a 100%);}
+.room-preview-pet{position:absolute;bottom:40px;left:50%;transform:translateX(-50%);font-size:52px;animation:petBob 2s ease-in-out infinite;}
+.room-preview-floor{position:absolute;bottom:0;left:0;right:0;height:40px;background:rgba(0,0,0,.4);border-top:1px solid rgba(255,255,255,.06);}
+.room-placed-item{position:absolute;font-size:28px;cursor:pointer;transition:transform .15s;-webkit-tap-highlight-color:transparent;}
+.room-placed-item:active{transform:scale(.8);}
+.room-shop-scroll{flex:1;overflow-y:auto;padding:14px;scrollbar-width:none;display:flex;flex-direction:column;gap:10px;}
+.room-shop-scroll::-webkit-scrollbar{display:none;}
+.room-shop-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;}
+.room-item-card{border-radius:18px;padding:14px 8px;text-align:center;cursor:pointer;border:1.5px solid;transition:transform .12s;-webkit-tap-highlight-color:transparent;position:relative;}
+.room-item-card:active{transform:scale(.92);}
+.room-item-card.owned{border-color:var(--g)!important;background:rgba(57,255,20,.08)!important;}
+.room-item-card.owned::after{content:'✓';position:absolute;top:6px;right:8px;font-size:10px;font-weight:900;color:var(--g);}
+.ric-em{font-size:30px;display:block;margin-bottom:5px;}
+.ric-nm{font-size:10px;font-weight:900;display:block;margin-bottom:3px;}
+.ric-price{font-size:10px;font-family:var(--mono);font-weight:900;}
+/* ── SEASONAL EVENT ── */
+.event-banner{margin:0 14px 12px;border-radius:22px;padding:16px;background:linear-gradient(135deg,rgba(255,45,85,.15),rgba(191,95,255,.1));border:1.5px solid rgba(255,45,85,.4);cursor:pointer;position:relative;overflow:hidden;}
+.event-banner-glow{position:absolute;inset:-20px;background:radial-gradient(circle at 70% 50%,rgba(255,45,85,.12),transparent 60%);pointer-events:none;}
+.event-title{font-size:14px;font-weight:900;color:var(--pk);margin-bottom:2px;display:flex;align-items:center;gap:6px;}
+.event-subtitle{font-size:10px;color:var(--t3);margin-bottom:10px;}
+.event-progress-wrap{width:100%;height:8px;background:rgba(255,255,255,.08);border-radius:100px;overflow:hidden;margin-bottom:6px;}
+.event-progress-fill{height:100%;border-radius:100px;background:linear-gradient(90deg,#FF2D55,#BF5FFF);transition:width .8s cubic-bezier(.34,1.56,.64,1);}
+.event-progress-lbl{font-size:9px;font-weight:900;font-family:var(--mono);display:flex;justify-content:space-between;color:var(--t3);}
+.event-timer{font-size:9px;color:var(--pk);font-weight:900;font-family:var(--mono);margin-top:4px;}
 </style>
 
 </head>
@@ -1619,6 +1646,26 @@ textarea.inp{resize:none;min-height:68px;}
         <div class="flb-ttl">🏆 Vänner Leaderboard</div>
         <div id="friendLBList"></div>
         <div style="margin-top:8px"><span class="sp-cta" onclick="nav('lb')">SE ALLA RANKINGS →</span></div>
+      </div>
+
+      <!-- SEASONAL EVENT -->
+      <div class="event-banner" id="eventBanner" onclick="openSeasonalEvent()">
+        <div class="event-banner-glow"></div>
+        <div class="event-title">🌸 SOMMAR KARMA EVENT <span style="background:rgba(255,45,85,.25);border:1px solid rgba(255,45,85,.5);font-size:8px;padding:2px 6px;border-radius:8px;margin-left:4px">LIVE</span></div>
+        <div class="event-subtitle">Gemensamt mål: Samla 100 000 World Points som community!</div>
+        <div class="event-progress-wrap"><div class="event-progress-fill" id="eventProgressFill" style="width:34%"></div></div>
+        <div class="event-progress-lbl"><span>34 000 / 100 000 WP</span><span id="eventContrib">Ditt bidrag: <span id="eventMyContrib">0</span></span></div>
+        <div class="event-timer" id="eventTimer">⏱️ 7 dagar kvar</div>
+      </div>
+
+      <!-- ROOM DECO TEASER -->
+      <div style="margin:0 14px 12px;border-radius:22px;padding:14px 16px;background:rgba(0,217,255,.07);border:1.5px solid rgba(0,217,255,.28);display:flex;align-items:center;gap:14px;cursor:pointer" onclick="openRoomShop()">
+        <span style="font-size:36px">🏠</span>
+        <div style="flex:1">
+          <div style="font-size:14px;font-weight:900;color:var(--b);margin-bottom:2px">DEKORERA RUMMET</div>
+          <div style="font-size:10px;color:var(--t3)" id="roomDecoSub">Personalisera din pets hem med möbler &amp; dekor</div>
+        </div>
+        <span style="font-size:18px;color:var(--b)">→</span>
       </div>
 
       <div class="sh"><div class="sh-t">GEAR</div><div class="sh-a" onclick="nav('shop');switchShop('gear')">SHOP →</div></div>
@@ -2055,6 +2102,8 @@ textarea.inp{resize:none;min-height:68px;}
       <div class="ld-item" onclick="openTalentTree();closeLDrawer()"><div class="ld-ico" style="background:linear-gradient(135deg,rgba(57,255,20,.15),rgba(0,217,255,.08))">🌳</div><div class="ld-lbl" style="color:var(--g)">Talent Träd</div></div>
       <div class="ld-item" onclick="openDiary();closeLDrawer()"><div class="ld-ico" style="background:linear-gradient(135deg,rgba(191,95,255,.15),rgba(255,51,119,.08))">📖</div><div class="ld-lbl">Pet Dagbok</div></div>
       <div class="ld-item" onclick="openGacha();closeLDrawer()"><div class="ld-ico" style="background:linear-gradient(135deg,rgba(255,230,0,.18),rgba(191,95,255,.1))">🎰</div><div class="ld-lbl" style="color:var(--y)">Dagligt Spin</div></div>
+      <div class="ld-item" onclick="openRoomShop();closeLDrawer()"><div class="ld-ico" style="background:linear-gradient(135deg,rgba(0,217,255,.15),rgba(57,255,20,.08))">🏠</div><div class="ld-lbl" style="color:var(--b)">Ditt Rum</div></div>
+      <div class="ld-item" onclick="openSeasonalEvent();closeLDrawer()"><div class="ld-ico" style="background:linear-gradient(135deg,rgba(255,45,85,.15),rgba(191,95,255,.08))">🌸</div><div class="ld-lbl" style="color:var(--pk)">Sommar Event</div></div>
       <div class="ld-item" onclick="openFishingGame();closeLDrawer()"><div class="ld-ico ld-ico-b">🎣</div><div class="ld-lbl">Fiska</div></div>
       <div class="ld-item" onclick="openModal('petShareModal');updateShareCard();closeLDrawer()"><div class="ld-ico ld-ico-g">📤</div><div class="ld-lbl">Dela min Pet</div></div>
       <div class="ld-sep"></div>
@@ -2395,6 +2444,50 @@ textarea.inp{resize:none;min-height:68px;}
   </div>
   <div class="gacha-result" id="gachaResult"></div>
   <button class="btn btn-y btn-lg gacha-spin-btn" id="gachaSpinBtn" onclick="spinGacha()">🎰 SPIN — GRATIS!</button>
+</div>
+<!-- ROOM DECORATION SHOP -->
+<div class="room-modal" id="roomModal">
+  <div class="talent-hdr">
+    <button class="pack-back" onclick="closeRoomShop()">←</button>
+    <div class="pack-title">🏠 DITT RUM</div>
+    <div style="font-size:12px;font-weight:900;color:var(--b);font-family:var(--mono)" id="roomCoinsDisp">500⚡</div>
+  </div>
+  <div class="room-preview" id="roomPreview">
+    <div class="room-preview-pet" id="roomPreviewPet">🐉</div>
+    <div class="room-preview-floor"></div>
+    <div id="roomPlacedItems"></div>
+  </div>
+  <div class="room-shop-scroll">
+    <div style="font-size:11px;font-weight:900;color:var(--t3);margin-bottom:8px;letter-spacing:1px">🛍️ KÖPTA ITEMS VISAS I RUMMET DIREKT</div>
+    <div class="room-shop-grid" id="roomShopGrid"></div>
+    <div style="height:20px"></div>
+  </div>
+</div>
+<!-- SEASONAL EVENT MODAL -->
+<div class="talent-modal" id="eventModal">
+  <div class="talent-hdr">
+    <button class="pack-back" onclick="closeSeasonalEvent()">←</button>
+    <div class="pack-title">🌸 SOMMAR EVENT</div>
+    <div style="font-size:8px;font-weight:900;color:var(--pk);border:1px solid rgba(255,45,85,.5);padding:2px 7px;border-radius:8px">LIVE</div>
+  </div>
+  <div class="talent-scroll">
+    <div style="border-radius:22px;padding:18px;background:linear-gradient(135deg,rgba(255,45,85,.12),rgba(191,95,255,.08));border:1.5px solid rgba(255,45,85,.3);margin-bottom:14px;text-align:center">
+      <div style="font-size:40px;margin-bottom:8px">🌸</div>
+      <div style="font-size:18px;font-weight:900;color:var(--pk);margin-bottom:4px">SOMMAR KARMA 2026</div>
+      <div style="font-size:12px;color:var(--t2);margin-bottom:16px">Hela KARMA-communityn samlar World Points tillsammans. Nå målet och alla får exklusiva belöningar!</div>
+      <div style="font-size:24px;font-weight:900;font-family:var(--mono);color:var(--y);margin-bottom:4px" id="eventTotalWP">34 000</div>
+      <div style="font-size:11px;color:var(--t3);margin-bottom:12px">av 100 000 World Points</div>
+      <div class="event-progress-wrap" style="height:12px"><div class="event-progress-fill" id="eventModalProgress" style="width:34%"></div></div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px" id="eventMilestones"></div>
+    <div style="background:var(--c1);border:1.5px solid var(--line);border-radius:18px;padding:14px 16px;margin-bottom:14px">
+      <div style="font-size:12px;font-weight:900;color:var(--t2);margin-bottom:10px">🏆 DITT BIDRAG</div>
+      <div style="font-size:28px;font-weight:900;font-family:var(--mono);color:var(--g)" id="myContribBig">0 WP</div>
+      <div style="font-size:10px;color:var(--t3);margin-top:4px">Bidra mer: spela, posta Flash, battle, uppdrag!</div>
+    </div>
+    <button class="btn btn-pk btn-lg btn-full" onclick="contributeToEvent()">⚡ BIDRA +5 WP TILL EVENTET</button>
+    <div style="height:20px"></div>
+  </div>
 </div>
 <!-- FISHING MINI-GAME -->
 <div class="fish-game" id="fishGame">
@@ -4835,6 +4928,130 @@ function spinGacha(){
     const st=$('spinTeaserSub');if(st)st.textContent='✅ Spinnat idag — kom tillbaka imorgon';
   },3200);
 }
+
+// ══════════════════════════════════════════
+// ── ROOM DECORATION SHOP ──
+// ══════════════════════════════════════════
+const ROOM_DECO_ITEMS=[
+  {id:'sofa',em:'🛋️',nm:'Soffa',price:80,col:'rgba(0,217,255,.15)',border:'rgba(0,217,255,.3)',x:10,y:50},
+  {id:'plant',em:'🪴',nm:'Växt',price:50,col:'rgba(57,255,20,.12)',border:'rgba(57,255,20,.28)',x:75,y:45},
+  {id:'trophy',em:'🏆',nm:'Pokal',price:120,col:'rgba(255,230,0,.15)',border:'rgba(255,230,0,.35)',x:55,y:40},
+  {id:'disco',em:'🪩',nm:'Diskoboll',price:200,col:'rgba(191,95,255,.15)',border:'rgba(191,95,255,.35)',x:85,y:20},
+  {id:'painting',em:'🖼️',nm:'Tavla',price:100,col:'rgba(255,159,10,.12)',border:'rgba(255,159,10,.3)',x:20,y:25},
+  {id:'bed',em:'🛏️',nm:'Säng',price:150,col:'rgba(255,45,85,.12)',border:'rgba(255,45,85,.28)',x:40,y:52},
+  {id:'tv',em:'📺',nm:'TV',price:180,col:'rgba(0,217,255,.12)',border:'rgba(0,217,255,.28)',x:68,y:30},
+  {id:'balloon',em:'🎈',nm:'Ballong',price:30,col:'rgba(255,45,85,.1)',border:'rgba(255,45,85,.25)',x:30,y:15},
+  {id:'star',em:'⭐',nm:'Stjärna',price:60,col:'rgba(255,230,0,.1)',border:'rgba(255,230,0,.3)',x:80,y:10},
+  {id:'rainbow',em:'🌈',nm:'Regnbåge',price:250,col:'rgba(191,95,255,.12)',border:'rgba(191,95,255,.3)',x:50,y:5},
+  {id:'cake',em:'🎂',nm:'Tårta',price:90,col:'rgba(255,159,10,.12)',border:'rgba(255,159,10,.28)',x:15,y:55},
+  {id:'lamp',em:'💡',nm:'Lampa',price:70,col:'rgba(255,230,0,.1)',border:'rgba(255,230,0,.25)',x:88,y:38},
+];
+function openRoomShop(){
+  const rm=$('roomModal');if(!rm)return;
+  rm.classList.add('open');
+  const rc=$('roomCoinsDisp');if(rc)rc.textContent=G.coins+'⚡';
+  const pp=$('roomPreviewPet');if(pp)pp.textContent=G.petEmoji||'🐉';
+  renderRoomPreview();renderRoomShopGrid();
+}
+function closeRoomShop(){const rm=$('roomModal');if(rm)rm.classList.remove('open');}
+function renderRoomPreview(){
+  const pl=$('roomPlacedItems');if(!pl)return;
+  const owned=G.roomDeco||[];
+  pl.innerHTML=owned.map(id=>{
+    const it=ROOM_DECO_ITEMS.find(x=>x.id===id);if(!it)return'';
+    return`<div class="room-placed-item" style="left:${it.x}%;top:${it.y}%;transform:translateX(-50%)" onclick="vibe(10)">${it.em}</div>`;
+  }).join('');
+}
+function renderRoomShopGrid(){
+  const grid=$('roomShopGrid');if(!grid)return;
+  const owned=G.roomDeco||[];
+  grid.innerHTML=ROOM_DECO_ITEMS.map(it=>`<div class="room-item-card ${owned.includes(it.id)?'owned':''}" style="background:${it.col};border-color:${it.border}" onclick="buyRoomDeco('${it.id}')">
+    <span class="ric-em">${it.em}</span>
+    <span class="ric-nm" style="color:var(--t1)">${it.nm}</span>
+    <span class="ric-price" style="color:${owned.includes(it.id)?'var(--g)':'var(--y)'}">${owned.includes(it.id)?'✓ KÖPT':it.price+'⚡'}</span>
+  </div>`).join('');
+}
+function buyRoomDeco(id){
+  const it=ROOM_DECO_ITEMS.find(x=>x.id===id);if(!it)return;
+  if(!G.roomDeco)G.roomDeco=[];
+  if(G.roomDeco.includes(id)){showT('✅ Redan köpt!','y');return;}
+  if(G.coins<it.price){showT('❌ Behöver '+it.price+'⚡','r');SFX.error();return;}
+  G.coins-=it.price;G.roomDeco.push(id);
+  SFX.win();vibe([30,20,60]);
+  showT(it.em+' '+it.nm+' placerades i ditt rum!','g');
+  addDiaryEntry('Köpte '+it.em+' '+it.nm+' till rummet! Hemmet ser fetare ut nu. 🏠');
+  save();updateHUD();
+  const rc=$('roomCoinsDisp');if(rc)rc.textContent=G.coins+'⚡';
+  renderRoomPreview();renderRoomShopGrid();
+  initPetRoom();
+  const sub=$('roomDecoSub');if(sub)sub.textContent=(G.roomDeco.length)+' items i ditt rum';
+}
+
+// ══════════════════════════════════════════
+// ── SEASONAL LIVE EVENT ──
+// ══════════════════════════════════════════
+const EVENT_MILESTONES=[
+  {wp:10000,em:'🌱',nm:'Vår',reward:'100 Coins',done:true},
+  {wp:25000,em:'☀️',nm:'Sommar',reward:'Exklusiv Pack',done:true},
+  {wp:50000,em:'🍂',nm:'Höst',reward:'300 Coins + XP Bomb',done:false},
+  {wp:100000,em:'❄️',nm:'Vinter',reward:'LEGENDARY Item + 500 Coins',done:false},
+];
+let _eventMyContrib=0;
+function openSeasonalEvent(){
+  const em=$('eventModal');if(!em)return;
+  em.classList.add('open');
+  const mc=$('myContribBig');if(mc)mc.textContent=_eventMyContrib+' WP';
+  const ms=$('eventMilestones');if(ms)ms.innerHTML=EVENT_MILESTONES.map(m=>`<div style="background:var(--c1);border:1.5px solid ${m.done?'rgba(57,255,20,.4)':'var(--line)'};border-radius:16px;padding:12px;text-align:center">
+    <div style="font-size:24px;margin-bottom:4px">${m.em}</div>
+    <div style="font-size:10px;font-weight:900;color:${m.done?'var(--g)':'var(--t2)'}">${m.nm}</div>
+    <div style="font-size:8px;color:var(--t3);margin-top:2px">${m.wp.toLocaleString()} WP</div>
+    <div style="font-size:9px;font-weight:700;color:${m.done?'var(--g)':'var(--y)'};margin-top:4px">${m.done?'✅ KLAR':m.reward}</div>
+  </div>`).join('');
+}
+function closeSeasonalEvent(){const em=$('eventModal');if(em)em.classList.remove('open');}
+function contributeToEvent(){
+  if(G.coins<5){showT('❌ Behöver 5 coins','r');return;}
+  G.coins-=5;_eventMyContrib+=5;addWorldPoints(5);
+  save();updateHUD();
+  SFX.click();vibe([20,15,40]);
+  showT('🌸 +5 WP bidragit till eventet!','pk');
+  const mc=$('myContribBig');if(mc)mc.textContent=_eventMyContrib+' WP';
+  const ec=$('eventMyContrib');if(ec)ec.textContent=_eventMyContrib;
+}
+
+// save() extension — add roomDeco
+const _origSave2=save;
+save=function(){
+  _origSave2();
+  try{
+    localStorage.setItem('kv8_rd',JSON.stringify(G.roomDeco||[]));
+    localStorage.setItem('kv8_evc',String(_eventMyContrib));
+  }catch(e){}
+};
+// load roomDeco
+try{const rd=localStorage.getItem('kv8_rd');if(rd)G.roomDeco=JSON.parse(rd);}catch(e){G.roomDeco=[];}
+if(!G.roomDeco)G.roomDeco=[];
+try{_eventMyContrib=parseInt(localStorage.getItem('kv8_evc')||'0');}catch(e){}
+// Update room deco teaser on load
+setTimeout(()=>{
+  const sub=$('roomDecoSub');if(sub&&G.roomDeco.length>0)sub.textContent=G.roomDeco.length+' items i ditt rum';
+  const ec=$('eventMyContrib');if(ec)ec.textContent=_eventMyContrib;
+},800);
+
+// Wire room deco items into pet room canvas
+const _baseInitPetRoom=initPetRoom;
+initPetRoom=function(){
+  _baseInitPetRoom();
+  const hero=$('petRoomLayer');if(!hero)return;
+  (G.roomDeco||[]).forEach(id=>{
+    const it=ROOM_DECO_ITEMS.find(x=>x.id===id);if(!it)return;
+    const d=document.createElement('div');
+    d.className='prl-item';
+    d.style.cssText=`left:${it.x}%;bottom:${it.y<50?'calc(40px + '+(50-it.y)+'%)':'calc(40px + 5%)'};font-size:20px;position:absolute;`;
+    d.textContent=it.em;
+    hero.appendChild(d);
+  });
+};
 
 // Wire +1 TP on level-up by patching gainXP's internal lvlup trigger
 const _baseTriggerLvlUp=triggerLvlUp;
