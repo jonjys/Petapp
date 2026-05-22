@@ -1328,6 +1328,22 @@ textarea.inp{resize:none;min-height:68px;}
 .ric-em{font-size:30px;display:block;margin-bottom:5px;}
 .ric-nm{font-size:10px;font-weight:900;display:block;margin-bottom:3px;}
 .ric-price{font-size:10px;font-family:var(--mono);font-weight:900;}
+/* ── FRIEND GIFTING ── */
+.gift-modal{position:fixed;inset:0;z-index:855;background:#04050c;display:flex;flex-direction:column;opacity:0;pointer-events:none;transition:opacity .3s;}
+.gift-modal.open{opacity:1;pointer-events:all;}
+.gift-friends-row{display:flex;gap:10px;overflow-x:auto;padding:12px 14px;scrollbar-width:none;flex-shrink:0;border-bottom:1px solid var(--line);}
+.gift-friends-row::-webkit-scrollbar{display:none;}
+.gift-friend-av{display:flex;flex-direction:column;align-items:center;gap:4px;cursor:pointer;min-width:56px;-webkit-tap-highlight-color:transparent;}
+.gift-friend-av.selected .gfa-ring{border-color:var(--g);background:rgba(57,255,20,.12);}
+.gfa-ring{width:52px;height:52px;border-radius:50%;border:2px solid var(--line);display:flex;align-items:center;justify-content:center;font-size:26px;transition:all .15s;}
+.gfa-nm{font-size:9px;font-weight:700;color:var(--t3);max-width:56px;text-align:center;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.gift-items-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;padding:14px;}
+.gift-item{border-radius:18px;padding:14px 8px;text-align:center;cursor:pointer;border:2px solid;transition:all .12s;-webkit-tap-highlight-color:transparent;}
+.gift-item:active{transform:scale(.92);}
+.gift-item.sel{border-color:var(--g)!important;background:rgba(57,255,20,.1)!important;}
+.gi-em{font-size:32px;display:block;margin-bottom:5px;}
+.gi-nm{font-size:10px;font-weight:900;display:block;margin-bottom:3px;}
+.gi-cost{font-size:9px;font-family:var(--mono);font-weight:900;color:var(--y);}
 /* ── SEASONAL EVENT ── */
 .event-banner{margin:0 14px 12px;border-radius:22px;padding:16px;background:linear-gradient(135deg,rgba(255,45,85,.15),rgba(191,95,255,.1));border:1.5px solid rgba(255,45,85,.4);cursor:pointer;position:relative;overflow:hidden;}
 .event-banner-glow{position:absolute;inset:-20px;background:radial-gradient(circle at 70% 50%,rgba(255,45,85,.12),transparent 60%);pointer-events:none;}
@@ -1584,6 +1600,7 @@ textarea.inp{resize:none;min-height:68px;}
         <div class="fcp-hdr">
           <div class="fcp-ttl">💌 Skicka kärlek till vänners pets</div>
           <div class="fcp-sub">Varje hjärta = +5 mood för deras pet</div>
+          <button class="btn btn-sm" style="background:rgba(57,255,20,.15);border:1px solid rgba(57,255,20,.3);color:var(--g);font-size:10px;font-weight:900;border-radius:10px;padding:4px 10px" onclick="openGiftModal()">🎁 GÅVA</button>
         </div>
         <div class="fcp-row" id="fcpRow"></div>
       </div>
@@ -2104,6 +2121,7 @@ textarea.inp{resize:none;min-height:68px;}
       <div class="ld-item" onclick="openGacha();closeLDrawer()"><div class="ld-ico" style="background:linear-gradient(135deg,rgba(255,230,0,.18),rgba(191,95,255,.1))">🎰</div><div class="ld-lbl" style="color:var(--y)">Dagligt Spin</div></div>
       <div class="ld-item" onclick="openRoomShop();closeLDrawer()"><div class="ld-ico" style="background:linear-gradient(135deg,rgba(0,217,255,.15),rgba(57,255,20,.08))">🏠</div><div class="ld-lbl" style="color:var(--b)">Ditt Rum</div></div>
       <div class="ld-item" onclick="openSeasonalEvent();closeLDrawer()"><div class="ld-ico" style="background:linear-gradient(135deg,rgba(255,45,85,.15),rgba(191,95,255,.08))">🌸</div><div class="ld-lbl" style="color:var(--pk)">Sommar Event</div></div>
+      <div class="ld-item" onclick="openGiftModal();closeLDrawer()"><div class="ld-ico" style="background:linear-gradient(135deg,rgba(57,255,20,.15),rgba(0,217,255,.06))">🎁</div><div class="ld-lbl" style="color:var(--g)">Skicka Gåva</div></div>
       <div class="ld-item" onclick="openFishingGame();closeLDrawer()"><div class="ld-ico ld-ico-b">🎣</div><div class="ld-lbl">Fiska</div></div>
       <div class="ld-item" onclick="openModal('petShareModal');updateShareCard();closeLDrawer()"><div class="ld-ico ld-ico-g">📤</div><div class="ld-lbl">Dela min Pet</div></div>
       <div class="ld-sep"></div>
@@ -2444,6 +2462,22 @@ textarea.inp{resize:none;min-height:68px;}
   </div>
   <div class="gacha-result" id="gachaResult"></div>
   <button class="btn btn-y btn-lg gacha-spin-btn" id="gachaSpinBtn" onclick="spinGacha()">🎰 SPIN — GRATIS!</button>
+</div>
+<!-- FRIEND GIFTING -->
+<div class="gift-modal" id="giftModal">
+  <div class="talent-hdr">
+    <button class="pack-back" onclick="closeGiftModal()">←</button>
+    <div class="pack-title">🎁 SKICKA GÅVA</div>
+    <div style="font-size:12px;font-weight:900;color:var(--y);font-family:var(--mono)" id="giftCoinsDisp">500⚡</div>
+  </div>
+  <div style="font-size:10px;font-weight:700;color:var(--t3);letter-spacing:.8px;padding:10px 14px 0">VÄLJ MOTTAGARE</div>
+  <div class="gift-friends-row" id="giftFriendsRow"></div>
+  <div style="font-size:10px;font-weight:700;color:var(--t3);letter-spacing:.8px;padding:10px 14px 0">VÄLJ GÅVA</div>
+  <div class="gift-items-grid" id="giftItemsGrid"></div>
+  <div style="padding:0 14px 14px">
+    <button class="btn btn-g btn-lg btn-full" id="giftSendBtn" onclick="sendGiftNow()" disabled>🎁 SKICKA GÅVA</button>
+    <div style="font-size:10px;color:var(--t3);text-align:center;margin-top:8px" id="giftStatusLbl">Välj en vän och en gåva</div>
+  </div>
 </div>
 <!-- ROOM DECORATION SHOP -->
 <div class="room-modal" id="roomModal">
@@ -5017,6 +5051,91 @@ function contributeToEvent(){
   showT('🌸 +5 WP bidragit till eventet!','pk');
   const mc=$('myContribBig');if(mc)mc.textContent=_eventMyContrib+' WP';
   const ec=$('eventMyContrib');if(ec)ec.textContent=_eventMyContrib;
+}
+
+// ══════════════════════════════════════════
+// ── FRIEND GIFTING SYSTEM ──
+// ══════════════════════════════════════════
+const GIFT_ITEMS=[
+  {id:'g_food',em:'🍖',nm:'Mat Pack',desc:'+30 Hunger',cost:20,col:'rgba(255,159,10,.15)',border:'rgba(255,159,10,.35)'},
+  {id:'g_energy',em:'⚡',nm:'Energidryck',desc:'+25 Energi',cost:20,col:'rgba(0,217,255,.12)',border:'rgba(0,217,255,.3)'},
+  {id:'g_mood',em:'💖',nm:'Kärleksbrygd',desc:'+20 Mood',cost:25,col:'rgba(255,45,85,.12)',border:'rgba(255,45,85,.28)'},
+  {id:'g_coins',em:'💰',nm:'Coin Pack',desc:'+50 Coins',cost:30,col:'rgba(255,230,0,.12)',border:'rgba(255,230,0,.3)'},
+  {id:'g_xp',em:'⭐',nm:'XP Bomb',desc:'+25 XP',cost:35,col:'rgba(57,255,20,.1)',border:'rgba(57,255,20,.28)'},
+  {id:'g_mega',em:'🎁',nm:'Mega Gift',desc:'Mat + Energi + Coins',cost:80,col:'rgba(191,95,255,.12)',border:'rgba(191,95,255,.3)'},
+];
+let _giftSelFriend=null,_giftSelItem=null;
+const _sentGifts=new Map();
+function openGiftModal(){
+  const gm=$('giftModal');if(!gm)return;
+  gm.classList.add('open');
+  _giftSelFriend=null;_giftSelItem=null;
+  const gc=$('giftCoinsDisp');if(gc)gc.textContent=G.coins+'⚡';
+  const fr=$('giftFriendsRow');
+  if(fr)fr.innerHTML=FRIENDS_DATA.map(f=>`<div class="gift-friend-av" id="gfav_${f.id}" onclick="selectGiftFriend('${f.id}')">
+    <div class="gfa-ring" style="border-color:${f.status==='online'?'rgba(57,255,20,.4)':'var(--line)'}">${f.pet}</div>
+    <div class="gfa-nm">${f.user.split('_')[0]}</div>
+    <div style="font-size:8px;font-weight:700;color:${f.status==='online'?'var(--g)':'var(--t3)'}">${f.status==='online'?'●':'○'}</div>
+  </div>`).join('');
+  renderGiftItems();
+  const sb=$('giftSendBtn');if(sb)sb.disabled=true;
+  const sl=$('giftStatusLbl');if(sl)sl.textContent='Välj en vän och en gåva';
+}
+function closeGiftModal(){const gm=$('giftModal');if(gm)gm.classList.remove('open');}
+function selectGiftFriend(fid){
+  _giftSelFriend=fid;
+  $('giftFriendsRow').querySelectorAll('.gift-friend-av').forEach(el=>el.classList.remove('selected'));
+  const el=$('gfav_'+fid);if(el)el.classList.add('selected');
+  updateGiftSendBtn();
+}
+function renderGiftItems(){
+  const grid=$('giftItemsGrid');if(!grid)return;
+  grid.innerHTML=GIFT_ITEMS.map(gi=>`<div class="gift-item ${_giftSelItem===gi.id?'sel':''}" id="gitm_${gi.id}" style="background:${gi.col};border-color:${gi.border}" onclick="selectGiftItem('${gi.id}')">
+    <span class="gi-em">${gi.em}</span>
+    <span class="gi-nm" style="color:var(--t1)">${gi.nm}</span>
+    <span style="font-size:8px;color:var(--t3);display:block;margin-bottom:3px">${gi.desc}</span>
+    <span class="gi-cost">${gi.cost}⚡</span>
+  </div>`).join('');
+}
+function selectGiftItem(id){
+  _giftSelItem=id;
+  $('giftItemsGrid').querySelectorAll('.gift-item').forEach(el=>el.classList.remove('sel'));
+  const el=$('gitm_'+id);if(el)el.classList.add('sel');
+  updateGiftSendBtn();
+}
+function updateGiftSendBtn(){
+  const sb=$('giftSendBtn');const sl=$('giftStatusLbl');if(!sb)return;
+  if(_giftSelFriend&&_giftSelItem){
+    const gi=GIFT_ITEMS.find(x=>x.id===_giftSelItem);
+    const f=FRIENDS_DATA.find(x=>x.id===_giftSelFriend);
+    if(gi&&f){
+      sb.disabled=G.coins<gi.cost;
+      if(sl)sl.textContent=G.coins<gi.cost?'❌ Inte tillräckligt med coins':'Skicka '+gi.em+' till '+f.user.split('_')[0];
+    }
+  } else {
+    sb.disabled=true;
+    if(sl)sl.textContent='Välj en vän och en gåva';
+  }
+}
+function sendGiftNow(){
+  if(!_giftSelFriend||!_giftSelItem)return;
+  const gi=GIFT_ITEMS.find(x=>x.id===_giftSelItem);
+  const f=FRIENDS_DATA.find(x=>x.id===_giftSelFriend);
+  if(!gi||!f)return;
+  if(G.coins<gi.cost){showT('❌ Behöver '+gi.cost+'⚡','r');SFX.error();return;}
+  G.coins-=gi.cost;
+  SFX.win();vibe([30,20,60,20,80]);
+  showT(gi.em+' Gåva skickad till '+f.user.split('_')[0]+'! 💌','g');
+  _sentGifts.set(f.id,gi.id);
+  addDiaryEntry('Skickade '+gi.em+' '+gi.nm+' till '+f.user+' som gåva! 🎁 '+gi.desc);
+  gainXP(8,'social');gainCoins(0);
+  setTimeout(()=>showT('💌 '+f.user.split('_')[0]+' tackade för gåvan! +10 XP','p'),2500);
+  setTimeout(()=>gainXP(10,'social'),2500);
+  spawnParticles(window.innerWidth/2,window.innerHeight*.4,'stars');
+  const gc=$('giftCoinsDisp');if(gc)gc.textContent=G.coins+'⚡';
+  save();updateHUD();
+  _giftSelItem=null;renderGiftItems();updateGiftSendBtn();
+  const sl=$('giftStatusLbl');if(sl)sl.textContent='✅ Skickat! Välj nästa gåva.';
 }
 
 // save() extension — add roomDeco
