@@ -1556,6 +1556,17 @@ textarea.inp{resize:none;min-height:68px;}
           <span class="vr-val"></span>
         </div>
       </div>
+      <!-- XP LEVEL PROGRESS BAR -->
+      <div style="margin:0 14px 12px;padding:12px 14px;background:rgba(57,255,20,.06);border:1.5px solid rgba(57,255,20,.2);border-radius:18px">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
+          <div style="font-size:11px;font-weight:900;color:var(--g);font-family:var(--mono)" id="xpBarLabel">LV1 PROGRESS</div>
+          <div style="font-size:10px;font-weight:700;color:var(--t3);font-family:var(--mono)" id="xpBarNums">0 / 150 XP</div>
+        </div>
+        <div style="width:100%;height:8px;background:rgba(255,255,255,.06);border-radius:100px;overflow:hidden">
+          <div id="xpBarFill" style="height:100%;width:0%;background:linear-gradient(90deg,var(--g),#00D9FF);border-radius:100px;transition:width .7s cubic-bezier(.34,1.56,.64,1)"></div>
+        </div>
+        <div style="font-size:9px;color:var(--t3);margin-top:4px" id="xpBarSub">Tjäna XP genom att mata, träna & posta Flash</div>
+      </div>
       <!-- CARE BUTTONS -->
       <div class="care-section-lbl">🎮 SKÖT DIN PET</div>
       <div class="care-hero">
@@ -3526,6 +3537,11 @@ function updatePetView(){
   $('vE').style.width=G.energy+'%';$('vEv').textContent=G.energy;
   $('vM').style.width=G.mood+'%';$('vMv').textContent=G.mood;
   $('vK').style.width=G.trustScore+'%';$('vKv').textContent=G.trustScore;
+  // XP Progress Bar
+  const xpFill=$('xpBarFill');if(xpFill)xpFill.style.width=pct+'%';
+  const xpLbl=$('xpBarLabel');if(xpLbl)xpLbl.textContent='LV'+G.level+' PROGRESS';
+  const xpNums=$('xpBarNums');if(xpNums)xpNums.textContent=G.exp+' / '+need+' XP';
+  const xpSub=$('xpBarSub');if(xpSub){const toNext=need-G.exp;xpSub.textContent=toNext>0?toNext+' XP tills Level '+(G.level+1)+'!':'🚀 Level up snart!';};
   // Pet sad/protection state — pet NEVER dies, just shows alert
   const sadEl=$('petSadAlert');
   if(sadEl){
