@@ -4322,271 +4322,6 @@ function schedulePetEvents(){
     if(Math.random()<.35){PET_RANDOM_EVENTS[~~(Math.random()*PET_RANDOM_EVENTS.length)]();}
   },45000);
 }
-// ── PACK SYSTEM ──
-const PACK_ITEMS_POOL={
-  common:[
-    {em:'🍖',nm:'Hundmat',rar:'common',eff:()=>{G.hunger=Math.min(100,G.hunger+25);updatePetView();showT('🍖 +25 Hunger','o');}},
-    {em:'⚡',nm:'Energidryck',rar:'common',eff:()=>{G.energy=Math.min(100,G.energy+30);showT('⚡ +30 Energi','b');}},
-    {em:'💰',nm:'50 Coins',rar:'common',eff:()=>{gainCoins(50);}},
-    {em:'🌿',nm:'Herb',rar:'common',eff:()=>{}},
-    {em:'🎀',nm:'Rosett',rar:'common',eff:()=>{G.mood=Math.min(100,G.mood+15);showT('💖 +15 Mood','p');}},
-    {em:'🍬',nm:'Godis',rar:'common',eff:()=>{G.hunger=Math.min(100,G.hunger+10);G.mood=Math.min(100,G.mood+10);}},
-  ],
-  rare:[
-    {em:'🔮',nm:'Magic Orb',rar:'rare',eff:()=>{gainXP(60,'social');showT('🔮 +60 XP','p');}},
-    {em:'🧪',nm:'XP Potion',rar:'rare',eff:()=>{gainXP(100,'action');showT('🧪 +100 XP!','b');}},
-    {em:'💎',nm:'Diamant',rar:'rare',eff:()=>{gainCoins(120);showT('💎 +120 Coins!','b');}},
-    {em:'🎮',nm:'Game Pad',rar:'rare',eff:()=>{G.mood=100;updatePetView();showT('🎮 MOOD 100!','p');}},
-  ],
-  epic:[
-    {em:'⭐',nm:'Stjärnfragment',rar:'epic',eff:()=>{G.trustScore=Math.min(100,G.trustScore+15);gainXP(150,'social');showT('⭐ +15 KARMA +150XP!','y');}},
-    {em:'🌙',nm:'Månstoft',rar:'epic',eff:()=>{G.hunger=100;G.energy=100;G.mood=100;updatePetView();showT('🌙 FULL RESET — PERFEKT!','y');}},
-    {em:'🔱',nm:'Trident',rar:'epic',eff:()=>{gainXP(200,'action');gainCoins(100);showT('🔱 EPIC! +200XP +100💰','o');}},
-  ],
-  legendary:[
-    {em:'👑',nm:'KARMA CROWN',rar:'legendary',eff:()=>{gainXP(500,'action');gainCoins(300);G.mood=100;G.hunger=100;G.energy=100;updatePetView();showT('👑 LEGENDARY! +500XP +300💰 FULL STATS!','g');spawnParticles(window.innerWidth/2,window.innerHeight/2,'stars');}},
-    {em:'🌟',nm:'Shooting Star',rar:'legendary',eff:()=>{gainXP(400,'social');addWorldPoints(100,'social');showT('🌟 LEGEND! +400XP +100WP!','g');spawnParticles(window.innerWidth/2,window.innerHeight/2,'stars');}},
-    {em:'💫',nm:'Cosmic Gem',rar:'legendary',eff:()=>{G.level++;triggerLvlUp();gainCoins(200);showT('💫 LEVEL UP INSTANT! +200💰','y');}},
-  ]
-};
-
-const PACKS=[
-  {id:'starter',nm:'STARTER PACK',ico:'📦',price:50,col:'#00D9FF',bordCol:'rgba(0,217,255,.4)',bg:'rgba(0,217,255,.07)',desc:'3 items · vanliga & ovanliga',cards:3,pool:{common:.65,rare:.3,epic:.05,legendary:0}},
-  {id:'pro',nm:'PRO PACK',ico:'💫',price:150,col:'#BF5FFF',bordCol:'rgba(191,95,255,.45)',bg:'rgba(191,95,255,.08)',desc:'5 items · garanterad EPIC',cards:5,pool:{common:.4,rare:.35,epic:.2,legendary:.05}},
-  {id:'legend',nm:'LEGEND PACK',ico:'👑',price:500,col:'#FFE600',bordCol:'rgba(255,230,0,.55)',bg:'rgba(255,230,0,.08)',desc:'7 items · chans på LEGENDARY!',cards:7,pool:{common:.2,rare:.35,epic:.3,legendary:.15}},
-];
-
-function openPackShop(){
-  $('packModal').classList.add('open');
-  $('packCoins').textContent=G.coins.toLocaleString('sv')+'⚡';
-  const area=$('packScrollArea');
-  area.innerHTML=PACKS.map(p=>`<div class="pack-card" onclick="buyPack('${p.id}')" style="background:${p.bg};border-color:${p.bordCol};">
-    <span class="pack-card-ico" style="color:${p.col}">${p.ico}</span>
-    <div class="pack-card-info">
-      <div class="pack-card-nm" style="color:${p.col}">${p.nm}</div>
-      <div class="pack-card-desc">${p.desc}</div>
-      <div class="pack-card-price" style="color:${p.col}">${p.price} ⚡ COINS</div>
-    </div>
-    <div class="pack-card-rarity" style="color:${p.col}">${p.cards} KORT</div>
-  </div>`).join('')+`<div style="padding:10px 0;text-align:center;font-size:11px;color:var(--t3)">Du har öppnat ${G.packsOpened} packs totalt 🎁</div><div style="height:20px"></div>`;
-}
-function closePackShop(){$('packModal').classList.remove('open');}
-
-function pickPackItem(pool){
-  const r=Math.random();
-  let tier='common';
-  if(r<pool.legendary)tier='legendary';
-  else if(r<pool.legendary+pool.epic)tier='epic';
-  else if(r<pool.legendary+pool.epic+pool.rare)tier='rare';
-  const arr=PACK_ITEMS_POOL[tier];
-  return arr[Math.floor(Math.random()*arr.length)];
-}
-
-let _packItems=[];
-function buyPack(id){
-  const p=PACKS.find(x=>x.id===id);if(!p)return;
-  if(G.coins<p.price){showT('❌ Behöver '+p.price+' coins!','r');SFX.error();return;}
-  G.coins-=p.price;G.packsOpened++;save();updateHUD();closePackShop();
-  _packItems=Array.from({length:p.cards},()=>pickPackItem(p.pool));
-  if(p.id==='pro'&&!_packItems.some(x=>x.rar==='epic'||x.rar==='legendary'))
-    _packItems[Math.floor(Math.random()*_packItems.length)]=PACK_ITEMS_POOL.epic[0];
-  if(p.id==='legend'&&!_packItems.some(x=>x.rar==='legendary'))
-    _packItems[0]=PACK_ITEMS_POOL.legendary[Math.floor(Math.random()*PACK_ITEMS_POOL.legendary.length)];
-  showPackReveal(p);
-}
-
-function showPackReveal(pack){
-  const scene=$('packOpenScene');
-  $('packRevealTtl').textContent='🎁 '+pack.nm;
-  $('packRevealSub').textContent='Tryck på korten för att avslöja! ('+pack.cards+' kort)';
-  $('packDoneBtn').style.display='none';
-  _flippedCount=0;
-  const cards=$('packRevealCards');
-  cards.innerHTML=_packItems.map((_,i)=>`<div class="pack-reveal-card" id="prc${i}" onclick="flipPackCard(${i})">
-    <div class="prc-inner" id="prci${i}">
-      <div class="prc-front"><div class="prc-front-ico">❓</div></div>
-      <div class="prc-back ${_packItems[i]?_packItems[i].rar:'common'}" id="prcb${i}">
-        <div class="prc-back-em">${_packItems[i]?_packItems[i].em:'?'}</div>
-        <div class="prc-back-nm">${_packItems[i]?_packItems[i].nm:'?'}</div>
-        <div class="prc-back-rar">${(_packItems[i]?_packItems[i].rar:'').toUpperCase()}</div>
-      </div>
-    </div>
-  </div>`).join('');
-  scene.classList.add('active');
-  vibe([20,10,30]);
-  setTimeout(()=>{for(let i=0;i<_packItems.length;i++){if(!$('prci'+i)||!$('prci'+i).classList.contains('flipped'))flipPackCard(i);}},5000);
-}
-
-let _flippedCount=0;
-function flipPackCard(i){
-  const inner=$('prci'+i);if(!inner||inner.classList.contains('flipped'))return;
-  inner.classList.add('flipped');
-  const item=_packItems[i];
-  if(item&&item.rar==='legendary'){vibe([50,30,80,30,100]);SFX.win();spawnParticles(window.innerWidth/2,window.innerHeight*.4,'stars');}
-  else if(item&&item.rar==='epic'){vibe([30,20,60]);SFX.win();}
-  else{vibe(15);SFX.click();}
-  _flippedCount++;
-  if(_flippedCount>=_packItems.length){
-    setTimeout(()=>{$('packDoneBtn').style.display='block';},500);
-  }
-}
-function closePackReveal(){
-  $('packOpenScene').classList.remove('active');
-  _flippedCount=0;
-  _packItems.forEach(item=>{if(item&&item.eff)try{item.eff();}catch(e){}});
-  G.collectibles.push(..._packItems.map(x=>({em:x.em,nm:x.nm,rar:x.rar,ts:Date.now()})));
-  if(G.collectibles.length>50)G.collectibles=G.collectibles.slice(-50);
-  save();updateHUD();updatePetView();
-  showT('🎁 Pack öppnat! Items tillagda!','g');
-}
-
-// ── TALENT TREE ──
-const TALENT_DEFS=[
-  {branch:'Kämpe',ico:'⚔️',col:'#FF2D55',bordCol:'rgba(255,45,85,.45)',nodes:[
-    {id:'t_atk1',ico:'💪',nm:'Styrka',desc:'+25% skada i battles',cost:1,req:[],legendary:false},
-    {id:'t_hp1',ico:'🛡️',nm:'Tough Skin',desc:'+50 max HP i battles',cost:1,req:['t_atk1'],legendary:false},
-    {id:'t_master',ico:'⚔️',nm:'BATTLE MASTER',desc:'2× XP från battles + snabbare vinst',cost:2,req:['t_hp1'],legendary:true},
-  ]},
-  {branch:'Social',ico:'💬',col:'#00D9FF',bordCol:'rgba(0,217,255,.4)',nodes:[
-    {id:'t_charm',ico:'✨',nm:'Charm',desc:'+20% social XP alltid',cost:1,req:[],legendary:false},
-    {id:'t_inf',ico:'📸',nm:'Influencer',desc:'Flash-poster ger 2× coins',cost:1,req:['t_charm'],legendary:false},
-    {id:'t_god',ico:'👑',nm:'KARMA GOD',desc:'Alla stats +25% permanent',cost:3,req:['t_inf'],legendary:true},
-  ]},
-  {branch:'Utforskare',ico:'🌿',col:'#39FF14',bordCol:'rgba(57,255,20,.4)',nodes:[
-    {id:'t_fish1',ico:'🎣',nm:'Lucky Lure',desc:'Sällsynta fiskar oftare',cost:1,req:[],legendary:false},
-    {id:'t_wild1',ico:'🦊',nm:'Pet Whisperer',desc:'Fånga wild pets gratis',cost:1,req:['t_fish1'],legendary:false},
-    {id:'t_exp',ico:'🌍',nm:'WORLD EXPLORER',desc:'+2× World Points från allt',cost:2,req:['t_wild1'],legendary:true},
-  ]},
-];
-function openTalentTree(){
-  $('talentModal').classList.add('open');
-  renderTalentTree();
-}
-function closeTalentTree(){$('talentModal').classList.remove('open');}
-function renderTalentTree(){
-  $('talentPts').textContent=(G.talentPoints||0)+' TP';
-  $('talentScroll').innerHTML=TALENT_DEFS.map(branch=>`
-    <div class="talent-branch" style="border-color:${branch.bordCol}">
-      <div class="tb-hdr"><div class="tb-ico">${branch.ico}</div><div><div class="tb-nm" style="color:${branch.col}">${branch.branch}</div><div class="tb-desc">${branch.nodes.length} förmågor</div></div></div>
-      <div class="talent-nodes">${branch.nodes.map(n=>{
-        const owned=(G.talents||[]).includes(n.id);
-        const reqsMet=n.req.every(r=>(G.talents||[]).includes(r));
-        const canBuy=reqsMet&&!owned&&(G.talentPoints||0)>=n.cost;
-        const locked=!reqsMet&&!owned;
-        return`<div class="talent-node ${owned?'owned':locked?'locked':''} ${n.legendary?'talent-legend-node':''}" style="border-color:${owned?branch.col:locked?'rgba(255,255,255,.1)':branch.bordCol};background:${owned?branch.col+'18':''}" onclick="learnTalent('${n.id}')">
-          <div class="tn-ico">${n.ico}</div>
-          <div class="tn-info"><div class="tn-nm" style="color:${owned?branch.col:'inherit'}">${n.nm}</div><div class="tn-desc">${n.desc}</div></div>
-          <div class="tn-cost" style="color:${canBuy?branch.col:'var(--t3)'}">${owned?'':n.cost+' TP'}</div>
-          <div class="tn-check">✓</div>
-        </div>`;
-      }).join('')}</div>
-    </div>`).join('')+'<div style="height:20px"></div>';
-}
-function learnTalent(id){
-  const all=TALENT_DEFS.flatMap(b=>b.nodes);const n=all.find(x=>x.id===id);if(!n)return;
-  if((G.talents||[]).includes(id)){showT('✅ Redan inlärd!','y');return;}
-  if(!n.req.every(r=>(G.talents||[]).includes(r))){showT('🔒 Lär dig föregående förmåga först','r');return;}
-  if((G.talentPoints||0)<n.cost){showT('❌ Behöver '+n.cost+' TP','r');return;}
-  G.talentPoints-=n.cost;if(!G.talents)G.talents=[];G.talents.push(id);
-  save();vibe([20,15,50,15,80]);SFX.win();showT('🌳 '+n.nm+' inlärd!','g');
-  renderTalentTree();
-}
-
-// ── PET DIARY ──
-function addDiaryEntry(text){
-  if(!G.diaryEntries)G.diaryEntries=[];
-  const d=new Date();const timeStr=d.getHours()+':'+String(d.getMinutes()).padStart(2,'0');
-  G.diaryEntries.unshift({text,time:timeStr,date:d.toLocaleDateString('sv'),pet:gS().e});
-  if(G.diaryEntries.length>30)G.diaryEntries=G.diaryEntries.slice(0,30);
-  save();
-}
-function openDiary(){
-  const modal=$('diaryModal');if(!modal)return;
-  modal.classList.add('open');
-  renderDiary();
-}
-function closeDiary(){const m=$('diaryModal');if(m)m.classList.remove('open');}
-function renderDiary(){
-  const list=$('diaryList');if(!list)return;
-  const entries=G.diaryEntries||[];
-  if(!entries.length){list.innerHTML='<div style="text-align:center;padding:40px 20px;color:var(--t3)"><div style="font-size:40px;margin-bottom:12px">📖</div><div style="font-size:13px">Ingen dagbok ännu.<br>Börja ta hand om din pet!</div></div>';return;}
-  list.innerHTML=entries.map(e=>`<div style="background:var(--c1);border:1px solid var(--line);border-radius:18px;padding:14px 16px;margin-bottom:10px">
-    <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">
-      <span style="font-size:20px">${e.pet}</span>
-      <div>
-        <div style="font-size:10px;font-weight:700;color:var(--t3)">${e.date} kl.${e.time}</div>
-      </div>
-    </div>
-    <div style="font-size:13px;line-height:1.6;color:var(--t1)">${e.text}</div>
-  </div>`).join('')+'<div style="height:20px"></div>';
-}
-
-// ── GACHA WHEEL ──
-const GACHA_PRIZES=[
-  {em:'💰',nm:'50 Coins',col:'#FF9F0A',eff:()=>{gainCoins(50);}},
-  {em:'⚡',nm:'+50 XP',col:'#00D9FF',eff:()=>{gainXP(50,'action');}},
-  {em:'🍖',nm:'Full Hunger',col:'#FF6B6B',eff:()=>{G.hunger=100;updatePetView();}},
-  {em:'💫',nm:'200 Coins!',col:'#BF5FFF',eff:()=>{gainCoins(200);}},
-  {em:'⭐',nm:'+100 XP!',col:'#39FF14',eff:()=>{gainXP(100,'action');}},
-  {em:'🎁',nm:'Pack Ticket',col:'#FFE600',eff:()=>{G.coins+=80;showT('🎁 +80 coins (pack credit)!','y');}},
-  {em:'💖',nm:'Full Mood',col:'#FF2D55',eff:()=>{G.mood=100;updatePetView();}},
-  {em:'👑',nm:'500 Coins!!',col:'#FFE600',eff:()=>{gainCoins(500);}},
-];
-let _gachaSpun=false;
-let _gachaAngle=0;
-function openGacha(){
-  const today=new Date().toDateString();
-  $('gachaModal').classList.add('open');
-  drawGachaWheel();
-  _gachaSpun=false;
-  $('gachaResult').innerHTML='';
-  if(G.lastSpin===today){
-    $('gachaSpinBtn').disabled=true;$('gachaSpinBtn').style.opacity='.4';
-    $('gachaSpinBtn').textContent='✅ Redan spinnat idag';
-    $('gachaSubtitle').textContent='Kom tillbaka imorgon för nytt spin!';
-  } else {
-    $('gachaSpinBtn').disabled=false;$('gachaSpinBtn').style.opacity='1';
-    $('gachaSpinBtn').textContent='🎰 SPIN — GRATIS!';
-    $('gachaSubtitle').textContent='Gratis spin varje dag!';
-  }
-}
-function closeGacha(){$('gachaModal').classList.remove('open');}
-function drawGachaWheel(){
-  const canvas=$('gachaCanvas');if(!canvas)return;
-  const ctx=canvas.getContext('2d');const n=GACHA_PRIZES.length;
-  const arc=Math.PI*2/n;
-  for(let i=0;i<n;i++){
-    const start=i*arc-Math.PI/2;const end=start+arc;
-    ctx.beginPath();ctx.moveTo(130,130);ctx.arc(130,130,128,start,end);ctx.fillStyle=GACHA_PRIZES[i].col+'bb';ctx.fill();
-    ctx.beginPath();ctx.moveTo(130,130);ctx.arc(130,130,128,start,end);ctx.strokeStyle='rgba(0,0,0,.3)';ctx.lineWidth=2;ctx.stroke();
-    ctx.save();ctx.translate(130,130);ctx.rotate(start+arc/2);ctx.textAlign='center';ctx.font='20px serif';ctx.fillText(GACHA_PRIZES[i].em,75,6);ctx.restore();
-  }
-}
-function spinGacha(){
-  const today=new Date().toDateString();
-  if(G.lastSpin===today){showT('✅ Redan spinnat idag!','y');return;}
-  if(_gachaSpun)return;
-  _gachaSpun=true;
-  $('gachaSpinBtn').disabled=true;$('gachaSpinBtn').textContent='🌀 Snurrar...';
-  G.lastSpin=today;save();
-  const prize=GACHA_PRIZES[Math.floor(Math.random()*GACHA_PRIZES.length)];
-  const prizeIdx=GACHA_PRIZES.indexOf(prize);
-  const arc=360/GACHA_PRIZES.length;
-  const targetAngle=360*5+(360-(prizeIdx*arc+arc/2));
-  _gachaAngle+=targetAngle;
-  const wheel=$('gachaWheel');
-  wheel.style.transform=`rotate(${_gachaAngle}deg)`;
-  vibe([20,10,20,10,30,10,40,10,60]);
-  setTimeout(()=>{
-    vibe([50,30,100,30,150]);SFX.win();
-    $('gachaResult').innerHTML=`<div style="font-size:40px;margin-bottom:8px">${prize.em}</div><div style="font-size:18px;font-weight:900;color:var(--y)">${prize.nm}</div><div style="font-size:11px;color:var(--t3);margin-top:4px">Grattis! 🎉</div>`;
-    prize.eff();showT('🎰 '+prize.nm+'!','y');
-    $('gachaSpinBtn').textContent='✅ Spinnat idag!';
-    spawnParticles(window.innerWidth/2,window.innerHeight*.4,'stars');
-    addDiaryEntry('Jag snurrade hjulet och vann: '+prize.nm+'! '+prize.em+' Bästa dag!');
-  },3200);
-}
-
 // ── KARMA WORLD ──
 const KW_DISTRICTS=[
   {id:'social',nm:'Social Hub',ico:'🏙️',col:'#00D9FF',wpReq:0,  statKey:'wldSocial', maxStat:30, desc:'Byggs av chattar & circles'},
@@ -4864,6 +4599,254 @@ try{
     setTimeout(()=>{updateEvolBadge();renderSocialPower();renderFriendCarePackages();renderCareNotifs();renderStreakMilestones();renderFriendLB();updatePetStatusRings();},600);
   }
 }catch(e){}
+
+// ══════════════════════════════════════════
+// ── PACK OPENING SYSTEM ──
+// ══════════════════════════════════════════
+const PACK_ITEMS_POOL=[
+  {id:'c1',nm:'Energy Bar',em:'🍫',rar:'common',ef:()=>{G.energy=Math.min(100,G.energy+15);showT('🍫 +15 ENERGY','b');}},
+  {id:'c2',nm:'Fish Bait',em:'🪱',rar:'common',ef:()=>{showT('🪱 Fish Bait Got!','b');}},
+  {id:'c3',nm:'Sticker Pack',em:'🌟',rar:'common',ef:()=>{gainCoins(25);showT('🌟 +25 COINS','y');}},
+  {id:'c4',nm:'Pet Snack',em:'🦴',rar:'common',ef:()=>{G.hunger=Math.min(100,G.hunger+20);showT('🦴 +20 HUNGER','o');}},
+  {id:'c5',nm:'Boost Drink',em:'⚡',rar:'common',ef:()=>{gainXP(10,'action');showT('⚡ +10 XP','g');}},
+  {id:'r1',nm:'XP Bomb',em:'💣',rar:'rare',ef:()=>{gainXP(50,'action');showT('💣 +50 XP BOMB!','g');}},
+  {id:'r2',nm:'Coin Stack',em:'💰',rar:'rare',ef:()=>{gainCoins(100);showT('💰 +100 COINS!','y');}},
+  {id:'r3',nm:'Mood Potion',em:'🧪',rar:'rare',ef:()=>{G.mood=Math.min(100,G.mood+40);showT('🧪 +40 MOOD!','p');}},
+  {id:'r4',nm:'Talent Chip',em:'🔮',rar:'rare',ef:()=>{G.talentPoints=(G.talentPoints||0)+1;showT('🔮 +1 TALENT POINT!','g');const tp=$('talentPts');if(tp)tp.textContent=G.talentPoints+' TP';}},
+  {id:'r5',nm:'Flash Boost',em:'📸',rar:'rare',ef:()=>{gainXP(30,'social');showT('📸 +30 XP FLASH!','pk');}},
+  {id:'e1',nm:'XP Mega Bomb',em:'🎆',rar:'epic',ef:()=>{gainXP(150,'action');showT('🎆 +150 XP MEGA!','g');}},
+  {id:'e2',nm:'Gold Chest',em:'🏆',rar:'epic',ef:()=>{gainCoins(300);showT('🏆 +300 COINS!','y');}},
+  {id:'e3',nm:'Full Restore',em:'💊',rar:'epic',ef:()=>{G.hunger=100;G.energy=100;G.mood=100;showT('💊 FULL RESTORE!','g');}},
+  {id:'e4',nm:'Talent Crystal',em:'💎',rar:'epic',ef:()=>{G.talentPoints=(G.talentPoints||0)+3;showT('💎 +3 TALENT PTS!','b');const tp=$('talentPts');if(tp)tp.textContent=G.talentPoints+' TP';}},
+  {id:'l1',nm:'Level Scroll',em:'📜',rar:'legendary',ef:()=>{const xpN2=l=>Math.floor(150*Math.pow(1.18,l-1));G.exp+=xpN2(G.level)*.8;while(G.exp>=xpN2(G.level)){G.exp-=xpN2(G.level);G.level++;}save();updateHUD();showT('📜 MEGA XP SURGE!','y');}},
+  {id:'l2',nm:'Dragon Relic',em:'🐉',rar:'legendary',ef:()=>{gainCoins(500);gainXP(100,'action');showT('🐉 DRAGON RELIC! +500⚡+100XP','y');}},
+  {id:'l3',nm:'World Pass',em:'🌍',rar:'legendary',ef:()=>{addWorldPoints(30);showT('🌍 +30 WORLD POINTS!','g');}},
+];
+const PACKS=[
+  {id:'starter',nm:'Starter Pack',em:'🎁',desc:'3 kort · Bra för nybörjare',cost:50,count:3,col:'rgba(0,217,255,.15)',border:'rgba(0,217,255,.4)',labelCol:'var(--b)',weights:{common:70,rare:25,epic:5,legendary:0}},
+  {id:'pro',nm:'Pro Pack',em:'🔥',desc:'5 kort · Ökad chans för Rare+',cost:150,count:5,col:'rgba(191,95,255,.15)',border:'rgba(191,95,255,.45)',labelCol:'var(--p)',weights:{common:40,rare:40,epic:17,legendary:3}},
+  {id:'legend',nm:'Legend Pack',em:'⭐',desc:'7 kort · Garanterad Epic+',cost:500,count:7,col:'rgba(255,230,0,.15)',border:'rgba(255,230,0,.5)',labelCol:'var(--y)',weights:{common:15,rare:35,epic:40,legendary:10}},
+];
+function _rollPackItem(weights){
+  const r=Math.random()*100;
+  let tier;
+  if(r<weights.legendary)tier='legendary';
+  else if(r<weights.legendary+weights.epic)tier='epic';
+  else if(r<weights.legendary+weights.epic+weights.rare)tier='rare';
+  else tier='common';
+  const pool=PACK_ITEMS_POOL.filter(x=>x.rar===tier);
+  return pool[Math.floor(Math.random()*pool.length)];
+}
+function openPackShop(){
+  const pm=$('packModal');if(!pm)return;
+  pm.classList.add('open');
+  const area=$('packScrollArea');if(!area)return;
+  const pc=$('packCoins');if(pc)pc.textContent=G.coins+'⚡';
+  area.innerHTML=PACKS.map(pk=>`<div class="pack-card" style="background:${pk.col};border-color:${pk.border}" onclick="buyPack('${pk.id}')">
+    <div class="pack-card-ico" style="color:${pk.labelCol}">${pk.em}</div>
+    <div class="pack-card-info">
+      <div class="pack-card-nm" style="color:${pk.labelCol}">${pk.nm}</div>
+      <div class="pack-card-desc">${pk.desc}</div>
+      <div class="pack-card-price" style="color:${pk.labelCol}">${pk.cost} ⚡</div>
+    </div>
+    <div class="pack-card-rarity" style="color:${pk.labelCol}">→</div>
+  </div>`).join('')+`<div style="margin-top:12px;padding:14px 16px;background:var(--c1);border-radius:18px;border:1.5px solid var(--line)">
+    <div style="font-size:12px;font-weight:900;color:var(--t2);margin-bottom:10px">📦 DITT BYTE (${G.collectibles.length} föremål)</div>
+    ${G.collectibles.length===0?'<div style="font-size:11px;color:var(--t3);text-align:center;padding:12px">Öppna ditt första pack!</div>':G.collectibles.slice(-12).reverse().map(c=>`<span style="display:inline-block;margin:3px;font-size:20px" title="${c.nm}">${c.em}</span>`).join('')}
+  </div>`;
+}
+function closePackShop(){const pm=$('packModal');if(pm)pm.classList.remove('open');}
+function buyPack(id,free){
+  const pk=PACKS.find(p=>p.id===id);if(!pk)return;
+  if(!free){if(G.coins<pk.cost){showT('❌ Inte tillräckligt med coins!','r');SFX.error();vibe([50]);return;}G.coins-=pk.cost;}
+  G.packsOpened=(G.packsOpened||0)+1;
+  const items=Array.from({length:pk.count},()=>_rollPackItem(pk.weights));
+  closePackShop();SFX.win();vibe([30,20,60]);
+  addDiaryEntry('Öppnade ett '+pk.nm+' och fick: '+items.map(i=>i.em).join('')+'!');
+  showPackReveal(pk,items);save();updateHUD();
+}
+function showPackReveal(pk,items){
+  const scene=$('packOpenScene');if(!scene)return;
+  scene.classList.add('active');
+  const ttl=$('packRevealTtl');if(ttl)ttl.textContent='🎁 '+pk.nm.toUpperCase();
+  const sub=$('packRevealSub');if(sub)sub.textContent='Tryck på korten för att avslöja!';
+  const doneBtn=$('packDoneBtn');if(doneBtn)doneBtn.style.display='none';
+  const cards=$('packRevealCards');if(!cards)return;
+  const rarCol={common:'var(--b)',rare:'var(--p)',epic:'var(--o)',legendary:'var(--y)'};
+  cards.innerHTML=items.map((item,i)=>`<div class="pack-reveal-card" onclick="flipPackCard(${i})" id="prc${i}">
+    <div class="prc-inner" id="prci${i}">
+      <div class="prc-front"><div class="prc-front-ico">🎁</div></div>
+      <div class="prc-back ${item.rar}">
+        <div class="prc-back-em">${item.em}</div>
+        <div class="prc-back-nm" style="color:${rarCol[item.rar]}">${item.nm}</div>
+        <div class="prc-back-rar" style="color:${rarCol[item.rar]}">${item.rar.toUpperCase()}</div>
+      </div>
+    </div>
+  </div>`).join('');
+  window._packRevealItems=items;window._packRevealFlipped=0;
+}
+function flipPackCard(i){
+  const inner=$('prci'+i);if(!inner||inner.classList.contains('flipped'))return;
+  inner.classList.add('flipped');
+  const item=(window._packRevealItems||[])[i];
+  if(item){
+    item.ef();
+    if(!G.collectibles)G.collectibles=[];
+    G.collectibles.push({id:item.id,nm:item.nm,em:item.em,rar:item.rar,ts:Date.now()});
+    if(item.rar==='legendary'){SFX.win();vibe([50,30,100,30,150,30,200]);spawnParticles(window.innerWidth/2,window.innerHeight/2,'stars');}
+    else if(item.rar==='epic'){SFX.win();vibe([50,30,80]);}
+    else SFX.click();
+    save();
+  }
+  window._packRevealFlipped=(window._packRevealFlipped||0)+1;
+  if(window._packRevealFlipped>=(window._packRevealItems||[]).length){
+    setTimeout(()=>{const btn=$('packDoneBtn');if(btn)btn.style.display='block';},400);
+  }
+}
+function closePackReveal(){
+  const scene=$('packOpenScene');if(scene)scene.classList.remove('active');
+  window._packRevealItems=[];window._packRevealFlipped=0;
+  openPackShop();
+}
+
+// ══════════════════════════════════════════
+// ── TALENT TREE ──
+// ══════════════════════════════════════════
+const TALENT_DEFS=[
+  {id:'k1',branch:'kämpe',branchNm:'⚔️ Kämpe',branchDesc:'Strids & träningsförmågor',branchCol:'#FF3B30',em:'💪',nm:'Iron Fist',desc:'+25% XP från träning',cost:1,req:null,ef:()=>{G._talentK1=true;}},
+  {id:'k2',branch:'kämpe',em:'🛡️',nm:'Battle Hardened',desc:'Tåler mer — energi minskar 30% långsammare',cost:2,req:'k1',ef:()=>{G._talentK2=true;}},
+  {id:'k3',branch:'kämpe',em:'⚡',nm:'Thunder Strike',desc:'Träning ger dubbelt XP + 10 coins bonus',cost:3,req:'k2',legendary:true,ef:()=>{G._talentK3=true;}},
+  {id:'s1',branch:'social',branchNm:'📸 Social',branchDesc:'Flash & community krafter',branchCol:'#FF2D55',em:'✨',nm:'Flash Master',desc:'+15 XP per Flash-post',cost:1,req:null,ef:()=>{G._talentS1=true;}},
+  {id:'s2',branch:'social',em:'👥',nm:'Circle Leader',desc:'Circles ger +10% bonus stats',cost:2,req:'s1',ef:()=>{G._talentS2=true;}},
+  {id:'s3',branch:'social',em:'🌟',nm:'Viral Legend',desc:'Alla social-actions ger 2× coins',cost:3,req:'s2',legendary:true,ef:()=>{G._talentS3=true;}},
+  {id:'u1',branch:'utforskare',branchNm:'🌍 Utforskare',branchDesc:'World & event förmågor',branchCol:'#00D9FF',em:'🗺️',nm:'Pathfinder',desc:'Uppdrag ger +10% bonus XP',cost:1,req:null,ef:()=>{G._talentU1=true;}},
+  {id:'u2',branch:'utforskare',em:'🐾',nm:'Pet Whisperer',desc:'Hunger & mood minskar 40% långsammare',cost:2,req:'u1',ef:()=>{G._talentU2=true;}},
+  {id:'u3',branch:'utforskare',em:'👑',nm:'World Ruler',desc:'+50 World Points direkt + alla zones genererar mer',cost:3,req:'u2',legendary:true,ef:()=>{G._talentU3=true;addWorldPoints(50);}},
+];
+function openTalentTree(){const tm=$('talentModal');if(!tm)return;tm.classList.add('open');renderTalentTree();}
+function closeTalentTree(){const tm=$('talentModal');if(tm)tm.classList.remove('open');}
+function renderTalentTree(){
+  const scroll=$('talentScroll');if(!scroll)return;
+  const tp=$('talentPts');if(tp)tp.textContent=(G.talentPoints||0)+' TP';
+  const owned=G.talents||[];
+  const branches=['kämpe','social','utforskare'];
+  scroll.innerHTML=branches.map(br=>{
+    const nodes=TALENT_DEFS.filter(t=>t.branch===br);
+    const meta=nodes[0];
+    return`<div class="talent-branch"><div class="tb-hdr"><div class="tb-ico">${meta.branchNm.split(' ')[0]}</div><div><div class="tb-nm" style="color:${meta.branchCol}">${meta.branchNm.split(' ').slice(1).join(' ')}</div><div class="tb-desc">${meta.branchDesc}</div></div></div><div class="talent-nodes">${nodes.map(n=>{
+      const isOwned=owned.includes(n.id);const reqMet=!n.req||owned.includes(n.req);const isLocked=!isOwned&&!reqMet;
+      return`<div class="talent-node ${isLocked?'locked':''} ${isOwned?'owned':''} ${n.legendary?'talent-legend-node':''}" style="border-color:${isOwned?meta.branchCol:isLocked?'rgba(255,255,255,.15)':meta.branchCol+'88'};background:${isOwned?meta.branchCol+'18':'var(--c2)'}" onclick="${isOwned?'showT(\'Allerede lärd!\',\'y\')':isLocked?'showT(\'🔒 Lär dig tidigare förmåga först!\',\'r\')':'learnTalent(\''+n.id+'\')'}">
+        <div class="tn-ico">${n.em}</div><div class="tn-info"><div class="tn-nm" style="color:${isOwned?meta.branchCol:'var(--t1)'}">${n.nm}</div><div class="tn-desc">${n.desc}</div></div>
+        <div class="tn-cost" style="color:${isOwned?'var(--g)':meta.branchCol}">${isOwned?'✓':n.cost+' TP'}</div><div class="tn-check">✓</div>
+      </div>`;}).join('')}</div></div>`;
+  }).join('');
+}
+function learnTalent(id){
+  const t=TALENT_DEFS.find(x=>x.id===id);if(!t)return;
+  if(!G.talents)G.talents=[];
+  if(G.talents.includes(id)){showT('Redan lärd!','y');return;}
+  if(t.req&&!G.talents.includes(t.req)){const prev=TALENT_DEFS.find(x=>x.id===t.req);showT('🔒 Lär dig '+(prev?prev.nm:'föregående')+'först!','r');return;}
+  if((G.talentPoints||0)<t.cost){showT('❌ Behöver '+t.cost+' TP! Levla upp för mer.','r');SFX.error();return;}
+  G.talentPoints-=t.cost;G.talents.push(id);t.ef();
+  SFX.win();vibe([30,20,60,20,80]);showT('🌳 '+t.nm+' inlärd!','g');
+  spawnParticles(window.innerWidth/2,window.innerHeight*.4,'stars');
+  addDiaryEntry('Lärde mig talangen "'+t.nm+'" på Talent Trädet!');
+  save();renderTalentTree();
+}
+
+// ══════════════════════════════════════════
+// ── PET DIARY ──
+// ══════════════════════════════════════════
+function addDiaryEntry(text){
+  if(!G.diaryEntries)G.diaryEntries=[];
+  const d=new Date();
+  const dateStr=d.toLocaleDateString('sv-SE',{month:'short',day:'numeric',hour:'2-digit',minute:'2-digit'});
+  G.diaryEntries.push({text,date:dateStr,pet:G.petEmoji,ts:Date.now()});
+  if(G.diaryEntries.length>50)G.diaryEntries=G.diaryEntries.slice(-50);
+}
+function openDiary(){const dm=$('diaryModal');if(!dm)return;dm.classList.add('open');renderDiary();}
+function closeDiary(){const dm=$('diaryModal');if(dm)dm.classList.remove('open');}
+function renderDiary(){
+  const list=$('diaryList');if(!list)return;
+  const entries=(G.diaryEntries||[]).slice().reverse();
+  if(entries.length===0){list.innerHTML=`<div style="text-align:center;padding:40px 20px;color:var(--t3)"><div style="font-size:48px;margin-bottom:12px">📖</div><div style="font-size:14px;font-weight:700">Dagboken är tom</div><div style="font-size:12px;margin-top:6px">Börja spela för att skriva minnen!</div></div>`;return;}
+  list.innerHTML=entries.map((e,i)=>`<div style="background:var(--c1);border:1.5px solid var(--line);border-radius:18px;padding:14px 16px;margin-bottom:10px">
+    <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px"><span style="font-size:20px">${e.pet||'🐾'}</span><span style="font-size:10px;color:var(--t3);font-family:var(--mono)">${e.date}</span>${i===0?'<span style="margin-left:auto;background:var(--g);color:#000;font-size:8px;font-weight:900;padding:2px 7px;border-radius:8px">NY</span>':''}</div>
+    <div style="font-size:13px;color:var(--t2);line-height:1.5">${e.text}</div>
+  </div>`).join('');
+}
+
+// ══════════════════════════════════════════
+// ── DAILY GACHA WHEEL ──
+// ══════════════════════════════════════════
+const GACHA_PRIZES=[
+  {em:'⚡',nm:'50 Coins',col:'#FFE600',ef:()=>{gainCoins(50);}},
+  {em:'💎',nm:'+1 Talent PT',col:'#BF5FFF',ef:()=>{G.talentPoints=(G.talentPoints||0)+1;const tp=$('talentPts');if(tp)tp.textContent=G.talentPoints+' TP';}},
+  {em:'🍖',nm:'Full Mat',col:'#FF9F0A',ef:()=>{G.hunger=100;updateHUD();}},
+  {em:'⭐',nm:'+30 XP',col:'#00D9FF',ef:()=>{gainXP(30,'action');}},
+  {em:'💰',nm:'150 Coins',col:'#39FF14',ef:()=>{gainCoins(150);}},
+  {em:'🎁',nm:'Gratis Pack',col:'#FF2D55',ef:()=>{setTimeout(()=>{closeGacha();buyPack('starter',true);},700);}},
+  {em:'🔋',nm:'Full Energi',col:'#00D9FF',ef:()=>{G.energy=100;updateHUD();}},
+  {em:'🏆',nm:'200 Coins',col:'#FFD700',ef:()=>{gainCoins(200);}},
+];
+let _gachaSpinning=false;
+function openGacha(){
+  const gm=$('gachaModal');if(!gm)return;
+  gm.classList.add('open');
+  drawGachaWheel();
+  const today=new Date().toDateString();const spun=G.lastSpin===today;
+  const btn=$('gachaSpinBtn');const sub=$('gachaSubtitle');const res=$('gachaResult');
+  if(btn){btn.disabled=spun;btn.textContent=spun?'✅ Redan spinnat idag':'🎰 SPIN — GRATIS!';}
+  if(sub)sub.textContent=spun?'Kom tillbaka imorgon för nästa spin!':'Gratis spin varje dag!';
+  if(res)res.innerHTML='';
+}
+function closeGacha(){const gm=$('gachaModal');if(gm)gm.classList.remove('open');_gachaSpinning=false;}
+function drawGachaWheel(){
+  const canvas=$('gachaCanvas');if(!canvas)return;
+  const ctx=canvas.getContext('2d');const n=GACHA_PRIZES.length;const arc=2*Math.PI/n;
+  const cx=130,cy=130,r=126;ctx.clearRect(0,0,260,260);
+  GACHA_PRIZES.forEach((p,i)=>{
+    ctx.beginPath();ctx.moveTo(cx,cy);ctx.arc(cx,cy,r,arc*i-Math.PI/2,arc*(i+1)-Math.PI/2);ctx.closePath();
+    ctx.fillStyle=p.col+'cc';ctx.fill();ctx.strokeStyle='rgba(0,0,0,.3)';ctx.lineWidth=1.5;ctx.stroke();
+    ctx.save();ctx.translate(cx,cy);ctx.rotate(arc*i+arc/2-Math.PI/2);ctx.textAlign='center';ctx.textBaseline='middle';
+    ctx.font='18px serif';ctx.fillText(p.em,r*.6,0);ctx.restore();
+  });
+}
+function spinGacha(){
+  const today=new Date().toDateString();
+  if(G.lastSpin===today){showT('✅ Redan spinnat idag!','y');return;}
+  if(_gachaSpinning)return;
+  _gachaSpinning=true;
+  const btn=$('gachaSpinBtn');if(btn){btn.disabled=true;btn.textContent='⏳ Snurrar...';}
+  const wheel=$('gachaWheel');if(!wheel)return;
+  const prizeIdx=Math.floor(Math.random()*GACHA_PRIZES.length);const prize=GACHA_PRIZES[prizeIdx];
+  const sliceDeg=360/GACHA_PRIZES.length;const targetDeg=360-prizeIdx*sliceDeg-sliceDeg/2;
+  const totalSpin=1800+targetDeg;
+  wheel.style.transition='transform 3s cubic-bezier(.17,.67,.12,.99)';wheel.style.transform=`rotate(${totalSpin}deg)`;
+  SFX.click();vibe([20,10,30,10,40]);
+  setTimeout(()=>{
+    _gachaSpinning=false;G.lastSpin=today;
+    prize.ef();SFX.win();vibe([50,30,100,30,150]);
+    const res=$('gachaResult');if(res)res.innerHTML=`<div style="font-size:40px;margin-bottom:6px;animation:spop .4s cubic-bezier(.34,1.56,.64,1)">${prize.em}</div><div style="font-size:16px;font-weight:900;color:var(--y)">${prize.nm}!</div><div style="font-size:11px;color:var(--t3);margin-top:4px">Kom tillbaka imorgon</div>`;
+    const sub=$('gachaSubtitle');if(sub)sub.textContent='Kom tillbaka imorgon för nästa spin!';
+    if(btn)btn.textContent='✅ Redan spinnat idag';
+    addDiaryEntry('Spann gacha-hjulet och vann '+prize.em+' '+prize.nm+'!');
+    save();updateHUD();spawnParticles(window.innerWidth/2,window.innerHeight*.35,'stars');
+    const st=$('spinTeaserSub');if(st)st.textContent='✅ Spinnat idag — kom tillbaka imorgon';
+  },3200);
+}
+
+// Wire +1 TP on level-up by patching gainXP's internal lvlup trigger
+const _baseTriggerLvlUp=triggerLvlUp;
+triggerLvlUp=function(){
+  _baseTriggerLvlUp();
+  G.talentPoints=(G.talentPoints||0)+1;
+  showT('🌳 +1 TALENT POINT!','g');
+  const tp=$('talentPts');if(tp)tp.textContent=G.talentPoints+' TP';
+  const teaserPts=$('talentTeaserPts');if(teaserPts)teaserPts.textContent=G.talentPoints+' TP';
+  addDiaryEntry('Nådde Level '+G.level+'! '+G.petName+' är starkare än någonsin! 🎉');
+  save();
+};
 
 // ── TIMERS ──
 setInterval(()=>{if(!G.name)return;G.hunger=Math.max(0,G.hunger-2);G.energy=Math.max(0,G.energy-1);if(G.hunger<20&&G.hunger>0){showT('⚠️ '+G.petName+' är hungrig!','r');SFX.error();}updateHUD();if(document.querySelector('#view-home.active')){updatePetView();updatePetWeather();}},120000);
