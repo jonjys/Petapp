@@ -3401,12 +3401,72 @@ function buyPremium(tier){
   setTimeout(()=>{spawnParticles(window.innerWidth/2,window.innerHeight*.4,'stars');},300);
   addH('👑 Uppgraderade till '+names[tier]+'!','var(--y)');
 }
-function pcFeed(){if(G.coins<10){showT('❌ Need 10 coins!','r');SFX.error();return;}G.coins-=10;G.hunger=Math.min(100,G.hunger+30);G.mood=Math.min(100,G.mood+5);pcReact('happy');showPetEmote('😋');if(Math.random()<.3)addDiaryEntry(G.petName+' åt mat med stor aptit! Hunger är nu '+Math.min(100,G.hunger)+'%. Mums! 🍖');showT('🍖 +30 HUNGER','g');SFX.click();advanceQuest('feed');updateHUD();updatePetView();}
-function pcTrain(){if(G.energy<20){showT('❌ Låg energi! Sova först.','r');SFX.error();return;}G.energy-=20;gainXP(15,'action');pcReact('happy');showPetEmote('💪');showT('🏋️ +15 XP','g');SFX.click();advanceQuest('train');}
-function pcSleep(){G.energy=Math.min(100,G.energy+40);G.mood=Math.min(100,G.mood+10);petAnimState.mood='sleeping';showPetEmote('💤');showT('😴 +40 ENERGY','g');SFX.click();advanceQuest('sleep');updateHUD();updatePetView();setTimeout(()=>{petAnimState.mood='idle';},4000);}
-function pcPlay(){if(G.energy<10){showT('❌ Behöver energi!','r');SFX.error();return;}G.energy-=10;G.mood=Math.min(100,G.mood+25);gainCoins(5);gainXP(5,'social');pcReact('happy');showPetEmote('🎉');showT('🎮 +5⚡ +5XP','g');SFX.click();advanceQuest('play');}
-function pcBath(){if(G.coins<5){showT('❌ Behöver 5 coins','r');return;}G.coins-=5;G.trustScore=Math.min(100,G.trustScore+3);G.mood=Math.min(100,G.mood+15);gainXP(8,'social');pcReact('happy');showPetEmote('🛁');showT('🛁 +15 MOOD · +3 KARMA','b');SFX.click();updateHUD();updatePetView();}
-function pcTalk(){G.mood=Math.min(100,G.mood+10);G.energy=Math.min(100,G.energy+5);gainXP(5,'social');petAnimState.mood='happy';setTimeout(()=>{petAnimState.mood='idle';},3000);showPetEmote('💬');showT('💬 '+G.petName+' älskar dig! 💖','p');SFX.click();markBond('chat');updatePetView();}
+// ── COMBO SYSTEM ──
+let _comboCount=0,_comboTimer=null,_lastComboTime=0;
+function _triggerCombo(baseLabel){
+  clearTimeout(_comboTimer);_comboCount++;_lastComboTime=Date.now();
+  _comboTimer=setTimeout(()=>{_comboCount=0;},8000);
+  if(_comboCount>=2){
+    const mult=Math.min(4,_comboCount);
+    const label=_comboCount>=4?'🔥 MAX COMBO x'+mult+'!!':_comboCount>=3?'⚡ COMBO x'+mult+'!':'✨ COMBO x'+mult;
+    const col=_comboCount>=4?'y':_comboCount>=3?'o':'g';
+    showT(label+' — '+baseLabel,''+col);
+    if(_comboCount>=3)vibe([20,10,40,10,60]);
+    if(_comboCount>=4)spawnParticles(window.innerWidth*.3+Math.random()*window.innerWidth*.4,window.innerHeight*.4,'stars');
+    return mult;
+  }
+  return 1;
+}
+function pcFeed(){
+  if(G.coins<10){showT('❌ Need 10 coins!','r');SFX.error();return;}
+  G.coins-=10;G.hunger=Math.min(100,G.hunger+30);G.mood=Math.min(100,G.mood+5);
+  pcReact('happy');showPetEmote('😋');
+  const mult=_triggerCombo('+30 HUNGER');
+  if(mult===1)showT('🍖 +30 HUNGER','g');
+  if(Math.random()<.3)addDiaryEntry(G.petName+' åt mat med stor aptit! Hunger är nu '+Math.min(100,G.hunger)+'%. Mums! 🍖');
+  SFX.click();advanceQuest('feed');updateHUD();updatePetView();
+}
+function pcTrain(){
+  if(G.energy<20){showT('❌ Låg energi! Sova först.','r');SFX.error();return;}
+  G.energy-=20;
+  const mult=_triggerCombo('+'+Math.floor(15*mult2())+' XP');
+  const xp=Math.floor(15*mult2());gainXP(xp,'action');
+  pcReact('happy');showPetEmote('💪');
+  if(mult===1)showT('🏋️ +15 XP','g');
+  SFX.click();advanceQuest('train');
+}
+function pcSleep(){
+  G.energy=Math.min(100,G.energy+40);G.mood=Math.min(100,G.mood+10);
+  petAnimState.mood='sleeping';showPetEmote('💤');showT('😴 +40 ENERGY','g');
+  SFX.click();advanceQuest('sleep');updateHUD();updatePetView();
+  setTimeout(()=>{petAnimState.mood='idle';},4000);
+}
+function pcPlay(){
+  if(G.energy<10){showT('❌ Behöver energi!','r');SFX.error();return;}
+  G.energy-=10;G.mood=Math.min(100,G.mood+25);
+  const mult=_triggerCombo('+5⚡ +5XP');
+  gainCoins(Math.floor(5*mult2()));gainXP(Math.floor(5*mult2()),'social');
+  pcReact('happy');showPetEmote('🎉');
+  if(mult===1)showT('🎮 +5⚡ +5XP','g');
+  SFX.click();advanceQuest('play');
+}
+function pcBath(){
+  if(G.coins<5){showT('❌ Behöver 5 coins','r');return;}G.coins-=5;
+  G.trustScore=Math.min(100,G.trustScore+3);G.mood=Math.min(100,G.mood+15);
+  gainXP(8,'social');pcReact('happy');showPetEmote('🛁');
+  const mult=_triggerCombo('+15 MOOD');
+  if(mult===1)showT('🛁 +15 MOOD · +3 KARMA','b');
+  SFX.click();updateHUD();updatePetView();
+}
+function pcTalk(){
+  G.mood=Math.min(100,G.mood+10);G.energy=Math.min(100,G.energy+5);
+  gainXP(5,'social');petAnimState.mood='happy';
+  const mult=_triggerCombo('💖 PET HAPPY');
+  if(mult===1)showT('💬 '+G.petName+' älskar dig! 💖','p');
+  setTimeout(()=>{petAnimState.mood='idle';},3000);
+  showPetEmote('💬');SFX.click();markBond('chat');updatePetView();
+}
+function mult2(){return Math.min(2,1+(_comboCount-1)*0.25);}
 function pcReact(m){
   const b=$('pcBody');
   if(m==='happy'){b.className='pc-b happy';$('pcMood').textContent='🤩';}
