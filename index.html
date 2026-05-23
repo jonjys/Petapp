@@ -132,7 +132,7 @@ textarea.inp{resize:none;min-height:68px;}
 .ftl{font-size:15px;font-weight:800;flex:1;}
 .fbd{flex:1;overflow-y:auto;scrollbar-width:none;}
 .fbd::-webkit-scrollbar{display:none;}
-.splash{position:fixed;inset:0;z-index:900;background:rgba(4,4,10,.97);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;opacity:0;pointer-events:none;transition:opacity .2s;}
+.splash{position:fixed;inset:0;z-index:9960;background:rgba(4,4,10,.97);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;opacity:0;pointer-events:none;transition:opacity .2s;}
 .splash.show{opacity:1;pointer-events:all;}
 @keyframes spop{from{transform:scale(.15) rotate(-12deg);}to{transform:scale(1) rotate(0);}}
 .sp-ico{font-size:80px;margin-bottom:12px;animation:spop .45s cubic-bezier(.34,1.56,.64,1);}
@@ -162,7 +162,7 @@ textarea.inp{resize:none;min-height:68px;}
 .ob-n{width:28px;height:28px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:900;flex-shrink:0;}
 
 /* PET HOME — TAMAGOTCHI HERO STYLE */
-.pet-hero{margin:0;background:linear-gradient(180deg,#07040f 0%,#030d07 50%,#040a09 100%);border:none;border-bottom:1px solid var(--line);padding:14px 0 10px;position:relative;overflow:hidden;}
+.pet-hero{margin:0;background:linear-gradient(180deg,#07040f 0%,#030d07 50%,#040a09 100%);border:none;border-bottom:1px solid var(--line);padding:8px 0 6px;position:relative;overflow:hidden;}
 .pet-hero::before{content:'';position:absolute;width:380px;height:380px;border-radius:50%;background:radial-gradient(circle,rgba(0,232,122,.08) 0%,transparent 65%);top:-120px;left:50%;transform:translateX(-50%);pointer-events:none;}
 .pet-hero::after{content:'';position:absolute;bottom:72px;left:10%;right:10%;height:1px;background:linear-gradient(90deg,transparent,rgba(0,232,122,.18),transparent);pointer-events:none;}
 .ph-row{display:flex;flex-direction:column;align-items:center;margin-bottom:0;}
@@ -213,13 +213,13 @@ textarea.inp{resize:none;min-height:68px;}
 .vr-mini.vr-k .vr-big-num{color:var(--g);}
 /* CARE HERO — Tamagotchi big buttons */
 .care-section-lbl{font-size:10px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:1px;padding:4px 14px 6px;display:flex;align-items:center;gap:6px;}
-.care-hero{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:0 14px 8px;}
-.care-hero-row2{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:0 14px 14px;}
-.chb{border-radius:22px;padding:16px 8px 14px;text-align:center;cursor:pointer;transition:transform .1s;-webkit-tap-highlight-color:transparent;position:relative;overflow:hidden;border:2px solid;min-height:90px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;}
+.care-hero{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin:0 12px 6px;}
+.care-hero-row2{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin:0 12px 10px;}
+.chb{border-radius:18px;padding:10px 6px 9px;text-align:center;cursor:pointer;transition:transform .1s;-webkit-tap-highlight-color:transparent;position:relative;overflow:hidden;border:2px solid;min-height:70px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;}
 .chb:active{transform:scale(.84);}
-.chb-ico{font-size:36px;display:block;line-height:1.1;}
-.chb-lbl{font-size:12px;font-weight:900;display:block;letter-spacing:.2px;}
-.chb-val{font-size:9px;display:block;font-weight:700;opacity:.72;font-family:var(--mono);}
+.chb-ico{font-size:26px;display:block;line-height:1.1;}
+.chb-lbl{font-size:11px;font-weight:900;display:block;letter-spacing:.2px;}
+.chb-val{font-size:8px;display:block;font-weight:700;opacity:.72;font-family:var(--mono);}
 .chb-feed{background:linear-gradient(155deg,rgba(255,159,10,.22),rgba(255,159,10,.06));border-color:rgba(255,159,10,.5);box-shadow:0 4px 14px rgba(255,159,10,.1);}
 .chb-feed .chb-lbl,.chb-feed .chb-val{color:var(--o);}
 .chb-train{background:linear-gradient(155deg,rgba(255,45,85,.2),rgba(255,45,85,.06));border-color:rgba(255,45,85,.5);box-shadow:0 4px 14px rgba(255,45,85,.1);}
@@ -965,7 +965,7 @@ textarea.inp{resize:none;min-height:68px;}
 @keyframes bobPrompt{0%,100%{transform:translateX(-50%) translateY(0);}50%{transform:translateX(-50%) translateY(-4px);}}
 .fish-bubble{position:absolute;border-radius:50%;background:rgba(0,180,255,.15);animation:fishBub var(--dur) ease-in-out infinite var(--del);}
 @keyframes fishBub{0%,100%{transform:translateY(0) scale(1);opacity:.4;}50%{transform:translateY(-8px) scale(1.15);opacity:.8;}}
-.fish-controls{padding:14px;background:rgba(2,10,22,.99);border-top:1px solid rgba(0,180,255,.14);flex-shrink:0;}
+.fish-controls{padding:14px;padding-bottom:calc(14px + env(safe-area-inset-bottom,0px));background:rgba(2,10,22,.99);border-top:1px solid rgba(0,180,255,.14);flex-shrink:0;}
 .fish-status{font-size:13px;font-weight:800;color:var(--b);text-align:center;margin-bottom:10px;font-family:var(--mono);letter-spacing:.3px;min-height:20px;}
 .fish-inventory{display:flex;gap:8px;flex-wrap:wrap;min-height:36px;margin-bottom:10px;}
 .fish-catch-tag{background:rgba(0,180,255,.1);border:1px solid rgba(0,180,255,.3);border-radius:12px;padding:5px 11px;display:flex;align-items:center;gap:6px;}
@@ -1529,7 +1529,7 @@ textarea.inp{resize:none;min-height:68px;}
           <div class="pet-av-wrap" id="petAvWrap" onclick="onPetTap(event)">
             <div class="pet-aura" id="petAura"></div>
             <div class="pet-ring"></div><div class="pet-ring2"></div>
-            <canvas id="petCanvas" width="320" height="320" style="width:256px;height:256px;box-shadow:0 0 48px rgba(0,232,122,.3);border-radius:50%"></canvas>
+            <canvas id="petCanvas" width="320" height="320" style="width:200px;height:200px;box-shadow:0 0 36px rgba(0,232,122,.3);border-radius:50%"></canvas>
             <div class="pet-scanlines"></div>
             <div class="pet-emote" id="petEmote"></div>
             <div class="pet-sad-alert" id="petSadAlert">😢 HUNGRIG!</div>
@@ -2586,6 +2586,7 @@ textarea.inp{resize:none;min-height:68px;}
   <div class="fish-controls">
     <div class="fish-status" id="fishStatus">Kasta ut metspöet för att börja!</div>
     <div class="fish-inventory" id="fishInventory"></div>
+    <div style="width:100%;height:6px;background:rgba(255,255,255,.08);border-radius:100px;overflow:hidden;margin-bottom:8px"><div id="fishTimerBar" style="height:100%;width:0%;background:linear-gradient(90deg,#FFE600,#FF3B30);border-radius:100px;transition:width 2s linear"></div></div>
     <button class="fish-cast-btn idle" id="fishCastBtn" onclick="fishCast()">🎣 KASTA METSPÖ</button>
     <div class="fish-score" id="fishScoreBar">Poäng: 0 · Bäst: 0</div>
   </div>
@@ -4171,15 +4172,23 @@ function fishCast(){
 }
 function triggerFishBite(){
   _fishState.biting=true;_fishState.catchWindow=true;
-  const bob=$('fishBob');if(bob){bob.classList.add('nibble');bob.style.boxShadow='0 0 18px rgba(255,200,0,.9)';}
-  const btn2=$('fishCastBtn');if(btn2){btn2.className='fish-cast-btn biting';btn2.textContent='🐟 RYCK! RYCK! RYCK!';}
-  $('fishStatus').textContent='🐟🐟 NAPP! TRYCK PÅ KNAPPEN NU! 🐟🐟';const prompt=$('fishTapPrompt');if(prompt){prompt.style.display='block';}
-  vibe([40,30,60]);
+  const bob=$('fishBob');if(bob){bob.classList.add('nibble');bob.style.boxShadow='0 0 24px rgba(255,200,0,1)';}
+  const btn2=$('fishCastBtn');if(btn2){btn2.className='fish-cast-btn biting';btn2.textContent='🐟 NAPP! TRYCK NU! 🐟';}
+  $('fishStatus').textContent='⚡ NAPP! TRYCK SNABBT! ⚡';
+  const prompt=$('fishTapPrompt');if(prompt){prompt.style.display='block';}
+  // Start timer bar
+  const tb=$('fishTimerBar');if(tb){tb.style.transition='none';tb.style.width='100%';void tb.offsetWidth;tb.style.transition='width 2s linear';tb.style.width='0%';}
+  vibe([40,30,60,30,80]);SFX.shout&&SFX.shout();
   _fishState.catchTimer=setTimeout(()=>{
-    if(_fishState.biting){_fishState.biting=false;_fishState.casting=false;_fishState.catchWindow=false;resetFishState('💨 Fisken rymde! Försök igen...');}
-  },1800);
+    if(_fishState.biting){_fishState.biting=false;_fishState.casting=false;_fishState.catchWindow=false;
+      const tb2=$('fishTimerBar');if(tb2){tb2.style.transition='none';tb2.style.width='0%';}
+      resetFishState('💨 Fisken rymde! Försök igen...');}
+  },2000);
 }
-function onFishSceneTap(e){if(_fishState.biting&&_fishState.catchWindow)catchFish();}
+function onFishSceneTap(e){
+  if(_fishState.biting&&_fishState.catchWindow){catchFish();return;}
+  if(!_fishState.casting){fishCast();return;}
+}
 function onFishTap(fishEl,ft){
   if(_fishState.biting&&_fishState.catchWindow){catchFish();return;}
   if(!_fishState.casting){fishCast();return;}
@@ -4191,19 +4200,24 @@ function catchFish(){
   if(!_fishState.biting||!_fishState.catchWindow)return;
   clearTimeout(_fishState.catchTimer);
   _fishState.biting=false;_fishState.casting=false;_fishState.catchWindow=false;
+  const tb=$('fishTimerBar');if(tb){tb.style.transition='none';tb.style.width='0%';}
   const rnd=Math.random();const ft=rnd<.4?FISH_TYPES[0]:rnd<.65?FISH_TYPES[1]:rnd<.8?FISH_TYPES[2]:rnd<.92?FISH_TYPES[3]:rnd<.98?FISH_TYPES[4]:FISH_TYPES[5];
   _fishState.score++;_fishState.inventory.push(ft);
+  _fishState._combo=(_fishState._combo||0)+1;
   if(_fishState.score>_fishState.best){_fishState.best=_fishState.score;localStorage.setItem('kv8_fishBest',_fishState.score);}
-  gainCoins(ft.coins);gainXP(ft.xp,'action');
-  if(ft.petFood){G.hunger=Math.min(100,G.hunger+25);updatePetView();showT('🦞 LEGENDARISK FISK! Pet mätt!','y');}
-  else{showT(ft.em+' '+ft.nm+'! +'+ft.coins+' coins','g');}
+  const combo=_fishState._combo||1;const comboMult=combo>=5?3:combo>=3?2:1;
+  gainCoins(ft.coins*comboMult);gainXP(ft.xp*comboMult,'action');
+  if(ft.petFood){G.hunger=Math.min(100,G.hunger+25);updatePetView();showT('🦞 LEGENDARISK FISK! +bonus!','y');}
+  else if(combo>=3){showT(ft.em+' COMBO ×'+comboMult+'! +'+ft.coins*comboMult+'⚡ +'+ft.xp*comboMult+'XP','y');}
+  else{showT(ft.em+' '+ft.nm+'! +'+ft.coins+'⚡','g');}
   const fx=$('fishCatchFx');if(fx){fx.classList.add('on');setTimeout(()=>fx.classList.remove('on'),300);}
   vibe([30,20,80,20,100]);SFX.win();
+  const st=$('fishStatus');if(st&&combo>=3)st.textContent='🔥 COMBO ×'+combo+'! Fånga fler för mer!';
   updateFishUI();
   setTimeout(()=>resetFishState('Kasta igen!'),1200);
 }
 function resetFishState(msg){
-  _fishState.casting=false;_fishState.biting=false;_fishState.catchWindow=false;
+  _fishState.casting=false;_fishState.biting=false;_fishState.catchWindow=false;_fishState._combo=0;
   const line=$('fishLine');const bob=$('fishBob');const prompt=$('fishTapPrompt');
   if(line)line.style.height='0';if(bob){bob.style.display='none';bob.classList.remove('nibble');bob.style.boxShadow='';}
   if(prompt)prompt.style.display='none';
@@ -4318,7 +4332,7 @@ const _origUpdatePetView=typeof updatePetView==='function'?updatePetView:null;
 function nav(name){
   document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
   document.querySelectorAll('.nb[data-v]').forEach(b=>b.classList.remove('on'));
-  const v=$('view-'+name);if(v)v.classList.add('active');
+  const v=$('view-'+name);if(v){v.classList.add('active');v.scrollTop=0;}
   const btn=document.querySelector('.nb[data-v="'+name+'"]');if(btn)btn.classList.add('on');
   vibe(8);
   ({
@@ -5177,6 +5191,7 @@ function showPackReveal(pk,items){
 
 function spinCaseItem(){
   if(_caseIdx>=_caseItems.length)return;
+  if(_caseSpinning)return;
   _caseSpinning=true;
   const item=_caseItems[_caseIdx];
   const sub=$('packRevealSub');if(sub)sub.textContent='Item '+ (_caseIdx+1)+' av '+_caseItems.length+'  — öppnar...';
@@ -5226,7 +5241,7 @@ function spinCaseItem(){
       <div style="font-size:16px;font-weight:900;color:${_RAR_COL[item.rar]};font-family:var(--mono)">${item.nm}</div>
       <div style="font-size:10px;font-weight:900;color:${_RAR_COL[item.rar]};letter-spacing:1px">${item.rar.toUpperCase()}</div>`;
     // Apply effect + save collectible
-    item.ef();
+    try{item.ef();}catch(e){console.warn('item ef error:',e);}
     if(!G.collectibles)G.collectibles=[];
     G.collectibles.push({id:item.id,nm:item.nm,em:item.em,rar:item.rar,ts:Date.now()});
     _caseWonItems.push(item);
@@ -5286,15 +5301,39 @@ function forceClosePackReveal(){
 // ── TALENT TREE ──
 // ══════════════════════════════════════════
 const TALENT_DEFS=[
-  {id:'k1',branch:'kämpe',branchNm:'⚔️ Kämpe',branchDesc:'Strids & träningsförmågor',branchCol:'#FF3B30',em:'💪',nm:'Iron Fist',desc:'+25% XP från träning',cost:1,req:null,ef:()=>{G._talentK1=true;}},
-  {id:'k2',branch:'kämpe',em:'🛡️',nm:'Battle Hardened',desc:'Tåler mer — energi minskar 30% långsammare',cost:2,req:'k1',ef:()=>{G._talentK2=true;}},
-  {id:'k3',branch:'kämpe',em:'⚡',nm:'Thunder Strike',desc:'Träning ger dubbelt XP + 10 coins bonus',cost:3,req:'k2',legendary:true,ef:()=>{G._talentK3=true;}},
-  {id:'s1',branch:'social',branchNm:'📸 Social',branchDesc:'Flash & community krafter',branchCol:'#FF2D55',em:'✨',nm:'Flash Master',desc:'+15 XP per Flash-post',cost:1,req:null,ef:()=>{G._talentS1=true;}},
-  {id:'s2',branch:'social',em:'👥',nm:'Circle Leader',desc:'Circles ger +10% bonus stats',cost:2,req:'s1',ef:()=>{G._talentS2=true;}},
-  {id:'s3',branch:'social',em:'🌟',nm:'Viral Legend',desc:'Alla social-actions ger 2× coins',cost:3,req:'s2',legendary:true,ef:()=>{G._talentS3=true;}},
-  {id:'u1',branch:'utforskare',branchNm:'🌍 Utforskare',branchDesc:'World & event förmågor',branchCol:'#00D9FF',em:'🗺️',nm:'Pathfinder',desc:'Uppdrag ger +10% bonus XP',cost:1,req:null,ef:()=>{G._talentU1=true;}},
-  {id:'u2',branch:'utforskare',em:'🐾',nm:'Pet Whisperer',desc:'Hunger & mood minskar 40% långsammare',cost:2,req:'u1',ef:()=>{G._talentU2=true;}},
-  {id:'u3',branch:'utforskare',em:'👑',nm:'World Ruler',desc:'+50 World Points direkt + alla zones genererar mer',cost:3,req:'u2',legendary:true,ef:()=>{G._talentU3=true;addWorldPoints(50);}},
+  // ⚔️ KÄMPE — Battle / Training
+  {id:'k1',branch:'kämpe',branchNm:'⚔️ KÄMPE',branchDesc:'Strid & träning',branchCol:'#FF3B30',em:'💪',nm:'Iron Fist',desc:'+25% XP från träning',cost:1,req:null,ef:()=>{G._talentK1=true;}},
+  {id:'k2',branch:'kämpe',em:'🛡️',nm:'Battle Hardened',desc:'Energi minskar 30% långsammare',cost:1,req:'k1',ef:()=>{G._talentK2=true;}},
+  {id:'k3',branch:'kämpe',em:'⚔️',nm:'Warrior Spirit',desc:'+50% XP från battles',cost:2,req:'k2',ef:()=>{G._talentK3=true;}},
+  {id:'k4',branch:'kämpe',em:'🔥',nm:'Berserker',desc:'Träning ger 2× XP + 10 coins',cost:2,req:'k3',ef:()=>{G._talentK4=true;}},
+  {id:'k5',branch:'kämpe',em:'👑',nm:'Warlord',desc:'Battle rewards ×3 permanent',cost:3,req:'k4',legendary:true,ef:()=>{G._talentK5=true;}},
+  // 📸 SOCIAL — Flash & Community
+  {id:'s1',branch:'social',branchNm:'📸 SOCIAL',branchDesc:'Flash & community',branchCol:'#FF2D55',em:'✨',nm:'Flash Master',desc:'+15 XP per Flash-post',cost:1,req:null,ef:()=>{G._talentS1=true;}},
+  {id:'s2',branch:'social',em:'🎯',nm:'Viral Starter',desc:'Flash ger +5 MOOD bonus',cost:1,req:'s1',ef:()=>{G._talentS2=true;}},
+  {id:'s3',branch:'social',em:'👥',nm:'Circle Leader',desc:'Circles ger +10% bonus stats',cost:2,req:'s2',ef:()=>{G._talentS3=true;}},
+  {id:'s4',branch:'social',em:'📱',nm:'Influencer',desc:'Social XP ×1.5 alltid',cost:2,req:'s3',ef:()=>{G._talentS4=true;}},
+  {id:'s5',branch:'social',em:'🌟',nm:'Viral Legend',desc:'Alla social-actions ger 2× coins',cost:3,req:'s4',legendary:true,ef:()=>{G._talentS5=true;}},
+  // 🌍 UTFORSKARE — World & Events
+  {id:'u1',branch:'utforskare',branchNm:'🌍 UTFORSKARE',branchDesc:'World & events',branchCol:'#00D9FF',em:'🗺️',nm:'Pathfinder',desc:'Uppdrag ger +10% bonus XP',cost:1,req:null,ef:()=>{G._talentU1=true;}},
+  {id:'u2',branch:'utforskare',em:'🐾',nm:'Pet Whisperer',desc:'Hunger & mood minskar 40% långsammare',cost:1,req:'u1',ef:()=>{G._talentU2=true;}},
+  {id:'u3',branch:'utforskare',em:'🔭',nm:'Explorer',desc:'+15 WP per event action',cost:2,req:'u2',ef:()=>{G._talentU3=true;}},
+  {id:'u4',branch:'utforskare',em:'⚡',nm:'Speed Runner',desc:'Quest progress ×2 i spel',cost:2,req:'u3',ef:()=>{G._talentU4=true;}},
+  {id:'u5',branch:'utforskare',em:'🌍',nm:'World Ruler',desc:'+50 WP direkt + zones ger mer',cost:3,req:'u4',legendary:true,ef:()=>{G._talentU5=true;addWorldPoints(50);}},
+  // 💰 HANDLARE — Commerce & Market
+  {id:'h1',branch:'handlare',branchNm:'💰 HANDLARE',branchDesc:'Handel & coins',branchCol:'#FFE600',em:'💰',nm:'Merchant',desc:'Shop discount –10%',cost:1,req:null,ef:()=>{G._talentH1=true;}},
+  {id:'h2',branch:'handlare',em:'📈',nm:'Investor',desc:'Tjäna +5 coins/min passivt',cost:1,req:'h1',ef:()=>{G._talentH2=true;}},
+  {id:'h3',branch:'handlare',em:'🏪',nm:'Shopkeeper',desc:'Commerce XP ×1.5',cost:2,req:'h2',ef:()=>{G._talentH3=true;}},
+  {id:'h4',branch:'handlare',em:'💎',nm:'Diamond Hands',desc:'Gacha spin +10% odds bonus',cost:2,req:'h3',ef:()=>{G._talentH4=true;}},
+  {id:'h5',branch:'handlare',em:'🏆',nm:'Tycoon',desc:'Alla coins intjänade ×2',cost:3,req:'h4',legendary:true,ef:()=>{G._talentH5=true;}},
+  // 🐾 DJURVÅRD — Pet Care & Bond
+  {id:'d1',branch:'djurvård',branchNm:'🐾 DJURVÅRD',branchDesc:'Pet & bond',branchCol:'#57FF3C',em:'🐾',nm:'Pet Lover',desc:'+20% hunger från mat',cost:1,req:null,ef:()=>{G._talentD1=true;}},
+  {id:'d2',branch:'djurvård',em:'💗',nm:'Bond Builder',desc:'Daily bond rewards ×1.5',cost:1,req:'d1',ef:()=>{G._talentD2=true;}},
+  {id:'d3',branch:'djurvård',em:'🧬',nm:'DNA Evolved',desc:'Evolutions kräver 1 level mindre',cost:2,req:'d2',ef:()=>{G._talentD3=true;}},
+  {id:'d4',branch:'djurvård',em:'⭐',nm:'Star Pet',desc:'Pet stats minskar 50% långsammare',cost:2,req:'d3',ef:()=>{G._talentD4=true;}},
+  {id:'d5',branch:'djurvård',em:'🌈',nm:'Perfect Bond',desc:'Pet håller alltid 80%+ stats',cost:3,req:'d4',legendary:true,ef:()=>{G._talentD5=true;}},
+  // ⚡ NEXUS — Cross-branch epic nodes
+  {id:'x1',branch:'nexus',branchNm:'⚡ NEXUS',branchDesc:'Kräver 2 grenar',branchCol:'#BF5FFF',em:'⚡',nm:'Warrior-Flash',desc:'Battle posts går virala automatiskt',cost:4,req:'k3',req2:'s3',ef:()=>{G._talentX1=true;}},
+  {id:'x2',branch:'nexus',em:'🌊',nm:'World Trader',desc:'+100 WP & låser upp exklusiv zone',cost:4,req:'u3',req2:'h3',ef:()=>{G._talentX2=true;addWorldPoints(100);showT('🌊 +100 WP! NEXUS UNLOCKED!','p');}},
 ];
 function openTalentTree(){const tm=$('talentModal');if(!tm)return;tm.classList.add('open');renderTalentTree();}
 function closeTalentTree(){const tm=$('talentModal');if(tm)tm.classList.remove('open');}
@@ -5302,23 +5341,61 @@ function renderTalentTree(){
   const scroll=$('talentScroll');if(!scroll)return;
   const tp=$('talentPts');if(tp)tp.textContent=(G.talentPoints||0)+' TP';
   const owned=G.talents||[];
-  const branches=['kämpe','social','utforskare'];
-  scroll.innerHTML=branches.map(br=>{
+  const branches=['kämpe','social','utforskare','handlare','djurvård'];
+  const nexus=TALENT_DEFS.filter(t=>t.branch==='nexus');
+  let html='<div style="padding:0 14px 8px"><div style="font-size:10px;color:var(--t3);line-height:1.5">Lär dig förmågor längs varje gren. Nexus-noder kräver 2 grenar.<br>TP erhålls vid level-up (fler TP per högre level).</div></div>';
+  html+=branches.map(br=>{
     const nodes=TALENT_DEFS.filter(t=>t.branch===br);
-    const meta=nodes[0];
-    return`<div class="talent-branch"><div class="tb-hdr"><div class="tb-ico">${meta.branchNm.split(' ')[0]}</div><div><div class="tb-nm" style="color:${meta.branchCol}">${meta.branchNm.split(' ').slice(1).join(' ')}</div><div class="tb-desc">${meta.branchDesc}</div></div></div><div class="talent-nodes">${nodes.map(n=>{
-      const isOwned=owned.includes(n.id);const reqMet=!n.req||owned.includes(n.req);const isLocked=!isOwned&&!reqMet;
-      return`<div class="talent-node ${isLocked?'locked':''} ${isOwned?'owned':''} ${n.legendary?'talent-legend-node':''}" style="border-color:${isOwned?meta.branchCol:isLocked?'rgba(255,255,255,.15)':meta.branchCol+'88'};background:${isOwned?meta.branchCol+'18':'var(--c2)'}" onclick="${isOwned?'showT(\'Allerede lärd!\',\'y\')':isLocked?'showT(\'🔒 Lär dig tidigare förmåga först!\',\'r\')':'learnTalent(\''+n.id+'\')'}">
-        <div class="tn-ico">${n.em}</div><div class="tn-info"><div class="tn-nm" style="color:${isOwned?meta.branchCol:'var(--t1)'}">${n.nm}</div><div class="tn-desc">${n.desc}</div></div>
-        <div class="tn-cost" style="color:${isOwned?'var(--g)':meta.branchCol}">${isOwned?'✓':n.cost+' TP'}</div><div class="tn-check">✓</div>
-      </div>`;}).join('')}</div></div>`;
+    const meta=nodes[0];if(!meta)return'';
+    const col=meta.branchCol;
+    const branchOwned=nodes.filter(n=>owned.includes(n.id)).length;
+    const nodesHtml=nodes.map((n,i)=>{
+      const isOwned=owned.includes(n.id);
+      const reqMet=!n.req||owned.includes(n.req);
+      const isLocked=!isOwned&&!reqMet;
+      const isAvailable=!isOwned&&reqMet;
+      const bgCol=isOwned?col+'28':isAvailable?'rgba(255,255,255,.05)':'rgba(0,0,0,.3)';
+      const borderCol=isOwned?col:isAvailable?col+'66':'rgba(255,255,255,.08)';
+      const onClick=isOwned?`showT('✅ Redan lärd!','y')`:(isLocked?`showT('🔒 Lär dig föregående förmåga först!','r')`:`learnTalent('${n.id}')`);
+      const connector=i>0?`<div style="width:24px;height:3px;background:${isOwned&&owned.includes(nodes[i-1].id)?col:'rgba(255,255,255,.1)'};border-radius:2px;flex-shrink:0"></div>`:'';
+      return`${connector}<div onclick="${onClick}" style="flex-shrink:0;width:60px;height:68px;border-radius:14px;border:2px solid ${borderCol};background:${bgCol};display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;cursor:pointer;position:relative;transition:all .12s;-webkit-tap-highlight-color:transparent;${isOwned?'box-shadow:0 0 14px '+col+'44':''};${n.legendary?'border-style:dashed;':''}" >
+        <div style="font-size:22px;line-height:1">${n.em}</div>
+        <div style="font-size:7.5px;font-weight:900;color:${isOwned?col:'var(--t2)'};text-align:center;line-height:1.2;max-width:56px;overflow:hidden">${n.nm}</div>
+        <div style="position:absolute;bottom:-7px;right:-5px;background:${isOwned?col:'rgba(255,255,255,.12)'};color:${isOwned?'#000':'var(--t3)'};font-size:8px;font-weight:900;font-family:var(--mono);padding:1px 4px;border-radius:5px">${isOwned?'✓':n.cost+'TP'}</div>
+        ${isAvailable&&!isOwned?`<div style="position:absolute;top:-4px;left:-4px;width:10px;height:10px;border-radius:50%;background:${col};animation:xpGlow .8s ease-in-out infinite"></div>`:''}
+      </div>`;
+    }).join('');
+    return`<div style="margin-bottom:14px"><div style="display:flex;align-items:center;gap:8px;padding:0 4px;margin-bottom:8px"><div style="width:22px;height:22px;border-radius:7px;background:${col}22;border:1.5px solid ${col}66;display:flex;align-items:center;justify-content:center;font-size:12px">${meta.branchNm.split(' ')[0]}</div><div><div style="font-size:11px;font-weight:900;color:${col};font-family:var(--mono)">${meta.branchNm}</div><div style="font-size:9px;color:var(--t3)">${meta.branchDesc} · ${branchOwned}/${nodes.length}</div></div></div><div style="display:flex;align-items:center;overflow-x:auto;padding:8px 4px 14px;scrollbar-width:none;gap:0">${nodesHtml}</div></div>`;
   }).join('');
+  // Nexus section
+  if(nexus.length>0){
+    html+=`<div style="margin:4px 0 8px;padding:10px 12px;background:rgba(191,95,255,.08);border:1.5px solid rgba(191,95,255,.25);border-radius:16px"><div style="font-size:10px;font-weight:900;color:#BF5FFF;font-family:var(--mono);margin-bottom:10px">⚡ NEXUS — CROSS-BRANCH NODES</div>`;
+    html+=nexus.map(n=>{
+      const isOwned=owned.includes(n.id);
+      const req1Met=!n.req||owned.includes(n.req);
+      const req2Met=!n.req2||owned.includes(n.req2);
+      const reqMet=req1Met&&req2Met;
+      const isLocked=!isOwned&&!reqMet;
+      const req1Node=TALENT_DEFS.find(x=>x.id===n.req);
+      const req2Node=TALENT_DEFS.find(x=>x.id===n.req2);
+      const reqs=[req1Node,req2Node].filter(Boolean).map(r=>`${r.em} ${r.nm}`).join(' + ');
+      const onClick=isOwned?`showT('✅ Redan lärd!','y')`:(isLocked?`showT('🔒 Behöver: ${reqs.replace(/'/g,'')}','r')`:`learnTalent('${n.id}')`);
+      return`<div onclick="${onClick}" style="display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:14px;border:2px solid ${isOwned?'#BF5FFF':isLocked?'rgba(255,255,255,.08)':'rgba(191,95,255,.4)'};background:${isOwned?'rgba(191,95,255,.18)':isLocked?'rgba(0,0,0,.2)':'rgba(191,95,255,.06)'};margin-bottom:8px;cursor:pointer;-webkit-tap-highlight-color:transparent">
+        <div style="font-size:28px">${n.em}</div>
+        <div style="flex:1"><div style="font-size:12px;font-weight:900;color:${isOwned?'#BF5FFF':'var(--t1)'}">${n.nm}</div><div style="font-size:9px;color:var(--t3);margin-top:1px">${n.desc}</div><div style="font-size:8px;color:rgba(191,95,255,.6);margin-top:3px">Kräver: ${reqs}</div></div>
+        <div style="font-size:11px;font-weight:900;color:${isOwned?'var(--g)':'#BF5FFF'};font-family:var(--mono)">${isOwned?'✓':n.cost+' TP'}</div>
+      </div>`;
+    }).join('');
+    html+='</div>';
+  }
+  scroll.innerHTML=html;
 }
 function learnTalent(id){
   const t=TALENT_DEFS.find(x=>x.id===id);if(!t)return;
   if(!G.talents)G.talents=[];
   if(G.talents.includes(id)){showT('Redan lärd!','y');return;}
-  if(t.req&&!G.talents.includes(t.req)){const prev=TALENT_DEFS.find(x=>x.id===t.req);showT('🔒 Lär dig '+(prev?prev.nm:'föregående')+'först!','r');return;}
+  if(t.req&&!G.talents.includes(t.req)){const prev=TALENT_DEFS.find(x=>x.id===t.req);showT('🔒 Lär dig '+(prev?prev.nm:'föregående förmåga')+' först!','r');return;}
+  if(t.req2&&!G.talents.includes(t.req2)){const prev2=TALENT_DEFS.find(x=>x.id===t.req2);showT('🔒 Lär dig '+(prev2?prev2.nm:'annan gren')+ ' också!','r');return;}
   if((G.talentPoints||0)<t.cost){showT('❌ Behöver '+t.cost+' TP! Levla upp för mer.','r');SFX.error();return;}
   G.talentPoints-=t.cost;G.talents.push(id);t.ef();
   SFX.win();vibe([30,20,60,20,80]);showT('🌳 '+t.nm+' inlärd!','g');
@@ -5353,14 +5430,18 @@ function renderDiary(){
 // ── DAILY GACHA WHEEL ──
 // ══════════════════════════════════════════
 const GACHA_PRIZES=[
-  {em:'⚡',nm:'50 Coins',col:'#FFE600',ef:()=>{gainCoins(50);}},
-  {em:'💎',nm:'+1 Talent PT',col:'#BF5FFF',ef:()=>{G.talentPoints=(G.talentPoints||0)+1;const tp=$('talentPts');if(tp)tp.textContent=G.talentPoints+' TP';}},
-  {em:'🍖',nm:'Full Mat',col:'#FF9F0A',ef:()=>{G.hunger=100;updateHUD();}},
-  {em:'⭐',nm:'+30 XP',col:'#00D9FF',ef:()=>{gainXP(30,'action');}},
-  {em:'💰',nm:'150 Coins',col:'#39FF14',ef:()=>{gainCoins(150);}},
+  {em:'⚡',nm:'75 Coins',col:'#FFE600',ef:()=>{gainCoins(75);}},
+  {em:'💎',nm:'+1 Talent PT',col:'#BF5FFF',ef:()=>{G.talentPoints=(G.talentPoints||0)+1;const tp=$('talentPts');if(tp)tp.textContent=G.talentPoints+' TP';showT('💎 +1 Talent Point!','p');}},
+  {em:'🍖',nm:'Full Mat',col:'#FF9F0A',ef:()=>{G.hunger=100;updatePetView();showT('🍖 Full mat!','o');}},
+  {em:'⭐',nm:'+50 XP',col:'#00D9FF',ef:()=>{gainXP(50,'action');}},
+  {em:'💰',nm:'200 Coins',col:'#39FF14',ef:()=>{gainCoins(200);}},
   {em:'🎁',nm:'Gratis Pack',col:'#FF2D55',ef:()=>{setTimeout(()=>{closeGacha();buyPack('starter',true);},700);}},
-  {em:'🔋',nm:'Full Energi',col:'#00D9FF',ef:()=>{G.energy=100;updateHUD();}},
-  {em:'🏆',nm:'200 Coins',col:'#FFD700',ef:()=>{gainCoins(200);}},
+  {em:'🔋',nm:'Full Energi',col:'#00D9FF',ef:()=>{G.energy=100;updatePetView();showT('🔋 Full energi!','b');}},
+  {em:'🏆',nm:'350 Coins',col:'#FFD700',ef:()=>{gainCoins(350);}},
+  {em:'📜',nm:'+2 Talent PT',col:'#BF5FFF',ef:()=>{G.talentPoints=(G.talentPoints||0)+2;const tp=$('talentPts');if(tp)tp.textContent=G.talentPoints+' TP';showT('📜 +2 Talent Points!','p');}},
+  {em:'🌈',nm:'Full Restore',col:'#FF9F0A',ef:()=>{G.hunger=100;G.energy=100;G.mood=100;updatePetView();showT('🌈 FULL RESTORE!','g');}},
+  {em:'🎯',nm:'+100 XP',col:'#39FF14',ef:()=>{gainXP(100,'action');showT('🎯 +100 XP BONUS!','g');}},
+  {em:'🔥',nm:'Pro Pack',col:'#FF2D55',ef:()=>{setTimeout(()=>{closeGacha();buyPack('pro',true);},700);}},
 ];
 let _gachaSpinning=false,_gachaAngle=0;
 let _lastSpinResultHTML='';
@@ -5632,8 +5713,11 @@ initPetRoom=function(){
 const _baseTriggerLvlUp=triggerLvlUp;
 triggerLvlUp=function(){
   _baseTriggerLvlUp();
-  G.talentPoints=(G.talentPoints||0)+1;
-  showT('🌳 +1 TALENT POINT!','g');
+  // Scaling TP: +1 at lv1-5, +2 at lv6-15, +3 at lv16-30, +4 at lv31-50, +5 at lv51+
+  const lv=G.level;
+  const tpGain=lv>=51?5:lv>=31?4:lv>=16?3:lv>=6?2:1;
+  G.talentPoints=(G.talentPoints||0)+tpGain;
+  showT('🌳 +'+tpGain+' TALENT POINT'+(tpGain>1?'S':'')+'! (LV'+lv+')','g');
   const tp=$('talentPts');if(tp)tp.textContent=G.talentPoints+' TP';
   const teaserPts=$('talentTeaserPts');if(teaserPts)teaserPts.textContent=G.talentPoints+' TP';
   addDiaryEntry('Nådde Level '+G.level+'! '+G.petName+' är starkare än någonsin! 🎉');
