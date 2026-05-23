@@ -277,10 +277,11 @@ textarea.inp{resize:none;min-height:68px;}
 .sc-streak{font-size:9px;color:var(--r);font-weight:800;font-family:var(--mono);}
 .flash-feed{flex:1;overflow-y:scroll;scroll-snap-type:y mandatory;scrollbar-width:none;}
 .flash-feed::-webkit-scrollbar{display:none;}
-.fv{scroll-snap-align:start;min-height:100svh;display:flex;flex-direction:column;background:var(--bg);border-bottom:1px solid var(--line);position:relative;}
-.fv-media{flex:1;min-height:55svh;background:var(--c1);display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;}
-.fv-bg{font-size:110px;opacity:.04;}
-.fv-right{position:absolute;right:12px;bottom:60px;display:flex;flex-direction:column;align-items:center;gap:18px;z-index:10;}
+.fv{scroll-snap-align:start;min-height:100svh;display:flex;flex-direction:column;background:#000;border-bottom:1px solid rgba(255,255,255,.06);position:relative;}
+.fv-media{flex:1;min-height:75svh;background:var(--c1);display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;cursor:pointer;}
+.fv-bg{font-size:160px;opacity:.05;pointer-events:none;position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);}
+.fv-right{position:absolute;right:10px;display:flex;flex-direction:column;align-items:center;gap:14px;z-index:10;}
+@keyframes musicSpin{0%{transform:rotate(0);}100%{transform:rotate(360deg);}}
 .fv-action{display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer;}
 .fv-action-ico{font-size:30px;transition:transform .15s;}
 .fv-action:active .fv-action-ico{transform:scale(.78);}
@@ -836,7 +837,7 @@ textarea.inp{resize:none;min-height:68px;}
 ═══════════════════════════════════ */
 .pet-room-layer{position:absolute;inset:0;overflow:hidden;pointer-events:none;border-radius:0;}
 .prl-sky{position:absolute;top:0;left:0;right:0;height:60%;}
-.prl-floor{position:absolute;bottom:0;left:0;right:0;height:40%;border-top:1.5px solid rgba(57,255,20,.2);}
+.prl-floor{position:absolute;bottom:0;left:0;right:0;height:40%;}
 .prl-floor-glow{position:absolute;bottom:0;left:10%;right:10%;height:30px;background:radial-gradient(ellipse,rgba(57,255,20,.1),transparent 70%);}
 .prl-star{position:absolute;border-radius:50%;background:#fff;animation:twk var(--dur) ease-in-out infinite var(--del);}
 @keyframes twk{0%,100%{opacity:.15;}50%{opacity:.9;}}
@@ -2650,7 +2651,7 @@ textarea.inp{resize:none;min-height:68px;}
 <div class="modal" id="rodShopModal">
   <div class="ms">
     <div class="mh" onclick="closeModal('rodShopModal')"></div>
-    <div class="mt">🎣 Spöuppgradering</div>
+    <div class="mt">🎣 Spöuppgradering <div class="mx" onclick="closeModal('rodShopModal')">✕</div></div>
     <div id="rodShopGrid" style="display:flex;flex-direction:column;gap:8px;padding:0 14px 18px"></div>
   </div>
 </div>
@@ -2658,7 +2659,7 @@ textarea.inp{resize:none;min-height:68px;}
 <div class="modal" id="fishJournalModal">
   <div class="ms">
     <div class="mh" onclick="closeModal('fishJournalModal')"></div>
-    <div class="mt">📖 Fångstjournal</div>
+    <div class="mt">📖 Fångstjournal <div class="mx" onclick="closeModal('fishJournalModal')">✕</div></div>
     <div id="fishJournalContent" style="padding:0 14px 18px"></div>
   </div>
 </div>
@@ -2811,10 +2812,14 @@ const UPPDRAG_DATA=[
 ];
 
 const FLASH_POSTS=[
-  {id:'f1',user:'ella_sthlm',pet:'🐉',lvl:9,up:'Mocca Tea @ Plattan',cap:'Faktiskt gott ☕ + 150 SEK direkt Swish 🙏',xp:'+80 XP',likes:347,live:false,streak:7},
-  {id:'f2',user:'maxruns',pet:'🐺',lvl:11,up:'Nike Air Flash @ Stadium',cap:'LEVEL 11 ACTIVATED 💀',xp:'+150 XP',likes:1204,live:true,streak:14},
-  {id:'f3',user:'sagas_world',pet:'🦋',lvl:7,up:'Daglig Flash #24',cap:'Thrift haul + vintage vibes 🤌',xp:'+20 XP',likes:567,live:false,streak:24},
-  {id:'f4',user:'carlos_leo',pet:'🦊',lvl:5,up:'Graffiti mural hunt',cap:'Hittade denna jätten på Hornstull 😭',xp:'+45 XP',likes:189,live:false,streak:3},
+  {id:'f1',user:'ella_sthlm',pet:'🐉',lvl:9,up:'Mocca Tea @ Plattan',cap:'Faktiskt gott ☕ + 150 SEK direkt Swish 🙏',xp:'+80 XP',likes:347,live:false,streak:7,bg:'linear-gradient(160deg,#0d1a2e,#1a0d2e)',sound:'🎵 Lo-fi beats',tag:'☕ CAFÉ'},
+  {id:'f2',user:'maxruns',pet:'🐺',lvl:11,up:'Nike Air Flash @ Stadium',cap:'LEVEL 11 ACTIVATED 💀 #gymrat #grind',xp:'+150 XP',likes:1204,live:true,streak:14,bg:'linear-gradient(160deg,#1a0808,#2e0d0d)',sound:'🎵 Hard Trap',tag:'💪 TRÄNING'},
+  {id:'f3',user:'sagas_world',pet:'🦋',lvl:7,up:'Daglig Flash #24',cap:'Thrift haul + vintage vibes 🤌 snyggt å billigt',xp:'+20 XP',likes:567,live:false,streak:24,bg:'linear-gradient(160deg,#0d2418,#1a2e0d)',sound:'🎵 Y2K Pop',tag:'🛍️ MODE'},
+  {id:'f4',user:'carlos_leo',pet:'🦊',lvl:5,up:'Graffiti mural hunt',cap:'Hittade denna jätten på Hornstull 😭 konst finns överallt',xp:'+45 XP',likes:189,live:false,streak:3,bg:'linear-gradient(160deg,#0d1a10,#1a2d0d)',sound:'🎵 Phonk',tag:'🎨 KONST'},
+  {id:'f5',user:'linnea_k',pet:'🐱',lvl:3,up:'Nybörjar-Flash 🌱',cap:'Första Flash!! Så nervös lol 😅',xp:'+20 XP',likes:892,live:false,streak:1,bg:'linear-gradient(160deg,#1a0d1a,#2e0d2e)',sound:'🎵 Viral Sound',tag:'✨ NY'},
+  {id:'f6',user:'viktor_v',pet:'🦁',lvl:8,up:'Streetfood run @ Meatballs',cap:'Köttbullar x3 med potatismos 🔥 typ 60kr',xp:'+35 XP',likes:2103,live:false,streak:11,bg:'linear-gradient(160deg,#1a1008,#2e1c08)',sound:'🎵 ABBA remix',tag:'🍝 MAT'},
+  {id:'f7',user:'amira_s',pet:'🌙',lvl:6,up:'Sunset @ Hammarby',cap:'Kvällslöpning med vänner 🌅 10k PR!',xp:'+60 XP',likes:445,live:false,streak:5,bg:'linear-gradient(160deg,#080d1a,#0d152e)',sound:'🎵 Running Mix',tag:'🏃 SPORT'},
+  {id:'f8',user:'zara_plays',pet:'🎮',lvl:4,up:'Gaming natt',cap:'ALL NIGHTER fr 🎮 Minecraft w/ gruppen',xp:'+25 XP',likes:731,live:true,streak:8,bg:'linear-gradient(160deg,#020818,#040e1a)',sound:'🎵 Chiptune',tag:'🎮 GAMING'},
 ];
 
 const STREAK_USERS=[
@@ -3580,14 +3585,16 @@ function _triggerCombo(baseLabel){
   return 1;
 }
 function pcFeed(){
+  const CD_MIN=30;const now=Date.now();const last=G._lastFeed||0;const elapsed=(now-last)/60000;
+  if(elapsed<CD_MIN){const rem=Math.ceil(CD_MIN-elapsed);showT('🍖 Mätt! Vänta '+rem+' min','y');SFX.error();return;}
   if(G.coins<10){showT('❌ Need 10 coins!','r');SFX.error();return;}
-  G.coins-=10;G.hunger=Math.min(100,G.hunger+30);G.mood=Math.min(100,G.mood+5);
+  G.coins-=10;G.hunger=Math.min(100,G.hunger+35);G.mood=Math.min(100,G.mood+5);G._lastFeed=now;
   pcReact('happy');showPetEmote('😋');
-  const mult=_triggerCombo('+30 HUNGER +3XP');
+  const mult=_triggerCombo('+35 HUNGER +3XP');
   gainXP(3*mult,'social');
-  if(mult===1)showT('🍖 +30 HUNGER · +3XP','g');
+  if(mult===1)showT('🍖 +35 HUNGER · +3XP · CD: 30 min','g');
   if(Math.random()<.3)addDiaryEntry(G.petName+' åt mat med stor aptit! Hunger är nu '+Math.min(100,G.hunger)+'%. Mums! 🍖');
-  SFX.click();advanceQuest('feed');advanceDailyChallenge('feed');updateHUD();updatePetView();
+  SFX.click();advanceQuest('feed');advanceDailyChallenge('feed');updateHUD();updatePetView();save();
 }
 function pcTrain(){
   if(G.energy<20){showT('❌ Låg energi! Sova först.','r');SFX.error();return;}
@@ -3599,20 +3606,24 @@ function pcTrain(){
   SFX.click();advanceQuest('train');advanceDailyChallenge('train');
 }
 function pcSleep(){
-  G.energy=Math.min(100,G.energy+40);G.mood=Math.min(100,G.mood+10);
+  const CD_MIN=60;const now=Date.now();const last=G._lastSleep||0;const elapsed=(now-last)/60000;
+  if(elapsed<CD_MIN){const rem=Math.ceil(CD_MIN-elapsed);showT('😴 Vila kvar! '+rem+' min','y');SFX.error();return;}
+  G.energy=Math.min(100,G.energy+50);G.mood=Math.min(100,G.mood+10);G._lastSleep=now;
   gainXP(5,'action');
-  petAnimState.mood='sleeping';showPetEmote('💤');showT('😴 +40 ENERGY · +5XP','g');
-  SFX.click();advanceQuest('sleep');updateHUD();updatePetView();
+  petAnimState.mood='sleeping';showPetEmote('💤');showT('😴 +50 ENERGY · +5XP · CD: 60 min','g');
+  SFX.click();advanceQuest('sleep');updateHUD();updatePetView();save();
   setTimeout(()=>{petAnimState.mood='idle';},4000);
 }
 function pcPlay(){
+  const CD_MIN=15;const now=Date.now();const last=G._lastPlay||0;
+  if((now-last)/60000<CD_MIN){showT('🎮 Ledsen! Vänta '+Math.ceil(CD_MIN-(now-last)/60000)+' min','y');SFX.error();return;}
   if(G.energy<10){showT('❌ Behöver energi!','r');SFX.error();return;}
-  G.energy-=10;G.mood=Math.min(100,G.mood+25);
+  G.energy-=10;G.mood=Math.min(100,G.mood+25);G._lastPlay=now;
   const mult=_triggerCombo('+5⚡ +5XP');
   gainCoins(Math.floor(5*mult2()));gainXP(Math.floor(5*mult2()),'social');
   pcReact('happy');showPetEmote('🎉');
-  if(mult===1)showT('🎮 +5⚡ +5XP','g');
-  SFX.click();advanceQuest('play');
+  if(mult===1)showT('🎮 +25 MOOD · +5⚡ · CD: 15 min','g');
+  SFX.click();advanceQuest('play');save();
 }
 function pcBath(){
   if(G.coins<5){showT('❌ Behöver 5 coins','r');return;}G.coins-=5;
@@ -3742,59 +3753,119 @@ function mgTap(){
 }
 
 // ── FLASH ──
-const _FLASH_GRADIENTS=['linear-gradient(160deg,#0d1a2e,#1a0d2e)','linear-gradient(160deg,#0d2418,#1a2e0d)','linear-gradient(160deg,#2e0d1a,#0d1a2e)','linear-gradient(160deg,#1a160d,#0d1a2e)','linear-gradient(160deg,#0d1a1a,#1a0d0d)'];
-const _REACT_EMOJIS=['🔥','💖','😂','🤯','👑'];
+const _REACT_EMOJIS=['🔥','💖','😂','🤯','👑','💀','🫶','⚡'];
+let _flashFollowing=new Set(G.flashFollowing||[]);
 function renderFlashFeed(){
   $('streakCircles').innerHTML=STREAK_USERS.map(s=>`<div class="sc" onclick="showT('${s.add?'📸 Lägg till':'⚡ '+s.user}','pk')"><div class="sc-ring ${s.add?'empty':s.status==='done'?'done':s.status==='missing'?'empty':s.live?'live':'active'}"><div class="sc-inner">${s.em}</div></div><div class="sc-name">${s.user}</div>${s.streak?`<div class="sc-streak">🔥${s.streak}</div>`:''}</div>`).join('');
   $('flashFeed').innerHTML=FLASH_POSTS.map((p,pi)=>{
-    const grad=_FLASH_GRADIENTS[pi%_FLASH_GRADIENTS.length];
     const liked=G.likedPosts.has(p.id);
-    return`<div class="fv">
-      <div class="fv-media" style="background:${grad}">
-        <div class="fv-bg" style="opacity:.06;font-size:130px">${p.pet}</div>
-        <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:8px">
-          <div style="font-size:72px;filter:drop-shadow(0 0 30px rgba(255,255,255,.2));animation:petBob 3s ease-in-out infinite">${p.pet}</div>
-          <div style="background:rgba(0,0,0,.5);backdrop-filter:blur(8px);border-radius:20px;padding:8px 16px;text-align:center;max-width:240px">
-            <div style="font-size:14px;font-weight:900;color:#fff;margin-bottom:3px">${p.cap}</div>
-            <div style="font-size:10px;color:rgba(255,255,255,.6)">${p.user} · 🔥${p.streak}d</div>
-          </div>
+    const following=_flashFollowing.has(p.user);
+    const comments=Math.max(1,~~(p.likes/7));
+    const saves=Math.max(1,~~(p.likes/12));
+    return`<div class="fv" id="fv${p.id}">
+      <div class="fv-media" style="background:${p.bg||'linear-gradient(160deg,#0d1a2e,#1a0d2e)'}" ondblclick="flashDoubleTapLike('${p.id}',event)" ontouchend="flashTouchLike('${p.id}',event)">
+        <!-- big pet bg -->
+        <div class="fv-bg" style="opacity:.07;font-size:160px;pointer-events:none">${p.pet}</div>
+        <!-- center pet + info -->
+        <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:10px;padding:0 56px 80px;pointer-events:none">
+          <div style="font-size:86px;filter:drop-shadow(0 0 40px rgba(255,255,255,.25));animation:petBob 2.8s ease-in-out infinite">${p.pet}</div>
         </div>
-        <div class="fv-right">
+        <!-- top bar -->
+        <div style="position:absolute;top:10px;left:12px;right:12px;display:flex;align-items:center;justify-content:space-between;z-index:4">
+          <div style="display:flex;gap:5px;align-items:center">
+            <span class="flash-stamp" style="font-size:9px">⚡ FLASH</span>
+            ${p.tag?`<span style="background:rgba(0,0,0,.55);border:1px solid rgba(255,255,255,.2);border-radius:12px;padding:2px 8px;font-size:9px;font-weight:900;color:#fff">${p.tag}</span>`:''}
+            ${p.live?'<span class="live-pill" style="font-size:9px"><div class="ldot"></div>LIVE</span>':''}
+          </div>
+          <span style="background:rgba(0,0,0,.5);border:1px solid rgba(255,255,255,.15);border-radius:10px;padding:2px 7px;font-size:9px;color:rgba(255,255,255,.7);font-family:var(--mono)">${p.sound}</span>
+        </div>
+        <!-- right action strip (TikTok-style) -->
+        <div class="fv-right" style="bottom:90px">
+          <!-- avatar + follow -->
+          <div style="position:relative;margin-bottom:16px">
+            <div class="fv-ava" style="width:44px;height:44px;font-size:24px;border:2.5px solid ${following?'var(--g)':'#fff'}">${p.pet}</div>
+            ${!following?`<div onclick="flashFollow('${p.user}')" style="position:absolute;bottom:-8px;left:50%;transform:translateX(-50%);width:18px;height:18px;background:var(--pk);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:900;cursor:pointer;border:2px solid #000">+</div>`:''}
+          </div>
           <div class="fv-action" onclick="likeFlash('${p.id}')">
-            <div class="fv-action-ico" id="fli${p.id}" style="color:${liked?'var(--pk)':'#fff'};font-size:34px">${liked?'❤️':'🤍'}</div>
-            <div class="fv-action-cnt" id="flc${p.id}">${p.likes}</div>
+            <div id="fli${p.id}" style="font-size:36px;transition:transform .15s">${liked?'❤️':'🤍'}</div>
+            <div class="fv-action-cnt" id="flc${p.id}" style="color:${liked?'var(--pk)':'#fff'}">${p.likes>=1000?(p.likes/1000).toFixed(1)+'K':p.likes}</div>
           </div>
           <div class="fv-action" onclick="flashQuickComment('${p.id}')">
-            <div class="fv-action-ico" style="font-size:34px">💬</div>
-            <div class="fv-action-cnt">${~~(p.likes/6)}</div>
+            <div style="font-size:34px">💬</div>
+            <div class="fv-action-cnt">${comments}</div>
+          </div>
+          <div class="fv-action" onclick="flashSave('${p.id}')">
+            <div id="fsv${p.id}" style="font-size:34px">${(G.savedFlash||new Set()).has(p.id)?'🔖':'📌'}</div>
+            <div class="fv-action-cnt">${saves}</div>
           </div>
           <div class="fv-action" onclick="doShare('${p.id}')">
-            <div class="fv-action-ico" style="font-size:34px">↗️</div>
+            <div style="font-size:34px">↗️</div>
             <div class="fv-action-cnt">Dela</div>
           </div>
           <div class="fv-action" onclick="flashSendGift('${p.id}','${p.pet}','${p.user}')">
-            <div class="fv-action-ico" style="font-size:34px">🎁</div>
-            <div class="fv-action-cnt">Gåva</div>
+            <div style="font-size:34px">🎁</div>
+            <div class="fv-action-cnt">Gift</div>
           </div>
         </div>
-        <div class="fv-tl">
-          <span class="flash-stamp">⚡ FLASH</span>
-          ${p.live?'<span class="live-pill"><div class="ldot"></div>LIVE</span>':''}
-          ${p.streak>=7?`<span style="background:rgba(255,68,85,.15);border:1px solid var(--r);color:var(--r);font-size:9px;font-weight:800;padding:2px 7px;border-radius:20px;font-family:var(--mono)">🔥 ${p.streak}d</span>`:''}
+        <!-- bottom info (TikTok style) -->
+        <div style="position:absolute;bottom:0;left:0;right:60px;padding:12px 14px;background:linear-gradient(180deg,transparent,rgba(0,0,0,.75));z-index:4">
+          <div style="display:flex;align-items:center;gap:7px;margin-bottom:6px">
+            <span style="font-size:13px;font-weight:900;color:#fff">@${p.user}</span>
+            ${following?`<span style="background:rgba(57,255,20,.25);border:1px solid rgba(57,255,20,.5);border-radius:8px;padding:1px 6px;font-size:9px;font-weight:900;color:var(--g)">✓ Följer</span>`:`<button onclick="flashFollow('${p.user}')" style="background:transparent;border:1px solid rgba(255,255,255,.5);border-radius:10px;color:#fff;font-size:10px;font-weight:900;padding:2px 8px;cursor:pointer;-webkit-tap-highlight-color:transparent">Följ</button>`}
+            ${p.streak>=7?`<span style="background:rgba(255,68,85,.2);border:1px solid var(--r);color:var(--r);font-size:9px;font-weight:800;padding:1px 6px;border-radius:10px">🔥${p.streak}d</span>`:''}
+            <span style="background:rgba(0,0,0,.4);border:1px solid rgba(255,255,255,.15);border-radius:8px;padding:1px 6px;font-size:9px;color:rgba(255,255,255,.7);font-family:var(--mono)">LV${p.lvl}</span>
+          </div>
+          <div style="font-size:13px;font-weight:600;color:rgba(255,255,255,.95);line-height:1.35;margin-bottom:6px">${p.cap}</div>
+          <div style="display:flex;align-items:center;gap:5px">
+            <div style="font-size:11px;animation:musicSpin 4s linear infinite">🎵</div>
+            <div style="font-size:10px;color:rgba(255,255,255,.6);overflow:hidden;white-space:nowrap;max-width:160px;text-overflow:ellipsis">${p.sound}</div>
+          </div>
         </div>
-        <div class="fv-bl"><span class="xp-pill">${p.xp}</span></div>
+        <!-- double-tap heart anim container -->
+        <div id="dth${p.id}" style="position:absolute;inset:0;pointer-events:none;z-index:10;display:flex;align-items:center;justify-content:center"></div>
       </div>
-      <div style="padding:8px 14px;background:var(--c1);border-top:1px solid var(--line);display:flex;align-items:center;gap:8px">
-        <div style="flex:1;display:flex;gap:4px">
-          ${_REACT_EMOJIS.map(em=>`<button style="font-size:20px;background:none;border:none;cursor:pointer;padding:2px 4px;-webkit-tap-highlight-color:transparent" onclick="flashReact('${p.id}','${em}')">${em}</button>`).join('')}
-        </div>
-        <div style="display:flex;gap:6px">
-          <div class="fv-ava" style="width:30px;height:30px;font-size:16px">${p.pet}</div>
-          <div><div class="fv-un" style="font-size:12px">${p.user}</div><div style="font-size:9px;color:var(--t3)">LV ${p.lvl}</div></div>
-        </div>
+      <!-- Quick react strip -->
+      <div style="padding:6px 12px;background:rgba(8,8,16,.97);border-top:1px solid rgba(255,255,255,.07);display:flex;gap:2px;overflow-x:auto;scrollbar-width:none;align-items:center">
+        ${_REACT_EMOJIS.map(em=>`<button style="font-size:22px;background:none;border:none;cursor:pointer;padding:4px 7px;-webkit-tap-highlight-color:transparent;border-radius:8px;transition:background .1s;flex-shrink:0" onclick="flashReact('${p.id}','${em}')">${em}</button>`).join('')}
+        <div style="flex:1"></div>
+        <span style="font-size:10px;color:var(--t3);font-family:var(--mono)">${p.xp}</span>
       </div>
     </div>`;
   }).join('');
+}
+let _flashDtTimer={};
+function flashTouchLike(id,e){
+  if(e.detail===0)return;// skip, handled separately
+}
+function flashDoubleTapLike(id,e){
+  const now=Date.now();const last=_flashDtTimer[id]||0;
+  _flashDtTimer[id]=now;
+  if(now-last<350){
+    if(!G.likedPosts.has(id)){likeFlash(id);}
+    // Show heart burst
+    const c=$('dth'+id);if(c){
+      const h=document.createElement('div');
+      h.style.cssText='font-size:80px;animation:floatUp 1s ease-out forwards;pointer-events:none;';
+      h.textContent='❤️';c.appendChild(h);setTimeout(()=>h.remove(),1000);
+    }
+  }
+}
+function flashFollow(user){
+  if(_flashFollowing.has(user)){_flashFollowing.delete(user);showT('Avföljde @'+user,'y');}
+  else{
+    _flashFollowing.add(user);
+    gainXP(3,'social');showT('✓ Följer nu @'+user+' · +3XP','g');vibe([15,10,20]);
+    if(!G.flashFollowing)G.flashFollowing=[];
+    G.flashFollowing=Array.from(_flashFollowing);save();
+  }
+  renderFlashFeed();
+}
+function flashSave(id){
+  if(!G.savedFlash)G.savedFlash=new Set();
+  if(typeof G.savedFlash==='object'&&!G.savedFlash.has)G.savedFlash=new Set(G.savedFlash);
+  if(G.savedFlash.has(id)){G.savedFlash.delete(id);showT('📌 Borttagen','y');}
+  else{G.savedFlash.add(id);gainXP(1,'social');showT('🔖 Sparad Flash! +1XP','g');vibe(10);}
+  const el=$('fsv'+id);if(el)el.textContent=G.savedFlash.has(id)?'🔖':'📌';
 }
 function flashReact(id,em){
   vibe([15,10,25]);SFX.click();gainXP(1,'social');
@@ -4298,6 +4369,8 @@ function closeFishingGame(){
   $('fishGame').classList.remove('open');
   clearTimeout(_fishState.biteTimer);clearTimeout(_fishState.catchTimer);
   if(_fishState._pfRaf){cancelAnimationFrame(_fishState._pfRaf);_fishState._pfRaf=null;}
+  closeModal('rodShopModal');closeModal('fishJournalModal');
+  _fishState.casting=false;_fishState.biting=false;_fishState.catchWindow=false;
 }
 function updateFishRodLabel(){
   const r=_getCurRod();const lbl=$('fishRodCurLabel');if(lbl)lbl.textContent=r.em+' '+r.nm;
@@ -4372,21 +4445,22 @@ function triggerFishBite(){
   $('fishStatus').textContent='⚡ NAPP! TRYCK SNABBT! ⚡';
   const prompt=$('fishTapPrompt');if(prompt)prompt.style.display='block';
   // Timer bar
-  const tb=$('fishTimerBar');if(tb){tb.style.transition='none';tb.style.width='100%';void tb.offsetWidth;tb.style.transition='width 2s linear';tb.style.width='0%';}
+  const CATCH_MS=4000;
+  const tb=$('fishTimerBar');if(tb){tb.style.transition='none';tb.style.width='100%';void tb.offsetWidth;tb.style.transition=`width ${CATCH_MS/1000}s linear`;tb.style.width='0%';}
   // Precision bar animation
   const pfBar=$('fishPerfectBar');const needle=$('fpbNeedle');const win=$('fpbWindow');
   if(pfBar&&needle&&win){
     pfBar.style.display='block';
-    let startT=Date.now();const totalMs=2000;
+    let startT=Date.now();
     function animPF(){
-      const elapsed=Date.now()-startT;if(elapsed>=totalMs||!_fishState.biting){pfBar.style.display='none';return;}
-      const progress=elapsed/totalMs;// needle sweeps back and forth
-      const sweepPos=Math.abs(Math.sin(progress*Math.PI*2.5));
-      needle.style.left=(sweepPos*90)+'%';
-      // window shrinks from 40% to 5%
-      const winW=Math.max(5,40-35*progress);
-      const winCenter=50;
-      win.style.left=(winCenter-winW/2)+'%';win.style.width=winW+'%';
+      const elapsed=Date.now()-startT;if(elapsed>=CATCH_MS||!_fishState.biting){pfBar.style.display='none';return;}
+      const progress=elapsed/CATCH_MS;
+      // needle sweeps back and forth (1.5 cycles = slower)
+      const sweepPos=Math.abs(Math.sin(progress*Math.PI*1.5));
+      needle.style.left=(sweepPos*88)+'%';
+      // window shrinks from 50% → 10% over 4s
+      const winW=Math.max(10,50-40*progress);
+      win.style.left=(50-winW/2)+'%';win.style.width=winW+'%';
       _fishState._pfRaf=requestAnimationFrame(animPF);
     }
     _fishState._pfRaf=requestAnimationFrame(animPF);
@@ -4400,7 +4474,7 @@ function triggerFishBite(){
       if(_fishState._pfRaf){cancelAnimationFrame(_fishState._pfRaf);_fishState._pfRaf=null;}
       resetFishState('💨 Fisken rymde! Försök igen...');
     }
-  },2000);
+  },CATCH_MS);
 }
 function onFishSceneTap(e){
   if(_fishState.biting&&_fishState.catchWindow){catchFish();return;}
@@ -4485,6 +4559,8 @@ function resetFishState(msg){
   if($('fishStatus'))$('fishStatus').textContent=msg;
 }
 function openRodShop(){
+  clearTimeout(_fishState.biteTimer);clearTimeout(_fishState.catchTimer);
+  if(_fishState.biting){resetFishState('Kasta igen!');_fishState.casting=false;}
   openModal('rodShopModal');
   const grid=$('rodShopGrid');if(!grid)return;
   const curRod=G.fishRod||'bamboo';
