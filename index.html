@@ -696,20 +696,20 @@ textarea.inp{resize:none;min-height:68px;}
 ═══════════════════════════════════ */
 .ld-ov{position:fixed;inset:0;background:rgba(0,0,0,.72);z-index:9099;opacity:0;pointer-events:none;transition:opacity .28s;backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);}
 .ld-ov.open{opacity:1;pointer-events:all;}
-.ldrawer{position:fixed;top:0;left:0;bottom:0;width:290px;background:#090910;z-index:9100;transform:translateX(-102%);transition:transform .28s cubic-bezier(.4,0,.2,1);display:flex;flex-direction:column;overflow:hidden;border-right:1px solid rgba(255,255,255,.08);}
+.ldrawer{position:fixed;top:0;left:0;bottom:0;width:260px;background:#080910;z-index:9100;transform:translateX(-102%);transition:transform .28s cubic-bezier(.4,0,.2,1);display:flex;flex-direction:column;overflow:hidden;border-right:1px solid rgba(255,255,255,.06);}
 .ldrawer.open{transform:translateX(0);}
-.ld-head{padding:52px 18px 16px;background:linear-gradient(180deg,rgba(0,232,122,.09) 0%,transparent 100%);border-bottom:1px solid rgba(255,255,255,.07);display:flex;align-items:center;gap:13px;flex-shrink:0;}
-.ld-av{width:56px;height:56px;border-radius:18px;background:var(--c2);border:2px solid rgba(57,255,20,.45);display:flex;align-items:center;justify-content:center;font-size:32px;flex-shrink:0;box-shadow:0 0 20px rgba(57,255,20,.15);}
-.ld-nm{font-size:17px;font-weight:900;line-height:1;margin-bottom:4px;}
+.ld-head{padding:48px 14px 12px;background:linear-gradient(180deg,rgba(0,232,122,.09) 0%,transparent 100%);border-bottom:1px solid rgba(255,255,255,.07);display:flex;align-items:center;gap:11px;flex-shrink:0;}
+.ld-av{width:44px;height:44px;border-radius:13px;background:var(--c2);border:2px solid rgba(57,255,20,.45);display:flex;align-items:center;justify-content:center;font-size:24px;flex-shrink:0;box-shadow:0 0 14px rgba(57,255,20,.12);}
+.ld-nm{font-size:14px;font-weight:900;line-height:1;margin-bottom:2px;}
 .ld-lvsub{font-size:11px;color:var(--t2);font-family:var(--mono);}
 .ld-close{margin-left:auto;width:34px;height:34px;border:none;background:rgba(255,255,255,.07);border-radius:10px;color:var(--t2);font-size:15px;cursor:pointer;flex-shrink:0;display:flex;align-items:center;justify-content:center;-webkit-tap-highlight-color:transparent;}
-.ld-body{flex:1;overflow-y:auto;scrollbar-width:none;padding:8px 8px 0;}
+.ld-body{flex:1;overflow-y:auto;scrollbar-width:none;padding:6px 7px 0;}
 .ld-body::-webkit-scrollbar{display:none;}
 .ld-sep{height:1px;background:rgba(255,255,255,.07);margin:5px 10px;}
-.ld-item{display:flex;align-items:center;gap:12px;padding:11px 12px;cursor:pointer;transition:background .1s;border-radius:14px;margin:1px 0;font-size:14px;font-weight:700;color:var(--t1);-webkit-tap-highlight-color:transparent;}
+.ld-item{display:flex;align-items:center;gap:10px;padding:7px 9px;cursor:pointer;transition:background .1s;border-radius:11px;margin:1px 0;font-size:12px;font-weight:600;color:var(--t1);-webkit-tap-highlight-color:transparent;}
 .ld-item:active{background:rgba(255,255,255,.06);}
-.ld-ico{width:40px;height:40px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:19px;flex-shrink:0;}
-.ld-lbl{flex:1;font-size:14px;font-weight:700;}
+.ld-ico{width:32px;height:32px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0;}
+.ld-lbl{flex:1;font-size:12px;font-weight:600;}
 .ld-ico-g{background:rgba(57,255,20,.14);}
 .ld-ico-pk{background:rgba(255,45,85,.14);}
 .ld-ico-b{background:rgba(0,217,255,.14);}
@@ -4148,7 +4148,7 @@ function fishCast(){
   bob.style.display='block';bob.style.top=(waterY+50)+'px';bob.style.left='calc(50% - 7px)';
   btn.className='fish-cast-btn casting';btn.textContent='🎣 VÄNTAR...';
   $('fishStatus').textContent='Väntar på fisk... 👀';
-  const waitTime=2000+Math.random()*4000;
+  const waitTime=1500+Math.random()*2500;
   _fishState.biteTimer=setTimeout(()=>{triggerFishBite();},waitTime);
 }
 function triggerFishBite(){
@@ -4162,6 +4162,13 @@ function triggerFishBite(){
   },1800);
 }
 function onFishSceneTap(e){if(_fishState.biting&&_fishState.catchWindow)catchFish();}
+function onFishTap(fishEl,ft){
+  if(_fishState.biting&&_fishState.catchWindow){catchFish();return;}
+  if(!_fishState.casting){fishCast();return;}
+  clearTimeout(_fishState.biteTimer);
+  _fishState.biteTimer=setTimeout(triggerFishBite,150+Math.random()*200);
+  if(fishEl){fishEl.style.transform='scale(1.3)';setTimeout(()=>{if(fishEl)fishEl.style.transform='';},200);}
+}
 function catchFish(){
   if(!_fishState.biting||!_fishState.catchWindow)return;
   clearTimeout(_fishState.catchTimer);
@@ -5321,6 +5328,7 @@ const GACHA_PRIZES=[
   {em:'🏆',nm:'200 Coins',col:'#FFD700',ef:()=>{gainCoins(200);}},
 ];
 let _gachaSpinning=false,_gachaAngle=0;
+let _lastSpinResultHTML='';
 function openGacha(){
   const gm=$('gachaModal');if(!gm)return;
   gm.classList.add('open');
@@ -5329,7 +5337,7 @@ function openGacha(){
   const btn=$('gachaSpinBtn');const sub=$('gachaSubtitle');const res=$('gachaResult');
   if(btn){btn.disabled=spun;btn.textContent=spun?'✅ Redan spinnat idag':'🎰 SPIN — GRATIS!';}
   if(sub)sub.textContent=spun?'Kom tillbaka imorgon för nästa spin!':'Gratis spin varje dag!';
-  if(res)res.innerHTML='';
+  if(res){if(spun&&_lastSpinResultHTML)res.innerHTML=_lastSpinResultHTML;else res.innerHTML='';}
 }
 function closeGacha(){const gm=$('gachaModal');if(gm)gm.classList.remove('open');_gachaSpinning=false;}
 function drawGachaWheel(){
@@ -5357,14 +5365,16 @@ function spinGacha(){
   SFX.click();vibe([20,10,30,10,40]);
   setTimeout(()=>{
     _gachaSpinning=false;G.lastSpin=today;
+    const _rhtml=`<div style="font-size:48px;margin-bottom:8px;animation:spop .4s cubic-bezier(.34,1.56,.64,1)">${prize.em}</div><div style="font-size:18px;font-weight:900;color:var(--y);margin-bottom:4px">${prize.nm}!</div><div style="font-size:11px;color:var(--t3)">Kom tillbaka imorgon ✅</div>`;
+    _lastSpinResultHTML=_rhtml;
+    const res=$('gachaResult');if(res)res.innerHTML=_rhtml;
     prize.ef();SFX.win();vibe([50,30,100,30,150]);
-    const res=$('gachaResult');if(res)res.innerHTML=`<div style="font-size:40px;margin-bottom:6px;animation:spop .4s cubic-bezier(.34,1.56,.64,1)">${prize.em}</div><div style="font-size:16px;font-weight:900;color:var(--y)">${prize.nm}!</div><div style="font-size:11px;color:var(--t3);margin-top:4px">Kom tillbaka imorgon</div>`;
     const sub=$('gachaSubtitle');if(sub)sub.textContent='Kom tillbaka imorgon för nästa spin!';
     if(btn)btn.textContent='✅ Redan spinnat idag';
     addDiaryEntry('Spann gacha-hjulet och vann '+prize.em+' '+prize.nm+'!');
     save();updateHUD();spawnParticles(window.innerWidth/2,window.innerHeight*.35,'stars');
     const st=$('spinTeaserSub');if(st)st.textContent='✅ Spinnat idag — kom tillbaka imorgon';
-  },3200);
+  },3100);
 }
 
 // ══════════════════════════════════════════
