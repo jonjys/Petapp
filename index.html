@@ -976,6 +976,34 @@ textarea.inp{resize:none;min-height:68px;}
 .fish-cast-btn.casting{border-color:rgba(255,200,0,.5);color:var(--y);background:linear-gradient(135deg,rgba(255,200,0,.1),rgba(255,150,0,.06));}
 .fish-cast-btn:active{transform:scale(.95);}
 .fish-score{font-size:11px;font-weight:900;color:var(--y);font-family:var(--mono);text-align:center;margin-top:5px;}
+.fish-rod-bar{display:flex;align-items:center;justify-content:space-between;padding:6px 14px;background:rgba(0,180,255,.06);border-bottom:1px solid rgba(0,180,255,.14);flex-shrink:0;gap:8px;}
+.fish-rod-cur{font-size:11px;font-weight:900;color:var(--b);font-family:var(--mono);}
+.fish-zone-lbl{position:absolute;left:7px;font-size:8px;color:rgba(0,200,255,.28);font-family:var(--mono);pointer-events:none;z-index:3;letter-spacing:.5px;}
+.fish-depth-div{position:absolute;left:0;right:0;height:1px;background:rgba(0,200,255,.1);z-index:2;}
+.fish-perfect-bar{position:absolute;bottom:14%;left:6%;right:6%;z-index:8;background:rgba(0,0,0,.82);border-radius:12px;padding:8px 12px 6px;border:1.5px solid rgba(255,220,0,.45);}
+.fpb-label{font-size:9px;font-weight:900;color:var(--y);font-family:var(--mono);text-align:center;margin-bottom:5px;letter-spacing:.5px;}
+.fpb-track{position:relative;height:18px;background:rgba(200,0,0,.25);border-radius:9px;overflow:hidden;}
+.fpb-window{position:absolute;top:0;height:100%;background:rgba(57,255,20,.6);border-radius:7px;transition:left .05s,width .05s;box-shadow:0 0 8px rgba(57,255,20,.5);}
+.fpb-needle{position:absolute;top:-2px;width:5px;height:22px;background:#fff;border-radius:3px;box-shadow:0 0 12px rgba(255,255,255,.9);}
+.fpb-hint{font-size:8px;text-align:center;color:rgba(255,255,255,.38);margin-top:3px;}
+.fish-cloud{position:absolute;top:7px;font-size:16px;animation:cloudDrift 14s linear infinite;opacity:.32;pointer-events:none;}
+@keyframes cloudDrift{0%{left:-14%;}100%{left:112%;}}
+.fish-weather-badge{position:absolute;top:5px;right:7px;background:rgba(0,0,0,.55);border:1px solid rgba(255,255,255,.14);border-radius:8px;padding:2px 8px;font-size:9px;color:rgba(255,255,255,.6);font-family:var(--mono);pointer-events:none;}
+.fish-combo-pop{position:absolute;top:10%;left:50%;transform:translateX(-50%);background:linear-gradient(135deg,var(--y),var(--o));color:#000;font-size:14px;font-weight:900;padding:7px 18px;border-radius:22px;font-family:var(--mono);z-index:9;pointer-events:none;animation:comboPop .4s cubic-bezier(.34,1.56,.64,1) forwards;}
+@keyframes comboPop{0%{transform:translateX(-50%) scale(0);opacity:0;}60%{transform:translateX(-50%) scale(1.1);}100%{transform:translateX(-50%) scale(1);opacity:1;}}
+.fish-deep-zone{position:absolute;left:0;right:0;bottom:0;height:30%;background:linear-gradient(180deg,transparent,rgba(0,10,40,.55));z-index:1;pointer-events:none;}
+/* Room theme */
+.room-theme-row{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;padding:8px 14px;border-bottom:1px solid var(--line);}
+.room-theme-row::-webkit-scrollbar{display:none;}
+.room-theme-chip{flex-shrink:0;padding:5px 12px;border-radius:18px;font-size:10px;font-weight:900;cursor:pointer;font-family:var(--mono);border:1.5px solid;transition:all .12s;-webkit-tap-highlight-color:transparent;}
+.room-theme-chip.active{box-shadow:0 0 12px currentColor;}
+/* Custom item creator */
+.room-emoji-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:5px;max-height:160px;overflow-y:auto;scrollbar-width:none;padding:6px;}
+.room-emoji-grid::-webkit-scrollbar{display:none;}
+.rej{font-size:22px;padding:5px;border-radius:8px;background:var(--c2);border:1.5px solid transparent;cursor:pointer;text-align:center;transition:all .1s;-webkit-tap-highlight-color:transparent;}
+.rej.sel{border-color:var(--g);background:rgba(57,255,20,.12);}
+/* Ach room glow */
+@keyframes achGlow{0%,100%{filter:drop-shadow(0 0 8px gold);}50%{filter:drop-shadow(0 0 18px gold) drop-shadow(0 0 5px #fff);}}
 
 /* ── EVOLUTION CEREMONY ── */
 .evol-ceremony{position:fixed;inset:0;z-index:9955;background:rgba(0,0,0,.98);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;opacity:0;pointer-events:none;transition:opacity .35s;overflow:hidden;}
@@ -1711,14 +1739,18 @@ textarea.inp{resize:none;min-height:68px;}
         <div class="event-timer" id="eventTimer">⏱️ 7 dagar kvar</div>
       </div>
 
-      <!-- ROOM DECO TEASER -->
-      <div style="margin:0 14px 12px;border-radius:22px;padding:14px 16px;background:rgba(0,217,255,.07);border:1.5px solid rgba(0,217,255,.28);display:flex;align-items:center;gap:14px;cursor:pointer" onclick="openRoomShop()">
-        <span style="font-size:36px">🏠</span>
-        <div style="flex:1">
-          <div style="font-size:14px;font-weight:900;color:var(--b);margin-bottom:2px">DEKORERA RUMMET</div>
-          <div style="font-size:10px;color:var(--t3)" id="roomDecoSub">Personalisera din pets hem med möbler &amp; dekor</div>
+      <!-- ROOM PREVIEW MINI (live) -->
+      <div style="margin:0 14px 12px;border-radius:22px;overflow:hidden;border:1.5px solid rgba(0,217,255,.28);cursor:pointer" onclick="openRoomShop()">
+        <div id="homeRoomPreview" style="width:100%;height:100px;position:relative;background:linear-gradient(180deg,#07040f,#030d07);overflow:hidden">
+          <div id="homeRoomPet" style="position:absolute;bottom:8px;font-size:28px;animation:roomPetWalk 7s ease-in-out infinite;filter:drop-shadow(0 0 8px rgba(57,255,20,.4));z-index:4">🐉</div>
+          <div style="position:absolute;bottom:0;left:0;right:0;height:28px;background:rgba(0,0,0,.5);border-top:1px solid rgba(57,255,20,.1);z-index:3"></div>
+          <div id="homeRoomItems" style="position:absolute;inset:0;z-index:5"></div>
+          <div style="position:absolute;top:6px;right:10px;background:rgba(0,0,0,.6);border:1px solid rgba(0,217,255,.3);border-radius:8px;padding:2px 8px;font-size:10px;font-weight:900;color:var(--b);font-family:var(--mono);z-index:6">🏠 DITT RUM</div>
         </div>
-        <span style="font-size:18px;color:var(--b)">→</span>
+        <div style="padding:8px 14px;background:rgba(0,217,255,.05);display:flex;align-items:center;justify-content:space-between">
+          <div style="font-size:10px;color:var(--t3)" id="roomDecoSub">Personalisera din pets hem med möbler &amp; dekor</div>
+          <span style="font-size:12px;color:var(--b)">Redigera →</span>
+        </div>
       </div>
 
       <div class="sh"><div class="sh-t">GEAR</div><div class="sh-a" onclick="nav('shop');switchShop('gear')">SHOP →</div></div>
@@ -2519,8 +2551,15 @@ textarea.inp{resize:none;min-height:68px;}
     <div class="room-preview-floor"></div>
     <div id="roomPlacedItems"></div>
   </div>
+  <!-- Room themes -->
+  <div class="room-theme-row" id="roomThemeRow"></div>
   <div class="room-shop-scroll">
-    <div style="font-size:11px;font-weight:900;color:var(--t3);margin-bottom:8px;letter-spacing:1px">🛍️ KÖPTA ITEMS VISAS I RUMMET DIREKT</div>
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
+      <div style="font-size:11px;font-weight:900;color:var(--t3);letter-spacing:1px">🛍️ ITEMS VISAS I RUMMET DIREKT</div>
+      <button onclick="openRoomCustomModal()" style="background:rgba(57,255,20,.1);border:1px solid rgba(57,255,20,.3);border-radius:10px;color:var(--g);font-size:10px;font-weight:900;padding:4px 10px;cursor:pointer;font-family:var(--ff)">🎨 Skapa Eget</button>
+    </div>
+    <!-- Category tabs -->
+    <div style="display:flex;gap:5px;overflow-x:auto;scrollbar-width:none;margin-bottom:10px" id="roomCatTabs"></div>
     <div class="room-shop-grid" id="roomShopGrid"></div>
     <div style="height:20px"></div>
   </div>
@@ -2558,10 +2597,27 @@ textarea.inp{resize:none;min-height:68px;}
     <div style="font-size:16px;font-weight:900;color:var(--b);flex:1;text-align:center;letter-spacing:1px;font-family:var(--mono)">🎣 FISKA</div>
     <div id="fishScoreTop" style="font-size:12px;font-weight:900;color:var(--y);font-family:var(--mono)">0 FISKAR</div>
   </div>
+  <!-- Rod bar -->
+  <div class="fish-rod-bar">
+    <div class="fish-rod-cur" id="fishRodCurLabel">🪵 Bambuspö</div>
+    <div style="display:flex;gap:6px">
+      <button onclick="openFishJournal()" style="background:rgba(0,180,255,.1);border:1px solid rgba(0,180,255,.3);border-radius:10px;color:var(--b);font-size:10px;font-weight:900;padding:4px 10px;cursor:pointer;font-family:var(--ff)">📖 Samling</button>
+      <button onclick="openRodShop()" style="background:rgba(57,255,20,.1);border:1px solid rgba(57,255,20,.3);border-radius:10px;color:var(--g);font-size:10px;font-weight:900;padding:4px 10px;cursor:pointer;font-family:var(--ff)">🔧 Uppgradera</button>
+    </div>
+  </div>
   <div class="fish-scene" id="fishScene" onclick="onFishSceneTap(event)" ontouchstart="onFishSceneTap(event)">
     <div class="fish-sky">
-      <div style="position:absolute;top:8px;left:18px;font-size:11px;color:rgba(255,255,255,.15);letter-spacing:1px">✦ ✦ ✦</div>
+      <div class="fish-cloud">☁️</div>
+      <div class="fish-cloud" style="animation-delay:-5s;top:14px;font-size:12px">☁️</div>
+      <div class="fish-weather-badge" id="fishWeatherBadge">☀️ Klart</div>
     </div>
+    <!-- Depth zone dividers + labels -->
+    <div class="fish-depth-div" style="top:58%"></div>
+    <div class="fish-depth-div" style="top:76%"></div>
+    <div class="fish-zone-lbl" style="top:42%">〰 YTA</div>
+    <div class="fish-zone-lbl" style="top:60%">〰 GRUNT</div>
+    <div class="fish-zone-lbl" style="top:78%">〰 DJUPT</div>
+    <div class="fish-deep-zone"></div>
     <div class="fish-water">
       <div class="fish-water-shimmer"></div>
     </div>
@@ -2569,13 +2625,57 @@ textarea.inp{resize:none;min-height:68px;}
     <div class="fish-bob" id="fishBob" style="display:none"></div>
     <div class="fish-catch-fx" id="fishCatchFx"></div>
     <div class="fish-tap-prompt" id="fishTapPrompt" style="display:none;bottom:38%">TAP! 🎣</div>
+    <!-- Precision catch bar -->
+    <div class="fish-perfect-bar" id="fishPerfectBar" style="display:none">
+      <div class="fpb-label">🎯 TIMING — TRYCK I DET GRÖNA!</div>
+      <div class="fpb-track">
+        <div class="fpb-window" id="fpbWindow" style="left:30%;width:40%"></div>
+        <div class="fpb-needle" id="fpbNeedle" style="left:0%"></div>
+      </div>
+      <div class="fpb-hint">PERFEKT = ×3 · BRA = ×2 · NORMAL = ×1</div>
+    </div>
   </div>
   <div class="fish-controls">
     <div class="fish-status" id="fishStatus">Kasta ut metspöet för att börja!</div>
     <div class="fish-inventory" id="fishInventory"></div>
-    <div style="width:100%;height:6px;background:rgba(255,255,255,.08);border-radius:100px;overflow:hidden;margin-bottom:8px"><div id="fishTimerBar" style="height:100%;width:0%;background:linear-gradient(90deg,#FFE600,#FF3B30);border-radius:100px;transition:width 2s linear"></div></div>
+    <div style="width:100%;height:5px;background:rgba(255,255,255,.08);border-radius:100px;overflow:hidden;margin-bottom:8px"><div id="fishTimerBar" style="height:100%;width:0%;background:linear-gradient(90deg,#FFE600,#FF3B30);border-radius:100px;transition:width 2s linear"></div></div>
     <button class="fish-cast-btn idle" id="fishCastBtn" onclick="fishCast()">🎣 KASTA METSPÖ</button>
-    <div class="fish-score" id="fishScoreBar">Poäng: 0 · Bäst: 0</div>
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-top:5px">
+      <div class="fish-score" id="fishScoreBar">Poäng: 0 · Bäst: 0</div>
+      <div id="fishStreakBadge" style="font-size:10px;font-weight:900;color:var(--o);font-family:var(--mono)"></div>
+    </div>
+  </div>
+</div>
+<!-- ROD SHOP MODAL -->
+<div class="modal" id="rodShopModal">
+  <div class="ms">
+    <div class="mh" onclick="closeModal('rodShopModal')"></div>
+    <div class="mt">🎣 Spöuppgradering</div>
+    <div id="rodShopGrid" style="display:flex;flex-direction:column;gap:8px;padding:0 14px 18px"></div>
+  </div>
+</div>
+<!-- FISH JOURNAL MODAL -->
+<div class="modal" id="fishJournalModal">
+  <div class="ms">
+    <div class="mh" onclick="closeModal('fishJournalModal')"></div>
+    <div class="mt">📖 Fångstjournal</div>
+    <div id="fishJournalContent" style="padding:0 14px 18px"></div>
+  </div>
+</div>
+<!-- ROOM CUSTOM ITEM MODAL -->
+<div class="modal" id="roomCustomModal">
+  <div class="ms">
+    <div class="mh" onclick="closeModal('roomCustomModal')"></div>
+    <div class="mt">🎨 Skapa Eget Item</div>
+    <div style="padding:0 14px 18px">
+      <div style="font-size:11px;color:var(--t3);margin-bottom:10px">Välj en emoji och namnge ditt item</div>
+      <div class="room-emoji-grid" id="roomEmojiGrid"></div>
+      <div style="margin-top:10px;display:flex;gap:8px;align-items:center">
+        <input id="customItemName" placeholder="Namn på item..." style="flex:1;background:var(--c2);border:1.5px solid var(--line2);border-radius:12px;padding:10px 14px;font-size:13px;color:var(--t1);font-family:var(--ff);outline:none" maxlength="20">
+        <button onclick="placeCustomRoomItem()" class="btn btn-g" style="padding:10px 16px">Placera</button>
+      </div>
+      <div style="font-size:10px;color:var(--t3);margin-top:8px">Kostar 0⚡ — Custom items är gratis!</div>
+    </div>
   </div>
 </div>
 
@@ -4146,55 +4246,160 @@ function doCraft(i){
 
 // ── FISHING MINI-GAME ──
 const FISH_TYPES=[
-  {em:'🐟',nm:'Abborre',coins:10,xp:5,rarity:'common'},
-  {em:'🐠',nm:'Gös',coins:20,xp:10,rarity:'common'},
-  {em:'🐡',nm:'Karp',coins:35,xp:15,rarity:'uncommon'},
-  {em:'🦈',nm:'Havsabborre',coins:60,xp:25,rarity:'rare'},
-  {em:'🐙',nm:'Bläckfisk',coins:100,xp:40,rarity:'epic'},
-  {em:'🦞',nm:'Hummer',coins:150,xp:60,rarity:'legendary',petFood:true},
+  // Surface zone — fast, low reward
+  {em:'🐟',nm:'Sill',coins:8,xp:3,rarity:'common',zone:'surface',wt:0.2},
+  {em:'🐠',nm:'Abborre',coins:14,xp:6,rarity:'common',zone:'surface',wt:0.4},
+  {em:'🦈',nm:'Liten Haj',coins:28,xp:11,rarity:'uncommon',zone:'surface',wt:1.1},
+  {em:'🐬',nm:'Delfin',coins:48,xp:18,rarity:'rare',zone:'surface',wt:2.5},
+  {em:'🦅',nm:'Örn (felmål!)',coins:4,xp:1,rarity:'common',zone:'surface',wt:0.1},
+  // Mid zone — medium speed + reward
+  {em:'🐡',nm:'Karp',coins:32,xp:13,rarity:'common',zone:'mid',wt:0.8},
+  {em:'🦑',nm:'Bläckfisk',coins:60,xp:24,rarity:'uncommon',zone:'mid',wt:1.8},
+  {em:'🐙',nm:'Octopus',coins:88,xp:34,rarity:'rare',zone:'mid',wt:3.2},
+  {em:'🦭',nm:'Säl',coins:75,xp:30,rarity:'rare',zone:'mid',wt:5},
+  {em:'🐊',nm:'Krokodil',coins:140,xp:55,rarity:'epic',zone:'mid',wt:10},
+  // Deep zone — slow, huge reward
+  {em:'🦞',nm:'Hummer',coins:120,xp:50,rarity:'epic',zone:'deep',wt:4,petFood:true},
+  {em:'🦀',nm:'Krabba',coins:100,xp:40,rarity:'epic',zone:'deep',wt:3.5},
+  {em:'🐋',nm:'Val',coins:220,xp:88,rarity:'legendary',zone:'deep',wt:20,petFood:true},
+  {em:'⭐',nm:'Stjärnfisk',coins:280,xp:110,rarity:'mythic',zone:'deep',wt:1.5,special:'xp2x'},
+  {em:'🧜',nm:'Sjöjungfru',coins:400,xp:160,rarity:'mythic',zone:'deep',wt:1,special:'coins2x'},
+  {em:'🏺',nm:'Gammal Urna',coins:600,xp:240,rarity:'mythic',zone:'deep',wt:0.8,special:'artifact'},
+  // Ultra rare — any zone, random spawn
+  {em:'🐲',nm:'Havsdrak',coins:1200,xp:480,rarity:'ultra',zone:'any',wt:99,special:'all',petFood:true},
+  {em:'🌟',nm:'Gyllene Fisk',coins:888,xp:350,rarity:'ultra',zone:'any',wt:99,special:'luckburst'},
+  {em:'👑',nm:'Kungsfisk',coins:777,xp:300,rarity:'ultra',zone:'any',wt:99,special:'crowns'},
+  {em:'💀',nm:'Skeletfisk',coins:666,xp:260,rarity:'ultra',zone:'any',wt:99,special:'cursed'},
 ];
-let _fishState={active:false,casting:false,biting:false,biteTimer:null,catchWindow:false,catchTimer:null,score:0,best:parseInt(localStorage.getItem('kv8_fishBest')||'0'),inventory:[],lineY:0,fishes:[]};
-function openFishingGame(){$('fishGame').classList.add('open');_fishState.score=0;_fishState.inventory=[];_fishState.casting=false;_fishState.biting=false;updateFishUI();setTimeout(()=>{spawnFishInScene();resetFishState('Kasta ut metspöet för att börja! 🎣');},380);}
-function closeFishingGame(){$('fishGame').classList.remove('open');clearTimeout(_fishState.biteTimer);clearTimeout(_fishState.catchTimer);}
+const FISH_RODS=[
+  {id:'bamboo',em:'🪵',nm:'Bambuspö',desc:'Standard spö. Når yta och grunt vatten.',price:0,zones:['surface','mid'],castSpeed:2.2,bonus:1,color:'#A0785A'},
+  {id:'carbon',em:'🎣',nm:'Kolfiber',desc:'Professionellt spö. Når alla djup.',price:300,zones:['surface','mid','deep'],castSpeed:1.6,bonus:1.3,color:'#00D9FF'},
+  {id:'titanium',em:'⚡',nm:'Titanspö ULTRA',desc:'Bästa möjliga spö! Snabbast bett, alla zoner, mega-bonus.',price:800,zones:['surface','mid','deep','any'],castSpeed:1.0,bonus:1.8,color:'#FFE600'},
+];
+const FISH_WEATHERS=[
+  {id:'sunny',em:'☀️',nm:'Klart',modifier:{surface:1.2,mid:1,deep:0.8}},
+  {id:'cloudy',em:'⛅',nm:'Mulet',modifier:{surface:1,mid:1.2,deep:1}},
+  {id:'rain',em:'🌧️',nm:'Regn',modifier:{surface:0.8,mid:1,deep:1.4}},
+  {id:'storm',em:'⛈️',nm:'Storm',modifier:{surface:0.4,mid:0.8,deep:1.8}},
+];
+let _fishState={casting:false,biting:false,biteTimer:null,catchWindow:false,catchTimer:null,score:0,best:parseInt(localStorage.getItem('kv8_fishBest')||'0'),inventory:[],_combo:0,_biteStartTime:0,_pfRaf:null,_weather:0};
+function _getCurRod(){return FISH_RODS.find(r=>r.id===(G.fishRod||'bamboo'))||FISH_RODS[0];}
+function openFishingGame(){
+  $('fishGame').classList.add('open');
+  _fishState.score=0;_fishState.inventory=[];_fishState.casting=false;_fishState.biting=false;_fishState._combo=0;
+  // Pick random weather
+  _fishState._weather=Math.floor(Math.random()*FISH_WEATHERS.length);
+  const wth=FISH_WEATHERS[_fishState._weather];
+  const wb=$('fishWeatherBadge');if(wb)wb.textContent=wth.em+' '+wth.nm;
+  updateFishRodLabel();updateFishUI();
+  setTimeout(()=>{spawnFishInScene();resetFishState('Kasta ut metspöet för att börja! 🎣');},380);
+}
+function closeFishingGame(){
+  $('fishGame').classList.remove('open');
+  clearTimeout(_fishState.biteTimer);clearTimeout(_fishState.catchTimer);
+  if(_fishState._pfRaf){cancelAnimationFrame(_fishState._pfRaf);_fishState._pfRaf=null;}
+}
+function updateFishRodLabel(){
+  const r=_getCurRod();const lbl=$('fishRodCurLabel');if(lbl)lbl.textContent=r.em+' '+r.nm;
+}
 function spawnFishInScene(){
-  const scene=$('fishScene');const existingFish=scene.querySelectorAll('.fish-em');existingFish.forEach(f=>f.remove());
-  const sh=scene.clientHeight||Math.round(window.innerHeight*.58);const waterTop=sh*.4;const waterH=sh*.6;
-  for(let i=0;i<4;i++){
-    const ft=FISH_TYPES[Math.random()<.6?0:Math.random()<.7?1:Math.random()<.7?2:Math.random()<.7?3:4];
-    const fish=document.createElement('div');fish.className='fish-em';fish.dataset.type=FISH_TYPES.indexOf(ft);
-    const startX=Math.random()*70+5;const y=waterTop+Math.random()*waterH*.7+waterH*.1;
-    const sw=((Math.random()<.5?1:-1)*(20+Math.random()*40))+'px';const dur=(2+Math.random()*3).toFixed(1)+'s';const del=(-Math.random()*2).toFixed(1)+'s';
-    fish.style.cssText=`left:${startX}%;top:${y}px;--sw:${sw};--dur:${dur};--del:${del};animation:fishSwim ${dur} ease-in-out infinite ${del}`;
-    fish.textContent=ft.em;fish.onclick=(e)=>{e.stopPropagation();onFishTap(fish,ft);};scene.appendChild(fish);
+  const scene=$('fishScene');scene.querySelectorAll('.fish-em,.fish-bubble').forEach(f=>f.remove());
+  const sh=scene.clientHeight||Math.round(window.innerHeight*.58);
+  const wth=FISH_WEATHERS[_fishState._weather]||FISH_WEATHERS[0];
+  const rod=_getCurRod();
+  // Zone Y ranges (% of sh): surface 42-56%, mid 58-74%, deep 76-92%
+  const zones={surface:[sh*.42,sh*.56],mid:[sh*.58,sh*.74],deep:[sh*.76,sh*.90]};
+  const accessible=rod.zones;
+  // Pick fish appropriate to rod's zones
+  const availFish=FISH_TYPES.filter(f=>accessible.includes(f.zone)||f.zone==='any');
+  const count=rod.id==='bamboo'?5:rod.id==='carbon'?7:9;
+  for(let i=0;i<count;i++){
+    // Weighted random by weather + rarity
+    const roll=Math.random();
+    let ft;
+    if(rod.id==='titanium'&&Math.random()<0.04)ft=availFish.find(f=>f.rarity==='ultra')||availFish[0];
+    else if(roll<.45)ft=availFish.filter(f=>f.rarity==='common')[Math.floor(Math.random()*availFish.filter(f=>f.rarity==='common').length)]||availFish[0];
+    else if(roll<.72)ft=availFish.filter(f=>f.rarity==='uncommon'||f.rarity==='common')[0]||availFish[0];
+    else if(roll<.88)ft=availFish.filter(f=>f.rarity==='rare'||f.rarity==='uncommon')[0]||availFish[0];
+    else if(roll<.96)ft=availFish.filter(f=>f.rarity==='epic'||f.rarity==='rare')[0]||availFish[0];
+    else ft=availFish.filter(f=>f.rarity==='legendary'||f.rarity==='mythic')[0]||availFish[0];
+    if(!ft)ft=availFish[0];
+    const zone=ft.zone==='any'?(['surface','mid','deep'][Math.floor(Math.random()*3)]):ft.zone;
+    const [yMin,yMax]=zones[zone]||zones.surface;
+    const startX=5+Math.random()*80;const y=yMin+Math.random()*(yMax-yMin);
+    const zoneSpeedMod=zone==='deep'?1.6:zone==='mid'?1.2:0.9;
+    const baseDur=(2.5+Math.random()*2.5)*zoneSpeedMod;
+    const sw=((Math.random()<.5?1:-1)*(15+Math.random()*35))+'px';
+    const del=(-Math.random()*3).toFixed(1)+'s';
+    const fish=document.createElement('div');
+    fish.className='fish-em';fish.dataset.type=FISH_TYPES.indexOf(ft);
+    const rarityGlow=ft.rarity==='ultra'?'filter:drop-shadow(0 0 8px #FFE600);font-size:30px;':ft.rarity==='mythic'?'filter:drop-shadow(0 0 6px #BF5FFF);':ft.rarity==='legendary'?'filter:drop-shadow(0 0 5px #FF3B30);':'';
+    fish.style.cssText=`left:${startX}%;top:${y}px;--sw:${sw};--dur:${baseDur.toFixed(1)}s;--del:${del};animation:fishSwim ${baseDur.toFixed(1)}s ease-in-out infinite ${del};${rarityGlow}`;
+    fish.textContent=ft.em;
+    fish.onclick=(e)=>{e.stopPropagation();onFishTap(fish,ft);};
+    scene.appendChild(fish);
   }
-  // Add bubbles
-  for(let i=0;i<5;i++){const b=document.createElement('div');b.className='fish-bubble';const sz=(4+Math.random()*8)+'px';b.style.cssText=`--dur:${(2+Math.random()*3).toFixed(1)}s;--del:${(-Math.random()*2).toFixed(1)}s;width:${sz};height:${sz};left:${10+Math.random()*80}%;top:${sh*.45+Math.random()*sh*.4}px`;$('fishScene').appendChild(b);}
+  for(let i=0;i<6;i++){
+    const b=document.createElement('div');b.className='fish-bubble';
+    const sz=(3+Math.random()*7)+'px';
+    const bY=sh*.42+Math.random()*sh*.5;
+    b.style.cssText=`--dur:${(1.8+Math.random()*3).toFixed(1)}s;--del:${(-Math.random()*3).toFixed(1)}s;width:${sz};height:${sz};left:${8+Math.random()*84}%;top:${bY}px`;
+    scene.appendChild(b);
+  }
 }
 function fishCast(){
   if(_fishState.casting){if(_fishState.biting){catchFish();return;}return;}
   _fishState.casting=true;_fishState.biting=false;
+  const rod=_getCurRod();
   const line=$('fishLine');const bob=$('fishBob');const btn=$('fishCastBtn');
-  const scene=$('fishScene');const sh=scene.clientHeight||Math.round(window.innerHeight*.58);const waterY=sh*.4;
-  line.style.height=(waterY+60)+'px';line.style.display='block';
-  bob.style.display='block';bob.style.top=(waterY+50)+'px';bob.style.left='calc(50% - 7px)';
+  const scene=$('fishScene');const sh=scene.clientHeight||Math.round(window.innerHeight*.58);
+  // Cast depth depends on rod
+  const depthPct=rod.id==='bamboo'?0.52:rod.id==='carbon'?0.66:0.80;
+  const waterY=sh*depthPct;
+  line.style.height=(waterY+40)+'px';line.style.display='block';
+  bob.style.display='block';bob.style.top=(waterY+30)+'px';bob.style.left='calc(50% - 7px)';
   btn.className='fish-cast-btn casting';btn.textContent='🎣 VÄNTAR...';
-  $('fishStatus').textContent='Väntar på fisk... 👀';
-  const waitTime=1500+Math.random()*2500;
+  $('fishStatus').textContent='Väntar på napp... 👀';
+  // Wait time based on rod
+  const wth=FISH_WEATHERS[_fishState._weather]||FISH_WEATHERS[0];
+  const baseWait=rod.castSpeed*1000;const waitTime=baseWait*0.6+Math.random()*baseWait*1.4;
   _fishState.biteTimer=setTimeout(()=>{triggerFishBite();},waitTime);
 }
 function triggerFishBite(){
-  _fishState.biting=true;_fishState.catchWindow=true;
-  const bob=$('fishBob');if(bob){bob.classList.add('nibble');bob.style.boxShadow='0 0 24px rgba(255,200,0,1)';}
-  const btn2=$('fishCastBtn');if(btn2){btn2.className='fish-cast-btn biting';btn2.textContent='🐟 NAPP! TRYCK NU! 🐟';}
+  _fishState.biting=true;_fishState.catchWindow=true;_fishState._biteStartTime=Date.now();
+  const bob=$('fishBob');if(bob){bob.classList.add('nibble');bob.style.boxShadow='0 0 28px rgba(255,200,0,1)';}
+  const btn2=$('fishCastBtn');if(btn2){btn2.className='fish-cast-btn biting';btn2.textContent='🐟 NAPP! TRYCK NU!';}
   $('fishStatus').textContent='⚡ NAPP! TRYCK SNABBT! ⚡';
-  const prompt=$('fishTapPrompt');if(prompt){prompt.style.display='block';}
-  // Start timer bar
+  const prompt=$('fishTapPrompt');if(prompt)prompt.style.display='block';
+  // Timer bar
   const tb=$('fishTimerBar');if(tb){tb.style.transition='none';tb.style.width='100%';void tb.offsetWidth;tb.style.transition='width 2s linear';tb.style.width='0%';}
+  // Precision bar animation
+  const pfBar=$('fishPerfectBar');const needle=$('fpbNeedle');const win=$('fpbWindow');
+  if(pfBar&&needle&&win){
+    pfBar.style.display='block';
+    let startT=Date.now();const totalMs=2000;
+    function animPF(){
+      const elapsed=Date.now()-startT;if(elapsed>=totalMs||!_fishState.biting){pfBar.style.display='none';return;}
+      const progress=elapsed/totalMs;// needle sweeps back and forth
+      const sweepPos=Math.abs(Math.sin(progress*Math.PI*2.5));
+      needle.style.left=(sweepPos*90)+'%';
+      // window shrinks from 40% to 5%
+      const winW=Math.max(5,40-35*progress);
+      const winCenter=50;
+      win.style.left=(winCenter-winW/2)+'%';win.style.width=winW+'%';
+      _fishState._pfRaf=requestAnimationFrame(animPF);
+    }
+    _fishState._pfRaf=requestAnimationFrame(animPF);
+  }
   vibe([40,30,60,30,80]);SFX.shout&&SFX.shout();
   _fishState.catchTimer=setTimeout(()=>{
-    if(_fishState.biting){_fishState.biting=false;_fishState.casting=false;_fishState.catchWindow=false;
+    if(_fishState.biting){
+      _fishState.biting=false;_fishState.casting=false;_fishState.catchWindow=false;_fishState._combo=0;
       const tb2=$('fishTimerBar');if(tb2){tb2.style.transition='none';tb2.style.width='0%';}
-      resetFishState('💨 Fisken rymde! Försök igen...');}
+      const pfB=$('fishPerfectBar');if(pfB)pfB.style.display='none';
+      if(_fishState._pfRaf){cancelAnimationFrame(_fishState._pfRaf);_fishState._pfRaf=null;}
+      resetFishState('💨 Fisken rymde! Försök igen...');
+    }
   },2000);
 }
 function onFishSceneTap(e){
@@ -4205,39 +4410,152 @@ function onFishTap(fishEl,ft){
   if(_fishState.biting&&_fishState.catchWindow){catchFish();return;}
   if(!_fishState.casting){fishCast();return;}
   clearTimeout(_fishState.biteTimer);
-  _fishState.biteTimer=setTimeout(triggerFishBite,150+Math.random()*200);
-  if(fishEl){fishEl.style.transform='scale(1.3)';setTimeout(()=>{if(fishEl)fishEl.style.transform='';},200);}
+  _fishState.biteTimer=setTimeout(triggerFishBite,100+Math.random()*200);
+  if(fishEl){fishEl.style.transform='scale(1.4) rotate(15deg)';setTimeout(()=>{if(fishEl)fishEl.style.transform='';},180);}
 }
 function catchFish(){
   if(!_fishState.biting||!_fishState.catchWindow)return;
   clearTimeout(_fishState.catchTimer);
+  if(_fishState._pfRaf){cancelAnimationFrame(_fishState._pfRaf);_fishState._pfRaf=null;}
+  const pfBar=$('fishPerfectBar');if(pfBar)pfBar.style.display='none';
   _fishState.biting=false;_fishState.casting=false;_fishState.catchWindow=false;
   const tb=$('fishTimerBar');if(tb){tb.style.transition='none';tb.style.width='0%';}
-  const rnd=Math.random();const ft=rnd<.4?FISH_TYPES[0]:rnd<.65?FISH_TYPES[1]:rnd<.8?FISH_TYPES[2]:rnd<.92?FISH_TYPES[3]:rnd<.98?FISH_TYPES[4]:FISH_TYPES[5];
+  // Precision timing check
+  const elapsed=Date.now()-_fishState._biteStartTime;
+  const needle=$('fpbNeedle');const win=$('fpbWindow');
+  let timingMult=1;let timingLabel='';
+  if(needle&&win){
+    const nLeft=parseFloat(needle.style.left||'0');
+    const wLeft=parseFloat(win.style.left||'30');
+    const wRight=wLeft+parseFloat(win.style.width||'40');
+    if(nLeft>=wLeft&&nLeft<=wRight){timingMult=3;timingLabel='🎯 PERFEKT!';}
+    else if(elapsed<800){timingMult=2;timingLabel='✅ BRA!';}
+    else{timingMult=1;timingLabel='';}
+  } else {
+    timingMult=elapsed<600?2:1;
+  }
+  const rod=_getCurRod();
+  // Pick fish based on current state
+  const wth=FISH_WEATHERS[_fishState._weather]||FISH_WEATHERS[0];
+  const rnd=Math.random();
+  let ft;
+  if(rod.id==='titanium'&&rnd<0.05)ft=FISH_TYPES.find(f=>f.rarity==='ultra');
+  else if(rnd<.38)ft=FISH_TYPES.filter(f=>f.rarity==='common')[Math.floor(Math.random()*5)];
+  else if(rnd<.60)ft=FISH_TYPES.filter(f=>f.rarity==='uncommon'||f.rarity==='common')[Math.floor(Math.random()*5)];
+  else if(rnd<.77)ft=FISH_TYPES.filter(f=>f.rarity==='rare')[Math.floor(Math.random()*3)];
+  else if(rnd<.89)ft=FISH_TYPES.filter(f=>f.rarity==='epic')[Math.floor(Math.random()*3)];
+  else if(rnd<.96)ft=FISH_TYPES.filter(f=>f.rarity==='legendary'||f.rarity==='mythic')[Math.floor(Math.random()*3)];
+  else ft=FISH_TYPES.find(f=>f.rarity==='ultra');
+  if(!ft||!ft.nm)ft=FISH_TYPES[0];
   _fishState.score++;_fishState.inventory.push(ft);
   _fishState._combo=(_fishState._combo||0)+1;
   if(_fishState.score>_fishState.best){_fishState.best=_fishState.score;localStorage.setItem('kv8_fishBest',_fishState.score);}
-  const combo=_fishState._combo||1;const comboMult=combo>=5?3:combo>=3?2:1;
-  gainCoins(ft.coins*comboMult);gainXP(ft.xp*comboMult,'action');
-  if(ft.petFood){G.hunger=Math.min(100,G.hunger+25);updatePetView();showT('🦞 LEGENDARISK FISK! +bonus!','y');}
-  else if(combo>=3){showT(ft.em+' COMBO ×'+comboMult+'! +'+ft.coins*comboMult+'⚡ +'+ft.xp*comboMult+'XP','y');}
-  else{showT(ft.em+' '+ft.nm+'! +'+ft.coins+'⚡','g');}
-  const fx=$('fishCatchFx');if(fx){fx.classList.add('on');setTimeout(()=>fx.classList.remove('on'),300);}
+  const combo=_fishState._combo;const comboMult=combo>=8?4:combo>=5?3:combo>=3?2:1;
+  const totalMult=timingMult*comboMult*rod.bonus;
+  const earnedCoins=Math.round(ft.coins*totalMult);const earnedXP=Math.round(ft.xp*totalMult);
+  // Track journal
+  if(!G.fishJournal)G.fishJournal={};G.fishJournal[ft.nm]=(G.fishJournal[ft.nm]||0)+1;
+  gainCoins(earnedCoins);gainXP(earnedXP,'action');
+  // Special effects
+  if(ft.special==='xp2x'){gainXP(earnedXP,'action');showT('⭐ STJÄRNFISK! Dubbel XP!','y');}
+  else if(ft.special==='coins2x'){gainCoins(earnedCoins);showT('🧜 SJÖJUNGFRU! Dubbla coins!','pk');}
+  else if(ft.special==='all'){gainCoins(earnedCoins);gainXP(earnedXP,'action');showT('🐲 HAVSDRAK!!! MEGA-BELÖNING!','y');vibe([80,40,100,40,100,40,120]);}
+  else if(ft.special==='luckburst'){gainCoins(Math.floor(Math.random()*500)+200);showT('🌟 GYLLENE FISK! Luck burst!','y');}
+  if(ft.petFood){G.hunger=Math.min(100,G.hunger+30);updatePetView();}
+  // Show timing label
+  if(timingLabel){
+    const scene=$('fishScene');const badge=document.createElement('div');badge.className='fish-combo-pop';
+    badge.textContent=timingLabel+(combo>=3?' COMBO ×'+comboMult:'');scene.appendChild(badge);setTimeout(()=>badge.remove(),1200);
+  }
+  // Toast
+  const rarityToast=ft.rarity==='ultra'?'y':ft.rarity==='mythic'?'p':ft.rarity==='legendary'?'pk':ft.rarity==='epic'?'o':'g';
+  showT(ft.em+' '+ft.nm+'! +'+earnedCoins+'⚡ +'+earnedXP+'XP'+(timingLabel?' '+timingLabel:''),rarityToast);
+  const fx=$('fishCatchFx');if(fx){fx.classList.add('on');setTimeout(()=>fx.classList.remove('on'),280);}
   vibe([30,20,80,20,100]);SFX.win();
-  const st=$('fishStatus');if(st&&combo>=3)st.textContent='🔥 COMBO ×'+combo+'! Fånga fler för mer!';
   updateFishUI();
-  setTimeout(()=>resetFishState('Kasta igen!'),1200);
+  setTimeout(()=>{spawnFishInScene();resetFishState(combo>=3?'🔥 COMBO ×'+combo+'! Fortsätt fånga!':'Kasta igen!');},1100);
 }
 function resetFishState(msg){
-  _fishState.casting=false;_fishState.biting=false;_fishState.catchWindow=false;_fishState._combo=0;
+  _fishState.casting=false;_fishState.biting=false;_fishState.catchWindow=false;
   const line=$('fishLine');const bob=$('fishBob');const prompt=$('fishTapPrompt');
-  if(line)line.style.height='0';if(bob){bob.style.display='none';bob.classList.remove('nibble');bob.style.boxShadow='';}
+  if(line)line.style.height='0';
+  if(bob){bob.style.display='none';bob.classList.remove('nibble');bob.style.boxShadow='';}
   if(prompt)prompt.style.display='none';
   const btn=$('fishCastBtn');if(btn){btn.className='fish-cast-btn idle';btn.textContent='🎣 KASTA METSPÖ';}
-  $('fishStatus').textContent=msg;
+  if($('fishStatus'))$('fishStatus').textContent=msg;
+}
+function openRodShop(){
+  openModal('rodShopModal');
+  const grid=$('rodShopGrid');if(!grid)return;
+  const curRod=G.fishRod||'bamboo';
+  grid.innerHTML=FISH_RODS.map(r=>{
+    const owned=r.price===0||(G.fishRods||[]).includes(r.id);
+    const active=r.id===curRod;
+    return`<div onclick="${active?`showT('Redan aktivt!','y')`:(owned?`selectFishRod('${r.id}')`:`buyFishRod('${r.id}')`)}" style="background:${active?'rgba(57,255,20,.07)':'var(--c1)'};border:1.5px solid ${active?'rgba(57,255,20,.4)':owned?'rgba(0,180,255,.3)':'var(--line)'};border-radius:16px;padding:14px 16px;display:flex;align-items:center;gap:12px;cursor:pointer;-webkit-tap-highlight-color:transparent">
+      <div style="font-size:30px">${r.em}</div>
+      <div style="flex:1">
+        <div style="font-size:13px;font-weight:900;color:${active?'var(--g)':'var(--t1)'}">${r.nm}</div>
+        <div style="font-size:9px;color:var(--t3);margin-top:2px">${r.desc}</div>
+        <div style="font-size:9px;color:${r.color};margin-top:3px">Bonus: ×${r.bonus} · Djup: ${r.zones.join('/')}</div>
+      </div>
+      <div style="font-size:11px;font-weight:900;font-family:var(--mono);color:${active?'var(--g)':owned?'var(--b)':'var(--y)'}">${active?'AKTIV':owned?'Välj':r.price+'⚡'}</div>
+    </div>`;
+  }).join('');
+}
+function buyFishRod(id){
+  const r=FISH_RODS.find(x=>x.id===id);if(!r)return;
+  if(G.coins<r.price){showT('❌ Behöver '+r.price+'⚡','r');SFX.error();return;}
+  if(!G.fishRods)G.fishRods=[];
+  G.coins-=r.price;G.fishRods.push(r.id);G.fishRod=r.id;
+  save();updateHUD();SFX.win();vibe([30,20,80,20,100]);
+  showT(r.em+' '+r.nm+' köpt & aktiverat!','g');
+  openRodShop();updateFishRodLabel();
+}
+function selectFishRod(id){
+  G.fishRod=id;save();
+  const r=FISH_RODS.find(x=>x.id===id);
+  showT('Spö bytt till '+r.em+' '+r.nm,'g');
+  openRodShop();updateFishRodLabel();
+}
+function openFishJournal(){
+  openModal('fishJournalModal');
+  const c=$('fishJournalContent');if(!c)return;
+  const caught=G.fishJournal||{};
+  const total=Object.values(caught).reduce((a,b)=>a+b,0);
+  const unique=Object.keys(caught).length;
+  c.innerHTML=`<div style="display:flex;gap:12px;margin-bottom:14px">
+    <div style="flex:1;background:rgba(0,180,255,.08);border:1px solid rgba(0,180,255,.2);border-radius:14px;padding:12px;text-align:center">
+      <div style="font-size:24px;font-weight:900;font-family:var(--mono);color:var(--b)">${total}</div>
+      <div style="font-size:9px;color:var(--t3);margin-top:2px">TOTALT FÅNGADE</div>
+    </div>
+    <div style="flex:1;background:rgba(57,255,20,.06);border:1px solid rgba(57,255,20,.2);border-radius:14px;padding:12px;text-align:center">
+      <div style="font-size:24px;font-weight:900;font-family:var(--mono);color:var(--g)">${unique}/${FISH_TYPES.length}</div>
+      <div style="font-size:9px;color:var(--t3);margin-top:2px">UNIKA ARTER</div>
+    </div>
+    <div style="flex:1;background:rgba(255,230,0,.07);border:1px solid rgba(255,230,0,.2);border-radius:14px;padding:12px;text-align:center">
+      <div style="font-size:24px;font-weight:900;font-family:var(--mono);color:var(--y)">${_fishState.best}</div>
+      <div style="font-size:9px;color:var(--t3);margin-top:2px">REKORD</div>
+    </div>
+  </div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:7px">`+
+  FISH_TYPES.map(ft=>{
+    const n=caught[ft.nm]||0;
+    const col=ft.rarity==='ultra'?'#FFE600':ft.rarity==='mythic'?'#BF5FFF':ft.rarity==='legendary'?'#FF3B30':ft.rarity==='epic'?'#FF9F0A':ft.rarity==='rare'?'#00D9FF':ft.rarity==='uncommon'?'#57FF3C':'rgba(255,255,255,.4)';
+    return`<div style="background:${n>0?'rgba(0,0,0,.3)':'rgba(0,0,0,.12)'};border:1px solid ${n>0?col+'55':'rgba(255,255,255,.05)'};border-radius:12px;padding:9px 10px;display:flex;align-items:center;gap:8px;opacity:${n>0?1:.45}">
+      <span style="font-size:20px;min-width:24px;text-align:center">${n>0?ft.em:'❓'}</span>
+      <div><div style="font-size:10px;font-weight:900;color:${col}">${n>0?ft.nm:'???'}</div><div style="font-size:8px;color:var(--t3)">${n>0?'×'+n+' · '+ft.rarity:'Inte fångad'}</div></div>
+    </div>`;
+  }).join('')+'</div>';
 }
 function updateFishUI(){
-  const inv=$('fishInventory');if(inv)inv.innerHTML=_fishState.inventory.slice(-6).map(f=>`<div class="fish-catch-tag"><span>${f.em}</span><div class="fish-catch-lbl">${f.nm}</div></div>`).join('');
+  const inv=$('fishInventory');
+  if(inv)inv.innerHTML=_fishState.inventory.slice(-8).map(f=>{
+    const col=f.rarity==='ultra'?'rgba(255,230,0,.2)':f.rarity==='mythic'?'rgba(191,95,255,.15)':f.rarity==='legendary'?'rgba(255,59,48,.15)':'rgba(0,180,255,.1)';
+    const border=f.rarity==='ultra'?'rgba(255,230,0,.5)':f.rarity==='mythic'?'rgba(191,95,255,.4)':f.rarity==='legendary'?'rgba(255,59,48,.4)':'rgba(0,180,255,.3)';
+    return`<div class="fish-catch-tag" style="background:${col};border-color:${border}"><span>${f.em}</span><div class="fish-catch-lbl">${f.nm}</div></div>`;
+  }).join('');
+  const combo=_fishState._combo;
+  const sb=$('fishStreakBadge');if(sb)sb.textContent=combo>=3?'🔥 ×'+combo+' COMBO':'';
   const s=$('fishScoreBar');if(s)s.textContent='Poäng: '+_fishState.score+' · Bäst: '+_fishState.best;
   const st=$('fishScoreTop');if(st)st.textContent=_fishState.score+' FISKAR';
 }
@@ -5343,9 +5661,27 @@ const TALENT_DEFS=[
   {id:'d3',branch:'djurvård',em:'🧬',nm:'DNA Evolved',desc:'Evolutions kräver 1 level mindre',cost:2,req:'d2',ef:()=>{G._talentD3=true;}},
   {id:'d4',branch:'djurvård',em:'⭐',nm:'Star Pet',desc:'Pet stats minskar 50% långsammare',cost:2,req:'d3',ef:()=>{G._talentD4=true;}},
   {id:'d5',branch:'djurvård',em:'🌈',nm:'Perfect Bond',desc:'Pet håller alltid 80%+ stats',cost:3,req:'d4',legendary:true,ef:()=>{G._talentD5=true;}},
+  // ⚔️ KÄMPE — Elite tier (require k5)
+  {id:'k6',branch:'kämpe',em:'💀',nm:'Death Strike',desc:'10% chans att dubbla XP varje träning',cost:3,req:'k5',ef:()=>{G._talentK6=true;}},
+  {id:'k7',branch:'kämpe',em:'🌋',nm:'Volcanic Rage',desc:'Battle XP ×5 under 60 sek efter level-up',cost:4,req:'k6',legendary:true,ef:()=>{G._talentK7=true;}},
+  // 📸 SOCIAL — Elite tier
+  {id:'s6',branch:'social',em:'💥',nm:'Viral Bomb',desc:'Nästa 3 Flash-posts ger 5× normal XP',cost:3,req:'s5',ef:()=>{G._talentS6=true;}},
+  {id:'s7',branch:'social',em:'🌐',nm:'Global Icon',desc:'All XP permanent ×1.2 + aura uppgradering',cost:4,req:'s6',legendary:true,ef:()=>{G._talentS7=true;}},
+  // 🌍 UTFORSKARE — Elite tier
+  {id:'u6',branch:'utforskare',em:'🛸',nm:'Dimension Hop',desc:'Teleport till valfri world gratis en gång/dag',cost:3,req:'u5',ef:()=>{G._talentU6=true;}},
+  {id:'u7',branch:'utforskare',em:'🪐',nm:'Planet Ruler',desc:'+200 WP direkt + permanent WP bonus ×1.5',cost:4,req:'u6',legendary:true,ef:()=>{G._talentU7=true;addWorldPoints(200);showT('🪐 +200 WP! PLANET RULER!','p');}},
+  // 💰 HANDLARE — Elite tier
+  {id:'h6',branch:'handlare',em:'🏦',nm:'Central Bank',desc:'Passiv 10 coins/min alltid',cost:3,req:'h5',ef:()=>{G._talentH6=true;}},
+  {id:'h7',branch:'handlare',em:'💸',nm:'Billionaire',desc:'Alla coin-drops ×3 permanent',cost:4,req:'h6',legendary:true,ef:()=>{G._talentH7=true;}},
+  // 🐾 DJURVÅRD — Elite tier
+  {id:'d6',branch:'djurvård',em:'🧪',nm:'Miracle Cure',desc:'Pet återhämtar 50% stats en gång/dag gratis',cost:3,req:'d5',ef:()=>{G._talentD6=true;}},
+  {id:'d7',branch:'djurvård',em:'🌟',nm:'Eternal Bond',desc:'Pet kan aldrig ha stats under 60%',cost:4,req:'d6',legendary:true,ef:()=>{G._talentD7=true;}},
   // ⚡ NEXUS — Cross-branch epic nodes
   {id:'x1',branch:'nexus',branchNm:'⚡ NEXUS',branchDesc:'Kräver 2 grenar',branchCol:'#BF5FFF',em:'⚡',nm:'Warrior-Flash',desc:'Battle posts går virala automatiskt',cost:4,req:'k3',req2:'s3',ef:()=>{G._talentX1=true;}},
   {id:'x2',branch:'nexus',em:'🌊',nm:'World Trader',desc:'+100 WP & låser upp exklusiv zone',cost:4,req:'u3',req2:'h3',ef:()=>{G._talentX2=true;addWorldPoints(100);showT('🌊 +100 WP! NEXUS UNLOCKED!','p');}},
+  {id:'x3',branch:'nexus',em:'🔱',nm:'Triple Crown',desc:'Alla stats minskar 60% långsammare. Episk power.',cost:5,req:'k5',req2:'d5',ef:()=>{G._talentX3=true;showT('🔱 TRIPLE CROWN! ULTIMATE POWER!','y');}},
+  {id:'x4',branch:'nexus',em:'👁️',nm:'All-Seeing Eye',desc:'+30% XP från ALLT. Permanent. Forever.',cost:5,req:'s5',req2:'u5',ef:()=>{G._talentX4=true;showT('👁️ ALL-SEEING EYE AKTIVERAT!','pk');}},
+  {id:'x5',branch:'nexus',em:'♾️',nm:'INFINITY',desc:'DU ÄR OÄNDLIG. Alla bonusar ×1.5 staplas.',cost:6,req:'k7',req2:'s7',ef:()=>{G._talentX5=true;spawnParticles(window.innerWidth/2,window.innerHeight/2,'stars');showT('♾️ INFINITY MODE AKTIVERAT!!!','y');vibe([80,40,120,40,160,40,200]);}},
 ];
 function openTalentTree(){const tm=$('talentModal');if(!tm)return;tm.classList.add('open');renderTalentTree();}
 function closeTalentTree(){const tm=$('talentModal');if(tm)tm.classList.remove('open');}
@@ -5509,46 +5845,110 @@ function spinGacha(){
 // ── ROOM DECORATION SHOP ──
 // ══════════════════════════════════════════
 const ROOM_DECO_ITEMS=[
-  {id:'sofa',em:'🛋️',nm:'Soffa',price:80,col:'rgba(0,217,255,.15)',border:'rgba(0,217,255,.3)',x:10,y:50},
-  {id:'plant',em:'🪴',nm:'Växt',price:50,col:'rgba(57,255,20,.12)',border:'rgba(57,255,20,.28)',x:75,y:45},
-  {id:'trophy',em:'🏆',nm:'Pokal',price:120,col:'rgba(255,230,0,.15)',border:'rgba(255,230,0,.35)',x:55,y:40},
-  {id:'disco',em:'🪩',nm:'Diskoboll',price:200,col:'rgba(191,95,255,.15)',border:'rgba(191,95,255,.35)',x:85,y:20},
-  {id:'painting',em:'🖼️',nm:'Tavla',price:100,col:'rgba(255,159,10,.12)',border:'rgba(255,159,10,.3)',x:20,y:25},
-  {id:'bed',em:'🛏️',nm:'Säng',price:150,col:'rgba(255,45,85,.12)',border:'rgba(255,45,85,.28)',x:40,y:52},
-  {id:'tv',em:'📺',nm:'TV',price:180,col:'rgba(0,217,255,.12)',border:'rgba(0,217,255,.28)',x:68,y:30},
-  {id:'balloon',em:'🎈',nm:'Ballong',price:30,col:'rgba(255,45,85,.1)',border:'rgba(255,45,85,.25)',x:30,y:15},
-  {id:'star',em:'⭐',nm:'Stjärna',price:60,col:'rgba(255,230,0,.1)',border:'rgba(255,230,0,.3)',x:80,y:10},
-  {id:'rainbow',em:'🌈',nm:'Regnbåge',price:250,col:'rgba(191,95,255,.12)',border:'rgba(191,95,255,.3)',x:50,y:5},
-  {id:'cake',em:'🎂',nm:'Tårta',price:90,col:'rgba(255,159,10,.12)',border:'rgba(255,159,10,.28)',x:15,y:55},
-  {id:'lamp',em:'💡',nm:'Lampa',price:70,col:'rgba(255,230,0,.1)',border:'rgba(255,230,0,.25)',x:88,y:38},
+  // Furniture
+  {id:'sofa',em:'🛋️',nm:'Soffa',price:80,cat:'möbler',col:'rgba(0,217,255,.15)',border:'rgba(0,217,255,.3)',x:10,y:50},
+  {id:'bed',em:'🛏️',nm:'Säng',price:150,cat:'möbler',col:'rgba(255,45,85,.12)',border:'rgba(255,45,85,.28)',x:40,y:52},
+  {id:'desk',em:'🪑',nm:'Skrivbord',price:110,cat:'möbler',col:'rgba(255,159,10,.12)',border:'rgba(255,159,10,.28)',x:65,y:48},
+  {id:'shelf',em:'📚',nm:'Bokhylla',price:130,cat:'möbler',col:'rgba(0,217,255,.12)',border:'rgba(0,217,255,.28)',x:5,y:28},
+  {id:'beanbag',em:'🫘',nm:'Sittsäck',price:90,cat:'möbler',col:'rgba(255,45,85,.1)',border:'rgba(255,45,85,.25)',x:80,y:52},
+  // Tech
+  {id:'tv',em:'📺',nm:'TV',price:180,cat:'tech',col:'rgba(0,217,255,.12)',border:'rgba(0,217,255,.28)',x:68,y:30},
+  {id:'pc',em:'🖥️',nm:'PC-Setup',price:250,cat:'tech',col:'rgba(0,217,255,.15)',border:'rgba(0,217,255,.35)',x:55,y:32},
+  {id:'speaker',em:'🔊',nm:'Högtalare',price:120,cat:'tech',col:'rgba(191,95,255,.12)',border:'rgba(191,95,255,.28)',x:12,y:38},
+  {id:'led',em:'💡',nm:'LED-Strip',price:70,cat:'tech',col:'rgba(255,230,0,.1)',border:'rgba(255,230,0,.25)',x:88,y:38},
+  // Nature
+  {id:'plant',em:'🪴',nm:'Växt',price:50,cat:'natur',col:'rgba(57,255,20,.12)',border:'rgba(57,255,20,.28)',x:75,y:45},
+  {id:'aquarium',em:'🐠',nm:'Akvarium',price:220,cat:'natur',col:'rgba(0,200,255,.14)',border:'rgba(0,200,255,.32)',x:22,y:42},
+  {id:'sakura',em:'🌸',nm:'Körsbärsträd',price:180,cat:'natur',col:'rgba(255,45,85,.1)',border:'rgba(255,45,85,.25)',x:90,y:22},
+  {id:'rainbow',em:'🌈',nm:'Regnbåge',price:250,cat:'natur',col:'rgba(191,95,255,.12)',border:'rgba(191,95,255,.3)',x:50,y:5},
+  // Decor
+  {id:'painting',em:'🖼️',nm:'Tavla',price:100,cat:'dekor',col:'rgba(255,159,10,.12)',border:'rgba(255,159,10,.3)',x:20,y:25},
+  {id:'balloon',em:'🎈',nm:'Ballong',price:30,cat:'dekor',col:'rgba(255,45,85,.1)',border:'rgba(255,45,85,.25)',x:30,y:15},
+  {id:'star',em:'⭐',nm:'Stjärna',price:60,cat:'dekor',col:'rgba(255,230,0,.1)',border:'rgba(255,230,0,.3)',x:80,y:10},
+  {id:'cake',em:'🎂',nm:'Tårta',price:90,cat:'dekor',col:'rgba(255,159,10,.12)',border:'rgba(255,159,10,.28)',x:15,y:55},
+  {id:'crystal',em:'💎',nm:'Kristall',price:200,cat:'dekor',col:'rgba(0,217,255,.15)',border:'rgba(0,217,255,.35)',x:44,y:20},
+  {id:'mirror',em:'🪞',nm:'Spegel',price:140,cat:'dekor',col:'rgba(191,95,255,.1)',border:'rgba(191,95,255,.25)',x:8,y:18},
+  // Special / Achievements
+  {id:'trophy',em:'🏆',nm:'Pokal',price:120,cat:'special',col:'rgba(255,230,0,.15)',border:'rgba(255,230,0,.35)',x:55,y:40},
+  {id:'disco',em:'🪩',nm:'Diskoboll',price:200,cat:'special',col:'rgba(191,95,255,.15)',border:'rgba(191,95,255,.35)',x:85,y:20},
+  {id:'portal',em:'🌀',nm:'Portal',price:350,cat:'special',col:'rgba(191,95,255,.18)',border:'rgba(191,95,255,.45)',x:35,y:8},
+  {id:'holo',em:'👾',nm:'Hologram',price:400,cat:'special',col:'rgba(0,217,255,.18)',border:'rgba(0,217,255,.45)',x:60,y:12},
+  {id:'fireplace',em:'🔥',nm:'Eldstad',price:160,cat:'special',col:'rgba(255,89,0,.15)',border:'rgba(255,89,0,.35)',x:42,y:50},
 ];
+const ROOM_THEMES=[
+  {id:'cosmic',nm:'🌌 Cosmic',bg:'linear-gradient(180deg,#07040f 0%,#030d07 50%,#040a09 100%)',floor:'rgba(20,5,40,.9)',accent:'#BF5FFF'},
+  {id:'neon',nm:'⚡ Neon Cyber',bg:'linear-gradient(180deg,#010612 0%,#030d18 50%,#02090f 100%)',floor:'rgba(0,20,40,.9)',accent:'#00D9FF'},
+  {id:'cozy',nm:'🏡 Cozy',bg:'linear-gradient(180deg,#120806 0%,#1a0e08 50%,#0f0a06 100%)',floor:'rgba(50,30,15,.9)',accent:'#FF9F0A'},
+  {id:'nature',nm:'🌿 Nature',bg:'linear-gradient(180deg,#050f03 0%,#061206 50%,#040a04 100%)',floor:'rgba(10,30,10,.9)',accent:'#57FF3C'},
+  {id:'space',nm:'🚀 Space',bg:'linear-gradient(180deg,#02020e 0%,#040420 50%,#020210 100%)',floor:'rgba(5,5,30,.9)',accent:'#4488FF'},
+];
+let _roomActiveCat='alla';
 function openRoomShop(){
   const rm=$('roomModal');if(!rm)return;
   rm.classList.add('open');
   const rc=$('roomCoinsDisp');if(rc)rc.textContent=G.coins+'⚡';
   const pp=$('roomPreviewPet');if(pp)pp.textContent=G.petEmoji||'🐉';
-  renderRoomPreview();renderRoomShopGrid();
+  renderRoomThemes();renderRoomPreview();renderRoomShopGrid();
 }
-function closeRoomShop(){const rm=$('roomModal');if(rm)rm.classList.remove('open');}
+function closeRoomShop(){
+  const rm=$('roomModal');if(rm)rm.classList.remove('open');
+  initPetRoom();
+}
+function renderRoomThemes(){
+  const row=$('roomThemeRow');if(!row)return;
+  const cur=G.roomTheme||'cosmic';
+  row.innerHTML=ROOM_THEMES.map(t=>`<div class="room-theme-chip ${t.id===cur?'active':''}" style="border-color:${t.accent};color:${t.id===cur?t.accent:'var(--t3)'};background:${t.id===cur?t.accent+'18':'transparent'}" onclick="setRoomTheme('${t.id}')">${t.nm}</div>`).join('');
+}
+function setRoomTheme(id){
+  G.roomTheme=id;save();
+  renderRoomThemes();renderRoomPreview();initPetRoom();
+  showT('🏠 Tema bytt!','g');
+}
 function renderRoomPreview(){
   const pl=$('roomPlacedItems');if(!pl)return;
   const rp=$('roomPreview');if(!rp)return;
   const owned=G.roomDeco||[];
+  const custom=G.customRoomItems||[];
+  // Apply theme background
+  const theme=ROOM_THEMES.find(t=>t.id===(G.roomTheme||'cosmic'))||ROOM_THEMES[0];
+  rp.style.background=theme.bg;
+  const floor=rp.querySelector('.room-preview-floor');if(floor)floor.style.background=theme.floor;
   const floatCls=['room-float-a','room-float-b','room-float-c'];
   pl.innerHTML=owned.map((id,i)=>{
     const it=ROOM_DECO_ITEMS.find(x=>x.id===id);if(!it)return'';
-    return`<div class="room-placed-item ${floatCls[i%3]}" style="left:${it.x}%;top:${it.y}%" onclick="vibe(10)">${it.em}<div class="room-sparkle-dot"></div></div>`;
+    return`<div class="room-placed-item ${floatCls[i%3]}" style="left:${it.x}%;top:${it.y}%;z-index:5;" title="${it.nm}" onclick="vibe(10)">${it.em}<div class="room-sparkle-dot"></div></div>`;
+  }).join('')+custom.map((ci,i)=>{
+    return`<div class="room-placed-item ${floatCls[i%3]}" style="left:${ci.x}%;top:${ci.y}%;z-index:5;" title="${ci.nm}" onclick="removeCustomRoomItem('${ci.id}')">${ci.em}<div class="room-sparkle-dot"></div></div>`;
   }).join('');
-  // Rebuild ambient bg elements
+  // Achievement trophies in room
+  const achItems=getAchievementRoomItems();
+  pl.innerHTML+=achItems.map((a,i)=>`<div style="position:absolute;left:${a.x}%;top:${a.y}%;font-size:18px;z-index:6;animation:achGlow 2s ease-in-out infinite;cursor:pointer;" title="${a.nm}" onclick="showT('🏆 ${a.nm}','y')">${a.em}</div>`).join('');
+  // Stars + ambient
   rp.querySelectorAll('.room-bg-star,.room-particle,.room-ambient-glow').forEach(e=>e.remove());
-  const glow=document.createElement('div');glow.className='room-ambient-glow';rp.insertBefore(glow,rp.firstChild);
-  for(let i=0;i<12;i++){const s=document.createElement('div');s.className='room-bg-star';const sz=(0.8+Math.random()*2.2).toFixed(1)+'px';s.style.cssText=`width:${sz};height:${sz};left:${Math.random()*95}%;top:${Math.random()*58}%;--dur:${(2+Math.random()*3).toFixed(1)}s;--del:${(-Math.random()*3).toFixed(1)}s;`;rp.insertBefore(s,rp.firstChild);}
-  for(let i=0;i<7;i++){const p=document.createElement('div');p.className='room-particle';p.style.cssText=`left:${8+Math.random()*84}%;bottom:${48+Math.random()*22}px;--dur:${(1.4+Math.random()*2).toFixed(1)}s;--del:${(-Math.random()*2.5).toFixed(1)}s;`;rp.appendChild(p);}
+  const glow=document.createElement('div');glow.className='room-ambient-glow';glow.style.background=`radial-gradient(ellipse at 50% 80%,${theme.accent}14 0%,transparent 70%)`;rp.insertBefore(glow,rp.firstChild);
+  for(let i=0;i<12;i++){const s=document.createElement('div');s.className='room-bg-star';const sz=(0.8+Math.random()*2).toFixed(1)+'px';s.style.cssText=`width:${sz};height:${sz};left:${Math.random()*95}%;top:${Math.random()*55}%;--dur:${(2+Math.random()*3).toFixed(1)}s;--del:${(-Math.random()*3).toFixed(1)}s;`;rp.insertBefore(s,rp.firstChild);}
+  for(let i=0;i<6;i++){const p=document.createElement('div');p.className='room-particle';p.style.cssText=`left:${8+Math.random()*84}%;bottom:${44+Math.random()*22}px;--dur:${(1.4+Math.random()*2).toFixed(1)}s;--del:${(-Math.random()*2.5).toFixed(1)}s;background:${theme.accent};`;rp.appendChild(p);}
 }
-function renderRoomShopGrid(){
+function getAchievementRoomItems(){
+  const items=[];const achs=G.achievements||[];
+  if(achs.includes('first_flash'))items.push({em:'🎬',nm:'First Flash',x:72,y:22});
+  if(achs.includes('streak7'))items.push({em:'🔥',nm:'7-Day Streak',x:82,y:18});
+  if(achs.includes('level5'))items.push({em:'⭐',nm:'Level 5',x:92,y:30});
+  if(achs.includes('fisher'))items.push({em:'🎣',nm:'Fischer',x:3,y:22});
+  return items;
+}
+function renderRoomShopGrid(cat){
+  if(cat)_roomActiveCat=cat;
+  // Category tabs
+  const tabs=$('roomCatTabs');
+  if(tabs){
+    const cats=['alla','möbler','tech','natur','dekor','special'];
+    tabs.innerHTML=cats.map(c=>`<div onclick="renderRoomShopGrid('${c}')" style="flex-shrink:0;padding:5px 12px;border-radius:18px;font-size:10px;font-weight:900;cursor:pointer;font-family:var(--mono);border:1.5px solid;border-color:${_roomActiveCat===c?'var(--g)':'var(--line)'};color:${_roomActiveCat===c?'var(--g)':'var(--t3)'};background:${_roomActiveCat===c?'rgba(57,255,20,.1)':'transparent'};-webkit-tap-highlight-color:transparent">${c.toUpperCase()}</div>`).join('');
+  }
   const grid=$('roomShopGrid');if(!grid)return;
   const owned=G.roomDeco||[];
-  grid.innerHTML=ROOM_DECO_ITEMS.map(it=>`<div class="room-item-card ${owned.includes(it.id)?'owned':''}" style="background:${it.col};border-color:${it.border}" onclick="buyRoomDeco('${it.id}')">
+  const filtered=_roomActiveCat==='alla'?ROOM_DECO_ITEMS:ROOM_DECO_ITEMS.filter(it=>it.cat===_roomActiveCat);
+  grid.innerHTML=filtered.map(it=>`<div class="room-item-card ${owned.includes(it.id)?'owned':''}" style="background:${it.col};border-color:${it.border}" onclick="buyRoomDeco('${it.id}')">
     <span class="ric-em">${it.em}</span>
     <span class="ric-nm" style="color:var(--t1)">${it.nm}</span>
     <span class="ric-price" style="color:${owned.includes(it.id)?'var(--g)':'var(--y)'}">${owned.includes(it.id)?'✓ KÖPT':it.price+'⚡'}</span>
@@ -5557,7 +5957,7 @@ function renderRoomShopGrid(){
 function buyRoomDeco(id){
   const it=ROOM_DECO_ITEMS.find(x=>x.id===id);if(!it)return;
   if(!G.roomDeco)G.roomDeco=[];
-  if(G.roomDeco.includes(id)){showT('✅ Redan köpt!','y');return;}
+  if(G.roomDeco.includes(id)){showT('✅ Redan köpt! Tryck på tavlan för info.','y');return;}
   if(G.coins<it.price){showT('❌ Behöver '+it.price+'⚡','r');SFX.error();return;}
   G.coins-=it.price;G.roomDeco.push(id);
   SFX.win();vibe([30,20,60]);
@@ -5565,9 +5965,39 @@ function buyRoomDeco(id){
   addDiaryEntry('Köpte '+it.em+' '+it.nm+' till rummet! Hemmet ser fetare ut nu. 🏠');
   save();updateHUD();
   const rc=$('roomCoinsDisp');if(rc)rc.textContent=G.coins+'⚡';
-  renderRoomPreview();renderRoomShopGrid();
-  initPetRoom();
+  renderRoomPreview();renderRoomShopGrid();initPetRoom();
   const sub=$('roomDecoSub');if(sub)sub.textContent=(G.roomDeco.length)+' items i ditt rum';
+}
+function openRoomCustomModal(){
+  openModal('roomCustomModal');
+  const grid=$('roomEmojiGrid');if(!grid)return;
+  const emojis=['🎸','🎹','🎺','🎻','🥁','🎤','🎮','🕹️','🎲','🎯','🧸','🪆','🎁','🎀','🪅','🪁','🧩','🛸','🚀','🌙','⭐','💫','🔮','🧿','🪬','🧲','🔬','🧬','💊','🩺','🎨','🖌️','✏️','📝','📖','🪞','🪟','🛁','🚿','🪴','🌵','🌺','🌻','🍄','🦋','🐝','🦊','🐼','🐨','🦁','🐯','🦄','🐲','👾','🤖','👻','🎃'];
+  let sel=emojis[0];
+  grid.innerHTML=emojis.map(e=>`<div class="rej" data-em="${e}" onclick="selectCustomEmoji(this,'${e}')">${e}</div>`).join('');
+  grid.querySelector('.rej').classList.add('sel');
+  grid._sel=sel;
+}
+function selectCustomEmoji(el,em){
+  document.querySelectorAll('.rej.sel').forEach(x=>x.classList.remove('sel'));
+  el.classList.add('sel');
+  $('roomEmojiGrid')._sel=em;
+}
+function placeCustomRoomItem(){
+  const grid=$('roomEmojiGrid');const em=grid?._sel||'⭐';
+  const name=$('customItemName')?.value.trim()||em+' Item';
+  if(!G.customRoomItems)G.customRoomItems=[];
+  const id='ci_'+Date.now();
+  const x=10+Math.random()*75;const y=10+Math.random()*45;
+  G.customRoomItems.push({id,em,nm:name,x,y});
+  save();closeModal('roomCustomModal');
+  renderRoomPreview();initPetRoom();
+  showT(em+' '+name+' placerat i rummet!','g');vibe([30,20,60]);
+}
+function removeCustomRoomItem(id){
+  if(!G.customRoomItems)return;
+  G.customRoomItems=G.customRoomItems.filter(x=>x.id!==id);
+  save();renderRoomPreview();initPetRoom();
+  showT('Item borttaget','y');
 }
 
 // ══════════════════════════════════════════
@@ -5687,38 +6117,82 @@ function sendGiftNow(){
   const sl=$('giftStatusLbl');if(sl)sl.textContent='✅ Skickat! Välj nästa gåva.';
 }
 
-// save() extension — add roomDeco
+// save() extension — add roomDeco, customRoomItems, fishData, roomTheme
 const _origSave2=save;
 save=function(){
   _origSave2();
   try{
     localStorage.setItem('kv8_rd',JSON.stringify(G.roomDeco||[]));
     localStorage.setItem('kv8_evc',String(_eventMyContrib));
+    localStorage.setItem('kv8_ci',JSON.stringify(G.customRoomItems||[]));
+    localStorage.setItem('kv8_fj',JSON.stringify(G.fishJournal||{}));
+    if(G.fishRod)localStorage.setItem('kv8_fr',G.fishRod);
+    if(G.fishRods)localStorage.setItem('kv8_frs',JSON.stringify(G.fishRods));
+    if(G.roomTheme)localStorage.setItem('kv8_rt',G.roomTheme);
   }catch(e){}
 };
-// load roomDeco
+// load roomDeco + extras
 try{const rd=localStorage.getItem('kv8_rd');if(rd)G.roomDeco=JSON.parse(rd);}catch(e){G.roomDeco=[];}
 if(!G.roomDeco)G.roomDeco=[];
 try{_eventMyContrib=parseInt(localStorage.getItem('kv8_evc')||'0');}catch(e){}
+try{const ci=localStorage.getItem('kv8_ci');if(ci)G.customRoomItems=JSON.parse(ci);}catch(e){G.customRoomItems=[];}
+if(!G.customRoomItems)G.customRoomItems=[];
+try{const fj=localStorage.getItem('kv8_fj');if(fj)G.fishJournal=JSON.parse(fj);}catch(e){G.fishJournal={};}
+if(!G.fishJournal)G.fishJournal={};
+try{G.fishRod=localStorage.getItem('kv8_fr')||'bamboo';}catch(e){G.fishRod='bamboo';}
+try{const frs=localStorage.getItem('kv8_frs');if(frs)G.fishRods=JSON.parse(frs);}catch(e){G.fishRods=[];}
+if(!G.fishRods)G.fishRods=[];
+try{G.roomTheme=localStorage.getItem('kv8_rt')||'cosmic';}catch(e){G.roomTheme='cosmic';}
 // Update room deco teaser on load
 setTimeout(()=>{
   const sub=$('roomDecoSub');if(sub&&G.roomDeco.length>0)sub.textContent=G.roomDeco.length+' items i ditt rum';
   const ec=$('eventMyContrib');if(ec)ec.textContent=_eventMyContrib;
 },800);
 
-// Wire room deco items into pet room canvas
+// Wire room deco items + custom items + themes into pet room hero
 const _baseInitPetRoom=initPetRoom;
 initPetRoom=function(){
   _baseInitPetRoom();
   const hero=$('petRoomLayer');if(!hero)return;
+  // Apply theme to pet hero background
+  const theme=ROOM_THEMES.find(t=>t.id===(G.roomTheme||'cosmic'))||ROOM_THEMES[0];
+  const ph=document.querySelector('.pet-hero');
+  if(ph)ph.style.background=theme.bg;
+  const sky=$('prlSky');if(sky)sky.style.background=theme.bg;
+  // Shop items
   (G.roomDeco||[]).forEach(id=>{
     const it=ROOM_DECO_ITEMS.find(x=>x.id===id);if(!it)return;
-    const d=document.createElement('div');
-    d.className='prl-item';
-    d.style.cssText=`left:${it.x}%;bottom:${it.y<50?'calc(40px + '+(50-it.y)+'%)':'calc(40px + 5%)'};font-size:20px;position:absolute;`;
-    d.textContent=it.em;
+    const d=document.createElement('div');d.className='prl-item';
+    d.style.cssText=`left:${it.x}%;bottom:${it.y<50?'calc(40px + '+(50-it.y)+'%)':'calc(40px + 5%)'};font-size:18px;position:absolute;`;
+    d.textContent=it.em;d.title=it.nm;
     hero.appendChild(d);
   });
+  // Custom items
+  (G.customRoomItems||[]).forEach(ci=>{
+    const d=document.createElement('div');d.className='prl-item';
+    d.style.cssText=`left:${ci.x}%;bottom:calc(40px + ${Math.max(0,50-ci.y)}%);font-size:18px;position:absolute;`;
+    d.textContent=ci.em;d.title=ci.nm;
+    hero.appendChild(d);
+  });
+  // Achievement trophies
+  getAchievementRoomItems().forEach(a=>{
+    const d=document.createElement('div');d.className='prl-item';
+    d.style.cssText=`left:${a.x}%;bottom:calc(40px + ${50-a.y}%);font-size:18px;position:absolute;animation:achGlow 2s ease-in-out infinite;`;
+    d.textContent=a.em;d.title=a.nm;
+    hero.appendChild(d);
+  });
+  // Update home tab mini room preview
+  const hrPet=$('homeRoomPet');if(hrPet)hrPet.textContent=G.petEmoji||'🐉';
+  const hrPrev=$('homeRoomPreview');if(hrPrev){const th=ROOM_THEMES.find(t=>t.id===(G.roomTheme||'cosmic'))||ROOM_THEMES[0];hrPrev.style.background=th.bg;}
+  const hrItems=$('homeRoomItems');
+  if(hrItems){
+    hrItems.innerHTML=(G.roomDeco||[]).slice(0,6).map((id,i)=>{
+      const it=ROOM_DECO_ITEMS.find(x=>x.id===id);if(!it)return'';
+      return`<div style="position:absolute;left:${it.x}%;bottom:${it.y>45?8:28}px;font-size:16px;z-index:5;animation:roomItemFloat ${2.5+i*.4}s ease-in-out infinite ${-i*.5}s">${it.em}</div>`;
+    }).join('')+(G.customRoomItems||[]).slice(0,3).map((ci,i)=>{
+      return`<div style="position:absolute;left:${ci.x}%;bottom:${ci.y>45?8:28}px;font-size:16px;z-index:5">${ci.em}</div>`;
+    }).join('');
+  }
 };
 
 // Wire +1 TP on level-up by patching gainXP's internal lvlup trigger
@@ -5741,6 +6215,15 @@ setInterval(()=>{if(!G.name)return;G.hunger=Math.max(0,G.hunger-2);G.energy=Math
 setInterval(save,8000);
 // Periodic social power refresh
 setInterval(()=>{if(G.name&&document.querySelector('#view-home.active'))renderSocialPower();},30000);
+// Passive income timer — 60s tick
+setInterval(()=>{
+  if(!G.name)return;
+  let passCoins=0;
+  if(G._talentH2)passCoins+=5;
+  if(G._talentH6)passCoins+=10;
+  if(G._talentH7)passCoins+=8;
+  if(passCoins>0){gainCoins(passCoins);showT('💰 +'+passCoins+'⚡ passiv inkomst!','y');}
+},60000);
 // Init quests for new users too
 if(!localStorage.getItem('kv8_n')){}else{setTimeout(initQuests,500);}
 </script>
