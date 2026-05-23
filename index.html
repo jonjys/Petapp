@@ -1512,89 +1512,76 @@ textarea.inp{resize:none;min-height:68px;}
   <div class="main">
     <!-- HOME -->
     <div class="view active" id="view-home">
-      <div class="pet-hero"><div class="pet-hero-bg"></div>
-        <!-- animated room layer -->
-        <div class="pet-room-layer" id="petRoomLayer">
+      <!-- COMPACT PET HERO — horizontal layout -->
+      <div class="pet-hero" id="sec-pet" style="padding:8px 12px 6px">
+        <div class="pet-hero-bg"></div>
+        <div class="pet-room-layer" id="petRoomLayer" style="opacity:.35;pointer-events:none">
           <div class="prl-sky" id="prlSky"></div>
           <div class="prl-floor"><div class="prl-floor-glow"></div></div>
           <div class="prl-weather" id="petWeather"></div>
         </div>
-        <!-- badge + mood row -->
-        <div class="ph-top">
-          <div class="dna-badge dna-base" id="dnaBadge">🧬 BASE</div>
-          <div class="mood-pill" id="moodPill">😊 CHILL</div>
-        </div>
-        <!-- BIG CENTERED PET -->
-        <div class="ph-row">
-          <div class="pet-av-wrap" id="petAvWrap" onclick="onPetTap(event)">
+        <div style="display:flex;align-items:center;gap:10px;position:relative;z-index:2">
+          <!-- Pet avatar -->
+          <div class="pet-av-wrap" id="petAvWrap" onclick="onPetTap(event)" style="width:80px;height:80px;flex-shrink:0">
             <div class="pet-aura" id="petAura"></div>
-            <div class="pet-ring"></div><div class="pet-ring2"></div>
-            <canvas id="petCanvas" width="320" height="320" style="width:200px;height:200px;box-shadow:0 0 36px rgba(0,232,122,.3);border-radius:50%"></canvas>
-            <div class="pet-scanlines"></div>
-            <div class="pet-emote" id="petEmote"></div>
-            <div class="pet-sad-alert" id="petSadAlert">😢 HUNGRIG!</div>
-            <button class="pet-edit-btn" onclick="event.stopPropagation();openPetDesigner()">🎨</button>
+            <div class="pet-ring" style="width:82px;height:82px"></div>
+            <div class="pet-ring2" style="width:90px;height:90px"></div>
+            <canvas id="petCanvas" width="320" height="320" style="width:80px;height:80px;box-shadow:0 0 20px rgba(0,232,122,.35);border-radius:50%;position:relative;z-index:2"></canvas>
+            <div class="pet-emote" id="petEmote" style="font-size:16px;top:-12px"></div>
+            <div class="pet-sad-alert" id="petSadAlert" style="font-size:8px;padding:1px 5px;bottom:-4px">😢</div>
+            <button class="pet-edit-btn" onclick="event.stopPropagation();openPetDesigner()" style="top:0;right:-4px;font-size:9px;padding:2px 4px;border-radius:7px">🎨</button>
+          </div>
+          <!-- Right info col -->
+          <div style="flex:1;min-width:0">
+            <div style="display:flex;align-items:center;gap:5px;margin-bottom:2px">
+              <div id="petName" class="pet-name" style="font-size:14px;margin:0;line-height:1">–</div>
+              <div class="pet-lv" style="font-size:8px;padding:1px 6px">LV <span id="petLvlN">1</span></div>
+              <div class="es-badge es1" id="evolStageBadge" style="font-size:7px;padding:1px 4px">ROOKIE</div>
+            </div>
+            <div style="font-size:8px;color:var(--t3);font-family:var(--mono);margin-bottom:4px">
+              <span id="petSpecies">–</span> · <span id="petEvol" style="color:var(--y)">NEXT EVOL: LV5</span>
+            </div>
+            <!-- XP bar compact -->
+            <div style="display:flex;justify-content:space-between;margin-bottom:2px">
+              <span id="xpBarLabel" style="font-size:7px;font-weight:900;color:var(--g);font-family:var(--mono)">LV1 PROGRESS</span>
+              <span id="xpBarNums" style="font-size:7px;color:var(--t3);font-family:var(--mono)">0 / 150 XP</span>
+            </div>
+            <div style="width:100%;height:5px;background:rgba(255,255,255,.07);border-radius:100px;overflow:hidden;margin-bottom:5px">
+              <div id="xpBarFill" style="height:100%;width:0%;background:linear-gradient(90deg,var(--g),#00D9FF);border-radius:100px;transition:width .7s cubic-bezier(.34,1.56,.64,1)"></div>
+            </div>
+            <!-- 4 stat micro-bars 2x2 -->
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:3px 8px">
+              <div>
+                <div style="display:flex;justify-content:space-between;font-size:7px;font-family:var(--mono);font-weight:700;color:var(--o)"><span>🍖</span><span id="vHv">80</span></div>
+                <div style="height:3px;background:rgba(255,255,255,.08);border-radius:2px;overflow:hidden"><div id="vH" style="height:100%;width:80%;background:var(--o);border-radius:2px;transition:width .5s"></div></div>
+              </div>
+              <div>
+                <div style="display:flex;justify-content:space-between;font-size:7px;font-family:var(--mono);font-weight:700;color:var(--b)"><span>⚡</span><span id="vEv">100</span></div>
+                <div style="height:3px;background:rgba(255,255,255,.08);border-radius:2px;overflow:hidden"><div id="vE" style="height:100%;width:100%;background:var(--b);border-radius:2px;transition:width .5s"></div></div>
+              </div>
+              <div>
+                <div style="display:flex;justify-content:space-between;font-size:7px;font-family:var(--mono);font-weight:700;color:var(--p)"><span>💖</span><span id="vMv">90</span></div>
+                <div style="height:3px;background:rgba(255,255,255,.08);border-radius:2px;overflow:hidden"><div id="vM" style="height:100%;width:90%;background:var(--p);border-radius:2px;transition:width .5s"></div></div>
+              </div>
+              <div>
+                <div style="display:flex;justify-content:space-between;font-size:7px;font-family:var(--mono);font-weight:700;color:var(--g)"><span>🌟</span><span id="vKv">42</span></div>
+                <div style="height:3px;background:rgba(255,255,255,.08);border-radius:2px;overflow:hidden"><div id="vK" style="height:100%;width:42%;background:var(--g);border-radius:2px;transition:width .5s"></div></div>
+              </div>
+            </div>
+          </div>
+          <!-- DNA badge + mood col -->
+          <div style="display:flex;flex-direction:column;align-items:flex-end;gap:5px;flex-shrink:0">
+            <div class="dna-badge dna-base" id="dnaBadge" style="font-size:7px;padding:2px 5px">🧬</div>
+            <div class="mood-pill" id="moodPill" style="font-size:8px;padding:2px 7px">😊</div>
           </div>
         </div>
-        <!-- name + level centered -->
-        <div class="ph-info">
-          <div class="pet-name" id="petName">–</div>
-          <div class="pet-species" id="petSpecies">–</div>
-          <div style="display:flex;align-items:center;justify-content:center;gap:8px;margin-top:5px">
-            <div class="pet-lv">LV <span id="petLvlN">1</span></div>
-            <div class="pet-evol" id="petEvol">NEXT EVOL: LV5</div>
-            <div class="es-badge es1" id="evolStageBadge">ROOKIE</div>
-          </div>
-        </div>
-        <!-- XP bar -->
-        <div class="xp-wrap">
-          <div class="xp-top"><span>XP</span><span id="xpNums">0/100</span></div>
-          <div class="xpt-seg" id="xpSegBar"></div>
-        </div>
-        <!-- hidden rings (JS updates these, kept invisible) -->
+        <!-- hidden JS refs -->
         <div style="display:none">
+          <span id="xpNums">0/150</span><div id="xpSegBar"></div><div id="xpBarSub"></div>
           <span id="ringH"></span><span id="ringHv"></span><span id="ringE"></span><span id="ringEv"></span><span id="ringM"></span><span id="ringMv"></span><span id="ringK"></span><span id="ringKv"></span>
           <span id="needHunger"></span><span id="needHungerV"></span><span id="needEnergy"></span><span id="needEnergyV"></span><span id="needMood"></span><span id="needMoodV"></span>
-          <span id="tamaFace"></span><span id="tamaState"></span>
+          <span id="tamaFace"></span><span id="tamaState"></span><div class="pet-scanlines"></div>
         </div>
-      </div>
-      <!-- STATS — SpawnEngine tiles: small label → big colored number → thin bar -->
-      <div class="vitals-row">
-        <div class="vr-mini vr-h">
-          <div class="vr-ico">🍖 HUNGER</div>
-          <div class="vr-big-num" id="vHv">80</div>
-          <div class="vr-bar-wrap"><div class="vr-bar-fill" id="vH" style="width:80%;background:var(--o)"></div></div>
-          <span class="vr-val"></span>
-        </div>
-        <div class="vr-mini vr-e">
-          <div class="vr-ico">⚡ ENERGI</div>
-          <div class="vr-big-num" id="vEv">100</div>
-          <div class="vr-bar-wrap"><div class="vr-bar-fill" id="vE" style="width:100%;background:var(--b)"></div></div>
-          <span class="vr-val"></span>
-        </div>
-        <div class="vr-mini vr-m">
-          <div class="vr-ico">💖 MOOD</div>
-          <div class="vr-big-num" id="vMv">90</div>
-          <div class="vr-bar-wrap"><div class="vr-bar-fill" id="vM" style="width:90%;background:var(--p)"></div></div>
-          <span class="vr-val"></span>
-        </div>
-        <div class="vr-mini vr-k">
-          <div class="vr-ico">🌟 KARMA</div>
-          <div class="vr-big-num" id="vKv">42</div>
-          <div class="vr-bar-wrap"><div class="vr-bar-fill" id="vK" style="width:42%;background:var(--g)"></div></div>
-          <span class="vr-val"></span>
-        </div>
-      </div>
-      <!-- XP LEVEL PROGRESS BAR -->
-      <div id="sec-xp" style="margin:0 14px 12px;padding:12px 14px;background:rgba(57,255,20,.06);border:1.5px solid rgba(57,255,20,.2);border-radius:18px">
-        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
-          <div style="font-size:11px;font-weight:900;color:var(--g);font-family:var(--mono)" id="xpBarLabel">LV1 PROGRESS</div>
-          <div style="font-size:10px;font-weight:700;color:var(--t3);font-family:var(--mono)" id="xpBarNums">0 / 150 XP</div>
-        </div>
-        <div style="width:100%;height:8px;background:rgba(255,255,255,.06);border-radius:100px;overflow:hidden">
-          <div id="xpBarFill" style="height:100%;width:0%;background:linear-gradient(90deg,var(--g),#00D9FF);border-radius:100px;transition:width .7s cubic-bezier(.34,1.56,.64,1)"></div>
-        </div>
-        <div style="font-size:9px;color:var(--t3);margin-top:4px" id="xpBarSub">Tjäna XP genom att mata, träna & posta Flash</div>
       </div>
       <!-- KARMA PULSE — live community activity -->
       <div style="margin:0 14px 10px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:14px;padding:8px 12px;display:flex;align-items:center;gap:8px;overflow:hidden">
@@ -3725,7 +3712,32 @@ function flashSendGift(id,pet,user){
   openGiftModal();
   const fname=user.split('_')[0];showT('🎁 Skickar gåva till '+fname+'!','g');
 }
-function likeFlash(id){const p=FLASH_POSTS.find(x=>x.id===id);if(!p)return;if(G.likedPosts.has(id)){G.likedPosts.delete(id);p.likes--;}else{G.likedPosts.add(id);p.likes++;gainXP(2,'social');vibe(15);}$('fli'+id).textContent=G.likedPosts.has(id)?'❤️':'🤍';$('fli'+id).style.color=G.likedPosts.has(id)?'var(--pk)':'#fff';$('flc'+id).textContent=p.likes;}
+function likeFlash(id){
+  const p=FLASH_POSTS.find(x=>x.id===id);if(!p)return;
+  if(G.likedPosts.has(id)){G.likedPosts.delete(id);p.likes--;}
+  else{
+    G.likedPosts.add(id);p.likes++;gainXP(2,'social');vibe(15);
+    _flashLikeCombo=(_flashLikeCombo||0)+1;clearTimeout(_flashLikeComboTimer);
+    _flashLikeComboTimer=setTimeout(()=>{_flashLikeCombo=0;},4000);
+    if(_flashLikeCombo>=3){gainCoins(Math.floor(_flashLikeCombo/3));showT('❤️ LIKE COMBO ×'+_flashLikeCombo+'! +'+Math.floor(_flashLikeCombo/3)+'⚡','pk');vibe([20,10,30]);}
+  }
+  $('fli'+id).textContent=G.likedPosts.has(id)?'❤️':'🤍';$('fli'+id).style.color=G.likedPosts.has(id)?'var(--pk)':'#fff';$('flc'+id).textContent=p.likes;
+}
+let _flashLikeCombo=0,_flashLikeComboTimer=null;
+let _flashTimeInterval=null,_flashTimeMinutes=0;
+function startFlashTimeReward(){
+  clearInterval(_flashTimeInterval);_flashTimeMinutes=0;
+  _flashTimeInterval=setInterval(()=>{
+    if(!document.querySelector('#view-flash.active')){clearInterval(_flashTimeInterval);return;}
+    _flashTimeMinutes++;
+    // 1 coin every 30s, XP every 60s
+    gainCoins(1);
+    if(_flashTimeMinutes%2===0){gainXP(3,'social');}
+    if(_flashTimeMinutes===1)showT('⏱️ +1⚡ för att scrolla KARMA!','g');
+    else if(_flashTimeMinutes===4)showT('🔥 2 min scrollat — +4⚡ bonus!','y');
+    else if(_flashTimeMinutes===10)showT('🏆 5 min scrollat! +10⚡ DEDICATION!','pk');
+  },30000);
+}
 function doShare(id){const p=FLASH_POSTS.find(x=>x.id===id);if(!p)return;const txt='⚡ KARMA Flash av '+p.user+'\n'+p.cap;if(navigator.share)navigator.share({title:'KARMA',text:txt});else{navigator.clipboard?.writeText(txt);showT('📋 Kopierat!','g');}}
 function handleFlashUpload(input){const f=input.files[0];if(!f)return;const r=new FileReader();r.onload=e=>{G.flashImg=e.target.result;$('flashPrev').src=G.flashImg;$('flashPrev').style.display='block';$('flashPH').style.display='none';$('flashUpArea').style.borderColor='var(--pk)';};r.readAsDataURL(f);}
 function submitFlash(){
@@ -4337,7 +4349,7 @@ function nav(name){
   vibe(8);
   ({
     home:()=>{updatePetView();renderSocialPower();renderFriendCarePackages();renderCareNotifs();renderStreakMilestones();renderFriendLB();updatePetStatusRings();updatePetWeather();renderDailyChallenges();if(!_speechTimer)schedulePetSpeech();startKarmaPulse();const st=$('spinTeaserSub');if(st)st.textContent=G.lastSpin===new Date().toDateString()?'✅ Spinnat idag — kom tillbaka imorgon':'🎰 Gratis spin tillgängligt nu!';},
-    flash:renderFlashFeed,
+    flash:()=>{renderFlashFeed();startFlashTimeReward();},
     circles:renderCircles,
     social:()=>switchSocial('activity',document.querySelector('#socialTabs .tab')),
     uppdrag:renderUppdrag,
