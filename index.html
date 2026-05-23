@@ -97,7 +97,7 @@ html,body{height:100%;width:100%;overflow:hidden;background:var(--bg);font-famil
 textarea.inp{resize:none;min-height:68px;}
 .lbl{font-size:10px;font-weight:700;color:var(--t3);letter-spacing:.8px;text-transform:uppercase;margin-bottom:5px;display:block;}
 .sh{display:flex;align-items:center;justify-content:space-between;padding:12px 14px 7px;}
-.sh-t{font-size:11px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:.8px;}
+.sh-t{font-size:10px;font-weight:800;color:rgba(255,255,255,.35);text-transform:uppercase;letter-spacing:.9px;}
 .sh-a{font-size:12px;font-weight:700;color:var(--g);cursor:pointer;}
 .r2{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-bottom:10px;}
 .r2 .inp{margin-bottom:0;}
@@ -2121,32 +2121,35 @@ textarea.inp{resize:none;min-height:68px;}
       <button class="ld-close" onclick="closeLDrawer()">✕</button>
     </div>
     <div class="ld-body">
+      <div style="font-size:9px;font-weight:700;color:var(--t3);letter-spacing:.9px;padding:7px 10px 2px;text-transform:uppercase">NAVIGERA</div>
       <div class="ld-item" onclick="nav('home');closeLDrawer()"><div class="ld-ico ld-ico-g">🐾</div><div class="ld-lbl">Min Pet</div></div>
       <div class="ld-item" onclick="nav('flash');closeLDrawer()"><div class="ld-ico ld-ico-pk">⚡</div><div class="ld-lbl">Flash Feed</div></div>
       <div class="ld-item" onclick="nav('social');closeLDrawer()"><div class="ld-ico ld-ico-b">💬</div><div class="ld-lbl">Vänner & Chat</div></div>
       <div class="ld-item" onclick="nav('explore');closeLDrawer()"><div class="ld-ico ld-ico-p">🔍</div><div class="ld-lbl">Utforska</div></div>
-      <div class="ld-item" style="background:linear-gradient(135deg,rgba(57,255,20,.05),rgba(0,217,255,.03));border:1px solid rgba(57,255,20,.1)" onclick="nav('world');closeLDrawer()"><div class="ld-ico" style="background:linear-gradient(135deg,rgba(57,255,20,.18),rgba(0,217,255,.12))">🌍</div><div class="ld-lbl" style="color:var(--g)">KARMA WORLD</div></div>
-      <div class="ld-item" onclick="openPackShop();closeLDrawer()"><div class="ld-ico" style="background:linear-gradient(135deg,rgba(255,230,0,.2),rgba(255,159,10,.12))">🎁</div><div class="ld-lbl" style="color:var(--y)">Pack Shop</div></div>
-      <div class="ld-item" onclick="openTalentTree();closeLDrawer()"><div class="ld-ico" style="background:linear-gradient(135deg,rgba(57,255,20,.15),rgba(0,217,255,.08))">🌳</div><div class="ld-lbl" style="color:var(--g)">Talent Träd</div></div>
-      <div class="ld-item" onclick="openDiary();closeLDrawer()"><div class="ld-ico" style="background:linear-gradient(135deg,rgba(191,95,255,.15),rgba(255,51,119,.08))">📖</div><div class="ld-lbl">Pet Dagbok</div></div>
-      <div class="ld-item" onclick="openGacha();closeLDrawer()"><div class="ld-ico" style="background:linear-gradient(135deg,rgba(255,230,0,.18),rgba(191,95,255,.1))">🎰</div><div class="ld-lbl" style="color:var(--y)">Dagligt Spin</div></div>
-      <div class="ld-item" onclick="openRoomShop();closeLDrawer()"><div class="ld-ico" style="background:linear-gradient(135deg,rgba(0,217,255,.15),rgba(57,255,20,.08))">🏠</div><div class="ld-lbl" style="color:var(--b)">Ditt Rum</div></div>
-      <div class="ld-item" onclick="openSeasonalEvent();closeLDrawer()"><div class="ld-ico" style="background:linear-gradient(135deg,rgba(255,45,85,.15),rgba(191,95,255,.08))">🌸</div><div class="ld-lbl" style="color:var(--pk)">Sommar Event</div></div>
-      <div class="ld-item" onclick="openGiftModal();closeLDrawer()"><div class="ld-ico" style="background:linear-gradient(135deg,rgba(57,255,20,.15),rgba(0,217,255,.06))">🎁</div><div class="ld-lbl" style="color:var(--g)">Skicka Gåva</div></div>
-      <div class="ld-item" onclick="openFishingGame();closeLDrawer()"><div class="ld-ico ld-ico-b">🎣</div><div class="ld-lbl">Fiska</div></div>
-      <div class="ld-item" onclick="openModal('petShareModal');updateShareCard();closeLDrawer()"><div class="ld-ico ld-ico-g">📤</div><div class="ld-lbl">Dela min Pet</div></div>
+      <div class="ld-item" onclick="nav('world');closeLDrawer()"><div class="ld-ico" style="background:rgba(57,255,20,.14)">🌍</div><div class="ld-lbl" style="color:var(--g)">KARMA WORLD</div></div>
       <div class="ld-sep"></div>
+      <div style="font-size:9px;font-weight:700;color:var(--t3);letter-spacing:.9px;padding:7px 10px 2px;text-transform:uppercase">FEATURES</div>
+      <div class="ld-item" onclick="openPackShop();closeLDrawer()"><div class="ld-ico" style="background:rgba(255,230,0,.14)">🎁</div><div class="ld-lbl" style="color:var(--y)">Pack Shop</div></div>
+      <div class="ld-item" onclick="openTalentTree();closeLDrawer()"><div class="ld-ico" style="background:rgba(57,255,20,.14)">🌳</div><div class="ld-lbl">Talent Träd</div></div>
+      <div class="ld-item" onclick="openDiary();closeLDrawer()"><div class="ld-ico" style="background:rgba(191,95,255,.14)">📖</div><div class="ld-lbl">Pet Dagbok</div></div>
+      <div class="ld-item" onclick="openGacha();closeLDrawer()"><div class="ld-ico" style="background:rgba(255,230,0,.14)">🎰</div><div class="ld-lbl" style="color:var(--y)">Dagligt Spin</div></div>
+      <div class="ld-item" onclick="openRoomShop();closeLDrawer()"><div class="ld-ico" style="background:rgba(0,217,255,.14)">🏠</div><div class="ld-lbl" style="color:var(--b)">Ditt Rum</div></div>
+      <div class="ld-item" onclick="openSeasonalEvent();closeLDrawer()"><div class="ld-ico" style="background:rgba(255,45,85,.14)">🌸</div><div class="ld-lbl" style="color:var(--pk)">Sommar Event</div></div>
+      <div class="ld-item" onclick="openGiftModal();closeLDrawer()"><div class="ld-ico" style="background:rgba(57,255,20,.14)">🎁</div><div class="ld-lbl">Skicka Gåva</div></div>
+      <div class="ld-item" onclick="openFishingGame();closeLDrawer()"><div class="ld-ico ld-ico-b">🎣</div><div class="ld-lbl">Fiska</div></div>
+      <div class="ld-sep"></div>
+      <div style="font-size:9px;font-weight:700;color:var(--t3);letter-spacing:.9px;padding:7px 10px 2px;text-transform:uppercase">HANDLA</div>
       <div class="ld-item" onclick="nav('market');closeLDrawer()"><div class="ld-ico ld-ico-o">🛍️</div><div class="ld-lbl">Marketplace</div></div>
       <div class="ld-item" onclick="nav('shop');closeLDrawer()"><div class="ld-ico ld-ico-tl">👗</div><div class="ld-lbl">Pet Shop</div></div>
       <div class="ld-item" onclick="nav('uppdrag');closeLDrawer()"><div class="ld-ico ld-ico-y">💼</div><div class="ld-lbl">Uppdrag</div></div>
       <div class="ld-item" onclick="nav('map');closeLDrawer()"><div class="ld-ico ld-ico-tl">🗺️</div><div class="ld-lbl">Live Karta</div></div>
       <div class="ld-sep"></div>
+      <div style="font-size:9px;font-weight:700;color:var(--t3);letter-spacing:.9px;padding:7px 10px 2px;text-transform:uppercase">PROFIL</div>
       <div class="ld-item" onclick="nav('lb');closeLDrawer()"><div class="ld-ico ld-ico-y">🏆</div><div class="ld-lbl">Leaderboard</div></div>
       <div class="ld-item" onclick="nav('profile');renderBadges();closeLDrawer()"><div class="ld-ico ld-ico-p">🎖️</div><div class="ld-lbl">Achievements</div></div>
-      <div class="ld-item" style="background:linear-gradient(135deg,rgba(255,230,0,.06),rgba(255,159,10,.04));border:1px solid rgba(255,230,0,.12)" onclick="openModal('premiumModal');closeLDrawer()"><div class="ld-ico" style="background:linear-gradient(135deg,rgba(255,230,0,.2),rgba(255,159,10,.15))">👑</div><div class="ld-lbl" style="color:var(--y)">KARMA PRO</div></div>
-      <div class="ld-sep"></div>
       <div class="ld-item" onclick="nav('profile');closeLDrawer()"><div class="ld-ico ld-ico-tl">👤</div><div class="ld-lbl">Profil</div></div>
-      <div class="ld-item" onclick="nav('launch');closeLDrawer()"><div class="ld-ico ld-ico-p">🚀</div><div class="ld-lbl">Launch Plan</div></div>
+      <div class="ld-item" style="background:linear-gradient(135deg,rgba(255,230,0,.06),rgba(255,159,10,.04));border:1px solid rgba(255,230,0,.12)" onclick="openModal('premiumModal');closeLDrawer()"><div class="ld-ico" style="background:rgba(255,230,0,.18)">👑</div><div class="ld-lbl" style="color:var(--y)">KARMA PRO</div></div>
+      <div class="ld-item" onclick="openModal('petShareModal');updateShareCard();closeLDrawer()"><div class="ld-ico ld-ico-g">📤</div><div class="ld-lbl">Dela min Pet</div></div>
     </div>
     <div class="ld-foot">
       <div class="ld-streak-row">
