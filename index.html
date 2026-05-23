@@ -49,7 +49,7 @@ html,body{height:100%;width:100%;overflow:hidden;background:var(--bg);font-famil
 .ddr-i{font-size:15px;width:20px;text-align:center;}
 .dd-bdg{margin-left:auto;background:var(--r);color:#fff;font-size:9px;font-weight:900;padding:2px 5px;border-radius:4px;}
 .main{flex:1;overflow:hidden;position:relative;}
-.view{position:absolute;inset:0;overflow-y:auto;overflow-x:hidden;display:none;flex-direction:column;scrollbar-width:none;background:var(--bg);}
+.view{position:absolute;inset:0;overflow-y:auto;overflow-x:hidden;display:none;flex-direction:column;scrollbar-width:none;background:var(--bg);scroll-behavior:smooth;}
 .view::-webkit-scrollbar{display:none;}
 .view.active{display:flex;}
 .vend{height:76px;flex-shrink:0;}
@@ -1573,7 +1573,7 @@ textarea.inp{resize:none;min-height:68px;}
         </div>
       </div>
       <!-- XP LEVEL PROGRESS BAR -->
-      <div style="margin:0 14px 12px;padding:12px 14px;background:rgba(57,255,20,.06);border:1.5px solid rgba(57,255,20,.2);border-radius:18px">
+      <div id="sec-xp" style="margin:0 14px 12px;padding:12px 14px;background:rgba(57,255,20,.06);border:1.5px solid rgba(57,255,20,.2);border-radius:18px">
         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
           <div style="font-size:11px;font-weight:900;color:var(--g);font-family:var(--mono)" id="xpBarLabel">LV1 PROGRESS</div>
           <div style="font-size:10px;font-weight:700;color:var(--t3);font-family:var(--mono)" id="xpBarNums">0 / 150 XP</div>
@@ -1589,7 +1589,7 @@ textarea.inp{resize:none;min-height:68px;}
         <div style="font-size:10px;color:var(--t2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis" id="karmaPulse">ella_s tränade sin 🐉 Eldraken · +15 XP</div>
       </div>
       <!-- CARE BUTTONS -->
-      <div class="care-section-lbl">🎮 SKÖT DIN PET</div>
+      <div class="care-section-lbl" id="sec-care">🎮 SKÖT DIN PET</div>
       <div class="care-hero">
         <div class="chb chb-feed" onclick="pcFeed()"><span class="chb-ico">🍖</span><span class="chb-lbl">MATA</span><span class="chb-val">+HUNGER</span></div>
         <div class="chb chb-train" onclick="pcTrain()"><span class="chb-ico">🏋️</span><span class="chb-lbl">TRÄNA</span><span class="chb-val">+15XP</span></div>
@@ -2146,7 +2146,7 @@ textarea.inp{resize:none;min-height:68px;}
       <div class="ld-sep"></div>
       <div style="font-size:9px;font-weight:700;color:var(--t3);letter-spacing:.9px;padding:7px 10px 2px;text-transform:uppercase">PROFIL</div>
       <div class="ld-item" onclick="nav('lb');closeLDrawer()"><div class="ld-ico ld-ico-y">🏆</div><div class="ld-lbl">Leaderboard</div></div>
-      <div class="ld-item" onclick="nav('profile');renderBadges();closeLDrawer()"><div class="ld-ico ld-ico-p">🎖️</div><div class="ld-lbl">Achievements</div></div>
+      <div class="ld-item" onclick="navTo('profile','badgeGrid');closeLDrawer()"><div class="ld-ico ld-ico-p">🎖️</div><div class="ld-lbl">Achievements</div></div>
       <div class="ld-item" onclick="nav('profile');closeLDrawer()"><div class="ld-ico ld-ico-tl">👤</div><div class="ld-lbl">Profil</div></div>
       <div class="ld-item" style="background:linear-gradient(135deg,rgba(255,230,0,.06),rgba(255,159,10,.04));border:1px solid rgba(255,230,0,.12)" onclick="openModal('premiumModal');closeLDrawer()"><div class="ld-ico" style="background:rgba(255,230,0,.18)">👑</div><div class="ld-lbl" style="color:var(--y)">KARMA PRO</div></div>
       <div class="ld-item" onclick="openModal('petShareModal');updateShareCard();closeLDrawer()"><div class="ld-ico ld-ico-g">📤</div><div class="ld-lbl">Dela min Pet</div></div>
@@ -4321,6 +4321,23 @@ function nav(name){
     world:()=>{renderKarmaWorld();initKarmaWorld();},
     launch:()=>{}
   }[name]||(() => {}))();
+}
+function navTo(tab,anchor){
+  nav(tab);
+  if(!anchor)return;
+  setTimeout(()=>{
+    const view=$('view-'+tab);
+    const target=$(anchor);
+    if(!view||!target)return;
+    const viewRect=view.getBoundingClientRect();
+    const targetRect=target.getBoundingClientRect();
+    const offset=targetRect.top-viewRect.top+view.scrollTop-12;
+    view.scrollTo({top:Math.max(0,offset),behavior:'smooth'});
+    const prevBox=target.style.boxShadow;
+    target.style.transition='box-shadow .6s ease-out';
+    target.style.boxShadow='0 0 0 2px var(--g),0 0 28px rgba(57,255,20,.4)';
+    setTimeout(()=>{target.style.boxShadow=prevBox||'';},900);
+  },120);
 }
 document.querySelectorAll('.nb[data-v]').forEach(b=>b.addEventListener('click',()=>nav(b.dataset.v)));
 $('flashBtn').addEventListener('click',()=>openModal('flashModal'));
