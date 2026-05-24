@@ -162,7 +162,7 @@ textarea.inp{resize:none;min-height:68px;}
 .ob-n{width:28px;height:28px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:900;flex-shrink:0;}
 
 /* PET HOME — TAMAGOTCHI HERO STYLE */
-.pet-hero{margin:0;background:linear-gradient(180deg,#07040f 0%,#030d07 50%,#040a09 100%);border:none;border-bottom:1px solid var(--line);padding:8px 0 6px;position:relative;overflow:hidden;}
+.pet-hero{margin:0;background:linear-gradient(180deg,#07040f 0%,#030d07 50%,#040a09 100%);border:none;border-bottom:1px solid var(--line);padding:8px 0 6px;position:relative;overflow:hidden;min-height:108px;}
 .pet-hero::before{content:'';position:absolute;width:380px;height:380px;border-radius:50%;background:radial-gradient(circle,rgba(0,232,122,.08) 0%,transparent 65%);top:-120px;left:50%;transform:translateX(-50%);pointer-events:none;}
 .pet-hero::after{content:'';position:absolute;bottom:72px;left:10%;right:10%;height:1px;background:transparent;pointer-events:none;}
 .ph-row{display:flex;flex-direction:column;align-items:center;margin-bottom:0;}
@@ -1553,7 +1553,7 @@ textarea.inp{resize:none;min-height:68px;}
       <!-- COMPACT PET HERO — horizontal layout -->
       <div class="pet-hero" id="sec-pet" style="padding:8px 12px 8px;border-bottom:1px solid rgba(57,255,20,.15);background:linear-gradient(180deg,#070b14 0%,#060d10 100%)">
         <div class="pet-hero-bg"></div>
-        <div class="pet-room-layer" id="petRoomLayer" style="opacity:.22;pointer-events:none">
+        <div class="pet-room-layer" id="petRoomLayer" style="opacity:.45;pointer-events:none">
           <div class="prl-sky" id="prlSky"></div>
           <div class="prl-floor"><div class="prl-floor-glow"></div></div>
           <div class="prl-weather" id="petWeather"></div>
@@ -2078,32 +2078,80 @@ textarea.inp{resize:none;min-height:68px;}
         </div>
       </div>
       <!-- Trending pets section -->
-      <div class="sh"><div class="sh-t">🔥 TRENDING PETS</div></div>
-      <div style="display:flex;gap:10px;overflow-x:auto;padding:0 14px 14px;scrollbar-width:none">
-        <div style="flex-shrink:0;width:80px;text-align:center;cursor:pointer" onclick="showT('💬 Lägg till vän!','pk')">
-          <div style="width:72px;height:72px;border-radius:22px;background:linear-gradient(135deg,rgba(57,255,20,.15),rgba(0,217,255,.08));border:2px solid rgba(57,255,20,.35);display:flex;align-items:center;justify-content:center;font-size:38px;margin-bottom:5px">🐉</div>
-          <div style="font-size:10px;font-weight:800">ella_s</div>
-          <div style="font-size:9px;color:var(--g);font-family:var(--mono)">LV9</div>
+      <div class="sh"><div class="sh-t">🔥 TRENDING PETS</div><div class="sh-a" onclick="showT('🏆 Topplista uppdateras varje timme!','pk')" style="color:var(--pk);cursor:pointer">LIVE TOP 100 →</div></div>
+      <div style="display:flex;gap:12px;overflow-x:auto;padding:0 14px 16px;scrollbar-width:none;-webkit-overflow-scrolling:touch">
+        <!-- #1 Trending -->
+        <div style="flex-shrink:0;width:130px;cursor:pointer" onclick="showT('🐉 Eldraken · 12.4K KARMA · Sänd vänförfrågan!','pk')">
+          <div style="width:130px;height:140px;border-radius:22px;background:linear-gradient(135deg,rgba(57,255,20,.18),rgba(0,217,255,.1));border:2px solid rgba(57,255,20,.5);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;position:relative;overflow:hidden">
+            <div style="position:absolute;inset:0;background:radial-gradient(ellipse at 50% 80%,rgba(57,255,20,.12),transparent 65%)"></div>
+            <div style="position:absolute;top:8px;left:8px;background:#FFD700;color:#000;font-size:9px;font-weight:900;padding:2px 7px;border-radius:7px;font-family:var(--mono);letter-spacing:.5px">#1</div>
+            <div style="position:absolute;top:8px;right:8px;font-size:12px;filter:drop-shadow(0 0 4px #ff6600)">🔥</div>
+            <div style="font-size:54px;line-height:1;filter:drop-shadow(0 0 16px rgba(57,255,20,.8));position:relative;z-index:1;animation:pf 3s ease-in-out infinite">🐉</div>
+            <div style="background:rgba(57,255,20,.18);border:1px solid rgba(57,255,20,.4);border-radius:8px;padding:2px 9px;font-size:9px;font-weight:900;color:var(--g);font-family:var(--mono);position:relative;z-index:1">LV 9</div>
+          </div>
+          <div style="margin-top:7px;padding:0 2px">
+            <div style="font-size:12px;font-weight:900;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">Eldraken</div>
+            <div style="font-size:10px;color:var(--t3);margin-top:1px">@ella_s</div>
+            <div style="font-size:10px;color:var(--pk);font-family:var(--mono);font-weight:900;margin-top:3px">12.4K 💜</div>
+          </div>
         </div>
-        <div style="flex-shrink:0;width:80px;text-align:center;cursor:pointer" onclick="showT('💬 Lägg till vän!','pk')">
-          <div style="width:72px;height:72px;border-radius:22px;background:linear-gradient(135deg,rgba(255,45,85,.15),rgba(191,95,255,.08));border:2px solid rgba(255,45,85,.35);display:flex;align-items:center;justify-content:center;font-size:38px;margin-bottom:5px">🐺</div>
-          <div style="font-size:10px;font-weight:800">maxruns</div>
-          <div style="font-size:9px;color:var(--pk);font-family:var(--mono)">LV11</div>
+        <!-- #2 -->
+        <div style="flex-shrink:0;width:130px;cursor:pointer" onclick="showT('🐺 Nightwolf · 9.8K KARMA · Sänd vänförfrågan!','pk')">
+          <div style="width:130px;height:140px;border-radius:22px;background:linear-gradient(135deg,rgba(191,95,255,.18),rgba(255,45,85,.08));border:2px solid rgba(191,95,255,.45);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;position:relative;overflow:hidden">
+            <div style="position:absolute;inset:0;background:radial-gradient(ellipse at 50% 80%,rgba(191,95,255,.12),transparent 65%)"></div>
+            <div style="position:absolute;top:8px;left:8px;background:rgba(255,255,255,.15);color:#fff;font-size:9px;font-weight:900;padding:2px 7px;border-radius:7px;font-family:var(--mono)">#2</div>
+            <div style="position:absolute;top:8px;right:8px;font-size:12px">🔥</div>
+            <div style="font-size:54px;line-height:1;filter:drop-shadow(0 0 16px rgba(191,95,255,.8));position:relative;z-index:1;animation:pf 3.4s ease-in-out infinite .5s">🐺</div>
+            <div style="background:rgba(191,95,255,.18);border:1px solid rgba(191,95,255,.4);border-radius:8px;padding:2px 9px;font-size:9px;font-weight:900;color:var(--p);font-family:var(--mono);position:relative;z-index:1">LV 11</div>
+          </div>
+          <div style="margin-top:7px;padding:0 2px">
+            <div style="font-size:12px;font-weight:900;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">Nightwolf</div>
+            <div style="font-size:10px;color:var(--t3);margin-top:1px">@maxruns</div>
+            <div style="font-size:10px;color:var(--pk);font-family:var(--mono);font-weight:900;margin-top:3px">9.8K 💜</div>
+          </div>
         </div>
-        <div style="flex-shrink:0;width:80px;text-align:center;cursor:pointer" onclick="showT('💬 Lägg till vän!','pk')">
-          <div style="width:72px;height:72px;border-radius:22px;background:linear-gradient(135deg,rgba(191,95,255,.15),rgba(0,217,255,.08));border:2px solid rgba(191,95,255,.35);display:flex;align-items:center;justify-content:center;font-size:38px;margin-bottom:5px">🦋</div>
-          <div style="font-size:10px;font-weight:800">sagas_w</div>
-          <div style="font-size:9px;color:var(--p);font-family:var(--mono)">LV7</div>
+        <!-- #3 -->
+        <div style="flex-shrink:0;width:130px;cursor:pointer" onclick="showT('🦋 Fjärilsqueen · 7.2K KARMA · Sänd vänförfrågan!','pk')">
+          <div style="width:130px;height:140px;border-radius:22px;background:linear-gradient(135deg,rgba(0,217,255,.18),rgba(191,95,255,.08));border:2px solid rgba(0,217,255,.4);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;position:relative;overflow:hidden">
+            <div style="position:absolute;inset:0;background:radial-gradient(ellipse at 50% 80%,rgba(0,217,255,.12),transparent 65%)"></div>
+            <div style="position:absolute;top:8px;left:8px;background:rgba(255,255,255,.15);color:#fff;font-size:9px;font-weight:900;padding:2px 7px;border-radius:7px;font-family:var(--mono)">#3</div>
+            <div style="position:absolute;top:8px;right:8px;font-size:12px">⭐</div>
+            <div style="font-size:54px;line-height:1;filter:drop-shadow(0 0 16px rgba(0,217,255,.8));position:relative;z-index:1;animation:pf 2.8s ease-in-out infinite 1s">🦋</div>
+            <div style="background:rgba(0,217,255,.18);border:1px solid rgba(0,217,255,.4);border-radius:8px;padding:2px 9px;font-size:9px;font-weight:900;color:var(--b);font-family:var(--mono);position:relative;z-index:1">LV 7</div>
+          </div>
+          <div style="margin-top:7px;padding:0 2px">
+            <div style="font-size:12px;font-weight:900;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">Fjärilsqueen</div>
+            <div style="font-size:10px;color:var(--t3);margin-top:1px">@sagas_w</div>
+            <div style="font-size:10px;color:var(--pk);font-family:var(--mono);font-weight:900;margin-top:3px">7.2K 💜</div>
+          </div>
         </div>
-        <div style="flex-shrink:0;width:80px;text-align:center;cursor:pointer" onclick="showT('💬 Lägg till vän!','pk')">
-          <div style="width:72px;height:72px;border-radius:22px;background:linear-gradient(135deg,rgba(255,159,10,.15),rgba(255,45,85,.08));border:2px solid rgba(255,159,10,.35);display:flex;align-items:center;justify-content:center;font-size:38px;margin-bottom:5px">🦊</div>
-          <div style="font-size:10px;font-weight:800">carlos_l</div>
-          <div style="font-size:9px;color:var(--o);font-family:var(--mono)">LV5</div>
+        <!-- #4 -->
+        <div style="flex-shrink:0;width:130px;cursor:pointer" onclick="showT('🦊 Räven · 5.5K KARMA · Sänd vänförfrågan!','pk')">
+          <div style="width:130px;height:140px;border-radius:22px;background:linear-gradient(135deg,rgba(255,159,10,.18),rgba(255,45,85,.08));border:2px solid rgba(255,159,10,.4);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;position:relative;overflow:hidden">
+            <div style="position:absolute;inset:0;background:radial-gradient(ellipse at 50% 80%,rgba(255,159,10,.12),transparent 65%)"></div>
+            <div style="position:absolute;top:8px;left:8px;background:rgba(255,255,255,.15);color:#fff;font-size:9px;font-weight:900;padding:2px 7px;border-radius:7px;font-family:var(--mono)">#4</div>
+            <div style="position:absolute;top:8px;right:8px;font-size:12px">💫</div>
+            <div style="font-size:54px;line-height:1;filter:drop-shadow(0 0 16px rgba(255,159,10,.8));position:relative;z-index:1;animation:pf 3.2s ease-in-out infinite .3s">🦊</div>
+            <div style="background:rgba(255,159,10,.18);border:1px solid rgba(255,159,10,.4);border-radius:8px;padding:2px 9px;font-size:9px;font-weight:900;color:var(--o);font-family:var(--mono);position:relative;z-index:1">LV 5</div>
+          </div>
+          <div style="margin-top:7px;padding:0 2px">
+            <div style="font-size:12px;font-weight:900;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">Räven</div>
+            <div style="font-size:10px;color:var(--t3);margin-top:1px">@carlos_l</div>
+            <div style="font-size:10px;color:var(--pk);font-family:var(--mono);font-weight:900;margin-top:3px">5.5K 💜</div>
+          </div>
         </div>
-        <div style="flex-shrink:0;width:80px;text-align:center;cursor:pointer" onclick="nav('home')">
-          <div style="width:72px;height:72px;border-radius:22px;background:linear-gradient(135deg,rgba(0,232,122,.2),rgba(0,232,122,.05));border:2px dashed rgba(57,255,20,.5);display:flex;align-items:center;justify-content:center;font-size:24px;margin-bottom:5px;opacity:.6">+</div>
-          <div style="font-size:10px;font-weight:800;color:var(--t3)">Din pet</div>
-          <div style="font-size:9px;color:var(--g);font-family:var(--mono)" id="explorePetLv">LV1</div>
+        <!-- User's pet card -->
+        <div style="flex-shrink:0;width:130px;cursor:pointer" onclick="nav('home')">
+          <div style="width:130px;height:140px;border-radius:22px;background:linear-gradient(135deg,rgba(57,255,20,.12),rgba(57,255,20,.04));border:2px dashed rgba(57,255,20,.5);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;position:relative">
+            <div style="font-size:38px" id="explorePetEmoji">🐾</div>
+            <div style="font-size:10px;font-weight:900;color:var(--g)">DIN PET</div>
+            <div style="font-size:9px;color:var(--t3)">Gå hem för att spela!</div>
+          </div>
+          <div style="margin-top:7px;padding:0 2px">
+            <div style="font-size:12px;font-weight:900" id="explorePetName">Din pet</div>
+            <div style="font-size:10px;color:var(--t3);margin-top:1px">@du</div>
+            <div style="font-size:9px;color:var(--g);font-family:var(--mono);font-weight:900;margin-top:3px" id="explorePetLv">LV 1</div>
+          </div>
         </div>
       </div>
       <!-- QUICK GAMES -->
@@ -2492,7 +2540,23 @@ textarea.inp{resize:none;min-height:68px;}
     <div class="pack-title">🌳 TALENT TRÄD</div>
     <div class="talent-pts" id="talentPts">0 TP</div>
   </div>
-  <div class="talent-scroll" id="talentScroll"></div>
+  <div style="position:absolute;top:10px;left:50%;transform:translateX(-50%);font-size:9px;color:rgba(255,255,255,.28);pointer-events:none;text-align:center;z-index:2">Nyp för zoom · Dra för att flytta · Tryck på nod</div>
+  <div id="ttLegend" style="position:absolute;top:52px;right:10px;background:rgba(0,0,0,.55);border:1px solid rgba(255,255,255,.1);border-radius:10px;padding:5px 9px;font-size:8px;color:rgba(255,255,255,.45);z-index:2;pointer-events:none;line-height:1.7">
+    ◼ minor &nbsp;● notable<br>○ keystone &nbsp;◆ mastery
+  </div>
+  <canvas id="talentCanvas" style="position:absolute;top:46px;left:0;right:0;bottom:0;width:100%;height:calc(100% - 46px);touch-action:none;cursor:grab;display:block"></canvas>
+  <div id="ttNodePanel" style="position:absolute;bottom:0;left:0;right:0;background:rgba(8,10,18,.97);border-top:1.5px solid rgba(255,255,255,.12);padding:14px 14px 20px;transform:translateY(100%);transition:transform .22s cubic-bezier(.4,0,.2,1);z-index:10;border-radius:24px 24px 0 0">
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
+      <div id="ttNodeEm" style="font-size:34px;flex-shrink:0">⚡</div>
+      <div style="flex:1;min-width:0">
+        <div id="ttNodeNm" style="font-size:14px;font-weight:900;line-height:1.2">–</div>
+        <div id="ttNodeDesc" style="font-size:10px;color:var(--t3);margin-top:3px;line-height:1.4">–</div>
+        <div id="ttNodeReq" style="font-size:9px;color:rgba(191,95,255,.6);margin-top:2px"></div>
+      </div>
+      <div id="ttNodeCost" style="font-size:13px;font-weight:900;font-family:var(--mono);flex-shrink:0"></div>
+    </div>
+    <button id="ttLearnBtn" onclick="ttLearnSelected()" style="width:100%;padding:11px;border-radius:14px;font-size:14px;font-weight:900;cursor:pointer;font-family:var(--ff);border:none;transition:all .15s">⚡ LÄR DIG</button>
+  </div>
 </div>
 <!-- PACK SYSTEM -->
 <div class="pack-modal" id="packModal">
@@ -2654,6 +2718,12 @@ textarea.inp{resize:none;min-height:68px;}
   <div class="fish-controls">
     <div class="fish-status" id="fishStatus">Kasta ut metspöet för att börja!</div>
     <div class="fish-inventory" id="fishInventory"></div>
+    <!-- Tension meter (fills when spam-tapping during wait) -->
+    <div id="fishTensionWrap" style="display:none;width:100%;margin-bottom:6px">
+      <div style="display:flex;justify-content:space-between;font-size:9px;font-family:var(--mono);font-weight:900;margin-bottom:3px"><span style="color:var(--b)">🌊 SPÄNNING</span><span id="fishTensionPct" style="color:var(--o)">0%</span></div>
+      <div style="height:8px;background:rgba(255,255,255,.07);border-radius:100px;overflow:hidden"><div id="fishTensionFill" style="height:100%;width:0%;background:linear-gradient(90deg,#00D9FF,#FFE600,#FF3B30);border-radius:100px;transition:width .12s"></div></div>
+    </div>
+    <!-- Catch timer bar (shows during bite phase) -->
     <div style="width:100%;height:5px;background:rgba(255,255,255,.08);border-radius:100px;overflow:hidden;margin-bottom:8px"><div id="fishTimerBar" style="height:100%;width:0%;background:linear-gradient(90deg,#FFE600,#FF3B30);border-radius:100px;transition:width 2s linear"></div></div>
     <button class="fish-cast-btn idle" id="fishCastBtn" onclick="fishCast()">🎣 KASTA METSPÖ</button>
     <div style="display:flex;justify-content:space-between;align-items:center;margin-top:5px">
@@ -4449,8 +4519,9 @@ function fishCast(){
   const waterY=sh*depthPct;
   line.style.height=(waterY+40)+'px';line.style.display='block';
   bob.style.display='block';bob.style.top=(waterY+30)+'px';bob.style.left='calc(50% - 7px)';
-  btn.className='fish-cast-btn casting';btn.textContent='🎣 VÄNTAR...';
-  $('fishStatus').textContent='Väntar på napp... 👀';
+  btn.className='fish-cast-btn casting';btn.textContent='🎣 VÄNTAR... (TRYCK PÅ VATTNET!)';
+  $('fishStatus').textContent='Tryck på vattnet för att bygga spänning! 🌊';
+  _fishTension=0;const tw=$('fishTensionWrap');if(tw)tw.style.display='block';const tf=$('fishTensionFill');if(tf)tf.style.width='0%';const tp=$('fishTensionPct');if(tp)tp.textContent='0%';
   // Wait time based on rod
   const wth=FISH_WEATHERS[_fishState._weather]||FISH_WEATHERS[0];
   const baseWait=rod.castSpeed*1000;const waitTime=baseWait*0.6+Math.random()*baseWait*1.4;
@@ -4458,6 +4529,7 @@ function fishCast(){
 }
 function triggerFishBite(){
   _fishState.biting=true;_fishState.catchWindow=true;_fishState._biteStartTime=Date.now();
+  _fishTension=0;clearTimeout(_fishTensionTimer);const tw=$('fishTensionWrap');if(tw)tw.style.display='none';
   const bob=$('fishBob');if(bob){bob.classList.add('nibble');bob.style.boxShadow='0 0 28px rgba(255,200,0,1)';}
   const btn2=$('fishCastBtn');if(btn2){btn2.className='fish-cast-btn biting';btn2.textContent='🐟 NAPP! TRYCK NU!';btn2.onclick=()=>catchFish();}
   $('fishStatus').textContent='⚡ NAPP! TRYCK SNABBT! ⚡';
@@ -4497,6 +4569,32 @@ function triggerFishBite(){
 function onFishSceneTap(e){
   if(_fishState.biting&&_fishState.catchWindow){catchFish();return;}
   if(!_fishState.casting){fishCast();return;}
+  // Spam-tap builds tension during wait
+  if(_fishState.casting&&!_fishState.biting){_fishAddTension(12);}
+}
+let _fishTension=0,_fishTensionTimer=null;
+function _fishAddTension(amt){
+  _fishTension=Math.min(100,(_fishTension||0)+amt);
+  const wrap=$('fishTensionWrap');const fill=$('fishTensionFill');const pct=$('fishTensionPct');
+  if(wrap)wrap.style.display='block';
+  if(fill)fill.style.width=_fishTension+'%';
+  if(pct)pct.textContent=Math.round(_fishTension)+'%';
+  clearTimeout(_fishTensionTimer);
+  if(_fishTension>=100){
+    _fishTension=0;
+    showT('🌊 MAX SPÄNNING! Napp omedelbart!','b');
+    vibe([20,10,40]);
+    clearTimeout(_fishState.biteTimer);
+    _fishState.biteTimer=setTimeout(triggerFishBite,200);
+    if(fill)fill.style.width='0%';if(pct)pct.textContent='0%';if(wrap)wrap.style.display='none';
+    return;
+  }
+  // Drain tension slowly
+  _fishTensionTimer=setTimeout(()=>{
+    _fishTension=Math.max(0,_fishTension-8);
+    if(fill)fill.style.width=_fishTension+'%';if(pct)pct.textContent=Math.round(_fishTension)+'%';
+    if(_fishTension<=0&&wrap)wrap.style.display='none';
+  },1200);
 }
 function onFishTap(fishEl,ft){
   if(_fishState.biting&&_fishState.catchWindow){catchFish();return;}
@@ -4571,6 +4669,7 @@ function catchFish(){
 }
 function resetFishState(msg){
   _fishState.casting=false;_fishState.biting=false;_fishState.catchWindow=false;
+  _fishTension=0;clearTimeout(_fishTensionTimer);const tw=$('fishTensionWrap');if(tw)tw.style.display='none';
   const line=$('fishLine');const bob=$('fishBob');const prompt=$('fishTapPrompt');
   if(line)line.style.height='0';
   if(bob){bob.style.display='none';bob.classList.remove('nibble');bob.style.boxShadow='';}
@@ -4771,7 +4870,7 @@ function nav(name){
     map:()=>{setTimeout(()=>{if(!G.mapInit)locateMe();},200);renderNearby();},
     lb:()=>renderLB2('level',document.querySelector('#lbTabs .tab')),
     profile:()=>{updateHUD();renderHistList();renderBadges();const pc=$('view-profile .prof-cover');if(pc){const wc={cosmic:'linear-gradient(135deg,#0d0520 0%,#07040f 50%,#0a0520 100%)',nature:'linear-gradient(135deg,#041a04 0%,#030d03 50%,#071207 100%)',city:'linear-gradient(135deg,#04060f 0%,#030415 50%,#040612 100%)',pixel:'linear-gradient(135deg,#0a0800 0%,#0a0800 50%,#060500 100%)'};pc.style.background=wc[G.world||'cosmic']||wc.cosmic;}},
-    explore:()=>{const el=$('explorePetLv');if(el)el.textContent='LV'+G.level;renderWeeklyChallenges();renderCraftGrid();const tp=$('talentTeaserPts');if(tp)tp.textContent=(G.talentPoints||0)+' TP';const ts=$('talentTeaserSub');if(ts)ts.textContent=(G.talents&&G.talents.length>0?G.talents.length+' av 9 förmågor inlärda':'Tjäna Talent Points genom att levla upp');},
+    explore:()=>{const el=$('explorePetLv');if(el)el.textContent='LV '+G.level;const en=$('explorePetEmoji');if(en)en.textContent=G.petEmoji||'🐾';const enm=$('explorePetName');if(enm)enm.textContent=G.petName||'Din pet';renderWeeklyChallenges();renderCraftGrid();const tp=$('talentTeaserPts');if(tp)tp.textContent=(G.talentPoints||0)+' TP';const ts=$('talentTeaserSub');if(ts)ts.textContent=(G.talents&&G.talents.length>0?G.talents.length+' av 147 förmågor inlärda':'Tjäna Talent Points genom att levla upp');},
     market:()=>{renderMkt();},
     world:()=>{renderKarmaWorld();initKarmaWorld();},
     launch:()=>{}
@@ -5954,140 +6053,21 @@ const TALENT_DEFS=[
   {id:'x20',branch:'nexus',em:'🌌',nm:'UNIVERSE',desc:'Alla branches maxade: oändlig passive XP.',cost:6,req:'m6a',req2:'kr7a',type:'mastery',legendary:true,ef:()=>{G._talentX20=true;gainXP(200,'action');gainCoins(500);addWorldPoints(200);spawnParticles(window.innerWidth/2,window.innerHeight*.3,'stars');spawnParticles(window.innerWidth*.2,window.innerHeight*.5,'stars');spawnParticles(window.innerWidth*.8,window.innerHeight*.5,'stars');showT('🌌 UNIVERSE UNLOCKED!!! ALLT ÄR DITT!!!','y');vibe([100,50,200,50,300,50,400,50,300]);}},
   {id:'x21',branch:'nexus',em:'☀️',nm:'SOLAR GOD',desc:'Du är solen. Alla actions ×3. Total dominans.',cost:6,req:'k9',req2:'s9',type:'mastery',legendary:true,ef:()=>{G._talentX21=true;gainXP(300,'action');gainCoins(1000);addWorldPoints(300);G.talentPoints=(G.talentPoints||0)+10;spawnParticles(window.innerWidth/2,window.innerHeight*.3,'stars');spawnParticles(window.innerWidth*.3,window.innerHeight*.4,'stars');spawnParticles(window.innerWidth*.7,window.innerHeight*.4,'stars');spawnParticles(window.innerWidth/2,window.innerHeight*.6,'stars');showT('☀️ SOLAR GOD!!! +1000 COINS +300 XP +10 TP!!!','y');vibe([200,50,300,50,400,50,300,50,200,50,100]);}},
 ];
-function openTalentTree(){const tm=$('talentModal');if(!tm)return;tm.classList.add('open');renderTalentTree();}
-function closeTalentTree(){const tm=$('talentModal');if(tm)tm.classList.remove('open');}
-function renderTalentTree(){
-  const scroll=$('talentScroll');if(!scroll)return;
+function openTalentTree(){
+  const tm=$('talentModal');if(!tm)return;
+  tm.classList.add('open');
+  _ttPC=null;_ttSel=null;
   const TP_EL=$('talentPts');if(TP_EL)TP_EL.textContent=(G.talentPoints||0)+' TP';
-  const OW=G.talents||[];
-  const ALL=TALENT_DEFS;
-  const nexus=ALL.filter(t=>t.branch==='nexus');
-  const totalOwned=OW.length;const totalAll=ALL.length;
-  const totalPct=Math.round(totalOwned/totalAll*100);
-  // Grid constants
-  const CELL=64,NH=62,CH=26;
-  const PI={a:0,b:1,c:2};
-
-  function nodeCard(n,brCol){
-    const isO=OW.includes(n.id);
-    const rMet=(!n.req||OW.includes(n.req))&&(!n.req2||OW.includes(n.req2));
-    const isA=!isO&&rMet;const isL=!isO&&!rMet;
-    const onClick=isO?`showT('✅ Redan lärd!','y')`:(isL?`showT('🔒 Lär föregående förmågor!','r')`:`learnTalent('${n.id}')`);
-    const szM={minor:42,notable:48,keystone:54,mastery:56};const sz=szM[n.type]||46;
-    const brM={minor:'10px',notable:'14px',keystone:'50%',mastery:'10px'};const br=brM[n.type]||'12px';
-    const isDia=n.type==='mastery';
-    const bg=isO?brCol+'2A':isA?'rgba(255,255,255,.07)':'rgba(0,0,0,.5)';
-    const bd=isO?brCol:isA?brCol+'88':'rgba(255,255,255,.12)';
-    const glow=isO?`box-shadow:0 0 16px ${brCol}44,inset 0 0 6px ${brCol}11;`:'';
-    const dash=n.legendary?'border-style:dashed;':'';
-    const rot=isDia?'transform:rotate(45deg);':'';const irot=isDia?'transform:rotate(-45deg);':'';
-    const emSz=n.type==='mastery'?17:n.type==='keystone'?16:n.type==='notable'?15:13;
-    const nmSz=sz<=44?5.5:6;
-    return`<div onclick="${onClick}" style="width:${sz}px;height:${sz}px;border-radius:${br};border:2px solid ${bd};background:${bg};${glow}${dash}${rot}display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;cursor:pointer;position:relative;transition:transform .1s,box-shadow .1s;-webkit-tap-highlight-color:transparent" title="${n.nm}: ${n.desc}">
-      <div style="${irot}display:flex;flex-direction:column;align-items:center;gap:1px">
-        <div style="font-size:${emSz}px;line-height:1">${n.em}</div>
-        <div style="font-size:${nmSz}px;font-weight:900;color:${isO?brCol:'var(--t2)'};text-align:center;line-height:1.1;max-width:${sz-6}px;word-break:break-word">${n.nm.length>10?n.nm.slice(0,9)+'…':n.nm}</div>
-      </div>
-      <div style="position:absolute;bottom:-9px;left:50%;${isDia?'transform:translateX(-50%) rotate(-45deg)':'transform:translateX(-50%)'};background:${isO?brCol:'rgba(15,15,15,.95)'};color:${isO?'#000':'var(--t3)'};font-size:6px;font-weight:900;font-family:var(--mono);padding:1px 4px;border-radius:4px;white-space:nowrap;border:1px solid ${isO?brCol+'66':'rgba(255,255,255,.12)'}">${isO?'✓':n.cost+'TP'}</div>
-      ${isA?`<div style="position:absolute;top:-4px;left:-4px;width:8px;height:8px;border-radius:50%;background:${brCol};animation:xpGlow .8s ease-in-out infinite${isDia?';transform:rotate(-45deg)':''}"></div>`:''}
-    </div>`;
-  }
-
-  function renderBranch(br){
-    const nodes=ALL.filter(t=>t.branch===br);if(!nodes.length)return'';
-    const meta=nodes[0];const brCol=meta.branchCol||'#39FF14';
-    const brO=nodes.filter(n=>OW.includes(n.id)).length;
-    const pct=Math.round(brO/nodes.length*100);
-    const byD={};nodes.forEach(n=>{const d=n.depth||1;if(!byD[d])byD[d]=[];byD[d].push(n);});
-    const depths=Object.keys(byD).map(Number).sort((a,b)=>a-b);
-    let tree='';
-    depths.forEach((d,di)=>{
-      const lvl=byD[d];const pMap={};lvl.forEach(n=>pMap[n.path||'a']=n);
-      // Connector row
-      if(di>0){
-        const prevD=depths[di-1];
-        const pairs=[];
-        lvl.forEach(child=>{
-          const par=ALL.find(n=>n.id===child.req&&n.branch===br&&n.depth===prevD);
-          if(par)pairs.push({fp:par.path||'a',tp:child.path||'a',lit:OW.includes(child.id)&&OW.includes(par.id)});
-        });
-        tree+=`<div style="position:relative;height:${CH}px;width:${3*CELL}px">`;
-        pairs.forEach(p=>{
-          const fi=PI[p.fp],ti=PI[p.tp];
-          const lc=p.lit?brCol:brCol+'44';
-          const fx=fi*CELL+CELL/2,tx=ti*CELL+CELL/2;
-          if(fi===ti){
-            tree+=`<div style="position:absolute;left:${fx-1}px;top:0;width:2px;height:${CH}px;background:${lc};border-radius:1px"></div>`;
-          } else {
-            const mnX=Math.min(fx,tx),mxX=Math.max(fx,tx);
-            tree+=`<div style="position:absolute;left:${fx-1}px;top:0;width:2px;height:${CH/2}px;background:${lc};border-radius:1px"></div>`;
-            tree+=`<div style="position:absolute;left:${mnX}px;top:${CH/2-1}px;width:${mxX-mnX}px;height:2px;background:${lc};border-radius:1px"></div>`;
-            tree+=`<div style="position:absolute;left:${tx-1}px;top:${CH/2}px;width:2px;height:${CH/2}px;background:${lc};border-radius:1px"></div>`;
-          }
-        });
-        tree+='</div>';
-      }
-      // Node row
-      tree+=`<div style="display:flex;height:${NH}px;width:${3*CELL}px">`;
-      ['a','b','c'].forEach(path=>{
-        const n=pMap[path];
-        tree+=`<div style="width:${CELL}px;display:flex;align-items:center;justify-content:center">${n?nodeCard(n,brCol):''}</div>`;
-      });
-      tree+='</div>';
-    });
-    return`<div style="margin-bottom:14px;border:1.5px solid ${brCol}33;border-radius:18px;overflow:hidden;background:rgba(0,0,0,.2)">
-      <div style="display:flex;align-items:center;gap:8px;padding:9px 12px;background:${brCol}11">
-        <div style="font-size:15px">${meta.branchNm.split(' ')[0]}</div>
-        <div style="flex:1"><div style="font-size:11px;font-weight:900;color:${brCol};font-family:var(--mono)">${meta.branchNm}</div><div style="font-size:8.5px;color:var(--t3)">${meta.branchDesc||''}</div></div>
-        <div style="font-size:10px;font-weight:900;color:${brCol};font-family:var(--mono)">${brO}/${nodes.length}</div>
-      </div>
-      <div style="height:3px;background:rgba(255,255,255,.06)"><div style="height:100%;width:${pct}%;background:${brCol};transition:width .4s"></div></div>
-      <div style="overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch;padding:10px 8px 14px">${tree}</div>
-    </div>`;
-  }
-
-  let html=`<div style="padding:0 14px 10px">
-    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px">
-      <div style="font-size:9px;color:var(--t3)">Lär förmågor längs varje gren. Nexus kräver 2 grenar.</div>
-      <div style="font-size:10px;font-weight:900;color:var(--g);font-family:var(--mono)">${totalOwned}/${totalAll}</div>
-    </div>
-    <div style="height:4px;background:rgba(255,255,255,.07);border-radius:3px;overflow:hidden">
-      <div style="height:100%;width:${totalPct}%;background:linear-gradient(90deg,#39FF14,#00D9FF);border-radius:3px;transition:width .4s"></div>
-    </div>
-    <div style="margin-top:6px;display:flex;gap:14px;font-size:8px;color:var(--t3)">
-      <span>◼ minor</span><span>● notable</span><span>○ keystone</span><span>◆ mastery</span>
-    </div>
-  </div>`;
-  html+=['kämpe','social','utforskare','handlare','djurvård','fiskare','kreativ','mäster'].map(renderBranch).join('');
-  // NEXUS
-  const nexO=nexus.filter(n=>OW.includes(n.id)).length;
-  html+=`<div style="margin-bottom:16px;border:1.5px solid rgba(191,95,255,.35);border-radius:18px;overflow:hidden;background:rgba(191,95,255,.05)">
-    <div style="display:flex;align-items:center;gap:8px;padding:9px 12px;background:rgba(191,95,255,.12)">
-      <div style="font-size:16px">⚡</div>
-      <div style="flex:1"><div style="font-size:11px;font-weight:900;color:#BF5FFF;font-family:var(--mono)">NEXUS — CROSS-BRANCH</div><div style="font-size:8.5px;color:var(--t3)">Kräver noder från 2 grenar</div></div>
-      <div style="font-size:10px;font-weight:900;color:#BF5FFF;font-family:var(--mono)">${nexO}/${nexus.length}</div>
-    </div>
-    <div style="height:3px;background:rgba(255,255,255,.06)"><div style="height:100%;width:${Math.round(nexO/nexus.length*100)}%;background:#BF5FFF;transition:width .4s"></div></div>
-    <div style="padding:10px 10px">`;
-  nexus.forEach(n=>{
-    const isO=OW.includes(n.id);
-    const rMet=(!n.req||OW.includes(n.req||''))&&(!n.req2||OW.includes(n.req2||''));
-    const isL=!isO&&!rMet;
-    const rn1=ALL.find(x=>x.id===n.req);const rn2=ALL.find(x=>x.id===n.req2);
-    const reqs=[rn1,rn2].filter(Boolean).map(r=>r.nm).join(' + ');
-    const onClick=isO?`showT('✅ Redan lärd!','y')`:(isL?`showT('🔒 ${reqs.replace(/'/g,'')} krävs','r')`:`learnTalent('${n.id}')`);
-    html+=`<div onclick="${onClick}" style="display:flex;align-items:center;gap:9px;padding:8px 10px;border-radius:12px;border:1.5px solid ${isO?'#BF5FFF':isL?'rgba(255,255,255,.08)':'rgba(191,95,255,.4)'};background:${isO?'rgba(191,95,255,.18)':isL?'rgba(0,0,0,.25)':'rgba(191,95,255,.06)'};margin-bottom:6px;cursor:pointer;-webkit-tap-highlight-color:transparent${n.legendary?';border-style:dashed':''}">
-      <div style="font-size:${n.legendary?28:22}px;flex-shrink:0">${n.em}</div>
-      <div style="flex:1;min-width:0">
-        <div style="font-size:11px;font-weight:900;color:${isO?'#BF5FFF':n.legendary?'#FFD700':'var(--t1)'}">${n.nm}${n.legendary?' ★':''}</div>
-        <div style="font-size:8.5px;color:var(--t3);overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${n.desc}</div>
-        <div style="font-size:7.5px;color:rgba(191,95,255,.65);margin-top:2px">Kräver: ${reqs}</div>
-      </div>
-      <div style="font-size:11px;font-weight:900;color:${isO?'var(--g)':'#BF5FFF'};font-family:var(--mono);flex-shrink:0">${isO?'✓':n.cost+' TP'}</div>
-    </div>`;
-  });
-  html+='</div></div>';
-  scroll.innerHTML=html;
+  setTimeout(initTalentCanvas,60);
+}
+function closeTalentTree(){
+  const tm=$('talentModal');if(tm)tm.classList.remove('open');
+  _ttHidePanel();
+}
+function renderTalentTree(){
+  const TP_EL=$('talentPts');if(TP_EL)TP_EL.textContent=(G.talentPoints||0)+' TP';
+  _ttPC=null;_ttDraw();
+  if(_ttSel)_ttShowPanel(_ttSel);
 }
 function learnTalent(id){
   const t=TALENT_DEFS.find(x=>x.id===id);if(!t)return;
@@ -6105,6 +6085,295 @@ function learnTalent(id){
   addDiaryEntry('Lärde mig talangen "'+t.nm+'" på Talent Trädet!');
   save();renderTalentTree();
 }
+
+// ══════════════════════════════════════════
+// ── POE TALENT TREE CANVAS ENGINE ──
+// ══════════════════════════════════════════
+const _TT_BANG={kämpe:Math.PI/4,social:0,utforskare:-Math.PI/4,handlare:-Math.PI/2,djurvård:-3*Math.PI/4,fiskare:Math.PI,kreativ:3*Math.PI/4,mäster:Math.PI/2};
+const _TT_BCOL={kämpe:'#FF3B30',social:'#FF2D55',utforskare:'#00D9FF',handlare:'#FFE600',djurvård:'#57FF3C',fiskare:'#00BFFF',kreativ:'#FF6EC7',mäster:'#FFD700',nexus:'#BF5FFF'};
+const _TT_RADS={minor:9,notable:14,keystone:21,mastery:26};
+const _TT_POFF={a:-68,b:0,c:68};
+const _TT_DS=92;
+let _ttPan={x:0,y:0},_ttScale=0.26,_ttSel=null,_ttPC=null;
+let _ttCanvasW=320,_ttCanvasH=540;
+
+function _ttWorldPos(n){
+  if(n.branch==='nexus'){
+    if(!_ttPC)return{wx:0,wy:0};
+    const p1=_ttPC[n.req],p2=_ttPC[n.req2];
+    if(!p1||!p2)return{wx:0,wy:0};
+    return{wx:(p1.wx+p2.wx)/2,wy:(p1.wy+p2.wy)/2};
+  }
+  const ang=_TT_BANG[n.branch]??0;
+  const poff=_TT_POFF[n.path||'b']??0;
+  const d=(n.depth||1)*_TT_DS;
+  return{wx:Math.cos(ang)*d-Math.sin(ang)*poff, wy:Math.sin(ang)*d+Math.cos(ang)*poff};
+}
+
+function _ttBuildPositions(){
+  const pos={};
+  TALENT_DEFS.forEach(n=>{if(n.branch!=='nexus')pos[n.id]=_ttWorldPos(n);});
+  _ttPC=pos;
+  TALENT_DEFS.forEach(n=>{if(n.branch==='nexus')pos[n.id]=_ttWorldPos(n);});
+  _ttPC=pos;
+}
+
+function _ttToScreen(wx,wy){
+  return{sx:_ttCanvasW/2+_ttPan.x+wx*_ttScale, sy:_ttCanvasH/2+_ttPan.y-wy*_ttScale};
+}
+
+function _ttDraw(){
+  const cv=$('talentCanvas');if(!cv)return;
+  const ctx=cv.getContext('2d');
+  const W=_ttCanvasW,H=_ttCanvasH;
+  ctx.clearRect(0,0,W,H);
+  ctx.fillStyle='#05070f';ctx.fillRect(0,0,W,H);
+
+  // Grid dots
+  ctx.fillStyle='rgba(255,255,255,0.03)';
+  const gs=Math.max(18,52*_ttScale);
+  const ox=((_ttPan.x+W/2)%gs+gs)%gs;
+  const oy=((_ttPan.y+H/2)%gs+gs)%gs;
+  for(let x=ox-gs;x<W+gs;x+=gs)for(let y=oy-gs;y<H+gs;y+=gs){ctx.beginPath();ctx.arc(x,y,1,0,Math.PI*2);ctx.fill();}
+
+  if(!_ttPC)_ttBuildPositions();
+  const owned=G.talents||[];
+
+  // Draw connections
+  TALENT_DEFS.forEach(n=>{
+    const p=_ttPC[n.id];if(!p)return;
+    const drawLink=(reqId)=>{
+      if(!reqId||!_ttPC[reqId])return;
+      const pr=_ttPC[reqId];
+      const {sx:x1,sy:y1}=_ttToScreen(pr.wx,pr.wy);
+      const {sx:x2,sy:y2}=_ttToScreen(p.wx,p.wy);
+      if(Math.max(x1,x2)<-60||Math.min(x1,x2)>W+60||Math.max(y1,y2)<-60||Math.min(y1,y2)>H+60)return;
+      const lit=owned.includes(n.id)&&owned.includes(reqId);
+      const col=_TT_BCOL[n.branch]??'#39FF14';
+      ctx.beginPath();ctx.moveTo(x1,y1);ctx.lineTo(x2,y2);
+      if(lit){ctx.strokeStyle=col+'bb';ctx.lineWidth=2.5;ctx.shadowColor=col;ctx.shadowBlur=8;}
+      else{ctx.strokeStyle=col+'22';ctx.lineWidth=1.5;ctx.shadowBlur=0;}
+      ctx.stroke();ctx.shadowBlur=0;
+    };
+    drawLink(n.req);if(n.req2)drawLink(n.req2);
+  });
+
+  // Draw nodes
+  TALENT_DEFS.forEach(n=>{
+    const p=_ttPC[n.id];if(!p)return;
+    const {sx,sy}=_ttToScreen(p.wx,p.wy);
+    const r=Math.max(5,(_TT_RADS[n.type]??9)*_ttScale);
+    if(sx+r*3<-8||sx-r*3>W+8||sy+r*3<-8||sy-r*3>H+8)return;
+    const isO=owned.includes(n.id);
+    const reqOk=(!n.req||owned.includes(n.req)||(n.req_or&&owned.includes(n.req_or)))&&(!n.req2||owned.includes(n.req2));
+    const isA=!isO&&reqOk;
+    const isSel=_ttSel&&_ttSel.id===n.id;
+    const col=_TT_BCOL[n.branch]??'#39FF14';
+    const isDia=n.type==='keystone'||n.type==='mastery';
+
+    // Outer glow ring
+    if(isO||isSel){
+      ctx.beginPath();
+      if(isDia){ctx.moveTo(sx,sy-r*2.4);ctx.lineTo(sx+r*2.4,sy);ctx.lineTo(sx,sy+r*2.4);ctx.lineTo(sx-r*2.4,sy);ctx.closePath();}
+      else ctx.arc(sx,sy,r*2.4,0,Math.PI*2);
+      ctx.fillStyle=isO?col+'18':col+'30';ctx.fill();
+    }
+    if(isA&&r>5){
+      ctx.beginPath();ctx.arc(sx,sy,r*1.9,0,Math.PI*2);
+      ctx.fillStyle='rgba(255,255,255,0.04)';ctx.fill();
+    }
+
+    // Main shape
+    ctx.beginPath();
+    if(isDia){const rm=n.type==='mastery'?r*1.15:r;ctx.moveTo(sx,sy-rm);ctx.lineTo(sx+rm,sy);ctx.lineTo(sx,sy+rm);ctx.lineTo(sx-rm,sy);ctx.closePath();}
+    else ctx.arc(sx,sy,r,0,Math.PI*2);
+    ctx.fillStyle=isO?col+'55':isA?col+'14':'rgba(6,10,22,0.95)';
+    if(isO){ctx.shadowColor=col;ctx.shadowBlur=16;}
+    ctx.fill();ctx.shadowBlur=0;
+    ctx.strokeStyle=isO?col:isA?col+'99':isSel?'rgba(255,255,255,0.6)':'rgba(255,255,255,0.13)';
+    ctx.lineWidth=isO?2.2:isSel?2.2:1.5;
+    if(isSel&&!isO){ctx.shadowColor='#fff';ctx.shadowBlur=10;}
+    ctx.stroke();ctx.shadowBlur=0;
+
+    // Emoji
+    if(r>6){
+      const fs=Math.max(8,Math.min(r*1.2,24));
+      ctx.font=`${fs}px serif`;ctx.textAlign='center';ctx.textBaseline='middle';
+      ctx.fillStyle=isO?'#fff':isA?'rgba(255,255,255,0.85)':'rgba(255,255,255,0.28)';
+      ctx.fillText(n.em,sx,sy-0.5);
+    }
+
+    // Name label
+    if((r>13||isO)&&r>7){
+      const fs2=Math.max(6.5,Math.min(r*0.6,11));
+      ctx.font=`800 ${fs2}px system-ui,sans-serif`;ctx.textAlign='center';ctx.textBaseline='top';
+      ctx.fillStyle=isO?col:'rgba(255,255,255,0.32)';
+      ctx.fillText(n.nm.length>14?n.nm.slice(0,13)+'…':n.nm,sx,sy+r+2);
+    }
+
+    // TP cost badge
+    if(!isO&&r>11){
+      ctx.font=`900 ${Math.max(7,r*0.62)}px monospace`;ctx.textAlign='center';ctx.textBaseline='alphabetic';
+      ctx.fillStyle=isA?col+'dd':'rgba(255,255,255,0.18)';
+      ctx.fillText(n.cost+'TP',sx,sy-r-3);
+    }
+  });
+
+  // Branch labels at center compass
+  if(_ttScale<0.22){
+    const labels=[
+      {b:'kämpe',col:'#FF3B30'},{b:'social',col:'#FF2D55'},{b:'utforskare',col:'#00D9FF'},
+      {b:'handlare',col:'#FFE600'},{b:'djurvård',col:'#57FF3C'},{b:'fiskare',col:'#00BFFF'},
+      {b:'kreativ',col:'#FF6EC7'},{b:'mäster',col:'#FFD700'}
+    ];
+    labels.forEach(({b,col})=>{
+      const ang=_TT_BANG[b]??0;
+      const d=2*_TT_DS;
+      const {sx,sy}=_ttToScreen(Math.cos(ang)*d,Math.sin(ang)*d);
+      if(sx<-20||sx>W+20||sy<-20||sy>H+20)return;
+      ctx.font='bold 11px system-ui';ctx.textAlign='center';ctx.textBaseline='middle';
+      ctx.fillStyle=col+'cc';
+      const nm=TALENT_DEFS.find(n=>n.branch===b);
+      if(nm)ctx.fillText(nm.branchNm||b.toUpperCase(),sx,sy);
+    });
+  }
+
+  // Progress overlay top-right
+  const total=TALENT_DEFS.length,got=owned.length;
+  ctx.font='bold 9px system-ui';ctx.textAlign='right';ctx.textBaseline='top';
+  ctx.fillStyle='rgba(255,255,255,0.3)';
+  ctx.fillText(got+'/'+total+' nodes',W-10,10);
+}
+
+function initTalentCanvas(){
+  let old=$('talentCanvas');if(!old)return;
+  const par=old.parentElement;
+  const W=par.clientWidth||window.innerWidth;
+  const H=Math.max(320,(par.clientHeight||window.innerHeight)-52);
+  const dpr=Math.min(window.devicePixelRatio||1,2);
+  _ttCanvasW=W;_ttCanvasH=H;
+
+  const cv=document.createElement('canvas');
+  cv.id='talentCanvas';
+  cv.style.cssText='position:absolute;top:46px;left:0;display:block;touch-action:none;cursor:grab;';
+  cv.style.width=W+'px';cv.style.height=H+'px';
+  cv.width=Math.round(W*dpr);cv.height=Math.round(H*dpr);
+  old.parentNode.replaceChild(cv,old);
+  const ctx=cv.getContext('2d');ctx.scale(dpr,dpr);
+
+  _ttPan={x:0,y:0};_ttScale=Math.max(0.16,Math.min(0.28,W/1500));
+  _ttPC=null;_ttSel=null;
+  _ttHidePanel();_ttDraw();
+
+  let drag=false,moved=false,lx=0,ly=0;
+  let t1=null,t2=null,pd=null;
+
+  cv.addEventListener('mousedown',e=>{drag=true;moved=false;lx=e.clientX;ly=e.clientY;cv.style.cursor='grabbing';});
+  window.addEventListener('mousemove',e=>{
+    if(!drag)return;
+    const dx=e.clientX-lx,dy=e.clientY-ly;
+    if(Math.abs(dx)+Math.abs(dy)>3)moved=true;
+    _ttPan.x+=dx;_ttPan.y+=dy;lx=e.clientX;ly=e.clientY;_ttDraw();
+  });
+  window.addEventListener('mouseup',e=>{
+    if(drag&&!moved){const br=cv.getBoundingClientRect();_ttHandleTap(e.clientX-br.left,e.clientY-br.top);}
+    drag=false;cv.style.cursor='grab';
+  });
+  cv.addEventListener('wheel',e=>{
+    e.preventDefault();
+    const f=e.deltaY<0?1.12:0.89;
+    const oldS=_ttScale;_ttScale=Math.max(0.07,Math.min(2.5,_ttScale*f));
+    const br=cv.getBoundingClientRect();
+    const mx=e.clientX-br.left-W/2-_ttPan.x;
+    const my=-(e.clientY-br.top-H/2-_ttPan.y);
+    _ttPan.x-=mx*(_ttScale/oldS-1);_ttPan.y+=my*(_ttScale/oldS-1);
+    _ttDraw();
+  },{passive:false});
+
+  cv.addEventListener('touchstart',e=>{
+    e.preventDefault();
+    if(e.touches.length===1){
+      t1={x:e.touches[0].clientX,y:e.touches[0].clientY};t2=null;
+      drag=true;moved=false;lx=e.touches[0].clientX;ly=e.touches[0].clientY;
+    }else if(e.touches.length>=2){
+      t1={x:e.touches[0].clientX,y:e.touches[0].clientY};
+      t2={x:e.touches[1].clientX,y:e.touches[1].clientY};
+      pd=Math.hypot(t2.x-t1.x,t2.y-t1.y);drag=false;
+    }
+  },{passive:false});
+  cv.addEventListener('touchmove',e=>{
+    e.preventDefault();
+    if(e.touches.length===1&&drag){
+      const dx=e.touches[0].clientX-lx,dy=e.touches[0].clientY-ly;
+      if(Math.abs(dx)+Math.abs(dy)>4)moved=true;
+      _ttPan.x+=dx;_ttPan.y+=dy;lx=e.touches[0].clientX;ly=e.touches[0].clientY;_ttDraw();
+    }else if(e.touches.length>=2&&pd!=null){
+      const na={x:e.touches[0].clientX,y:e.touches[0].clientY};
+      const nb={x:e.touches[1].clientX,y:e.touches[1].clientY};
+      const nd=Math.hypot(nb.x-na.x,nb.y-na.y);
+      const f=nd/pd;pd=nd;_ttScale=Math.max(0.07,Math.min(2.5,_ttScale*f));
+      if(t1&&t2){
+        const mx0=(t1.x+t2.x)/2,my0=(t1.y+t2.y)/2;
+        const mx1=(na.x+nb.x)/2,my1=(na.y+nb.y)/2;
+        _ttPan.x+=mx1-mx0;_ttPan.y+=my1-my0;
+      }
+      t1=na;t2=nb;_ttDraw();
+    }
+  },{passive:false});
+  cv.addEventListener('touchend',e=>{
+    if(!moved&&t1&&e.changedTouches.length){
+      const br=cv.getBoundingClientRect();
+      _ttHandleTap(e.changedTouches[0].clientX-br.left,e.changedTouches[0].clientY-br.top);
+    }
+    if(e.touches.length===0){drag=false;t1=null;t2=null;pd=null;}
+  });
+}
+
+function _ttHandleTap(tx,ty){
+  if(!_ttPC)_ttBuildPositions();
+  let best=null,bestD=Infinity;
+  TALENT_DEFS.forEach(n=>{
+    const p=_ttPC&&_ttPC[n.id];if(!p)return;
+    const {sx,sy}=_ttToScreen(p.wx,p.wy);
+    const r=Math.max(22,(_TT_RADS[n.type]??9)*_ttScale+12);
+    const d=Math.hypot(tx-sx,ty-sy);
+    if(d<r&&d<bestD){best=n;bestD=d;}
+  });
+  if(best){_ttSel=best;_ttShowPanel(best);}
+  else{_ttSel=null;_ttHidePanel();}
+  _ttDraw();
+}
+
+function _ttShowPanel(n){
+  const panel=$('ttNodePanel');if(!panel)return;
+  const owned=G.talents||[];
+  const isO=owned.includes(n.id);
+  const reqOk=(!n.req||owned.includes(n.req)||(n.req_or&&owned.includes(n.req_or)))&&(!n.req2||owned.includes(n.req2));
+  const col=_TT_BCOL[n.branch]??'#39FF14';
+  const em=$('ttNodeEm');if(em)em.textContent=n.em;
+  const nm=$('ttNodeNm');if(nm){nm.textContent=n.nm+(n.legendary?' ★':'');nm.style.color=col;}
+  const desc=$('ttNodeDesc');if(desc)desc.textContent=n.desc;
+  const reqEl=$('ttNodeReq');if(reqEl){
+    const parts=[];
+    if(n.req){const r=TALENT_DEFS.find(x=>x.id===n.req);if(r)parts.push(r.nm);}
+    if(n.req2){const r=TALENT_DEFS.find(x=>x.id===n.req2);if(r)parts.push(r.nm);}
+    reqEl.textContent=parts.length?'Kräver: '+parts.join(' + '):'Startförmåga — ingen krav';
+  }
+  const costEl=$('ttNodeCost');if(costEl)costEl.textContent=isO?'✓':n.cost+' TP';
+  const btn=$('ttLearnBtn');if(btn){
+    if(isO){btn.textContent='✅ Inlärd';btn.style.background='rgba(57,255,20,.1)';btn.style.color='var(--g)';btn.disabled=true;}
+    else if(!reqOk){btn.textContent='🔒 Lär föregående nod';btn.style.background='rgba(255,255,255,.06)';btn.style.color='var(--t3)';btn.disabled=true;}
+    else if((G.talentPoints||0)<n.cost){btn.textContent='❌ Behöver '+n.cost+' TP';btn.style.background='rgba(255,50,50,.12)';btn.style.color='#ff6666';btn.disabled=false;}
+    else{btn.textContent='⚡ LÄR DIG — '+n.cost+' TP';btn.style.background=col;btn.style.color='#000';btn.disabled=false;}
+  }
+  panel.style.transform='translateY(0)';
+}
+
+function _ttHidePanel(){
+  const p=$('ttNodePanel');if(p)p.style.transform='translateY(100%)';
+}
+
+function ttLearnSelected(){if(!_ttSel)return;learnTalent(_ttSel.id);}
 
 // ══════════════════════════════════════════
 // ── PET DIARY ──
