@@ -96,7 +96,7 @@ html,body{height:100%;width:100%;overflow:hidden;background:var(--bg);font-famil
 .inp::placeholder{color:var(--t3);}
 textarea.inp{resize:none;min-height:68px;}
 .lbl{font-size:10px;font-weight:700;color:var(--t3);letter-spacing:.8px;text-transform:uppercase;margin-bottom:5px;display:block;}
-.sh{display:flex;align-items:center;justify-content:space-between;padding:12px 14px 7px;}
+.sh{display:flex;align-items:center;justify-content:space-between;padding:9px 14px 5px;}
 .sh-t{font-size:10px;font-weight:800;color:rgba(255,255,255,.35);text-transform:uppercase;letter-spacing:.9px;}
 .sh-a{font-size:12px;font-weight:700;color:var(--g);cursor:pointer;}
 .r2{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-bottom:10px;}
@@ -212,14 +212,14 @@ textarea.inp{resize:none;min-height:68px;}
 .vr-mini.vr-k{background:rgba(57,255,20,.06);border-color:rgba(57,255,20,.28);}
 .vr-mini.vr-k .vr-big-num{color:var(--g);}
 /* CARE HERO — Tamagotchi big buttons */
-.care-section-lbl{font-size:10px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:1px;padding:4px 14px 6px;display:flex;align-items:center;gap:6px;}
-.care-hero{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin:0 12px 6px;}
-.care-hero-row2{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin:0 12px 10px;}
-.chb{border-radius:18px;padding:10px 6px 9px;text-align:center;cursor:pointer;transition:transform .1s;-webkit-tap-highlight-color:transparent;position:relative;overflow:hidden;border:2px solid;min-height:70px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;}
+.care-section-lbl{font-size:9px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:1px;padding:3px 14px 4px;display:flex;align-items:center;gap:6px;}
+.care-hero{display:grid;grid-template-columns:repeat(3,1fr);gap:5px;margin:0 12px 5px;}
+.care-hero-row2{display:grid;grid-template-columns:repeat(3,1fr);gap:5px;margin:0 12px 8px;}
+.chb{border-radius:14px;padding:7px 5px 7px;text-align:center;cursor:pointer;transition:transform .1s;-webkit-tap-highlight-color:transparent;position:relative;overflow:hidden;border:2px solid;min-height:56px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;}
 .chb:active{transform:scale(.84);}
-.chb-ico{font-size:26px;display:block;line-height:1.1;}
-.chb-lbl{font-size:11px;font-weight:900;display:block;letter-spacing:.2px;}
-.chb-val{font-size:8px;display:block;font-weight:700;opacity:.72;font-family:var(--mono);}
+.chb-ico{font-size:22px;display:block;line-height:1.1;}
+.chb-lbl{font-size:9px;font-weight:900;display:block;letter-spacing:.2px;}
+.chb-val{font-size:7px;display:block;font-weight:700;opacity:.72;font-family:var(--mono);}
 .chb-feed{background:linear-gradient(155deg,rgba(255,159,10,.22),rgba(255,159,10,.06));border-color:rgba(255,159,10,.5);box-shadow:0 4px 14px rgba(255,159,10,.1);}
 .chb-feed .chb-lbl,.chb-feed .chb-val{color:var(--o);}
 .chb-train{background:linear-gradient(155deg,rgba(255,45,85,.2),rgba(255,45,85,.06));border-color:rgba(255,45,85,.5);box-shadow:0 4px 14px rgba(255,45,85,.1);}
@@ -260,20 +260,20 @@ textarea.inp{resize:none;min-height:68px;}
 .mg-combo{font-size:11px;font-weight:800;color:var(--y);margin-top:8px;font-family:var(--mono);min-height:16px;}
 /* Flash */
 .flash-top{background:var(--c1);border-bottom:1px solid var(--line);flex-shrink:0;}
-.flash-title-row{display:flex;align-items:center;justify-content:space-between;padding:12px 14px 8px;}
-.flash-title{font-size:22px;font-weight:900;font-family:var(--mono);}
-.flash-sub{font-size:12px;color:var(--t2);padding:0 14px 10px;}
-.streak-circles{display:flex;gap:10px;overflow-x:auto;scrollbar-width:none;padding:0 14px 12px;}
+.flash-title-row{display:flex;align-items:center;justify-content:space-between;padding:7px 14px 5px;}
+.flash-title{font-size:15px;font-weight:900;font-family:var(--mono);}
+.flash-sub{font-size:10px;color:var(--t3);padding:0 14px 6px;}
+.streak-circles{display:flex;gap:7px;overflow-x:auto;scrollbar-width:none;padding:4px 14px 7px;}
 .streak-circles::-webkit-scrollbar{display:none;}
-.sc{display:flex;flex-direction:column;align-items:center;gap:4px;cursor:pointer;flex-shrink:0;}
-.sc-ring{width:60px;height:60px;border-radius:50%;padding:2.5px;display:flex;align-items:center;justify-content:center;}
+.sc{display:flex;flex-direction:column;align-items:center;gap:2px;cursor:pointer;flex-shrink:0;}
+.sc-ring{width:44px;height:44px;border-radius:50%;padding:2px;display:flex;align-items:center;justify-content:center;}
 .sc-ring.active{background:conic-gradient(var(--pk),var(--p),var(--g),var(--pk));}
 .sc-ring.done{background:conic-gradient(var(--g),var(--tl),var(--g));}
 .sc-ring.empty{background:conic-gradient(var(--c3),var(--c3));}
 .sc-ring.live{background:conic-gradient(var(--r),var(--y),var(--r));animation:lring 1.5s infinite;}
 @keyframes lring{0%,100%{box-shadow:0 0 0 0 rgba(255,68,85,.4);}50%{box-shadow:0 0 0 5px rgba(255,68,85,0);}}
-.sc-inner{width:53px;height:53px;border-radius:50%;background:var(--c2);display:flex;align-items:center;justify-content:center;font-size:26px;}
-.sc-name{font-size:9px;color:var(--t2);max-width:60px;text-align:center;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.sc-inner{width:39px;height:39px;border-radius:50%;background:var(--c2);display:flex;align-items:center;justify-content:center;font-size:19px;}
+.sc-name{font-size:8px;color:var(--t2);max-width:44px;text-align:center;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
 .sc-streak{font-size:9px;color:var(--r);font-weight:800;font-family:var(--mono);}
 .flash-feed{flex:1;overflow-y:scroll;scroll-snap-type:y mandatory;scrollbar-width:none;}
 .flash-feed::-webkit-scrollbar{display:none;}
@@ -348,7 +348,7 @@ textarea.inp{resize:none;min-height:68px;}
 .cw-snd:active{transform:scale(.88);}
 /* Uppdrag */
 .uppdrag-hdr{padding:13px 14px 11px;background:var(--c1);border-bottom:1px solid var(--line);flex-shrink:0;}
-.uppdrag-title{font-size:22px;font-weight:900;font-family:var(--mono);}
+.uppdrag-title{font-size:17px;font-weight:900;font-family:var(--mono);}
 .uppdrag-title-r{display:flex;align-items:center;justify-content:space-between;margin-bottom:5px;}
 .ufilters{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;padding:8px 14px;border-bottom:1px solid var(--line);flex-shrink:0;}
 .ufilters::-webkit-scrollbar{display:none;}
@@ -384,7 +384,7 @@ textarea.inp{resize:none;min-height:68px;}
 /* Shop */
 .shop-hdr{padding:12px 13px 10px;background:var(--c1);border-bottom:1px solid var(--line);flex-shrink:0;}
 .shop-title-r{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;}
-.shop-title{font-size:22px;font-weight:900;font-family:var(--mono);}
+.shop-title{font-size:17px;font-weight:900;font-family:var(--mono);}
 .shop-srch{display:flex;align-items:center;gap:9px;background:var(--c2);border:1px solid var(--line);border-radius:12px;padding:0 13px;}
 .shop-srch input{flex:1;background:none;border:none;outline:none;padding:10px 0;color:var(--t1);font-family:var(--ff);font-size:14px;}
 .shop-srch input::placeholder{color:var(--t3);}
@@ -502,21 +502,25 @@ textarea.inp{resize:none;min-height:68px;}
 .lb-vl{font-size:14px;font-weight:900;text-align:right;font-family:var(--mono);}
 .lb-up{font-size:10px;font-weight:700;color:var(--g);text-align:right;}
 /* Profile */
-.prof-cover{height:84px;background:linear-gradient(135deg,rgba(0,255,136,.08),rgba(68,136,255,.05));position:relative;overflow:hidden;flex-shrink:0;}
-.prof-cover-pat{position:absolute;inset:0;background:repeating-linear-gradient(45deg,transparent,transparent 20px,rgba(0,255,136,.025) 20px,rgba(0,255,136,.025) 21px);}
-.prof-ava-wr{position:absolute;bottom:-27px;left:13px;}
-.prof-ava{width:70px;height:70px;border-radius:18px;background:var(--c2);border:3px solid var(--bg);display:flex;align-items:center;justify-content:center;font-size:36px;position:relative;}
-.prof-trust{position:absolute;bottom:-2px;right:-2px;background:var(--g);border:2px solid var(--bg);border-radius:7px;padding:1px 5px;font-size:8px;font-weight:900;color:var(--bg);font-family:var(--mono);}
-.prof-content{padding:34px 13px 11px;flex-shrink:0;}
-.prof-name{font-size:22px;font-weight:900;}
-.prof-handle{font-size:12px;color:var(--t3);margin-bottom:9px;font-family:var(--mono);}
-.prof-stats{display:flex;border:1px solid var(--line);border-radius:12px;overflow:hidden;background:var(--c1);}
-.ps{flex:1;text-align:center;padding:10px 5px;border-right:1px solid var(--line);}
+.prof-cover{height:120px;background:linear-gradient(135deg,#0d1a0d 0%,#071420 50%,#0d0d1a 100%);position:relative;overflow:hidden;flex-shrink:0;}
+.prof-cover-pat{position:absolute;inset:0;background:repeating-linear-gradient(45deg,transparent,transparent 22px,rgba(57,255,20,.018) 22px,rgba(57,255,20,.018) 23px);}
+.prof-cover-glow{position:absolute;inset:0;background:radial-gradient(ellipse at 30% 60%,rgba(57,255,20,.12) 0%,transparent 60%),radial-gradient(ellipse at 80% 40%,rgba(0,217,255,.08) 0%,transparent 50%);pointer-events:none;}
+.prof-cover-info{position:absolute;bottom:10px;right:14px;text-align:right;}
+.prof-cover-lv{font-size:11px;font-weight:900;color:var(--g);font-family:var(--mono);}
+.prof-cover-species{font-size:9px;color:rgba(57,255,20,.5);font-family:var(--mono);}
+.prof-ava-wr{position:absolute;bottom:-22px;left:14px;}
+.prof-ava{width:64px;height:64px;border-radius:16px;background:var(--c2);border:2.5px solid var(--g);display:flex;align-items:center;justify-content:center;font-size:32px;position:relative;box-shadow:0 0 20px rgba(57,255,20,.2);}
+.prof-trust{position:absolute;bottom:-3px;right:-4px;background:var(--g);border:2px solid var(--bg);border-radius:6px;padding:1px 4px;font-size:7px;font-weight:900;color:var(--bg);font-family:var(--mono);}
+.prof-content{padding:28px 14px 8px;flex-shrink:0;}
+.prof-name{font-size:16px;font-weight:900;}
+.prof-handle{font-size:10px;color:var(--t3);margin-bottom:7px;font-family:var(--mono);}
+.prof-stats{display:flex;border:1px solid var(--line);border-radius:11px;overflow:hidden;background:var(--c1);}
+.ps{flex:1;text-align:center;padding:7px 4px;border-right:1px solid var(--line);}
 .ps:last-child{border-right:none;}
-.ps-v{font-size:18px;font-weight:900;font-family:var(--mono);}
-.ps-l{font-size:9px;color:var(--t3);text-transform:uppercase;letter-spacing:.8px;margin-top:1px;}
-.trust-card{margin:0 13px 10px;background:rgba(0,255,136,.04);border:1px solid rgba(0,255,136,.18);border-radius:16px;padding:14px;}
-.trust-big{font-size:54px;font-weight:900;color:var(--g);line-height:1;font-family:var(--mono);}
+.ps-v{font-size:14px;font-weight:900;font-family:var(--mono);}
+.ps-l{font-size:8px;color:var(--t3);text-transform:uppercase;letter-spacing:.6px;margin-top:1px;}
+.trust-card{background:rgba(0,255,136,.04);border:1px solid rgba(0,255,136,.18);border-radius:14px;padding:12px;}
+.trust-big{font-size:40px;font-weight:900;color:var(--g);line-height:1;font-family:var(--mono);}
 .tr-row{display:flex;align-items:center;gap:9px;margin-bottom:5px;}
 .tr-lbl{font-size:10px;color:var(--t3);width:84px;flex-shrink:0;}
 .tr-track{flex:1;height:4px;background:var(--c3);border-radius:100px;overflow:hidden;}
@@ -765,7 +769,7 @@ textarea.inp{resize:none;min-height:68px;}
 /* ═══════════════════════════════════
    EXPLORE VIEW
 ═══════════════════════════════════ */
-.explore-hdr{padding:16px 14px 6px;font-size:24px;font-weight:900;font-family:var(--mono);}
+.explore-hdr{padding:11px 14px 5px;font-size:17px;font-weight:900;font-family:var(--mono);}
 .explore-sub{font-size:13px;color:var(--t2);padding:0 14px 14px;}
 .explore-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:0 14px 12px;}
 .eg-card{border-radius:20px;padding:18px 16px;cursor:pointer;transition:transform .1s;-webkit-tap-highlight-color:transparent;position:relative;overflow:hidden;min-height:110px;display:flex;flex-direction:column;justify-content:flex-end;}
@@ -868,17 +872,17 @@ textarea.inp{resize:none;min-height:68px;}
    MARKETPLACE
 ═══════════════════════════════════ */
 .mkt-hdr{flex-shrink:0;padding:14px 14px 0;background:var(--bg);}
-.mkt-title{font-size:24px;font-weight:900;font-family:var(--mono);margin-bottom:10px;}
-.mkt-cats{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;padding-bottom:12px;}
+.mkt-title{font-size:18px;font-weight:900;font-family:var(--mono);margin-bottom:8px;}
+.mkt-cats{display:flex;gap:5px;overflow-x:auto;scrollbar-width:none;padding-bottom:10px;}
 .mkt-cats::-webkit-scrollbar{display:none;}
-.mkt-cat{padding:7px 14px;border-radius:20px;font-size:12px;font-weight:700;cursor:pointer;background:var(--c1);border:1px solid var(--line);white-space:nowrap;flex-shrink:0;-webkit-tap-highlight-color:transparent;transition:all .1s;}
+.mkt-cat{padding:6px 12px;border-radius:18px;font-size:11px;font-weight:700;cursor:pointer;background:var(--c1);border:1px solid var(--line);white-space:nowrap;flex-shrink:0;-webkit-tap-highlight-color:transparent;transition:all .1s;}
 .mkt-cat.on{background:var(--g);color:var(--bg);border-color:var(--g);}
-.mkt-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:10px 14px;}
-.mkt-card{background:var(--c1);border:1px solid var(--line);border-radius:18px;padding:14px 12px;cursor:pointer;transition:transform .1s;-webkit-tap-highlight-color:transparent;overflow:hidden;}
+.mkt-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:8px 14px;}
+.mkt-card{background:var(--c1);border:1px solid var(--line);border-radius:14px;padding:11px 10px;cursor:pointer;transition:transform .1s;-webkit-tap-highlight-color:transparent;overflow:hidden;}
 .mkt-card:active{transform:scale(.95);}
-.mkt-em{font-size:38px;display:block;margin-bottom:7px;}
-.mkt-nm{font-size:13px;font-weight:800;margin-bottom:2px;}
-.mkt-desc{font-size:10px;color:var(--t3);margin-bottom:8px;}
+.mkt-em{font-size:30px;display:block;margin-bottom:5px;}
+.mkt-nm{font-size:12px;font-weight:800;margin-bottom:2px;}
+.mkt-desc{font-size:9px;color:var(--t3);margin-bottom:7px;}
 .mkt-footer{display:flex;align-items:center;justify-content:space-between;}
 .mkt-price{font-size:13px;font-weight:900;color:var(--y);font-family:var(--mono);}
 .mkt-buy{font-size:10px;font-weight:900;padding:5px 11px;border-radius:8px;background:var(--g);color:var(--bg);border:none;cursor:pointer;font-family:var(--ff);transition:transform .1s;}
@@ -1408,8 +1412,8 @@ textarea.inp{resize:none;min-height:68px;}
 .gi-nm{font-size:10px;font-weight:900;display:block;margin-bottom:3px;}
 .gi-cost{font-size:9px;font-family:var(--mono);font-weight:900;color:var(--y);}
 /* ── SEASONAL EVENT ── */
-.event-banner{margin:0 14px 16px;border-radius:22px;padding:16px 16px 18px;background:linear-gradient(135deg,rgba(255,45,85,.15),rgba(191,95,255,.1));border:1.5px solid rgba(255,45,85,.4);cursor:pointer;position:relative;overflow:hidden;}
-.event-banner-glow{position:absolute;inset:-20px;background:radial-gradient(circle at 70% 50%,rgba(255,45,85,.12),transparent 60%);pointer-events:none;}
+.event-banner{margin:0 14px 16px;border-radius:22px;padding:14px 16px 16px;background:linear-gradient(135deg,rgba(255,45,85,.14),rgba(191,95,255,.09));border:1.5px solid rgba(255,45,85,.4);cursor:pointer;position:relative;}
+.event-banner-glow{position:absolute;inset:0;border-radius:22px;background:radial-gradient(circle at 70% 50%,rgba(255,45,85,.1),transparent 65%);pointer-events:none;}
 .event-title{font-size:14px;font-weight:900;color:var(--pk);margin-bottom:2px;display:flex;align-items:center;gap:6px;}
 .event-subtitle{font-size:10px;color:var(--t3);margin-bottom:10px;}
 .event-progress-wrap{width:100%;height:8px;background:rgba(255,255,255,.08);border-radius:100px;overflow:hidden;margin-bottom:6px;}
@@ -1910,10 +1914,14 @@ textarea.inp{resize:none;min-height:68px;}
 
     <!-- PROFILE -->
     <div class="view" id="view-profile">
-      <div class="prof-cover"><div class="prof-cover-pat"></div></div>
+      <div class="prof-cover">
+        <div class="prof-cover-pat"></div>
+        <div class="prof-cover-glow"></div>
+        <div class="prof-cover-info"><div class="prof-cover-lv" id="profCoverLv">LV1</div><div class="prof-cover-species" id="profCoverSpecies">ROOKIE</div></div>
+      </div>
       <div class="prof-ava-wr"><div class="prof-ava"><span id="profAvaEm">🐉</span><div class="prof-trust" id="profTrustTag">BRONZE</div></div></div>
       <div class="prof-content">
-        <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:9px">
+        <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:7px">
           <div><div class="prof-name" id="profName">–</div><div class="prof-handle" id="profHandle">@–</div></div>
           <button class="btn btn-ghost btn-sm" onclick="shareProfile()">📤 Dela</button>
         </div>
@@ -3668,8 +3676,10 @@ function updateHUD(){
   $('ddName').textContent=G.name||'–';
   $('ddSub').textContent='Level '+G.level+' · 🔥'+G.streak+'d';
   $('profAvaEm').textContent=s.e;
-  $('profName').textContent=G.name;
-  $('profHandle').textContent='@'+(G.name||'').toLowerCase().replace(/\s+/g,'_');
+  $('profName').textContent=G.name||'–';
+  $('profHandle').textContent='@'+(G.name||'–').toLowerCase().replace(/\s+/g,'_');
+  const profCl=$('profCoverLv');if(profCl)profCl.textContent='LV'+G.level+' · 🔥'+G.streak+'d';
+  const profCs=$('profCoverSpecies');if(profCs)profCs.textContent=s.s;
   $('pnFlash').textContent=G.postCount;$('pnUppdrag').textContent=G.bountiesDone;$('pnSEK').textContent=G.totalSEK;$('pnLvl').textContent=G.level;
   const pmBadge=$('premiumBadge');if(pmBadge)pmBadge.style.display=G.premium?'inline-flex':'none';
   const tl=G.trustScore>=90?'GOLD':G.trustScore>=70?'SILVER':'BRONZE';
@@ -4758,7 +4768,7 @@ function nav(name){
     shop:()=>{renderSrcFilter();renderShop();},
     map:()=>{setTimeout(()=>{if(!G.mapInit)locateMe();},200);renderNearby();},
     lb:()=>renderLB2('level',document.querySelector('#lbTabs .tab')),
-    profile:()=>{updateHUD();renderHistList();renderBadges();},
+    profile:()=>{updateHUD();renderHistList();renderBadges();const pc=$('view-profile .prof-cover');if(pc){const wc={cosmic:'linear-gradient(135deg,#0d0520 0%,#07040f 50%,#0a0520 100%)',nature:'linear-gradient(135deg,#041a04 0%,#030d03 50%,#071207 100%)',city:'linear-gradient(135deg,#04060f 0%,#030415 50%,#040612 100%)',pixel:'linear-gradient(135deg,#0a0800 0%,#0a0800 50%,#060500 100%)'};pc.style.background=wc[G.world||'cosmic']||wc.cosmic;}},
     explore:()=>{const el=$('explorePetLv');if(el)el.textContent='LV'+G.level;renderWeeklyChallenges();renderCraftGrid();const tp=$('talentTeaserPts');if(tp)tp.textContent=(G.talentPoints||0)+' TP';const ts=$('talentTeaserSub');if(ts)ts.textContent=(G.talents&&G.talents.length>0?G.talents.length+' av 9 förmågor inlärda':'Tjäna Talent Points genom att levla upp');},
     market:()=>{renderMkt();},
     world:()=>{renderKarmaWorld();initKarmaWorld();},
@@ -5715,119 +5725,374 @@ function forceClosePackReveal(){
 // ── TALENT TREE ──
 // ══════════════════════════════════════════
 const TALENT_DEFS=[
-  // ⚔️ KÄMPE — Battle / Training
-  {id:'k1',branch:'kämpe',branchNm:'⚔️ KÄMPE',branchDesc:'Strid & träning',branchCol:'#FF3B30',em:'💪',nm:'Iron Fist',desc:'+25% XP från träning',cost:1,req:null,ef:()=>{G._talentK1=true;}},
-  {id:'k2',branch:'kämpe',em:'🛡️',nm:'Battle Hardened',desc:'Energi minskar 30% långsammare',cost:1,req:'k1',ef:()=>{G._talentK2=true;}},
-  {id:'k3',branch:'kämpe',em:'⚔️',nm:'Warrior Spirit',desc:'+50% XP från battles',cost:2,req:'k2',ef:()=>{G._talentK3=true;}},
-  {id:'k4',branch:'kämpe',em:'🔥',nm:'Berserker',desc:'Träning ger 2× XP + 10 coins',cost:2,req:'k3',ef:()=>{G._talentK4=true;}},
-  {id:'k5',branch:'kämpe',em:'👑',nm:'Warlord',desc:'Battle rewards ×3 permanent',cost:3,req:'k4',legendary:true,ef:()=>{G._talentK5=true;}},
-  // 📸 SOCIAL — Flash & Community
-  {id:'s1',branch:'social',branchNm:'📸 SOCIAL',branchDesc:'Flash & community',branchCol:'#FF2D55',em:'✨',nm:'Flash Master',desc:'+15 XP per Flash-post',cost:1,req:null,ef:()=>{G._talentS1=true;}},
-  {id:'s2',branch:'social',em:'🎯',nm:'Viral Starter',desc:'Flash ger +5 MOOD bonus',cost:1,req:'s1',ef:()=>{G._talentS2=true;}},
-  {id:'s3',branch:'social',em:'👥',nm:'Circle Leader',desc:'Circles ger +10% bonus stats',cost:2,req:'s2',ef:()=>{G._talentS3=true;}},
-  {id:'s4',branch:'social',em:'📱',nm:'Influencer',desc:'Social XP ×1.5 alltid',cost:2,req:'s3',ef:()=>{G._talentS4=true;}},
-  {id:'s5',branch:'social',em:'🌟',nm:'Viral Legend',desc:'Alla social-actions ger 2× coins',cost:3,req:'s4',legendary:true,ef:()=>{G._talentS5=true;}},
-  // 🌍 UTFORSKARE — World & Events
-  {id:'u1',branch:'utforskare',branchNm:'🌍 UTFORSKARE',branchDesc:'World & events',branchCol:'#00D9FF',em:'🗺️',nm:'Pathfinder',desc:'Uppdrag ger +10% bonus XP',cost:1,req:null,ef:()=>{G._talentU1=true;}},
-  {id:'u2',branch:'utforskare',em:'🐾',nm:'Pet Whisperer',desc:'Hunger & mood minskar 40% långsammare',cost:1,req:'u1',ef:()=>{G._talentU2=true;}},
-  {id:'u3',branch:'utforskare',em:'🔭',nm:'Explorer',desc:'+15 WP per event action',cost:2,req:'u2',ef:()=>{G._talentU3=true;}},
-  {id:'u4',branch:'utforskare',em:'⚡',nm:'Speed Runner',desc:'Quest progress ×2 i spel',cost:2,req:'u3',ef:()=>{G._talentU4=true;}},
-  {id:'u5',branch:'utforskare',em:'🌍',nm:'World Ruler',desc:'+50 WP direkt + zones ger mer',cost:3,req:'u4',legendary:true,ef:()=>{G._talentU5=true;addWorldPoints(50);}},
-  // 💰 HANDLARE — Commerce & Market
-  {id:'h1',branch:'handlare',branchNm:'💰 HANDLARE',branchDesc:'Handel & coins',branchCol:'#FFE600',em:'💰',nm:'Merchant',desc:'Shop discount –10%',cost:1,req:null,ef:()=>{G._talentH1=true;}},
-  {id:'h2',branch:'handlare',em:'📈',nm:'Investor',desc:'Tjäna +5 coins/min passivt',cost:1,req:'h1',ef:()=>{G._talentH2=true;}},
-  {id:'h3',branch:'handlare',em:'🏪',nm:'Shopkeeper',desc:'Commerce XP ×1.5',cost:2,req:'h2',ef:()=>{G._talentH3=true;}},
-  {id:'h4',branch:'handlare',em:'💎',nm:'Diamond Hands',desc:'Gacha spin +10% odds bonus',cost:2,req:'h3',ef:()=>{G._talentH4=true;}},
-  {id:'h5',branch:'handlare',em:'🏆',nm:'Tycoon',desc:'Alla coins intjänade ×2',cost:3,req:'h4',legendary:true,ef:()=>{G._talentH5=true;}},
-  // 🐾 DJURVÅRD — Pet Care & Bond
-  {id:'d1',branch:'djurvård',branchNm:'🐾 DJURVÅRD',branchDesc:'Pet & bond',branchCol:'#57FF3C',em:'🐾',nm:'Pet Lover',desc:'+20% hunger från mat',cost:1,req:null,ef:()=>{G._talentD1=true;}},
-  {id:'d2',branch:'djurvård',em:'💗',nm:'Bond Builder',desc:'Daily bond rewards ×1.5',cost:1,req:'d1',ef:()=>{G._talentD2=true;}},
-  {id:'d3',branch:'djurvård',em:'🧬',nm:'DNA Evolved',desc:'Evolutions kräver 1 level mindre',cost:2,req:'d2',ef:()=>{G._talentD3=true;}},
-  {id:'d4',branch:'djurvård',em:'⭐',nm:'Star Pet',desc:'Pet stats minskar 50% långsammare',cost:2,req:'d3',ef:()=>{G._talentD4=true;}},
-  {id:'d5',branch:'djurvård',em:'🌈',nm:'Perfect Bond',desc:'Pet håller alltid 80%+ stats',cost:3,req:'d4',legendary:true,ef:()=>{G._talentD5=true;}},
-  // ⚔️ KÄMPE — Elite tier (require k5)
-  {id:'k6',branch:'kämpe',em:'💀',nm:'Death Strike',desc:'10% chans att dubbla XP varje träning',cost:3,req:'k5',ef:()=>{G._talentK6=true;}},
-  {id:'k7',branch:'kämpe',em:'🌋',nm:'Volcanic Rage',desc:'Battle XP ×5 under 60 sek efter level-up',cost:4,req:'k6',legendary:true,ef:()=>{G._talentK7=true;}},
-  // 📸 SOCIAL — Elite tier
-  {id:'s6',branch:'social',em:'💥',nm:'Viral Bomb',desc:'Nästa 3 Flash-posts ger 5× normal XP',cost:3,req:'s5',ef:()=>{G._talentS6=true;}},
-  {id:'s7',branch:'social',em:'🌐',nm:'Global Icon',desc:'All XP permanent ×1.2 + aura uppgradering',cost:4,req:'s6',legendary:true,ef:()=>{G._talentS7=true;}},
-  // 🌍 UTFORSKARE — Elite tier
-  {id:'u6',branch:'utforskare',em:'🛸',nm:'Dimension Hop',desc:'Teleport till valfri world gratis en gång/dag',cost:3,req:'u5',ef:()=>{G._talentU6=true;}},
-  {id:'u7',branch:'utforskare',em:'🪐',nm:'Planet Ruler',desc:'+200 WP direkt + permanent WP bonus ×1.5',cost:4,req:'u6',legendary:true,ef:()=>{G._talentU7=true;addWorldPoints(200);showT('🪐 +200 WP! PLANET RULER!','p');}},
-  // 💰 HANDLARE — Elite tier
-  {id:'h6',branch:'handlare',em:'🏦',nm:'Central Bank',desc:'Passiv 10 coins/min alltid',cost:3,req:'h5',ef:()=>{G._talentH6=true;}},
-  {id:'h7',branch:'handlare',em:'💸',nm:'Billionaire',desc:'Alla coin-drops ×3 permanent',cost:4,req:'h6',legendary:true,ef:()=>{G._talentH7=true;}},
-  // 🐾 DJURVÅRD — Elite tier
-  {id:'d6',branch:'djurvård',em:'🧪',nm:'Miracle Cure',desc:'Pet återhämtar 50% stats en gång/dag gratis',cost:3,req:'d5',ef:()=>{G._talentD6=true;}},
-  {id:'d7',branch:'djurvård',em:'🌟',nm:'Eternal Bond',desc:'Pet kan aldrig ha stats under 60%',cost:4,req:'d6',legendary:true,ef:()=>{G._talentD7=true;}},
-  // ⚡ NEXUS — Cross-branch epic nodes
-  {id:'x1',branch:'nexus',branchNm:'⚡ NEXUS',branchDesc:'Kräver 2 grenar',branchCol:'#BF5FFF',em:'⚡',nm:'Warrior-Flash',desc:'Battle posts går virala automatiskt',cost:4,req:'k3',req2:'s3',ef:()=>{G._talentX1=true;}},
-  {id:'x2',branch:'nexus',em:'🌊',nm:'World Trader',desc:'+100 WP & låser upp exklusiv zone',cost:4,req:'u3',req2:'h3',ef:()=>{G._talentX2=true;addWorldPoints(100);showT('🌊 +100 WP! NEXUS UNLOCKED!','p');}},
-  {id:'x3',branch:'nexus',em:'🔱',nm:'Triple Crown',desc:'Alla stats minskar 60% långsammare. Episk power.',cost:5,req:'k5',req2:'d5',ef:()=>{G._talentX3=true;showT('🔱 TRIPLE CROWN! ULTIMATE POWER!','y');}},
-  {id:'x4',branch:'nexus',em:'👁️',nm:'All-Seeing Eye',desc:'+30% XP från ALLT. Permanent. Forever.',cost:5,req:'s5',req2:'u5',ef:()=>{G._talentX4=true;showT('👁️ ALL-SEEING EYE AKTIVERAT!','pk');}},
-  {id:'x5',branch:'nexus',em:'♾️',nm:'INFINITY',desc:'DU ÄR OÄNDLIG. Alla bonusar ×1.5 staplas.',cost:6,req:'k7',req2:'s7',ef:()=>{G._talentX5=true;spawnParticles(window.innerWidth/2,window.innerHeight/2,'stars');showT('♾️ INFINITY MODE AKTIVERAT!!!','y');vibe([80,40,120,40,160,40,200]);}},
+
+  // ════════════════════════════════════════════════
+  // ⚔️ KÄMPE — Battle / Training  (18 nodes)
+  // ════════════════════════════════════════════════
+  // Depth 1-3: trunk
+  {id:'k1',branch:'kämpe',branchNm:'⚔️ KÄMPE',branchDesc:'Strid & träning',branchCol:'#FF3B30',em:'💪',nm:'Iron Fist',desc:'+25% XP från träning',cost:1,req:null,type:'minor',depth:1,path:'a',ef:()=>{G._talentK1=true;}},
+  {id:'k2',branch:'kämpe',em:'🛡️',nm:'Battle Hardened',desc:'Energi minskar 30% långsammare',cost:1,req:'k1',type:'minor',depth:2,path:'a',ef:()=>{G._talentK2=true;}},
+  {id:'k3',branch:'kämpe',em:'⚔️',nm:'Warrior Spirit',desc:'+50% XP från battles',cost:2,req:'k2',type:'notable',depth:3,path:'a',ef:()=>{G._talentK3=true;}},
+  // Fork A — Berserker path (depth 4-8)
+  {id:'k4a',branch:'kämpe',em:'🔥',nm:'Berserker',desc:'Träning ger 2× XP + 10 coins',cost:2,req:'k3',type:'notable',depth:4,path:'a',ef:()=>{G._talentK4a=true;}},
+  {id:'k5a',branch:'kämpe',em:'💀',nm:'Death Strike',desc:'15% chans att dubbla XP varje träning',cost:2,req:'k4a',type:'notable',depth:5,path:'a',ef:()=>{G._talentK5a=true;}},
+  {id:'k6a',branch:'kämpe',em:'🌋',nm:'Volcanic Rage',desc:'Battle XP ×3 under 60 sek efter level-up',cost:3,req:'k5a',type:'keystone',depth:6,path:'a',ef:()=>{G._talentK6a=true;}},
+  {id:'k7a',branch:'kämpe',em:'👑',nm:'Warlord',desc:'Battle rewards ×3 permanent',cost:3,req:'k6a',type:'keystone',depth:7,path:'a',ef:()=>{G._talentK7a=true;}},
+  {id:'k8a',branch:'kämpe',em:'🩸',nm:'Blood Fury',desc:'Varje tredje träning: gratis + dubbel XP',cost:4,req:'k7a',type:'mastery',depth:8,path:'a',legendary:true,ef:()=>{G._talentK8a=true;showT('🩸 BLOOD FURY AKTIVERAT!','r');}},
+  // Fork B — Defender path (depth 4-8)
+  {id:'k4b',branch:'kämpe',em:'🛡',nm:'Iron Wall',desc:'Battle damage mot dig –40%',cost:2,req:'k3',type:'notable',depth:4,path:'b',ef:()=>{G._talentK4b=true;}},
+  {id:'k5b',branch:'kämpe',em:'⚓',nm:'Anchor',desc:'Kan aldrig förlora battle i rad 3× gånger',cost:2,req:'k4b',type:'notable',depth:5,path:'b',ef:()=>{G._talentK5b=true;}},
+  {id:'k6b',branch:'kämpe',em:'🏰',nm:'Fortress',desc:'HP återhämtar 20% per battle du vinner',cost:3,req:'k5b',type:'keystone',depth:6,path:'b',ef:()=>{G._talentK6b=true;}},
+  {id:'k7b',branch:'kämpe',em:'🗡️',nm:'Counter Strike',desc:'Vid block: motattack ger +30 XP bonus',cost:3,req:'k6b',type:'keystone',depth:7,path:'b',ef:()=>{G._talentK7b=true;}},
+  {id:'k8b',branch:'kämpe',em:'⚜️',nm:'Eternal Knight',desc:'Aldrig game-over i battle. Alltid överleva.',cost:4,req:'k7b',type:'mastery',depth:8,path:'b',legendary:true,ef:()=>{G._talentK8b=true;showT('⚜️ ETERNAL KNIGHT! Oövervinnlig!','y');}},
+  // Fork C — Speed path (depth 5-8, branches from k4a)
+  {id:'k5c',branch:'kämpe',em:'⚡',nm:'Lightning Reflex',desc:'Dodge-cooldown halveras',cost:2,req:'k4a',type:'notable',depth:5,path:'c',ef:()=>{G._talentK5c=true;}},
+  {id:'k6c',branch:'kämpe',em:'🌪️',nm:'Whirlwind',desc:'Varje attack ger +5 bonus coins',cost:2,req:'k5c',type:'notable',depth:6,path:'c',ef:()=>{G._talentK6c=true;gainCoins(10);}},
+  {id:'k7c',branch:'kämpe',em:'☄️',nm:'Meteor Strike',desc:'En gång/dag: garanterad crit som ger 5× XP',cost:3,req:'k6c',type:'keystone',depth:7,path:'c',ef:()=>{G._talentK7c=true;}},
+  {id:'k8c',branch:'kämpe',em:'🌠',nm:'Star Slayer',desc:'Alla träningsaktioner ger +1 TP var 10:e gång',cost:4,req:'k7c',type:'mastery',depth:8,path:'c',legendary:true,ef:()=>{G._talentK8c=true;showT('🌠 STAR SLAYER! Extra TP power!','y');}},
+  // Apex keystone (depth 10)
+  {id:'k9',branch:'kämpe',em:'🔱',nm:'GOD OF WAR',desc:'All XP ×2 + coins ×2 permanent. APEX.',cost:6,req:'k8a',type:'mastery',depth:10,path:'a',legendary:true,ef:()=>{G._talentK9=true;gainXP(50,'action');gainCoins(100);spawnParticles(window.innerWidth/2,window.innerHeight*.4,'stars');showT('🔱 GOD OF WAR AKTIVERAT!!!','r');vibe([50,20,100,20,150]);}},
+
+  // ════════════════════════════════════════════════
+  // 📸 SOCIAL — Flash & Community  (18 nodes)
+  // ════════════════════════════════════════════════
+  // Depth 1-3: trunk
+  {id:'s1',branch:'social',branchNm:'📸 SOCIAL',branchDesc:'Flash & community',branchCol:'#FF2D55',em:'✨',nm:'Flash Master',desc:'+15 XP per Flash-post',cost:1,req:null,type:'minor',depth:1,path:'a',ef:()=>{G._talentS1=true;}},
+  {id:'s2',branch:'social',em:'🎯',nm:'Viral Starter',desc:'Flash ger +5 MOOD bonus',cost:1,req:'s1',type:'minor',depth:2,path:'a',ef:()=>{G._talentS2=true;}},
+  {id:'s3',branch:'social',em:'👥',nm:'Circle Leader',desc:'Circles ger +10% bonus stats',cost:2,req:'s2',type:'notable',depth:3,path:'a',ef:()=>{G._talentS3=true;}},
+  // Fork A — Influencer path (depth 4-8)
+  {id:'s4a',branch:'social',em:'📱',nm:'Influencer',desc:'Social XP ×1.5 alltid',cost:2,req:'s3',type:'notable',depth:4,path:'a',ef:()=>{G._talentS4a=true;}},
+  {id:'s5a',branch:'social',em:'🌟',nm:'Viral Legend',desc:'Alla social-actions ger 2× coins',cost:2,req:'s4a',type:'notable',depth:5,path:'a',ef:()=>{G._talentS5a=true;}},
+  {id:'s6a',branch:'social',em:'💥',nm:'Viral Bomb',desc:'Nästa 5 Flash-posts ger 5× normal XP',cost:3,req:'s5a',type:'keystone',depth:6,path:'a',ef:()=>{G._talentS6a=true;}},
+  {id:'s7a',branch:'social',em:'🌐',nm:'Global Icon',desc:'All XP permanent ×1.2 + aura uppgradering',cost:3,req:'s6a',type:'keystone',depth:7,path:'a',ef:()=>{G._talentS7a=true;}},
+  {id:'s8a',branch:'social',em:'👁‍🗨',nm:'Cultural Reset',desc:'Du sätter metatrends — circle bonuses ×3',cost:4,req:'s7a',type:'mastery',depth:8,path:'a',legendary:true,ef:()=>{G._talentS8a=true;showT('👁‍🗨 CULTURAL RESET! Du är trenden!','pk');}},
+  // Fork B — Community path (depth 4-8)
+  {id:'s4b',branch:'social',em:'🤝',nm:'Hype Builder',desc:'Varje daglig inloggning ger +20 XP bonus',cost:2,req:'s3',type:'notable',depth:4,path:'b',ef:()=>{G._talentS4b=true;}},
+  {id:'s5b',branch:'social',em:'🎪',nm:'Event King',desc:'Circle events ger 2× rewards',cost:2,req:'s4b',type:'notable',depth:5,path:'b',ef:()=>{G._talentS5b=true;}},
+  {id:'s6b',branch:'social',em:'💬',nm:'Chat God',desc:'Meddelanden i circles ger +3 XP vardera',cost:3,req:'s5b',type:'keystone',depth:6,path:'b',ef:()=>{G._talentS6b=true;}},
+  {id:'s7b',branch:'social',em:'🏅',nm:'Community MVP',desc:'Streak-bonusar dubblas alltid',cost:3,req:'s6b',type:'keystone',depth:7,path:'b',ef:()=>{G._talentS7b=true;}},
+  {id:'s8b',branch:'social',em:'🎭',nm:'Legend of the Feed',desc:'Alla streaks räknas dubbelt. Oåtkomlig aura.',cost:4,req:'s7b',type:'mastery',depth:8,path:'b',legendary:true,ef:()=>{G._talentS8b=true;showT('🎭 LEGEND OF THE FEED!','pk');vibe([30,20,60]);}},
+  // Fork C — Aesthetics path (depth 5-8, branches from s4a)
+  {id:'s5c',branch:'social',em:'🎨',nm:'Aesthetic Eye',desc:'Pet-utseende bonusar ger +10 XP extra',cost:2,req:'s4a',type:'notable',depth:5,path:'c',ef:()=>{G._talentS5c=true;}},
+  {id:'s6c',branch:'social',em:'💅',nm:'Drip Check',desc:'Varje ny pet-skin ger +25 coins',cost:2,req:'s5c',type:'notable',depth:6,path:'c',ef:()=>{G._talentS6c=true;}},
+  {id:'s7c',branch:'social',em:'🌈',nm:'Main Character',desc:'Din profil syns alltid överst i feed',cost:3,req:'s6c',type:'keystone',depth:7,path:'c',ef:()=>{G._talentS7c=true;}},
+  {id:'s8c',branch:'social',em:'💎',nm:'Icon Status',desc:'Flash-photos ger 3× XP + bonus coins alltid',cost:4,req:'s7c',type:'mastery',depth:8,path:'c',legendary:true,ef:()=>{G._talentS8c=true;gainCoins(50);showT('💎 ICON STATUS! Du är ikonisk.','pk');}},
+  // Apex keystone
+  {id:'s9',branch:'social',em:'🌌',nm:'CELEBRITY',desc:'Alla community-actions ger ×3 allt. MEGA.',cost:6,req:'s8a',type:'mastery',depth:10,path:'a',legendary:true,ef:()=>{G._talentS9=true;gainXP(60,'social');gainCoins(80);spawnParticles(window.innerWidth/2,window.innerHeight*.4,'stars');showT('🌌 CELEBRITY MODE AKTIVERAT!!!','pk');vibe([60,30,120,30,180]);}},
+
+  // ════════════════════════════════════════════════
+  // 🌍 UTFORSKARE — World & Events  (17 nodes)
+  // ════════════════════════════════════════════════
+  // Depth 1-3: trunk
+  {id:'u1',branch:'utforskare',branchNm:'🌍 UTFORSKARE',branchDesc:'World & events',branchCol:'#00D9FF',em:'🗺️',nm:'Pathfinder',desc:'Uppdrag ger +10% bonus XP',cost:1,req:null,type:'minor',depth:1,path:'a',ef:()=>{G._talentU1=true;}},
+  {id:'u2',branch:'utforskare',em:'🐾',nm:'Pet Whisperer',desc:'Hunger & mood minskar 40% långsammare',cost:1,req:'u1',type:'minor',depth:2,path:'a',ef:()=>{G._talentU2=true;}},
+  {id:'u3',branch:'utforskare',em:'🔭',nm:'Explorer',desc:'+15 WP per event action',cost:2,req:'u2',type:'notable',depth:3,path:'a',ef:()=>{G._talentU3=true;}},
+  // Fork A — Speed path (depth 4-7)
+  {id:'u4a',branch:'utforskare',em:'⚡',nm:'Speed Runner',desc:'Quest progress ×2 i spel',cost:2,req:'u3',type:'notable',depth:4,path:'a',ef:()=>{G._talentU4a=true;}},
+  {id:'u5a',branch:'utforskare',em:'🌍',nm:'World Ruler',desc:'+50 WP direkt + zones ger mer',cost:2,req:'u4a',type:'notable',depth:5,path:'a',ef:()=>{G._talentU5a=true;addWorldPoints(50);}},
+  {id:'u6a',branch:'utforskare',em:'🛸',nm:'Dimension Hop',desc:'Lås upp hemliga zoner gratis en gång/dag',cost:3,req:'u5a',type:'keystone',depth:6,path:'a',ef:()=>{G._talentU6a=true;}},
+  {id:'u7a',branch:'utforskare',em:'🪐',nm:'Planet Ruler',desc:'+150 WP direkt + permanent WP bonus ×1.5',cost:4,req:'u6a',type:'mastery',depth:7,path:'a',legendary:true,ef:()=>{G._talentU7a=true;addWorldPoints(150);showT('🪐 +150 WP! PLANET RULER!','p');}},
+  // Fork B — Event path (depth 4-7)
+  {id:'u4b',branch:'utforskare',em:'🎪',nm:'Event Chaser',desc:'Events ger +30 bonus XP alltid',cost:2,req:'u3',type:'notable',depth:4,path:'b',ef:()=>{G._talentU4b=true;}},
+  {id:'u5b',branch:'utforskare',em:'🎯',nm:'Bullseye',desc:'Alla event-mål klara ger bonus ×2',cost:2,req:'u4b',type:'notable',depth:5,path:'b',ef:()=>{G._talentU5b=true;}},
+  {id:'u6b',branch:'utforskare',em:'🏆',nm:'Event Champion',desc:'Event-streaks ger ×3 WP per dag',cost:3,req:'u5b',type:'keystone',depth:6,path:'b',ef:()=>{G._talentU6b=true;}},
+  {id:'u7b',branch:'utforskare',em:'🌋',nm:'Zone Destroyer',desc:'Alla zoner ger +50% WP permanent',cost:4,req:'u6b',type:'mastery',depth:7,path:'b',legendary:true,ef:()=>{G._talentU7b=true;addWorldPoints(75);showT('🌋 ZONE DESTROYER! +75WP!','b');}},
+  // Fork C — Lore path (depth 5-8, branches from u4a)
+  {id:'u5c',branch:'utforskare',em:'📜',nm:'Lore Keeper',desc:'Diary entries ger +5 XP vardera',cost:2,req:'u4a',type:'notable',depth:5,path:'c',ef:()=>{G._talentU5c=true;}},
+  {id:'u6c',branch:'utforskare',em:'🧭',nm:'Ancient Map',desc:'Hemliga event clues ger ×2 XP',cost:2,req:'u5c',type:'notable',depth:6,path:'c',ef:()=>{G._talentU6c=true;}},
+  {id:'u7c',branch:'utforskare',em:'🗝️',nm:'Key Master',desc:'Lås upp alla zoner utan WP-krav en gång',cost:3,req:'u6c',type:'keystone',depth:7,path:'c',ef:()=>{G._talentU7c=true;showT('🗝️ KEY MASTER! Alla zoner öppna!','b');}},
+  {id:'u8c',branch:'utforskare',em:'📖',nm:'World Historian',desc:'Varje diary-entry: +1 bonus coin + aura',cost:4,req:'u7c',type:'mastery',depth:8,path:'c',legendary:true,ef:()=>{G._talentU8c=true;showT('📖 WORLD HISTORIAN! Legacy unlocked!','b');}},
+  // Apex keystone
+  {id:'u9',branch:'utforskare',em:'🌌',nm:'COSMOS',desc:'+500 WP direkt. Alla WP-actions ×2 för alltid.',cost:6,req:'u7a',type:'mastery',depth:10,path:'a',legendary:true,ef:()=>{G._talentU9=true;addWorldPoints(500);spawnParticles(window.innerWidth/2,window.innerHeight*.4,'stars');showT('🌌 COSMOS! +500 WP! UNIVERSUM ÄR DITT!!!','b');vibe([80,40,160,40,240]);}},
+
+  // ════════════════════════════════════════════════
+  // 💰 HANDLARE — Commerce & Market  (17 nodes)
+  // ════════════════════════════════════════════════
+  // Depth 1-3: trunk
+  {id:'h1',branch:'handlare',branchNm:'💰 HANDLARE',branchDesc:'Handel & coins',branchCol:'#FFE600',em:'💰',nm:'Merchant',desc:'Shop discount -10%',cost:1,req:null,type:'minor',depth:1,path:'a',ef:()=>{G._talentH1=true;}},
+  {id:'h2',branch:'handlare',em:'📈',nm:'Investor',desc:'Tjäna +5 coins bonus per action',cost:1,req:'h1',type:'minor',depth:2,path:'a',ef:()=>{G._talentH2=true;}},
+  {id:'h3',branch:'handlare',em:'🏪',nm:'Shopkeeper',desc:'Commerce XP ×1.5',cost:2,req:'h2',type:'notable',depth:3,path:'a',ef:()=>{G._talentH3=true;}},
+  // Fork A — Riches path (depth 4-7)
+  {id:'h4a',branch:'handlare',em:'💎',nm:'Diamond Hands',desc:'Gacha spin +15% odds bonus',cost:2,req:'h3',type:'notable',depth:4,path:'a',ef:()=>{G._talentH4a=true;}},
+  {id:'h5a',branch:'handlare',em:'🏆',nm:'Tycoon',desc:'Alla coins intjänade ×2',cost:2,req:'h4a',type:'notable',depth:5,path:'a',ef:()=>{G._talentH5a=true;}},
+  {id:'h6a',branch:'handlare',em:'🏦',nm:'Central Bank',desc:'Passiv +15 coins per action alltid',cost:3,req:'h5a',type:'keystone',depth:6,path:'a',ef:()=>{G._talentH6a=true;}},
+  {id:'h7a',branch:'handlare',em:'💸',nm:'Billionaire',desc:'Alla coin-drops ×3 permanent',cost:4,req:'h6a',type:'mastery',depth:7,path:'a',legendary:true,ef:()=>{G._talentH7a=true;gainCoins(200);showT('💸 BILLIONAIRE! +200 coins!','y');}},
+  // Fork B — Gacha path (depth 4-7)
+  {id:'h4b',branch:'handlare',em:'🎰',nm:'Lucky Roller',desc:'Gacha: +1 gratis spin per dag',cost:2,req:'h3',type:'notable',depth:4,path:'b',ef:()=>{G._talentH4b=true;}},
+  {id:'h5b',branch:'handlare',em:'🍀',nm:'Four Leaf',desc:'Gacha legendary drop rate +5%',cost:2,req:'h4b',type:'notable',depth:5,path:'b',ef:()=>{G._talentH5b=true;}},
+  {id:'h6b',branch:'handlare',em:'🎲',nm:'Loaded Dice',desc:'Varje 5:e gacha-spin garanterar rare+',cost:3,req:'h5b',type:'keystone',depth:6,path:'b',ef:()=>{G._talentH6b=true;}},
+  {id:'h7b',branch:'handlare',em:'👑',nm:'Jackpot King',desc:'En gång per dag: guaranteed jackpot spin',cost:4,req:'h6b',type:'mastery',depth:7,path:'b',legendary:true,ef:()=>{G._talentH7b=true;showT('👑 JACKPOT KING! Daglig jackpot unlocked!','y');}},
+  // Fork C — Market path (depth 5-8, branches from h4a)
+  {id:'h5c',branch:'handlare',em:'📊',nm:'Market Watch',desc:'Se alla shop-priser minska 20% extra',cost:2,req:'h4a',type:'notable',depth:5,path:'c',ef:()=>{G._talentH5c=true;}},
+  {id:'h6c',branch:'handlare',em:'🤑',nm:'Arbitrage',desc:'Sälj items för 30% mer än normalt',cost:2,req:'h5c',type:'notable',depth:6,path:'c',ef:()=>{G._talentH6c=true;}},
+  {id:'h7c',branch:'handlare',em:'🏛️',nm:'Trade Empire',desc:'Alla köp genererar +10% cashback i coins',cost:3,req:'h6c',type:'keystone',depth:7,path:'c',ef:()=>{G._talentH7c=true;}},
+  {id:'h8c',branch:'handlare',em:'💰',nm:'Wall Street King',desc:'Passiv inkomst: +50 coins var 5:e minut',cost:4,req:'h7c',type:'mastery',depth:8,path:'c',legendary:true,ef:()=>{G._talentH8c=true;gainCoins(100);showT('💰 WALL STREET KING! Passiv ekonomi max!','y');}},
+  // Apex keystone
+  {id:'h9',branch:'handlare',em:'♛',nm:'OLIGARCH',desc:'Alla coin-drops ×5 forever. Ekonomin är din.',cost:6,req:'h7a',type:'mastery',depth:10,path:'a',legendary:true,ef:()=>{G._talentH9=true;gainCoins(500);spawnParticles(window.innerWidth/2,window.innerHeight*.4,'stars');showT('♛ OLIGARCH MODE! +500 COINS!!! RIKAST.','y');vibe([60,30,120,30,180]);}},
+
+  // ════════════════════════════════════════════════
+  // 🐾 DJURVÅRD — Pet Care & Bond  (17 nodes)
+  // ════════════════════════════════════════════════
+  // Depth 1-3: trunk
+  {id:'d1',branch:'djurvård',branchNm:'🐾 DJURVÅRD',branchDesc:'Pet & bond',branchCol:'#57FF3C',em:'🐾',nm:'Pet Lover',desc:'+20% hunger från mat',cost:1,req:null,type:'minor',depth:1,path:'a',ef:()=>{G._talentD1=true;}},
+  {id:'d2',branch:'djurvård',em:'💗',nm:'Bond Builder',desc:'Daily bond rewards ×1.5',cost:1,req:'d1',type:'minor',depth:2,path:'a',ef:()=>{G._talentD2=true;}},
+  {id:'d3',branch:'djurvård',em:'🧬',nm:'DNA Evolved',desc:'Evolutions kräver 1 level mindre',cost:2,req:'d2',type:'notable',depth:3,path:'a',ef:()=>{G._talentD3=true;}},
+  // Fork A — Bond path (depth 4-7)
+  {id:'d4a',branch:'djurvård',em:'⭐',nm:'Star Pet',desc:'Pet stats minskar 50% långsammare',cost:2,req:'d3',type:'notable',depth:4,path:'a',ef:()=>{G._talentD4a=true;}},
+  {id:'d5a',branch:'djurvård',em:'🌈',nm:'Perfect Bond',desc:'Pet håller alltid 80%+ stats',cost:2,req:'d4a',type:'notable',depth:5,path:'a',ef:()=>{G._talentD5a=true;}},
+  {id:'d6a',branch:'djurvård',em:'🧪',nm:'Miracle Cure',desc:'Pet återhämtar 50% stats en gång/dag gratis',cost:3,req:'d5a',type:'keystone',depth:6,path:'a',ef:()=>{G._talentD6a=true;}},
+  {id:'d7a',branch:'djurvård',em:'🌟',nm:'Eternal Bond',desc:'Pet kan aldrig ha stats under 60%',cost:4,req:'d6a',type:'mastery',depth:7,path:'a',legendary:true,ef:()=>{G._talentD7a=true;showT('🌟 ETERNAL BOND! Pet är evigt frisk!','g');}},
+  // Fork B — Heal path (depth 4-7)
+  {id:'d4b',branch:'djurvård',em:'💊',nm:'Quick Heal',desc:'Mat-CD halveras. Hungrig? Aldrig.',cost:2,req:'d3',type:'notable',depth:4,path:'b',ef:()=>{G._talentD4b=true;}},
+  {id:'d5b',branch:'djurvård',em:'🌿',nm:'Herbal Remedy',desc:'Varje matning ger +5 MOOD bonus',cost:2,req:'d4b',type:'notable',depth:5,path:'b',ef:()=>{G._talentD5b=true;}},
+  {id:'d6b',branch:'djurvård',em:'🏥',nm:'Pet Hospital',desc:'Gratis fullständig healing en gång/dag',cost:3,req:'d5b',type:'keystone',depth:6,path:'b',ef:()=>{G._talentD6b=true;}},
+  {id:'d7b',branch:'djurvård',em:'💉',nm:'Immortal Pet',desc:'Pet förlorar aldrig mer än 1% per timme',cost:4,req:'d6b',type:'mastery',depth:7,path:'b',legendary:true,ef:()=>{G._talentD7b=true;showT('💉 IMMORTAL PET! Stats frysta på max!','g');}},
+  // Fork C — Evolution path (depth 5-8, branches from d4a)
+  {id:'d5c',branch:'djurvård',em:'🦋',nm:'Metamorphosis',desc:'Evolution animation + +30 XP vid varje evo',cost:2,req:'d4a',type:'notable',depth:5,path:'c',ef:()=>{G._talentD5c=true;}},
+  {id:'d6c',branch:'djurvård',em:'🐉',nm:'Dragon Tamer',desc:'Level 10+ pets ger ×2 rewards alltid',cost:2,req:'d5c',type:'notable',depth:6,path:'c',ef:()=>{G._talentD6c=true;}},
+  {id:'d7c',branch:'djurvård',em:'🔮',nm:'Arcane Bond',desc:'Pet genererar +5 XP/min passivt när glad',cost:3,req:'d6c',type:'keystone',depth:7,path:'c',ef:()=>{G._talentD7c=true;}},
+  {id:'d8c',branch:'djurvård',em:'👾',nm:'Mystic Companion',desc:'Pet kan ha 2 aktiva power-ups samtidigt',cost:4,req:'d7c',type:'mastery',depth:8,path:'c',legendary:true,ef:()=>{G._talentD8c=true;showT('👾 MYSTIC COMPANION! Dubbel power-up!','g');}},
+  // Apex keystone
+  {id:'d9',branch:'djurvård',em:'🌺',nm:'DIVINE PET',desc:'Pet är odödlig och ger ×3 allt alltid. APEX.',cost:6,req:'d7a',type:'mastery',depth:10,path:'a',legendary:true,ef:()=>{G._talentD9=true;gainXP(80,'action');spawnParticles(window.innerWidth/2,window.innerHeight*.4,'stars');showT('🌺 DIVINE PET AKTIVERAT!!! APEX BOND!','g');vibe([60,30,120,30,200]);}},
+
+  // ════════════════════════════════════════════════
+  // 🎣 FISKARE — Fishing & Patience  (16 nodes)
+  // ════════════════════════════════════════════════
+  // Depth 1-3: trunk
+  {id:'fi1',branch:'fiskare',branchNm:'🎣 FISKARE',branchDesc:'Fiske & tålamod',branchCol:'#00BFFF',em:'🎣',nm:'Rookie Fisher',desc:'Fiske-actions ger +10 XP',cost:1,req:null,type:'minor',depth:1,path:'a',ef:()=>{G._talentFi1=true;}},
+  {id:'fi2',branch:'fiskare',em:'🐟',nm:'Fish Sense',desc:'Fångst-chansen ökar +15%',cost:1,req:'fi1',type:'minor',depth:2,path:'a',ef:()=>{G._talentFi2=true;}},
+  {id:'fi3',branch:'fiskare',em:'🌊',nm:'Water Reader',desc:'Event-fiske ger ×2 XP alltid',cost:2,req:'fi2',type:'notable',depth:3,path:'a',ef:()=>{G._talentFi3=true;}},
+  // Fork A — Big Catch path (depth 4-7)
+  {id:'fi4a',branch:'fiskare',em:'🐠',nm:'Exotic Hunter',desc:'Sällsynta fiskar ger +50 coins bonus',cost:2,req:'fi3',type:'notable',depth:4,path:'a',ef:()=>{G._talentFi4a=true;}},
+  {id:'fi5a',branch:'fiskare',em:'🦈',nm:'Shark Tamer',desc:'Fångst av boss-fisk ger +100 XP',cost:2,req:'fi4a',type:'notable',depth:5,path:'a',ef:()=>{G._talentFi5a=true;}},
+  {id:'fi6a',branch:'fiskare',em:'🏅',nm:'Tournament Pro',desc:'Fishing tournaments ger ×3 rewards',cost:3,req:'fi5a',type:'keystone',depth:6,path:'a',ef:()=>{G._talentFi6a=true;}},
+  {id:'fi7a',branch:'fiskare',em:'🐋',nm:'Whale Whisperer',desc:'Legendär fisk: +200 coins + +50 XP direkt',cost:4,req:'fi6a',type:'mastery',depth:7,path:'a',legendary:true,ef:()=>{G._talentFi7a=true;gainCoins(200);gainXP(50,'action');showT('🐋 WHALE WHISPERER! +200 coins!','b');}},
+  // Fork B — Patience path (depth 4-7)
+  {id:'fi4b',branch:'fiskare',em:'⏳',nm:'Zen Fisher',desc:'Väntan ger passiv +2 XP/min',cost:2,req:'fi3',type:'notable',depth:4,path:'b',ef:()=>{G._talentFi4b=true;}},
+  {id:'fi5b',branch:'fiskare',em:'🌅',nm:'Dawn Fisher',desc:'Morgon-actions ger +20% extra XP',cost:2,req:'fi4b',type:'notable',depth:5,path:'b',ef:()=>{G._talentFi5b=true;}},
+  {id:'fi6b',branch:'fiskare',em:'🎋',nm:'Still Waters',desc:'Alla CD-timers minskar 25% globalt',cost:3,req:'fi5b',type:'keystone',depth:6,path:'b',ef:()=>{G._talentFi6b=true;}},
+  {id:'fi7b',branch:'fiskare',em:'🌙',nm:'Moonlight Catch',desc:'Natt-fiske: garanterat legendär varje 10:e kast',cost:4,req:'fi6b',type:'mastery',depth:7,path:'b',legendary:true,ef:()=>{G._talentFi7b=true;showT('🌙 MOONLIGHT CATCH! Nattfiske unlocked!','b');}},
+  // Fork C — Ecosystem path (depth 5-7, branches from fi4a)
+  {id:'fi5c',branch:'fiskare',em:'🦀',nm:'Ecosystem Scout',desc:'Fiske-platser ger +1 WP extra per kast',cost:2,req:'fi4a',type:'notable',depth:5,path:'c',ef:()=>{G._talentFi5c=true;}},
+  {id:'fi6c',branch:'fiskare',em:'🪸',nm:'Reef Keeper',desc:'Speciella platser låser upp exklusiva fiskar',cost:2,req:'fi5c',type:'notable',depth:6,path:'c',ef:()=>{G._talentFi6c=true;}},
+  {id:'fi7c',branch:'fiskare',em:'🌿',nm:'Nature Bond',desc:'Fiske ger +5 MOOD till pet varje gång',cost:3,req:'fi6c',type:'keystone',depth:7,path:'c',ef:()=>{G._talentFi7c=true;}},
+  // Apex keystone
+  {id:'fi8',branch:'fiskare',em:'🔱',nm:'NEPTUNE',desc:'Alla vatten-actions ger ×4 allt. Du äger havet.',cost:6,req:'fi7a',type:'mastery',depth:10,path:'a',legendary:true,ef:()=>{G._talentFi8=true;gainCoins(300);gainXP(100,'action');addWorldPoints(50);spawnParticles(window.innerWidth/2,window.innerHeight*.4,'stars');showT('🔱 NEPTUNE! Havet lyder dig!','b');vibe([80,40,160,40,240]);}},
+
+  // ════════════════════════════════════════════════
+  // 🎨 KREATIV — Creativity & Art  (15 nodes)
+  // ════════════════════════════════════════════════
+  // Depth 1-3: trunk
+  {id:'kr1',branch:'kreativ',branchNm:'🎨 KREATIV',branchDesc:'Kreativitet & konst',branchCol:'#FF6EC7',em:'🎨',nm:'Doodler',desc:'Pet customisation ger +5 XP',cost:1,req:null,type:'minor',depth:1,path:'a',ef:()=>{G._talentKr1=true;}},
+  {id:'kr2',branch:'kreativ',em:'✏️',nm:'Sketch Artist',desc:'Varje ny pet-design ger +10 coins',cost:1,req:'kr1',type:'minor',depth:2,path:'a',ef:()=>{G._talentKr2=true;}},
+  {id:'kr3',branch:'kreativ',em:'🖌️',nm:'Color Theory',desc:'Pet-färger ger MOOD +10 boost',cost:2,req:'kr2',type:'notable',depth:3,path:'a',ef:()=>{G._talentKr3=true;}},
+  // Fork A — Visual path (depth 4-7)
+  {id:'kr4a',branch:'kreativ',em:'📸',nm:'Photo Pro',desc:'Flash-bilder med filter ger 2× social XP',cost:2,req:'kr3',type:'notable',depth:4,path:'a',ef:()=>{G._talentKr4a=true;}},
+  {id:'kr5a',branch:'kreativ',em:'🎬',nm:'Director',desc:'Reels & animerade posts ger ×3 XP',cost:2,req:'kr4a',type:'notable',depth:5,path:'a',ef:()=>{G._talentKr5a=true;}},
+  {id:'kr6a',branch:'kreativ',em:'🏆',nm:'Award Winner',desc:'Kreativa posts nomineras automatiskt till events',cost:3,req:'kr5a',type:'keystone',depth:6,path:'a',ef:()=>{G._talentKr6a=true;}},
+  {id:'kr7a',branch:'kreativ',em:'🎭',nm:'Auteur',desc:'Alla visuella actions ger permanent ×2 XP',cost:4,req:'kr6a',type:'mastery',depth:7,path:'a',legendary:true,ef:()=>{G._talentKr7a=true;showT('🎭 AUTEUR! Visuell mästare!','pk');}},
+  // Fork B — Design path (depth 4-7)
+  {id:'kr4b',branch:'kreativ',em:'🧩',nm:'Pattern Maker',desc:'Pet accessories ger +15 XP vardera',cost:2,req:'kr3',type:'notable',depth:4,path:'b',ef:()=>{G._talentKr4b=true;}},
+  {id:'kr5b',branch:'kreativ',em:'💡',nm:'Visionary',desc:'Ny pet-skin varje level skapar buzz: +20 coins',cost:2,req:'kr4b',type:'notable',depth:5,path:'b',ef:()=>{G._talentKr5b=true;}},
+  {id:'kr6b',branch:'kreativ',em:'🌟',nm:'Trendsetter',desc:'Dina designs inspirerar andra: circle-bonus ×2',cost:3,req:'kr5b',type:'keystone',depth:6,path:'b',ef:()=>{G._talentKr6b=true;}},
+  {id:'kr7b',branch:'kreativ',em:'🦄',nm:'Unicorn Creator',desc:'Exklusiv pet-skin varje månad. Helt gratis.',cost:4,req:'kr6b',type:'mastery',depth:7,path:'b',legendary:true,ef:()=>{G._talentKr7b=true;showT('🦄 UNICORN CREATOR! Gratis skins forever!','pk');}},
+  // Fork C — Music path (depth 5-7, branches from kr4a)
+  {id:'kr5c',branch:'kreativ',em:'🎵',nm:'Sound Designer',desc:'Musik-actions i Flash ger +15 XP bonus',cost:2,req:'kr4a',type:'notable',depth:5,path:'c',ef:()=>{G._talentKr5c=true;}},
+  {id:'kr6c',branch:'kreativ',em:'🎸',nm:'Beat Maker',desc:'Ljud-effekter på posts ger viral-chans +20%',cost:2,req:'kr5c',type:'notable',depth:6,path:'c',ef:()=>{G._talentKr6c=true;}},
+  {id:'kr7c',branch:'kreativ',em:'🎤',nm:'Chart Topper',desc:'Musik-virala posts ger ×4 XP en gång/dag',cost:3,req:'kr6c',type:'keystone',depth:7,path:'c',ef:()=>{G._talentKr7c=true;}},
+  // Apex keystone
+  {id:'kr8',branch:'kreativ',em:'🌌',nm:'RENAISSANCE',desc:'Kreativitet höjer ALLT ×2. Din konst = power.',cost:6,req:'kr7a',type:'mastery',depth:10,path:'a',legendary:true,ef:()=>{G._talentKr8=true;gainXP(70,'social');gainCoins(120);spawnParticles(window.innerWidth/2,window.innerHeight*.4,'stars');showT('🌌 RENAISSANCE! Du är ett konstverk!!!','pk');vibe([50,25,100,25,180]);}},
+
+  // ════════════════════════════════════════════════
+  // 🏆 MÄSTER — Champion (requires other branches)  (12 nodes)
+  // ════════════════════════════════════════════════
+  // Depth 1-3: trunk (requires k3 + s3 to start)
+  {id:'m1',branch:'mäster',branchNm:'🏆 MÄSTER',branchDesc:'Champion — kräver andra grenar',branchCol:'#FFD700',em:'🏆',nm:'Rising Champion',desc:'+30 XP vid varje ny milstolpe',cost:2,req:'k3',req2:'s3',type:'notable',depth:1,path:'a',ef:()=>{G._talentM1=true;showT('🏆 MÄSTER-grenen upplåst!','y');}},
+  {id:'m2',branch:'mäster',em:'🥇',nm:'Gold Standard',desc:'Alla rewards ×1.3 permanent',cost:2,req:'m1',type:'notable',depth:2,path:'a',ef:()=>{G._talentM2=true;}},
+  {id:'m3',branch:'mäster',em:'🎖️',nm:'Hall of Fame',desc:'Ditt namn visas i top 3 community alltid',cost:3,req:'m2',type:'keystone',depth:3,path:'a',ef:()=>{G._talentM3=true;showT('🎖️ HALL OF FAME! Ditt namn syns alltid!','y');}},
+  // Fork A — Tournament path (depth 4-6)
+  {id:'m4a',branch:'mäster',em:'⚡',nm:'Tournament Ace',desc:'Events: kan delta i exklusiva master-turneringar',cost:3,req:'m3',type:'keystone',depth:4,path:'a',ef:()=>{G._talentM4a=true;}},
+  {id:'m5a',branch:'mäster',em:'🦅',nm:'Eagle Eye',desc:'Aldrig missa en event-deadline — CD -30%',cost:3,req:'m4a',type:'keystone',depth:5,path:'a',ef:()=>{G._talentM5a=true;}},
+  {id:'m6a',branch:'mäster',em:'💫',nm:'Prime Form',desc:'Level-ups ger +2 TP istället för 1',cost:4,req:'m5a',type:'mastery',depth:6,path:'a',legendary:true,ef:()=>{G._talentM6a=true;G.talentPoints=(G.talentPoints||0)+3;showT('💫 PRIME FORM! +3 bonus TP!','y');}},
+  // Fork B — Legacy path (depth 4-6)
+  {id:'m4b',branch:'mäster',em:'📜',nm:'Legacy Builder',desc:'Varje 10 levels: +50 coins automatisk',cost:3,req:'m3',type:'keystone',depth:4,path:'b',ef:()=>{G._talentM4b=true;}},
+  {id:'m5b',branch:'mäster',em:'🗺️',nm:'World Conqueror',desc:'+100 WP direkt + alla WP-zoner ger ×2',cost:3,req:'m4b',type:'keystone',depth:5,path:'b',ef:()=>{G._talentM5b=true;addWorldPoints(100);showT('🗺️ +100 WP! World Conqueror!','y');}},
+  {id:'m6b',branch:'mäster',em:'👸',nm:'Royal Decree',desc:'Alla branches ger 10% extra XP alltid',cost:4,req:'m5b',type:'mastery',depth:6,path:'b',legendary:true,ef:()=>{G._talentM6b=true;showT('👸 ROYAL DECREE! Alla grenar buffade!','y');}},
+  // Fork C — Prestige path (depth 5-6, branches from m4a)
+  {id:'m5c',branch:'mäster',em:'🌟',nm:'Prestige Aura',desc:'Visuell aura runt pet. +20 MOOD bonus.',cost:3,req:'m4a',type:'keystone',depth:5,path:'c',ef:()=>{G._talentM5c=true;}},
+  {id:'m6c',branch:'mäster',em:'🔥',nm:'On Fire',desc:'5-dagars streak: alla rewards ×2 hela veckan',cost:4,req:'m5c',type:'mastery',depth:6,path:'c',legendary:true,ef:()=>{G._talentM6c=true;showT('🔥 ON FIRE! Vecka av dubbel power!','y');}},
+  // Ultimate apex
+  {id:'m7',branch:'mäster',em:'♾️',nm:'GRAND MASTER',desc:'Du har nått apex. All XP & coins ×2 FOREVER.',cost:6,req:'m6a',type:'mastery',depth:8,path:'a',legendary:true,ef:()=>{G._talentM7=true;gainXP(100,'action');gainCoins(300);addWorldPoints(100);G.talentPoints=(G.talentPoints||0)+5;spawnParticles(window.innerWidth/2,window.innerHeight*.3,'stars');spawnParticles(window.innerWidth*.3,window.innerHeight*.5,'stars');spawnParticles(window.innerWidth*.7,window.innerHeight*.5,'stars');showT('♾️ GRAND MASTER!!! APEX OF APEX!!!','y');vibe([100,50,200,50,300,50,200]);}},
+
+  // ════════════════════════════════════════════════
+  // ⚡ NEXUS — Cross-branch epic nodes  (21 nodes)
+  // ════════════════════════════════════════════════
+  {id:'x1',branch:'nexus',branchNm:'⚡ NEXUS',branchDesc:'Kräver 2+ grenar',branchCol:'#BF5FFF',em:'⚡',nm:'Warrior-Flash',desc:'Battle posts går virala automatiskt — båda XP',cost:4,req:'k3',req2:'s3',type:'keystone',ef:()=>{G._talentX1=true;showT('⚡ WARRIOR-FLASH! Battle + viral!','pk');}},
+  {id:'x2',branch:'nexus',em:'🌊',nm:'World Trader',desc:'+100 WP & låser upp exklusiv handelszon',cost:4,req:'u3',req2:'h3',type:'keystone',ef:()=>{G._talentX2=true;addWorldPoints(100);showT('🌊 +100 WP! WORLD TRADER!','p');}},
+  {id:'x3',branch:'nexus',em:'🔱',nm:'Triple Crown',desc:'Alla stats minskar 60% långsammare. Epos.',cost:5,req:'k5a',req2:'d5a',type:'mastery',ef:()=>{G._talentX3=true;showT('🔱 TRIPLE CROWN! ULTIMATE POWER!','y');}},
+  {id:'x4',branch:'nexus',em:'👁️',nm:'All-Seeing Eye',desc:'+35% XP från ALLT. Permanent. Forever.',cost:5,req:'s5a',req2:'u5a',type:'mastery',ef:()=>{G._talentX4=true;gainXP(30,'action');showT('👁️ ALL-SEEING EYE AKTIVERAT!','pk');}},
+  {id:'x5',branch:'nexus',em:'♾️',nm:'INFINITY',desc:'DU ÄR OÄNDLIG. Alla bonusar ×1.5 staplas.',cost:6,req:'k8a',req2:'s8a',type:'mastery',legendary:true,ef:()=>{G._talentX5=true;spawnParticles(window.innerWidth/2,window.innerHeight/2,'stars');showT('♾️ INFINITY MODE!!!','y');vibe([80,40,120,40,160,40,200]);}},
+  {id:'x6',branch:'nexus',em:'🎣',nm:'Fisher-Warrior',desc:'Fiske ger battle-XP + battle ger fiske-bonus',cost:4,req:'fi3',req2:'k3',type:'keystone',ef:()=>{G._talentX6=true;showT('🎣⚔️ FISHER-WARRIOR! Dubbel XP!','b');}},
+  {id:'x7',branch:'nexus',em:'🎨',nm:'Artist Influencer',desc:'Kreativa posts räknas som social Flash ×2',cost:4,req:'kr3',req2:'s3',type:'keystone',ef:()=>{G._talentX7=true;showT('🎨📸 ARTIST INFLUENCER!','pk');}},
+  {id:'x8',branch:'nexus',em:'🌺',nm:'Nature Healer',desc:'Fiske-lugn läker pet stats +5% per session',cost:4,req:'fi3',req2:'d3',type:'keystone',ef:()=>{G._talentX8=true;showT('🌺 NATURE HEALER! Pet healar via fiske!','g');}},
+  {id:'x9',branch:'nexus',em:'💎',nm:'Creative Commerce',desc:'Kreativa skins säljer för ×2 i shop',cost:4,req:'kr3',req2:'h3',type:'keystone',ef:()=>{G._talentX9=true;gainCoins(50);showT('💎 CREATIVE COMMERCE! +50 coins!','y');}},
+  {id:'x10',branch:'nexus',em:'🌍',nm:'Explorer-Fisher',desc:'+50 WP varje gång du fiskar i ny zon',cost:4,req:'u3',req2:'fi3',type:'keystone',ef:()=>{G._talentX10=true;addWorldPoints(30);showT('🌍🎣 EXPLORER-FISHER! +30 WP!','b');}},
+  {id:'x11',branch:'nexus',em:'🎭',nm:'Social Artist',desc:'Kreativ Flash viral-chans: +30% alltid',cost:4,req:'s4a',req2:'kr4a',type:'keystone',ef:()=>{G._talentX11=true;showT('🎭 SOCIAL ARTIST! Viral-chans maxad!','pk');}},
+  {id:'x12',branch:'nexus',em:'🏦',nm:'Battle Treasury',desc:'Vinner du battle: +20 coins direkt alltid',cost:4,req:'k4a',req2:'h4a',type:'keystone',ef:()=>{G._talentX12=true;gainCoins(30);showT('🏦 BATTLE TREASURY! Coins per win!','y');}},
+  {id:'x13',branch:'nexus',em:'🌟',nm:'Bond Champion',desc:'Hög bond ger +20% battle XP bonus alltid',cost:5,req:'d5a',req2:'k5a',type:'mastery',ef:()=>{G._talentX13=true;showT('🌟 BOND CHAMPION! Bond = Battle power!','g');}},
+  {id:'x14',branch:'nexus',em:'🎪',nm:'Event Merchant',desc:'Event-deltagande ger +30 coins per event',cost:5,req:'u4b',req2:'h4a',type:'mastery',ef:()=>{G._talentX14=true;gainCoins(60);showT('🎪 EVENT MERCHANT! +60 coins!','y');}},
+  {id:'x15',branch:'nexus',em:'🔮',nm:'Mystic Fisher',desc:'Fiske under events ger ×3 XP + WP',cost:5,req:'fi5a',req2:'u4b',type:'mastery',ef:()=>{G._talentX15=true;addWorldPoints(20);showT('🔮 MYSTIC FISHER! Event-fiske OP!','b');}},
+  {id:'x16',branch:'nexus',em:'👑',nm:'Champion Artist',desc:'Kreativ mäster: alla nodes i kreativ ger ×1.5',cost:5,req:'m3',req2:'kr6a',type:'mastery',ef:()=>{G._talentX16=true;showT('👑 CHAMPION ARTIST! Kreativ APEX!','pk');}},
+  {id:'x17',branch:'nexus',em:'🌊',nm:'Aqua Commerce',desc:'Fiske-items säljs för ×3 i shop automatiskt',cost:5,req:'fi6a',req2:'h6a',type:'mastery',ef:()=>{G._talentX17=true;gainCoins(150);showT('🌊 AQUA COMMERCE! +150 coins!','y');}},
+  {id:'x18',branch:'nexus',em:'🐉',nm:'Dragon Bond',desc:'Max-bond pet ger ×2 alla actions alltid',cost:5,req:'d7a',req2:'k7a',type:'mastery',legendary:true,ef:()=>{G._talentX18=true;gainXP(50,'action');showT('🐉 DRAGON BOND! Max power!','g');}},
+  {id:'x19',branch:'nexus',em:'🌈',nm:'Rainbow Master',desc:'Har du 5+ branches: all XP ×1.5 permanent',cost:5,req:'m3',req2:'fi3',type:'mastery',legendary:true,ef:()=>{G._talentX19=true;gainXP(40,'action');gainCoins(80);showT('🌈 RAINBOW MASTER! 5+ grenar bonus!','pk');}},
+  {id:'x20',branch:'nexus',em:'🌌',nm:'UNIVERSE',desc:'Alla branches maxade: oändlig passive XP.',cost:6,req:'m6a',req2:'kr7a',type:'mastery',legendary:true,ef:()=>{G._talentX20=true;gainXP(200,'action');gainCoins(500);addWorldPoints(200);spawnParticles(window.innerWidth/2,window.innerHeight*.3,'stars');spawnParticles(window.innerWidth*.2,window.innerHeight*.5,'stars');spawnParticles(window.innerWidth*.8,window.innerHeight*.5,'stars');showT('🌌 UNIVERSE UNLOCKED!!! ALLT ÄR DITT!!!','y');vibe([100,50,200,50,300,50,400,50,300]);}},
+  {id:'x21',branch:'nexus',em:'☀️',nm:'SOLAR GOD',desc:'Du är solen. Alla actions ×3. Total dominans.',cost:6,req:'k9',req2:'s9',type:'mastery',legendary:true,ef:()=>{G._talentX21=true;gainXP(300,'action');gainCoins(1000);addWorldPoints(300);G.talentPoints=(G.talentPoints||0)+10;spawnParticles(window.innerWidth/2,window.innerHeight*.3,'stars');spawnParticles(window.innerWidth*.3,window.innerHeight*.4,'stars');spawnParticles(window.innerWidth*.7,window.innerHeight*.4,'stars');spawnParticles(window.innerWidth/2,window.innerHeight*.6,'stars');showT('☀️ SOLAR GOD!!! +1000 COINS +300 XP +10 TP!!!','y');vibe([200,50,300,50,400,50,300,50,200,50,100]);}},
 ];
 function openTalentTree(){const tm=$('talentModal');if(!tm)return;tm.classList.add('open');renderTalentTree();}
 function closeTalentTree(){const tm=$('talentModal');if(tm)tm.classList.remove('open');}
 function renderTalentTree(){
   const scroll=$('talentScroll');if(!scroll)return;
-  const tp=$('talentPts');if(tp)tp.textContent=(G.talentPoints||0)+' TP';
-  const owned=G.talents||[];
-  const branches=['kämpe','social','utforskare','handlare','djurvård'];
-  const nexus=TALENT_DEFS.filter(t=>t.branch==='nexus');
-  let html='<div style="padding:0 14px 8px"><div style="font-size:10px;color:var(--t3);line-height:1.5">Lär dig förmågor längs varje gren. Nexus-noder kräver 2 grenar.<br>TP erhålls vid level-up (fler TP per högre level).</div></div>';
-  html+=branches.map(br=>{
-    const nodes=TALENT_DEFS.filter(t=>t.branch===br);
-    const meta=nodes[0];if(!meta)return'';
-    const col=meta.branchCol;
-    const branchOwned=nodes.filter(n=>owned.includes(n.id)).length;
-    const nodesHtml=nodes.map((n,i)=>{
-      const isOwned=owned.includes(n.id);
-      const reqMet=!n.req||owned.includes(n.req);
-      const isLocked=!isOwned&&!reqMet;
-      const isAvailable=!isOwned&&reqMet;
-      const bgCol=isOwned?col+'28':isAvailable?'rgba(255,255,255,.05)':'rgba(0,0,0,.3)';
-      const borderCol=isOwned?col:isAvailable?col+'66':'rgba(255,255,255,.08)';
-      const onClick=isOwned?`showT('✅ Redan lärd!','y')`:(isLocked?`showT('🔒 Lär dig föregående förmåga först!','r')`:`learnTalent('${n.id}')`);
-      const connector=i>0?`<div style="width:24px;height:3px;background:${isOwned&&owned.includes(nodes[i-1].id)?col:'rgba(255,255,255,.1)'};border-radius:2px;flex-shrink:0"></div>`:'';
-      return`${connector}<div onclick="${onClick}" style="flex-shrink:0;width:60px;height:68px;border-radius:14px;border:2px solid ${borderCol};background:${bgCol};display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;cursor:pointer;position:relative;transition:all .12s;-webkit-tap-highlight-color:transparent;${isOwned?'box-shadow:0 0 14px '+col+'44':''};${n.legendary?'border-style:dashed;':''}" >
-        <div style="font-size:22px;line-height:1">${n.em}</div>
-        <div style="font-size:7.5px;font-weight:900;color:${isOwned?col:'var(--t2)'};text-align:center;line-height:1.2;max-width:56px;overflow:hidden">${n.nm}</div>
-        <div style="position:absolute;bottom:-7px;right:-5px;background:${isOwned?col:'rgba(255,255,255,.12)'};color:${isOwned?'#000':'var(--t3)'};font-size:8px;font-weight:900;font-family:var(--mono);padding:1px 4px;border-radius:5px">${isOwned?'✓':n.cost+'TP'}</div>
-        ${isAvailable&&!isOwned?`<div style="position:absolute;top:-4px;left:-4px;width:10px;height:10px;border-radius:50%;background:${col};animation:xpGlow .8s ease-in-out infinite"></div>`:''}
-      </div>`;
-    }).join('');
-    return`<div style="margin-bottom:14px"><div style="display:flex;align-items:center;gap:8px;padding:0 4px;margin-bottom:8px"><div style="width:22px;height:22px;border-radius:7px;background:${col}22;border:1.5px solid ${col}66;display:flex;align-items:center;justify-content:center;font-size:12px">${meta.branchNm.split(' ')[0]}</div><div><div style="font-size:11px;font-weight:900;color:${col};font-family:var(--mono)">${meta.branchNm}</div><div style="font-size:9px;color:var(--t3)">${meta.branchDesc} · ${branchOwned}/${nodes.length}</div></div></div><div style="display:flex;align-items:center;overflow-x:auto;padding:8px 4px 14px;scrollbar-width:none;gap:0">${nodesHtml}</div></div>`;
-  }).join('');
-  // Nexus section
-  if(nexus.length>0){
-    html+=`<div style="margin:4px 0 8px;padding:10px 12px;background:rgba(191,95,255,.08);border:1.5px solid rgba(191,95,255,.25);border-radius:16px"><div style="font-size:10px;font-weight:900;color:#BF5FFF;font-family:var(--mono);margin-bottom:10px">⚡ NEXUS — CROSS-BRANCH NODES</div>`;
-    html+=nexus.map(n=>{
-      const isOwned=owned.includes(n.id);
-      const req1Met=!n.req||owned.includes(n.req);
-      const req2Met=!n.req2||owned.includes(n.req2);
-      const reqMet=req1Met&&req2Met;
-      const isLocked=!isOwned&&!reqMet;
-      const req1Node=TALENT_DEFS.find(x=>x.id===n.req);
-      const req2Node=TALENT_DEFS.find(x=>x.id===n.req2);
-      const reqs=[req1Node,req2Node].filter(Boolean).map(r=>`${r.em} ${r.nm}`).join(' + ');
-      const onClick=isOwned?`showT('✅ Redan lärd!','y')`:(isLocked?`showT('🔒 Behöver: ${reqs.replace(/'/g,'')}','r')`:`learnTalent('${n.id}')`);
-      return`<div onclick="${onClick}" style="display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:14px;border:2px solid ${isOwned?'#BF5FFF':isLocked?'rgba(255,255,255,.08)':'rgba(191,95,255,.4)'};background:${isOwned?'rgba(191,95,255,.18)':isLocked?'rgba(0,0,0,.2)':'rgba(191,95,255,.06)'};margin-bottom:8px;cursor:pointer;-webkit-tap-highlight-color:transparent">
-        <div style="font-size:28px">${n.em}</div>
-        <div style="flex:1"><div style="font-size:12px;font-weight:900;color:${isOwned?'#BF5FFF':'var(--t1)'}">${n.nm}</div><div style="font-size:9px;color:var(--t3);margin-top:1px">${n.desc}</div><div style="font-size:8px;color:rgba(191,95,255,.6);margin-top:3px">Kräver: ${reqs}</div></div>
-        <div style="font-size:11px;font-weight:900;color:${isOwned?'var(--g)':'#BF5FFF'};font-family:var(--mono)">${isOwned?'✓':n.cost+' TP'}</div>
-      </div>`;
-    }).join('');
-    html+='</div>';
+  const TP_EL=$('talentPts');if(TP_EL)TP_EL.textContent=(G.talentPoints||0)+' TP';
+  const OW=G.talents||[];
+  const ALL=TALENT_DEFS;
+  const nexus=ALL.filter(t=>t.branch==='nexus');
+  const totalOwned=OW.length;const totalAll=ALL.length;
+  const totalPct=Math.round(totalOwned/totalAll*100);
+  // Grid constants
+  const CELL=64,NH=62,CH=26;
+  const PI={a:0,b:1,c:2};
+
+  function nodeCard(n,brCol){
+    const isO=OW.includes(n.id);
+    const rMet=(!n.req||OW.includes(n.req))&&(!n.req2||OW.includes(n.req2));
+    const isA=!isO&&rMet;const isL=!isO&&!rMet;
+    const onClick=isO?`showT('✅ Redan lärd!','y')`:(isL?`showT('🔒 Lär föregående förmågor!','r')`:`learnTalent('${n.id}')`);
+    const szM={minor:42,notable:48,keystone:54,mastery:56};const sz=szM[n.type]||46;
+    const brM={minor:'10px',notable:'14px',keystone:'50%',mastery:'10px'};const br=brM[n.type]||'12px';
+    const isDia=n.type==='mastery';
+    const bg=isO?brCol+'2A':isA?'rgba(255,255,255,.07)':'rgba(0,0,0,.5)';
+    const bd=isO?brCol:isA?brCol+'88':'rgba(255,255,255,.12)';
+    const glow=isO?`box-shadow:0 0 16px ${brCol}44,inset 0 0 6px ${brCol}11;`:'';
+    const dash=n.legendary?'border-style:dashed;':'';
+    const rot=isDia?'transform:rotate(45deg);':'';const irot=isDia?'transform:rotate(-45deg);':'';
+    const emSz=n.type==='mastery'?17:n.type==='keystone'?16:n.type==='notable'?15:13;
+    const nmSz=sz<=44?5.5:6;
+    return`<div onclick="${onClick}" style="width:${sz}px;height:${sz}px;border-radius:${br};border:2px solid ${bd};background:${bg};${glow}${dash}${rot}display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;cursor:pointer;position:relative;transition:transform .1s,box-shadow .1s;-webkit-tap-highlight-color:transparent" title="${n.nm}: ${n.desc}">
+      <div style="${irot}display:flex;flex-direction:column;align-items:center;gap:1px">
+        <div style="font-size:${emSz}px;line-height:1">${n.em}</div>
+        <div style="font-size:${nmSz}px;font-weight:900;color:${isO?brCol:'var(--t2)'};text-align:center;line-height:1.1;max-width:${sz-6}px;word-break:break-word">${n.nm.length>10?n.nm.slice(0,9)+'…':n.nm}</div>
+      </div>
+      <div style="position:absolute;bottom:-9px;left:50%;${isDia?'transform:translateX(-50%) rotate(-45deg)':'transform:translateX(-50%)'};background:${isO?brCol:'rgba(15,15,15,.95)'};color:${isO?'#000':'var(--t3)'};font-size:6px;font-weight:900;font-family:var(--mono);padding:1px 4px;border-radius:4px;white-space:nowrap;border:1px solid ${isO?brCol+'66':'rgba(255,255,255,.12)'}">${isO?'✓':n.cost+'TP'}</div>
+      ${isA?`<div style="position:absolute;top:-4px;left:-4px;width:8px;height:8px;border-radius:50%;background:${brCol};animation:xpGlow .8s ease-in-out infinite${isDia?';transform:rotate(-45deg)':''}"></div>`:''}
+    </div>`;
   }
+
+  function renderBranch(br){
+    const nodes=ALL.filter(t=>t.branch===br);if(!nodes.length)return'';
+    const meta=nodes[0];const brCol=meta.branchCol||'#39FF14';
+    const brO=nodes.filter(n=>OW.includes(n.id)).length;
+    const pct=Math.round(brO/nodes.length*100);
+    const byD={};nodes.forEach(n=>{const d=n.depth||1;if(!byD[d])byD[d]=[];byD[d].push(n);});
+    const depths=Object.keys(byD).map(Number).sort((a,b)=>a-b);
+    let tree='';
+    depths.forEach((d,di)=>{
+      const lvl=byD[d];const pMap={};lvl.forEach(n=>pMap[n.path||'a']=n);
+      // Connector row
+      if(di>0){
+        const prevD=depths[di-1];
+        const pairs=[];
+        lvl.forEach(child=>{
+          const par=ALL.find(n=>n.id===child.req&&n.branch===br&&n.depth===prevD);
+          if(par)pairs.push({fp:par.path||'a',tp:child.path||'a',lit:OW.includes(child.id)&&OW.includes(par.id)});
+        });
+        tree+=`<div style="position:relative;height:${CH}px;width:${3*CELL}px">`;
+        pairs.forEach(p=>{
+          const fi=PI[p.fp],ti=PI[p.tp];
+          const lc=p.lit?brCol:brCol+'44';
+          const fx=fi*CELL+CELL/2,tx=ti*CELL+CELL/2;
+          if(fi===ti){
+            tree+=`<div style="position:absolute;left:${fx-1}px;top:0;width:2px;height:${CH}px;background:${lc};border-radius:1px"></div>`;
+          } else {
+            const mnX=Math.min(fx,tx),mxX=Math.max(fx,tx);
+            tree+=`<div style="position:absolute;left:${fx-1}px;top:0;width:2px;height:${CH/2}px;background:${lc};border-radius:1px"></div>`;
+            tree+=`<div style="position:absolute;left:${mnX}px;top:${CH/2-1}px;width:${mxX-mnX}px;height:2px;background:${lc};border-radius:1px"></div>`;
+            tree+=`<div style="position:absolute;left:${tx-1}px;top:${CH/2}px;width:2px;height:${CH/2}px;background:${lc};border-radius:1px"></div>`;
+          }
+        });
+        tree+='</div>';
+      }
+      // Node row
+      tree+=`<div style="display:flex;height:${NH}px;width:${3*CELL}px">`;
+      ['a','b','c'].forEach(path=>{
+        const n=pMap[path];
+        tree+=`<div style="width:${CELL}px;display:flex;align-items:center;justify-content:center">${n?nodeCard(n,brCol):''}</div>`;
+      });
+      tree+='</div>';
+    });
+    return`<div style="margin-bottom:14px;border:1.5px solid ${brCol}33;border-radius:18px;overflow:hidden;background:rgba(0,0,0,.2)">
+      <div style="display:flex;align-items:center;gap:8px;padding:9px 12px;background:${brCol}11">
+        <div style="font-size:15px">${meta.branchNm.split(' ')[0]}</div>
+        <div style="flex:1"><div style="font-size:11px;font-weight:900;color:${brCol};font-family:var(--mono)">${meta.branchNm}</div><div style="font-size:8.5px;color:var(--t3)">${meta.branchDesc||''}</div></div>
+        <div style="font-size:10px;font-weight:900;color:${brCol};font-family:var(--mono)">${brO}/${nodes.length}</div>
+      </div>
+      <div style="height:3px;background:rgba(255,255,255,.06)"><div style="height:100%;width:${pct}%;background:${brCol};transition:width .4s"></div></div>
+      <div style="overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch;padding:10px 8px 14px">${tree}</div>
+    </div>`;
+  }
+
+  let html=`<div style="padding:0 14px 10px">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px">
+      <div style="font-size:9px;color:var(--t3)">Lär förmågor längs varje gren. Nexus kräver 2 grenar.</div>
+      <div style="font-size:10px;font-weight:900;color:var(--g);font-family:var(--mono)">${totalOwned}/${totalAll}</div>
+    </div>
+    <div style="height:4px;background:rgba(255,255,255,.07);border-radius:3px;overflow:hidden">
+      <div style="height:100%;width:${totalPct}%;background:linear-gradient(90deg,#39FF14,#00D9FF);border-radius:3px;transition:width .4s"></div>
+    </div>
+    <div style="margin-top:6px;display:flex;gap:14px;font-size:8px;color:var(--t3)">
+      <span>◼ minor</span><span>● notable</span><span>○ keystone</span><span>◆ mastery</span>
+    </div>
+  </div>`;
+  html+=['kämpe','social','utforskare','handlare','djurvård','fiskare','kreativ','mäster'].map(renderBranch).join('');
+  // NEXUS
+  const nexO=nexus.filter(n=>OW.includes(n.id)).length;
+  html+=`<div style="margin-bottom:16px;border:1.5px solid rgba(191,95,255,.35);border-radius:18px;overflow:hidden;background:rgba(191,95,255,.05)">
+    <div style="display:flex;align-items:center;gap:8px;padding:9px 12px;background:rgba(191,95,255,.12)">
+      <div style="font-size:16px">⚡</div>
+      <div style="flex:1"><div style="font-size:11px;font-weight:900;color:#BF5FFF;font-family:var(--mono)">NEXUS — CROSS-BRANCH</div><div style="font-size:8.5px;color:var(--t3)">Kräver noder från 2 grenar</div></div>
+      <div style="font-size:10px;font-weight:900;color:#BF5FFF;font-family:var(--mono)">${nexO}/${nexus.length}</div>
+    </div>
+    <div style="height:3px;background:rgba(255,255,255,.06)"><div style="height:100%;width:${Math.round(nexO/nexus.length*100)}%;background:#BF5FFF;transition:width .4s"></div></div>
+    <div style="padding:10px 10px">`;
+  nexus.forEach(n=>{
+    const isO=OW.includes(n.id);
+    const rMet=(!n.req||OW.includes(n.req||''))&&(!n.req2||OW.includes(n.req2||''));
+    const isL=!isO&&!rMet;
+    const rn1=ALL.find(x=>x.id===n.req);const rn2=ALL.find(x=>x.id===n.req2);
+    const reqs=[rn1,rn2].filter(Boolean).map(r=>r.nm).join(' + ');
+    const onClick=isO?`showT('✅ Redan lärd!','y')`:(isL?`showT('🔒 ${reqs.replace(/'/g,'')} krävs','r')`:`learnTalent('${n.id}')`);
+    html+=`<div onclick="${onClick}" style="display:flex;align-items:center;gap:9px;padding:8px 10px;border-radius:12px;border:1.5px solid ${isO?'#BF5FFF':isL?'rgba(255,255,255,.08)':'rgba(191,95,255,.4)'};background:${isO?'rgba(191,95,255,.18)':isL?'rgba(0,0,0,.25)':'rgba(191,95,255,.06)'};margin-bottom:6px;cursor:pointer;-webkit-tap-highlight-color:transparent${n.legendary?';border-style:dashed':''}">
+      <div style="font-size:${n.legendary?28:22}px;flex-shrink:0">${n.em}</div>
+      <div style="flex:1;min-width:0">
+        <div style="font-size:11px;font-weight:900;color:${isO?'#BF5FFF':n.legendary?'#FFD700':'var(--t1)'}">${n.nm}${n.legendary?' ★':''}</div>
+        <div style="font-size:8.5px;color:var(--t3);overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${n.desc}</div>
+        <div style="font-size:7.5px;color:rgba(191,95,255,.65);margin-top:2px">Kräver: ${reqs}</div>
+      </div>
+      <div style="font-size:11px;font-weight:900;color:${isO?'var(--g)':'#BF5FFF'};font-family:var(--mono);flex-shrink:0">${isO?'✓':n.cost+' TP'}</div>
+    </div>`;
+  });
+  html+='</div></div>';
   scroll.innerHTML=html;
 }
 function learnTalent(id){
   const t=TALENT_DEFS.find(x=>x.id===id);if(!t)return;
   if(!G.talents)G.talents=[];
   if(G.talents.includes(id)){showT('Redan lärd!','y');return;}
-  if(t.req&&!G.talents.includes(t.req)){const prev=TALENT_DEFS.find(x=>x.id===t.req);showT('🔒 Lär dig '+(prev?prev.nm:'föregående förmåga')+' först!','r');return;}
-  if(t.req2&&!G.talents.includes(t.req2)){const prev2=TALENT_DEFS.find(x=>x.id===t.req2);showT('🔒 Lär dig '+(prev2?prev2.nm:'annan gren')+ ' också!','r');return;}
+  // req_or: either req OR req_or satisfies the prerequisite
+  const req1Ok=!t.req||G.talents.includes(t.req);
+  const reqOrOk=t.req_or&&G.talents.includes(t.req_or);
+  if(t.req&&!req1Ok&&!reqOrOk){const prev=TALENT_DEFS.find(x=>x.id===t.req);showT('🔒 Lär dig '+(prev?prev.nm:'föregående förmåga')+' först!','r');return;}
+  if(t.req2&&!G.talents.includes(t.req2)){const prev2=TALENT_DEFS.find(x=>x.id===t.req2);showT('🔒 Lär dig '+(prev2?prev2.nm:'annan gren')+' också!','r');return;}
   if((G.talentPoints||0)<t.cost){showT('❌ Behöver '+t.cost+' TP! Levla upp för mer.','r');SFX.error();return;}
   G.talentPoints-=t.cost;G.talents.push(id);t.ef();
   SFX.win();vibe([30,20,60,20,80]);showT('🌳 '+t.nm+' inlärd!','g');
