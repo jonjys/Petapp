@@ -164,7 +164,7 @@ textarea.inp{resize:none;min-height:68px;}
 /* PET HOME — TAMAGOTCHI HERO STYLE */
 .pet-hero{margin:0;background:linear-gradient(180deg,#07040f 0%,#030d07 50%,#040a09 100%);border:none;border-bottom:1px solid var(--line);padding:8px 0 6px;position:relative;overflow:hidden;}
 .pet-hero::before{content:'';position:absolute;width:380px;height:380px;border-radius:50%;background:radial-gradient(circle,rgba(0,232,122,.08) 0%,transparent 65%);top:-120px;left:50%;transform:translateX(-50%);pointer-events:none;}
-.pet-hero::after{content:'';position:absolute;bottom:72px;left:10%;right:10%;height:1px;background:linear-gradient(90deg,transparent,rgba(0,232,122,.18),transparent);pointer-events:none;}
+.pet-hero::after{content:'';position:absolute;bottom:72px;left:10%;right:10%;height:1px;background:transparent;pointer-events:none;}
 .ph-row{display:flex;flex-direction:column;align-items:center;margin-bottom:0;}
 .ph-top{display:flex;align-items:center;justify-content:space-between;padding:0 16px 8px;width:100%;}
 .ph-info{text-align:center;padding:8px 0 4px;}
@@ -836,10 +836,13 @@ textarea.inp{resize:none;min-height:68px;}
    PET ROOM — Neko Atsume style
 ═══════════════════════════════════ */
 .pet-room-layer{position:absolute;inset:0;overflow:hidden;pointer-events:none;border-radius:0;}
-.prl-sky{position:absolute;top:0;left:0;right:0;height:60%;}
-.prl-floor{position:absolute;bottom:0;left:0;right:0;height:40%;}
-.prl-floor-glow{position:absolute;bottom:0;left:10%;right:10%;height:30px;background:radial-gradient(ellipse,rgba(57,255,20,.1),transparent 70%);}
+.prl-sky{position:absolute;top:0;left:0;right:0;height:62%;}
+.prl-floor{position:absolute;bottom:0;left:0;right:0;height:38%;}
+.prl-floor-glow{position:absolute;top:0;left:0;right:0;height:24px;background:linear-gradient(180deg,rgba(57,255,20,.12),transparent);}
 .prl-star{position:absolute;border-radius:50%;background:#fff;animation:twk var(--dur) ease-in-out infinite var(--del);}
+.prl-room-item{position:absolute;pointer-events:none;font-size:var(--sz,18px);line-height:1;}
+.prl-room-item.wall-item{top:var(--yt,18%);left:var(--xl,10%);}
+.prl-room-item.floor-item{bottom:calc(38% + 2px);left:var(--xl,10%);}
 @keyframes twk{0%,100%{opacity:.15;}50%{opacity:.9;}}
 .prl-item{position:absolute;font-size:var(--sz);animation:iFloat var(--dur) ease-in-out infinite var(--del);cursor:pointer;-webkit-tap-highlight-color:transparent;z-index:3;pointer-events:auto;}
 @keyframes iFloat{0%,100%{transform:translateY(0);}50%{transform:translateY(-5px);}}
@@ -960,8 +963,10 @@ textarea.inp{resize:none;min-height:68px;}
 .fish-em.nibble{animation:fishNib .12s ease-out 3;}
 @keyframes fishSwim{0%{transform:translateX(0) scaleX(1);}50%{transform:translateX(var(--sw)) scaleX(-1);}100%{transform:translateX(0) scaleX(1);}}
 @keyframes fishNib{0%,100%{transform:none;}50%{transform:translateY(-5px);}}
-.fish-catch-fx{position:absolute;inset:0;background:rgba(255,220,0,.18);pointer-events:none;opacity:0;transition:opacity .1s;}
+.fish-catch-fx{position:absolute;inset:0;background:radial-gradient(circle,rgba(57,255,20,.7) 0%,rgba(255,230,0,.5) 40%,transparent 75%);pointer-events:none;opacity:0;transition:opacity .08s;}
 .fish-catch-fx.on{opacity:1;}
+.fish-fly{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%) scale(0);font-size:52px;z-index:99;pointer-events:none;animation:fishFlyOut .9s cubic-bezier(.17,.89,.32,1.28) forwards;}
+@keyframes fishFlyOut{0%{transform:translate(-50%,-50%) scale(0);opacity:1}60%{transform:translate(-50%,-200%) scale(1.4);opacity:1}100%{transform:translate(-50%,-340%) scale(.6);opacity:0}}
 .fish-tap-prompt{position:absolute;left:50%;transform:translateX(-50%);background:linear-gradient(135deg,var(--y),var(--o));color:#000;font-size:12px;font-weight:900;padding:7px 18px;border-radius:22px;font-family:var(--mono);pointer-events:none;white-space:nowrap;animation:bobPrompt .55s ease-in-out infinite;box-shadow:0 4px 16px rgba(255,200,0,.4);}
 @keyframes bobPrompt{0%,100%{transform:translateX(-50%) translateY(0);}50%{transform:translateX(-50%) translateY(-4px);}}
 .fish-bubble{position:absolute;border-radius:50%;background:rgba(0,180,255,.15);animation:fishBub var(--dur) ease-in-out infinite var(--del);}
@@ -1403,7 +1408,7 @@ textarea.inp{resize:none;min-height:68px;}
 .gi-nm{font-size:10px;font-weight:900;display:block;margin-bottom:3px;}
 .gi-cost{font-size:9px;font-family:var(--mono);font-weight:900;color:var(--y);}
 /* ── SEASONAL EVENT ── */
-.event-banner{margin:0 14px 12px;border-radius:22px;padding:16px;background:linear-gradient(135deg,rgba(255,45,85,.15),rgba(191,95,255,.1));border:1.5px solid rgba(255,45,85,.4);cursor:pointer;position:relative;overflow:hidden;}
+.event-banner{margin:0 14px 16px;border-radius:22px;padding:16px 16px 18px;background:linear-gradient(135deg,rgba(255,45,85,.15),rgba(191,95,255,.1));border:1.5px solid rgba(255,45,85,.4);cursor:pointer;position:relative;overflow:hidden;}
 .event-banner-glow{position:absolute;inset:-20px;background:radial-gradient(circle at 70% 50%,rgba(255,45,85,.12),transparent 60%);pointer-events:none;}
 .event-title{font-size:14px;font-weight:900;color:var(--pk);margin-bottom:2px;display:flex;align-items:center;gap:6px;}
 .event-subtitle{font-size:10px;color:var(--t3);margin-bottom:10px;}
@@ -1542,23 +1547,23 @@ textarea.inp{resize:none;min-height:68px;}
     <!-- HOME -->
     <div class="view active" id="view-home">
       <!-- COMPACT PET HERO — horizontal layout -->
-      <div class="pet-hero" id="sec-pet" style="padding:8px 12px 6px">
+      <div class="pet-hero" id="sec-pet" style="padding:8px 12px 8px;border-bottom:1px solid rgba(57,255,20,.15);background:linear-gradient(180deg,#070b14 0%,#060d10 100%)">
         <div class="pet-hero-bg"></div>
-        <div class="pet-room-layer" id="petRoomLayer" style="opacity:.35;pointer-events:none">
+        <div class="pet-room-layer" id="petRoomLayer" style="opacity:.22;pointer-events:none">
           <div class="prl-sky" id="prlSky"></div>
           <div class="prl-floor"><div class="prl-floor-glow"></div></div>
           <div class="prl-weather" id="petWeather"></div>
         </div>
         <div style="display:flex;align-items:center;gap:10px;position:relative;z-index:2">
-          <!-- Pet avatar -->
-          <div class="pet-av-wrap" id="petAvWrap" onclick="onPetTap(event)" style="width:80px;height:80px;flex-shrink:0">
-            <div class="pet-aura" id="petAura"></div>
-            <div class="pet-ring" style="width:82px;height:82px"></div>
-            <div class="pet-ring2" style="width:90px;height:90px"></div>
-            <canvas id="petCanvas" width="320" height="320" style="width:80px;height:80px;box-shadow:0 0 20px rgba(0,232,122,.35);border-radius:50%;position:relative;z-index:2"></canvas>
-            <div class="pet-emote" id="petEmote" style="font-size:16px;top:-12px"></div>
-            <div class="pet-sad-alert" id="petSadAlert" style="font-size:8px;padding:1px 5px;bottom:-4px">😢</div>
-            <button class="pet-edit-btn" onclick="event.stopPropagation();openPetDesigner()" style="top:0;right:-4px;font-size:9px;padding:2px 4px;border-radius:7px">🎨</button>
+          <!-- Pet avatar with emoji fallback -->
+          <div style="position:relative;width:84px;height:84px;flex-shrink:0;cursor:pointer" onclick="onPetTap(event)">
+            <!-- emoji fallback always visible -->
+            <div id="petHeroEmoji" style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:46px;z-index:1;filter:drop-shadow(0 0 14px rgba(57,255,20,.5))">🐉</div>
+            <div class="pet-aura" id="petAura" style="z-index:3"></div>
+            <div style="position:absolute;inset:0;border-radius:50%;border:2.5px solid rgba(57,255,20,.4);animation:ringPulse 3s ease-in-out infinite;z-index:2;pointer-events:none"></div>
+            <canvas id="petCanvas" width="320" height="320" style="position:absolute;inset:0;width:84px;height:84px;border-radius:50%;z-index:3;box-shadow:0 0 24px rgba(0,232,122,.4)"></canvas>
+            <div class="pet-emote" id="petEmote" style="font-size:16px;top:-12px;z-index:5"></div>
+            <div class="pet-sad-alert" id="petSadAlert" style="font-size:8px;padding:1px 5px;bottom:-4px;z-index:5">😢</div>
           </div>
           <!-- Right info col -->
           <div style="flex:1;min-width:0">
@@ -3688,6 +3693,7 @@ function updatePetView(){
   renderSegXPBar();
   redrawPetCanvas();
   $('petName').textContent=G.petName;$('petSpecies').textContent=s.s;$('petLvlN').textContent=G.level;
+  const phe=$('petHeroEmoji');if(phe)phe.textContent=G.petEmoji||'🐉';
   const ne=gNE();$('petEvol').textContent=ne?'NEXT EVOL: LV'+ne:'MAX EVOLUTION ⚡';
   $('xpNums').textContent=G.exp+'/'+need;
   $('stA').textContent=G.actionStat;$('stAb').style.width=Math.min(100,G.actionStat)+'%';
@@ -4544,7 +4550,9 @@ function catchFish(){
   // Toast
   const rarityToast=ft.rarity==='ultra'?'y':ft.rarity==='mythic'?'p':ft.rarity==='legendary'?'pk':ft.rarity==='epic'?'o':'g';
   showT(ft.em+' '+ft.nm+'! +'+earnedCoins+'⚡ +'+earnedXP+'XP'+(timingLabel?' '+timingLabel:''),rarityToast);
-  const fx=$('fishCatchFx');if(fx){fx.classList.add('on');setTimeout(()=>fx.classList.remove('on'),280);}
+  const fx=$('fishCatchFx');if(fx){fx.classList.add('on');setTimeout(()=>fx.classList.remove('on'),700);}
+  // Flying fish animation
+  const scene=$('fishScene');if(scene){const fly=document.createElement('div');fly.className='fish-fly';fly.textContent=ft.em;scene.appendChild(fly);setTimeout(()=>fly.remove(),900);}
   vibe([30,20,80,20,100]);SFX.win();
   updateFishUI();
   setTimeout(()=>{spawnFishInScene();resetFishState(combo>=3?'🔥 COMBO ×'+combo+'! Fortsätt fånga!':'Kasta igen!');},1100);
@@ -5895,24 +5903,25 @@ function spinGacha(){
   const today=new Date().toDateString();
   if(G.lastSpin===today){showT('✅ Redan spinnat idag!','y');return;}
   if(_gachaSpinning)return;
-  _gachaSpinning=true;
-  const btn=$('gachaSpinBtn');if(btn){btn.disabled=true;btn.textContent='⏳ Snurrar...';}
   const wheel=$('gachaWheel');if(!wheel)return;
+  _gachaSpinning=true;
+  G.lastSpin=today;save();
+  const spinBtn=$('gachaSpinBtn');if(spinBtn){spinBtn.disabled=true;spinBtn.textContent='⏳ Snurrar...';}
   const prizeIdx=Math.floor(Math.random()*GACHA_PRIZES.length);const prize=GACHA_PRIZES[prizeIdx];
   const sliceDeg=360/GACHA_PRIZES.length;const targetDeg=360-prizeIdx*sliceDeg-sliceDeg/2;
   _gachaAngle=Math.ceil((_gachaAngle||0)/360)*360+1800+targetDeg;
   wheel.style.transition='transform 3s cubic-bezier(.17,.67,.12,.99)';wheel.style.transform=`rotate(${_gachaAngle}deg)`;
   SFX.click();vibe([20,10,30,10,40]);
   setTimeout(()=>{
-    _gachaSpinning=false;G.lastSpin=today;
+    _gachaSpinning=false;
     const _rhtml=`<div style="font-size:48px;margin-bottom:8px;animation:spop .4s cubic-bezier(.34,1.56,.64,1)">${prize.em}</div><div style="font-size:18px;font-weight:900;color:var(--y);margin-bottom:4px">${prize.nm}!</div><div style="font-size:11px;color:var(--t3)">Kom tillbaka imorgon ✅</div>`;
     _lastSpinResultHTML=_rhtml;
     const res=$('gachaResult');if(res)res.innerHTML=_rhtml;
     prize.ef();SFX.win();vibe([50,30,100,30,150]);
     const sub=$('gachaSubtitle');if(sub)sub.textContent='Kom tillbaka imorgon för nästa spin!';
-    if(btn)btn.textContent='✅ Redan spinnat idag';
+    const freshBtn=$('gachaSpinBtn');if(freshBtn){freshBtn.disabled=true;freshBtn.textContent='✅ Redan spinnat idag';}
     addDiaryEntry('Spann gacha-hjulet och vann '+prize.em+' '+prize.nm+'!');
-    save();updateHUD();spawnParticles(window.innerWidth/2,window.innerHeight*.35,'stars');
+    updateHUD();spawnParticles(window.innerWidth/2,window.innerHeight*.35,'stars');
     const st=$('spinTeaserSub');if(st)st.textContent='✅ Spinnat idag — kom tillbaka imorgon';
   },3100);
 }
@@ -5989,16 +5998,22 @@ function renderRoomPreview(){
   const theme=ROOM_THEMES.find(t=>t.id===(G.roomTheme||'cosmic'))||ROOM_THEMES[0];
   rp.style.background=theme.bg;
   const floor=rp.querySelector('.room-preview-floor');if(floor)floor.style.background=theme.floor;
-  const floatCls=['room-float-a','room-float-b','room-float-c'];
+  function roomPos(x,y,isCustom,ciId,nm,em){
+    const isWall=y<42;
+    const pos=isWall?`left:${x}%;top:${y}%`:`left:${x}%;bottom:22%`;
+    const sz=isWall?'22px':'28px';
+    const click=isCustom?`removeCustomRoomItem('${ciId}')`:'vibe(10)';
+    return`<div class="room-placed-item" style="${pos};z-index:5;font-size:${sz};cursor:pointer;" title="${nm}" onclick="${click}">${em}<div class="room-sparkle-dot"></div></div>`;
+  }
   pl.innerHTML=owned.map((id,i)=>{
     const it=ROOM_DECO_ITEMS.find(x=>x.id===id);if(!it)return'';
-    return`<div class="room-placed-item ${floatCls[i%3]}" style="left:${it.x}%;top:${it.y}%;z-index:5;" title="${it.nm}" onclick="vibe(10)">${it.em}<div class="room-sparkle-dot"></div></div>`;
+    return roomPos(it.x,it.y,false,null,it.nm,it.em);
   }).join('')+custom.map((ci,i)=>{
-    return`<div class="room-placed-item ${floatCls[i%3]}" style="left:${ci.x}%;top:${ci.y}%;z-index:5;" title="${ci.nm}" onclick="removeCustomRoomItem('${ci.id}')">${ci.em}<div class="room-sparkle-dot"></div></div>`;
+    return roomPos(ci.x,ci.y,true,ci.id,ci.nm,ci.em);
   }).join('');
-  // Achievement trophies in room
+  // Achievement trophies on floor with glow
   const achItems=getAchievementRoomItems();
-  pl.innerHTML+=achItems.map((a,i)=>`<div style="position:absolute;left:${a.x}%;top:${a.y}%;font-size:18px;z-index:6;animation:achGlow 2s ease-in-out infinite;cursor:pointer;" title="${a.nm}" onclick="showT('🏆 ${a.nm}','y')">${a.em}</div>`).join('');
+  pl.innerHTML+=achItems.map((a,i)=>`<div style="position:absolute;left:${a.x}%;bottom:22%;font-size:20px;z-index:6;animation:achGlow 2s ease-in-out infinite;cursor:pointer;" title="${a.nm}" onclick="showT('🏆 ${a.nm}','y')">${a.em}</div>`).join('');
   // Stars + ambient
   rp.querySelectorAll('.room-bg-star,.room-particle,.room-ambient-glow').forEach(e=>e.remove());
   const glow=document.createElement('div');glow.className='room-ambient-glow';glow.style.background=`radial-gradient(ellipse at 50% 80%,${theme.accent}14 0%,transparent 70%)`;rp.insertBefore(glow,rp.firstChild);
@@ -6230,44 +6245,56 @@ const _baseInitPetRoom=initPetRoom;
 initPetRoom=function(){
   _baseInitPetRoom();
   const hero=$('petRoomLayer');if(!hero)return;
-  // Apply theme to pet hero background
+  // Remove old room items (keep stars/prl-item from world emojis)
+  hero.querySelectorAll('.prl-room-item').forEach(e=>e.remove());
+  // Apply theme
   const theme=ROOM_THEMES.find(t=>t.id===(G.roomTheme||'cosmic'))||ROOM_THEMES[0];
   const ph=document.querySelector('.pet-hero');
   if(ph)ph.style.background=theme.bg;
   const sky=$('prlSky');if(sky)sky.style.background=theme.bg;
+  // Helper: place item in room (wall = top 62%, floor = sits on floor line at bottom 38%)
+  function placeRoomItem(em,nm,x,isWall,wallY,glow){
+    const d=document.createElement('div');
+    d.className='prl-room-item '+(isWall?'wall-item':'floor-item');
+    const sz=isWall?'16px':'20px';
+    if(isWall){
+      d.style.cssText=`--sz:${sz};--xl:${x}%;--yt:${wallY}%;`+(glow?`filter:drop-shadow(0 0 6px ${glow});`:'');
+    } else {
+      d.style.cssText=`--sz:${sz};--xl:${x}%;`+(glow?`filter:drop-shadow(0 0 6px ${glow});`:'');
+    }
+    d.textContent=em;d.title=nm;
+    hero.appendChild(d);
+  }
   // Shop items
   (G.roomDeco||[]).forEach(id=>{
     const it=ROOM_DECO_ITEMS.find(x=>x.id===id);if(!it)return;
-    const d=document.createElement('div');d.className='prl-item';
-    d.style.cssText=`left:${it.x}%;bottom:${it.y<50?'calc(40px + '+(50-it.y)+'%)':'calc(40px + 5%)'};font-size:18px;position:absolute;`;
-    d.textContent=it.em;d.title=it.nm;
-    hero.appendChild(d);
+    const isWall=it.y<42;
+    placeRoomItem(it.em,it.nm,it.x,isWall,Math.max(5,it.y)+'',null);
   });
   // Custom items
   (G.customRoomItems||[]).forEach(ci=>{
-    const d=document.createElement('div');d.className='prl-item';
-    d.style.cssText=`left:${ci.x}%;bottom:calc(40px + ${Math.max(0,50-ci.y)}%);font-size:18px;position:absolute;`;
-    d.textContent=ci.em;d.title=ci.nm;
-    hero.appendChild(d);
+    const isWall=ci.y<42;
+    placeRoomItem(ci.em,ci.nm,ci.x,isWall,Math.max(5,ci.y)+'',null);
   });
-  // Achievement trophies
+  // Achievement trophies (floor with glow)
   getAchievementRoomItems().forEach(a=>{
-    const d=document.createElement('div');d.className='prl-item';
-    d.style.cssText=`left:${a.x}%;bottom:calc(40px + ${50-a.y}%);font-size:18px;position:absolute;animation:achGlow 2s ease-in-out infinite;`;
-    d.textContent=a.em;d.title=a.nm;
-    hero.appendChild(d);
+    placeRoomItem(a.em,a.nm,a.x,false,0,theme.accent+'aa');
   });
   // Update home tab mini room preview
   const hrPet=$('homeRoomPet');if(hrPet)hrPet.textContent=G.petEmoji||'🐉';
   const hrPrev=$('homeRoomPreview');if(hrPrev){const th=ROOM_THEMES.find(t=>t.id===(G.roomTheme||'cosmic'))||ROOM_THEMES[0];hrPrev.style.background=th.bg;}
   const hrItems=$('homeRoomItems');
   if(hrItems){
-    hrItems.innerHTML=(G.roomDeco||[]).slice(0,6).map((id,i)=>{
+    const wallItems=(G.roomDeco||[]).slice(0,4).map((id,i)=>{
       const it=ROOM_DECO_ITEMS.find(x=>x.id===id);if(!it)return'';
-      return`<div style="position:absolute;left:${it.x}%;bottom:${it.y>45?8:28}px;font-size:16px;z-index:5;animation:roomItemFloat ${2.5+i*.4}s ease-in-out infinite ${-i*.5}s">${it.em}</div>`;
-    }).join('')+(G.customRoomItems||[]).slice(0,3).map((ci,i)=>{
-      return`<div style="position:absolute;left:${ci.x}%;bottom:${ci.y>45?8:28}px;font-size:16px;z-index:5">${ci.em}</div>`;
+      const isWall=it.y<42;
+      return`<div style="position:absolute;left:${it.x}%;${isWall?'top:12px':'bottom:30px'};font-size:${isWall?'14':'18'}px;z-index:5">${it.em}</div>`;
     }).join('');
+    const customItems=(G.customRoomItems||[]).slice(0,3).map(ci=>{
+      const isWall=ci.y<42;
+      return`<div style="position:absolute;left:${ci.x}%;${isWall?'top:12px':'bottom:30px'};font-size:16px;z-index:5">${ci.em}</div>`;
+    }).join('');
+    hrItems.innerHTML=wallItems+customItems;
   }
 };
 
