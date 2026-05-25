@@ -8,6 +8,7 @@
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700;800;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
 :root{
   --bg:#000000;--c1:#0d0d0d;--c2:#141414;--c3:#1c1c1c;--c4:#242424;
@@ -1446,10 +1447,71 @@ textarea.inp{resize:none;min-height:68px;}
 .event-progress-fill{height:100%;border-radius:100px;background:linear-gradient(90deg,#FF2D55,#BF5FFF);transition:width .8s cubic-bezier(.34,1.56,.64,1);}
 .event-progress-lbl{font-size:9px;font-weight:900;font-family:var(--mono);display:flex;justify-content:space-between;color:var(--t3);}
 .event-timer{font-size:9px;color:var(--pk);font-weight:900;font-family:var(--mono);margin-top:4px;}
+
+/* ══════════════════════════════════
+   AUTH SCREEN
+══════════════════════════════════ */
+#authScreen{position:fixed;inset:0;z-index:2000;background:#000;display:none;flex-direction:column;align-items:center;justify-content:center;padding:0 24px;}
+.auth-orb{position:absolute;border-radius:50%;pointer-events:none;}
+@keyframes authOrb1{0%,100%{transform:translate(0,0) scale(1);}50%{transform:translate(24px,-24px) scale(1.12);}}
+@keyframes authOrb2{0%,100%{transform:translate(0,0) scale(1);}50%{transform:translate(-20px,20px) scale(1.15);}}
+.auth-card{position:relative;z-index:1;width:100%;max-width:360px;}
+.auth-logo{text-align:center;margin-bottom:28px;}
+.auth-logo-txt{font-size:44px;font-weight:900;font-family:var(--mono);letter-spacing:-2px;}
+.auth-logo-k{color:var(--g);text-shadow:0 0 32px rgba(57,255,20,.65);}
+.auth-logo-sub{font-size:11px;color:var(--t3);letter-spacing:2.5px;text-transform:uppercase;margin-top:3px;}
+.auth-tabs{display:flex;background:var(--c1);border:1px solid var(--line);border-radius:14px;padding:4px;margin-bottom:18px;}
+.auth-tab{flex:1;text-align:center;padding:9px;border-radius:10px;font-size:13px;font-weight:900;cursor:pointer;transition:all .15s;font-family:var(--mono);color:var(--t3);}
+.auth-tab.on{background:var(--g);color:#000;}
+.auth-divider{display:flex;align-items:center;gap:10px;margin:14px 0;}
+.auth-divider span{height:1px;flex:1;background:var(--line);}
+.auth-divider div{font-size:10px;color:var(--t3);}
+.auth-social-btn{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:11px;background:var(--c1);border:1px solid var(--line2);border-radius:11px;color:var(--t1);font-size:13px;font-weight:700;cursor:pointer;transition:all .12s;-webkit-tap-highlight-color:transparent;}
+.auth-social-btn:active{background:var(--c2);}
+.auth-err{font-size:12px;color:var(--r);text-align:center;min-height:18px;margin-top:2px;}
+.auth-skip{text-align:center;margin-top:14px;font-size:11px;color:var(--t3);}
+.auth-skip a{color:var(--t3);text-decoration:underline;cursor:pointer;}
+.auth-user-badge{display:flex;align-items:center;gap:10px;background:rgba(57,255,20,.08);border:1px solid rgba(57,255,20,.22);border-radius:14px;padding:11px 14px;margin-bottom:16px;}
+.auth-sb-status{position:fixed;top:8px;right:8px;z-index:3000;font-size:9px;font-weight:900;padding:3px 8px;border-radius:8px;font-family:var(--mono);}
 </style>
 
 </head>
 <body>
+<!-- AUTH SCREEN -->
+<div id="authScreen">
+  <!-- Ambient orbs -->
+  <div class="auth-orb" style="top:-25%;left:-15%;width:65%;height:65%;background:radial-gradient(circle,rgba(57,255,20,.08),transparent 65%);animation:authOrb1 9s ease-in-out infinite;"></div>
+  <div class="auth-orb" style="bottom:-25%;right:-15%;width:65%;height:65%;background:radial-gradient(circle,rgba(191,95,255,.07),transparent 65%);animation:authOrb2 11s ease-in-out infinite;"></div>
+  <div class="auth-card">
+    <div class="auth-logo">
+      <div class="auth-logo-txt"><span class="auth-logo-k">K</span>ARMA</div>
+      <div class="auth-logo-sub">Real Life · Game Engine ⚡</div>
+    </div>
+    <!-- Tabs -->
+    <div class="auth-tabs" id="authTabs">
+      <div class="auth-tab on" id="authTabLogin" onclick="switchAuthTab('login')">LOGGA IN</div>
+      <div class="auth-tab" id="authTabReg" onclick="switchAuthTab('register')">REGISTRERA</div>
+    </div>
+    <!-- Form fields -->
+    <div style="display:flex;flex-direction:column;gap:10px;">
+      <div id="authUsernameWrap" style="display:none;">
+        <input class="inp" id="authUsername" type="text" placeholder="Välj ett unikt username" maxlength="20" autocomplete="username">
+      </div>
+      <input class="inp" id="authEmail" type="email" placeholder="Email" autocomplete="email">
+      <div style="position:relative;">
+        <input class="inp" id="authPassword" type="password" placeholder="Lösenord (min 6 tecken)" style="padding-right:48px;" autocomplete="current-password">
+        <span onclick="toggleAuthPw()" style="position:absolute;right:13px;top:50%;transform:translateY(-50%);font-size:18px;cursor:pointer;color:var(--t3);-webkit-tap-highlight-color:transparent;">👁</span>
+      </div>
+      <div class="auth-err" id="authErr"></div>
+      <button id="authSubmitBtn" onclick="doAuth()" class="btn btn-g btn-lg btn-full" style="margin-top:2px;">⚡ LOGGA IN</button>
+    </div>
+    <!-- Divider + magic link -->
+    <div class="auth-divider"><span></span><div>ELLER</div><span></span></div>
+    <button onclick="sendMagicLink()" class="auth-social-btn">🔗 Skicka Magic Link (ingen lösenord)</button>
+    <div class="auth-skip"><a onclick="skipAuth()">Spela utan konto — demo mode</a></div>
+  </div>
+</div>
+
 <!-- ONBOARDING -->
 <div class="ob" id="ob">
   <div class="ob-bg" id="obBg"></div>
@@ -1548,7 +1610,11 @@ textarea.inp{resize:none;min-height:68px;}
     <div class="mw" style="display:none">
       <div class="ham" id="hamBtn"><span></span><span></span><span></span></div>
       <div class="dd" id="dd">
-        <div class="dd-head"><div class="dd-nm" id="ddName">–</div><div class="dd-sb" id="ddSub">Level 1</div></div>
+        <div class="dd-head">
+          <div class="dd-nm" id="ddName">–</div>
+          <div class="dd-sb" id="ddSub">Level 1</div>
+          <div id="ddCloudBadge" style="display:none;margin-top:4px;font-size:9px;font-weight:900;color:var(--g);font-family:var(--mono);">☁️ SYNKAT MED MOLNET</div>
+        </div>
         <div class="dd-sec">
           <div class="ddr" onclick="cM();nav('home')"><div class="ddr-i">🐾</div>Din Pet</div>
           <div class="ddr" onclick="cM();nav('flash')"><div class="ddr-i">⚡</div>Flash Feed</div>
@@ -1561,8 +1627,11 @@ textarea.inp{resize:none;min-height:68px;}
           <div class="ddr" onclick="cM();nav('lb')"><div class="ddr-i">🏆</div>Leaderboard</div>
           <div class="ddr" onclick="cM();nav('profile')"><div class="ddr-i">👤</div>Profil</div>
           <div class="ddr" onclick="cM();oWin('aiWin')"><div class="ddr-i">🤖</div>KARMA AI</div>
-          <div class="ddr" onclick="cM();nav('launch')"><div class="ddr-i">🚀</div>Launch Plan</div>
           <div class="ddr" style="background:linear-gradient(135deg,#FFE60022,#FF9F0A11);border:1px solid #FFE60055" onclick="cM();openModal('premiumModal')"><div class="ddr-i">👑</div><span style="color:var(--y);font-weight:900">KARMA PRO</span></div>
+        </div>
+        <div class="dd-sec" id="ddAuthSection">
+          <div id="ddLoginRow" class="ddr" onclick="cM();showAuthScreen()" style="display:none"><div class="ddr-i">🔑</div>Logga in / Registrera</div>
+          <div id="ddLogoutRow" class="ddr" onclick="cM();sbSignOut()" style="display:none;color:var(--r)"><div class="ddr-i">🚪</div>Logga ut</div>
         </div>
       </div>
     </div>
@@ -3371,7 +3440,7 @@ function cp(n){const d=document.createElement('div');d.className='cpop';d.textCo
 function sa(sel,el){document.querySelectorAll(sel+' .topt').forEach(x=>x.className='topt');el.classList.add('on');}
 function dist(la1,lo1,la2,lo2){const R=6371e3,f1=la1*Math.PI/180,f2=la2*Math.PI/180,df=(la2-la1)*Math.PI/180,dl=(lo2-lo1)*Math.PI/180;const a=Math.sin(df/2)**2+Math.cos(f1)*Math.cos(f2)*Math.sin(dl/2)**2;return R*2*Math.atan2(Math.sqrt(a),Math.sqrt(1-a));}
 function fmtD(m){return m<1000?Math.round(m)+'m':+(m/1000).toFixed(1)+'km';}
-function save(){try{const d={n:G.name,p:G.petEmoji,pn:G.petName,l:G.level,c:G.coins,st:G.streak,x:G.exp,as:G.actionStat,cs:G.commerceStat,ss:G.socialStat,g:JSON.stringify(G.gear),eg:G.equippedGear||'',sek:G.totalSEK,ts:G.trustScore,posts:G.postCount,b:G.bountiesDone,hu:G.hunger,en:G.energy,mo:G.mood,brands:JSON.stringify(G.brands),circles:JSON.stringify(G.circles),sw:JSON.stringify(G.streakWeek),petCfg:JSON.stringify(G.petConfig),pm:G.premium?1:0,pt:G.premiumTier,wld:G.world,bond:JSON.stringify(G.todayBond),bdate:G.bondDate,wp:G.worldPoints,bz:JSON.stringify(G.builtZones),wpc:G.wildPetsCaught,wflash:G.wldFlash,wbattle:G.wldBattle,wmarket:G.wldMarket,wstreak:G.wldStreak,wsocial:G.wldSocial,po:G.packsOpened,col:JSON.stringify(G.collectibles),tp:G.talentPoints,tl:JSON.stringify(G.talents),tlvl:JSON.stringify(G.talentLvls||{}),diary:JSON.stringify(G.diaryEntries.slice(-20)),ls:G.lastSpin,ltt:G.lastTalkTime||0,lwb:G.lastWpBoost||0};for(const k in d)localStorage.setItem('kv8_'+k,d[k]);}catch(e){}}
+function save(){try{const d={n:G.name,p:G.petEmoji,pn:G.petName,l:G.level,c:G.coins,st:G.streak,x:G.exp,as:G.actionStat,cs:G.commerceStat,ss:G.socialStat,g:JSON.stringify(G.gear),eg:G.equippedGear||'',sek:G.totalSEK,ts:G.trustScore,posts:G.postCount,b:G.bountiesDone,hu:G.hunger,en:G.energy,mo:G.mood,brands:JSON.stringify(G.brands),circles:JSON.stringify(G.circles),sw:JSON.stringify(G.streakWeek),petCfg:JSON.stringify(G.petConfig),pm:G.premium?1:0,pt:G.premiumTier,wld:G.world,bond:JSON.stringify(G.todayBond),bdate:G.bondDate,wp:G.worldPoints,bz:JSON.stringify(G.builtZones),wpc:G.wildPetsCaught,wflash:G.wldFlash,wbattle:G.wldBattle,wmarket:G.wldMarket,wstreak:G.wldStreak,wsocial:G.wldSocial,po:G.packsOpened,col:JSON.stringify(G.collectibles),tp:G.talentPoints,tl:JSON.stringify(G.talents),tlvl:JSON.stringify(G.talentLvls||{}),diary:JSON.stringify(G.diaryEntries.slice(-20)),ls:G.lastSpin,ltt:G.lastTalkTime||0,lwb:G.lastWpBoost||0};for(const k in d)localStorage.setItem('kv8_'+k,d[k]);}catch(e){}sbQueueSync();}
 
 // ── DNA + MOOD SYSTEM ──
 function getPetDNA(){
@@ -3893,7 +3962,11 @@ function updateHUD(){
   $('pcLv').textContent='LV'+G.level;
   if(G.hunger<25)pcReact('hungry');
   $('ddName').textContent=G.name||'–';
-  $('ddSub').textContent='Level '+G.level+' · 🔥'+G.streak+'d';
+  $('ddSub').textContent='Level '+G.level+' · 🔥'+G.streak+'d'+(_sbUser?' · ☁️':'');
+  // Cloud badge + auth rows
+  const cloudBadge=$('ddCloudBadge');if(cloudBadge)cloudBadge.style.display=_sbUser?'block':'none';
+  const loginRow=$('ddLoginRow');if(loginRow)loginRow.style.display=_sbUser?'none':'flex';
+  const logoutRow=$('ddLogoutRow');if(logoutRow)logoutRow.style.display=_sbUser?'flex':'none';
   $('profAvaEm').textContent=s.e;
   $('profName').textContent=G.name||'–';
   $('profHandle').textContent='@'+(G.name||'–').toLowerCase().replace(/\s+/g,'_');
@@ -3991,8 +4064,16 @@ function mgTap(){
 const _REACT_EMOJIS=['🔥','💖','😂','🤯','👑','💀','🫶','⚡'];
 let _flashFollowing=new Set(G.flashFollowing||[]);
 function renderFlashFeed(){
-  $('streakCircles').innerHTML=STREAK_USERS.map(s=>`<div class="sc" onclick="showT('${s.add?'📸 Lägg till':'⚡ '+s.user}','pk')"><div class="sc-ring ${s.add?'empty':s.status==='done'?'done':s.status==='missing'?'empty':s.live?'live':'active'}"><div class="sc-inner">${s.em}</div></div><div class="sc-name">${s.user}</div>${s.streak?`<div class="sc-streak">🔥${s.streak}</div>`:''}</div>`).join('');
-  $('flashFeed').innerHTML=FLASH_POSTS.map((p,pi)=>{
+  // Build streak circles from real follows if available, else mock
+  const circleUsers=_sbFeedPosts.length>0
+    ? _sbFeedPosts.slice(0,8).map(p=>({user:p.username,em:p.pet_emoji,status:'active',streak:0,live:false,add:false}))
+    : STREAK_USERS;
+  $('streakCircles').innerHTML=circleUsers.map(s=>`<div class="sc" onclick="showT('${s.add?'📸 Lägg till':'⚡ @'+s.user}','pk')"><div class="sc-ring ${s.add?'empty':s.status==='done'?'done':s.status==='missing'?'empty':s.live?'live':'active'}"><div class="sc-inner">${s.em}</div></div><div class="sc-name">${s.user}</div>${s.streak?`<div class="sc-streak">🔥${s.streak}</div>`:''}</div>`).join('');
+  // Use real DB posts if loaded, else mock data
+  const feedPosts=_sbFeedPosts.length>0
+    ? _sbFeedPosts.map(p=>({id:p.id,user:p.username,pet:p.pet_emoji,lvl:p.pet_level||1,cap:p.caption||'',sound:p.sound||'Original Sound 🎵',tag:p.tag||'',bg:p.bg||'',likes:p.likes_count||0,live:p.is_live||false,streak:0,xp:'+20XP',sbPost:true}))
+    : FLASH_POSTS;
+  $('flashFeed').innerHTML=feedPosts.map((p,pi)=>{
     const liked=G.likedPosts.has(p.id);
     const following=_flashFollowing.has(p.user);
     const comments=Math.max(1,~~(p.likes/7));
@@ -4119,15 +4200,23 @@ function flashSendGift(id,pet,user){
   const fname=user.split('_')[0];showT('🎁 Skickar gåva till '+fname+'!','g');
 }
 function likeFlash(id){
-  const p=FLASH_POSTS.find(x=>x.id===id);if(!p)return;
-  if(G.likedPosts.has(id)){G.likedPosts.delete(id);p.likes--;}
+  // Try Supabase like first (DB posts)
+  const dbPost=_sbFeedPosts.find(x=>x.id===id);
+  if(dbPost){sbToggleLike(id);}
+  // Local optimistic update
+  const p=FLASH_POSTS.find(x=>x.id===id)||dbPost;
+  if(!p)return;
+  if(G.likedPosts.has(id)){G.likedPosts.delete(id);if(p.likes!==undefined)p.likes--;}
   else{
-    G.likedPosts.add(id);p.likes++;gainXP(2,'social');vibe(15);
+    G.likedPosts.add(id);if(p.likes!==undefined)p.likes++;gainXP(2,'social');vibe(15);
     _flashLikeCombo=(_flashLikeCombo||0)+1;clearTimeout(_flashLikeComboTimer);
     _flashLikeComboTimer=setTimeout(()=>{_flashLikeCombo=0;},4000);
     if(_flashLikeCombo>=3){gainCoins(Math.floor(_flashLikeCombo/3));showT('❤️ LIKE COMBO ×'+_flashLikeCombo+'! +'+Math.floor(_flashLikeCombo/3)+'⚡','pk');vibe([20,10,30]);}
   }
-  $('fli'+id).textContent=G.likedPosts.has(id)?'❤️':'🤍';$('fli'+id).style.color=G.likedPosts.has(id)?'var(--pk)':'#fff';$('flc'+id).textContent=p.likes;
+  const liEl=$('fli'+id);const cntEl=$('flc'+id);
+  if(liEl)liEl.textContent=G.likedPosts.has(id)?'❤️':'🤍';
+  if(liEl)liEl.style.color=G.likedPosts.has(id)?'var(--pk)':'#fff';
+  if(cntEl&&p.likes!==undefined)cntEl.textContent=p.likes>=1000?(p.likes/1000).toFixed(1)+'K':p.likes;
 }
 let _flashLikeCombo=0,_flashLikeComboTimer=null;
 let _flashTimeInterval=null,_flashTimeMinutes=0;
@@ -4150,7 +4239,10 @@ function submitFlash(){
   const cap=$('flashCaption').value.trim();if(!G.flashImg&&!cap){showT('❌ Lägg till video eller text','r');return;}
   G.streak++;G.postCount++;
   const day=new Date().getDay();G.streakWeek[day===0?6:day-1]=true;
+  // Add to local mock feed immediately (optimistic)
   FLASH_POSTS.unshift({id:'fl'+Date.now(),user:G.name||'Du',pet:gS().e,lvl:G.level,up:'Daglig Flash #'+G.postCount,cap:cap||'⚡ Flash! '+new Date().toLocaleTimeString('sv',{hour:'2-digit',minute:'2-digit'}),xp:'+20 XP',likes:0,live:false,streak:G.streak});
+  // Post to Supabase (real)
+  sbPostFlash(cap||'⚡ Flash! 🐾');
   gainXP(20,'social');gainCoins(10);markBond('flash');addWorldPoints(10,'flash');
   G.flashImg=null;$('flashCaption').value='';$('flashPrev').style.display='none';$('flashPH').style.display='';$('flashUpArea').style.borderColor='';
   closeModal('flashModal');renderFlashFeed();updateHUD();updatePetView();vibe([30,20,80]);SFX.win();
@@ -5361,12 +5453,19 @@ function obFeedPet(){
 function finishOB(){
   $('ob').style.display='none';$('app').style.display='flex';
   G.world=obWorld;
+  // Use pending username from Supabase registration if available
+  const pendingUn=localStorage.getItem('kv8_pending_username');
+  if(pendingUn&&!G.name){G.name=pendingUn;}
+  localStorage.removeItem('kv8_pending_username');
   save();updateHUD();nav('home');
   vibe([50,30,100,30,80]);showT('⚡ WELCOME '+(G.name||'').toUpperCase()+'!','g');
   addH('🎮 '+G.name+' joined KARMA v2!');
   setTimeout(()=>{initPetRoom();renderBondBar();},200);
   setTimeout(startPetAnim,100);
   setTimeout(initQuests,500);setTimeout(scheduleEvents,10000);SFX.lvlup();
+  // Create cloud profile
+  setTimeout(sbCreateProfile,1500);
+  setTimeout(sbSubscribeRealtime,2000);
 }
 // Init onboarding background
 setTimeout(()=>{applyWorldTheme('cosmic',$('obBg'));},100);
@@ -5863,10 +5962,442 @@ function initKarmaWorld(){
   })();
 }
 
+// ══════════════════════════════════════════════════════════════
+// ── SUPABASE BACKEND LAYER ──
+// ══════════════════════════════════════════════════════════════
+
+// ▶ STEP 1: Go to supabase.com → New Project
+// ▶ STEP 2: Paste your URL and anon key below
+// ▶ STEP 3: Run supabase-schema.sql in the SQL Editor
+const SB_URL='https://YOUR-PROJECT-ID.supabase.co';
+const SB_KEY='YOUR-ANON-PUBLIC-KEY';
+
+let _sb=null,_sbUser=null,_sbChannel=null,_sbSyncTimer=null;
+let _sbFeedPosts=[]; // real posts cache
+let _sbConfigured=false;
+
+function sbInit(){
+  try{
+    if(typeof supabase==='undefined')return false;
+    if(SB_URL.includes('YOUR-PROJECT')||SB_KEY.includes('YOUR-ANON'))return false;
+    _sb=supabase.createClient(SB_URL,SB_KEY);
+    _sbConfigured=true;
+    return true;
+  }catch(e){return false;}
+}
+function sbReady(){return _sbConfigured&&!!_sb&&!!_sbUser;}
+
+// ─── AUTH UI ───────────────────────────────
+let _authTab='login';
+
+function switchAuthTab(tab){
+  _authTab=tab;
+  const isLogin=tab==='login';
+  $('authTabLogin').className='auth-tab'+(isLogin?' on':'');
+  $('authTabReg').className='auth-tab'+(!isLogin?' on':'');
+  $('authUsernameWrap').style.display=isLogin?'none':'block';
+  $('authSubmitBtn').textContent=isLogin?'⚡ LOGGA IN':'🚀 SKAPA KONTO';
+  $('authErr').textContent='';
+  $('authErr').style.color='var(--r)';
+}
+
+function toggleAuthPw(){
+  const pw=$('authPassword');pw.type=pw.type==='password'?'text':'password';
+}
+
+function hideAuthScreen(){
+  const a=$('authScreen');if(a)a.style.display='none';
+}
+
+function showAuthScreen(){
+  const a=$('authScreen');if(a)a.style.display='flex';
+}
+
+function skipAuth(){
+  hideAuthScreen();
+  showT('🎮 Demo mode — ingen account','y');
+}
+
+async function doAuth(){
+  if(!_sbConfigured){skipAuth();return;}
+  const email=($('authEmail').value||'').trim();
+  const password=$('authPassword').value||'';
+  const username=($('authUsername').value||'').trim();
+  const btn=$('authSubmitBtn');
+  const err=$('authErr');
+  err.style.color='var(--r)';err.textContent='';
+  if(!email||!password){err.textContent='Fyll i email och lösenord.';return;}
+  if(password.length<6){err.textContent='Lösenordet måste vara minst 6 tecken.';return;}
+  if(_authTab==='register'){
+    if(!username||username.length<3){err.textContent='Username måste vara minst 3 tecken.';return;}
+    if(!/^[a-zA-Z0-9_]+$/.test(username)){err.textContent='Bara bokstäver, siffror och _';return;}
+  }
+  btn.textContent='⏳ Laddar...';btn.disabled=true;
+  try{
+    if(_authTab==='login'){
+      const{data,error}=await _sb.auth.signInWithPassword({email,password});
+      if(error){err.textContent=_sbFriendlyError(error.message);btn.textContent='⚡ LOGGA IN';btn.disabled=false;return;}
+      _sbUser=data.user;
+      await _sbAfterLogin();
+    } else {
+      // Check username availability
+      const{data:existing}=await _sb.from('profiles').select('username').eq('username',username).single();
+      if(existing){err.textContent='Username är taget — välj ett annat.';btn.textContent='🚀 SKAPA KONTO';btn.disabled=false;return;}
+      const{data,error}=await _sb.auth.signUp({email,password,options:{data:{username}}});
+      if(error){err.textContent=_sbFriendlyError(error.message);btn.textContent='🚀 SKAPA KONTO';btn.disabled=false;return;}
+      if(!data.user){
+        err.style.color='var(--g)';err.textContent='✅ Kolla mailen för bekräftelse!';
+        btn.textContent='📧 Kolla mailen';btn.disabled=false;return;
+      }
+      _sbUser=data.user;
+      // Store username for onboarding
+      localStorage.setItem('kv8_pending_username',username);
+      hideAuthScreen();
+      showT('👋 Välkommen! Konfigurera din pet ⬇️','g');
+    }
+  }catch(e){
+    err.textContent='Nätverksfel — försök igen.';
+    btn.textContent=_authTab==='login'?'⚡ LOGGA IN':'🚀 SKAPA KONTO';
+    btn.disabled=false;
+  }
+}
+
+function _sbFriendlyError(msg){
+  if(msg.includes('Invalid login'))return 'Fel email eller lösenord.';
+  if(msg.includes('already registered'))return 'Email redan registrerat.';
+  if(msg.includes('rate limit'))return 'För många försök — vänta en stund.';
+  return msg;
+}
+
+async function sendMagicLink(){
+  if(!_sbConfigured){showT('Supabase ej konfigurerat','r');return;}
+  const email=($('authEmail').value||'').trim();
+  if(!email){$('authErr').textContent='Ange din email.';return;}
+  const{error}=await _sb.auth.signInWithOtp({email,options:{shouldCreateUser:true}});
+  const err=$('authErr');
+  if(error){err.textContent=error.message;}
+  else{err.style.color='var(--g)';err.textContent='✅ Magic link skickad! Kolla mailen.';}
+}
+
+// ─── AFTER LOGIN ───────────────────────────
+async function _sbAfterLogin(){
+  hideAuthScreen();
+  const loaded=await sbLoadProfile();
+  if(loaded){
+    // Returning user — skip onboarding
+    $('ob').style.display='none';
+    $('app').style.display='flex';
+    updateHUD();nav('home');
+    setTimeout(startPetAnim,150);
+    setTimeout(()=>{checkBondDate();initPetRoom();renderBondBar();},400);
+    setTimeout(startKarmaPulse,1200);setTimeout(renderJackpot,800);
+    setTimeout(initQuests,300);setTimeout(scheduleEvents,8000);
+    sbSubscribeRealtime();
+    setTimeout(sbFetchFeed,1000);
+    setTimeout(()=>{$('circleDot').style.display='inline-block';},1500);
+  }
+  // else: new user — onboarding will handle creating profile on finishOB
+}
+
+// ─── PROFILE LOAD / SAVE ───────────────────
+async function sbLoadProfile(){
+  if(!_sbConfigured||!_sbUser)return false;
+  try{
+    const{data,error}=await _sb.from('profiles').select('*').eq('id',_sbUser.id).single();
+    if(error||!data)return false;
+    G.name=data.username;G.petEmoji=data.pet_emoji||'🐉';G.petName=data.pet_name||'Min Pet';
+    G.level=data.level||1;G.exp=data.exp||0;G.coins=data.coins||500;
+    G.hunger=data.hunger||80;G.energy=data.energy||100;G.mood=data.mood||90;
+    G.streak=data.streak||0;G.world=data.world||'cosmic';
+    G.premium=data.premium||false;G.premiumTier=data.premium_tier||0;
+    G.talentPoints=data.talent_points||0;
+    G.worldPoints=data.world_points||0;
+    G.trustScore=data.trust_score||42;
+    G.postCount=data.post_count||0;
+    G.actionStat=data.action_stat||0;G.socialStat=data.social_stat||0;G.commerceStat=data.commerce_stat||0;
+    try{G.talents=data.talents||[];}catch(e){}
+    try{G.talentLvls=data.talent_lvls||{};}catch(e){}
+    try{if(data.pet_config)G.petConfig=data.pet_config;}catch(e){}
+    try{G.builtZones=data.built_zones||[];}catch(e){}
+    try{if(data.today_bond)G.todayBond=data.today_bond;}catch(e){}
+    try{G.diaryEntries=data.diary_entries||[];}catch(e){}
+    try{G.gear=data.gear||[];}catch(e){}
+    G.equippedGear=data.equipped_gear||null;
+    G.lastSpin=data.last_spin||'';
+    G.lastTalkTime=data.last_talk_time||0;
+    G.lastWpBoost=data.last_wp_boost||0;
+    G.bondDate=data.bond_date||'';
+    G.roomTheme=data.room_theme||'cosmic';
+    try{G.roomDeco=data.room_deco||[];}catch(e){}
+    save(); // mirror to localStorage cache
+    return true;
+  }catch(e){console.warn('[SB] loadProfile',e);return false;}
+}
+
+async function sbCreateProfile(){
+  if(!_sbConfigured||!_sbUser)return;
+  try{
+    await _sb.from('profiles').upsert({
+      id:_sbUser.id,username:G.name,pet_emoji:G.petEmoji,pet_name:G.petName,
+      level:G.level,exp:G.exp,coins:G.coins,hunger:G.hunger,energy:G.energy,
+      mood:G.mood,streak:G.streak,world:G.world,
+      talent_points:G.talentPoints,world_points:G.worldPoints,
+      trust_score:G.trustScore,action_stat:G.actionStat,
+      social_stat:G.socialStat,commerce_stat:G.commerceStat,
+    });
+    showT('☁️ Profil sparad i molnet!','g');
+  }catch(e){console.warn('[SB] createProfile',e);}
+}
+
+// Debounced — called from save()
+function sbQueueSync(){
+  if(!sbReady())return;
+  clearTimeout(_sbSyncTimer);
+  _sbSyncTimer=setTimeout(_sbDoSync,4000);
+}
+
+async function _sbDoSync(){
+  if(!sbReady())return;
+  try{
+    await _sb.from('profiles').upsert({
+      id:_sbUser.id,
+      username:G.name,pet_emoji:G.petEmoji,pet_name:G.petName,
+      level:G.level,exp:G.exp,coins:G.coins,
+      hunger:G.hunger,energy:G.energy,mood:G.mood,
+      streak:G.streak,world:G.world,
+      premium:G.premium,premium_tier:G.premiumTier,
+      talent_points:G.talentPoints,
+      talents:G.talents||[],
+      talent_lvls:G.talentLvls||{},
+      pet_config:G.petConfig||{},
+      world_points:G.worldPoints,
+      built_zones:G.builtZones||[],
+      action_stat:G.actionStat,social_stat:G.socialStat,commerce_stat:G.commerceStat,
+      trust_score:G.trustScore,post_count:G.postCount,
+      today_bond:G.todayBond||{},bond_date:G.bondDate||'',
+      last_spin:G.lastSpin||'',
+      last_talk_time:G.lastTalkTime||0,last_wp_boost:G.lastWpBoost||0,
+      room_theme:G.roomTheme||'cosmic',
+      room_deco:G.roomDeco||[],
+      gear:G.gear||[],equipped_gear:G.equippedGear||'',
+      diary_entries:(G.diaryEntries||[]).slice(-20),
+      updated_at:new Date().toISOString(),
+    });
+  }catch(e){console.warn('[SB] sync',e);}
+}
+
+// ─── FLASH POSTS ────────────────────────────
+async function sbPostFlash(caption){
+  if(!sbReady())return false;
+  try{
+    const{error}=await _sb.from('posts').insert({
+      user_id:_sbUser.id,
+      username:G.name,
+      pet_emoji:G.petEmoji,
+      pet_level:G.level,
+      caption:caption||'',
+      sound:'Original Sound 🎵',
+      tag:'',
+      bg:''
+    });
+    if(error){console.warn('[SB] postFlash',error);return false;}
+    // Refresh feed
+    setTimeout(sbFetchFeed,300);
+    return true;
+  }catch(e){return false;}
+}
+
+async function sbFetchFeed(){
+  if(!_sbConfigured)return;
+  try{
+    const{data,error}=await _sb.from('posts')
+      .select('*')
+      .order('created_at',{ascending:false})
+      .limit(30);
+    if(!error&&data&&data.length){
+      _sbFeedPosts=data;
+      if(document.querySelector('#view-flash.active'))renderFlashFeed();
+    }
+  }catch(e){}
+}
+
+async function sbToggleLike(postId){
+  if(!sbReady())return;
+  try{
+    const{data:existing}=await _sb.from('post_likes')
+      .select('post_id').eq('post_id',postId).eq('user_id',_sbUser.id).maybeSingle();
+    if(existing){
+      await _sb.from('post_likes').delete().eq('post_id',postId).eq('user_id',_sbUser.id);
+      await _sb.rpc('decrement_likes',{post_id:postId});
+    } else {
+      await _sb.from('post_likes').insert({post_id:postId,user_id:_sbUser.id});
+      await _sb.rpc('increment_likes',{post_id:postId});
+    }
+    // Update local cached post
+    const p=_sbFeedPosts.find(x=>x.id===postId);
+    if(p){p.likes_count=existing?Math.max(0,p.likes_count-1):p.likes_count+1;}
+  }catch(e){}
+}
+
+async function sbLoadFriends(){
+  if(!sbReady())return[];
+  try{
+    const{data}=await _sb.from('follows')
+      .select('following_id,profiles!follows_following_id_fkey(id,username,pet_emoji,level,hunger,energy,mood,streak,world)')
+      .eq('follower_id',_sbUser.id).limit(20);
+    return data?.map(f=>f.profiles).filter(Boolean)||[];
+  }catch(e){return[];}
+}
+
+async function sbFollowUser(targetUserId){
+  if(!sbReady()||targetUserId===_sbUser.id)return;
+  try{
+    const{data:existing}=await _sb.from('follows')
+      .select('follower_id').eq('follower_id',_sbUser.id).eq('following_id',targetUserId).maybeSingle();
+    if(existing){
+      await _sb.from('follows').delete().eq('follower_id',_sbUser.id).eq('following_id',targetUserId);
+      showT('Avföljde','y');
+    } else {
+      await _sb.from('follows').insert({follower_id:_sbUser.id,following_id:targetUserId});
+      showT('✅ Följer nu!','g');
+    }
+  }catch(e){}
+}
+
+async function sbLoadNotifications(){
+  if(!sbReady())return[];
+  try{
+    const{data}=await _sb.from('notifications')
+      .select('*').eq('user_id',_sbUser.id).eq('read',false)
+      .order('created_at',{ascending:false}).limit(20);
+    return data||[];
+  }catch(e){return[];}
+}
+
+async function sbMarkNotifsRead(){
+  if(!sbReady())return;
+  await _sb.from('notifications').update({read:true}).eq('user_id',_sbUser.id).eq('read',false);
+}
+
+// Send notification to another user
+async function sbSendNotif(toUserId,type,message,data={}){
+  if(!_sbConfigured||!_sbUser)return;
+  try{
+    await _sb.from('notifications').insert({
+      user_id:toUserId,
+      from_user_id:_sbUser.id,
+      from_username:G.name,
+      from_pet_emoji:G.petEmoji,
+      type,message,data,
+    });
+  }catch(e){}
+}
+
+// ─── REAL-TIME ───────────────────────────────
+function sbSubscribeRealtime(){
+  if(!_sbConfigured||!_sbUser)return;
+  if(_sbChannel)_sb.removeChannel(_sbChannel);
+  _sbChannel=_sb.channel('karma-live')
+    // New posts from anyone
+    .on('postgres_changes',{event:'INSERT',schema:'public',table:'posts'},payload=>{
+      const p=payload.new;
+      _sbFeedPosts=[p,..._sbFeedPosts].slice(0,30);
+      if(document.querySelector('#view-flash.active'))renderFlashFeed();
+      if(p.user_id!==_sbUser.id){
+        showT('⚡ @'+p.username+' postade en Flash!','pk');
+        // Increment notif badge
+        const dot=$('circleDot');if(dot)dot.style.display='inline-block';
+      }
+    })
+    // Friends' pet state changes
+    .on('postgres_changes',{event:'UPDATE',schema:'public',table:'profiles'},payload=>{
+      const p=payload.new;
+      if(p.id===_sbUser.id)return;
+      _sbUpdateFriendCard(p);
+    })
+    // Incoming notifications
+    .on('postgres_changes',{event:'INSERT',schema:'public',table:'notifications',filter:`user_id=eq.${_sbUser.id}`},payload=>{
+      const n=payload.new;
+      showT(n.message,'p');
+      vibe(15);
+    })
+    .subscribe();
+}
+
+function _sbUpdateFriendCard(profile){
+  const el=$('fcpRow');if(!el)return;
+  const card=el.querySelector('[data-uid="'+profile.id+'"]');
+  if(!card)return;
+  const em=card.querySelector('.fcp-av span');if(em)em.textContent=profile.pet_emoji;
+  const lv=card.querySelector('.fcp-lv');if(lv)lv.textContent='LV'+profile.level;
+  // Flash indicator if pet is hungry
+  if(profile.hunger<25)card.querySelector('.fcp-av')?.classList.add('hungry-friend');
+}
+
+// Sign out
+async function sbSignOut(){
+  if(!_sbConfigured)return;
+  if(_sbChannel)_sb.removeChannel(_sbChannel);
+  await _sb.auth.signOut();
+  _sbUser=null;_sbFeedPosts=[];_sbConfigured=false;
+  localStorage.clear();
+  showT('👋 Utloggad','y');
+  setTimeout(()=>location.reload(),800);
+}
+
+// ─── STARTUP CHECK ──────────────────────────
+// Returns 'demo' if Supabase not configured (fall through to localStorage)
+// Returns 'handled' if Supabase is in control (auth screen or loaded profile)
+async function sbCheckOnStart(){
+  if(!sbInit()) return 'demo'; // not configured — use localStorage
+  showAuthScreen(); // show while we check session
+  try{
+    const{data:{session}}=await _sb.auth.getSession();
+    if(session){
+      _sbUser=session.user;
+      hideAuthScreen();
+      const loaded=await sbLoadProfile();
+      if(loaded){
+        $('ob').style.display='none';
+        $('app').style.display='flex';
+        updateHUD();nav('home');
+        setTimeout(startPetAnim,150);
+        setTimeout(()=>{checkBondDate();initPetRoom();renderBondBar();},400);
+        setTimeout(startKarmaPulse,1200);setTimeout(renderJackpot,800);
+        setTimeout(initQuests,300);setTimeout(scheduleEvents,8000);
+        setTimeout(()=>$('circleDot').style.display='inline-block',1500);
+        setTimeout(()=>{schedulePetSpeech();schedulePetEvents();},2500);
+        setTimeout(()=>{updateEvolBadge();renderSocialPower();renderFriendCarePackages();renderCareNotifs();},700);
+        sbSubscribeRealtime();setTimeout(sbFetchFeed,1200);
+      }
+      // else: onboarding will run naturally
+    }
+    // No session — auth screen stays visible
+  }catch(e){
+    // Network error — fall back to demo mode
+    hideAuthScreen();
+    return 'demo';
+  }
+  return 'handled';
+}
+
+// Handle magic link return / OAuth redirect
+if(typeof supabase!=='undefined'&&!SB_URL.includes('YOUR-PROJECT')){
+  const _sbTmp=supabase.createClient(SB_URL,SB_KEY);
+  _sbTmp.auth.onAuthStateChange((event,session)=>{
+    if((event==='SIGNED_IN'||event==='TOKEN_REFRESHED')&&session&&!_sbUser&&_sbConfigured){
+      _sbUser=session.user;
+      _sbAfterLogin();
+    }
+  });
+}
+
 // ── LOAD ──
-try{
-  const sn=localStorage.getItem('kv8_n');
-  if(sn){
+// Demo-mode load from localStorage (runs only when Supabase is not configured)
+function _loadFromLocalStorage(){
+  try{
+    const sn=localStorage.getItem('kv8_n');
+    if(!sn)return;
     G.name=sn;G.petEmoji=localStorage.getItem('kv8_p')||'🐉';G.petName=localStorage.getItem('kv8_pn')||'Eldraken';
     G.level=parseInt(localStorage.getItem('kv8_l')||'1');G.coins=parseInt(localStorage.getItem('kv8_c')||'500');
     G.streak=parseInt(localStorage.getItem('kv8_st')||'0');G.exp=parseInt(localStorage.getItem('kv8_x')||'0');
@@ -5907,13 +6438,18 @@ try{
     setTimeout(startKarmaPulse,1200);setTimeout(renderJackpot,800);
     setTimeout(()=>$('circleDot').style.display='inline-block',1500);
     setTimeout(startPetAnim,150);
-    setTimeout(initQuests,300);
-    setTimeout(scheduleEvents,8000);
+    setTimeout(initQuests,300);setTimeout(scheduleEvents,8000);
     setTimeout(()=>{checkBondDate();initPetRoom();renderBondBar();},400);
     setTimeout(()=>{schedulePetSpeech();schedulePetEvents();},2000);
     setTimeout(()=>{updateEvolBadge();renderSocialPower();renderFriendCarePackages();renderCareNotifs();renderStreakMilestones();renderFriendLB();updatePetStatusRings();},600);
-  }
-}catch(e){}
+  }catch(e){}
+}
+
+// Bootstrap: Supabase first, localStorage as fallback
+(async()=>{
+  const mode=await sbCheckOnStart();
+  if(mode==='demo') _loadFromLocalStorage();
+})();
 
 // ══════════════════════════════════════════
 // ── DAILY CHALLENGE SYSTEM ──
