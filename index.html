@@ -135,6 +135,7 @@ textarea.inp{resize:none;min-height:68px;}
 .splash{position:fixed;inset:0;z-index:9960;background:rgba(4,4,10,.97);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;opacity:0;pointer-events:none;transition:opacity .2s;}
 .splash.show{opacity:1;pointer-events:all;}
 @keyframes spop{from{transform:scale(.15) rotate(-12deg);}to{transform:scale(1) rotate(0);}}
+@keyframes gachaUltra{from{box-shadow:0 0 20px rgba(255,215,0,.6),0 0 40px rgba(191,95,255,.4);}to{box-shadow:0 0 40px rgba(255,215,0,.9),0 0 80px rgba(191,95,255,.7),0 0 0 4px rgba(255,215,0,.2);}}
 .sp-ico{font-size:80px;margin-bottom:12px;animation:spop .45s cubic-bezier(.34,1.56,.64,1);}
 .sp-title{font-size:30px;font-weight:900;text-align:center;margin-bottom:6px;}
 .sp-sub{font-size:14px;color:var(--t2);text-align:center;margin-bottom:12px;}
@@ -259,10 +260,11 @@ textarea.inp{resize:none;min-height:68px;}
 .mg-btn:active{transform:scale(.82);}
 .mg-combo{font-size:11px;font-weight:800;color:var(--y);margin-top:8px;font-family:var(--mono);min-height:16px;}
 /* Flash */
-.flash-top{background:var(--c1);border-bottom:1px solid var(--line);flex-shrink:0;}
-.flash-title-row{display:flex;align-items:center;justify-content:space-between;padding:7px 14px 5px;}
+.flash-top{position:absolute;top:0;left:0;right:0;z-index:20;background:linear-gradient(180deg,rgba(0,0,0,.8) 0%,transparent 100%);border-bottom:none;pointer-events:none;padding-bottom:24px;}
+.flash-top>.flash-title-row,.flash-top>.flash-sub,.flash-top>.streak-circles{pointer-events:auto;}
+.flash-title-row{display:flex;align-items:center;justify-content:space-between;padding:10px 14px 4px;}
 .flash-title{font-size:15px;font-weight:900;font-family:var(--mono);}
-.flash-sub{font-size:10px;color:var(--t3);padding:0 14px 6px;}
+.flash-sub{font-size:10px;color:rgba(255,255,255,.55);padding:0 14px 4px;}
 .streak-circles{display:flex;gap:7px;overflow-x:auto;scrollbar-width:none;padding:4px 14px 7px;}
 .streak-circles::-webkit-scrollbar{display:none;}
 .sc{display:flex;flex-direction:column;align-items:center;gap:2px;cursor:pointer;flex-shrink:0;}
@@ -275,10 +277,11 @@ textarea.inp{resize:none;min-height:68px;}
 .sc-inner{width:39px;height:39px;border-radius:50%;background:var(--c2);display:flex;align-items:center;justify-content:center;font-size:19px;}
 .sc-name{font-size:8px;color:var(--t2);max-width:44px;text-align:center;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
 .sc-streak{font-size:9px;color:var(--r);font-weight:800;font-family:var(--mono);}
-.flash-feed{flex:1;overflow-y:scroll;scroll-snap-type:y mandatory;scrollbar-width:none;}
+.flash-feed{position:absolute;inset:0;overflow-y:scroll;scroll-snap-type:y mandatory;scrollbar-width:none;}
 .flash-feed::-webkit-scrollbar{display:none;}
-.fv{scroll-snap-align:start;min-height:100svh;display:flex;flex-direction:column;background:#000;border-bottom:1px solid rgba(255,255,255,.06);position:relative;}
-.fv-media{flex:1;min-height:75svh;background:var(--c1);display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;cursor:pointer;}
+#view-flash{overflow:hidden;}
+.fv{scroll-snap-align:start;height:100svh;min-height:100svh;display:flex;flex-direction:column;background:#000;position:relative;}
+.fv-media{flex:1;min-height:calc(100svh - 52px);background:var(--c1);display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;cursor:pointer;}
 .fv-bg{font-size:160px;opacity:.05;pointer-events:none;position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);}
 .fv-right{position:absolute;right:10px;display:flex;flex-direction:column;align-items:center;gap:14px;z-index:10;}
 @keyframes musicSpin{0%{transform:rotate(0);}100%{transform:rotate(360deg);}}
@@ -860,14 +863,19 @@ textarea.inp{resize:none;min-height:68px;}
 .pet-room-layer{position:absolute;inset:0;overflow:hidden;pointer-events:none;border-radius:0;}
 .prl-sky{position:absolute;top:0;left:0;right:0;height:62%;}
 .prl-floor{position:absolute;bottom:0;left:0;right:0;height:38%;}
-.prl-floor-glow{position:absolute;top:0;left:0;right:0;height:24px;background:linear-gradient(180deg,rgba(57,255,20,.12),transparent);}
+.prl-floor-glow{position:absolute;top:0;left:0;right:0;height:32px;background:linear-gradient(180deg,rgba(57,255,20,.18),transparent);animation:floorPulse 4s ease-in-out infinite;}
+@keyframes floorPulse{0%,100%{opacity:.7;}50%{opacity:1;}}
+.prl-floor-shimmer{position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,rgba(57,255,20,.4),transparent);animation:shimmerSlide 3s ease-in-out infinite;}
+@keyframes shimmerSlide{0%{transform:translateX(-100%);}100%{transform:translateX(100%)}}
 .prl-star{position:absolute;border-radius:50%;background:#fff;animation:twk var(--dur) ease-in-out infinite var(--del);}
-.prl-room-item{position:absolute;pointer-events:none;font-size:var(--sz,18px);line-height:1;}
+.prl-orb{position:absolute;border-radius:50%;background:radial-gradient(circle,var(--orbc,rgba(57,255,20,.35)) 0%,transparent 70%);animation:orbDrift var(--dur) ease-in-out infinite var(--del);pointer-events:none;}
+@keyframes orbDrift{0%,100%{transform:translateY(0) scale(1);opacity:.4;}50%{transform:translateY(-14px) scale(1.2);opacity:.8;}}
+.prl-room-item{position:absolute;pointer-events:none;font-size:var(--sz,18px);line-height:1;filter:drop-shadow(0 2px 8px var(--glow,rgba(57,255,20,.3)));}
 .prl-room-item.wall-item{top:var(--yt,18%);left:var(--xl,10%);}
 .prl-room-item.floor-item{bottom:calc(38% + 2px);left:var(--xl,10%);}
 @keyframes twk{0%,100%{opacity:.15;}50%{opacity:.9;}}
-.prl-item{position:absolute;font-size:var(--sz);animation:iFloat var(--dur) ease-in-out infinite var(--del);cursor:pointer;-webkit-tap-highlight-color:transparent;z-index:3;pointer-events:auto;}
-@keyframes iFloat{0%,100%{transform:translateY(0);}50%{transform:translateY(-8px);}}
+.prl-item{position:absolute;font-size:var(--sz);animation:iFloat var(--dur) ease-in-out infinite var(--del);cursor:pointer;-webkit-tap-highlight-color:transparent;z-index:3;pointer-events:auto;filter:drop-shadow(0 0 8px rgba(57,255,20,.25));}
+@keyframes iFloat{0%,100%{transform:translateY(0) rotate(0deg);}50%{transform:translateY(-10px) rotate(3deg);}}
 
 /* ═══════════════════════════════════
    DAILY BOND BAR
@@ -932,7 +940,7 @@ textarea.inp{resize:none;min-height:68px;}
 .sp-panel{margin:0 12px 10px;background:var(--c1);border:1.5px solid rgba(0,217,255,.2);border-radius:18px;padding:13px 14px;position:relative;overflow:hidden;}
 .sp-panel::before{content:'';position:absolute;top:-30px;right:-30px;width:130px;height:130px;background:radial-gradient(circle,rgba(0,217,255,.08),transparent 70%);pointer-events:none;}
 .sp-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:9px;}
-.sp-ttl{font-size:10px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:.8px;}
+.sp-ttl{font-size:10px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:.8px;flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
 .sp-boost{font-size:12px;font-weight:900;color:var(--b);font-family:var(--mono);}
 .sp-bar{height:6px;background:var(--c3);border-radius:100px;overflow:hidden;margin-bottom:9px;}
 .sp-bar-fill{height:100%;background:linear-gradient(90deg,var(--b),var(--p));border-radius:100px;transition:width .8s cubic-bezier(.34,1.56,.64,1);box-shadow:0 0 8px rgba(0,217,255,.35);}
@@ -1573,7 +1581,7 @@ textarea.inp{resize:none;min-height:68px;}
         <div class="pet-hero-bg"></div>
         <div class="pet-room-layer" id="petRoomLayer" style="opacity:.45;pointer-events:none">
           <div class="prl-sky" id="prlSky"></div>
-          <div class="prl-floor"><div class="prl-floor-glow"></div></div>
+          <div class="prl-floor"><div class="prl-floor-glow"></div><div class="prl-floor-shimmer"></div></div>
           <div class="prl-weather" id="petWeather"></div>
         </div>
         <div style="display:flex;align-items:center;gap:10px;position:relative;z-index:2">
@@ -3000,7 +3008,7 @@ const G={
   worldPoints:0,builtZones:[],wildPetsCaught:0,
   wldFlash:0,wldBattle:0,wldMarket:0,wldStreak:0,wldSocial:0,
   packsOpened:0,collectibles:[],
-  talentPoints:0,talents:[],
+  talentPoints:0,talents:[],talentLvls:{},
   diaryEntries:[],
   lastSpin:'',
 };
@@ -3363,7 +3371,7 @@ function cp(n){const d=document.createElement('div');d.className='cpop';d.textCo
 function sa(sel,el){document.querySelectorAll(sel+' .topt').forEach(x=>x.className='topt');el.classList.add('on');}
 function dist(la1,lo1,la2,lo2){const R=6371e3,f1=la1*Math.PI/180,f2=la2*Math.PI/180,df=(la2-la1)*Math.PI/180,dl=(lo2-lo1)*Math.PI/180;const a=Math.sin(df/2)**2+Math.cos(f1)*Math.cos(f2)*Math.sin(dl/2)**2;return R*2*Math.atan2(Math.sqrt(a),Math.sqrt(1-a));}
 function fmtD(m){return m<1000?Math.round(m)+'m':+(m/1000).toFixed(1)+'km';}
-function save(){try{const d={n:G.name,p:G.petEmoji,pn:G.petName,l:G.level,c:G.coins,st:G.streak,x:G.exp,as:G.actionStat,cs:G.commerceStat,ss:G.socialStat,g:JSON.stringify(G.gear),eg:G.equippedGear||'',sek:G.totalSEK,ts:G.trustScore,posts:G.postCount,b:G.bountiesDone,hu:G.hunger,en:G.energy,mo:G.mood,brands:JSON.stringify(G.brands),circles:JSON.stringify(G.circles),sw:JSON.stringify(G.streakWeek),petCfg:JSON.stringify(G.petConfig),pm:G.premium?1:0,pt:G.premiumTier,wld:G.world,bond:JSON.stringify(G.todayBond),bdate:G.bondDate,wp:G.worldPoints,bz:JSON.stringify(G.builtZones),wpc:G.wildPetsCaught,wflash:G.wldFlash,wbattle:G.wldBattle,wmarket:G.wldMarket,wstreak:G.wldStreak,wsocial:G.wldSocial,po:G.packsOpened,col:JSON.stringify(G.collectibles),tp:G.talentPoints,tl:JSON.stringify(G.talents),diary:JSON.stringify(G.diaryEntries.slice(-20)),ls:G.lastSpin};for(const k in d)localStorage.setItem('kv8_'+k,d[k]);}catch(e){}}
+function save(){try{const d={n:G.name,p:G.petEmoji,pn:G.petName,l:G.level,c:G.coins,st:G.streak,x:G.exp,as:G.actionStat,cs:G.commerceStat,ss:G.socialStat,g:JSON.stringify(G.gear),eg:G.equippedGear||'',sek:G.totalSEK,ts:G.trustScore,posts:G.postCount,b:G.bountiesDone,hu:G.hunger,en:G.energy,mo:G.mood,brands:JSON.stringify(G.brands),circles:JSON.stringify(G.circles),sw:JSON.stringify(G.streakWeek),petCfg:JSON.stringify(G.petConfig),pm:G.premium?1:0,pt:G.premiumTier,wld:G.world,bond:JSON.stringify(G.todayBond),bdate:G.bondDate,wp:G.worldPoints,bz:JSON.stringify(G.builtZones),wpc:G.wildPetsCaught,wflash:G.wldFlash,wbattle:G.wldBattle,wmarket:G.wldMarket,wstreak:G.wldStreak,wsocial:G.wldSocial,po:G.packsOpened,col:JSON.stringify(G.collectibles),tp:G.talentPoints,tl:JSON.stringify(G.talents),tlvl:JSON.stringify(G.talentLvls||{}),diary:JSON.stringify(G.diaryEntries.slice(-20)),ls:G.lastSpin,ltt:G.lastTalkTime||0,lwb:G.lastWpBoost||0};for(const k in d)localStorage.setItem('kv8_'+k,d[k]);}catch(e){}}
 
 // ── DNA + MOOD SYSTEM ──
 function getPetDNA(){
@@ -3853,6 +3861,11 @@ function pcBath(){
   SFX.click();updateHUD();updatePetView();
 }
 function pcTalk(){
+  const now=Date.now();
+  const cd=30000;
+  const elapsed=now-(G.lastTalkTime||0);
+  if(elapsed<cd){const left=Math.ceil((cd-elapsed)/1000);showT('⏳ '+left+'s till nästa bond — pet behöver pausa!','y');vibe(5);return;}
+  G.lastTalkTime=now;
   G.mood=Math.min(100,G.mood+10);G.energy=Math.min(100,G.energy+5);
   gainXP(5,'social');petAnimState.mood='happy';
   const mult=_triggerCombo('💖 PET HAPPY');
@@ -5381,19 +5394,28 @@ function initPetRoom(){
   const sky=$('prlSky');if(sky)sky.style.background=rm.sky;
   const fl=hero.querySelector('.prl-floor');if(fl)fl.style.background=rm.floor;
   // clear old stars/items
-  hero.querySelectorAll('.prl-star,.prl-item').forEach(e=>e.remove());
-  // generate stars
-  for(let i=0;i<rm.stars;i++){
+  hero.querySelectorAll('.prl-star,.prl-item,.prl-orb').forEach(e=>e.remove());
+  // generate stars (more = better)
+  const starCount=Math.max(rm.stars,28);
+  for(let i=0;i<starCount;i++){
     const s=document.createElement('div');s.className='prl-star';
-    const sz=0.8+Math.random()*1.8;
-    s.style.cssText=`left:${Math.random()*100}%;top:${Math.random()*60}%;width:${sz}px;height:${sz}px;--dur:${2+Math.random()*4}s;--del:${-Math.random()*4}s;`;
+    const sz=0.6+Math.random()*2.4;
+    s.style.cssText=`left:${Math.random()*100}%;top:${Math.random()*65}%;width:${sz}px;height:${sz}px;--dur:${1.5+Math.random()*4}s;--del:${-Math.random()*4}s;`;
     hero.appendChild(s);
   }
+  // ambient glow orbs
+  const orbColors=['rgba(57,255,20,.35)','rgba(0,217,255,.3)','rgba(191,95,255,.28)','rgba(255,230,0,.25)'];
+  for(let i=0;i<4;i++){
+    const o=document.createElement('div');o.className='prl-orb';
+    const sz=20+Math.random()*30;
+    o.style.cssText=`left:${10+i*22}%;top:${15+Math.random()*35}%;width:${sz}px;height:${sz}px;--orbc:${orbColors[i%orbColors.length]};--dur:${2.5+Math.random()*3}s;--del:${-i*0.7}s;`;
+    hero.appendChild(o);
+  }
   // floating emojis (world-specific)
-  for(let i=0;i<3;i++){
+  for(let i=0;i<4;i++){
     const e=document.createElement('div');e.className='prl-item';
     const em=rm.emojis[i%rm.emojis.length];
-    e.style.cssText=`left:${5+i*28}%;top:${20+Math.random()*30}%;--sz:16px;--dur:${1.4+Math.random()*1}s;--del:${-i*0.5}s;`;
+    e.style.cssText=`left:${4+i*24}%;top:${16+Math.random()*28}%;--sz:${14+Math.random()*6}px;--dur:${1.2+Math.random()*1.2}s;--del:${-i*0.45}s;`;
     e.textContent=em;e.title='Dekor';
     hero.appendChild(e);
   }
@@ -5632,6 +5654,12 @@ const KW_FRIENDS=[
 let _kwRaf=null;
 
 function addWorldPoints(n,source){
+  if(source==='manual'){
+    const now=Date.now();const cd=3600000;
+    const elapsed=now-(G.lastWpBoost||0);
+    if(elapsed<cd){const left=Math.ceil((cd-elapsed)/60000);showT('⏳ BOOST om '+left+' min — max 1 gång/timme','y');return;}
+    G.lastWpBoost=now;
+  }
   G.worldPoints+=n;
   if(source==='flash')  G.wldFlash++;
   else if(source==='battle') G.wldBattle++;
@@ -5868,8 +5896,11 @@ try{
     try{const col=localStorage.getItem('kv8_col');if(col)G.collectibles=JSON.parse(col);}catch(e){}
     G.talentPoints=parseInt(localStorage.getItem('kv8_tp')||'0');
     try{const tl=localStorage.getItem('kv8_tl');if(tl)G.talents=JSON.parse(tl);}catch(e){}
+    try{const tlvl=localStorage.getItem('kv8_tlvl');if(tlvl)G.talentLvls=JSON.parse(tlvl);}catch(e){}
     try{const di=localStorage.getItem('kv8_diary');if(di)G.diaryEntries=JSON.parse(di);}catch(e){}
     G.lastSpin=localStorage.getItem('kv8_ls')||'';
+    G.lastTalkTime=parseInt(localStorage.getItem('kv8_ltt')||'0');
+    G.lastWpBoost=parseInt(localStorage.getItem('kv8_lwb')||'0');
     const _today=new Date().toDateString();const _last=localStorage.getItem('kv8_lastLogin');
     if(_last!==_today){localStorage.setItem('kv8_lastLogin',_today);if(_last){const _b=G.premium?300:75;G.coins+=_b;setTimeout(()=>{showT('🎁 DAILY LOGIN BONUS! +'+_b+' COINS','g');vibe([30,20,60,20,80]);},2500);}}
     $('ob').style.display='none';$('app').style.display='flex';updateHUD();nav('home');
@@ -6428,17 +6459,35 @@ function renderTalentTree(){
 function learnTalent(id){
   const t=TALENT_DEFS.find(x=>x.id===id);if(!t)return;
   if(!G.talents)G.talents=[];
-  if(G.talents.includes(id)){showT('Redan lärd!','y');return;}
-  // req_or: either req OR req_or satisfies the prerequisite
-  const req1Ok=!t.req||G.talents.includes(t.req);
-  const reqOrOk=t.req_or&&G.talents.includes(t.req_or);
-  if(t.req&&!req1Ok&&!reqOrOk){const prev=TALENT_DEFS.find(x=>x.id===t.req);showT('🔒 Lär dig '+(prev?prev.nm:'föregående förmåga')+' först!','r');return;}
-  if(t.req2&&!G.talents.includes(t.req2)){const prev2=TALENT_DEFS.find(x=>x.id===t.req2);showT('🔒 Lär dig '+(prev2?prev2.nm:'annan gren')+' också!','r');return;}
-  if((G.talentPoints||0)<t.cost){showT('❌ Behöver '+t.cost+' TP! Levla upp för mer.','r');SFX.error();return;}
-  G.talentPoints-=t.cost;G.talents.push(id);t.ef();
-  SFX.win();vibe([30,20,60,20,80]);showT('🌳 '+t.nm+' inlärd!','g');
-  spawnParticles(window.innerWidth/2,window.innerHeight*.4,'stars');
-  addDiaryEntry('Lärde mig talangen "'+t.nm+'" på Talent Trädet!');
+  if(!G.talentLvls)G.talentLvls={};
+  const curLv=G.talentLvls[id]||0;
+  const isUnlocked=G.talents.includes(id);
+  if(!isUnlocked){
+    // req_or: either req OR req_or satisfies the prerequisite
+    const req1Ok=!t.req||G.talents.includes(t.req);
+    const reqOrOk=t.req_or&&G.talents.includes(t.req_or);
+    if(t.req&&!req1Ok&&!reqOrOk){const prev=TALENT_DEFS.find(x=>x.id===t.req);showT('🔒 Lär dig '+(prev?prev.nm:'föregående förmåga')+' först!','r');return;}
+    if(t.req2&&!G.talents.includes(t.req2)){const prev2=TALENT_DEFS.find(x=>x.id===t.req2);showT('🔒 Lär dig '+(prev2?prev2.nm:'annan gren')+' också!','r');return;}
+  }
+  if(curLv>=1000){showT('⭐ MAX LEVEL 1000! Absolut mästare!','g');vibe([100,50,200]);return;}
+  // Cost scales: base for first unlock, then base*(curLv+1) per level-up
+  const cost=isUnlocked?Math.ceil(t.cost*(curLv+1)):t.cost;
+  if((G.talentPoints||0)<cost){showT('❌ Behöver '+cost+' TP! Levla upp för mer.','r');SFX.error();return;}
+  G.talentPoints-=cost;
+  G.talentLvls[id]=curLv+1;
+  if(!isUnlocked){
+    G.talents.push(id);t.ef();
+    SFX.win();vibe([30,20,60,20,80]);showT('🌳 '+t.nm+' inlärd! (LV1)','g');
+    spawnParticles(window.innerWidth/2,window.innerHeight*.4,'stars');
+    addDiaryEntry('Lärde mig talangen "'+t.nm+'" på Talent Trädet!');
+  } else {
+    const newLv=curLv+1;
+    vibe([20,10,40]);
+    if(newLv%100===0){SFX.win();spawnParticles(window.innerWidth/2,window.innerHeight*.4,'stars');showT('💯 '+t.nm+' LV'+newLv+' MILESTONE! LEGENDARISK!','g');}
+    else if(newLv%10===0){SFX.click();showT('⬆️ '+t.nm+' LV'+newLv+'! Kraftfull!','p');}
+    else{showT('⬆️ '+t.nm+' → LV'+newLv,'b');}
+    addDiaryEntry('Uppgraderade "'+t.nm+'" till LV'+(curLv+1)+'!');
+  }
   save();renderTalentTree();
 }
 
@@ -6567,11 +6616,18 @@ function _ttDraw(){
       ctx.fillText(n.nm.length>14?n.nm.slice(0,13)+'…':n.nm,sx,sy+r+2);
     }
 
-    // TP cost badge
+    // TP cost badge or level badge
     if(!isO&&r>11){
       ctx.font=`900 ${Math.max(7,r*0.62)}px monospace`;ctx.textAlign='center';ctx.textBaseline='alphabetic';
       ctx.fillStyle=isA?col+'dd':'rgba(255,255,255,0.18)';
       ctx.fillText(n.cost+'TP',sx,sy-r-3);
+    } else if(isO&&r>9){
+      const lv=(G.talentLvls||{})[n.id]||1;
+      if(lv>1){
+        ctx.font=`900 ${Math.max(7,r*0.58)}px monospace`;ctx.textAlign='center';ctx.textBaseline='alphabetic';
+        ctx.fillStyle='#FFD700';
+        ctx.fillText('L'+lv,sx,sy-r-3);
+      }
     }
   });
 
@@ -6703,11 +6759,13 @@ function _ttHandleTap(tx,ty){
 function _ttShowPanel(n){
   const panel=$('ttNodePanel');if(!panel)return;
   const owned=G.talents||[];
+  const lvls=G.talentLvls||{};
+  const curLv=lvls[n.id]||0;
   const isO=owned.includes(n.id);
   const reqOk=(!n.req||owned.includes(n.req)||(n.req_or&&owned.includes(n.req_or)))&&(!n.req2||owned.includes(n.req2));
   const col=_TT_BCOL[n.branch]??'#39FF14';
   const em=$('ttNodeEm');if(em)em.textContent=n.em;
-  const nm=$('ttNodeNm');if(nm){nm.textContent=n.nm+(n.legendary?' ★':'');nm.style.color=col;}
+  const nm=$('ttNodeNm');if(nm){nm.textContent=n.nm+(n.legendary?' ★':'')+(isO?' LV'+curLv:'');nm.style.color=col;}
   const desc=$('ttNodeDesc');if(desc)desc.textContent=n.desc;
   const reqEl=$('ttNodeReq');if(reqEl){
     const parts=[];
@@ -6715,9 +6773,15 @@ function _ttShowPanel(n){
     if(n.req2){const r=TALENT_DEFS.find(x=>x.id===n.req2);if(r)parts.push(r.nm);}
     reqEl.textContent=parts.length?'Kräver: '+parts.join(' + '):'Startförmåga — ingen krav';
   }
-  const costEl=$('ttNodeCost');if(costEl)costEl.textContent=isO?'✓':n.cost+' TP';
+  const nextCost=isO?Math.ceil(n.cost*(curLv+1)):n.cost;
+  const costEl=$('ttNodeCost');if(costEl)costEl.textContent=isO?'LV'+curLv+'/1000 · '+nextCost+' TP nästa':n.cost+' TP';
   const btn=$('ttLearnBtn');if(btn){
-    if(isO){btn.textContent='✅ Inlärd';btn.style.background='rgba(57,255,20,.1)';btn.style.color='var(--g)';btn.disabled=true;}
+    if(curLv>=1000){btn.textContent='⭐ MAX LVL 1000 — MÄSTARE';btn.style.background='rgba(255,215,0,.15)';btn.style.color='#FFD700';btn.disabled=true;}
+    else if(isO){
+      const nxt=Math.ceil(n.cost*(curLv+1));
+      if((G.talentPoints||0)<nxt){btn.textContent='❌ Behöver '+nxt+' TP (LV'+(curLv+1)+')';btn.style.background='rgba(255,50,50,.12)';btn.style.color='#ff6666';btn.disabled=false;}
+      else{btn.textContent='⬆️ LEVEL UP → LV'+(curLv+1)+' — '+nxt+' TP';btn.style.background=col;btn.style.color='#000';btn.disabled=false;}
+    }
     else if(!reqOk){btn.textContent='🔒 Lär föregående nod';btn.style.background='rgba(255,255,255,.06)';btn.style.color='var(--t3)';btn.disabled=true;}
     else if((G.talentPoints||0)<n.cost){btn.textContent='❌ Behöver '+n.cost+' TP';btn.style.background='rgba(255,50,50,.12)';btn.style.color='#ff6666';btn.disabled=false;}
     else{btn.textContent='⚡ LÄR DIG — '+n.cost+' TP';btn.style.background=col;btn.style.color='#000';btn.disabled=false;}
@@ -6769,6 +6833,10 @@ const GACHA_PRIZES=[
   {em:'🌈',nm:'Full Restore',col:'#FF9F0A',ef:()=>{G.hunger=100;G.energy=100;G.mood=100;updatePetView();showT('🌈 FULL RESTORE!','g');}},
   {em:'🎯',nm:'+100 XP',col:'#39FF14',ef:()=>{gainXP(100,'action');showT('🎯 +100 XP BONUS!','g');}},
   {em:'🔥',nm:'Pro Pack',col:'#FF2D55',ef:()=>{setTimeout(()=>{closeGacha();buyPack('pro',true);},700);}},
+  // ── ULTRA-RARE (CS:GO knife tier) ── ~2% combined
+  {em:'👑',nm:'2 VECKORS PREMIUM',col:'#FFD700',ultra:true,ef:()=>{G.premium=true;G.premiumTier='gold';G.premiumUntil=Date.now()+14*86400000;save();showT('👑 2 VECKORS PREMIUM AKTIVERAT! GRATTIS!!!','y');spawnParticles(window.innerWidth/2,window.innerHeight*.3,'stars');vibe([100,50,200,50,400,50,300]);addDiaryEntry('VANN 2 VECKORS PREMIUM i gacha! Omöjligt sällsynt! 👑');}},
+  {em:'🌌',nm:'SECRET PET SKIN: COSMIC',col:'#BF5FFF',ultra:true,ef:()=>{G.petConfig=Object.assign(G.petConfig||{},{bodyColor:'#1a0a3d',eyeColor:'#BF5FFF',glowColor:'rgba(191,95,255,.9)',hasWings:true,accessory:'halo'});save();redrawPetCanvas();showT('🌌 COSMIC SECRET SKIN UPPLÅST! ULTRA RARE!!!','p');spawnParticles(window.innerWidth/2,window.innerHeight*.3,'stars');vibe([80,40,160,40,240,40,320]);}},
+  {em:'💠',nm:'500 COINS + 5 TP MEGA',col:'#00D9FF',ultra:true,ef:()=>{gainCoins(500);G.talentPoints=(G.talentPoints||0)+5;save();showT('💠 500 COINS + 5 TP MEGA DROP! SJUKT SÄLLSYNT!','b');spawnParticles(window.innerWidth/2,window.innerHeight*.3,'stars');vibe([60,30,120,30,200]);}},
 ];
 // ── KARMA JACKPOT ──
 function getJackpotPot(){
@@ -6876,17 +6944,24 @@ function spinGacha(){
   _gachaSpinning=true;
   G.lastSpin=today;save();
   const spinBtn=$('gachaSpinBtn');if(spinBtn){spinBtn.disabled=true;spinBtn.textContent='⏳ Snurrar...';}
-  const prizeIdx=Math.floor(Math.random()*GACHA_PRIZES.length);const prize=GACHA_PRIZES[prizeIdx];
+  // Weighted random: ultra-rare ~2% total, rest 98%
+  const ultraPool=GACHA_PRIZES.filter(p=>p.ultra);
+  const normalPool=GACHA_PRIZES.filter(p=>!p.ultra);
+  let prize,prizeIdx;
+  if(Math.random()<0.02&&ultraPool.length){prize=ultraPool[Math.floor(Math.random()*ultraPool.length)];}
+  else{prize=normalPool[Math.floor(Math.random()*normalPool.length)];}
+  prizeIdx=GACHA_PRIZES.indexOf(prize);
   const sliceDeg=360/GACHA_PRIZES.length;const targetDeg=360-prizeIdx*sliceDeg-sliceDeg/2;
   _gachaAngle=Math.ceil((_gachaAngle||0)/360)*360+1800+targetDeg;
   wheel.style.transition='transform 3s cubic-bezier(.17,.67,.12,.99)';wheel.style.transform=`rotate(${_gachaAngle}deg)`;
   SFX.click();vibe([20,10,30,10,40]);
   setTimeout(()=>{
     _gachaSpinning=false;
-    const _rhtml=`<div style="font-size:48px;margin-bottom:8px;animation:spop .4s cubic-bezier(.34,1.56,.64,1)">${prize.em}</div><div style="font-size:18px;font-weight:900;color:var(--y);margin-bottom:4px">${prize.nm}!</div><div style="font-size:11px;color:var(--t3)">Kom tillbaka imorgon ✅</div>`;
+    const ultraStyle=prize.ultra?`background:linear-gradient(135deg,rgba(255,215,0,.25),rgba(191,95,255,.2));border:2px solid gold;border-radius:18px;padding:12px;animation:gachaUltra 1s ease-in-out infinite alternate;`:'';
+    const _rhtml=`<div style="${ultraStyle}"><div style="font-size:${prize.ultra?64:48}px;margin-bottom:8px;animation:spop .4s cubic-bezier(.34,1.56,.64,1)">${prize.em}</div>${prize.ultra?`<div style="font-size:10px;font-weight:900;color:#FFD700;letter-spacing:2px;margin-bottom:4px;font-family:var(--mono)">◆ ULTRA RARE ◆</div>`:''}  <div style="font-size:${prize.ultra?20:18}px;font-weight:900;color:${prize.ultra?'#FFD700':'var(--y)'};margin-bottom:4px">${prize.nm}!</div><div style="font-size:11px;color:var(--t3)">Kom tillbaka imorgon ✅</div></div>`;
     _lastSpinResultHTML=_rhtml;
     const res=$('gachaResult');if(res)res.innerHTML=_rhtml;
-    prize.ef();SFX.win();vibe([50,30,100,30,150]);
+    prize.ef();SFX.win();vibe(prize.ultra?[100,50,200,50,400,50,300]:[50,30,100,30,150]);
     const sub=$('gachaSubtitle');if(sub)sub.textContent='Kom tillbaka imorgon för nästa spin!';
     const freshBtn=$('gachaSpinBtn');if(freshBtn){freshBtn.disabled=true;freshBtn.textContent='✅ Redan spinnat idag';}
     addDiaryEntry('Spann gacha-hjulet och vann '+prize.em+' '+prize.nm+'!');
@@ -7298,6 +7373,30 @@ setInterval(()=>{
 },60000);
 // Init quests for new users too
 if(!localStorage.getItem('kv8_n')){}else{setTimeout(initQuests,500);}
+
+// ── GLOBAL CLICK / SESSION TRACKING ──
+let _totalClicks=parseInt(localStorage.getItem('kv8_tc')||'0');
+let _sessionClicks=0;
+let _sessionStart=Date.now();
+{const sc=parseInt(localStorage.getItem('kv8_sc')||'0');localStorage.setItem('kv8_sc',sc+1);}
+function _trackTap(){
+  _totalClicks++;_sessionClicks++;
+  if(_totalClicks%100===0){
+    localStorage.setItem('kv8_tc',_totalClicks);
+    if(_totalClicks===500)setTimeout(()=>showT('🖱️ 500 KLICK — du är besatt! 😄','g'),100);
+    if(_totalClicks===2000)setTimeout(()=>showT('🔥 2000 KLICK — fullständig addict!','pk'),100);
+    if(_totalClicks===10000)setTimeout(()=>{showT('👑 10 000 KLICK — KARMA LEGEND!!!','y');spawnParticles(window.innerWidth/2,window.innerHeight*.4,'stars');},100);
+  }
+}
+document.addEventListener('touchstart',_trackTap,{passive:true});
+document.addEventListener('visibilitychange',()=>{
+  if(document.hidden){
+    localStorage.setItem('kv8_tc',_totalClicks);
+    const timeToday=parseInt(localStorage.getItem('kv8_tt')||'0');
+    localStorage.setItem('kv8_tt',timeToday+Math.round((Date.now()-_sessionStart)/1000));
+    _sessionStart=Date.now();
+  }
+});
 </script>
 </body>
 </html>
