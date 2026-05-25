@@ -759,6 +759,24 @@ textarea.inp{resize:none;min-height:68px;}
 .nb[data-v="explore"].on .nb-inner{background:rgba(191,95,255,.2);}
 .nb[data-v="explore"].on .nl{color:#BF5FFF;}
 .nb[data-v="explore"].on .ni{transform:scale(1.1);}
+.nb[data-v="play"].on .nb-inner{background:rgba(255,159,10,.22);}
+.nb[data-v="play"].on .nl{color:#FF9F0A;}
+.nb[data-v="play"].on .ni{transform:scale(1.1);}
+.nb[data-v="world"].on .nb-inner{background:rgba(57,255,20,.22);}
+.nb[data-v="world"].on .nl{color:#39FF14;}
+.nb[data-v="world"].on .ni{transform:scale(1.1);}
+.nb[data-v="me"].on .nb-inner{background:rgba(191,95,255,.22);}
+.nb[data-v="me"].on .nl{color:#BF5FFF;}
+.nb[data-v="me"].on .ni{transform:scale(1.1);}
+.me-subtabs{display:flex;gap:0;overflow-x:auto;scrollbar-width:none;border-bottom:2px solid var(--line);position:sticky;top:0;background:var(--bg);z-index:5;}
+.me-subtabs::-webkit-scrollbar{display:none;}
+.me-stab{flex:1;min-width:54px;padding:10px 4px 8px;text-align:center;font-size:9px;font-weight:900;cursor:pointer;color:var(--t3);border-bottom:2px solid transparent;margin-bottom:-2px;transition:all .12s;font-family:var(--mono);-webkit-tap-highlight-color:transparent;letter-spacing:.3px;}
+.me-stab.on{color:var(--p);border-bottom-color:var(--p);}
+.me-spanel{display:none;}
+.me-spanel.on{display:block;}
+.world-toggle{display:flex;gap:0;margin:12px 14px 0;border-radius:14px;overflow:hidden;border:1.5px solid var(--line);}
+.world-toggle-btn{flex:1;padding:9px;text-align:center;font-size:11px;font-weight:900;cursor:pointer;color:var(--t3);background:var(--c1);transition:all .12s;font-family:var(--mono);-webkit-tap-highlight-color:transparent;}
+.world-toggle-btn.on{background:rgba(57,255,20,.14);color:var(--g);}
 .nb-notif{position:absolute;top:-1px;right:-3px;width:8px;height:8px;border-radius:50%;background:var(--pk);border:1.5px solid #06060e;animation:notifPulse 2s ease infinite;}
 @keyframes notifPulse{0%,100%{transform:scale(1);}50%{transform:scale(1.4);}}
 .nb-create{flex:1;background:none;border:none;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:2px;-webkit-tap-highlight-color:transparent;}
@@ -1953,6 +1971,11 @@ textarea.inp{resize:none;min-height:68px;}
 
     <!-- KARMA WORLD -->
     <div class="view" id="view-world">
+      <div class="world-toggle" id="worldToggle">
+        <div class="world-toggle-btn on" id="wtbWorld" onclick="switchWorldTab('world')">🌍 KARMA WORLD</div>
+        <div class="world-toggle-btn" id="wtbKarta" onclick="switchWorldTab('karta')">🗺️ LIVE KARTA</div>
+      </div>
+      <div id="world-panel-world">
       <div class="kw-skyline-wrap">
         <canvas id="kwSkyCanvas" height="130"></canvas>
         <div class="kw-name-pill" id="kwNamePill">🌍 KARMA WORLD</div>
@@ -1989,7 +2012,15 @@ textarea.inp{resize:none;min-height:68px;}
       <div class="kw-build-bar">
         <button class="kw-build-btn" style="border-color:rgba(255,230,0,.45);color:var(--y);background:rgba(255,230,0,.06)" onclick="addWorldPoints(20,'manual');vibe(30);showT('⚡ +20 World Points!','y')">⚡ BOOST +20WP</button>
         <button class="kw-build-btn" style="border-color:rgba(57,255,20,.45);color:var(--g);background:rgba(57,255,20,.06)" onclick="nav('home')">🐾 MIN PET</button>
-        <button class="kw-build-btn" style="border-color:rgba(0,217,255,.45);color:var(--b);background:rgba(0,217,255,.06)" onclick="nav('map')">🗺️ MAP</button>
+        <button class="kw-build-btn" style="border-color:rgba(0,217,255,.45);color:var(--b);background:rgba(0,217,255,.06)" onclick="switchWorldTab('karta')">🗺️ KARTA</button>
+      </div>
+      </div>
+      <div id="world-panel-karta" style="display:none">
+        <!-- Map content embed -->
+        <div id="meMapWrap" style="height:calc(100vh - 160px);position:relative;background:#0a0e1a">
+          <div id="meMapInner" style="width:100%;height:100%"></div>
+        </div>
+        <div id="meNearbyList" style="padding:0 14px"></div>
       </div>
     </div>
 
@@ -2197,12 +2228,128 @@ textarea.inp{resize:none;min-height:68px;}
     </div>
   </div>
 
+    <!-- SPELA VIEW -->
+    <div class="view" id="view-play" style="padding:0">
+      <div style="padding:16px 14px 12px;display:flex;align-items:center;justify-content:space-between">
+        <div><div style="font-size:20px;font-weight:900;letter-spacing:-.3px">🎮 SPELA</div><div style="font-size:10px;color:var(--t3);margin-top:1px">Alla spel &amp; uppdrag på ett ställe</div></div>
+        <div style="font-size:10px;font-weight:900;color:var(--o);font-family:var(--mono)" id="playStreakLabel"></div>
+      </div>
+      <!-- SPIN card -->
+      <div style="margin:0 14px 10px;background:linear-gradient(135deg,rgba(255,159,10,.14),rgba(191,95,255,.07));border:2px solid rgba(255,159,10,.38);border-radius:22px;padding:16px 18px;cursor:pointer;display:flex;align-items:center;gap:14px;-webkit-tap-highlight-color:transparent" onclick="openGacha()">
+        <div style="font-size:44px;filter:drop-shadow(0 0 14px rgba(255,159,10,.7));animation:pf 2s ease-in-out infinite">🎰</div>
+        <div style="flex:1;min-width:0">
+          <div style="font-size:15px;font-weight:900">DAGLIGT SPIN</div>
+          <div style="font-size:10px;color:var(--t3);margin-top:3px" id="spinPlayLabel">Gratis spin tillgängligt!</div>
+          <div style="display:flex;gap:5px;margin-top:5px;flex-wrap:wrap">
+            <span style="font-size:9px;background:rgba(255,159,10,.15);border:1px solid rgba(255,159,10,.3);color:var(--o);padding:2px 7px;border-radius:8px;font-family:var(--mono)">💰 Coins</span>
+            <span style="font-size:9px;background:rgba(191,95,255,.15);border:1px solid rgba(191,95,255,.3);color:var(--p);padding:2px 7px;border-radius:8px;font-family:var(--mono)">💎 Talent TP</span>
+            <span style="font-size:9px;background:rgba(57,255,20,.12);border:1px solid rgba(57,255,20,.25);color:var(--g);padding:2px 7px;border-radius:8px;font-family:var(--mono)">⭐ XP</span>
+          </div>
+        </div>
+        <div style="font-size:22px;color:var(--o)">→</div>
+      </div>
+      <!-- FISKA card -->
+      <div style="margin:0 14px 10px;background:linear-gradient(135deg,rgba(0,217,255,.14),rgba(0,150,255,.07));border:2px solid rgba(0,217,255,.38);border-radius:22px;padding:16px 18px;cursor:pointer;display:flex;align-items:center;gap:14px;-webkit-tap-highlight-color:transparent" onclick="openFishingGame()">
+        <div style="font-size:44px;filter:drop-shadow(0 0 14px rgba(0,217,255,.7));animation:pf 2.5s ease-in-out infinite .6s">🎣</div>
+        <div style="flex:1;min-width:0">
+          <div style="font-size:15px;font-weight:900">FISKA</div>
+          <div style="font-size:10px;color:var(--t3);margin-top:3px">Spamma för spänning · fånga fiskar · vinn mat &amp; coins</div>
+          <div style="display:flex;gap:5px;margin-top:5px;flex-wrap:wrap">
+            <span style="font-size:9px;background:rgba(0,217,255,.12);border:1px solid rgba(0,217,255,.28);color:var(--b);padding:2px 7px;border-radius:8px;font-family:var(--mono)">🐟 Fisk</span>
+            <span style="font-size:9px;background:rgba(57,255,20,.12);border:1px solid rgba(57,255,20,.25);color:var(--g);padding:2px 7px;border-radius:8px;font-family:var(--mono)">🍖 Mat</span>
+            <span style="font-size:9px;background:rgba(255,159,10,.12);border:1px solid rgba(255,159,10,.28);color:var(--o);padding:2px 7px;border-radius:8px;font-family:var(--mono)">⚡ Coins</span>
+          </div>
+        </div>
+        <div style="font-size:22px;color:var(--b)">→</div>
+      </div>
+      <!-- ACHIEVEMENTS -->
+      <div class="sh"><div class="sh-t">🏆 ACHIEVEMENTS</div><div class="sh-a" id="playAchCount" style="color:var(--y)">0 / 17</div></div>
+      <div id="playAchGrid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;padding:0 14px 4px"></div>
+      <!-- UPPDRAG -->
+      <div class="sh"><div class="sh-t">🎯 UPPDRAG &amp; BOUNTIES</div><div class="sh-a" style="color:var(--y)" onclick="showT('Klicka på ett uppdrag för mer info','b')">INFO</div></div>
+      <div id="playUppdragList" style="padding:0 14px"></div>
+      <div class="vend"></div>
+    </div>
+
+    <!-- JAG VIEW -->
+    <div class="view" id="view-me" style="padding:0">
+      <!-- Sub-tab bar -->
+      <div class="me-subtabs" id="meSubTabs">
+        <div class="me-stab on" onclick="switchMeTab('rum',this)">🏠 RUM</div>
+        <div class="me-stab" onclick="switchMeTab('profil',this)">👤 PROFIL</div>
+        <div class="me-stab" onclick="switchMeTab('shop',this)">🛍️ SHOP</div>
+        <div class="me-stab" onclick="switchMeTab('gave',this)">🎁 GÅVA</div>
+        <div class="me-stab" onclick="switchMeTab('dagbok',this)">📖 DAGBOK</div>
+        <div class="me-stab" onclick="switchMeTab('event',this)">🌞 EVENT</div>
+      </div>
+      <!-- RUM panel -->
+      <div class="me-spanel on" id="me-panel-rum">
+        <div style="padding:14px 14px 8px;display:flex;align-items:center;justify-content:space-between">
+          <div style="font-size:14px;font-weight:900">🏠 Mitt Rum</div>
+          <button onclick="openRoomShop()" style="background:rgba(0,217,255,.1);border:1px solid rgba(0,217,255,.3);border-radius:12px;color:var(--b);font-size:11px;font-weight:900;padding:6px 14px;cursor:pointer;font-family:var(--ff)">🎨 Anpassa</button>
+        </div>
+        <div id="meRumPreview" style="margin:0 14px 12px;height:190px;border-radius:20px;overflow:hidden;position:relative;background:linear-gradient(180deg,#04080f 0%,#071220 55%,#0c1a0d 100%);border:1.5px solid var(--line)">
+          <div class="pet-room-layer" id="meRumBg" style="opacity:.6;pointer-events:none">
+            <div class="prl-sky" id="meRumSky"></div>
+            <div class="prl-floor"><div class="prl-floor-glow"></div></div>
+          </div>
+          <div id="meRumPet" style="position:absolute;bottom:44px;font-size:40px;animation:roomPetWalk 3.8s ease-in-out infinite;filter:drop-shadow(0 0 12px rgba(57,255,20,.4));z-index:4">🐉</div>
+          <div id="meRumItems" style="position:absolute;inset:0;z-index:2"></div>
+        </div>
+        <div class="sh" style="margin-top:0"><div class="sh-t">MÖBLER &amp; DEKOR</div></div>
+        <div id="meRumGearList" style="display:flex;gap:8px;overflow-x:auto;padding:0 14px 14px;scrollbar-width:none"></div>
+      </div>
+      <!-- PROFIL panel -->
+      <div class="me-spanel" id="me-panel-profil">
+        <div id="meProfilInner"></div>
+      </div>
+      <!-- SHOP panel -->
+      <div class="me-spanel" id="me-panel-shop" style="padding:0">
+        <div class="shop-hdr" style="padding-top:12px">
+          <div class="shop-title-r"><div class="shop-title">Pet Shop</div></div>
+          <div class="shop-srch"><span style="font-size:17px">🔍</span><input placeholder="Sök..." id="meShopInp" oninput="renderMeShop(this.value)"></div>
+        </div>
+        <div class="tabs" id="meShopTabs">
+          <div class="tab on" onclick="switchMeShopTab('all',this)">✨ ALLA</div>
+          <div class="tab" onclick="switchMeShopTab('food',this)">🍖 Mat</div>
+          <div class="tab" onclick="switchMeShopTab('skin',this)">🎨 Skins</div>
+          <div class="tab" onclick="switchMeShopTab('gear',this)">⚡ Gear</div>
+        </div>
+        <div id="meShopGrid" style="padding:8px 14px"></div>
+      </div>
+      <!-- GÅVA panel -->
+      <div class="me-spanel" id="me-panel-gave">
+        <div style="padding:14px">
+          <div style="font-size:14px;font-weight:900;margin-bottom:12px">🎁 Skicka Gåva</div>
+          <div style="font-size:11px;color:var(--t3);margin-bottom:12px">Välj en vän och skicka en gåva med kärlek!</div>
+          <div id="meGaveList" style="display:flex;flex-direction:column;gap:8px;margin-bottom:14px"></div>
+          <div style="font-size:12px;font-weight:900;margin-bottom:8px;color:var(--t2)">Välj gåva:</div>
+          <div id="meGaveItems" style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:14px"></div>
+          <button id="meGaveSendBtn" onclick="sendMeGift()" disabled style="width:100%;padding:12px;border-radius:16px;font-size:14px;font-weight:900;cursor:pointer;font-family:var(--ff);border:none;background:rgba(255,255,255,.07);color:var(--t3)">🎁 SKICKA GÅVA</button>
+        </div>
+      </div>
+      <!-- DAGBOK panel -->
+      <div class="me-spanel" id="me-panel-dagbok">
+        <div style="padding:14px 14px 8px;display:flex;align-items:center;justify-content:space-between">
+          <div style="font-size:14px;font-weight:900">📖 Pet Dagbok</div>
+          <div style="font-size:10px;color:var(--t3)">De senaste minnena</div>
+        </div>
+        <div id="meDagbokList" style="padding:0 14px"></div>
+        <div class="vend"></div>
+      </div>
+      <!-- EVENT panel -->
+      <div class="me-spanel" id="me-panel-event">
+        <div id="meEventInner" style="padding:14px"></div>
+        <div class="vend"></div>
+      </div>
+    </div>
+
   <div class="bnav">
-    <button class="nb on" data-v="home"><div class="nb-inner"><div class="ni">🐾</div></div><div class="nl">MIN PET</div></button>
-    <button class="nb" data-v="flash"><div class="nb-inner"><div class="ni">⚡</div><div class="nb-notif"></div></div><div class="nl">FLASH</div></button>
+    <button class="nb on" data-v="home"><div class="nb-inner"><div class="ni">🐾</div></div><div class="nl">HEM</div></button>
+    <button class="nb" data-v="play"><div class="nb-inner"><div class="ni">🎮</div><div class="nb-notif" id="playNotif"></div></div><div class="nl">SPELA</div></button>
     <button class="nb-create" id="flashBtn"><div class="create-btn">＋</div><div class="create-lbl">SKAPA</div></button>
-    <button class="nb" data-v="social"><div class="nb-inner"><div class="ni">💬</div><div class="nb-notif"></div></div><div class="nl">CHAT</div></button>
-    <button class="nb" data-v="explore"><div class="nb-inner"><div class="ni">🔍</div></div><div class="nl">UTFORSKA</div></button>
+    <button class="nb" data-v="world"><div class="nb-inner"><div class="ni">🌍</div></div><div class="nl">VÄRLD</div></button>
+    <button class="nb" data-v="me"><div class="nb-inner"><div class="ni">👤</div></div><div class="nl">JAG</div></button>
   </div>
 
   <!-- LEFT DRAWER OVERLAY + DRAWER -->
