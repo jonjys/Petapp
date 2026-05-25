@@ -2376,21 +2376,21 @@ textarea.inp{resize:none;min-height:68px;}
       <div class="ld-item" onclick="openTalentTree();closeLDrawer()"><div class="ld-ico" style="background:rgba(57,255,20,.14)">🌳</div><div class="ld-lbl">Talent Träd</div></div>
       <div class="ld-item" onclick="openDiary();closeLDrawer()"><div class="ld-ico" style="background:rgba(191,95,255,.14)">📖</div><div class="ld-lbl">Pet Dagbok</div></div>
       <div class="ld-item" onclick="openGacha();closeLDrawer()"><div class="ld-ico" style="background:rgba(255,230,0,.14)">🎰</div><div class="ld-lbl" style="color:var(--y)">Dagligt Spin</div></div>
-      <div class="ld-item" onclick="openRoomShop();closeLDrawer()"><div class="ld-ico" style="background:rgba(0,217,255,.14)">🏠</div><div class="ld-lbl" style="color:var(--b)">Ditt Rum</div></div>
-      <div class="ld-item" onclick="openSeasonalEvent();closeLDrawer()"><div class="ld-ico" style="background:rgba(255,45,85,.14)">🌸</div><div class="ld-lbl" style="color:var(--pk)">Sommar Event</div></div>
-      <div class="ld-item" onclick="openGiftModal();closeLDrawer()"><div class="ld-ico" style="background:rgba(57,255,20,.14)">🎁</div><div class="ld-lbl">Skicka Gåva</div></div>
-      <div class="ld-item" onclick="openFishingGame();closeLDrawer()"><div class="ld-ico ld-ico-b">🎣</div><div class="ld-lbl">Fiska</div></div>
+      <div class="ld-item" onclick="switchMeTab('rum',null);nav('me');closeLDrawer()"><div class="ld-ico" style="background:rgba(0,217,255,.14)">🏠</div><div class="ld-lbl" style="color:var(--b)">Ditt Rum</div></div>
+      <div class="ld-item" onclick="switchMeTab('event',null);nav('me');closeLDrawer()"><div class="ld-ico" style="background:rgba(255,45,85,.14)">🌸</div><div class="ld-lbl" style="color:var(--pk)">Sommar Event</div></div>
+      <div class="ld-item" onclick="switchMeTab('gave',null);nav('me');closeLDrawer()"><div class="ld-ico" style="background:rgba(57,255,20,.14)">🎁</div><div class="ld-lbl">Skicka Gåva</div></div>
+      <div class="ld-item" onclick="nav('play');closeLDrawer()"><div class="ld-ico ld-ico-b">🎣</div><div class="ld-lbl">Fiska</div></div>
       <div class="ld-sep"></div>
       <div style="font-size:9px;font-weight:700;color:var(--t3);letter-spacing:.9px;padding:7px 10px 2px;text-transform:uppercase">HANDLA</div>
       <div class="ld-item" onclick="nav('market');closeLDrawer()"><div class="ld-ico ld-ico-o">🛍️</div><div class="ld-lbl">Marketplace</div></div>
-      <div class="ld-item" onclick="nav('shop');closeLDrawer()"><div class="ld-ico ld-ico-tl">👗</div><div class="ld-lbl">Pet Shop</div></div>
-      <div class="ld-item" onclick="nav('uppdrag');closeLDrawer()"><div class="ld-ico ld-ico-y">💼</div><div class="ld-lbl">Uppdrag</div></div>
-      <div class="ld-item" onclick="nav('map');closeLDrawer()"><div class="ld-ico ld-ico-tl">🗺️</div><div class="ld-lbl">Live Karta</div></div>
+      <div class="ld-item" onclick="switchMeTab('shop',null);nav('me');closeLDrawer()"><div class="ld-ico ld-ico-tl">👗</div><div class="ld-lbl">Pet Shop</div></div>
+      <div class="ld-item" onclick="nav('play');closeLDrawer()"><div class="ld-ico ld-ico-y">💼</div><div class="ld-lbl">Uppdrag</div></div>
+      <div class="ld-item" onclick="switchWorldTab('karta');nav('world');closeLDrawer()"><div class="ld-ico ld-ico-tl">🗺️</div><div class="ld-lbl">Live Karta</div></div>
       <div class="ld-sep"></div>
       <div style="font-size:9px;font-weight:700;color:var(--t3);letter-spacing:.9px;padding:7px 10px 2px;text-transform:uppercase">PROFIL</div>
       <div class="ld-item" onclick="nav('lb');closeLDrawer()"><div class="ld-ico ld-ico-y">🏆</div><div class="ld-lbl">Leaderboard</div></div>
       <div class="ld-item" onclick="navTo('profile','badgeGrid');closeLDrawer()"><div class="ld-ico ld-ico-p">🎖️</div><div class="ld-lbl">Achievements</div></div>
-      <div class="ld-item" onclick="nav('profile');closeLDrawer()"><div class="ld-ico ld-ico-tl">👤</div><div class="ld-lbl">Profil</div></div>
+      <div class="ld-item" onclick="switchMeTab('profil',null);nav('me');closeLDrawer()"><div class="ld-ico ld-ico-tl">👤</div><div class="ld-lbl">Profil</div></div>
       <div class="ld-item" style="background:linear-gradient(135deg,rgba(255,230,0,.06),rgba(255,159,10,.04));border:1px solid rgba(255,230,0,.12)" onclick="openModal('premiumModal');closeLDrawer()"><div class="ld-ico" style="background:rgba(255,230,0,.18)">👑</div><div class="ld-lbl" style="color:var(--y)">KARMA PRO</div></div>
       <div class="ld-item" onclick="openModal('petShareModal');updateShareCard();closeLDrawer()"><div class="ld-ico ld-ico-g">📤</div><div class="ld-lbl">Dela min Pet</div></div>
     </div>
@@ -4193,10 +4193,11 @@ function submitCircle(){
 
 // ── UPPDRAG ──
 function verBadge(u){if(u.verLevel==='premium')return'<span class="ver-g ver-y">⭐ PREMIUM</span>';if(u.verLevel==='gold')return'<span class="ver-g">✓ VERIFIERAD</span>';return'<span style="font-size:10px;color:var(--t3)">⏳ Ej verifierad</span>';}
-function renderUppdrag(){
+function renderUppdrag(container){
   const all=[...UPPDRAG_DATA,...G.myUppdrag];
   const src=G.upFilter==='mine'?G.myUppdrag:G.upFilter==='all'?all:all.filter(u=>u.type===G.upFilter||u.cType===G.upFilter);
-  $('uppdragList').innerHTML=src.length?src.map(u=>`<div class="uc ${u.verified?'verified-co':''} ${u.featured?'verified-gold':''}" onclick="openUppdragDetail('${u.id}')"><div class="uc-co"><div class="uc-co-logo">${u.coEm||'👤'}</div><div style="flex:1"><div class="uc-co-name">${u.co} ${verBadge(u)}</div><div class="uc-co-type">${u.verLevel==='premium'?'⭐ Premium':u.verLevel==='gold'?'✓ Verifierat':'Ej verifierat'}</div></div>${u.live?'<span class="tag tr" style="font-size:9px">🔴 LIVE</span>':''}${u.featured?'<span class="tag ty" style="font-size:9px;margin-left:4px">⭐ TOP</span>':''}</div><div class="uc-body"><div class="uc-top"><div class="uc-title">${u.title}</div><span class="tag ${u.cType==='reel'?'tr':u.cType==='task'?'tp':u.cType==='review'?'ty':'tb2'}" style="font-size:9px">${{reel:'🎬',task:'🛠️',photo:'📸',review:'⭐'}[u.cType]||'🎯'}</span></div><div class="uc-desc">${u.desc.substring(0,90)}${u.desc.length>90?'...':''}</div><div class="uc-req">${u.req.map(r=>`<span class="tag tb2" style="font-size:9px">${r}</span>`).join('')}</div>${u.loc?`<div class="uc-loc">📍 ${u.loc}</div>`:''}<div class="uc-bot"><div class="uc-rewards">${u.sek?`<div class="uc-sek">💸 ${u.sek} SEK</div>`:''}<div class="uc-coins">⚡ ${u.coins}</div><div class="uc-xp">+${u.xp}XP</div></div><button class="btn btn-g btn-sm" onclick="event.stopPropagation();claimUppdrag('${u.id}')">TA →</button></div></div><div class="uc-prog-wrap"><div class="uc-prog-bar"><div class="uc-prog-fill" style="width:${Math.min(100,(u.claimed/u.winners)*100)}%"></div></div></div><div class="uc-foot"><div class="uc-spots">🏆 ${u.claimed}/${u.winners>=999?'∞':u.winners}</div><div class="uc-dead">⏱ ${u.deadline}</div></div></div>`).join(''):`<div style="text-align:center;padding:40px 20px"><div style="font-size:44px;opacity:.2;margin-bottom:10px">🎯</div><div style="font-size:14px;color:var(--t3)">Inga uppdrag.</div></div>`;
+  const target=container||$('uppdragList');if(!target)return;
+  target.innerHTML=src.length?src.map(u=>`<div class="uc ${u.verified?'verified-co':''} ${u.featured?'verified-gold':''}" onclick="openUppdragDetail('${u.id}')"><div class="uc-co"><div class="uc-co-logo">${u.coEm||'👤'}</div><div style="flex:1"><div class="uc-co-name">${u.co} ${verBadge(u)}</div><div class="uc-co-type">${u.verLevel==='premium'?'⭐ Premium':u.verLevel==='gold'?'✓ Verifierat':'Ej verifierat'}</div></div>${u.live?'<span class="tag tr" style="font-size:9px">🔴 LIVE</span>':''}${u.featured?'<span class="tag ty" style="font-size:9px;margin-left:4px">⭐ TOP</span>':''}</div><div class="uc-body"><div class="uc-top"><div class="uc-title">${u.title}</div><span class="tag ${u.cType==='reel'?'tr':u.cType==='task'?'tp':u.cType==='review'?'ty':'tb2'}" style="font-size:9px">${{reel:'🎬',task:'🛠️',photo:'📸',review:'⭐'}[u.cType]||'🎯'}</span></div><div class="uc-desc">${u.desc.substring(0,90)}${u.desc.length>90?'...':''}</div><div class="uc-req">${u.req.map(r=>`<span class="tag tb2" style="font-size:9px">${r}</span>`).join('')}</div>${u.loc?`<div class="uc-loc">📍 ${u.loc}</div>`:''}<div class="uc-bot"><div class="uc-rewards">${u.sek?`<div class="uc-sek">💸 ${u.sek} SEK</div>`:''}<div class="uc-coins">⚡ ${u.coins}</div><div class="uc-xp">+${u.xp}XP</div></div><button class="btn btn-g btn-sm" onclick="event.stopPropagation();claimUppdrag('${u.id}')">TA →</button></div></div><div class="uc-prog-wrap"><div class="uc-prog-bar"><div class="uc-prog-fill" style="width:${Math.min(100,(u.claimed/u.winners)*100)}%"></div></div></div><div class="uc-foot"><div class="uc-spots">🏆 ${u.claimed}/${u.winners>=999?'∞':u.winners}</div><div class="uc-dead">⏱ ${u.deadline}</div></div></div>`).join(''):`<div style="text-align:center;padding:40px 20px"><div style="font-size:44px;opacity:.2;margin-bottom:10px">🎯</div><div style="font-size:14px;color:var(--t3)">Inga uppdrag.</div></div>`;
 }
 document.querySelectorAll('#ufilters .uf').forEach(f=>f.addEventListener('click',()=>{document.querySelectorAll('#ufilters .uf').forEach(x=>x.classList.remove('on'));f.classList.add('on');G.upFilter=f.dataset.uf;renderUppdrag();}));
 function openUppdragDetail(id){
@@ -5019,7 +5020,9 @@ function nav(name){
     profile:()=>{updateHUD();renderHistList();renderBadges();const pc=$('view-profile .prof-cover');if(pc){const wc={cosmic:'linear-gradient(135deg,#0d0520 0%,#07040f 50%,#0a0520 100%)',nature:'linear-gradient(135deg,#041a04 0%,#030d03 50%,#071207 100%)',city:'linear-gradient(135deg,#04060f 0%,#030415 50%,#040612 100%)',pixel:'linear-gradient(135deg,#0a0800 0%,#0a0800 50%,#060500 100%)'};pc.style.background=wc[G.world||'cosmic']||wc.cosmic;}},
     explore:()=>{const el=$('explorePetLv');if(el)el.textContent='LV '+G.level;const en=$('explorePetEmoji');if(en)en.textContent=G.petEmoji||'🐾';const enm=$('explorePetName');if(enm)enm.textContent=G.petName||'Din pet';renderWeeklyChallenges();renderCraftGrid();const tp=$('talentTeaserPts');if(tp)tp.textContent=(G.talentPoints||0)+' TP';const ts=$('talentTeaserSub');if(ts)ts.textContent=(G.talents&&G.talents.length>0?G.talents.length+' av 147 förmågor inlärda':'Tjäna Talent Points genom att levla upp');},
     market:()=>{renderMkt();},
-    world:()=>{renderKarmaWorld();initKarmaWorld();},
+    play:()=>{renderPlayView();},
+    me:()=>{switchMeTab('rum', document.querySelector('.me-stab.on')||document.querySelector('.me-stab'));},
+    world:()=>{renderKarmaWorld();initKarmaWorld();switchWorldTab(document.querySelector('.world-toggle-btn.on')?.id==='wtbKarta'?'karta':'world');},
     launch:()=>{}
   }[name]||(() => {}))();
 }
@@ -5042,6 +5045,225 @@ function navTo(tab,anchor){
 }
 document.querySelectorAll('.nb[data-v]').forEach(b=>b.addEventListener('click',()=>nav(b.dataset.v)));
 $('flashBtn').addEventListener('click',()=>openModal('flashModal'));
+
+// ── PLAY VIEW ──
+function renderPlayView(){
+  const sl=$('spinPlayLabel');if(sl)sl.textContent=G.lastSpin===new Date().toDateString()?'✅ Spinnat idag — kom tillbaka imorgon!':'🎰 Gratis spin tillgängligt nu!';
+  const ps=$('playStreakLabel');if(ps&&G.streak)ps.textContent='🔥 '+G.streak+'d streak';
+  const ag=$('playAchGrid');const ac=$('playAchCount');
+  if(ag){
+    const earned=[..._earnedAchs];
+    if(ac)ac.textContent=earned.length+' / '+ACHIEVEMENTS.length;
+    ag.innerHTML=ACHIEVEMENTS.map(a=>{
+      const done=earned.includes(a.id);
+      return`<div style="background:${done?'rgba(255,215,0,.1)':'var(--c1)'};border:1.5px solid ${done?'rgba(255,215,0,.4)':'var(--line)'};border-radius:14px;padding:10px 8px;text-align:center;transition:.2s">
+        <div style="font-size:24px;${done?'':'filter:grayscale(1);opacity:.35'}">${a.ico}</div>
+        <div style="font-size:8px;font-weight:900;color:${done?'var(--y)':'var(--t3)'};margin-top:4px;line-height:1.2">${a.nm}</div>
+        ${done?'<div style="font-size:8px;color:var(--g);margin-top:2px">✓ KLAR</div>':''}
+      </div>`;
+    }).join('');
+  }
+  const ul=$('playUppdragList');if(ul)renderUppdrag(ul);
+}
+
+// ── ME VIEW ──
+function switchMeTab(tab, el){
+  document.querySelectorAll('.me-stab').forEach(t=>t.classList.remove('on'));
+  document.querySelectorAll('.me-spanel').forEach(p=>p.classList.remove('on'));
+  if(el)el.classList.add('on');
+  else{const t=document.querySelector('.me-stab[onclick*="\''+tab+'\'"]');if(t)t.classList.add('on');}
+  const panel=$('me-panel-'+tab);if(panel)panel.classList.add('on');
+  if(tab==='rum')renderMeRum();
+  else if(tab==='profil')renderMeProfil();
+  else if(tab==='shop')renderMeShop('');
+  else if(tab==='gave')renderMeGave();
+  else if(tab==='dagbok')renderMeDagbok();
+  else if(tab==='event')renderMeEvent();
+}
+
+function renderMeRum(){
+  const pet=$('meRumPet');if(pet)pet.textContent=G.petEmoji||'🐉';
+  const sky=$('meRumSky');if(sky&&G.roomTheme){const THEMES_MAP={forest:'linear-gradient(180deg,#0b2d12 0%,#0e3d18 100%)',ocean:'linear-gradient(180deg,#021d3a 0%,#03295a 100%)',space:'linear-gradient(180deg,#020410 0%,#060820 100%)',city:'linear-gradient(180deg,#0d0d20 0%,#151530 100%)',desert:'linear-gradient(180deg,#3d2200 0%,#5a3300 100%)',neon:'linear-gradient(180deg,#0a0020 0%,#100030 100%)',sunset:'linear-gradient(180deg,#3d0d00 0%,#5a2000 100%)'};sky.style.background=THEMES_MAP[G.roomTheme]||'linear-gradient(180deg,#061020 0%,#081830 100%)';}
+  const items=$('meRumItems');if(items){const placed=G.roomItems||[];items.innerHTML=placed.map(it=>`<div style="position:absolute;font-size:22px;${it.wall?`top:${it.y||20}%;left:${it.x||30}%`:`bottom:calc(38% + 2px);left:${it.x||40}%`};transform:translateX(-50%)">${it.em}</div>`).join('');}
+  const gl=$('meRumGearList');if(gl){const gear=G.gear||[];gl.innerHTML=gear.length?gear.map(gid=>{const g=GEAR.find(x=>x.id===gid);return g?`<div onclick="equipGear('${g.em}','${g.id}')" style="width:52px;height:52px;flex-shrink:0;border-radius:13px;background:var(--c1);border:2px solid ${G.equippedGear===g.em?'var(--g)':'var(--line)'};display:flex;align-items:center;justify-content:center;font-size:26px;cursor:pointer;position:relative">${g.em}${G.equippedGear===g.em?'<div style="position:absolute;top:-4px;right:-4px;background:var(--g);color:#000;font-size:7px;font-weight:900;padding:1px 3px;border-radius:4px">ON</div>':''}</div>`:''}).join(''):`<div style="color:var(--t3);font-size:12px;padding:10px">Inget gear ännu — gå till Shop!</div>`;}
+}
+
+function renderMeProfil(){
+  const el=$('meProfilInner');if(!el)return;
+  const pets=G.petEmoji||'🐉';const lvl=G.level||1;const xp=G.xp||0;const nxp=G.nextXP||150;
+  const coins=G.coins||0;const streak=G.streak||0;
+  const earned=[..._earnedAchs];
+  el.innerHTML=`
+    <div style="padding:16px 14px 0">
+      <div style="display:flex;align-items:center;gap:14px;margin-bottom:14px">
+        <div style="width:72px;height:72px;border-radius:50%;background:var(--c2);border:2px solid var(--g);display:flex;align-items:center;justify-content:center;font-size:38px;flex-shrink:0">${pets}</div>
+        <div style="flex:1;min-width:0">
+          <div style="font-size:18px;font-weight:900">${G.petName||'–'}</div>
+          <div style="font-size:10px;color:var(--t3);font-family:var(--mono)">${G.petSpecies||'Okänd art'}</div>
+          <div style="display:flex;gap:6px;margin-top:6px;flex-wrap:wrap">
+            <span style="background:rgba(57,255,20,.15);color:var(--g);font-size:10px;font-weight:900;padding:3px 8px;border-radius:8px;font-family:var(--mono)">LV ${lvl}</span>
+            <span style="background:rgba(255,159,10,.1);color:var(--o);font-size:10px;font-weight:900;padding:3px 8px;border-radius:8px;font-family:var(--mono)">🔥 ${streak}d</span>
+            <span style="background:rgba(255,215,0,.1);color:var(--y);font-size:10px;font-weight:900;padding:3px 8px;border-radius:8px;font-family:var(--mono)">💰 ${coins}</span>
+          </div>
+        </div>
+      </div>
+      <div style="margin-bottom:14px">
+        <div style="display:flex;justify-content:space-between;font-size:10px;color:var(--t3);margin-bottom:4px"><span>XP Progress</span><span>${xp}/${nxp}</span></div>
+        <div style="height:8px;background:var(--c3);border-radius:100px;overflow:hidden"><div style="height:100%;width:${Math.round(xp/nxp*100)}%;background:linear-gradient(90deg,var(--g),var(--tl));border-radius:100px"></div></div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:14px">
+        <div style="background:var(--c1);border:1px solid var(--line);border-radius:14px;padding:10px;text-align:center"><div style="font-size:20px;font-weight:900;color:var(--o)">${G.hunger||0}</div><div style="font-size:9px;color:var(--t3)">🍖 Mättnad</div></div>
+        <div style="background:var(--c1);border:1px solid var(--line);border-radius:14px;padding:10px;text-align:center"><div style="font-size:20px;font-weight:900;color:var(--b)">${G.energy||0}</div><div style="font-size:9px;color:var(--t3)">⚡ Energi</div></div>
+        <div style="background:var(--c1);border:1px solid var(--line);border-radius:14px;padding:10px;text-align:center"><div style="font-size:20px;font-weight:900;color:var(--p)">${G.mood||0}</div><div style="font-size:9px;color:var(--t3)">💖 Humör</div></div>
+      </div>
+      <div class="sh" style="padding:0;margin-bottom:8px"><div class="sh-t" style="font-size:12px">🏆 ACHIEVEMENTS (${earned.length}/${ACHIEVEMENTS.length})</div></div>
+      <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px">${earned.map(id=>{const a=ACHIEVEMENTS.find(x=>x.id===id);return a?`<div style="background:rgba(255,215,0,.1);border:1px solid rgba(255,215,0,.3);border-radius:8px;padding:4px 8px;font-size:10px" title="${a.nm}">${a.ico} ${a.nm}</div>`:''}).join('')||'<div style="color:var(--t3);font-size:11px">Inga achievements ännu — börja spela!</div>'}</div>
+    </div>`;
+}
+
+function renderMeShop(search){
+  const grid=$('meShopGrid');if(!grid)return;
+  const tab=document.querySelector('#meShopTabs .tab.on');const cat=tab?tab.dataset.cat:'all';
+  const ITEMS_DEF=[
+    {em:'🍖',nm:'Köttstycke',cat:'food',price:15,desc:'+30 Hunger'},
+    {em:'🍕',nm:'Pizza Slice',cat:'food',price:25,desc:'+50 Hunger'},
+    {em:'⚡',nm:'Energy Drink',cat:'food',price:20,desc:'+40 Energy'},
+    {em:'🍰',nm:'Tårta',cat:'food',price:40,desc:'+70 Hunger'},
+    {em:'💊',nm:'Vitaminer',cat:'food',price:30,desc:'+20 alla stats'},
+    {em:'🎨',nm:'Neon Skin',cat:'skin',price:150,desc:'Neon glow skin'},
+    {em:'🌈',nm:'Rainbow',cat:'skin',price:200,desc:'Regnbågs-skin'},
+    {em:'👑',nm:'Royal Crown',cat:'skin',price:500,desc:'Kunglig look'},
+    {em:'⚔️',nm:'Battle Sword',cat:'gear',price:100,desc:'+20% battle XP'},
+    {em:'🛡️',nm:'Iron Shield',cat:'gear',price:80,desc:'+15% defense'},
+    {em:'📿',nm:'Magic Beads',cat:'gear',price:120,desc:'+10% all XP'},
+  ];
+  const q=(search||'').toLowerCase();
+  const filtered=ITEMS_DEF.filter(i=>(cat==='all'||i.cat===cat)&&(!q||i.nm.toLowerCase().includes(q)||i.em.includes(q)));
+  grid.innerHTML=filtered.map(i=>`<div onclick="buyMeItem('${i.em}','${i.nm}',${i.price},'${i.cat}')" style="background:var(--c1);border:1.5px solid var(--line);border-radius:16px;padding:12px;text-align:center;cursor:pointer;-webkit-tap-highlight-color:transparent">
+    <div style="font-size:32px;margin-bottom:6px">${i.em}</div>
+    <div style="font-size:11px;font-weight:900;line-height:1.2">${i.nm}</div>
+    <div style="font-size:9px;color:var(--t3);margin:3px 0">${i.desc}</div>
+    <div style="font-size:11px;font-weight:900;color:var(--y);font-family:var(--mono)">${i.price} ⚡</div>
+  </div>`).join('');
+}
+
+function switchMeShopTab(cat, el){
+  document.querySelectorAll('#meShopTabs .tab').forEach(t=>{t.classList.remove('on');t.dataset.cat=t.getAttribute('onclick').match(/'(\w+)'/)?.[1];});
+  if(el){el.classList.add('on');el.dataset.cat=cat;}
+  renderMeShop($('meShopInp')?$('meShopInp').value:'');
+}
+
+function buyMeItem(em,nm,price,cat){
+  if((G.coins||0)<price){showT('❌ Behöver '+price+' coins!','r');SFX.error();return;}
+  G.coins-=price;
+  if(cat==='food'){
+    if(em==='🍖'){G.hunger=Math.min(100,G.hunger+30);}
+    else if(em==='🍕'){G.hunger=Math.min(100,G.hunger+50);}
+    else if(em==='⚡'){G.energy=Math.min(100,G.energy+40);}
+    else if(em==='🍰'){G.hunger=Math.min(100,G.hunger+70);}
+    else if(em==='💊'){G.hunger=Math.min(100,G.hunger+20);G.energy=Math.min(100,G.energy+20);G.mood=Math.min(100,G.mood+20);}
+    updatePetView();
+  } else if(cat==='gear'){
+    if(!G.gear)G.gear=[];if(!G.gear.includes(nm))G.gear.push(nm);
+  }
+  SFX.win();vibe([30,20,50]);showT(em+' '+nm+' köpt!','g');
+  save();updateHUD();renderMeShop($('meShopInp')?$('meShopInp').value:'');
+}
+
+function renderMeGave(){
+  const fl=$('meGaveList');if(!fl)return;
+  const friends=['ella_sthlm 🐉','maxruns 🐺','sagas_world 🦋','carlos_l 🦊'];
+  fl.innerHTML=friends.map((f,i)=>`<div onclick="selectMeGiveFriend(${i},this)" style="display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:14px;border:1.5px solid var(--line);background:var(--c1);cursor:pointer;-webkit-tap-highlight-color:transparent" id="meFriendRow${i}">
+    <div style="font-size:22px">${f.split(' ')[1]}</div>
+    <div style="font-size:13px;font-weight:900">${f.split(' ')[0]}</div>
+    <div style="margin-left:auto;width:20px;height:20px;border-radius:50%;border:2px solid var(--line)" id="meFriendCheck${i}"></div>
+  </div>`).join('');
+  const gi=$('meGaveItems');if(!gi)return;
+  const gifts=[{em:'🍖',nm:'Mat',price:5},{em:'💊',nm:'Vitaminer',price:10},{em:'🎁',nm:'Surprise',price:20},{em:'⭐',nm:'+XP Boost',price:30},{em:'💰',nm:'50 Coins',price:0},{em:'🌸',nm:'Kärlek',price:0},{em:'🏆',nm:'Trophy',price:50},{em:'🎨',nm:'Skin',price:100}];
+  gi.innerHTML=gifts.map((g,i)=>`<div onclick="selectMeGift(${i},this,'${g.nm}')" style="background:var(--c1);border:1.5px solid var(--line);border-radius:12px;padding:8px;text-align:center;cursor:pointer" id="meGiftItem${i}">
+    <div style="font-size:24px">${g.em}</div>
+    <div style="font-size:8px;font-weight:900;margin-top:3px">${g.nm}</div>
+    ${g.price?`<div style="font-size:8px;color:var(--y)">${g.price}⚡</div>`:'<div style="font-size:8px;color:var(--g)">Gratis</div>'}
+  </div>`).join('');
+  window._meGaveFriend=null;window._meGaveGift=null;
+}
+function selectMeGiveFriend(i,el){
+  document.querySelectorAll('[id^="meFriendRow"]').forEach(r=>r.style.borderColor='var(--line)');
+  document.querySelectorAll('[id^="meFriendCheck"]').forEach(c=>{c.style.background='';c.style.borderColor='var(--line)';});
+  el.style.borderColor='var(--pk)';$('meFriendCheck'+i).style.background='var(--pk)';$('meFriendCheck'+i).style.borderColor='var(--pk)';
+  window._meGaveFriend=i;_updateMeGaveBtn();
+}
+function selectMeGift(i,el,nm){
+  document.querySelectorAll('[id^="meGiftItem"]').forEach(r=>r.style.borderColor='var(--line)');
+  el.style.borderColor='var(--g)';window._meGaveGift=nm;_updateMeGaveBtn();
+}
+function _updateMeGaveBtn(){
+  const btn=$('meGaveSendBtn');if(!btn)return;
+  if(window._meGaveFriend!=null&&window._meGaveGift){btn.disabled=false;btn.style.background='var(--pk)';btn.style.color='#fff';}
+  else{btn.disabled=true;btn.style.background='rgba(255,255,255,.07)';btn.style.color='var(--t3)';}
+}
+function sendMeGift(){
+  if(window._meGaveFriend==null||!window._meGaveGift)return;
+  SFX.win();vibe([40,20,80]);showT('🎁 Gåva "'+window._meGaveGift+'" skickad!','pk');
+  addDiaryEntry('Skickade gåvan "'+window._meGaveGift+'" till en vän!');
+  save();renderMeGave();
+}
+
+function renderMeDagbok(){
+  const list=$('meDagbokList');if(!list)return;
+  const entries=(G.diaryEntries||[]).slice().reverse();
+  if(!entries.length){list.innerHTML=`<div style="text-align:center;padding:40px 20px;color:var(--t3)"><div style="font-size:42px;margin-bottom:10px">📖</div><div style="font-size:13px;font-weight:700">Dagboken är tom</div><div style="font-size:11px;margin-top:5px">Börja spela för att skriva minnen!</div></div>`;return;}
+  list.innerHTML=entries.map((e,i)=>`<div style="background:var(--c1);border:1.5px solid var(--line);border-radius:16px;padding:12px 14px;margin-bottom:8px">
+    <div style="display:flex;align-items:center;gap:7px;margin-bottom:7px"><span style="font-size:18px">${e.pet||'🐾'}</span><span style="font-size:9px;color:var(--t3);font-family:var(--mono)">${e.date}</span>${i===0?'<span style="margin-left:auto;background:var(--g);color:#000;font-size:8px;font-weight:900;padding:2px 6px;border-radius:7px">NY</span>':''}</div>
+    <div style="font-size:12px;color:var(--t2);line-height:1.5">${e.text}</div>
+  </div>`).join('');
+}
+
+function renderMeEvent(){
+  const el=$('meEventInner');if(!el)return;
+  el.innerHTML=`
+    <div style="text-align:center;margin-bottom:16px">
+      <div style="font-size:48px;margin-bottom:8px">🌞</div>
+      <div style="font-size:18px;font-weight:900">SOMMAR EVENT 2025</div>
+      <div style="font-size:11px;color:var(--t3);margin-top:4px">Tävla med din pet och vinn exklusiva priser!</div>
+    </div>
+    <div style="background:var(--c1);border:1.5px solid rgba(255,215,0,.35);border-radius:18px;padding:14px;margin-bottom:12px">
+      <div style="display:flex;justify-content:space-between;font-size:11px;font-weight:900;margin-bottom:8px"><span style="color:var(--y)">Event Progress</span><span style="color:var(--y);font-family:var(--mono)">${G.eventPoints||0} / 500 WP</span></div>
+      <div style="height:10px;background:rgba(255,255,255,.08);border-radius:100px;overflow:hidden"><div style="height:100%;width:${Math.min(100,Math.round(((G.eventPoints||0)/500)*100))}%;background:linear-gradient(90deg,#FFE600,#FF9F0A);border-radius:100px;transition:width .5s"></div></div>
+      <div style="font-size:10px;color:var(--t3);margin-top:6px">${Math.max(0,500-(G.eventPoints||0))} WP kvar till final-belöningen!</div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px">
+      <div style="background:rgba(255,215,0,.08);border:1px solid rgba(255,215,0,.25);border-radius:14px;padding:12px;text-align:center">
+        <div style="font-size:24px">🏅</div><div style="font-size:10px;font-weight:900;margin-top:4px">Sommar Badge</div><div style="font-size:9px;color:var(--t3)">100 WP</div>
+      </div>
+      <div style="background:rgba(255,215,0,.08);border:1px solid rgba(255,215,0,.25);border-radius:14px;padding:12px;text-align:center">
+        <div style="font-size:24px">🌴</div><div style="font-size:10px;font-weight:900;margin-top:4px">Beach Skin</div><div style="font-size:9px;color:var(--t3)">250 WP</div>
+      </div>
+      <div style="background:rgba(255,215,0,.08);border:1px solid rgba(255,215,0,.25);border-radius:14px;padding:12px;text-align:center">
+        <div style="font-size:24px">☀️</div><div style="font-size:10px;font-weight:900;margin-top:4px">Summer Crown</div><div style="font-size:9px;color:var(--t3)">400 WP</div>
+      </div>
+      <div style="background:rgba(255,215,0,.08);border:1px solid rgba(255,215,0,.25);border-radius:14px;padding:12px;text-align:center">
+        <div style="font-size:24px">🏆</div><div style="font-size:10px;font-weight:900;margin-top:4px">SOMMAR LEGEND</div><div style="font-size:9px;color:var(--t3)">500 WP</div>
+      </div>
+    </div>
+    <button onclick="contributeToEvent();renderMeEvent()" style="width:100%;padding:13px;border-radius:16px;font-size:14px;font-weight:900;cursor:pointer;font-family:var(--ff);border:none;background:linear-gradient(135deg,#FFE600,#FF9F0A);color:#000">⚡ BIDRA +5 WP TILL EVENTET</button>`;
+}
+
+// ── WORLD TAB TOGGLE ──
+function switchWorldTab(tab){
+  const wp=$('world-panel-world');const kp=$('world-panel-karta');
+  const wb=$('wtbWorld');const kb=$('wtbKarta');
+  if(!wp||!kp)return;
+  if(tab==='world'){
+    wp.style.display='';kp.style.display='none';
+    if(wb)wb.classList.add('on');if(kb)kb.classList.remove('on');
+    renderKarmaWorld();initKarmaWorld();
+  }else{
+    wp.style.display='none';kp.style.display='';
+    if(wb)wb.classList.remove('on');if(kb)kb.classList.add('on');
+    setTimeout(()=>{if(!G.mapInit)locateMe();renderNearby();},200);
+  }
+}
 
 // ── LEFT DRAWER ──
 function openLDrawer(){
