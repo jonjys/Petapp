@@ -1550,6 +1550,7 @@ textarea.inp{resize:none;min-height:68px;}
 <!-- ONBOARDING -->
 <div class="ob" id="ob">
   <div class="ob-bg" id="obBg"></div>
+  <button id="langToggle" onclick="toggleLang()" style="position:absolute;top:14px;right:14px;z-index:100;background:rgba(255,255,255,.1);border:1.5px solid rgba(255,255,255,.2);border-radius:12px;padding:6px 12px;font-size:15px;cursor:pointer;backdrop-filter:blur(8px);-webkit-tap-highlight-color:transparent;color:#fff;font-weight:900;letter-spacing:.5px">🇸🇪 SV</button>
 
   <!-- WORLD SELECTION — shown first -->
   <div class="ob-step" id="obsw">
@@ -1557,8 +1558,8 @@ textarea.inp{resize:none;min-height:68px;}
       <div class="ob-logo-hero"><span class="ok">K</span>ARMA</div>
       <div class="ob-tag2">Real Life · Game Engine ⚡</div>
       <div class="ob-prog2"><div class="ob-d2 on"></div><div class="ob-d2"></div><div class="ob-d2"></div><div class="ob-d2"></div></div>
-      <div class="ob-h2">Välj din värld.</div>
-      <div class="ob-p2">Din värld är hemmet för din pet. Välj den miljö du vill leva i.</div>
+      <div class="ob-h2" id="obWorldTitle">Välj din värld.</div>
+      <div class="ob-p2" id="obWorldSub">Din värld är hemmet för din pet. Välj den miljö du vill leva i.</div>
       <div class="ob-worlds">
         <div class="ob-world sel" data-world="cosmic" onclick="pickWorld(this)">
           <span class="ob-world-ico">🌌</span>
@@ -1635,20 +1636,20 @@ textarea.inp{resize:none;min-height:68px;}
   <div class="ob-step" id="obs3" style="display:none">
     <div class="ob-content">
       <div class="ob-prog2"><div class="ob-d2 on"></div><div class="ob-d2 on"></div><div class="ob-d2 on"></div><div class="ob-d2 on"></div></div>
-      <div class="ob-h2">Hur gammal är du? 🎂</div>
-      <div class="ob-p2">Anpassar appen efter dig</div>
+      <div class="ob-h2" id="obAgeTitle">Hur gammal är du? 🎂</div>
+      <div class="ob-p2" id="obAgeSub">Anpassar appen efter dig</div>
       <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:20px">
         <div class="ob-world sel" id="obAge1" onclick="setObAge('kid',this)" style="text-align:left;padding:14px 16px;display:flex;align-items:center;gap:12px">
-          <span style="font-size:28px">🧒</span><div><div style="font-size:14px;font-weight:900">Under 13</div><div style="font-size:10px;color:rgba(255,255,255,.5)">Pet &amp; spel-läge — ingen social</div></div>
+          <span style="font-size:28px">🧒</span><div><div id="obAge1Lbl" style="font-size:14px;font-weight:900">Under 13</div><div id="obAge1Desc" style="font-size:10px;color:rgba(255,255,255,.5)">Pet &amp; spel-läge — ingen social</div></div>
         </div>
         <div class="ob-world" id="obAge2" onclick="setObAge('teen',this)" style="text-align:left;padding:14px 16px;display:flex;align-items:center;gap:12px">
-          <span style="font-size:28px">🧑</span><div><div style="font-size:14px;font-weight:900">13–17</div><div style="font-size:10px;color:rgba(255,255,255,.5)">Full app — socialt + spel + pet</div></div>
+          <span style="font-size:28px">🧑</span><div><div id="obAge2Lbl" style="font-size:14px;font-weight:900">13–17</div><div id="obAge2Desc" style="font-size:10px;color:rgba(255,255,255,.5)">Full app — socialt + spel + pet</div></div>
         </div>
         <div class="ob-world" id="obAge3" onclick="setObAge('adult',this)" style="text-align:left;padding:14px 16px;display:flex;align-items:center;gap:12px">
-          <span style="font-size:28px">👤</span><div><div style="font-size:14px;font-weight:900">18+</div><div style="font-size:10px;color:rgba(255,255,255,.5)">Full app + exklusivt innehåll</div></div>
+          <span style="font-size:28px">👤</span><div><div id="obAge3Lbl" style="font-size:14px;font-weight:900">18+</div><div id="obAge3Desc" style="font-size:10px;color:rgba(255,255,255,.5)">Full app + exklusivt innehåll</div></div>
         </div>
       </div>
-      <button class="btn btn-g btn-lg btn-full" onclick="obNext(3)">Nästa →</button>
+      <button class="btn btn-g btn-lg btn-full ob-next-btn" onclick="obNext(4)">Nästa →</button>
     </div>
   </div>
 
@@ -1657,30 +1658,30 @@ textarea.inp{resize:none;min-height:68px;}
     <div class="ob-content">
       <div class="ob-prog2"><div class="ob-d2 on"></div><div class="ob-d2 on"></div><div class="ob-d2 on"></div><div class="ob-d2 on"></div></div>
       <div class="ob-h2">Vad lockar dig mest? ✨</div>
-      <div class="ob-p2">Vi anpassar din startsida</div>
+      <div class="ob-p2" id="obModeSub">Vi anpassar din startsida</div>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:20px">
         <div class="ob-world" id="obMode1" onclick="setObMode('games',this)" style="padding:18px 10px">
           <span class="ob-world-ico">🎮</span>
-          <span class="ob-world-nm">Minispel</span>
-          <span class="ob-world-ds">Battle, fiska, spin</span>
+          <span class="ob-world-nm" id="obMode1Lbl">Minispel</span>
+          <span class="ob-world-ds" id="obMode1Desc">Battle, fiska, spin</span>
         </div>
         <div class="ob-world sel" id="obMode2" onclick="setObMode('social',this)" style="padding:18px 10px">
           <span class="ob-world-ico">⚡</span>
-          <span class="ob-world-nm">Socialt</span>
-          <span class="ob-world-ds">Flash, följ, chat</span>
+          <span class="ob-world-nm" id="obMode2Lbl">Socialt</span>
+          <span class="ob-world-ds" id="obMode2Desc">Flash, följ, chat</span>
         </div>
         <div class="ob-world" id="obMode3" onclick="setObMode('pet',this)" style="padding:18px 10px">
           <span class="ob-world-ico">🐾</span>
-          <span class="ob-world-nm">Pet</span>
-          <span class="ob-world-ds">Träna, mata, vård</span>
+          <span class="ob-world-nm" id="obMode3Lbl">Pet</span>
+          <span class="ob-world-ds" id="obMode3Desc">Träna, mata, vård</span>
         </div>
         <div class="ob-world" id="obMode4" onclick="setObMode('full',this)" style="padding:18px 10px">
           <span class="ob-world-ico">🌟</span>
-          <span class="ob-world-nm">Allt!</span>
-          <span class="ob-world-ds">Ge mig hela paketet</span>
+          <span class="ob-world-nm" id="obMode4Lbl">Allt!</span>
+          <span class="ob-world-ds" id="obMode4Desc">Ge mig hela paketet</span>
         </div>
       </div>
-      <button class="btn btn-g btn-lg btn-full" onclick="finishOB()">🚀 STARTA KARMA!</button>
+      <button class="btn btn-g btn-lg btn-full" id="obStartKarmaBtn" onclick="finishOB()">🚀 STARTA KARMA!</button>
     </div>
   </div>
 </div>
@@ -5612,6 +5613,73 @@ function obNext(step){
   if(targetEl)targetEl.style.display='block';
   vibe(20);
 }
+// ── LANGUAGE ──
+const STRINGS={
+  sv:{
+    worldTitle:'Välj din värld.',worldSub:'Din värld är hemmet för din pet.',
+    nameTitle:'Vad heter du?',namePlaceholder:'Ditt namn',
+    petTitle:'Välj din pet.',petSub:'Din livspartner. Välj klokt.',
+    petNamePlaceholder:'Ge din pet ett namn',
+    feedTitle:'Mata din pet!',feedSub:'Tryck för att ge den mat',
+    ageTitle:'Hur gammal är du? 🎂',ageSub:'Anpassar appen efter dig',
+    modeTitle:'Vad lockar dig mest? ✨',modeSub:'Vi anpassar din startsida',
+    next:'Nästa →',start:'🚀 STARTA KARMA!',
+    under13:'Under 13',teen:'13–17',adult:'18+',
+    games:'Minispel',social:'Socialt',pet:'Pet',all:'Allt!',
+    kidDesc:'Pet & spel-läge — ingen social',teenDesc:'Full app — socialt + spel + pet',adultDesc:'Full app + exklusivt innehåll',
+    gamesDesc:'Battle, fiska, spin',socialDesc:'Flash, följ, chat',petDesc:'Träna, mata, vård',allDesc:'Ge mig hela paketet',
+  },
+  en:{
+    worldTitle:'Choose your world.',worldSub:'Your world is your pet\'s home.',
+    nameTitle:'What\'s your name?',namePlaceholder:'Your name',
+    petTitle:'Choose your pet.',petSub:'Your life partner. Choose wisely.',
+    petNamePlaceholder:'Name your pet',
+    feedTitle:'Feed your pet!',feedSub:'Tap to give it food',
+    ageTitle:'How old are you? 🎂',ageSub:'We\'ll adapt the app for you',
+    modeTitle:'What excites you most? ✨',modeSub:'We\'ll customize your home screen',
+    next:'Next →',start:'🚀 START KARMA!',
+    under13:'Under 13',teen:'13–17',adult:'18+',
+    games:'Mini-games',social:'Social',pet:'Pet',all:'Everything!',
+    kidDesc:'Pet & game mode — no social',teenDesc:'Full app — social + games + pet',adultDesc:'Full app + exclusive content',
+    gamesDesc:'Battle, fish, spin',socialDesc:'Flash, follow, chat',petDesc:'Train, feed, care',allDesc:'Give me the full package',
+  }
+};
+let _curLang='sv';
+function t(k){return(STRINGS[_curLang]||STRINGS.sv)[k]||k;}
+function toggleLang(){
+  _curLang=_curLang==='sv'?'en':'sv';
+  G.lang=_curLang;localStorage.setItem('kv8_lang',_curLang);
+  const btn=$('langToggle');if(btn)btn.textContent=_curLang==='sv'?'🇸🇪 SV':'🇬🇧 EN';
+  _applyLang();
+}
+function _applyLang(){
+  const L=STRINGS[_curLang]||STRINGS.sv;
+  // Onboarding text
+  _setT('obWorldTitle',L.worldTitle);_setT('obWorldSub',L.worldSub);
+  _setT('obNameTitle',L.nameTitle);
+  const ni=$('obNameInp');if(ni)ni.placeholder=L.namePlaceholder;
+  _setT('obPetTitle',L.petTitle);_setT('obPetSub',L.petSub);
+  const pni=$('obPetNameInp');if(pni)pni.placeholder=L.petNamePlaceholder;
+  _setT('obFeedMainLbl',L.feedTitle);_setT('obFeedSubLbl',L.feedSub);
+  _setT('obAgeTitle',L.ageTitle);_setT('obAgeSub',L.ageSub);
+  _setT('obModeTitle',L.modeTitle);_setT('obModeSub',L.modeSub);
+  _setT('obAge1Lbl',L.under13);_setT('obAge1Desc',L.kidDesc);
+  _setT('obAge2Lbl',L.teen);_setT('obAge2Desc',L.teenDesc);
+  _setT('obAge3Lbl',L.adult);_setT('obAge3Desc',L.adultDesc);
+  _setT('obMode1Lbl',L.games);_setT('obMode1Desc',L.gamesDesc);
+  _setT('obMode2Lbl',L.social);_setT('obMode2Desc',L.socialDesc);
+  _setT('obMode3Lbl',L.pet);_setT('obMode3Desc',L.petDesc);
+  _setT('obMode4Lbl',L.all);_setT('obMode4Desc',L.allDesc);
+  // Buttons
+  document.querySelectorAll('.ob-next-btn').forEach(b=>b.textContent=L.next);
+  const sb=$('obStartKarmaBtn');if(sb)sb.textContent=L.start;
+  // HUD / app strings update
+  const hl=$('homeLabel');if(hl)hl.textContent=_curLang==='en'?'HOME':'HEM';
+}
+function _setT(id,txt){const el=$(id);if(el)el.textContent=txt;}
+// Load saved lang
+(()=>{const sl=localStorage.getItem('kv8_lang');if(sl&&(sl==='sv'||sl==='en')){_curLang=sl;if(sl==='en'){const btn=$('langToggle');if(btn)btn.textContent='🇬🇧 EN';_applyLang();}}})();
+
 function setObAge(age,el){
   G.ageGroup=age;
   document.querySelectorAll('#obs3 .ob-world').forEach(w=>w.classList.remove('sel'));
