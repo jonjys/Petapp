@@ -1627,7 +1627,60 @@ textarea.inp{resize:none;min-height:68px;}
         </div>
         <span style="font-size:22px;opacity:.6">→</span>
       </div>
-      <button class="btn btn-g btn-lg btn-full" id="obStartBtn" disabled style="opacity:.35" onclick="finishOB()">⚡ ENTER KARMA WORLD</button>
+      <button class="btn btn-g btn-lg btn-full" id="obStartBtn" disabled style="opacity:.35" onclick="obNext(3)">⚡ NÄSTA →</button>
+    </div>
+  </div>
+
+  <!-- Age step -->
+  <div class="ob-step" id="obs3" style="display:none">
+    <div class="ob-content">
+      <div class="ob-prog2"><div class="ob-d2 on"></div><div class="ob-d2 on"></div><div class="ob-d2 on"></div><div class="ob-d2 on"></div></div>
+      <div class="ob-h2">Hur gammal är du? 🎂</div>
+      <div class="ob-p2">Anpassar appen efter dig</div>
+      <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:20px">
+        <div class="ob-world sel" id="obAge1" onclick="setObAge('kid',this)" style="text-align:left;padding:14px 16px;display:flex;align-items:center;gap:12px">
+          <span style="font-size:28px">🧒</span><div><div style="font-size:14px;font-weight:900">Under 13</div><div style="font-size:10px;color:rgba(255,255,255,.5)">Pet &amp; spel-läge — ingen social</div></div>
+        </div>
+        <div class="ob-world" id="obAge2" onclick="setObAge('teen',this)" style="text-align:left;padding:14px 16px;display:flex;align-items:center;gap:12px">
+          <span style="font-size:28px">🧑</span><div><div style="font-size:14px;font-weight:900">13–17</div><div style="font-size:10px;color:rgba(255,255,255,.5)">Full app — socialt + spel + pet</div></div>
+        </div>
+        <div class="ob-world" id="obAge3" onclick="setObAge('adult',this)" style="text-align:left;padding:14px 16px;display:flex;align-items:center;gap:12px">
+          <span style="font-size:28px">👤</span><div><div style="font-size:14px;font-weight:900">18+</div><div style="font-size:10px;color:rgba(255,255,255,.5)">Full app + exklusivt innehåll</div></div>
+        </div>
+      </div>
+      <button class="btn btn-g btn-lg btn-full" onclick="obNext(3)">Nästa →</button>
+    </div>
+  </div>
+
+  <!-- Mode step -->
+  <div class="ob-step" id="obs4" style="display:none">
+    <div class="ob-content">
+      <div class="ob-prog2"><div class="ob-d2 on"></div><div class="ob-d2 on"></div><div class="ob-d2 on"></div><div class="ob-d2 on"></div></div>
+      <div class="ob-h2">Vad lockar dig mest? ✨</div>
+      <div class="ob-p2">Vi anpassar din startsida</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:20px">
+        <div class="ob-world" id="obMode1" onclick="setObMode('games',this)" style="padding:18px 10px">
+          <span class="ob-world-ico">🎮</span>
+          <span class="ob-world-nm">Minispel</span>
+          <span class="ob-world-ds">Battle, fiska, spin</span>
+        </div>
+        <div class="ob-world sel" id="obMode2" onclick="setObMode('social',this)" style="padding:18px 10px">
+          <span class="ob-world-ico">⚡</span>
+          <span class="ob-world-nm">Socialt</span>
+          <span class="ob-world-ds">Flash, följ, chat</span>
+        </div>
+        <div class="ob-world" id="obMode3" onclick="setObMode('pet',this)" style="padding:18px 10px">
+          <span class="ob-world-ico">🐾</span>
+          <span class="ob-world-nm">Pet</span>
+          <span class="ob-world-ds">Träna, mata, vård</span>
+        </div>
+        <div class="ob-world" id="obMode4" onclick="setObMode('full',this)" style="padding:18px 10px">
+          <span class="ob-world-ico">🌟</span>
+          <span class="ob-world-nm">Allt!</span>
+          <span class="ob-world-ds">Ge mig hela paketet</span>
+        </div>
+      </div>
+      <button class="btn btn-g btn-lg btn-full" onclick="finishOB()">🚀 STARTA KARMA!</button>
     </div>
   </div>
 </div>
@@ -2122,6 +2175,7 @@ textarea.inp{resize:none;min-height:68px;}
       <div class="kw-build-bar">
         <button class="kw-build-btn" style="border-color:rgba(255,230,0,.45);color:var(--y);background:rgba(255,230,0,.06)" onclick="addWorldPoints(20,'manual');vibe(30);showT('⚡ +20 World Points!','y')">⚡ BOOST +20WP</button>
         <button class="kw-build-btn" style="border-color:rgba(57,255,20,.45);color:var(--g);background:rgba(57,255,20,.06)" onclick="nav('home')">🐾 MIN PET</button>
+        <button class="kw-build-btn" style="border-color:rgba(255,45,85,.45);color:var(--pk);background:rgba(255,45,85,.06)" onclick="openClanView()">⚔️ KLAN</button>
         <button class="kw-build-btn" style="border-color:rgba(0,217,255,.45);color:var(--b);background:rgba(0,217,255,.06)" onclick="switchWorldTab('karta')">🗺️ KARTA</button>
       </div>
       </div>
@@ -3118,6 +3172,7 @@ const G={
   upFilter:'all',myUppdrag:[],currentCircle:null,
   streakWeek:[false,false,false,false,false,false,false],
   premium:false,premiumTier:0,
+  ageGroup:'teen',appMode:'full',clan:null,clanEm:'',
   world:'cosmic',
   todayBond:{flash:false,chat:false,quest:false,market:false},
   bondDate:'',
@@ -3969,12 +4024,15 @@ function pcPlay(){
   SFX.click();advanceQuest('play');save();
 }
 function pcBath(){
-  if(G.coins<5){showT('❌ Behöver 5 coins','r');return;}G.coins-=5;
-  G.trustScore=Math.min(100,G.trustScore+3);G.mood=Math.min(100,G.mood+15);
-  gainXP(8,'social');pcReact('happy');showPetEmote('🛁');
-  const mult=_triggerCombo('+15 MOOD');
-  if(mult===1)showT('🛁 +15 MOOD · +3 KARMA','b');
-  SFX.click();updateHUD();updatePetView();
+  const CD_MIN=5;const now=Date.now();const last=G._lastBath||0;
+  if((now-last)/60000<CD_MIN){showT('🛁 Vänta '+Math.ceil(CD_MIN-(now-last)/60000)+' min','y');SFX.error();return;}
+  if(G.coins<3){showT('❌ Behöver 3 coins','r');return;}
+  G.coins-=3;G._lastBath=now;
+  G.trustScore=Math.min(100,G.trustScore+3);G.mood=Math.min(100,G.mood+18);
+  gainXP(10,'social');pcReact('happy');showPetEmote('✨');
+  const mult=_triggerCombo('+18 MOOD');
+  if(mult===1)showT('🛁 +18 MOOD · +3 KARMA · CD: 5 min','b');
+  SFX.click();updateHUD();updatePetView();save();
 }
 function pcTalk(){
   const now=Date.now();
@@ -4363,6 +4421,74 @@ function submitUppdrag(){
   renderUppdrag();updateHUD();vibe([30,20,50]);showT(verified?'✓ VERIFIERAT & LIVE!':'🏢 PUBLICERAT! −50⚡','g');
 }
 
+// ── CLANS & RAIDS ──
+const MOCK_CLANS=[
+  {id:'c1',nm:'Neon Dragons',em:'🐉',members:12,power:8420,tag:'ND',col:'var(--pk)'},
+  {id:'c2',nm:'Cosmic Bears',em:'🐻',members:8,power:5800,tag:'CB',col:'var(--b)'},
+  {id:'c3',nm:'Shadow Pack',em:'🐺',members:15,power:11200,tag:'SP',col:'var(--p)'},
+  {id:'c4',nm:'Gold Hunters',em:'🦁',members:6,power:4100,tag:'GH',col:'var(--y)'},
+];
+function openClanView(){
+  const modal=$('clanModal');if(!modal){_buildClanModal();return;}
+  modal.style.display='flex';
+  renderClans();
+}
+function _buildClanModal(){
+  const m=document.createElement('div');
+  m.id='clanModal';m.className='modal';m.style.display='flex';
+  m.innerHTML=`<div class="ms"><div class="mh" onclick="closeModal('clanModal')"></div>
+    <div class="mt">⚔️ Klaner <div class="mx" onclick="closeModal('clanModal')">✕</div></div>
+    ${G.clan?`<div style="background:linear-gradient(135deg,rgba(57,255,20,.08),rgba(57,255,20,.02));border:1.5px solid rgba(57,255,20,.3);border-radius:16px;padding:14px;margin-bottom:14px">
+      <div style="font-size:13px;font-weight:900;color:var(--g)">👑 DITT KLAN: ${G.clan}</div>
+      <div style="font-size:10px;color:var(--t3);margin-top:4px">Klanmedlem · Bidra med WP för att växa</div>
+      <div style="display:flex;gap:8px;margin-top:10px">
+        <button class="btn btn-pk btn-sm" onclick="openRaid()">⚔️ RAIDA</button>
+        <button class="btn btn-sm" style="flex:1" onclick="showT('Klan-chat kommer snart!','b')">💬 KLAN-CHAT</button>
+      </div>
+    </div>`:''}
+    <div class="sh"><div class="sh-t">🌍 AKTIVA KLANER</div></div>
+    <div id="clanList" style="padding:0 0 18px"></div>
+    ${!G.clan?`<button class="btn btn-g btn-lg btn-full" onclick="createClan()">+ SKAPA KLAN</button>`:''}
+  </div>`;
+  document.body.appendChild(m);
+  renderClans();
+}
+function renderClans(){
+  const el=$('clanList');if(!el)return;
+  el.innerHTML=MOCK_CLANS.map(c=>`<div class="clan-card" onclick="joinClan('${c.id}','${c.nm}','${c.em}')">
+    <div class="clan-em">${c.em}</div>
+    <div class="clan-info">
+      <div class="clan-nm">${c.nm} <span style="font-size:9px;color:var(--t3)">[${c.tag}]</span></div>
+      <div class="clan-sub">${c.members} medlemmar</div>
+      <div class="clan-pow">⚡ ${c.power.toLocaleString()} Power</div>
+    </div>
+    ${G.clan===c.nm?'<span style="font-size:10px;color:var(--g);font-weight:900">✓ MITT</span>':
+    `<button class="raid-btn" onclick="event.stopPropagation();raidClan('${c.id}','${c.nm}')">⚔️</button>`}
+  </div>`).join('');
+}
+function joinClan(id,nm,em){
+  if(G.clan===nm){showT('👑 Du är redan i '+nm+'!','y');return;}
+  G.clan=nm;G.clanEm=em;save();
+  showT('⚔️ Gick med i '+nm+'!','g');
+  closeModal('clanModal');
+}
+function createClan(){
+  const nm=prompt('Namnge ditt klan (max 20 tecken):');
+  if(!nm||nm.length<2)return;
+  G.clan=nm.substring(0,20);G.clanEm='⚔️';save();
+  showT('👑 Klan "'+G.clan+'" skapat!','g');
+  closeModal('clanModal');
+}
+function raidClan(id,nm){
+  if(!G.clan){showT('⚔️ Gå med i ett klan först!','r');return;}
+  const power=G.worldPoints||0;const enemy=MOCK_CLANS.find(c=>c.id===id);
+  const win=Math.random()<(power/(power+enemy.power)*2);
+  if(win){const loot=Math.floor(Math.random()*200)+50;gainCoins(loot);addWorldPoints(30,'raid');showT('🏆 RAID LYCKADES! +'+loot+'⚡ +30WP','y');vibe([50,30,100,30,80]);}
+  else{showT('💀 Raid misslyckades... '+nm+' var för starka.','r');vibe([20,10,20]);}
+  closeModal('clanModal');save();
+}
+function openRaid(){closeModal('clanModal');showT('⚔️ Välj ett klan att raida i klanlistan!','pk');setTimeout(openClanView,500);}
+
 // ── SOCIAL ──
 function switchSocial(tab,el){
   document.querySelectorAll('#socialTabs .tab').forEach(t=>t.classList.remove('on'));
@@ -4728,24 +4854,41 @@ const FISH_WEATHERS=[
   {id:'rain',em:'🌧️',nm:'Regn',modifier:{surface:0.8,mid:1,deep:1.4}},
   {id:'storm',em:'⛈️',nm:'Storm',modifier:{surface:0.4,mid:0.8,deep:1.8}},
 ];
-let _fishState={casting:false,biting:false,biteTimer:null,catchWindow:false,catchTimer:null,score:0,best:parseInt(localStorage.getItem('kv8_fishBest')||'0'),inventory:[],_combo:0,_biteStartTime:0,_pfRaf:null,_weather:0};
+let _fishState={phase:'idle',score:0,best:parseInt(localStorage.getItem('kv8_fishBest')||'0'),inventory:[],_combo:0,_spamPct:0,_spamTimer:null,_drainTimer:null,_failTimer:null,_weather:0,_curFish:null};
+let _fishTension=0,_fishTensionTimer=null;
 function _getCurRod(){return FISH_RODS.find(r=>r.id===(G.fishRod||'bamboo'))||FISH_RODS[0];}
+
 function openFishingGame(){
   $('fishGame').classList.add('open');
-  _fishState.score=0;_fishState.inventory=[];_fishState.casting=false;_fishState.biting=false;_fishState._combo=0;
-  // Pick random weather
+  _fishState.phase='idle';_fishState.score=0;_fishState.inventory=[];_fishState._combo=0;
   _fishState._weather=Math.floor(Math.random()*FISH_WEATHERS.length);
   const wth=FISH_WEATHERS[_fishState._weather];
   const wb=$('fishWeatherBadge');if(wb)wb.textContent=wth.em+' '+wth.nm;
   updateFishRodLabel();updateFishUI();
-  setTimeout(()=>{spawnFishInScene();resetFishState('Kasta ut metspöet för att börja! 🎣');},380);
+  _fishResetVisuals();
+  setTimeout(()=>{spawnFishInScene();_fishSetStatus('🎣 Tryck KASTA för att börja!');},380);
 }
+
 function closeFishingGame(){
   $('fishGame').classList.remove('open');
-  clearTimeout(_fishState.biteTimer);clearTimeout(_fishState.catchTimer);
-  if(_fishState._pfRaf){cancelAnimationFrame(_fishState._pfRaf);_fishState._pfRaf=null;}
+  _fishStopSpam();clearTimeout(_fishState._failTimer);
+  _fishState.phase='idle';
   closeModal('rodShopModal');closeModal('fishJournalModal');
-  _fishState.casting=false;_fishState.biting=false;_fishState.catchWindow=false;
+}
+
+function _fishSetStatus(msg){if($('fishStatus'))$('fishStatus').textContent=msg;}
+
+function _fishResetVisuals(){
+  const ring=$('fishSpamRing');if(ring)ring.classList.remove('on');
+  const hint=$('fishTapHint');if(hint)hint.classList.remove('on');
+  const splash=$('fishCatchSplash');if(splash)splash.classList.remove('on');
+  const fail=$('fishFailText');if(fail)fail.classList.remove('on');
+  const pfBar=$('fishPerfectBar');if(pfBar)pfBar.style.display='none';
+  const line=$('fishLine');if(line)line.style.height='0';
+  const bob=$('fishBob');if(bob){bob.style.display='none';bob.classList.remove('nibble');bob.style.boxShadow='';}
+  const prompt=$('fishTapPrompt');if(prompt)prompt.style.display='none';
+  const tw=$('fishTensionWrap');if(tw)tw.style.display='none';
+  const btn=$('fishCastBtn');if(btn){btn.className='fish-cast-btn idle';btn.textContent='🎣 KASTA METSPÖ';btn.style.touchAction='manipulation';}
 }
 function updateFishRodLabel(){
   const r=_getCurRod();const lbl=$('fishRodCurLabel');if(lbl)lbl.textContent=r.em+' '+r.nm;
@@ -4796,177 +4939,154 @@ function spawnFishInScene(){
   }
 }
 function fishCast(){
-  if(_fishState.casting){if(_fishState.biting){catchFish();return;}return;}
-  _fishState.casting=true;_fishState.biting=false;
+  if(_fishState.phase!=='idle')return;
+  _fishState.phase='waiting';
   const rod=_getCurRod();
-  const line=$('fishLine');const bob=$('fishBob');const btn=$('fishCastBtn');
-  const scene=$('fishScene');const sh=scene.clientHeight||Math.round(window.innerHeight*.58);
-  // Cast depth depends on rod
-  const depthPct=rod.id==='bamboo'?0.52:rod.id==='carbon'?0.66:0.80;
+  const scene=$('fishScene');const sh=scene.clientHeight||Math.round(window.innerHeight*.55);
+  const depthPct=rod.id==='bamboo'?.50:rod.id==='carbon'?.65:.78;
   const waterY=sh*depthPct;
-  line.style.height=(waterY+40)+'px';line.style.display='block';
-  bob.style.display='block';bob.style.top=(waterY+30)+'px';bob.style.left='calc(50% - 7px)';
-  btn.className='fish-cast-btn casting';btn.textContent='🎣 VÄNTAR... (TRYCK PÅ VATTNET!)';
-  $('fishStatus').textContent='Tryck på vattnet för att bygga spänning! 🌊';
-  _fishTension=0;const tw=$('fishTensionWrap');if(tw)tw.style.display='block';const tf=$('fishTensionFill');if(tf)tf.style.width='0%';const tp=$('fishTensionPct');if(tp)tp.textContent='0%';
-  // Wait time based on rod
-  const wth=FISH_WEATHERS[_fishState._weather]||FISH_WEATHERS[0];
-  const baseWait=rod.castSpeed*1000;const waitTime=baseWait*0.6+Math.random()*baseWait*1.4;
-  _fishState.biteTimer=setTimeout(()=>{triggerFishBite();},waitTime);
+  const line=$('fishLine');const bob=$('fishBob');
+  if(line){line.style.height=(waterY+35)+'px';line.style.display='block';}
+  if(bob){bob.style.display='block';bob.style.top=(waterY+28)+'px';bob.style.left='calc(50% - 7px)';}
+  const btn=$('fishCastBtn');if(btn){btn.className='fish-cast-btn casting';btn.textContent='🌊 Väntar på napp...';}
+  _fishSetStatus('Väntar på napp... 🌊');
+  vibe(20);SFX.click();
+  const wt=rod.castSpeed*1000;
+  const wait=wt*.5+Math.random()*wt*1.5;
+  _fishState._failTimer=setTimeout(_fishTriggerBite,wait);
 }
-function triggerFishBite(){
-  _fishState.biting=true;_fishState.catchWindow=true;_fishState._biteStartTime=Date.now();
-  _fishTension=0;clearTimeout(_fishTensionTimer);const tw=$('fishTensionWrap');if(tw)tw.style.display='none';
-  const bob=$('fishBob');if(bob){bob.classList.add('nibble');bob.style.boxShadow='0 0 28px rgba(255,200,0,1)';}
-  const btn2=$('fishCastBtn');if(btn2){btn2.className='fish-cast-btn biting';btn2.textContent='🐟 NAPP! TRYCK NU!';btn2.onclick=()=>catchFish();}
-  $('fishStatus').textContent='⚡ NAPP! TRYCK SNABBT! ⚡';
-  const prompt=$('fishTapPrompt');if(prompt)prompt.style.display='block';
-  // Timer bar
-  const CATCH_MS=4000;
-  const tb=$('fishTimerBar');if(tb){tb.style.transition='none';tb.style.width='100%';void tb.offsetWidth;tb.style.transition=`width ${CATCH_MS/1000}s linear`;tb.style.width='0%';}
-  // Precision bar animation
-  const pfBar=$('fishPerfectBar');const needle=$('fpbNeedle');const win=$('fpbWindow');
-  if(pfBar&&needle&&win){
-    pfBar.style.display='block';
-    let startT=Date.now();
-    function animPF(){
-      const elapsed=Date.now()-startT;if(elapsed>=CATCH_MS||!_fishState.biting){pfBar.style.display='none';return;}
-      const progress=elapsed/CATCH_MS;
-      // needle sweeps back and forth (1.5 cycles = slower)
-      const sweepPos=Math.abs(Math.sin(progress*Math.PI*1.5));
-      needle.style.left=(sweepPos*88)+'%';
-      // window shrinks from 50% → 10% over 4s
-      const winW=Math.max(10,50-40*progress);
-      win.style.left=(50-winW/2)+'%';win.style.width=winW+'%';
-      _fishState._pfRaf=requestAnimationFrame(animPF);
-    }
-    _fishState._pfRaf=requestAnimationFrame(animPF);
-  }
-  vibe([40,30,60,30,80]);SFX.shout&&SFX.shout();
-  _fishState.catchTimer=setTimeout(()=>{
-    if(_fishState.biting){
-      _fishState.biting=false;_fishState.casting=false;_fishState.catchWindow=false;_fishState._combo=0;
-      const tb2=$('fishTimerBar');if(tb2){tb2.style.transition='none';tb2.style.width='0%';}
-      const pfB=$('fishPerfectBar');if(pfB)pfB.style.display='none';
-      if(_fishState._pfRaf){cancelAnimationFrame(_fishState._pfRaf);_fishState._pfRaf=null;}
-      resetFishState('💨 Fisken rymde! Försök igen...');
-    }
-  },CATCH_MS);
-}
-function onFishSceneTap(e){
-  if(_fishState.biting&&_fishState.catchWindow){catchFish();return;}
-  if(!_fishState.casting){fishCast();return;}
-  // Spam-tap builds tension during wait
-  if(_fishState.casting&&!_fishState.biting){_fishAddTension(12);}
-}
-let _fishTension=0,_fishTensionTimer=null;
-function _fishAddTension(amt){
-  _fishTension=Math.min(100,(_fishTension||0)+amt);
-  const wrap=$('fishTensionWrap');const fill=$('fishTensionFill');const pct=$('fishTensionPct');
-  if(wrap)wrap.style.display='block';
-  if(fill)fill.style.width=_fishTension+'%';
-  if(pct)pct.textContent=Math.round(_fishTension)+'%';
-  clearTimeout(_fishTensionTimer);
-  if(_fishTension>=100){
-    _fishTension=0;
-    showT('🌊 MAX SPÄNNING! Napp omedelbart!','b');
-    vibe([20,10,40]);
-    clearTimeout(_fishState.biteTimer);
-    _fishState.biteTimer=setTimeout(triggerFishBite,200);
-    if(fill)fill.style.width='0%';if(pct)pct.textContent='0%';if(wrap)wrap.style.display='none';
-    return;
-  }
-  // Drain tension slowly
-  _fishTensionTimer=setTimeout(()=>{
-    _fishTension=Math.max(0,_fishTension-8);
-    if(fill)fill.style.width=_fishTension+'%';if(pct)pct.textContent=Math.round(_fishTension)+'%';
-    if(_fishTension<=0&&wrap)wrap.style.display='none';
-  },1200);
-}
-function onFishTap(fishEl,ft){
-  if(_fishState.biting&&_fishState.catchWindow){catchFish();return;}
-  if(!_fishState.casting){fishCast();return;}
-  clearTimeout(_fishState.biteTimer);
-  _fishState.biteTimer=setTimeout(triggerFishBite,100+Math.random()*200);
-  if(fishEl){fishEl.style.transform='scale(1.4) rotate(15deg)';setTimeout(()=>{if(fishEl)fishEl.style.transform='';},180);}
-}
-function catchFish(){
-  if(!_fishState.biting||!_fishState.catchWindow)return;
-  clearTimeout(_fishState.catchTimer);
-  if(_fishState._pfRaf){cancelAnimationFrame(_fishState._pfRaf);_fishState._pfRaf=null;}
-  const pfBar=$('fishPerfectBar');if(pfBar)pfBar.style.display='none';
-  _fishState.biting=false;_fishState.casting=false;_fishState.catchWindow=false;
-  const tb=$('fishTimerBar');if(tb){tb.style.transition='none';tb.style.width='0%';}
-  // Precision timing check
-  const elapsed=Date.now()-_fishState._biteStartTime;
-  const needle=$('fpbNeedle');const win=$('fpbWindow');
-  let timingMult=1;let timingLabel='';
-  if(needle&&win){
-    const nLeft=parseFloat(needle.style.left||'0');
-    const wLeft=parseFloat(win.style.left||'30');
-    const wRight=wLeft+parseFloat(win.style.width||'40');
-    if(nLeft>=wLeft&&nLeft<=wRight){timingMult=3;timingLabel='🎯 PERFEKT!';}
-    else if(elapsed<800){timingMult=2;timingLabel='✅ BRA!';}
-    else{timingMult=1;timingLabel='';}
-  } else {
-    timingMult=elapsed<600?2:1;
-  }
+
+function _fishTriggerBite(){
+  if(_fishState.phase!=='waiting')return;
+  _fishState.phase='biting';
   const rod=_getCurRod();
-  // Pick fish based on current state
-  const wth=FISH_WEATHERS[_fishState._weather]||FISH_WEATHERS[0];
+  // Pick fish
+  const accessible=rod.zones;
+  const avail=FISH_TYPES.filter(f=>accessible.includes(f.zone)||f.zone==='any');
   const rnd=Math.random();
   let ft;
-  if(rod.id==='titanium'&&rnd<0.05)ft=FISH_TYPES.find(f=>f.rarity==='ultra');
-  else if(rnd<.38)ft=FISH_TYPES.filter(f=>f.rarity==='common')[Math.floor(Math.random()*5)];
-  else if(rnd<.60)ft=FISH_TYPES.filter(f=>f.rarity==='uncommon'||f.rarity==='common')[Math.floor(Math.random()*5)];
-  else if(rnd<.77)ft=FISH_TYPES.filter(f=>f.rarity==='rare')[Math.floor(Math.random()*3)];
-  else if(rnd<.89)ft=FISH_TYPES.filter(f=>f.rarity==='epic')[Math.floor(Math.random()*3)];
-  else if(rnd<.96)ft=FISH_TYPES.filter(f=>f.rarity==='legendary'||f.rarity==='mythic')[Math.floor(Math.random()*3)];
-  else ft=FISH_TYPES.find(f=>f.rarity==='ultra');
-  if(!ft||!ft.nm)ft=FISH_TYPES[0];
-  _fishState.score++;_fishState.inventory.push(ft);
+  if(rod.id==='titanium'&&rnd<.05)ft=avail.find(f=>f.rarity==='ultra');
+  else if(rnd<.38)ft=avail.filter(f=>f.rarity==='common')[Math.floor(Math.random()*3)];
+  else if(rnd<.60)ft=avail.filter(f=>f.rarity==='uncommon'||f.rarity==='common')[0];
+  else if(rnd<.77)ft=avail.filter(f=>f.rarity==='rare')[0];
+  else if(rnd<.89)ft=avail.filter(f=>f.rarity==='epic')[0];
+  else if(rnd<.96)ft=avail.filter(f=>f.rarity==='legendary'||f.rarity==='mythic')[0];
+  else ft=avail.find(f=>f.rarity==='ultra');
+  if(!ft)ft=avail[0]||FISH_TYPES[0];
+  _fishState._curFish=ft;
+  // Bob nibble
+  const bob=$('fishBob');if(bob){bob.classList.add('nibble');bob.style.boxShadow='0 0 22px rgba(255,220,0,1)';}
+  const btn=$('fishCastBtn');if(btn){btn.className='fish-cast-btn biting';btn.textContent='🐟 NAPP! SPAMMA NU!';}
+  // Show spam ring
+  _fishState._spamPct=0;
+  const ring=$('fishSpamRing');if(ring)ring.classList.add('on');
+  const hint=$('fishTapHint');if(hint)hint.classList.add('on');
+  _fishUpdateSpamUI(0);
+  _fishSetStatus('⚡ NAPP! SPAMMA SKÄRMEN! ⚡');
+  vibe([40,20,60,20,80]);SFX.shout&&SFX.shout();
+  // Start drain
+  _fishStartDrain(ft);
+  // Fail timer based on rarity
+  const failMs=ft.rarity==='ultra'||ft.rarity==='mythic'?2000:ft.rarity==='legendary'||ft.rarity==='epic'?2500:ft.rarity==='rare'?3000:3800;
+  _fishState._failTimer=setTimeout(_fishFail,failMs);
+}
+
+function _fishStartDrain(ft){
+  clearInterval(_fishState._drainTimer);
+  const drainRate=ft.rarity==='ultra'?7:ft.rarity==='legendary'||ft.rarity==='mythic'?5.5:ft.rarity==='epic'?4.5:ft.rarity==='rare'?4:3;
+  _fishState._drainTimer=setInterval(()=>{
+    if(_fishState.phase!=='biting'){clearInterval(_fishState._drainTimer);return;}
+    _fishState._spamPct=Math.max(0,_fishState._spamPct-drainRate);
+    _fishUpdateSpamUI(_fishState._spamPct);
+  },150);
+}
+
+function _fishStopSpam(){
+  clearInterval(_fishState._drainTimer);
+  clearTimeout(_fishState._failTimer);
+}
+
+function _fishUpdateSpamUI(pct){
+  const arc=$('fishSpamArc');if(arc){const offset=377-(377*pct/100);arc.style.strokeDashoffset=offset;arc.style.stroke=pct>70?'var(--g)':pct>40?'var(--y)':'var(--pk)';}
+  const pctEl=$('fishSpamPct');if(pctEl)pctEl.textContent=Math.round(pct)+'%';
+}
+
+function fishSpamTap(){
+  if(_fishState.phase!=='biting')return;
+  const ft=_fishState._curFish||FISH_TYPES[0];
+  const gainRate=ft.rarity==='ultra'||ft.rarity==='mythic'?10:ft.rarity==='legendary'||ft.rarity==='epic'?13:ft.rarity==='rare'?16:18;
+  _fishState._spamPct=Math.min(100,_fishState._spamPct+gainRate);
+  _fishUpdateSpamUI(_fishState._spamPct);
+  vibe(8);
+  // Screen shake on high %
+  if(_fishState._spamPct>80){const s=$('fishScene');if(s){s.style.transform='translateX('+((Math.random()-.5)*5)+'px)';setTimeout(()=>{if(s)s.style.transform='';},80);}}
+  if(_fishState._spamPct>=100){_fishCatch();return;}
+}
+
+function onFishSceneTap(e){
+  if(e&&e.type==='touchstart')e.preventDefault();
+  if(_fishState.phase==='biting'){fishSpamTap();return;}
+  if(_fishState.phase==='idle'){fishCast();return;}
+}
+
+function onFishTap(fishEl,ft){
+  if(_fishState.phase==='biting'){fishSpamTap();return;}
+  if(_fishState.phase==='idle'){fishCast();return;}
+  if(fishEl){fishEl.style.transform='scale(1.3) rotate(12deg)';setTimeout(()=>{if(fishEl)fishEl.style.transform='';},150);}
+}
+
+function _fishCatch(){
+  _fishStopSpam();
+  _fishState.phase='idle';
+  const ft=_fishState._curFish||FISH_TYPES[0];
+  _fishResetVisuals();
+  // Show splash
+  const splash=$('fishCatchSplash');if(splash){splash.textContent=ft.em;splash.classList.add('on');setTimeout(()=>splash.classList.remove('on'),700);}
+  // Rewards
+  const rod=_getCurRod();
   _fishState._combo=(_fishState._combo||0)+1;
-  if(_fishState.score>_fishState.best){_fishState.best=_fishState.score;localStorage.setItem('kv8_fishBest',_fishState.score);}
   const combo=_fishState._combo;const comboMult=combo>=8?4:combo>=5?3:combo>=3?2:1;
-  const totalMult=timingMult*comboMult*rod.bonus;
-  const earnedCoins=Math.round(ft.coins*totalMult);const earnedXP=Math.round(ft.xp*totalMult);
-  // Track journal
+  const earnedCoins=Math.round(ft.coins*comboMult*rod.bonus);
+  const earnedXP=Math.round(ft.xp*comboMult*rod.bonus);
+  _fishState.score++;_fishState.inventory.push(ft);
+  if(_fishState.score>_fishState.best){_fishState.best=_fishState.score;localStorage.setItem('kv8_fishBest',_fishState.score);}
   if(!G.fishJournal)G.fishJournal={};G.fishJournal[ft.nm]=(G.fishJournal[ft.nm]||0)+1;
   gainCoins(earnedCoins);gainXP(earnedXP,'action');
-  // Special effects
   if(ft.special==='xp2x'){gainXP(earnedXP,'action');showT('⭐ STJÄRNFISK! Dubbel XP!','y');}
   else if(ft.special==='coins2x'){gainCoins(earnedCoins);showT('🧜 SJÖJUNGFRU! Dubbla coins!','pk');}
-  else if(ft.special==='all'){gainCoins(earnedCoins);gainXP(earnedXP,'action');showT('🐲 HAVSDRAK!!! MEGA-BELÖNING!','y');vibe([80,40,100,40,100,40,120]);}
-  else if(ft.special==='luckburst'){gainCoins(Math.floor(Math.random()*500)+200);showT('🌟 GYLLENE FISK! Luck burst!','y');}
+  else if(ft.special==='all'){gainCoins(earnedCoins);gainXP(earnedXP,'action');showT('🐲 HAVSDRAK!!! MEGA!','y');vibe([80,40,100,40,120]);}
   if(ft.petFood){G.hunger=Math.min(100,G.hunger+30);updatePetView();}
-  // Show timing label
-  if(timingLabel){
-    const scene=$('fishScene');const badge=document.createElement('div');badge.className='fish-combo-pop';
-    badge.textContent=timingLabel+(combo>=3?' COMBO ×'+comboMult:'');scene.appendChild(badge);setTimeout(()=>badge.remove(),1200);
-  }
-  // Toast
-  const rarityToast=ft.rarity==='ultra'?'y':ft.rarity==='mythic'?'p':ft.rarity==='legendary'?'pk':ft.rarity==='epic'?'o':'g';
-  showT(ft.em+' '+ft.nm+'! +'+earnedCoins+'⚡ +'+earnedXP+'XP'+(timingLabel?' '+timingLabel:''),rarityToast);
-  const fx=$('fishCatchFx');if(fx){fx.classList.add('on');setTimeout(()=>fx.classList.remove('on'),700);}
-  // Flying fish animation
-  const scene=$('fishScene');if(scene){const fly=document.createElement('div');fly.className='fish-fly';fly.textContent=ft.em;scene.appendChild(fly);setTimeout(()=>fly.remove(),900);}
+  const rt=ft.rarity==='ultra'?'y':ft.rarity==='mythic'?'p':ft.rarity==='legendary'?'pk':ft.rarity==='epic'?'o':'g';
+  showT(ft.em+' '+ft.nm+'! +'+earnedCoins+'⚡ +'+earnedXP+'XP'+(combo>=3?' 🔥×'+combo:''),rt);
   vibe([30,20,80,20,100]);SFX.win();
   updateFishUI();
-  setTimeout(()=>{spawnFishInScene();resetFishState(combo>=3?'🔥 COMBO ×'+combo+'! Fortsätt fånga!':'Kasta igen!');},1100);
+  save();advanceQuest('fish');
+  setTimeout(()=>{spawnFishInScene();_fishSetStatus(combo>=3?'🔥 COMBO ×'+combo+'! Kasta igen!':'💪 Bra catch! Kasta igen!');},900);
 }
+
+function _fishFail(){
+  if(_fishState.phase!=='biting')return;
+  _fishStopSpam();
+  _fishState.phase='idle';
+  _fishState._combo=0;
+  _fishResetVisuals();
+  const fail=$('fishFailText');if(fail){fail.classList.add('on');setTimeout(()=>fail.classList.remove('on'),1200);}
+  _fishSetStatus('💨 Fisken rymde! Spamma snabbare nästa gång!');
+  vibe([20,10,20]);
+  updateFishUI();
+  setTimeout(()=>spawnFishInScene(),600);
+}
+
+function catchFish(){fishSpamTap();}
+
 function resetFishState(msg){
-  _fishState.casting=false;_fishState.biting=false;_fishState.catchWindow=false;
-  _fishTension=0;clearTimeout(_fishTensionTimer);const tw=$('fishTensionWrap');if(tw)tw.style.display='none';
-  const line=$('fishLine');const bob=$('fishBob');const prompt=$('fishTapPrompt');
-  if(line)line.style.height='0';
-  if(bob){bob.style.display='none';bob.classList.remove('nibble');bob.style.boxShadow='';}
-  if(prompt)prompt.style.display='none';
-  const btn=$('fishCastBtn');if(btn){btn.className='fish-cast-btn idle';btn.textContent='🎣 KASTA METSPÖ';btn.onclick=()=>fishCast();}
-  if($('fishStatus'))$('fishStatus').textContent=msg;
+  _fishState.phase='idle';
+  _fishResetVisuals();
+  if(msg)_fishSetStatus(msg);
 }
 function openRodShop(){
-  clearTimeout(_fishState.biteTimer);clearTimeout(_fishState.catchTimer);
-  if(_fishState.biting){resetFishState('Kasta igen!');_fishState.casting=false;}
+  _fishStopSpam();clearTimeout(_fishState._failTimer);
+  if(_fishState.phase==='biting'||_fishState.phase==='waiting'){resetFishState('Kasta igen!');}
   openModal('rodShopModal');
   const grid=$('rodShopGrid');if(!grid)return;
   const curRod=G.fishRod||'bamboo';
@@ -5486,8 +5606,22 @@ function obNext(step){
     const pw=$('obPetWelcome');if(pw)pw.textContent='Välkommen, '+pn+'!';
     _obFed=false;
   }
+  // Step 3 = age step, step 4 = mode step (already handled by setObAge/setObMode)
   document.querySelectorAll('.ob-step').forEach(s=>s.style.display='none');
-  $('obs'+step).style.display='block';vibe(20);
+  const targetEl=$('obs'+step);
+  if(targetEl)targetEl.style.display='block';
+  vibe(20);
+}
+function setObAge(age,el){
+  G.ageGroup=age;
+  document.querySelectorAll('#obs3 .ob-world').forEach(w=>w.classList.remove('sel'));
+  el.classList.add('sel');
+}
+let _obMode='full';
+function setObMode(mode,el){
+  _obMode=mode;G.appMode=mode;
+  document.querySelectorAll('#obs4 .ob-world').forEach(w=>w.classList.remove('sel'));
+  el.classList.add('sel');
 }
 function obFeedPet(){
   if(_obFed)return;
@@ -7617,35 +7751,49 @@ function setRoomTheme(id){
   showT('🏠 Tema bytt!','g');
 }
 function renderRoomPreview(){
-  const pl=$('roomPlacedItems');if(!pl)return;
-  const rp=$('roomPreview');if(!rp)return;
+  const wrap=$('roomPreview');if(!wrap)return;
   const owned=G.roomDeco||[];
+  const theme=G.roomTheme||'cosmic';
+  // Build room items
+  const placements=[
+    {id:'sofa',      ico:'🛋️',x:'8%',  y:'56%',sz:'28px'},
+    {id:'plant',     ico:'🪴',x:'80%', y:'52%',sz:'24px'},
+    {id:'lamp',      ico:'🪔',x:'72%', y:'28%',sz:'20px'},
+    {id:'trophy',    ico:'🏆',x:'45%', y:'22%',sz:'22px'},
+    {id:'rug',       ico:'🪸',x:'38%', y:'66%',sz:'28px'},
+    {id:'tv',        ico:'📺',x:'5%',  y:'28%',sz:'24px'},
+    {id:'bed',       ico:'🛏️',x:'60%', y:'56%',sz:'28px'},
+    {id:'bookshelf', ico:'📚',x:'88%', y:'28%',sz:'22px'},
+  ];
+  const activeItems=ROOM_DECO_ITEMS.filter(it=>owned.includes(it.id));
+  const petX=30+Math.floor(Date.now()/3000)%40;
+  // Also render placed items + achievement trophies
   const custom=G.customRoomItems||[];
-  // Apply theme background
-  const theme=ROOM_THEMES.find(t=>t.id===(G.roomTheme||'cosmic'))||ROOM_THEMES[0];
-  rp.style.background=theme.bg;
-  const floor=rp.querySelector('.room-preview-floor');if(floor)floor.style.background=theme.floor;
-  function roomPos(x,y,isCustom,ciId,nm,em){
-    const isWall=y<42;
-    const pos=isWall?`left:${x}%;top:${y}%`:`left:${x}%;bottom:22%`;
-    const sz=isWall?'22px':'28px';
-    const click=isCustom?`removeCustomRoomItem('${ciId}')`:'vibe(10)';
-    return`<div class="room-placed-item" style="${pos};z-index:5;font-size:${sz};cursor:pointer;" title="${nm}" onclick="${click}">${em}<div class="room-sparkle-dot"></div></div>`;
-  }
-  pl.innerHTML=owned.map((id,i)=>{
-    const it=ROOM_DECO_ITEMS.find(x=>x.id===id);if(!it)return'';
-    return roomPos(it.x,it.y,false,null,it.nm,it.em);
-  }).join('')+custom.map((ci,i)=>{
-    return roomPos(ci.x,ci.y,true,ci.id,ci.nm,ci.em);
-  }).join('');
-  // Achievement trophies on floor with glow
   const achItems=getAchievementRoomItems();
-  pl.innerHTML+=achItems.map((a,i)=>`<div style="position:absolute;left:${a.x}%;bottom:22%;font-size:20px;z-index:6;animation:achGlow 2s ease-in-out infinite;cursor:pointer;" title="${a.nm}" onclick="showT('🏆 ${a.nm}','y')">${a.em}</div>`).join('');
-  // Stars + ambient
-  rp.querySelectorAll('.room-bg-star,.room-particle,.room-ambient-glow').forEach(e=>e.remove());
-  const glow=document.createElement('div');glow.className='room-ambient-glow';glow.style.background=`radial-gradient(ellipse at 50% 80%,${theme.accent}14 0%,transparent 70%)`;rp.insertBefore(glow,rp.firstChild);
-  for(let i=0;i<12;i++){const s=document.createElement('div');s.className='room-bg-star';const sz=(0.8+Math.random()*2).toFixed(1)+'px';s.style.cssText=`width:${sz};height:${sz};left:${Math.random()*95}%;top:${Math.random()*55}%;--dur:${(2+Math.random()*3).toFixed(1)}s;--del:${(-Math.random()*3).toFixed(1)}s;`;rp.insertBefore(s,rp.firstChild);}
-  for(let i=0;i<6;i++){const p=document.createElement('div');p.className='room-particle';p.style.cssText=`left:${8+Math.random()*84}%;bottom:${44+Math.random()*22}px;--dur:${(1.4+Math.random()*2).toFixed(1)}s;--del:${(-Math.random()*2.5).toFixed(1)}s;background:${theme.accent};`;rp.appendChild(p);}
+  const extraItems=custom.map(ci=>`<div class="room-deco-item" style="left:${ci.x}%;bottom:44%;font-size:22px;--dur:3s;--del:0s" onclick="showT('${ci.nm}','b');removeCustomRoomItem('${ci.id}')">${ci.em}</div>`).join('');
+  const achHtml=achItems.map(a=>`<div class="room-deco-item" style="left:${a.x}%;bottom:44%;font-size:20px;--dur:2s;--del:-.5s" onclick="showT('🏆 ${a.nm}','y')">${a.em}</div>`).join('');
+  wrap.innerHTML=`<div class="room-scene" id="roomScene">
+    <div class="room-window">🌙</div>
+    <div class="room-lamp"></div>
+    ${activeItems.map((it,i)=>{
+      const pl=placements[i%placements.length];
+      return`<div class="room-deco-item" style="left:${pl.x};bottom:${i<3?'44%':'48%'};font-size:${pl.sz};--dur:${2.5+i*.3}s;--del:-${i*.4}s" onclick="showT('${it.nm||it.ico}','b')">${it.em||pl.ico}</div>`;
+    }).join('')}
+    ${extraItems}${achHtml}
+    <div class="room-floor"></div>
+    <div class="room-pet-anim" id="roomPetEm" style="left:${petX}%">${G.petEmoji||'🐉'}</div>
+  </div>`;
+  // Walk pet around room
+  _startRoomPetWalk();
+}
+let _roomWalkTimer=null;
+function _startRoomPetWalk(){
+  clearInterval(_roomWalkTimer);
+  _roomWalkTimer=setInterval(()=>{
+    const el=$('roomPetEm');if(!el)return;
+    const x=20+Math.floor(Math.random()*55);
+    el.style.left=x+'%';
+  },3000);
 }
 function getAchievementRoomItems(){
   const items=[];const achs=G.achievements||[];
