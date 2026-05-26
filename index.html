@@ -874,6 +874,15 @@ textarea.inp{resize:none;min-height:68px;}
 .prl-room-item{position:absolute;pointer-events:none;font-size:var(--sz,18px);line-height:1;filter:drop-shadow(0 2px 8px var(--glow,rgba(57,255,20,.3)));}
 .prl-room-item.wall-item{top:var(--yt,18%);left:var(--xl,10%);}
 .prl-room-item.floor-item{bottom:calc(38% + 2px);left:var(--xl,10%);}
+.room-scene{position:relative;width:100%;border-radius:20px;overflow:hidden;background:linear-gradient(180deg,#1a0835 0%,#2d1155 45%,#0e2240 45%,#162d50 100%);min-height:160px;}
+.room-floor{position:absolute;bottom:0;left:0;right:0;height:42%;background:linear-gradient(180deg,#1e3a5f,#142840);border-top:2px solid rgba(0,200,255,.25);}
+.room-wall-deco{position:absolute;top:10%;left:50%;transform:translateX(-50%);font-size:28px;opacity:.3;pointer-events:none;}
+.room-window{position:absolute;top:8%;right:12%;width:44px;height:52px;border-radius:6px 6px 0 0;background:linear-gradient(135deg,rgba(0,150,255,.3),rgba(100,200,255,.15));border:2px solid rgba(0,200,255,.4);display:flex;align-items:center;justify-content:center;font-size:18px;}
+.room-lamp{position:absolute;top:0;left:20%;width:3px;height:24px;background:rgba(255,200,100,.4);}
+.room-lamp::after{content:'💡';font-size:14px;position:absolute;top:-4px;left:50%;transform:translateX(-50%);}
+.room-pet-anim{position:absolute;bottom:44%;left:50%;transform:translateX(-50%);font-size:52px;animation:petBob 2s ease-in-out infinite;filter:drop-shadow(0 4px 12px rgba(57,255,20,.4));transition:left 3s ease-in-out;z-index:5;}
+.room-deco-item{position:absolute;font-size:22px;animation:petBob var(--dur,3s) ease-in-out infinite var(--del,0s);cursor:pointer;z-index:4;transition:transform .15s;}
+.room-deco-item:active{transform:scale(1.3);}
 @keyframes twk{0%,100%{opacity:.15;}50%{opacity:.9;}}
 .prl-item{position:absolute;font-size:var(--sz);animation:iFloat var(--dur) ease-in-out infinite var(--del);cursor:pointer;-webkit-tap-highlight-color:transparent;z-index:3;pointer-events:auto;filter:drop-shadow(0 0 8px rgba(57,255,20,.25));}
 @keyframes iFloat{0%,100%{transform:translateY(0) rotate(0deg);}50%{transform:translateY(-10px) rotate(3deg);}}
@@ -1262,6 +1271,15 @@ textarea.inp{resize:none;min-height:68px;}
 .kw-build-bar{position:sticky;bottom:0;background:rgba(2,3,8,.97);border-top:1px solid var(--line);padding:12px 14px;display:flex;gap:8px;backdrop-filter:blur(16px);flex-shrink:0;}
 .kw-build-btn{flex:1;padding:12px 8px;border-radius:16px;border:2px solid;font-size:12px;font-weight:900;cursor:pointer;font-family:var(--ff);text-align:center;transition:all .1s;-webkit-tap-highlight-color:transparent;}
 .kw-build-btn:active{transform:scale(.93);}
+/* Clan cards */
+.clan-card{background:var(--c1);border:1.5px solid var(--line);border-radius:18px;padding:14px 16px;display:flex;align-items:center;gap:12px;cursor:pointer;-webkit-tap-highlight-color:transparent;transition:transform .1s;margin-bottom:8px;}
+.clan-card:active{transform:scale(.97);}
+.clan-em{font-size:32px;width:48px;text-align:center;flex-shrink:0;}
+.clan-info{flex:1;min-width:0;}
+.clan-nm{font-size:14px;font-weight:900;}
+.clan-sub{font-size:10px;color:var(--t3);margin-top:2px;}
+.clan-pow{font-size:11px;font-weight:900;color:var(--g);font-family:var(--mono);}
+.raid-btn{flex-shrink:0;background:linear-gradient(135deg,var(--r),var(--pk));color:#fff;border:none;border-radius:12px;padding:8px 12px;font-size:11px;font-weight:900;cursor:pointer;font-family:var(--ff);-webkit-tap-highlight-color:transparent;}
 /* Skyline building styles */
 .kw-construct-fx{position:fixed;inset:0;z-index:9998;pointer-events:none;display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity .3s;}
 .kw-construct-fx.show{opacity:1;}
@@ -1292,6 +1310,23 @@ textarea.inp{resize:none;min-height:68px;}
 /* Fish biting state */
 .fish-cast-btn.biting{border-color:rgba(255,220,0,1) !important;color:#000 !important;background:linear-gradient(135deg,#FFE600,#FF9F0A) !important;font-size:16px !important;letter-spacing:1px !important;animation:bitePulse .32s ease-in-out infinite !important;}
 @keyframes bitePulse{0%,100%{transform:scale(1);box-shadow:0 0 0 0 rgba(255,220,0,.5);}50%{transform:scale(1.04);box-shadow:0 0 24px 6px rgba(255,220,0,.3);}}
+/* Fishing spam ring */
+.fish-spam-ring{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:140px;height:140px;z-index:30;pointer-events:none;display:none;}
+.fish-spam-ring.on{display:block;}
+.fish-spam-svg{width:100%;height:100%;}
+.fish-spam-label{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;pointer-events:none;}
+.fish-spam-pct{font-size:22px;font-weight:900;color:#fff;font-family:var(--mono);line-height:1;}
+.fish-spam-tap{font-size:11px;color:rgba(255,255,255,.7);font-weight:800;letter-spacing:1px;margin-top:2px;animation:spamPulse .3s ease-in-out infinite;}
+@keyframes spamPulse{0%,100%{transform:scale(1);}50%{transform:scale(1.15);}}
+.fish-catch-splash{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:60px;z-index:40;pointer-events:none;opacity:0;}
+.fish-catch-splash.on{animation:splashOut .7s cubic-bezier(.17,.89,.32,1.28) forwards;}
+@keyframes splashOut{0%{opacity:1;transform:translate(-50%,-50%) scale(.3);}60%{opacity:1;transform:translate(-50%,-50%) scale(1.4);}100%{opacity:0;transform:translate(-50%,-80%) scale(.8);}}
+.fish-fail-text{position:absolute;top:40%;left:50%;transform:translateX(-50%);font-size:20px;font-weight:900;color:var(--r);font-family:var(--mono);z-index:40;pointer-events:none;opacity:0;}
+.fish-fail-text.on{animation:failFade 1.2s ease-out forwards;}
+@keyframes failFade{0%{opacity:1;transform:translateX(-50%) translateY(0);}100%{opacity:0;transform:translateX(-50%) translateY(-40px);}}
+.fish-tap-hint{position:absolute;bottom:32%;left:50%;transform:translateX(-50%);background:linear-gradient(135deg,var(--pk),var(--p));color:#fff;font-size:14px;font-weight:900;padding:10px 22px;border-radius:28px;font-family:var(--mono);z-index:35;pointer-events:none;letter-spacing:1px;display:none;box-shadow:0 4px 24px rgba(255,45,85,.5);}
+.fish-tap-hint.on{display:block;animation:hintBounce .4s ease-in-out infinite;}
+@keyframes hintBounce{0%,100%{transform:translateX(-50%) translateY(0);}50%{transform:translateX(-50%) translateY(-5px);}}
 /* Tamagotchi mood face */
 .tama-mood{display:flex;align-items:center;justify-content:center;gap:8px;padding:6px 12px 2px;font-size:11px;font-weight:700;color:var(--t3);}
 .tama-face{font-size:28px;filter:drop-shadow(0 0 8px rgba(57,255,20,.3));animation:tamaBob 2.5s ease-in-out infinite;}
@@ -2923,6 +2958,20 @@ textarea.inp{resize:none;min-height:68px;}
       </div>
       <div class="fpb-hint">PERFEKT = ×3 · BRA = ×2 · NORMAL = ×1</div>
     </div>
+    <!-- Spam ring -->
+    <div class="fish-spam-ring" id="fishSpamRing">
+      <svg class="fish-spam-svg" viewBox="0 0 140 140">
+        <circle cx="70" cy="70" r="60" fill="none" stroke="rgba(255,255,255,.12)" stroke-width="12"/>
+        <circle id="fishSpamArc" cx="70" cy="70" r="60" fill="none" stroke="var(--pk)" stroke-width="12" stroke-dasharray="377" stroke-dashoffset="377" stroke-linecap="round" transform="rotate(-90 70 70)" style="transition:stroke-dashoffset .08s;"/>
+      </svg>
+      <div class="fish-spam-label">
+        <div class="fish-spam-pct" id="fishSpamPct">0%</div>
+        <div class="fish-spam-tap">SPAMMA!</div>
+      </div>
+    </div>
+    <div class="fish-catch-splash" id="fishCatchSplash">💦</div>
+    <div class="fish-fail-text" id="fishFailText">💨 RYMDE!</div>
+    <div class="fish-tap-hint" id="fishTapHint">👇 TRYCK!</div>
   </div>
   <div class="fish-controls">
     <div class="fish-status" id="fishStatus">Kasta ut metspöet för att börja!</div>
