@@ -2365,9 +2365,13 @@ textarea.inp{resize:none;min-height:68px;}
           <div class="xgame-banner" style="background:linear-gradient(135deg,#180208,#200210)">⚡</div>
           <div class="xgame-info"><div class="xgame-nm">FLASH</div><div class="xgame-sub">Posta daglig Flash</div><div class="xgame-rew">+STREAK</div></div>
         </div>
-        <div class="xgame-card" onclick="showT('🎮 Minne kommer snart!','p')">
-          <div class="xgame-banner" style="background:linear-gradient(135deg,#0e0218,#140228)">🃏</div>
-          <div class="xgame-info"><div class="xgame-nm">MINNE</div><div class="xgame-sub">Pet minneskort</div><div class="xgame-rew">SNART</div></div>
+        <div class="xgame-card" onclick="nav('world');setTimeout(()=>document.querySelector('.kw-wild-pet')?.scrollIntoView({behavior:'smooth'}),400)">
+          <div class="xgame-banner" style="background:linear-gradient(135deg,#181208,#28200a)">🦎</div>
+          <div class="xgame-info"><div class="xgame-nm">FÅNGA PETS</div><div class="xgame-sub">Judgment Ring ⭕</div><div class="xgame-rew">+XP +WP</div></div>
+        </div>
+        <div class="xgame-card" onclick="openBattle()">
+          <div class="xgame-banner" style="background:linear-gradient(135deg,#180210,#200412)">⚔️</div>
+          <div class="xgame-info"><div class="xgame-nm">BATTLE</div><div class="xgame-sub">Slåss mot monster</div><div class="xgame-rew">+COINS +XP</div></div>
         </div>
       </div>
 
@@ -2836,7 +2840,7 @@ textarea.inp{resize:none;min-height:68px;}
 <div class="talent-modal" id="talentModal">
   <div class="talent-hdr">
     <button class="pack-back" onclick="closeTalentTree()">←</button>
-    <div class="pack-title">🌳 TALENT TRÄD</div>
+    <div class="pack-title">⚡ FÖRMÅGOR</div>
     <div class="talent-pts" id="talentPts">0 TP</div>
   </div>
   <div style="position:absolute;top:10px;left:50%;transform:translateX(-50%);font-size:9px;color:rgba(255,255,255,.28);pointer-events:none;text-align:center;z-index:2">Nyp för zoom · Dra för att flytta · Tryck på nod</div>
@@ -2888,19 +2892,22 @@ textarea.inp{resize:none;min-height:68px;}
   </div>
 </div>
 <!-- GACHA WHEEL -->
-<div class="gacha-modal" id="gachaModal">
-  <button class="pack-back" onclick="closeGacha()" style="position:absolute;top:16px;left:16px;font-size:22px;background:none;border:none;color:var(--t2);cursor:pointer">←</button>
-  <div style="font-size:20px;font-weight:900;font-family:var(--mono);margin-bottom:6px;text-align:center">🎰 DAGLIGT SPIN</div>
-  <div style="font-size:11px;color:var(--t3);margin-bottom:20px;text-align:center" id="gachaSubtitle">Gratis spin varje dag!</div>
-  <div class="gacha-wheel-wrap">
-    <div class="gacha-pointer">▼</div>
-    <div class="gacha-wheel" id="gachaWheel">
-      <canvas id="gachaCanvas" width="260" height="260"></canvas>
+<div class="gacha-modal" id="gachaModal" onclick="if(event.target===this)closeGacha()">
+  <div onclick="event.stopPropagation()" style="display:flex;flex-direction:column;align-items:center;position:relative;width:100%;max-width:340px">
+    <button class="pack-back" onclick="closeGacha()" style="position:absolute;top:-4px;left:0;font-size:22px;background:none;border:none;color:var(--t2);cursor:pointer">←</button>
+    <div style="font-size:20px;font-weight:900;font-family:var(--mono);margin-bottom:6px;text-align:center">🎰 DAGLIGT SPIN</div>
+    <div style="font-size:11px;color:var(--t3);margin-bottom:20px;text-align:center" id="gachaSubtitle">Gratis spin varje dag!</div>
+    <div class="gacha-wheel-wrap">
+      <div class="gacha-pointer">▼</div>
+      <div class="gacha-wheel" id="gachaWheel">
+        <canvas id="gachaCanvas" width="260" height="260"></canvas>
+      </div>
+      <div class="gacha-center">🎲</div>
     </div>
-    <div class="gacha-center">🎲</div>
+    <div class="gacha-result" id="gachaResult"></div>
+    <button class="btn btn-y btn-lg gacha-spin-btn" id="gachaSpinBtn" onclick="spinGacha()">🎰 SPIN — GRATIS!</button>
+    <button id="gachaInventoryBtn" onclick="closeGacha();nav('me');switchMeTab('shop',null)" style="display:none;margin-top:10px;background:rgba(255,255,255,.08);border:1.5px solid rgba(255,255,255,.2);border-radius:14px;padding:10px 24px;color:#fff;font-size:13px;font-weight:900;cursor:pointer;font-family:var(--ff)">🎒 KOLLA INVENTORYT</button>
   </div>
-  <div class="gacha-result" id="gachaResult"></div>
-  <button class="btn btn-y btn-lg gacha-spin-btn" id="gachaSpinBtn" onclick="spinGacha()">🎰 SPIN — GRATIS!</button>
 </div>
 <!-- FRIEND GIFTING -->
 <div class="gift-modal" id="giftModal">
@@ -3471,7 +3478,8 @@ const BATTLE_ENEMIES=[
 ];
 let _bt={active:false,wave:1,eHp:60,eMax:60,pHp:100,pMax:100,blocking:false,dodging:false,enemy:null};
 function openBattle(){
-  _bt.wave=1;_bt.pHp=100;_bt.pMax=100;startBattleWave();
+  _bt={active:false,wave:1,eHp:60,eMax:60,pHp:100,pMax:100,blocking:false,dodging:false,enemy:null};
+  startBattleWave();
   $('battleArena').classList.add('open');SFX.battle();vibe([20,10,20]);
 }
 function closeBattle(){$('battleArena').classList.remove('open');_bt.active=false;}
@@ -3517,8 +3525,8 @@ function battleWin(){
   spawnParticles(window.innerWidth/2,window.innerHeight*.5,'stars');
   setTimeout(()=>{
     _bt.wave++;
-    if(_bt.wave>BATTLE_ENEMIES.length){$('baLog').textContent='👑 ALLA WAVES KLARADE! KARMA LEGEND!';showAchievement('👑','BATTLE MASTER!');setTimeout(closeBattle,3000);}
-    else startBattleWave();
+    if(_bt.wave>BATTLE_ENEMIES.length){$('baLog').textContent='👑 ALLA WAVES KLARADE! KARMA LEGEND!';showAchievement('👑','BATTLE MASTER!');_bt.active=false;setTimeout(()=>{closeBattle();},3000);}
+    else {_bt.pHp=Math.min(_bt.pMax,_bt.pHp+30);startBattleWave();}
   },2200);
 }
 function battleLose(){
@@ -4911,10 +4919,10 @@ function spawnFishInScene(){
     let ft;
     if(rod.id==='titanium'&&Math.random()<0.04)ft=availFish.find(f=>f.rarity==='ultra')||availFish[0];
     else if(roll<.45)ft=availFish.filter(f=>f.rarity==='common')[Math.floor(Math.random()*availFish.filter(f=>f.rarity==='common').length)]||availFish[0];
-    else if(roll<.72)ft=availFish.filter(f=>f.rarity==='uncommon'||f.rarity==='common')[0]||availFish[0];
-    else if(roll<.88)ft=availFish.filter(f=>f.rarity==='rare'||f.rarity==='uncommon')[0]||availFish[0];
-    else if(roll<.96)ft=availFish.filter(f=>f.rarity==='epic'||f.rarity==='rare')[0]||availFish[0];
-    else ft=availFish.filter(f=>f.rarity==='legendary'||f.rarity==='mythic')[0]||availFish[0];
+    else if(roll<.72){const arr=availFish.filter(f=>f.rarity==='uncommon'||f.rarity==='common');ft=arr[Math.floor(Math.random()*arr.length)]||availFish[0];}
+    else if(roll<.88){const arr=availFish.filter(f=>f.rarity==='rare'||f.rarity==='uncommon');ft=arr[Math.floor(Math.random()*arr.length)]||availFish[0];}
+    else if(roll<.96){const arr=availFish.filter(f=>f.rarity==='epic'||f.rarity==='rare');ft=arr[Math.floor(Math.random()*arr.length)]||availFish[0];}
+    else{const arr=availFish.filter(f=>f.rarity==='legendary'||f.rarity==='mythic');ft=arr[Math.floor(Math.random()*arr.length)]||availFish[0];}
     if(!ft)ft=availFish[0];
     const zone=ft.zone==='any'?(['surface','mid','deep'][Math.floor(Math.random()*3)]):ft.zone;
     const [yMin,yMax]=zones[zone]||zones.surface;
@@ -4968,10 +4976,10 @@ function _fishTriggerBite(){
   let ft;
   if(rod.id==='titanium'&&rnd<.05)ft=avail.find(f=>f.rarity==='ultra');
   else if(rnd<.38)ft=avail.filter(f=>f.rarity==='common')[Math.floor(Math.random()*3)];
-  else if(rnd<.60)ft=avail.filter(f=>f.rarity==='uncommon'||f.rarity==='common')[0];
-  else if(rnd<.77)ft=avail.filter(f=>f.rarity==='rare')[0];
-  else if(rnd<.89)ft=avail.filter(f=>f.rarity==='epic')[0];
-  else if(rnd<.96)ft=avail.filter(f=>f.rarity==='legendary'||f.rarity==='mythic')[0];
+  else if(rnd<.60){const arr=avail.filter(f=>f.rarity==='uncommon'||f.rarity==='common');ft=arr[Math.floor(Math.random()*arr.length)];}
+  else if(rnd<.77){const arr=avail.filter(f=>f.rarity==='rare');ft=arr[Math.floor(Math.random()*arr.length)];}
+  else if(rnd<.89){const arr=avail.filter(f=>f.rarity==='epic');ft=arr[Math.floor(Math.random()*arr.length)];}
+  else if(rnd<.96){const arr=avail.filter(f=>f.rarity==='legendary'||f.rarity==='mythic');ft=arr[Math.floor(Math.random()*arr.length)];}
   else ft=avail.find(f=>f.rarity==='ultra');
   if(!ft)ft=avail[0]||FISH_TYPES[0];
   _fishState._curFish=ft;
@@ -6104,7 +6112,111 @@ function renderKarmaWorld(){
   _updateKwHomeTeaser();
 }
 
+// ── JUDGMENT RING (Shadow Hearts-style wild pet catching) ──
+const _jr={active:false,angle:0,speed:2,raf:null,greenStart:0,greenEnd:0,perfectStart:0,perfectEnd:0,petId:null,attempts:0};
+const _JR_RARITY={
+  common:   {speed:1.4,greenSize:85,col:'#39FF14',label:'VANLIG'},
+  uncommon: {speed:2.0,greenSize:60,col:'#00D9FF',label:'OVANLIG'},
+  rare:     {speed:2.8,greenSize:42,col:'#FFE600',label:'SÄLLSYNT'},
+  epic:     {speed:3.8,greenSize:26,col:'#FF9F0A',label:'EPISK'},
+  legendary:{speed:5.0,greenSize:16,col:'#FF2D55',label:'LEGENDÄR'},
+};
 function catchWildPet(id){
+  const p=KW_WILD_PETS.find(x=>x.id===id);if(!p)return;
+  if(G.builtZones.includes('caught_'+id)){showT('✅ Redan fångad!','y');return;}
+  if(G.coins<p.cost){showT('❌ Behöver '+p.cost+'⚡','r');SFX.error();return;}
+  // Open judgment ring instead of instant catch
+  _openJudgmentRing(p);
+}
+function _openJudgmentRing(p){
+  let existing=$('jrOverlay');if(existing)existing.remove();
+  const cfg=_JR_RARITY[p.rarity||'common']||_JR_RARITY.common;
+  _jr.active=false;cancelAnimationFrame(_jr.raf);
+  _jr.speed=cfg.speed;_jr.angle=0;_jr.petId=p.id;_jr.attempts=0;
+  const gs=120+Math.random()*160;
+  _jr.greenStart=gs;_jr.greenEnd=gs+cfg.greenSize;
+  _jr.perfectStart=gs+cfg.greenSize*.35;_jr.perfectEnd=gs+cfg.greenSize*.65;
+  const ov=document.createElement('div');ov.id='jrOverlay';
+  ov.style.cssText='position:fixed;inset:0;z-index:1100;background:rgba(0,0,0,.93);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px';
+  ov.innerHTML=`<div style="font-size:11px;font-weight:900;color:${cfg.col};letter-spacing:3px;margin-bottom:8px;font-family:var(--mono)">${cfg.label}</div>
+    <div style="font-size:72px;margin-bottom:6px;animation:petBob 1.2s ease-in-out infinite">${p.em}</div>
+    <div style="font-size:18px;font-weight:900;color:#fff;margin-bottom:4px">${p.nm}</div>
+    <div style="font-size:11px;color:var(--t3);margin-bottom:18px">Kostnad: ${p.cost}⚡ · Tryck när nålen är i det gröna!</div>
+    <div id="jrWrap" style="position:relative;width:230px;height:230px;margin-bottom:16px;cursor:pointer" onclick="jrTap()" ontouchstart="event.preventDefault();jrTap()">
+      <svg id="jrSvg" width="230" height="230" viewBox="0 0 230 230" style="position:absolute;inset:0">
+        <circle cx="115" cy="115" r="95" fill="rgba(255,0,0,.12)" stroke="rgba(255,0,0,.35)" stroke-width="22" fill-rule="nonzero"/>
+      </svg>
+      <div id="jrNeedle" style="position:absolute;top:50%;left:50%;width:3px;height:96px;background:linear-gradient(to top,rgba(255,255,255,.1),#fff);transform-origin:bottom center;margin-left:-1.5px;margin-top:-96px;border-radius:2px;box-shadow:0 0 8px rgba(255,255,255,.9)"></div>
+      <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:22px;height:22px;border-radius:50%;background:rgba(255,255,255,.15);border:2.5px solid rgba(255,255,255,.5)"></div>
+    </div>
+    <div id="jrResult" style="font-size:20px;font-weight:900;min-height:28px;font-family:var(--mono);text-align:center;margin-bottom:12px"></div>
+    <div style="font-size:10px;color:var(--t3);margin-bottom:14px">3 missar → peten rymmer</div>
+    <button onclick="closeJudgmentRing()" style="background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.18);border-radius:12px;padding:8px 22px;color:var(--t2);font-size:12px;cursor:pointer;font-family:var(--ff)">Avbryt</button>`;
+  document.body.appendChild(ov);
+  _jrDrawZones(cfg);
+  _jr.active=true;
+  let last=null;
+  function tick(ts){if(!_jr.active)return;if(last===null)last=ts;const dt=(ts-last)/1000;last=ts;
+    _jr.angle=(_jr.angle+_jr.speed*360*dt)%360;
+    const n=$('jrNeedle');if(n)n.style.transform=`rotate(${_jr.angle}deg)`;
+    _jr.raf=requestAnimationFrame(tick);}
+  _jr.raf=requestAnimationFrame(tick);
+}
+function _jrDrawZones(cfg){
+  const svg=$('jrSvg');if(!svg)return;
+  const cx=115,cy=115,r=95;
+  function arc(s,e,stroke,sw){
+    const toR=d=>(d-90)*Math.PI/180;
+    const x1=cx+r*Math.cos(toR(s)),y1=cy+r*Math.sin(toR(s));
+    const x2=cx+r*Math.cos(toR(e)),y2=cy+r*Math.sin(toR(e));
+    const large=((e-s+360)%360)>180?1:0;
+    const el=document.createElementNS('http://www.w3.org/2000/svg','path');
+    el.setAttribute('d',`M ${x1} ${y1} A ${r} ${r} 0 ${large} 1 ${x2} ${y2}`);
+    el.setAttribute('fill','none');el.setAttribute('stroke',stroke);el.setAttribute('stroke-width',sw);
+    svg.appendChild(el);
+  }
+  // Yellow warning zone before green
+  arc(_jr.greenStart-cfg.greenSize*.3,_jr.greenStart,'rgba(255,200,0,.6)',22);
+  // Green zone
+  arc(_jr.greenStart,_jr.greenEnd,cfg.col,22);
+  // Perfect white flash in center of green
+  arc(_jr.perfectStart,_jr.perfectEnd,'rgba(255,255,255,.95)',24);
+}
+function jrTap(){
+  if(!_jr.active)return;
+  const a=_jr.angle;
+  function inArc(a,s,e){const ss=s%360,ee=e%360;return ee>ss?a>=ss&&a<=ee:(a>=ss||a<=ee);}
+  if(inArc(a,_jr.perfectStart,_jr.perfectEnd)){_jrCatch(true);return;}
+  if(inArc(a,_jr.greenStart,_jr.greenEnd)){_jrCatch(false);return;}
+  _jr.attempts++;
+  const res=$('jrResult');if(res){res.textContent='❌ MISS! '+(3-_jr.attempts)+' kvar';res.style.color='var(--r)';}
+  vibe([10,10,10]);
+  const ov=$('jrOverlay');if(ov){ov.style.background='rgba(180,0,0,.5)';setTimeout(()=>{if(ov)ov.style.background='rgba(0,0,0,.93)';},180);}
+  if(_jr.attempts>=3){setTimeout(()=>{
+    const res=$('jrResult');if(res){res.textContent='💨 Peten rymde!';res.style.color='var(--r)';}
+    showT('💨 '+KW_WILD_PETS.find(x=>x.id===_jr.petId)?.nm+' rymde!','r');
+    vibe([20,10,20]);_jr.active=false;cancelAnimationFrame(_jr.raf);
+    setTimeout(closeJudgmentRing,1200);
+  },200);}
+}
+function _jrCatch(perfect){
+  _jr.active=false;cancelAnimationFrame(_jr.raf);
+  const p=KW_WILD_PETS.find(x=>x.id===_jr.petId);if(!p)return;
+  G.coins-=p.cost;G.builtZones.push('caught_'+p.id);G.wildPetsCaught++;
+  const xp=perfect?Math.round(p.xpR*2):p.xpR;gainXP(xp,'action');
+  addWorldPoints(perfect?20:10,'catch');save();
+  const res=$('jrResult');if(res){res.textContent=perfect?'✨ PERFEKT! ×2 XP!':'✅ FÅNGAD!';res.style.color=perfect?'var(--y)':'var(--g)';}
+  vibe([30,20,80,20,100,20,120]);SFX.win();
+  spawnParticles(window.innerWidth/2,window.innerHeight*.4,'stars');
+  showT(p.em+(perfect?' PERFEKT! ':' FÅNGAD! ')+(perfect?'×2 ':'')+xp+' XP','g');
+  renderKarmaWorld();updateHUD();
+  setTimeout(closeJudgmentRing,1600);
+}
+function closeJudgmentRing(){_jr.active=false;cancelAnimationFrame(_jr.raf);const o=$('jrOverlay');if(o)o.remove();}
+// ── END JUDGMENT RING ──
+
+function _oldCatchWildPetUnused(id){
+  // kept for reference, not called
   const p=KW_WILD_PETS.find(x=>x.id===id);if(!p)return;
   if(G.builtZones.includes('caught_'+id)){showT('✅ Redan fångad!','y');return;}
   if(G.coins<p.cost){showT('❌ Behöver '+p.cost+'⚡','r');SFX.error();return;}
@@ -7708,6 +7820,7 @@ function openGacha(){
   if(btn){btn.disabled=spun;btn.textContent=spun?'✅ Redan spinnat idag':'🎰 SPIN — GRATIS!';}
   if(sub)sub.textContent=spun?'Kom tillbaka imorgon för nästa spin!':'Gratis spin varje dag!';
   if(res){if(spun&&_lastSpinResultHTML)res.innerHTML=_lastSpinResultHTML;else res.innerHTML='';}
+  const invBtn=$('gachaInventoryBtn');if(invBtn)invBtn.style.display=(spun&&_lastSpinResultHTML)?'block':'none';
 }
 function closeGacha(){const gm=$('gachaModal');if(gm)gm.classList.remove('open');_gachaSpinning=false;}
 function drawGachaWheel(){
@@ -7746,6 +7859,7 @@ function spinGacha(){
     const _rhtml=`<div style="${ultraStyle}"><div style="font-size:${prize.ultra?64:48}px;margin-bottom:8px;animation:spop .4s cubic-bezier(.34,1.56,.64,1)">${prize.em}</div>${prize.ultra?`<div style="font-size:10px;font-weight:900;color:#FFD700;letter-spacing:2px;margin-bottom:4px;font-family:var(--mono)">◆ ULTRA RARE ◆</div>`:''}  <div style="font-size:${prize.ultra?20:18}px;font-weight:900;color:${prize.ultra?'#FFD700':'var(--y)'};margin-bottom:4px">${prize.nm}!</div><div style="font-size:11px;color:var(--t3)">Kom tillbaka imorgon ✅</div></div>`;
     _lastSpinResultHTML=_rhtml;
     const res=$('gachaResult');if(res)res.innerHTML=_rhtml;
+    const invBtn=$('gachaInventoryBtn');if(invBtn)invBtn.style.display='block';
     prize.ef();SFX.win();vibe(prize.ultra?[100,50,200,50,400,50,300]:[50,30,100,30,150]);
     const sub=$('gachaSubtitle');if(sub)sub.textContent='Kom tillbaka imorgon för nästa spin!';
     const freshBtn=$('gachaSpinBtn');if(freshBtn){freshBtn.disabled=true;freshBtn.textContent='✅ Redan spinnat idag';}
