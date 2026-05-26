@@ -261,22 +261,22 @@ textarea.inp{resize:none;min-height:68px;}
 .mg-btn:active{transform:scale(.82);}
 .mg-combo{font-size:11px;font-weight:800;color:var(--y);margin-top:8px;font-family:var(--mono);min-height:16px;}
 /* Flash */
-.flash-top{position:absolute;top:0;left:0;right:0;z-index:20;background:linear-gradient(180deg,rgba(0,0,0,.75) 0%,transparent 100%);border-bottom:none;pointer-events:none;padding-bottom:8px;}
-.flash-top>.flash-title-row,.flash-top>.streak-circles{pointer-events:auto;}
+.flash-top{position:absolute;top:0;left:0;right:0;z-index:20;background:linear-gradient(180deg,rgba(0,0,0,.65) 0%,transparent 100%);border-bottom:none;pointer-events:none;padding-bottom:4px;}
+.flash-top>.flash-title-row{pointer-events:auto;}
 .flash-title-row{display:flex;align-items:center;justify-content:space-between;padding:8px 12px 2px;}
 .flash-title{font-size:13px;font-weight:900;font-family:var(--mono);}
 .flash-sub{display:none;}
-.streak-circles{display:flex;gap:5px;overflow-x:auto;scrollbar-width:none;padding:2px 12px 4px;}
+.streak-circles{position:absolute;left:7px;top:54px;bottom:90px;z-index:20;display:flex;flex-direction:column;gap:6px;overflow-y:auto;overflow-x:hidden;scrollbar-width:none;padding:4px 0;pointer-events:auto;}
 .streak-circles::-webkit-scrollbar{display:none;}
 .sc{display:flex;flex-direction:column;align-items:center;gap:1px;cursor:pointer;flex-shrink:0;}
-.sc-ring{width:36px;height:36px;border-radius:50%;padding:2px;display:flex;align-items:center;justify-content:center;}
+.sc-ring{width:38px;height:38px;border-radius:50%;padding:2px;display:flex;align-items:center;justify-content:center;filter:drop-shadow(0 1px 4px rgba(0,0,0,.7));}
 .sc-ring.active{background:conic-gradient(var(--pk),var(--p),var(--g),var(--pk));}
 .sc-ring.done{background:conic-gradient(var(--g),var(--tl),var(--g));}
 .sc-ring.empty{background:conic-gradient(var(--c3),var(--c3));}
 .sc-ring.live{background:conic-gradient(var(--r),var(--y),var(--r));animation:lring 1.5s infinite;}
 @keyframes lring{0%,100%{box-shadow:0 0 0 0 rgba(255,68,85,.4);}50%{box-shadow:0 0 0 5px rgba(255,68,85,0);}}
-.sc-inner{width:31px;height:31px;border-radius:50%;background:var(--c2);display:flex;align-items:center;justify-content:center;font-size:15px;}
-.sc-name{font-size:7px;color:var(--t2);max-width:36px;text-align:center;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.sc-inner{width:33px;height:33px;border-radius:50%;background:var(--c2);display:flex;align-items:center;justify-content:center;font-size:17px;}
+.sc-name{font-size:7px;color:rgba(255,255,255,.7);max-width:38px;text-align:center;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
 .sc-streak{font-size:8px;color:var(--r);font-weight:800;font-family:var(--mono);}
 .flash-feed{position:absolute;inset:0;overflow-y:scroll;scroll-snap-type:y mandatory;scrollbar-width:none;}
 .flash-feed::-webkit-scrollbar{display:none;}
@@ -287,7 +287,7 @@ textarea.inp{resize:none;min-height:68px;}
 .fv-right{position:absolute;right:10px;display:flex;flex-direction:column;align-items:center;gap:10px;z-index:10;}
 @keyframes musicSpin{0%{transform:rotate(0);}100%{transform:rotate(360deg);}}
 .fv-action{display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer;}
-.fv-action-ico{font-size:26px;transition:transform .15s;}
+.fv-action-ico{font-size:22px;transition:transform .15s;}
 .fv-action:active .fv-action-ico{transform:scale(.78);}
 .fv-action-cnt{font-size:11px;font-weight:700;color:#fff;font-family:var(--mono);}
 .fv-tl{position:absolute;top:10px;left:10px;display:flex;flex-direction:column;gap:5px;z-index:5;}
@@ -983,7 +983,7 @@ textarea.inp{resize:none;min-height:68px;}
 .fish-game{position:fixed;inset:0;z-index:760;background:#020c18;display:flex;flex-direction:column;transform:translateY(100%);transition:transform .32s cubic-bezier(.32,.72,0,1);}
 .fish-game.open{transform:translateY(0);}
 .fish-hdr{height:56px;display:flex;align-items:center;padding:0 14px;gap:12px;border-bottom:1px solid rgba(0,180,255,.2);flex-shrink:0;background:rgba(2,10,22,.98);}
-.fish-scene{flex:1;position:relative;overflow:hidden;}
+.fish-scene{flex:1;position:relative;overflow:hidden;touch-action:manipulation;}
 .fish-sky{position:absolute;top:0;left:0;right:0;height:40%;background:linear-gradient(180deg,#020810 0%,#030d1e 100%);}
 .fish-water{position:absolute;top:40%;bottom:0;left:0;right:0;background:linear-gradient(180deg,rgba(0,90,180,.22) 0%,rgba(0,35,90,.5) 100%);border-top:2.5px solid rgba(0,200,255,.3);}
 .fish-water-shimmer{position:absolute;top:0;left:0;right:0;height:20px;background:linear-gradient(90deg,transparent 0%,rgba(0,200,255,.15) 30%,transparent 50%,rgba(0,200,255,.1) 80%,transparent 100%);animation:waterShimmer 3s ease-in-out infinite;}
@@ -1008,7 +1008,7 @@ textarea.inp{resize:none;min-height:68px;}
 .fish-catch-tag{background:rgba(0,180,255,.1);border:1px solid rgba(0,180,255,.3);border-radius:12px;padding:5px 11px;display:flex;align-items:center;gap:6px;}
 .fish-catch-tag span{font-size:20px;}
 .fish-catch-lbl{font-size:10px;font-weight:700;color:var(--b);}
-.fish-cast-btn{width:100%;padding:14px;border-radius:18px;font-size:14px;font-weight:900;cursor:pointer;font-family:var(--ff);letter-spacing:.5px;transition:all .1s;-webkit-tap-highlight-color:transparent;border:2px solid;background:linear-gradient(135deg,rgba(0,180,255,.12),rgba(0,100,200,.08));}
+.fish-cast-btn{width:100%;padding:16px;border-radius:18px;font-size:15px;font-weight:900;cursor:pointer;font-family:var(--ff);letter-spacing:.5px;transition:all .1s;-webkit-tap-highlight-color:transparent;touch-action:manipulation;border:2px solid;background:linear-gradient(135deg,rgba(0,180,255,.12),rgba(0,100,200,.08));}
 .fish-cast-btn.idle{border-color:rgba(0,180,255,.5);color:var(--b);box-shadow:0 0 18px rgba(0,180,255,.15);}
 .fish-cast-btn.casting{border-color:rgba(255,200,0,.5);color:var(--y);background:linear-gradient(135deg,rgba(255,200,0,.1),rgba(255,150,0,.06));}
 .fish-cast-btn:active{transform:scale(.95);}
@@ -1873,9 +1873,8 @@ textarea.inp{resize:none;min-height:68px;}
           <div class="flash-title">⚡ Flash</div>
           <button class="btn btn-pk" onclick="openModal('flashModal')" style="padding:4px 10px;font-size:12px;border-radius:8px;">+ POST</button>
         </div>
-        <div class="flash-sub">Daglig 1–5 sek video. Miss en dag = streak borta. 🔥</div>
-        <div class="streak-circles" id="streakCircles"></div>
       </div>
+      <div class="streak-circles" id="streakCircles"></div>
       <div class="flash-feed" id="flashFeed"></div>
     </div>
 
@@ -1907,7 +1906,7 @@ textarea.inp{resize:none;min-height:68px;}
     <!-- SHOP -->
     <div class="view" id="view-shop" style="padding:0">
       <div class="shop-hdr">
-        <div class="shop-title-r"><div class="shop-title">Marketplace</div><button class="btn btn-g btn-sm" onclick="openModal('sellModal')">+ Sälj</button></div>
+        <div class="shop-title-r"><div class="shop-title">Marketplace</div></div>
         <div class="shop-srch"><span style="font-size:17px">🔍</span><input placeholder="Sök produkter..." id="shopInp" oninput="G.shopSearch=this.value.toLowerCase();renderShop()"></div>
       </div>
       <div class="tabs" id="shopTabs">
@@ -1936,7 +1935,6 @@ textarea.inp{resize:none;min-height:68px;}
           <div class="mkt-cat" onclick="switchMkt('gear',this)">⚔️ Gear</div>
           <div class="mkt-cat" onclick="switchMkt('deco',this)">🏠 Deko</div>
           <div class="mkt-cat" onclick="switchMkt('rare',this)">💎 Rare</div>
-          <div class="mkt-cat" onclick="switchMkt('sell',this)">📤 Sälj</div>
         </div>
       </div>
       <div id="mktContent" style="overflow-y:auto;flex:1"></div>
@@ -2652,7 +2650,7 @@ textarea.inp{resize:none;min-height:68px;}
 <div class="modal" id="premiumModal">
   <div class="ms">
     <div class="mh"></div>
-    <div class="mt">👑 KARMA PRO <div class="mx" onclick="closeModal('premiumModal')">✕</div></div>
+    <div class="mt">✨ KARMA PREMIUM <div class="mx" onclick="closeModal('premiumModal')">✕</div></div>
     <div style="text-align:center;padding:10px 0 18px">
       <div style="font-size:46px;margin-bottom:8px">👑</div>
       <div style="font-size:13px;font-weight:900;color:var(--y);letter-spacing:2px;margin-bottom:4px">UPPGRADERA DIN LEGEND</div>
@@ -2662,7 +2660,7 @@ textarea.inp{resize:none;min-height:68px;}
       <div class="pm-card" style="border:2px solid var(--g);border-radius:16px;padding:16px;cursor:pointer;background:linear-gradient(135deg,rgba(57,255,20,.08),rgba(57,255,20,.02))" onclick="buyPremium(1)">
         <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
           <div style="font-size:15px;font-weight:900;color:var(--g)">⚡ KARMA+</div>
-          <div style="font-size:14px;font-weight:900;color:var(--y);font-family:var(--mono)">49 SEK/mån</div>
+          <div style="font-size:14px;font-weight:900;color:var(--y);font-family:var(--mono)">19 kr/mån</div>
         </div>
         <div style="font-size:11px;color:var(--t2);line-height:1.7">✅ 1.75× XP på allt<br>✅ +150 daily login coins<br>✅ Prioritet i uppdrag<br>✅ Grön ✅ badge</div>
       </div>
@@ -2670,14 +2668,14 @@ textarea.inp{resize:none;min-height:68px;}
         <div style="position:absolute;top:-10px;right:14px;background:var(--y);color:#000;font-size:9px;font-weight:900;padding:3px 8px;border-radius:20px;letter-spacing:1px">POPULÄRAST</div>
         <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
           <div style="font-size:15px;font-weight:900;color:var(--y)">👑 KARMA PRO</div>
-          <div style="font-size:14px;font-weight:900;color:var(--y);font-family:var(--mono)">99 SEK/mån</div>
+          <div style="font-size:14px;font-weight:900;color:var(--y);font-family:var(--mono)">39 kr/mån</div>
         </div>
         <div style="font-size:11px;color:var(--t2);line-height:1.7">🔥 2.5× XP TURBO BOOST<br>🔥 +300 daily login coins<br>🔥 Exklusiva pet-skins<br>🔥 Guld 👑 badge + aura<br>🔥 Bonusuppdrag varje vecka</div>
       </div>
       <div class="pm-card" style="border:2px solid var(--pk);border-radius:16px;padding:16px;cursor:pointer;background:linear-gradient(135deg,rgba(255,45,85,.08),rgba(191,95,255,.05))" onclick="buyPremium(3)">
         <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
-          <div style="font-size:15px;font-weight:900;color:var(--pk)">⚡ KARMA GOD</div>
-          <div style="font-size:14px;font-weight:900;color:var(--y);font-family:var(--mono)">199 SEK/mån</div>
+          <div style="font-size:15px;font-weight:900;color:var(--pk)">✨ KARMA GOLD</div>
+          <div style="font-size:14px;font-weight:900;color:var(--y);font-family:var(--mono)">89 kr/mån</div>
         </div>
         <div style="font-size:11px;color:var(--t2);line-height:1.7">💀 3× XP GODMODE<br>💀 Obegränsade drops<br>💀 Early access till allt nytt<br>💀 💀 badge + special effects<br>💀 1000 bonus coins/dag</div>
       </div>
@@ -2896,7 +2894,7 @@ textarea.inp{resize:none;min-height:68px;}
       <button onclick="openRodShop()" style="background:rgba(57,255,20,.1);border:1px solid rgba(57,255,20,.3);border-radius:10px;color:var(--g);font-size:10px;font-weight:900;padding:4px 10px;cursor:pointer;font-family:var(--ff)">🔧 Uppgradera</button>
     </div>
   </div>
-  <div class="fish-scene" id="fishScene" onclick="onFishSceneTap(event)">
+  <div class="fish-scene" id="fishScene" onclick="onFishSceneTap(event)" ontouchstart="event.preventDefault();onFishSceneTap(event)">
     <div class="fish-sky">
       <div class="fish-cloud">☁️</div>
       <div class="fish-cloud" style="animation-delay:-5s;top:14px;font-size:12px">☁️</div>
@@ -2936,7 +2934,7 @@ textarea.inp{resize:none;min-height:68px;}
     </div>
     <!-- Catch timer bar (shows during bite phase) -->
     <div style="width:100%;height:5px;background:rgba(255,255,255,.08);border-radius:100px;overflow:hidden;margin-bottom:8px"><div id="fishTimerBar" style="height:100%;width:0%;background:linear-gradient(90deg,#FFE600,#FF3B30);border-radius:100px;transition:width 2s linear"></div></div>
-    <button class="fish-cast-btn idle" id="fishCastBtn" onclick="fishCast()">🎣 KASTA METSPÖ</button>
+    <button class="fish-cast-btn idle" id="fishCastBtn" onclick="fishCast()" style="touch-action:manipulation">🎣 KASTA METSPÖ</button>
     <div style="display:flex;justify-content:space-between;align-items:center;margin-top:5px">
       <div class="fish-score" id="fishScoreBar">Poäng: 0 · Bäst: 0</div>
       <div id="fishStreakBadge" style="font-size:10px;font-weight:900;color:var(--o);font-family:var(--mono)"></div>
@@ -3853,7 +3851,7 @@ function triggerLvlUp(){
   checkEvolution(prevLv,G.level);updateEvolBadge();
 }
 function buyPremium(tier){
-  const names=['','KARMA+','KARMA PRO','KARMA GOD'];const prices=[0,49,99,199];
+  const names=['','KARMA+','KARMA PRO','KARMA GOLD'];const prices=[0,19,39,89];
   if(G.premiumTier>=tier){showT('👑 Redan aktiverat!','y');return;}
   G.premium=true;G.premiumTier=tier;
   const bonus=tier>=3?5000:tier>=2?2000:500;G.coins+=bonus;
@@ -4096,30 +4094,30 @@ function renderFlashFeed(){
           <span style="background:rgba(0,0,0,.5);border:1px solid rgba(255,255,255,.15);border-radius:10px;padding:2px 7px;font-size:9px;color:rgba(255,255,255,.7);font-family:var(--mono)">${p.sound}</span>
         </div>
         <!-- right action strip (TikTok-style) -->
-        <div class="fv-right" style="bottom:90px">
+        <div class="fv-right" style="bottom:80px">
           <!-- avatar + follow -->
-          <div style="position:relative;margin-bottom:16px">
-            <div class="fv-ava" style="width:44px;height:44px;font-size:24px;border:2.5px solid ${following?'var(--g)':'#fff'}">${p.pet}</div>
-            ${!following?`<div onclick="flashFollow('${p.user}')" style="position:absolute;bottom:-8px;left:50%;transform:translateX(-50%);width:18px;height:18px;background:var(--pk);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:900;cursor:pointer;border:2px solid #000">+</div>`:''}
+          <div style="position:relative;margin-bottom:10px">
+            <div class="fv-ava" style="width:36px;height:36px;font-size:20px;border:2px solid ${following?'var(--g)':'#fff'}">${p.pet}</div>
+            ${!following?`<div onclick="flashFollow('${p.user}')" style="position:absolute;bottom:-6px;left:50%;transform:translateX(-50%);width:15px;height:15px;background:var(--pk);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:900;cursor:pointer;border:2px solid #000">+</div>`:''}
           </div>
           <div class="fv-action" onclick="likeFlash('${p.id}')">
-            <div id="fli${p.id}" style="font-size:36px;transition:transform .15s">${liked?'❤️':'🤍'}</div>
+            <div id="fli${p.id}" style="font-size:22px;transition:transform .15s">${liked?'❤️':'🤍'}</div>
             <div class="fv-action-cnt" id="flc${p.id}" style="color:${liked?'var(--pk)':'#fff'}">${p.likes>=1000?(p.likes/1000).toFixed(1)+'K':p.likes}</div>
           </div>
           <div class="fv-action" onclick="flashQuickComment('${p.id}')">
-            <div style="font-size:34px">💬</div>
+            <div style="font-size:22px">💬</div>
             <div class="fv-action-cnt">${comments}</div>
           </div>
           <div class="fv-action" onclick="flashSave('${p.id}')">
-            <div id="fsv${p.id}" style="font-size:34px">${(G.savedFlash||new Set()).has(p.id)?'🔖':'📌'}</div>
+            <div id="fsv${p.id}" style="font-size:22px">${(G.savedFlash||new Set()).has(p.id)?'🔖':'📌'}</div>
             <div class="fv-action-cnt">${saves}</div>
           </div>
           <div class="fv-action" onclick="doShare('${p.id}')">
-            <div style="font-size:34px">↗️</div>
+            <div style="font-size:22px">↗️</div>
             <div class="fv-action-cnt">Dela</div>
           </div>
           <div class="fv-action" onclick="flashSendGift('${p.id}','${p.pet}','${p.user}')">
-            <div style="font-size:34px">🎁</div>
+            <div style="font-size:22px">🎁</div>
             <div class="fv-action-cnt">Gift</div>
           </div>
         </div>
@@ -5602,7 +5600,7 @@ function renderMkt(){
       ${G.gear.length?G.gear.map(gid=>{const g=GEAR.find(x=>x.id===gid);if(!g)return'';return`<div class="mkt-sell-row"><div style="font-size:28px;width:40px">${g.em}</div><div style="flex:1"><div style="font-size:13px;font-weight:700">${g.nm}</div><div style="font-size:10px;color:var(--t3)">${g.st}</div></div><button class="mkt-sell-btn" style="flex:none;padding:8px 14px" onclick="sellItem('${g.id}',${Math.floor(g.cost*.6)})">Sälj ${Math.floor(g.cost*.6)}⚡</button></div>`;}).join(''):'<div style="text-align:center;padding:40px 20px;color:var(--t3)">Inget att sälja ännu</div>'}
     </div>
     <div style="padding:0 14px 12px">
-      <button class="mkt-sell-btn btn-full" style="width:100%" onclick="showT('📸 Foto-funktion kommer snart!','p')">📸 Sälj en IRL-produkt</button>
+      <button class="mkt-sell-btn btn-full" style="width:100%;display:none" onclick="showT('📸 Foto-funktion kommer snart!','p')">📸 Sälj en IRL-produkt</button>
     </div>`;
     return;
   }
