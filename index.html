@@ -957,6 +957,8 @@ textarea.inp{resize:none;min-height:68px;}
 .room-deco-v2:active{transform:scale(1.2);}
 .room-glow{position:absolute;border-radius:50%;pointer-events:none;animation:roomGlow 3s ease-in-out infinite;}
 @keyframes roomGlow{0%,100%{opacity:.4;transform:scale(1);}50%{opacity:.7;transform:scale(1.15);}}
+@keyframes neonFlicker{0%,100%{opacity:.7;}40%{opacity:.3;}42%{opacity:.7;}80%{opacity:.5;}82%{opacity:.8;}}
+@keyframes sleepBob{0%,100%{transform:translateY(0) rotate(-5deg);}50%{transform:translateY(-6px) rotate(5deg);}}
 /* ── FISHING JUNK ── */
 .fish-junk-tag{background:rgba(255,159,10,.12);border:1px solid rgba(255,159,10,.3);border-radius:10px;padding:4px 10px;}
 .fish-miss-overlay{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;pointer-events:none;z-index:50;}
@@ -1120,6 +1122,107 @@ textarea.inp{resize:none;min-height:68px;}
 .room-theme-row::-webkit-scrollbar{display:none;}
 .room-theme-chip{flex-shrink:0;padding:5px 12px;border-radius:18px;font-size:10px;font-weight:900;cursor:pointer;font-family:var(--mono);border:1.5px solid;transition:all .12s;-webkit-tap-highlight-color:transparent;}
 .room-theme-chip.active{box-shadow:0 0 12px currentColor;}
+
+/* ── ROOM V3 ── */
+.rv3-wrap{width:100%;border-radius:18px;overflow:hidden;position:relative;background:#000;}
+.rv3-profile{padding:14px 16px 10px;display:flex;align-items:center;gap:14px;background:rgba(0,0,0,.45);border-bottom:1px solid rgba(255,255,255,.07);}
+.rv3-pet-bob{font-size:52px;animation:petBob 2s ease-in-out infinite;filter:drop-shadow(0 4px 18px rgba(57,255,20,.45));flex-shrink:0;cursor:pointer;}
+.rv3-info{flex:1;min-width:0;}
+.rv3-username{font-size:16px;font-weight:900;color:var(--t1);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.rv3-handle{font-size:10px;color:var(--t3);font-family:var(--mono);margin-bottom:5px;}
+.rv3-lvbadge{display:inline-flex;align-items:center;gap:4px;padding:3px 8px;border-radius:10px;font-size:10px;font-weight:900;font-family:var(--mono);border:1.5px solid;animation:lvGlow 2.5s ease-in-out infinite;}
+@keyframes lvGlow{0%,100%{box-shadow:0 0 6px currentColor;}50%{box-shadow:0 0 16px currentColor,0 0 28px currentColor;}}
+.rv3-online{width:8px;height:8px;border-radius:50%;background:var(--g);display:inline-block;box-shadow:0 0 8px var(--g);animation:onlinePulse 2s ease-in-out infinite;margin-left:6px;}
+@keyframes onlinePulse{0%,100%{opacity:1;}50%{opacity:.4;}}
+.rv3-rings{display:flex;gap:8px;flex-shrink:0;}
+.rv3-ring-wrap{display:flex;flex-direction:column;align-items:center;gap:2px;}
+.rv3-ring-lbl{font-size:7px;font-weight:900;color:var(--t3);font-family:var(--mono);letter-spacing:.5px;}
+.rv3-ring-svg{width:40px;height:40px;}
+.rv3-ring-val{font-size:9px;font-weight:900;font-family:var(--mono);margin-top:-2px;}
+/* Room scene */
+.rv3-scene{position:relative;width:100%;height:260px;overflow:hidden;}
+.rv3-sky{position:absolute;inset:0;transition:background 1.5s ease;}
+.rv3-clouds{position:absolute;top:0;left:0;right:0;height:45%;pointer-events:none;}
+.rv3-cloud{position:absolute;font-size:22px;opacity:.55;animation:cloudDrift var(--cd,18s) linear infinite var(--cdd,0s);}
+.rv3-wall{position:absolute;top:0;left:0;right:0;height:72%;pointer-events:none;}
+.rv3-window{position:absolute;top:7%;right:7%;width:24%;height:32%;border-radius:8px;overflow:hidden;cursor:pointer;transition:all .2s;}
+.rv3-window:hover{transform:scale(1.04);filter:brightness(1.15);}
+.rv3-window-frame{position:absolute;inset:0;border:2.5px solid rgba(255,255,255,.22);border-radius:8px;z-index:2;pointer-events:none;}
+.rv3-window-cross{position:absolute;inset:0;z-index:2;pointer-events:none;}
+.rv3-window-cross::before{content:'';position:absolute;top:50%;left:0;right:0;height:2px;background:rgba(255,255,255,.18);}
+.rv3-window-cross::after{content:'';position:absolute;left:50%;top:0;bottom:0;width:2px;background:rgba(255,255,255,.18);}
+.rv3-window-scene{position:absolute;inset:0;}
+.rv3-win-particle{position:absolute;pointer-events:none;font-size:8px;animation:winPartFloat var(--wpd,4s) ease-in-out infinite var(--wpdd,0s);}
+@keyframes winPartFloat{0%,100%{transform:translateY(0) translateX(0) rotate(0deg);opacity:.6;}50%{transform:translateY(-12px) translateX(5px) rotate(15deg);opacity:1;}}
+/* Dust motes */
+.rv3-dust{position:absolute;pointer-events:none;z-index:11;}
+.rv3-mote{position:absolute;width:2px;height:2px;border-radius:50%;background:rgba(255,240,200,.7);box-shadow:0 0 3px rgba(255,240,200,.5);animation:moteDrift var(--md,6s) ease-in-out infinite var(--mdd,0s);}
+@keyframes moteDrift{0%,100%{transform:translateY(0) translateX(0);opacity:.4;}50%{transform:translateY(-18px) translateX(var(--mx,5px));opacity:.9;}}
+/* Seasonal particles */
+.rv3-season-part{position:absolute;pointer-events:none;z-index:10;font-size:10px;animation:seasonFall var(--sf,5s) linear infinite var(--sfd,0s);}
+@keyframes seasonFall{0%{transform:translateY(-20px) rotate(0deg);opacity:0;}10%{opacity:1;}90%{opacity:.7;}100%{transform:translateY(270px) rotate(360deg);opacity:0;}}
+/* Mood hearts */
+.rv3-mood-heart{position:absolute;pointer-events:none;z-index:12;font-size:14px;animation:rv3HFloat var(--hd,1.5s) ease-out forwards;}
+@keyframes rv3HFloat{0%{transform:translateY(0) scale(1);opacity:1;}100%{transform:translateY(-60px) scale(.6);opacity:0;}}
+/* Floor + furniture */
+.rv3-floor{position:absolute;bottom:0;left:0;right:0;height:32%;border-top:2px solid rgba(255,255,255,.1);}
+.rv3-obj{position:absolute;font-size:22px;cursor:pointer;z-index:8;transition:transform .15s,filter .15s;user-select:none;}
+.rv3-obj:hover{transform:scale(1.15);filter:brightness(1.2);}
+.rv3-obj:active{transform:scale(.9);}
+.rv3-obj-lbl{position:absolute;bottom:-14px;left:50%;transform:translateX(-50%);font-size:7px;color:rgba(255,255,255,.5);white-space:nowrap;font-family:var(--mono);pointer-events:none;}
+/* TV stat display */
+.rv3-tv{position:absolute;top:12%;left:7%;z-index:7;cursor:pointer;}
+.rv3-tv-screen{width:52px;height:36px;background:#001a2e;border-radius:5px;border:2px solid rgba(0,200,255,.5);overflow:hidden;position:relative;box-shadow:0 0 12px rgba(0,200,255,.35);animation:tvGlow 3s ease-in-out infinite;}
+@keyframes tvGlow{0%,100%{box-shadow:0 0 12px rgba(0,200,255,.35);}50%{box-shadow:0 0 22px rgba(0,200,255,.65),0 0 6px rgba(0,200,255,.3) inset;}}
+.rv3-tv-scanline{position:absolute;inset:0;background:repeating-linear-gradient(0deg,rgba(0,0,0,.15) 0px,rgba(0,0,0,.15) 1px,transparent 1px,transparent 3px);pointer-events:none;z-index:2;}
+.rv3-tv-bar{height:5px;border-radius:2px;margin:2px 3px;position:relative;}
+.rv3-tv-label{font-size:5px;color:rgba(0,200,255,.7);font-family:var(--mono);padding:0 3px;}
+.rv3-tv-stand{width:16px;height:6px;background:rgba(255,255,255,.15);margin:0 auto;border-radius:0 0 4px 4px;}
+.rv3-tv-base{width:28px;height:4px;background:rgba(255,255,255,.12);margin:0 auto;border-radius:2px;}
+/* Gear icons in room */
+.rv3-gear-item{position:absolute;z-index:6;font-size:18px;cursor:pointer;filter:drop-shadow(0 0 6px rgba(255,200,0,.3));transition:transform .3s;}
+.rv3-gear-item:hover{transform:rotate(15deg) scale(1.2);}
+/* Pet */
+.rv3-pet{position:absolute;bottom:31%;font-size:38px;z-index:10;user-select:none;cursor:pointer;transition:left 2.5s cubic-bezier(.45,0,.55,1);}
+.rv3-pet.sleeping{animation:sleepBob 2.5s ease-in-out infinite;}
+.rv3-pet.dancing{animation:petDance .6s ease-in-out infinite;}
+.rv3-pet.playing{animation:petPlay .4s ease-in-out infinite;}
+/* Torch flicker for castle */
+.rv3-torch{position:absolute;font-size:18px;z-index:6;animation:torchFlicker .3s ease-in-out infinite alternate;}
+@keyframes torchFlicker{from{filter:drop-shadow(0 0 6px orange) brightness(1);}to{filter:drop-shadow(0 0 14px red) brightness(1.3);}}
+/* Stat popup */
+.rv3-stat-popup{position:fixed;inset:0;z-index:850;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.75);backdrop-filter:blur(6px);}
+.rv3-stat-box{background:var(--c1);border:1.5px solid var(--line2);border-radius:20px;padding:18px 20px;min-width:220px;}
+
+/* ── STREET FISHING UPGRADE ── */
+.fish-loc-bar{display:flex;gap:5px;overflow-x:auto;scrollbar-width:none;padding:6px 14px;background:rgba(0,10,25,.95);border-bottom:1px solid rgba(0,180,255,.12);flex-shrink:0;}
+.fish-loc-bar::-webkit-scrollbar{display:none;}
+.fish-loc-chip{flex-shrink:0;padding:4px 10px;border-radius:14px;font-size:9px;font-weight:900;cursor:pointer;font-family:var(--mono);border:1.5px solid;transition:all .12s;-webkit-tap-highlight-color:transparent;white-space:nowrap;}
+.fish-loc-chip.active{box-shadow:0 0 10px currentColor;}
+.fish-loc-chip.locked{opacity:.4;cursor:default;}
+.fish-water-anim{position:absolute;top:38%;left:0;right:0;height:5px;background:linear-gradient(90deg,transparent,rgba(0,200,255,.4),transparent);animation:waterWave 2s ease-in-out infinite;pointer-events:none;z-index:3;}
+@keyframes waterWave{0%,100%{transform:translateX(-30%) scaleX(1.4);}50%{transform:translateX(10%) scaleX(.8);}}
+.fish-water-anim2{position:absolute;top:40%;left:0;right:0;height:3px;background:linear-gradient(90deg,transparent,rgba(0,200,255,.25),transparent);animation:waterWave 3.2s ease-in-out infinite .8s;pointer-events:none;z-index:3;}
+.fish-hook{position:absolute;width:6px;height:10px;border:2px solid rgba(255,255,255,.8);border-top:none;border-radius:0 0 6px 6px;z-index:7;pointer-events:none;display:none;}
+.fish-hook::after{content:'';position:absolute;bottom:-4px;right:-3px;width:4px;height:4px;border:2px solid rgba(255,255,255,.7);border-radius:50% 50% 50% 0;transform:rotate(-45deg);}
+.fish-catch-zone{position:absolute;width:40px;height:40px;border-radius:50%;border:2.5px solid rgba(57,255,20,.7);background:rgba(57,255,20,.1);pointer-events:none;z-index:6;display:none;animation:catchZonePulse .4s ease-in-out infinite;}
+@keyframes catchZonePulse{0%,100%{transform:scale(1);border-color:rgba(57,255,20,.7);}50%{transform:scale(1.15);border-color:rgba(57,255,20,1);}}
+.fish-swim-target{position:absolute;z-index:5;cursor:pointer;user-select:none;-webkit-tap-highlight-color:transparent;}
+.fish-streak-badge{position:absolute;top:8px;left:50%;transform:translateX(-50%);background:linear-gradient(135deg,var(--y),var(--o));color:#000;font-size:11px;font-weight:900;padding:4px 14px;border-radius:16px;font-family:var(--mono);z-index:20;pointer-events:none;display:none;animation:streakBadgePop .3s cubic-bezier(.34,1.56,.64,1);}
+@keyframes streakBadgePop{0%{transform:translateX(-50%) scale(0);}100%{transform:translateX(-50%) scale(1);}}
+.fish-hotspot{position:absolute;top:6px;right:8px;background:linear-gradient(135deg,#ff6a00,#ee0979);color:#fff;font-size:9px;font-weight:900;padding:3px 8px;border-radius:10px;font-family:var(--mono);pointer-events:none;display:none;animation:hotspotPulse .5s ease-in-out infinite alternate;}
+@keyframes hotspotPulse{from{box-shadow:0 0 8px #ff6a00;}to{box-shadow:0 0 18px #ee0979,0 0 6px #ff6a00;}}
+.fish-splash-part{position:absolute;pointer-events:none;z-index:15;font-size:14px;animation:splashOut .7s ease-out forwards;}
+@keyframes splashOut{0%{transform:translate(-50%,-50%) scale(0) rotate(0);opacity:1;}100%{transform:translate(calc(-50% + var(--sx,20px)),calc(-50% + var(--sy,-30px))) scale(1) rotate(360deg);opacity:0;}}
+.fish-camshake{animation:camShake .4s ease-in-out;}
+@keyframes camShake{0%,100%{transform:translate(0,0);}15%{transform:translate(-5px,3px);}30%{transform:translate(5px,-3px);}45%{transform:translate(-4px,2px);}60%{transform:translate(4px,-2px);}75%{transform:translate(-2px,1px);}90%{transform:translate(2px,-1px);}}
+/* Fångstlåda (catch box) */
+.fish-box-modal{position:fixed;inset:0;z-index:800;background:rgba(0,0,0,.88);display:flex;align-items:flex-end;transform:translateY(100%);transition:transform .3s cubic-bezier(.32,.72,0,1);}
+.fish-box-modal.open{transform:translateY(0);}
+.fish-box-inner{width:100%;max-width:430px;margin:0 auto;background:var(--c1);border-radius:22px 22px 0 0;padding:16px 14px;max-height:85vh;overflow-y:auto;}
+.fish-box-fish{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:14px;border:1px solid;margin-bottom:7px;}
+.fish-box-sell{background:rgba(57,255,20,.1);border:1px solid rgba(57,255,20,.35);border-radius:10px;padding:5px 10px;font-size:10px;font-weight:900;color:var(--g);cursor:pointer;font-family:var(--mono);-webkit-tap-highlight-color:transparent;}
+
 /* Custom item creator */
 .room-emoji-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:5px;max-height:160px;overflow-y:auto;scrollbar-width:none;padding:6px;}
 .room-emoji-grid::-webkit-scrollbar{display:none;}
@@ -3222,23 +3325,28 @@ textarea.inp{resize:none;min-height:68px;}
 <div class="fish-game" id="fishGame">
   <div class="fish-hdr">
     <button style="background:none;border:none;color:var(--t2);font-size:22px;cursor:pointer" onclick="closeFishingGame()">←</button>
-    <div style="font-size:16px;font-weight:900;color:var(--b);flex:1;text-align:center;letter-spacing:1px;font-family:var(--mono)">🎣 FISKA</div>
+    <div style="font-size:16px;font-weight:900;color:var(--b);flex:1;text-align:center;letter-spacing:1px;font-family:var(--mono)" id="fishLocTitle">🎣 STREET FISHING</div>
     <div id="fishScoreTop" style="font-size:12px;font-weight:900;color:var(--y);font-family:var(--mono)">0 FISKAR</div>
   </div>
+  <!-- Location bar -->
+  <div class="fish-loc-bar" id="fishLocBar"></div>
   <!-- Rod bar -->
   <div class="fish-rod-bar">
     <div class="fish-rod-cur" id="fishRodCurLabel">🪵 Bambuspö</div>
     <div style="display:flex;gap:6px">
+      <button onclick="openFishCatchBox()" style="background:rgba(255,159,10,.1);border:1px solid rgba(255,159,10,.3);border-radius:10px;color:var(--o);font-size:10px;font-weight:900;padding:4px 10px;cursor:pointer;font-family:var(--ff)" id="fishBoxBtn">📦 Låda</button>
       <button onclick="openFishJournal()" style="background:rgba(0,180,255,.1);border:1px solid rgba(0,180,255,.3);border-radius:10px;color:var(--b);font-size:10px;font-weight:900;padding:4px 10px;cursor:pointer;font-family:var(--ff)">📖 Samling</button>
       <button onclick="openRodShop()" style="background:rgba(57,255,20,.1);border:1px solid rgba(57,255,20,.3);border-radius:10px;color:var(--g);font-size:10px;font-weight:900;padding:4px 10px;cursor:pointer;font-family:var(--ff)">🔧 Uppgradera</button>
     </div>
   </div>
   <div class="fish-scene" id="fishScene" onclick="onFishSceneTap(event)" ontouchstart="event.preventDefault();onFishSceneTap(event)">
-    <div class="fish-sky">
+    <div class="fish-sky" id="fishSkyBg">
       <div class="fish-cloud">☁️</div>
       <div class="fish-cloud" style="animation-delay:-5s;top:14px;font-size:12px">☁️</div>
       <div class="fish-weather-badge" id="fishWeatherBadge">☀️ Klart</div>
     </div>
+    <!-- Location scene elements -->
+    <div id="fishLocScene" style="position:absolute;inset:0;pointer-events:none;z-index:2"></div>
     <!-- Depth zone dividers + labels -->
     <div class="fish-depth-div" style="top:58%"></div>
     <div class="fish-depth-div" style="top:76%"></div>
@@ -3248,11 +3356,15 @@ textarea.inp{resize:none;min-height:68px;}
     <div class="fish-deep-zone"></div>
     <div class="fish-water">
       <div class="fish-water-shimmer"></div>
+      <div class="fish-water-anim"></div>
+      <div class="fish-water-anim2"></div>
     </div>
     <div class="fish-line" id="fishLine" style="height:0;left:50%"></div>
+    <div class="fish-hook" id="fishHook"></div>
+    <div class="fish-catch-zone" id="fishCatchZone"></div>
     <div class="fish-bob" id="fishBob" style="display:none"></div>
     <div class="fish-catch-fx" id="fishCatchFx"></div>
-    <div class="fish-tap-prompt" id="fishTapPrompt" style="display:none;bottom:38%">TAP! 🎣</div>
+    <div class="fish-tap-prompt" id="fishTapPrompt" style="display:none;bottom:38%">🎯 TAP!</div>
     <!-- Precision catch bar -->
     <div class="fish-perfect-bar" id="fishPerfectBar" onclick="catchFish()" style="display:none;cursor:pointer">
       <div class="fpb-label">🎯 TIMING — TRYCK I DET GRÖNA!</div>
@@ -3276,7 +3388,8 @@ textarea.inp{resize:none;min-height:68px;}
     <div class="fish-catch-splash" id="fishCatchSplash">💦</div>
     <div class="fish-fail-text" id="fishFailText">💨 RYMDE!</div>
     <div class="fish-tap-hint" id="fishTapHint">👇 TRYCK!</div>
-    <div id="fishStreakBadgeScene" style="display:none;position:absolute;top:8px;left:50%;transform:translateX(-50%);background:linear-gradient(135deg,var(--y),var(--o));color:#000;font-size:11px;font-weight:900;padding:4px 12px;border-radius:16px;font-family:var(--mono);z-index:20;pointer-events:none">🔥 STREAK x1</div>
+    <div class="fish-streak-badge" id="fishStreakBadgeScene">🔥 STREAK x1</div>
+    <div class="fish-hotspot" id="fishHotspot">🔥 HOT SPOT!</div>
   </div>
   <div class="fish-controls">
     <div class="fish-status" id="fishStatus">Kasta ut metspöet för att börja!</div>
@@ -3309,6 +3422,36 @@ textarea.inp{resize:none;min-height:68px;}
     <div class="mh" onclick="closeModal('fishJournalModal')"></div>
     <div class="mt">📖 Fångstjournal <div class="mx" onclick="closeModal('fishJournalModal')">✕</div></div>
     <div id="fishJournalContent" style="padding:0 14px 18px"></div>
+  </div>
+</div>
+<!-- FÅNGSTLÅDA (Catch Box) -->
+<div class="fish-box-modal" id="fishBoxModal">
+  <div class="fish-box-inner">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
+      <div style="font-size:16px;font-weight:900">📦 Fångstlåda</div>
+      <button onclick="closeFishCatchBox()" style="background:var(--c2);border:1px solid var(--line);border-radius:10px;padding:5px 12px;font-size:12px;font-weight:900;color:var(--t2);cursor:pointer;font-family:var(--ff)">✕ Stäng</button>
+    </div>
+    <div style="display:flex;gap:8px;margin-bottom:12px">
+      <div style="flex:1;background:rgba(0,180,255,.07);border:1px solid rgba(0,180,255,.2);border-radius:12px;padding:10px;text-align:center">
+        <div id="fishBoxCount" style="font-size:20px;font-weight:900;font-family:var(--mono);color:var(--b)">0/20</div>
+        <div style="font-size:8px;color:var(--t3)">LÅDAN</div>
+      </div>
+      <div style="flex:1;background:rgba(57,255,20,.06);border:1px solid rgba(57,255,20,.2);border-radius:12px;padding:10px;text-align:center">
+        <div id="fishBoxValue" style="font-size:20px;font-weight:900;font-family:var(--mono);color:var(--g)">0⚡</div>
+        <div style="font-size:8px;color:var(--t3)">TOTALVÄRDE</div>
+      </div>
+      <button onclick="sellAllFishInBox()" style="flex-shrink:0;background:rgba(255,230,0,.12);border:1.5px solid rgba(255,230,0,.4);border-radius:12px;padding:8px 12px;font-size:10px;font-weight:900;color:var(--y);cursor:pointer;font-family:var(--mono);-webkit-tap-highlight-color:transparent">💰 SÄLJ<br>ALLT</button>
+    </div>
+    <div id="fishBoxList" style="display:flex;flex-direction:column;gap:6px;max-height:55vh;overflow-y:auto"></div>
+    <div style="height:16px"></div>
+  </div>
+</div>
+<!-- RV3 Stat Popup -->
+<div class="rv3-stat-popup" id="rv3StatPopup" style="display:none" onclick="closeRv3StatPopup()">
+  <div class="rv3-stat-box" onclick="event.stopPropagation()">
+    <div style="font-size:18px;font-weight:900;margin-bottom:12px;display:flex;align-items:center;gap:8px"><span id="rv3StatPet">🐉</span><span>Pet Stats</span></div>
+    <div style="display:grid;gap:8px" id="rv3StatList"></div>
+    <button onclick="closeRv3StatPopup()" class="btn btn-ghost btn-sm btn-full" style="margin-top:12px">Stäng</button>
   </div>
 </div>
 <!-- ROOM CUSTOM ITEM MODAL -->
@@ -3539,6 +3682,10 @@ const G={
   ownedZones:[],
   terrLastIncome:{},
   dnaMixes:[],
+  fishLocation:'malaren',
+  fishInventoryBox:[],
+  fishStreak:0,
+  fishBonuses:{},
 };
 
 const EVOL={
@@ -6244,6 +6391,46 @@ function _pbUpdateScore() {
   const co = $('pbCoins'); if (co) co.textContent = _pbCoinsEarned;
 }
 
+// ══════════════════════════════════════════
+// ── STREET FISHING — LOCATION SYSTEM ──
+// ══════════════════════════════════════════
+const FISH_LOCATIONS=[
+  {id:'malaren',nm:'Mälaren Bryggan',em:'🌊',req:1,sky:'linear-gradient(180deg,#020810,#030d1e)',water:'linear-gradient(180deg,rgba(0,80,160,.25),rgba(0,25,70,.55))',waterBorder:'rgba(0,180,255,.3)',desc:'Grunden. Bra för nybörjare.',nightBonus:false},
+  {id:'gamlastan',nm:'Gamla Stan Kajen',em:'🏛️',req:5,sky:'linear-gradient(180deg,#060408,#0a0610)',water:'linear-gradient(180deg,rgba(0,60,120,.25),rgba(0,20,60,.55))',waterBorder:'rgba(150,100,255,.3)',desc:'Historiska vatten. Sällsynta fynd.',nightBonus:false},
+  {id:'djurgarden',nm:'Djurgården Sundet',em:'🌿',req:10,sky:'linear-gradient(180deg,#020a02,#030d04)',water:'linear-gradient(180deg,rgba(0,100,40,.2),rgba(0,40,20,.5))',waterBorder:'rgba(0,255,100,.25)',desc:'Naturvatten. Epic catches.',nightBonus:false},
+  {id:'hammarby',nm:'Hammarby Sjöstad',em:'🤖',req:15,sky:'linear-gradient(180deg,#060208,#08040e)',water:'linear-gradient(180deg,rgba(80,0,160,.2),rgba(40,0,80,.5))',waterBorder:'rgba(200,0,255,.3)',desc:'Urban utforskning. Ghost gear.',nightBonus:true},
+  {id:'norr',nm:'Norr Mälarstrand VIP',em:'👑',req:20,sky:'linear-gradient(180deg,#010108,#02020c)',water:'linear-gradient(180deg,rgba(0,20,80,.3),rgba(0,10,40,.6))',waterBorder:'rgba(255,220,0,.4)',desc:'Legendar zon. Nattbonus!',nightBonus:true},
+];
+
+const STREET_FISH={
+  malaren:[
+    {em:'🐟',nm:'Abborre',coins:12,xp:5,rarity:'common',loc:'malaren',speed:1.0},
+    {em:'🐠',nm:'Gös',coins:25,xp:10,rarity:'uncommon',loc:'malaren',speed:1.3},
+    {em:'🦈',nm:'Gäddkung',coins:80,xp:35,rarity:'rare',loc:'malaren',speed:2.0,bonus:'xp5pct'},
+  ],
+  gamlastan:[
+    {em:'🐡',nm:'Braxen',coins:20,xp:8,rarity:'common',loc:'gamlastan',speed:0.9},
+    {em:'🦑',nm:'Blektinta',coins:55,xp:22,rarity:'uncommon',loc:'gamlastan',speed:1.4},
+    {em:'🗿',nm:'Vikingafisk',coins:180,xp:70,rarity:'rare',loc:'gamlastan',speed:1.8},
+  ],
+  djurgarden:[
+    {em:'🦢',nm:'Svanerull',coins:18,xp:7,rarity:'common',loc:'djurgarden',speed:0.8},
+    {em:'🦋',nm:'Fjärilsfisk',coins:60,xp:24,rarity:'uncommon',loc:'djurgarden',speed:1.6},
+    {em:'🐲',nm:'Sjödrake',coins:300,xp:120,rarity:'epic',loc:'djurgarden',speed:2.2,bonus:'coins10pct'},
+  ],
+  hammarby:[
+    {em:'🤖',nm:'Cyberfisk',coins:35,xp:14,rarity:'common',loc:'hammarby',speed:1.5},
+    {em:'💾',nm:'Datafisk',coins:90,xp:36,rarity:'uncommon',loc:'hammarby',speed:1.9},
+    {em:'👾',nm:'Glitchgös',coins:400,xp:160,rarity:'epic',loc:'hammarby',speed:2.5},
+  ],
+  norr:[
+    {em:'🌙',nm:'Månfisk',coins:200,xp:80,rarity:'epic',loc:'norr',speed:1.2},
+    {em:'⭐',nm:'Nattjärna',coins:500,xp:200,rarity:'legendary',loc:'norr',speed:1.8,nightOnly:true},
+    {em:'🔮',nm:'Voidabborre',coins:999,xp:400,rarity:'mythic',loc:'norr',speed:2.8,nightOnly:true},
+  ],
+};
+
+// All fish combined (for journal compatibility)
 // ── FISHING MINI-GAME ──
 const FISH_TYPES=[
   // Surface zone — fast, low reward
@@ -6304,24 +6491,319 @@ const FISH_WEATHERS=[
 ];
 let _fishState={phase:'idle',score:0,best:parseInt(localStorage.getItem('kv8_fishBest')||'0'),inventory:[],_combo:0,_spamPct:0,_spamTimer:null,_drainTimer:null,_failTimer:null,_weather:0,_curFish:null,_streak:0,_streakRecord:parseInt(localStorage.getItem('kv8_fishStreak')||'0')};
 let _fishTension=0,_fishTensionTimer=null;
+// Street fishing extended state
+let _sfStreak=0;let _sfHookX=50;let _sfHookDir=1;let _sfHookTimer=null;let _sfSwimTimer=null;let _sfCurTarget=null;
 function _getCurRod(){return FISH_RODS.find(r=>r.id===(G.fishRod||'bamboo'))||FISH_RODS[0];}
+
+// ── Render location chips ──
+function renderFishLocBar(){
+  const bar=$('fishLocBar');if(!bar)return;
+  const cur=G.fishLocation||'malaren';
+  const hour=new Date().getHours();const isNight=hour>=22||hour<6;
+  bar.innerHTML=FISH_LOCATIONS.map(loc=>{
+    const locked=G.level<loc.req;
+    const active=loc.id===cur;
+    const col=active?'var(--b)':'var(--t3)';
+    const nightIcon=loc.nightBonus&&isNight?'🌙':'';
+    return`<div class="fish-loc-chip ${active?'active':''} ${locked?'locked':''}"
+      style="border-color:${active?'var(--b)':'rgba(255,255,255,.15)'};color:${col};background:${active?'rgba(0,217,255,.12)':'transparent'}"
+      onclick="${locked?`showT('🔒 LV${loc.req} krävs!','r')`:`selectFishLoc('${loc.id}')`}">${loc.em} ${loc.nm}${locked?' 🔒':nightIcon?' 🌙':''}</div>`;
+  }).join('');
+}
+
+function selectFishLoc(id){
+  const loc=FISH_LOCATIONS.find(l=>l.id===id);if(!loc)return;
+  if(G.level<loc.req){showT('🔒 LV'+loc.req+' krävs!','r');return;}
+  G.fishLocation=id;save();
+  renderFishLocBar();_applyLocScene(id);
+  _fishState.phase='idle';_fishResetVisuals();
+  spawnStreetFishInScene();
+  _fishSetStatus(loc.em+' '+loc.nm+' — '+loc.desc);
+  showT(loc.em+' Moved to '+loc.nm,'b');
+}
+
+function _applyLocScene(locId){
+  const loc=FISH_LOCATIONS.find(l=>l.id===locId)||FISH_LOCATIONS[0];
+  const sky=$('fishSkyBg');if(sky)sky.style.background=loc.sky||'';
+  const water=$('fishScene')?.querySelector('.fish-water');
+  if(water){water.style.background=loc.water||'';water.style.borderTopColor=loc.waterBorder||'';}
+  const title=$('fishLocTitle');if(title)title.textContent=loc.em+' '+loc.nm;
+  // Weather badge
+  const hour=new Date().getHours();const isNight=hour>=22||hour<6;
+  const wb=$('fishWeatherBadge');
+  const wth=FISH_WEATHERS[_fishState._weather]||FISH_WEATHERS[0];
+  if(wb)wb.textContent=wth.em+' '+(isNight&&loc.nightBonus?'NATTTID 2x ':'')+(wth.nm);
+  // Location scene decorations
+  const sceneEl=$('fishLocScene');if(sceneEl){
+    sceneEl.innerHTML='';
+    if(locId==='gamlastan')sceneEl.innerHTML=`<div style="position:absolute;bottom:38%;left:5%;font-size:22px;opacity:.3;pointer-events:none">🏛️</div><div style="position:absolute;bottom:38%;right:5%;font-size:18px;opacity:.25;pointer-events:none">⚓</div>`;
+    if(locId==='djurgarden')sceneEl.innerHTML=`<div style="position:absolute;bottom:38%;left:3%;font-size:20px;opacity:.3;pointer-events:none">🌿</div><div style="position:absolute;top:5%;left:40%;font-size:18px;opacity:.2;pointer-events:none">🦢</div>`;
+    if(locId==='hammarby')sceneEl.innerHTML=`<div style="position:absolute;top:8%;right:10%;font-size:16px;opacity:.3;pointer-events:none;animation:twk 2s ease-in-out infinite">🔦</div>`;
+    if(locId==='norr')sceneEl.innerHTML=`<div style="position:absolute;top:3%;left:50%;font-size:14px;opacity:.5;pointer-events:none;animation:twk 1.5s ease-in-out infinite">👑</div>`;
+  }
+  // Hotspot badge
+  const hs=$('fishHotspot');if(hs)hs.style.display=_sfStreak>=3?'block':'none';
+}
+
+// ── Spawn street fish using swimming targets ──
+function spawnStreetFishInScene(){
+  const scene=$('fishScene');if(!scene)return;
+  scene.querySelectorAll('.fish-em,.fish-bubble,.fish-swim-target').forEach(f=>f.remove());
+  const locId=G.fishLocation||'malaren';
+  const hour=new Date().getHours();const isNight=hour>=22||hour<6;
+  const locFish=(STREET_FISH[locId]||STREET_FISH.malaren).filter(f=>!f.nightOnly||isNight);
+  const wth=FISH_WEATHERS[_fishState._weather]||FISH_WEATHERS[0];
+  const sh=scene.clientHeight||Math.round(window.innerHeight*.55);
+  const rod=_getCurRod();
+  const count=rod.id==='bamboo'?4:rod.id==='carbon'?6:8;
+  for(let i=0;i<count;i++){
+    const roll=Math.random();
+    let ft=locFish[0];
+    if(roll<.5)ft=locFish[0];
+    else if(roll<.8&&locFish[1])ft=locFish[1];
+    else ft=locFish[locFish.length-1]||locFish[0];
+    // Also mix in some classic fish for variety
+    if(Math.random()<.3){const cl=FISH_TYPES.filter(f=>f.rarity==='common'||f.rarity==='uncommon');ft={...cl[Math.floor(Math.random()*cl.length)],loc:locId};}
+    const startX=5+Math.random()*80;
+    const yBase=sh*.42+Math.random()*sh*.5;
+    const dur=(1.5+Math.random()*2)/(ft.speed||1);
+    const sw=((Math.random()<.5?1:-1)*(20+Math.random()*40))+'px';
+    const del=(-Math.random()*2).toFixed(1)+'s';
+    const fish=document.createElement('div');
+    fish.className='fish-swim-target';
+    const rarityGlow=ft.rarity==='mythic'?'filter:drop-shadow(0 0 8px #BF5FFF);font-size:30px;':ft.rarity==='legendary'?'filter:drop-shadow(0 0 7px #FF3B30);font-size:28px;':ft.rarity==='epic'?'filter:drop-shadow(0 0 6px #FF9F0A);font-size:26px;':'font-size:24px;';
+    fish.style.cssText=`left:${startX}%;top:${yBase}px;--sw:${sw};--dur:${dur.toFixed(1)}s;--del:${del};animation:fishSwim ${dur.toFixed(1)}s ease-in-out infinite ${del};${rarityGlow}position:absolute;z-index:4;cursor:pointer;-webkit-tap-highlight-color:transparent;user-select:none;`;
+    fish.textContent=ft.em;
+    fish._ftData=ft;
+    fish.onclick=(e)=>{e.stopPropagation();onStreetFishTap(fish,ft);};
+    scene.appendChild(fish);
+  }
+  // bubbles
+  for(let i=0;i<5;i++){
+    const b=document.createElement('div');b.className='fish-bubble';
+    const sz=(3+Math.random()*6)+'px';
+    const bY=sh*.42+Math.random()*sh*.5;
+    b.style.cssText=`--dur:${(2+Math.random()*3).toFixed(1)}s;--del:${(-Math.random()*3).toFixed(1)}s;width:${sz};height:${sz};left:${8+Math.random()*84}%;top:${bY}px`;
+    scene.appendChild(b);
+  }
+  // Rainy weather bonus fish hint
+  if(wth.id==='rain'){const hint=$('fishWeatherBadge');if(hint)hint.textContent='🌧️ Regn — +30% sällsynt!';}
+  if(wth.id==='storm'){const hint=$('fishWeatherBadge');if(hint)hint.textContent='⛈️ Storm — Epic/Legendary only!';}
+}
+
+// ── Hook drop animation + catch zone ──
+let _sfHookY=0;let _sfHookActive=false;
+function _dropStreetHook(){
+  if(_sfHookActive)return;_sfHookActive=true;
+  const scene=$('fishScene');if(!scene)return;
+  const sh=scene.clientHeight||300;
+  const rod=_getCurRod();
+  const hookDepthPct=rod.id==='bamboo'?.5:rod.id==='carbon'?.65:.8;
+  _sfHookY=sh*hookDepthPct;
+  const line=$('fishLine');const hook=$('fishHook');const zone=$('fishCatchZone');
+  const hookX=40+Math.random()*20;
+  if(line){line.style.height=_sfHookY+'px';line.style.left=hookX+'%';line.style.display='block';}
+  if(hook){hook.style.display='block';hook.style.top=(_sfHookY-5)+'px';hook.style.left=`calc(${hookX}% - 3px)`;}
+  if(zone){zone.style.display='block';zone.style.top=(_sfHookY-20)+'px';zone.style.left=`calc(${hookX}% - 20px)`;}
+}
+
+function _reelUpHook(){
+  _sfHookActive=false;
+  const line=$('fishLine');const hook=$('fishHook');const zone=$('fishCatchZone');
+  if(line){line.style.height='0';}if(hook)hook.style.display='none';if(zone)zone.style.display='none';
+}
+
+// ── Tap on swimming fish ──
+function onStreetFishTap(fishEl,ft){
+  if(_fishState.phase==='biting'){fishSpamTap();return;}
+  if(_fishState.phase==='idle'){
+    // Bait and hook — clicking the actual fish directly = catch attempt
+    _sfCurTarget=ft;
+    _fishState.phase='biting';_fishState._curFish=ft;
+    _dropStreetHook();
+    // Check if fish is near hook
+    const scene=$('fishScene');if(!scene)return;
+    const fishRect=fishEl.getBoundingClientRect();
+    const hookEl=$('fishHook');const hookRect=hookEl?hookEl.getBoundingClientRect():{left:0,top:0,right:0,bottom:0};
+    const dist=Math.abs(fishRect.left-hookRect.left)+Math.abs(fishRect.top-hookRect.top);
+    if(dist<120){
+      // Close enough — trigger catch sequence
+      _sfStreak++;G.fishStreak=_sfStreak;
+      _sfHitFish(ft,fishEl);
+    } else {
+      // Not close, start spam phase
+      _fishState._spamPct=0;
+      const ring=$('fishSpamRing');if(ring)ring.classList.add('on');
+      const hint=$('fishTapHint');if(hint)hint.classList.add('on');
+      _fishUpdateSpamUI(0);
+      _fishSetStatus('🎣 '+ft.em+' '+ft.nm+' — SPAMMA för att dra in!');
+      vibe([30,20,50]);
+      _fishStartDrain(ft);
+      const failMs=ft.rarity==='mythic'?1800:ft.rarity==='legendary'||ft.rarity==='epic'?2200:ft.rarity==='rare'?2800:3500;
+      _fishState._failTimer=setTimeout(_fishFail,failMs);
+      fishEl.style.animation='none';fishEl.style.filter='drop-shadow(0 0 12px rgba(255,220,0,.8))';
+      _sfCurFishEl=fishEl;
+    }
+    return;
+  }
+  fishSpamTap();
+}
+let _sfCurFishEl=null;
+
+function _sfHitFish(ft,fishEl){
+  _fishStopSpam();_fishState.phase='idle';
+  _fishResetVisuals();_reelUpHook();
+  if(fishEl){fishEl.style.animation='fishFlyOut .9s cubic-bezier(.17,.89,.32,1.28) forwards';setTimeout(()=>fishEl.remove(),900);}
+  _sfCurFishEl=null;
+  // Splash particles
+  _spawnSplashParticles(ft);
+  // Camera shake for epic+
+  if(ft.rarity==='epic'||ft.rarity==='legendary'||ft.rarity==='mythic'){
+    const scene=$('fishScene');if(scene){scene.classList.add('fish-camshake');setTimeout(()=>scene.classList.remove('fish-camshake'),450);}
+  }
+  // Rewards
+  const rod=_getCurRod();
+  _fishState._combo=(_fishState._combo||0)+1;const combo=_fishState._combo;
+  const comboMult=combo>=8?4:combo>=5?3:combo>=3?2:1;
+  // Streak + hot spot
+  const streakMult=_sfStreak>=3?2:1;
+  const isNight=new Date().getHours()>=22||new Date().getHours()<6;
+  const locData=FISH_LOCATIONS.find(l=>l.id===(G.fishLocation||'malaren'))||FISH_LOCATIONS[0];
+  const nightMult=isNight&&locData.nightBonus?2:1;
+  // Weather
+  const wth=FISH_WEATHERS[_fishState._weather]||FISH_WEATHERS[0];
+  const stormRisk=wth.id==='storm'&&Math.random()<0.15;
+  if(stormRisk){
+    showT('⛈️ Storm! Fisken rymde!','r');_fishFail();return;
+  }
+  const rainBonus=wth.id==='rain'?1.3:1;
+  // Total coins
+  let baseCoins=Math.round(ft.coins*comboMult*rod.bonus*streakMult*nightMult*rainBonus);
+  let baseXP=Math.round(ft.xp*comboMult*rod.bonus);
+  // Apply permanent bonuses
+  if((G.fishBonuses||{}).xp5pct)baseXP=Math.round(baseXP*1.05);
+  if((G.fishBonuses||{}).coins10pct)baseCoins=Math.round(baseCoins*1.1);
+  gainCoins(baseCoins);gainXP(baseXP,'action');
+  // Journal
+  if(!G.fishJournal)G.fishJournal={};G.fishJournal[ft.nm]=(G.fishJournal[ft.nm]||0)+1;
+  // Add to catch box (fångstlåda)
+  if(!G.fishInventoryBox)G.fishInventoryBox=[];
+  if(G.fishInventoryBox.length<20){
+    G.fishInventoryBox.push({...ft,caughtAt:Date.now(),loc:G.fishLocation||'malaren'});
+  } else showT('📦 Låda full! Sälj några fiskar.','y');
+  // Permanent bonus for special fish
+  if(ft.bonus==='xp5pct'&&!(G.fishBonuses||{}).xp5pct){G.fishBonuses=G.fishBonuses||{};G.fishBonuses.xp5pct=true;showT('🦈 Gäddkung! +5% XP permanent!','y');vibe([80,40,120]);}
+  if(ft.bonus==='coins10pct'&&!(G.fishBonuses||{}).coins10pct){G.fishBonuses=G.fishBonuses||{};G.fishBonuses.coins10pct=true;showT('🐲 Sjödrake! +10% Coins permanent!','pk');vibe([80,40,120]);}
+  // Score
+  _fishState.score++;
+  if(_fishState.score>_fishState.best){_fishState.best=_fishState.score;localStorage.setItem('kv8_fishBest',_fishState.score);}
+  if(_sfStreak>(_fishState._streakRecord||0)){_fishState._streakRecord=_sfStreak;localStorage.setItem('kv8_fishStreak',_sfStreak);}
+  // Toast
+  const rarityCol=ft.rarity==='mythic'?'p':ft.rarity==='legendary'?'pk':ft.rarity==='epic'?'o':'g';
+  const streakMsg=_sfStreak>=3?` 🔥×${_sfStreak}`:'';const nightMsg=nightMult===2?' 🌙×2':'';
+  showT(`${ft.em} ${ft.nm}! +${baseCoins}⚡ +${baseXP}XP${streakMsg}${nightMsg}`,rarityCol);
+  SFX.win();vibe([30,20,80,20,100]);
+  // Inventory display (last 8)
+  _fishState.inventory.push(ft);
+  _updateFishStreakBadge();
+  updateFishUI();save();advanceQuest&&advanceQuest('fish');
+  setTimeout(()=>{spawnStreetFishInScene();_fishSetStatus(combo>=3?'🔥 COMBO ×'+combo+'! Kasta igen!':'💪 Bra catch! Klicka på en fisk!');},900);
+}
+
+function _spawnSplashParticles(ft){
+  const scene=$('fishScene');if(!scene)return;
+  const count=ft.rarity==='mythic'||ft.rarity==='legendary'?8:ft.rarity==='epic'?6:4;
+  const cx=50+Math.random()*10;const cy=45+Math.random()*10;
+  for(let i=0;i<count;i++){
+    const p=document.createElement('div');p.className='fish-splash-part';
+    const angle=Math.random()*360;const dist=20+Math.random()*40;
+    const sx=Math.cos(angle*Math.PI/180)*dist;const sy=Math.sin(angle*Math.PI/180)*dist-40;
+    p.style.cssText=`left:${cx}%;top:${cy}%;position:absolute;pointer-events:none;--sx:${sx}px;--sy:${sy}px`;
+    p.textContent=['💦','✨','💧','🌊'][Math.floor(Math.random()*4)];
+    scene.appendChild(p);setTimeout(()=>p.remove(),750);
+  }
+}
+
+function _updateFishStreakBadge(){
+  const badge=$('fishStreakBadgeScene');
+  const hotspot=$('fishHotspot');
+  if(badge){
+    if(_sfStreak>1){badge.style.display='block';badge.textContent='🔥 STREAK x'+_sfStreak;}
+    else{badge.style.display='none';}
+  }
+  if(hotspot){hotspot.style.display=_sfStreak>=3?'block':'none';}
+  const sb=$('fishStreakBadge');if(sb)sb.textContent=_fishState._combo>=3?'🔥 ×'+_fishState._combo+' COMBO':'';
+}
+
+// ── Fångstlåda (Catch Box) ──
+function openFishCatchBox(){
+  const m=$('fishBoxModal');if(m)m.classList.add('open');
+  renderFishCatchBox();
+}
+function closeFishCatchBox(){const m=$('fishBoxModal');if(m)m.classList.remove('open');}
+function renderFishCatchBox(){
+  if(!G.fishInventoryBox)G.fishInventoryBox=[];
+  const cnt=$('fishBoxCount');if(cnt)cnt.textContent=G.fishInventoryBox.length+'/20';
+  const val=$('fishBoxValue');if(val)val.textContent=G.fishInventoryBox.reduce((s,f)=>s+(f.coins||0),0)+'⚡';
+  const list=$('fishBoxList');if(!list)return;
+  if(G.fishInventoryBox.length===0){list.innerHTML=`<div style="text-align:center;padding:30px 0;color:var(--t3);font-size:13px">📦 Lådan är tom. Gå fiska!</div>`;return;}
+  const colMap={mythic:'rgba(191,95,255,.15)',legendary:'rgba(255,59,48,.15)',epic:'rgba(255,159,10,.12)',rare:'rgba(0,217,255,.1)',uncommon:'rgba(57,255,20,.08)',common:'rgba(255,255,255,.05)',junk:'rgba(255,255,255,.03)'};
+  const borderMap={mythic:'rgba(191,95,255,.5)',legendary:'rgba(255,59,48,.4)',epic:'rgba(255,159,10,.35)',rare:'rgba(0,217,255,.3)',uncommon:'rgba(57,255,20,.25)',common:'rgba(255,255,255,.12)',junk:'rgba(255,255,255,.07)'};
+  list.innerHTML=G.fishInventoryBox.map((f,idx)=>`<div class="fish-box-fish" style="background:${colMap[f.rarity]||colMap.common};border-color:${borderMap[f.rarity]||borderMap.common}">
+    <span style="font-size:26px">${f.em}</span>
+    <div style="flex:1">
+      <div style="font-size:13px;font-weight:900;color:var(--t1)">${f.nm}</div>
+      <div style="font-size:10px;color:var(--t3)">${f.rarity} · ${(FISH_LOCATIONS.find(l=>l.id===f.loc)||{em:'🌊'}).em} ${f.loc||'okänd'}</div>
+    </div>
+    <div style="text-align:right">
+      <div style="font-size:11px;font-weight:900;color:var(--y);font-family:var(--mono)">${f.coins}⚡</div>
+      <button class="fish-box-sell" onclick="sellSingleFish(${idx})">Sälj</button>
+    </div>
+  </div>`).join('');
+}
+function sellSingleFish(idx){
+  if(!G.fishInventoryBox||G.fishInventoryBox.length<=idx)return;
+  const f=G.fishInventoryBox[idx];
+  gainCoins(f.coins);G.fishInventoryBox.splice(idx,1);
+  save();renderFishCatchBox();
+  showT(f.em+' såld för '+f.coins+'⚡','g');SFX.coin&&SFX.coin();
+}
+function sellAllFishInBox(){
+  if(!G.fishInventoryBox||G.fishInventoryBox.length===0){showT('📦 Lådan är tom!','y');return;}
+  const total=G.fishInventoryBox.reduce((s,f)=>s+(f.coins||0),0);
+  gainCoins(total);G.fishInventoryBox=[];
+  save();renderFishCatchBox();updateHUD();
+  showT('💰 Sålde allt! +'+total+'⚡','g');SFX.win();vibe([30,20,60]);
+}
 
 function openFishingGame(){
   $('fishGame').classList.add('open');
   _fishState.phase='idle';_fishState.score=0;_fishState.inventory=[];_fishState._combo=0;
-  _fishState._weather=Math.floor(Math.random()*FISH_WEATHERS.length);
+  _sfStreak=0;_sfCurTarget=null;_sfCurFishEl=null;_sfHookActive=false;
+  // Weather
+  const hour=new Date().getHours();const isNight=hour>=22||hour<6;
+  // Storm only 5% chance, rainy 20%
+  const wRoll=Math.random();
+  _fishState._weather=wRoll<.05?3:wRoll<.25?2:wRoll<.55?1:0;
   const wth=FISH_WEATHERS[_fishState._weather];
   const wb=$('fishWeatherBadge');if(wb)wb.textContent=wth.em+' '+wth.nm;
+  // Apply location
+  if(!G.fishLocation)G.fishLocation='malaren';
+  const fishBoxBtn=$('fishBoxBtn');if(fishBoxBtn)fishBoxBtn.textContent='📦 Låda ('+((G.fishInventoryBox||[]).length)+')';
+  renderFishLocBar();_applyLocScene(G.fishLocation||'malaren');
   updateFishRodLabel();updateFishUI();
   _fishResetVisuals();
-  setTimeout(()=>{spawnFishInScene();_fishSetStatus('🎣 Tryck KASTA för att börja!');},380);
+  _updateFishStreakBadge();
+  setTimeout(()=>{spawnStreetFishInScene();_fishSetStatus('🎣 Klicka på en fisk för att fånga den!');},380);
 }
 
 function closeFishingGame(){
   $('fishGame').classList.remove('open');
   _fishStopSpam();clearTimeout(_fishState._failTimer);
+  _sfHookActive=false;_reelUpHook();
   _fishState.phase='idle';
   closeModal('rodShopModal');closeModal('fishJournalModal');
+  closeFishCatchBox();
 }
 
 function _fishSetStatus(msg){if($('fishStatus'))$('fishStatus').textContent=msg;}
@@ -6342,6 +6824,10 @@ function updateFishRodLabel(){
   const r=_getCurRod();const lbl=$('fishRodCurLabel');if(lbl)lbl.textContent=r.em+' '+r.nm;
 }
 function spawnFishInScene(){
+  // Delegate to new street fishing system
+  spawnStreetFishInScene();
+}
+function _origSpawnFishInScene(){
   const scene=$('fishScene');scene.querySelectorAll('.fish-em,.fish-bubble').forEach(f=>f.remove());
   const sh=scene.clientHeight||Math.round(window.innerHeight*.58);
   const wth=FISH_WEATHERS[_fishState._weather]||FISH_WEATHERS[0];
@@ -6391,20 +6877,20 @@ function spawnFishInScene(){
 }
 function fishCast(){
   if(_fishState.phase!=='idle')return;
+  // New mechanic: cast drops hook, fish swim past - click fish to catch
   _fishState.phase='waiting';
-  const rod=_getCurRod();
-  const scene=$('fishScene');const sh=scene.clientHeight||Math.round(window.innerHeight*.55);
-  const depthPct=rod.id==='bamboo'?.50:rod.id==='carbon'?.65:.78;
-  const waterY=sh*depthPct;
-  const line=$('fishLine');const bob=$('fishBob');
-  if(line){line.style.height=(waterY+35)+'px';line.style.display='block';}
-  if(bob){bob.style.display='block';bob.style.top=(waterY+28)+'px';bob.style.left='calc(50% - 7px)';}
-  const btn=$('fishCastBtn');if(btn){btn.className='fish-cast-btn casting';btn.textContent='🌊 Väntar på napp...';}
-  _fishSetStatus('Väntar på napp... 🌊');
-  vibe(20);SFX.click();
-  const wt=rod.castSpeed*1000;
-  const wait=wt*.5+Math.random()*wt*1.5;
-  _fishState._failTimer=setTimeout(_fishTriggerBite,wait);
+  _dropStreetHook();
+  const btn=$('fishCastBtn');if(btn){btn.className='fish-cast-btn casting';btn.textContent='🎣 Klicka på en fisk!';}
+  _fishSetStatus('🌊 Hook kastad! Klicka på en fisk som simmar nära kroken!');
+  vibe(20);SFX.click&&SFX.click();
+  // Auto-reset if no fish caught in time
+  const rod=_getCurRod();const waitMs=rod.castSpeed*3000;
+  _fishState._failTimer=setTimeout(()=>{
+    if(_fishState.phase==='waiting'){
+      _fishState.phase='idle';_reelUpHook();_fishResetVisuals();
+      _fishSetStatus('🎣 Klicka på en fisk för att fånga den!');
+    }
+  },waitMs);
 }
 
 function _fishTriggerBite(){
@@ -6488,19 +6974,27 @@ function fishSpamTap(){
   vibe(8);
   // Screen shake on high %
   if(_fishState._spamPct>80){const s=$('fishScene');if(s){s.style.transform='translateX('+((Math.random()-.5)*5)+'px)';setTimeout(()=>{if(s)s.style.transform='';},80);}}
-  if(_fishState._spamPct>=100){_fishCatch();return;}
+  if(_fishState._spamPct>=100){
+    // spam complete — complete street catch
+    _fishStopSpam();_fishResetVisuals();_reelUpHook();
+    const curFish=_fishState._curFish;_fishState.phase='idle';
+    if(curFish&&_sfCurFishEl){_sfHitFish(curFish,_sfCurFishEl);}
+    else if(curFish){_sfHitFish(curFish,null);}
+    return;
+  }
 }
 
 function onFishSceneTap(e){
   if(e&&e.type==='touchstart')e.preventDefault();
   if(_fishState.phase==='biting'){fishSpamTap();return;}
   if(_fishState.phase==='idle'){fishCast();return;}
+  if(_fishState.phase==='waiting'){_fishSetStatus('🎣 Klicka direkt på en fisk!');return;}
 }
 
 function onFishTap(fishEl,ft){
+  // This handles clicks on legacy fish-em elements (for backwards compat)
   if(_fishState.phase==='biting'){fishSpamTap();return;}
-  if(_fishState.phase==='idle'){fishCast();return;}
-  if(fishEl){fishEl.style.transform='scale(1.3) rotate(12deg)';setTimeout(()=>{if(fishEl)fishEl.style.transform='';},150);}
+  if(_fishState.phase==='idle'||_fishState.phase==='waiting'){onStreetFishTap(fishEl,ft);return;}
 }
 
 function _fishCatch(){
@@ -6558,12 +7052,14 @@ function _fishFail(){
   _fishState.phase='idle';
   _fishState._combo=0;
   _fishState._streak=0;
-  _fishResetVisuals();
+  _sfStreak=0;_sfCurFishEl=null;
+  _fishResetVisuals();_reelUpHook();
+  _updateFishStreakBadge();
   const fail=$('fishFailText');if(fail){fail.classList.add('on');setTimeout(()=>fail.classList.remove('on'),1200);}
   _fishSetStatus(MISS_MSGS[Math.floor(Math.random()*MISS_MSGS.length)]);
   vibe([20,10,20]);
   updateFishUI();
-  setTimeout(()=>spawnFishInScene(),600);
+  setTimeout(()=>spawnStreetFishInScene(),600);
 }
 
 function catchFish(){fishSpamTap();}
@@ -6614,22 +7110,49 @@ function openFishJournal(){
   const caught=G.fishJournal||{};
   const total=Object.values(caught).reduce((a,b)=>a+b,0);
   const unique=Object.keys(caught).length;
-  c.innerHTML=`<div style="display:flex;gap:12px;margin-bottom:14px">
-    <div style="flex:1;background:rgba(0,180,255,.08);border:1px solid rgba(0,180,255,.2);border-radius:14px;padding:12px;text-align:center">
-      <div style="font-size:24px;font-weight:900;font-family:var(--mono);color:var(--b)">${total}</div>
-      <div style="font-size:9px;color:var(--t3);margin-top:2px">TOTALT FÅNGADE</div>
+  // All catchable fish = classic + street
+  const allStreetFish=Object.values(STREET_FISH).flat();
+  const allFish=[...FISH_TYPES,...allStreetFish.filter(sf=>!FISH_TYPES.find(f=>f.nm===sf.nm))];
+  const totalTypes=allFish.length;
+  // Bonuses
+  const bonuses=G.fishBonuses||{};
+  const bonusHtml=Object.keys(bonuses).length>0?`<div style="background:rgba(57,255,20,.07);border:1.5px solid rgba(57,255,20,.25);border-radius:14px;padding:10px 14px;margin-bottom:12px">
+    <div style="font-size:10px;font-weight:900;color:var(--g);margin-bottom:6px">⚡ PERMANENTA BONUSAR</div>
+    ${bonuses.xp5pct?'<div style="font-size:11px;color:var(--g)">🦈 Gäddkung +5% XP</div>':''}
+    ${bonuses.coins10pct?'<div style="font-size:11px;color:var(--y)">🐲 Sjödrake +10% Coins</div>':''}
+  </div>`:'';
+  c.innerHTML=`<div style="display:flex;gap:8px;margin-bottom:14px">
+    <div style="flex:1;background:rgba(0,180,255,.08);border:1px solid rgba(0,180,255,.2);border-radius:14px;padding:10px;text-align:center">
+      <div style="font-size:22px;font-weight:900;font-family:var(--mono);color:var(--b)">${total}</div>
+      <div style="font-size:8px;color:var(--t3);margin-top:2px">TOTALT</div>
     </div>
-    <div style="flex:1;background:rgba(57,255,20,.06);border:1px solid rgba(57,255,20,.2);border-radius:14px;padding:12px;text-align:center">
-      <div style="font-size:24px;font-weight:900;font-family:var(--mono);color:var(--g)">${unique}/${FISH_TYPES.length}</div>
-      <div style="font-size:9px;color:var(--t3);margin-top:2px">UNIKA ARTER</div>
+    <div style="flex:1;background:rgba(57,255,20,.06);border:1px solid rgba(57,255,20,.2);border-radius:14px;padding:10px;text-align:center">
+      <div style="font-size:22px;font-weight:900;font-family:var(--mono);color:var(--g)">${unique}/${totalTypes}</div>
+      <div style="font-size:8px;color:var(--t3);margin-top:2px">UNIKA ARTER</div>
     </div>
-    <div style="flex:1;background:rgba(255,230,0,.07);border:1px solid rgba(255,230,0,.2);border-radius:14px;padding:12px;text-align:center">
-      <div style="font-size:24px;font-weight:900;font-family:var(--mono);color:var(--y)">${_fishState.best}</div>
-      <div style="font-size:9px;color:var(--t3);margin-top:2px">REKORD</div>
+    <div style="flex:1;background:rgba(255,230,0,.07);border:1px solid rgba(255,230,0,.2);border-radius:14px;padding:10px;text-align:center">
+      <div style="font-size:22px;font-weight:900;font-family:var(--mono);color:var(--y)">${_fishState.best}</div>
+      <div style="font-size:8px;color:var(--t3);margin-top:2px">REKORD</div>
+    </div>
+    <div style="flex:1;background:rgba(255,100,0,.07);border:1px solid rgba(255,100,0,.2);border-radius:14px;padding:10px;text-align:center">
+      <div style="font-size:22px;font-weight:900;font-family:var(--mono);color:var(--o)">${_fishState._streakRecord||0}</div>
+      <div style="font-size:8px;color:var(--t3);margin-top:2px">STREAK REC</div>
     </div>
   </div>
-  <div style="display:grid;grid-template-columns:1fr 1fr;gap:7px">`+
-  FISH_TYPES.map(ft=>{
+  ${bonusHtml}
+  <div style="font-size:10px;font-weight:900;color:var(--b);margin-bottom:8px;letter-spacing:.5px">🏙️ STREET FISK</div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:12px">`+
+  allStreetFish.map(ft=>{
+    const n=caught[ft.nm]||0;
+    const col=ft.rarity==='mythic'?'#BF5FFF':ft.rarity==='legendary'?'#FF3B30':ft.rarity==='epic'?'#FF9F0A':ft.rarity==='rare'?'#00D9FF':'rgba(255,255,255,.4)';
+    const loc=FISH_LOCATIONS.find(l=>l.id===ft.loc)||{em:'🌊'};
+    return`<div style="background:${n>0?'rgba(0,0,0,.3)':'rgba(0,0,0,.12)'};border:1px solid ${n>0?col+'55':'rgba(255,255,255,.05)'};border-radius:12px;padding:9px 10px;display:flex;align-items:center;gap:8px;opacity:${n>0?1:.45}">
+      <span style="font-size:20px;min-width:24px;text-align:center">${n>0?ft.em:'❓'}</span>
+      <div><div style="font-size:10px;font-weight:900;color:${col}">${n>0?ft.nm:'???'}</div><div style="font-size:8px;color:var(--t3)">${n>0?'×'+n+' · '+loc.em:'Inte fångad'}</div></div>
+    </div>`;
+  }).join('')+
+  `</div><div style="font-size:10px;font-weight:900;color:var(--t3);margin-bottom:8px;letter-spacing:.5px">🌊 KLASSISK FISK</div><div style="display:grid;grid-template-columns:1fr 1fr;gap:6px">`+
+  FISH_TYPES.slice(0,12).map(ft=>{
     const n=caught[ft.nm]||0;
     const col=ft.rarity==='ultra'?'#FFE600':ft.rarity==='mythic'?'#BF5FFF':ft.rarity==='legendary'?'#FF3B30':ft.rarity==='epic'?'#FF9F0A':ft.rarity==='rare'?'#00D9FF':ft.rarity==='uncommon'?'#57FF3C':'rgba(255,255,255,.4)';
     return`<div style="background:${n>0?'rgba(0,0,0,.3)':'rgba(0,0,0,.12)'};border:1px solid ${n>0?col+'55':'rgba(255,255,255,.05)'};border-radius:12px;padding:9px 10px;display:flex;align-items:center;gap:8px;opacity:${n>0?1:.45}">
@@ -6641,15 +7164,16 @@ function openFishJournal(){
 function updateFishUI(){
   const inv=$('fishInventory');
   if(inv)inv.innerHTML=_fishState.inventory.slice(-8).map(f=>{
-    const col=f.rarity==='ultra'?'rgba(255,230,0,.2)':f.rarity==='mythic'?'rgba(191,95,255,.15)':f.rarity==='legendary'?'rgba(255,59,48,.15)':'rgba(0,180,255,.1)';
-    const border=f.rarity==='ultra'?'rgba(255,230,0,.5)':f.rarity==='mythic'?'rgba(191,95,255,.4)':f.rarity==='legendary'?'rgba(255,59,48,.4)':'rgba(0,180,255,.3)';
+    const col=f.rarity==='ultra'||f.rarity==='mythic'?'rgba(191,95,255,.15)':f.rarity==='legendary'?'rgba(255,59,48,.15)':f.rarity==='epic'?'rgba(255,159,10,.12)':'rgba(0,180,255,.1)';
+    const border=f.rarity==='ultra'||f.rarity==='mythic'?'rgba(191,95,255,.4)':f.rarity==='legendary'?'rgba(255,59,48,.4)':f.rarity==='epic'?'rgba(255,159,10,.35)':'rgba(0,180,255,.3)';
     return`<div class="fish-catch-tag" style="background:${col};border-color:${border}"><span>${f.em}</span><div class="fish-catch-lbl">${f.nm}</div></div>`;
   }).join('');
   const combo=_fishState._combo;
   const sb=$('fishStreakBadge');if(sb)sb.textContent=combo>=3?'🔥 ×'+combo+' COMBO':'';
-  const sbs=$('fishStreakBadgeScene');if(sbs){if((_fishState._streak||0)>1){sbs.style.display='block';sbs.textContent='🔥 STREAK x'+_fishState._streak;}else{sbs.style.display='none';}}
-  const s=$('fishScoreBar');if(s)s.textContent='Poäng: '+_fishState.score+' · Bäst: '+_fishState.best+(_fishState._streakRecord>2?' · Streak REC: '+_fishState._streakRecord:'');
+  _updateFishStreakBadge();
+  const s=$('fishScoreBar');if(s)s.textContent='Poäng: '+_fishState.score+' · Bäst: '+_fishState.best+((_fishState._streakRecord||0)>2?' · Streak REC: '+_fishState._streakRecord:'');
   const st=$('fishScoreTop');if(st)st.textContent=_fishState.score+' FISKAR';
+  const fishBoxBtn=$('fishBoxBtn');if(fishBoxBtn)fishBoxBtn.textContent='📦 Låda ('+((G.fishInventoryBox||[]).length)+')';
 }
 
 // ── ENHANCED LEADERBOARD ──
@@ -6832,9 +7356,19 @@ function switchMeTab(tab, el){
 }
 
 function renderMeRum(){
-  const pet=$('meRumPet');if(pet)pet.textContent=G.petEmoji||'🐉';
-  const sky=$('meRumSky');if(sky&&G.roomTheme){const THEMES_MAP={forest:'linear-gradient(180deg,#0b2d12 0%,#0e3d18 100%)',ocean:'linear-gradient(180deg,#021d3a 0%,#03295a 100%)',space:'linear-gradient(180deg,#020410 0%,#060820 100%)',city:'linear-gradient(180deg,#0d0d20 0%,#151530 100%)',desert:'linear-gradient(180deg,#3d2200 0%,#5a3300 100%)',neon:'linear-gradient(180deg,#0a0020 0%,#100030 100%)',sunset:'linear-gradient(180deg,#3d0d00 0%,#5a2000 100%)'};sky.style.background=THEMES_MAP[G.roomTheme]||'linear-gradient(180deg,#061020 0%,#081830 100%)';}
-  const items=$('meRumItems');if(items){const placed=G.roomItems||[];items.innerHTML=placed.map(it=>`<div style="position:absolute;font-size:22px;${it.wall?`top:${it.y||20}%;left:${it.x||30}%`:`bottom:calc(38% + 2px);left:${it.x||40}%`};transform:translateX(-50%)">${it.em}</div>`).join('');}
+  const themeId=G.roomTheme||'cosmic';
+  const isV3=RV3_THEMES&&RV3_THEMES[themeId]!=null;
+  if(isV3){
+    const container=$('meRumPreview');
+    if(container){
+      container.style.height='auto';container.style.border='none';container.style.background='transparent';container.style.borderRadius='20px';
+      renderRoomV3('meRumPreview');
+    }
+  } else {
+    const pet=$('meRumPet');if(pet)pet.textContent=G.petEmoji||'🐉';
+    const sky=$('meRumSky');if(sky&&G.roomTheme){const THEMES_MAP={forest:'linear-gradient(180deg,#0b2d12 0%,#0e3d18 100%)',ocean:'linear-gradient(180deg,#021d3a 0%,#03295a 100%)',space:'linear-gradient(180deg,#020410 0%,#060820 100%)',city:'linear-gradient(180deg,#0d0d20 0%,#151530 100%)',desert:'linear-gradient(180deg,#3d2200 0%,#5a3300 100%)',neon:'linear-gradient(180deg,#0a0020 0%,#100030 100%)',sunset:'linear-gradient(180deg,#3d0d00 0%,#5a2000 100%)'};sky.style.background=THEMES_MAP[G.roomTheme]||'linear-gradient(180deg,#061020 0%,#081830 100%)';}
+    const items=$('meRumItems');if(items){const placed=G.roomItems||[];items.innerHTML=placed.map(it=>`<div style="position:absolute;font-size:22px;${it.wall?`top:${it.y||20}%;left:${it.x||30}%`:`bottom:calc(38% + 2px);left:${it.x||40}%`};transform:translateX(-50%)">${it.em}</div>`).join('');}
+  }
   const gl=$('meRumGearList');if(gl){const gear=G.gear||[];gl.innerHTML=gear.length?gear.map(gid=>{const g=GEAR.find(x=>x.id===gid);return g?`<div onclick="equipGear('${g.em}','${g.id}')" style="width:52px;height:52px;flex-shrink:0;border-radius:13px;background:var(--c1);border:2px solid ${G.equippedGear===g.em?'var(--g)':'var(--line)'};display:flex;align-items:center;justify-content:center;font-size:26px;cursor:pointer;position:relative">${g.em}${G.equippedGear===g.em?'<div style="position:absolute;top:-4px;right:-4px;background:var(--g);color:#000;font-size:7px;font-weight:900;padding:1px 3px;border-radius:4px">ON</div>':''}</div>`:''}).join(''):`<div style="color:var(--t3);font-size:12px;padding:10px">Inget gear ännu — gå till Shop!</div>`;}
 }
 
@@ -9761,6 +10295,12 @@ const ROOM_THEMES=[
   {id:'cozy',nm:'🏡 Cozy',bg:'linear-gradient(180deg,#120806 0%,#1a0e08 50%,#0f0a06 100%)',floor:'rgba(50,30,15,.9)',accent:'#FF9F0A'},
   {id:'nature',nm:'🌿 Nature',bg:'linear-gradient(180deg,#050f03 0%,#061206 50%,#040a04 100%)',floor:'rgba(10,30,10,.9)',accent:'#57FF3C'},
   {id:'space',nm:'🚀 Space',bg:'linear-gradient(180deg,#02020e 0%,#040420 50%,#020210 100%)',floor:'rgba(5,5,30,.9)',accent:'#4488FF'},
+  // V3 themes
+  {id:'city',nm:'🏙️ City',bg:'linear-gradient(180deg,#04060e 0%,#080c1a 50%,#060810 100%)',floor:'rgba(10,15,40,.95)',accent:'#00D9FF',v3:true,wall:'repeating-linear-gradient(90deg,rgba(100,120,160,.04) 0,rgba(100,120,160,.04) 1px,transparent 1px,transparent 22px)',window:'city',floorTex:'linear-gradient(180deg,#0a0e1c,#060810)'},
+  {id:'forest',nm:'🌿 Forest',bg:'linear-gradient(180deg,#030c04 0%,#040e05 50%,#030804 100%)',floor:'rgba(10,30,12,.95)',accent:'#39FF14',v3:true,wall:'repeating-linear-gradient(45deg,rgba(30,80,20,.06) 0,rgba(30,80,20,.06) 1px,transparent 1px,transparent 20px)',window:'forest',floorTex:'linear-gradient(180deg,#0a1c0a,#060e06)'},
+  {id:'space_v3',nm:'🚀 Space',bg:'linear-gradient(180deg,#020210 0%,#04041a 50%,#020210 100%)',floor:'rgba(5,5,40,.95)',accent:'#4488FF',v3:true,wall:'',window:'space_v3',floorTex:'linear-gradient(180deg,#050520,#020210)'},
+  {id:'beach',nm:'🏖️ Beach',bg:'linear-gradient(180deg,#060d1a 0%,#081022 50%,#060d18 100%)',floor:'rgba(40,35,10,.95)',accent:'#FFE600',v3:true,wall:'repeating-linear-gradient(60deg,rgba(220,180,80,.04) 0,rgba(220,180,80,.04) 1px,transparent 1px,transparent 18px)',window:'beach',floorTex:'linear-gradient(180deg,#1c1808,#0e0e04)'},
+  {id:'castle',nm:'🏰 Castle',bg:'linear-gradient(180deg,#0c0a08 0%,#140e0a 50%,#0a0806 100%)',floor:'rgba(30,20,10,.95)',accent:'#FF9F0A',v3:true,wall:'repeating-linear-gradient(90deg,rgba(140,100,60,.05) 0,rgba(140,100,60,.05) 2px,transparent 2px,transparent 28px)',window:'castle',floorTex:'linear-gradient(180deg,#1a1208,#0e0a04)'},
 ];
 let _roomActiveCat='alla';
 function openRoomShop(){
@@ -9777,12 +10317,12 @@ function closeRoomShop(){
 function renderRoomThemes(){
   const row=$('roomThemeRow');if(!row)return;
   const cur=G.roomTheme||'cosmic';
-  row.innerHTML=ROOM_THEMES.map(t=>`<div class="room-theme-chip ${t.id===cur?'active':''}" style="border-color:${t.accent};color:${t.id===cur?t.accent:'var(--t3)'};background:${t.id===cur?t.accent+'18':'transparent'}" onclick="setRoomTheme('${t.id}')">${t.nm}</div>`).join('');
+  row.innerHTML=ROOM_THEMES.map(t=>`<div class="room-theme-chip ${t.id===cur?'active':''}" style="border-color:${t.accent};color:${t.id===cur?t.accent:'var(--t3)'};background:${t.id===cur?t.accent+'18':'transparent'}" onclick="setRoomTheme('${t.id}')">${t.nm}${t.v3?'<span style="font-size:6px;vertical-align:super;margin-left:2px;opacity:.7">V3</span>':''}</div>`).join('');
 }
 function setRoomTheme(id){
   G.roomTheme=id;save();
-  renderRoomThemes();renderRoomPreview();initPetRoom();
-  showT('🏠 Tema bytt!','g');
+  renderRoomThemes();renderRoomPreview();renderMeRum();initPetRoom();
+  showT('🏠 Tema bytt till '+(ROOM_THEMES.find(t=>t.id===id)||{nm:'?'}).nm+'!','g');
 }
 function renderRoomPreview(){
   const wrap=$('roomPreview');if(!wrap)return;
@@ -9941,6 +10481,364 @@ function getAchievementRoomItems(){
   if(achs.includes('level5'))items.push({em:'⭐',nm:'Level 5',x:92,y:30});
   if(achs.includes('fisher'))items.push({em:'🎣',nm:'Fischer',x:3,y:22});
   return items;
+}
+
+// ══════════════════════════════════════════
+// ── ROOM V3 — ULTRA MEGA ROOM SYSTEM ──
+// ══════════════════════════════════════════
+const RV3_THEMES={
+  city:{
+    sky:h=>h>=6&&h<9?'linear-gradient(180deg,#2a0a00,#4a1800,#ff6030)':h>=9&&h<17?'linear-gradient(180deg,#04060e,#080c1a)':h>=17&&h<19?'linear-gradient(180deg,#1a0600,#2e0a00,#ff8020)':h>=19&&h<21?'linear-gradient(180deg,#12041a,#1a0830)':'linear-gradient(180deg,#020208,#04040e)',
+    wall:'linear-gradient(180deg,#0a0e1c 0%,#06080e 100%)',wallTex:'repeating-linear-gradient(90deg,rgba(100,120,200,.05) 0,rgba(100,120,200,.05) 1px,transparent 1px,transparent 24px)',
+    floor:'linear-gradient(180deg,#0a0e1c,#060810)',
+    window:h=>{
+      if(h>=6&&h<9)return{bg:'linear-gradient(180deg,#ff6030,#ffa040,#ff4020)',emoji:'🌅',particles:['✨','🌸']};
+      if(h>=9&&h<17)return{bg:'linear-gradient(180deg,#0a1832,#1a2848)',emoji:'🏙️',particles:['🌇','☁️']};
+      if(h>=17&&h<19)return{bg:'linear-gradient(180deg,#2a0800,#ff5010)',emoji:'🌆',particles:['🌇']};
+      if(h>=19&&h<21)return{bg:'linear-gradient(180deg,#100420,#1a0840)',emoji:'🌃',particles:['⭐','🌙']};
+      return{bg:'linear-gradient(180deg,#020208,#04040c)',emoji:'🌃',particles:['⭐','✨','🌙']};
+    },
+    neonSign:true,bricks:true,
+    gearPositions:[{x:'8%',bottom:'31%'},{x:'80%',bottom:'31%'},{x:'55%',top:'15%'},{x:'72%',top:'14%'},{x:'30%',top:'16%'},{x:'90%',top:'20%'}],
+    dustColor:'rgba(200,220,255,.6)',
+  },
+  forest:{
+    sky:h=>h>=6&&h<9?'linear-gradient(180deg,#0a1c04,#1a3008)':h>=9&&h<17?'linear-gradient(180deg,#050f03,#061206)':h>=17&&h<19?'linear-gradient(180deg,#0a1a04,#1c2808)':h>=19&&h<21?'linear-gradient(180deg,#030a02,#040c03)':'linear-gradient(180deg,#010501,#020702)',
+    wall:'linear-gradient(180deg,#051005 0%,#030803 100%)',wallTex:'repeating-linear-gradient(45deg,rgba(30,80,20,.07) 0,rgba(30,80,20,.07) 1px,transparent 1px,transparent 20px)',
+    floor:'linear-gradient(180deg,#0a1c0a,#060e06)',
+    window:h=>{
+      if(h>=6&&h<9)return{bg:'linear-gradient(180deg,#0a2004,#1a3808)',emoji:'🌄',particles:['🍃','🌿']};
+      if(h>=9&&h<17)return{bg:'linear-gradient(180deg,#0a1c04,#1a3208)',emoji:'🌳',particles:['🍃','🌿','🦋']};
+      if(h>=17&&h<19)return{bg:'linear-gradient(180deg,#101404,#1e2006)',emoji:'🌲',particles:['🍂']};
+      return{bg:'linear-gradient(180deg,#010401,#020602)',emoji:'🌲',particles:['🌙','⭐','🦉']};
+    },
+    leaves:true,woodWall:true,
+    gearPositions:[{x:'6%',bottom:'31%'},{x:'82%',bottom:'31%'},{x:'60%',top:'13%'},{x:'76%',top:'15%'},{x:'28%',top:'14%'},{x:'90%',top:'18%'}],
+    dustColor:'rgba(180,255,180,.5)',
+  },
+  space_v3:{
+    sky:_h=>'linear-gradient(180deg,#010108,#02020e)',
+    wall:'linear-gradient(180deg,#020210 0%,#04041a 100%)',wallTex:'',
+    floor:'linear-gradient(180deg,#050520,#020210)',
+    window:_h=>({bg:'linear-gradient(180deg,#000008,#00000e)',emoji:'🌌',particles:['⭐','✨','💫']}),
+    stars:true,metallic:true,
+    gearPositions:[{x:'5%',bottom:'31%'},{x:'80%',bottom:'31%'},{x:'58%',top:'14%'},{x:'74%',top:'13%'},{x:'32%',top:'15%'},{x:'90%',top:'20%'}],
+    dustColor:'rgba(150,180,255,.5)',
+  },
+  beach:{
+    sky:h=>h>=6&&h<9?'linear-gradient(180deg,#0a0e1a,#141824)':h>=9&&h<17?'linear-gradient(180deg,#060d1a,#081022)':h>=17&&h<19?'linear-gradient(180deg,#0a0a10,#141018)':h>=19&&h<21?'linear-gradient(180deg,#050810,#080c18)':'linear-gradient(180deg,#020508,#030710)',
+    wall:'linear-gradient(180deg,#0a0c08 0%,#060808 100%)',wallTex:'repeating-linear-gradient(60deg,rgba(220,180,80,.04) 0,rgba(220,180,80,.04) 1px,transparent 1px,transparent 18px)',
+    floor:'linear-gradient(180deg,#1c1808,#0e0e04)',
+    window:h=>{
+      if(h>=6&&h<9)return{bg:'linear-gradient(180deg,#ff6030,#ff8040)',emoji:'🌅',particles:['🌊','🐚']};
+      if(h>=9&&h<17)return{bg:'linear-gradient(180deg,#061428,#0a1e3a)',emoji:'🏖️',particles:['🌊','🐬','🌴']};
+      if(h>=17&&h<19)return{bg:'linear-gradient(180deg,#1a0808,#2e1010)',emoji:'🌇',particles:['🌊']};
+      return{bg:'linear-gradient(180deg,#020408,#040810)',emoji:'🌙',particles:['⭐','🌊']};
+    },
+    waves:true,palmWall:true,
+    gearPositions:[{x:'7%',bottom:'31%'},{x:'81%',bottom:'31%'},{x:'57%',top:'14%'},{x:'73%',top:'15%'},{x:'29%',top:'16%'},{x:'89%',top:'19%'}],
+    dustColor:'rgba(255,240,150,.5)',
+  },
+  castle:{
+    sky:_h=>'linear-gradient(180deg,#0c0a08,#100e0a)',
+    wall:'linear-gradient(180deg,#1a1208 0%,#0e0a06 100%)',wallTex:'repeating-linear-gradient(90deg,rgba(140,100,60,.06) 0,rgba(140,100,60,.06) 2px,transparent 2px,transparent 28px)',
+    floor:'linear-gradient(180deg,#1a1208,#0e0a04)',
+    window:_h=>({bg:'linear-gradient(180deg,#0c0408,#180808)',emoji:'🏰',particles:['✨'],stained:true}),
+    torches:true,stoneWall:true,
+    gearPositions:[{x:'5%',bottom:'31%'},{x:'82%',bottom:'31%'},{x:'60%',top:'14%'},{x:'76%',top:'15%'},{x:'30%',top:'13%'},{x:'90%',top:'20%'}],
+    dustColor:'rgba(255,200,100,.5)',
+  },
+};
+
+function _rv3GetTimeWindow(theme,hour){
+  const t=RV3_THEMES[theme]||RV3_THEMES.city;
+  return typeof t.window==='function'?t.window(hour):t.window(hour);
+}
+
+function renderRoomV3(containerId){
+  const wrap=$(containerId);if(!wrap)return;
+  const themeId=G.roomTheme||'city';
+  const theme=RV3_THEMES[themeId]||RV3_THEMES.city;
+  const hour=new Date().getHours();
+  const owned=G.roomDeco||[];
+  const mood=G.mood||100;
+  const hunger=G.hunger||100;
+  const energy=G.energy||100;
+  const lv=G.level||1;
+  // XP
+  const xpN_val=xpN?xpN(lv):150;
+  const xpPct=Math.min(100,Math.round(((G.exp||0)%xpN_val)/xpN_val*100));
+  const win=_rv3GetTimeWindow(themeId,hour);
+
+  // Profile rings SVG helper
+  const ring=(val,color,label)=>{
+    const r=16,c=2*Math.PI*r,pct=Math.min(100,val)/100;
+    return`<div class="rv3-ring-wrap">
+      <svg class="rv3-ring-svg" viewBox="0 0 40 40">
+        <circle cx="20" cy="20" r="${r}" fill="none" stroke="rgba(255,255,255,.08)" stroke-width="3.5"/>
+        <circle cx="20" cy="20" r="${r}" fill="none" stroke="${color}" stroke-width="3.5" stroke-linecap="round"
+          stroke-dasharray="${c}" stroke-dashoffset="${c-(c*pct)}" transform="rotate(-90 20 20)"
+          style="transition:stroke-dashoffset .8s ease"/>
+        <text x="20" y="24" text-anchor="middle" font-size="7" font-weight="900" fill="${color}" font-family="monospace">${Math.round(val)}</text>
+      </svg>
+      <div class="rv3-ring-lbl" style="color:${color}">${label}</div>
+    </div>`;
+  };
+
+  // Stained glass window pattern for castle
+  const stainedGlass=win.stained?`<svg style="position:absolute;inset:0;width:100%;height:100%;opacity:.85" viewBox="0 0 60 80">
+    <rect x="0" y="0" width="30" height="40" fill="rgba(255,100,0,.3)" stroke="rgba(0,0,0,.5)" stroke-width="2"/>
+    <rect x="30" y="0" width="30" height="40" fill="rgba(0,100,255,.3)" stroke="rgba(0,0,0,.5)" stroke-width="2"/>
+    <rect x="0" y="40" width="60" height="40" fill="rgba(100,0,255,.25)" stroke="rgba(0,0,0,.5)" stroke-width="2"/>
+    <ellipse cx="30" cy="40" rx="12" ry="12" fill="rgba(255,200,0,.4)" stroke="rgba(0,0,0,.5)" stroke-width="2"/>
+  </svg>`:'';;
+
+  // Window particles
+  const winParticles=(win.particles||[]).slice(0,4).map((p,i)=>`<div class="rv3-win-particle" style="--wpd:${3+i*.7}s;--wpdd:${-i*.8}s;left:${10+i*22}%;top:${15+i*15}%">${p}</div>`).join('');
+
+  // Gear items (owned shop items shown in room at fixed positions)
+  const gearPos=theme.gearPositions||[];
+  const ownedGear=owned.slice(0,6);
+  const gearHtml=ownedGear.map((id,i)=>{
+    const it=ROOM_DECO_ITEMS.find(x=>x.id===id);if(!it||!gearPos[i])return'';
+    const pos=gearPos[i];
+    const posStyle=pos.bottom?`left:${pos.x};bottom:${pos.bottom}`:`left:${pos.x};top:${pos.top}`;
+    return`<div class="rv3-gear-item" style="${posStyle}" title="${it.nm}" onclick="showT('${it.em} ${it.nm}','y')">${it.em}</div>`;
+  }).join('');
+
+  // TV stat display
+  const tvHtml=`<div class="rv3-tv" onclick="showRv3StatPopup()" title="Klicka för stats">
+    <div class="rv3-tv-screen">
+      <div class="rv3-tv-scanline"></div>
+      <div class="rv3-tv-label" style="padding-top:2px">HP</div>
+      <div class="rv3-tv-bar" style="background:rgba(57,255,20,.15)"><div style="height:100%;width:${mood}%;background:var(--g);border-radius:2px;transition:width .5s"></div></div>
+      <div class="rv3-tv-label">🍖</div>
+      <div class="rv3-tv-bar" style="background:rgba(255,159,10,.15)"><div style="height:100%;width:${hunger}%;background:var(--o);border-radius:2px;transition:width .5s"></div></div>
+      <div class="rv3-tv-label">XP</div>
+      <div class="rv3-tv-bar" style="background:rgba(0,217,255,.12)"><div style="height:100%;width:${xpPct}%;background:var(--b);border-radius:2px;transition:width .5s"></div></div>
+    </div>
+    <div class="rv3-tv-stand"></div>
+    <div class="rv3-tv-base"></div>
+  </div>`;
+
+  // Night stars for space/night themes
+  const starsHtml=theme.stars||hour<6||hour>=22?Array.from({length:22},(_,i)=>`<div style="position:absolute;left:${Math.random()*100}%;top:${Math.random()*65}%;width:${1+Math.random()*2}px;height:${1+Math.random()*2}px;border-radius:50%;background:#fff;opacity:${.3+Math.random()*.7};animation:twk ${1.5+Math.random()*3}s ease-in-out infinite ${-Math.random()*3}s"></div>`).join(''):'';
+
+  // Torches for castle
+  const torchHtml=theme.torches?`<div class="rv3-torch" style="left:5%;bottom:55%">🔥</div><div class="rv3-torch" style="right:5%;bottom:55%" style="animation-delay:.15s">🔥</div>`:'';
+
+  // Neon city sign
+  const neonHtml=theme.neonSign?`<div style="position:absolute;top:8%;left:8%;font-size:9px;font-family:var(--mono);font-weight:900;color:var(--b);opacity:.7;text-shadow:0 0 8px var(--b),0 0 16px var(--b);animation:neonFlicker 3s ease-in-out infinite;pointer-events:none;z-index:6">KARMA</div>`:'';
+
+  // Water bowl (clickable feed)
+  const bowlEmpty=hunger<40;
+  const bowlHtml=`<div class="rv3-obj" style="left:42%;bottom:31%" onclick="pcFeed();renderRoomV3('roomPreview');showT('🥣 Mat serverat!','g')" title="Klicka för att mata">🥣<span class="rv3-obj-lbl">${bowlEmpty?'Tömd':'Mat'}</span></div>`;
+
+  // Bed (clickable sleep)
+  const bedHtml=`<div class="rv3-obj" style="right:5%;bottom:31%" onclick="rv3SleepPet()" title="Sömn +30 energi">🛏️<span class="rv3-obj-lbl">Säng</span></div>`;
+
+  // Custom items
+  const custom=G.customRoomItems||[];
+  const customHtml=custom.map(ci=>`<div style="position:absolute;left:${ci.x}%;bottom:31%;font-size:18px;z-index:8;cursor:pointer" onclick="removeCustomRoomItem('${ci.id}')" title="${ci.nm}">${ci.em}</div>`).join('');
+
+  // Level badge color
+  const lvColor=lv>=20?'var(--y)':lv>=10?'var(--p)':lv>=5?'var(--b)':'var(--g)';
+
+  wrap.innerHTML=`
+  <div class="rv3-wrap">
+    <!-- Profile header -->
+    <div class="rv3-profile">
+      <div class="rv3-pet-bob" onclick="onPetTap(event)">${G.petEmoji||'🐉'}</div>
+      <div class="rv3-info">
+        <div class="rv3-username">${G.petName||'Eldraken'}<span class="rv3-online"></span></div>
+        <div class="rv3-handle">@${(G.name||'user').toLowerCase().replace(/\s+/g,'_')} · KARMA</div>
+        <div class="rv3-lvbadge" style="border-color:${lvColor};color:${lvColor};background:${lvColor}18">
+          ⚡ LV ${lv} · ${(gS&&gS())?gS().s:'ROOKIE'}
+        </div>
+      </div>
+      <div class="rv3-rings">
+        ${ring(mood,'var(--pk)','MOOD')}
+        ${ring(hunger,'var(--o)','MAT')}
+        ${ring(xpPct,'var(--b)','XP')}
+      </div>
+    </div>
+    <!-- Room scene -->
+    <div class="rv3-scene" id="rv3Scene">
+      <!-- Sky layer -->
+      <div class="rv3-sky" style="background:${typeof theme.sky==='function'?theme.sky(hour):theme.sky}">${starsHtml}</div>
+      <!-- Wall layer -->
+      <div class="rv3-wall" style="background:${theme.wall};"></div>
+      ${theme.wallTex?`<div style="position:absolute;top:0;left:0;right:0;height:72%;pointer-events:none;z-index:1;${theme.wallTex?'background:'+theme.wallTex:''}"></div>`:''}
+      <!-- Neon / torches -->
+      ${neonHtml}${torchHtml}
+      <!-- Window -->
+      <div class="rv3-window" onclick="rv3ToggleDayNight()" id="rv3Window">
+        <div class="rv3-window-scene" style="background:${win.bg}">${stainedGlass}${winParticles}</div>
+        <div class="rv3-window-frame"></div>
+        <div class="rv3-window-cross"></div>
+        <div style="position:absolute;top:2px;left:2px;font-size:10px;z-index:3">${win.emoji}</div>
+      </div>
+      <!-- Dust motes (from window) -->
+      <div class="rv3-dust">${Array.from({length:20},(_,i)=>`<div class="rv3-mote" style="left:${62+Math.random()*24}%;top:${8+Math.random()*60}%;--md:${4+Math.random()*4}s;--mdd:${-Math.random()*4}s;--mx:${(Math.random()-.5)*14}px"></div>`).join('')}</div>
+      <!-- TV -->
+      ${tvHtml}
+      <!-- Gear in room -->
+      ${gearHtml}
+      <!-- Custom items -->
+      ${customHtml}
+      <!-- Floor -->
+      <div class="rv3-floor" style="background:${theme.floor}"></div>
+      <!-- Floor items -->
+      ${bowlHtml}${bedHtml}
+      <!-- Pet -->
+      <div class="rv3-pet" id="rv3Pet" onclick="onPetTap(event)" style="left:35%">${G.petEmoji||'🐉'}</div>
+      <!-- Season particles container -->
+      <div id="rv3SeasonParticles" style="position:absolute;inset:0;pointer-events:none;z-index:9"></div>
+    </div>
+  </div>`;
+
+  // Start life after render
+  _startRv3PetLife();
+  _spawnRv3Particles(themeId,hour,mood);
+}
+
+let _rv3LifeTimer=null;let _rv3HeartTimer=null;let _rv3PetX=35;let _rv3PetDir=1;
+function _startRv3PetLife(){
+  clearInterval(_rv3LifeTimer);clearInterval(_rv3HeartTimer);
+  const hour=new Date().getHours();const isNight=hour<6||hour>=22;
+  _rv3LifeTimer=setInterval(()=>{
+    const pet=$('rv3Pet');if(!pet){clearInterval(_rv3LifeTimer);return;}
+    const en=G.energy||100;const mo=G.mood||100;const hu=G.hunger||100;
+    let state='';
+    if(isNight||en<25)state='sleeping';
+    else if(hu<35)state='hungry';
+    else if(mo>85&&Math.random()<0.3)state='dancing';
+    else if(mo>75)state='playing';
+    pet.className='rv3-pet '+(state||'');
+    if(state==='sleeping'){pet.style.left='55%';}
+    else if(state==='hungry'){pet.style.left='42%';}
+    else{
+      _rv3PetX+=_rv3PetDir*(10+Math.random()*18);
+      if(_rv3PetX>72){_rv3PetX=72;_rv3PetDir=-1;}if(_rv3PetX<10){_rv3PetX=10;_rv3PetDir=1;}
+      pet.style.left=_rv3PetX+'%';pet.style.transform=_rv3PetDir>0?'scaleX(1)':'scaleX(-1)';
+    }
+  },3800);
+  // Hearts when mood > 85
+  if((G.mood||100)>85){
+    _rv3HeartTimer=setInterval(()=>{
+      const scene=$('rv3Scene');if(!scene){clearInterval(_rv3HeartTimer);return;}
+      const h=document.createElement('div');h.className='rv3-mood-heart';
+      h.textContent=['💕','❤️','💖','✨'][Math.floor(Math.random()*4)];
+      const pet=$('rv3Pet');const px=pet?parseFloat(pet.style.left||'35'):35;
+      h.style.cssText=`left:${px+5+Math.random()*12}%;bottom:${42+Math.random()*15}%;position:absolute;pointer-events:none;--hd:${1.2+Math.random()*.5}s`;
+      scene.appendChild(h);setTimeout(()=>h.remove(),2000);
+    },2000);
+  }
+}
+
+function _spawnRv3Particles(themeId,hour,mood){
+  const cont=$('rv3SeasonParticles');if(!cont)return;
+  cont.innerHTML='';
+  const month=new Date().getMonth();const isWinter=month<=1||month===11;const isSummer=month>=5&&month<=7;
+  // Season particles in window area
+  const spawnParticle=()=>{
+    const p=document.createElement('div');p.className='rv3-season-part';
+    let em='❄️';
+    if(themeId==='forest'&&isSummer)em=['🦋','🍃','🌿'][Math.floor(Math.random()*3)];
+    else if(themeId==='forest')em=['🍂','🍃'][Math.floor(Math.random()*2)];
+    else if(themeId==='beach')em=['🌊','🐚'][Math.floor(Math.random()*2)];
+    else if(themeId==='space_v3')em=['✨','💫','⭐'][Math.floor(Math.random()*3)];
+    else if(themeId==='castle')em=['✨','🔥'][Math.floor(Math.random()*2)];
+    else if(isWinter)em='❄️';
+    else if(isSummer)em='🦋';
+    else em='🍃';
+    p.textContent=em;
+    p.style.cssText=`left:${Math.random()*90}%;top:-10px;--sf:${4+Math.random()*4}s;--sfd:${-Math.random()*4}s`;
+    cont.appendChild(p);
+    setTimeout(()=>p.remove(),8000);
+  };
+  // spawn a few immediately
+  for(let i=0;i<6;i++)setTimeout(()=>spawnParticle(),i*300);
+  // then periodically
+  if(!cont._spawnInterval)cont._spawnInterval=setInterval(spawnParticle,2200);
+}
+
+let _rv3NightMode=false;
+function rv3ToggleDayNight(){
+  _rv3NightMode=!_rv3NightMode;
+  const themeId=G.roomTheme||'city';const theme=RV3_THEMES[themeId]||RV3_THEMES.city;
+  const win=$('rv3Window');if(!win)return;
+  const h=_rv3NightMode?23:12;
+  const wdata=typeof theme.window==='function'?theme.window(h):theme.window;
+  const scene=win.querySelector('.rv3-window-scene');
+  if(scene)scene.style.background=wdata.bg;
+  const sky=$('rv3Scene')?.querySelector('.rv3-sky');
+  if(sky)sky.style.background=typeof theme.sky==='function'?theme.sky(h):theme.sky;
+  showT(_rv3NightMode?'🌙 Natt-vy!':'☀️ Dag-vy!','b');
+}
+
+let _rv3BedCooldown=false;
+function rv3SleepPet(){
+  if(_rv3BedCooldown){showT('😴 Säng är på nedkylning! (10 min)','y');return;}
+  G.energy=Math.min(100,G.energy+30);_rv3BedCooldown=true;
+  setTimeout(()=>{_rv3BedCooldown=false;},10*60*1000);
+  updatePetView&&updatePetView();save&&save();
+  showT('😴 Din pet sover gott! +30 Energi','b');vibe([20,15,40]);
+  renderRoomV3('roomPreview');
+}
+
+function showRv3StatPopup(){
+  const popup=$('rv3StatPopup');if(!popup)return;
+  const pet=$('rv3StatPet');if(pet)pet.textContent=G.petEmoji||'🐉';
+  const list=$('rv3StatList');if(!list)return;
+  const xpN_val=xpN?xpN(G.level||1):150;
+  const xpPct=Math.min(100,Math.round(((G.exp||0)%xpN_val)/xpN_val*100));
+  const stats=[
+    {lbl:'Mood',val:G.mood||100,color:'var(--pk)',icon:'💖'},
+    {lbl:'Mat',val:G.hunger||100,color:'var(--o)',icon:'🍖'},
+    {lbl:'Energi',val:G.energy||100,color:'var(--b)',icon:'⚡'},
+    {lbl:'XP',val:xpPct,color:'var(--g)',icon:'⭐'},
+    {lbl:'Level',val:G.level||1,max:false,color:'var(--y)',icon:'👑'},
+    {lbl:'Coins',val:G.coins||0,max:false,color:'var(--y)',icon:'💰'},
+  ];
+  list.innerHTML=stats.map(s=>`<div style="display:flex;align-items:center;gap:8px">
+    <span style="font-size:14px">${s.icon}</span>
+    <div style="flex:1">
+      <div style="font-size:9px;font-weight:900;color:var(--t3);font-family:var(--mono)">${s.lbl.toUpperCase()}</div>
+      ${s.max===false?`<div style="font-size:13px;font-weight:900;color:${s.color};font-family:var(--mono)">${s.val}</div>`:`<div style="height:6px;background:rgba(255,255,255,.08);border-radius:4px;overflow:hidden;margin-top:2px"><div style="height:100%;width:${s.val}%;background:${s.color};border-radius:4px;transition:width .5s"></div></div>`}
+    </div>
+    ${s.max!==false?`<span style="font-size:10px;font-weight:900;color:${s.color};font-family:var(--mono)">${s.val}%</span>`:''}
+  </div>`).join('');
+  popup.style.display='flex';
+}
+function closeRv3StatPopup(){const p=$('rv3StatPopup');if(p)p.style.display='none';}
+
+// Override renderRoomPreview to use V3 for modal
+const _origRenderRoomPreview=renderRoomPreview;
+renderRoomPreview=function(){
+  const themeId=G.roomTheme||'cosmic';
+  const isV3=RV3_THEMES[themeId]!=null;
+  if(isV3){
+    // For the modal roomPreview container - it's used by the shop
+    const wrap=$('roomPreview');
+    if(wrap){wrap.style.height='auto';wrap.style.background='transparent';renderRoomV3('roomPreview');}
+  } else {
+    _origRenderRoomPreview();
+  }
+};
+
+// Also wire the meRumPreview on the Profile tab
+function renderMeRumV3(){
+  const container=$('meRumPreview');if(!container)return;
+  const themeId=G.roomTheme||'cosmic';
+  const isV3=RV3_THEMES[themeId]!=null;
+  if(isV3){
+    container.style.height='auto';container.style.background='transparent';
+    renderRoomV3('meRumPreview');
+  } else {
+    // original mini-room
+    const sky=$('meRumSky');if(sky&&G.roomTheme){const THEMES_MAP={forest:'linear-gradient(180deg,#0b2d12 0%,#0e3d18 100%)',ocean:'linear-gradient(180deg,#021d3a 0%,#03295a 100%)',space:'linear-gradient(180deg,#020410 0%,#060820 100%)',city:'linear-gradient(180deg,#0d0d20 0%,#151530 100%)',desert:'linear-gradient(180deg,#3d2200 0%,#5a3300 100%)',neon:'linear-gradient(180deg,#0a0020 0%,#100030 100%)',sunset:'linear-gradient(180deg,#3d0d00 0%,#5a2000 100%)'};sky.style.background=THEMES_MAP[G.roomTheme]||'linear-gradient(180deg,#061020 0%,#081830 100%)';}
+  }
 }
 function renderRoomShopGrid(cat){
   if(cat)_roomActiveCat=cat;
@@ -10135,6 +11033,9 @@ save=function(){
     if(G.fishRods)localStorage.setItem('kv8_frs',JSON.stringify(G.fishRods));
     if(G.roomTheme)localStorage.setItem('kv8_rt',G.roomTheme);
     if(_fishState._streakRecord)localStorage.setItem('kv8_fishStreak',_fishState._streakRecord);
+    if(G.fishLocation)localStorage.setItem('kv8_fishLoc',G.fishLocation);
+    localStorage.setItem('kv8_fishBox',JSON.stringify(G.fishInventoryBox||[]));
+    localStorage.setItem('kv8_fishBonuses',JSON.stringify(G.fishBonuses||{}));
   }catch(e){}
 };
 // load roomDeco + extras
@@ -10149,6 +11050,11 @@ try{G.fishRod=localStorage.getItem('kv8_fr')||'bamboo';}catch(e){G.fishRod='bamb
 try{const frs=localStorage.getItem('kv8_frs');if(frs)G.fishRods=JSON.parse(frs);}catch(e){G.fishRods=[];}
 if(!G.fishRods)G.fishRods=[];
 try{G.roomTheme=localStorage.getItem('kv8_rt')||'cosmic';}catch(e){G.roomTheme='cosmic';}
+try{G.fishLocation=localStorage.getItem('kv8_fishLoc')||'malaren';}catch(e){G.fishLocation='malaren';}
+try{const fb=localStorage.getItem('kv8_fishBox');if(fb)G.fishInventoryBox=JSON.parse(fb);}catch(e){G.fishInventoryBox=[];}
+if(!G.fishInventoryBox)G.fishInventoryBox=[];
+try{const fbn=localStorage.getItem('kv8_fishBonuses');if(fbn)G.fishBonuses=JSON.parse(fbn);}catch(e){G.fishBonuses={};}
+if(!G.fishBonuses)G.fishBonuses={};
 // Update room deco teaser on load
 setTimeout(()=>{
   const sub=$('roomDecoSub');if(sub&&G.roomDeco.length>0)sub.textContent=G.roomDeco.length+' items i ditt rum';
