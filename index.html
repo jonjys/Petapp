@@ -1567,6 +1567,54 @@ textarea.inp{resize:none;min-height:68px;}
 /* DNA */
 .dna-pet-opt{width:44px;height:44px;border-radius:10px;background:var(--c2);border:1.5px solid var(--line);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .1s;}
 .dna-pet-opt:active{transform:scale(.88);}
+
+/* ── KARMA STORIES ── */
+.story-ring{flex-shrink:0;display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer;-webkit-tap-highlight-color:transparent;}
+.story-avatar{width:52px;height:52px;border-radius:50%;border:2.5px solid transparent;background-clip:padding-box;position:relative;display:flex;align-items:center;justify-content:center;font-size:28px;}
+.story-avatar.unseen{border-color:transparent;background:linear-gradient(var(--bg),var(--bg)) padding-box,linear-gradient(135deg,var(--pk),var(--p),var(--b)) border-box;}
+.story-avatar.seen{border-color:rgba(255,255,255,.2);}
+.story-avatar.mine{background:linear-gradient(var(--bg),var(--bg)) padding-box,linear-gradient(135deg,var(--y),var(--o)) border-box;border-color:transparent;}
+.story-lbl{font-size:9px;color:var(--t3);font-weight:600;max-width:52px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;text-align:center;}
+.story-lbl.mine{color:var(--y);}
+.story-viewer{position:fixed;inset:0;z-index:900;background:#000;display:flex;flex-direction:column;}
+.story-viewer.hidden{display:none;}
+.story-progress{display:flex;gap:3px;padding:10px 10px 0;flex-shrink:0;}
+.story-seg{flex:1;height:2.5px;border-radius:2px;background:rgba(255,255,255,.25);overflow:hidden;}
+.story-seg-fill{height:100%;background:#fff;border-radius:2px;width:0%;transition:none;}
+.story-seg-fill.active{transition:width linear;}
+.story-hdr{display:flex;align-items:center;gap:10px;padding:8px 12px;flex-shrink:0;}
+.story-close{margin-left:auto;font-size:22px;color:#fff;cursor:pointer;padding:4px;}
+.story-body{flex:1;position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;}
+.story-bg{position:absolute;inset:0;background-size:cover;}
+.story-content{position:relative;z-index:2;text-align:center;padding:20px;}
+.story-tap-prev{position:absolute;left:0;top:0;width:35%;height:100%;z-index:10;}
+.story-tap-next{position:absolute;right:0;top:0;width:65%;height:100%;z-index:10;}
+
+/* ── HOLOGRAPHIC PET CARD ── */
+.pet-card-wrap{position:fixed;inset:0;z-index:900;background:rgba(0,0,0,.92);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px;}
+.pet-card-wrap.hidden{display:none;}
+.pet-card{width:260px;height:380px;border-radius:22px;position:relative;overflow:hidden;cursor:pointer;box-shadow:0 20px 60px rgba(0,0,0,.8);}
+.pet-card-holo{position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,0,128,.15) 0%,rgba(0,255,128,.15) 25%,rgba(0,128,255,.15) 50%,rgba(255,0,255,.15) 75%,rgba(255,200,0,.15) 100%);pointer-events:none;mix-blend-mode:overlay;opacity:0;transition:opacity .3s;}
+.pet-card:active .pet-card-holo{opacity:1;}
+.pet-card-canvas{display:block;width:260px;height:380px;}
+
+/* ── FORTUNE ORACLE ── */
+.fortune-wrap{position:fixed;inset:0;z-index:880;background:rgba(0,0,0,.95);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;}
+.fortune-wrap.hidden{display:none;}
+.fortune-orb{width:120px;height:120px;border-radius:50%;background:radial-gradient(circle at 35% 35%,rgba(191,95,255,.8),rgba(63,0,127,.9));box-shadow:0 0 40px rgba(191,95,255,.6),0 0 80px rgba(191,95,255,.3);animation:orbPulse 2s ease-in-out infinite;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:48px;margin-bottom:20px;}
+@keyframes orbPulse{0%,100%{box-shadow:0 0 40px rgba(191,95,255,.6),0 0 80px rgba(191,95,255,.3);}50%{box-shadow:0 0 60px rgba(191,95,255,.9),0 0 120px rgba(191,95,255,.5),0 0 0 8px rgba(191,95,255,.15);}}
+.fortune-card{background:linear-gradient(135deg,rgba(63,0,127,.4),rgba(30,0,60,.6));border:1.5px solid rgba(191,95,255,.4);border-radius:18px;padding:20px;max-width:300px;text-align:center;opacity:0;transform:translateY(20px);transition:all .6s cubic-bezier(.34,1.56,.64,1);}
+.fortune-card.revealed{opacity:1;transform:none;}
+.fortune-stars{font-size:11px;color:rgba(191,95,255,.7);letter-spacing:3px;margin-bottom:8px;font-family:var(--mono);}
+.fortune-title{font-size:18px;font-weight:900;color:var(--p);margin-bottom:10px;}
+.fortune-text{font-size:13px;color:rgba(255,255,255,.8);line-height:1.6;margin-bottom:14px;}
+.fortune-event{background:rgba(255,230,0,.1);border:1px solid rgba(255,230,0,.3);border-radius:10px;padding:8px 12px;font-size:11px;color:var(--y);font-weight:700;}
+
+/* ── NIGHT OWL MODE ── */
+.night-owl-overlay{position:fixed;inset:0;pointer-events:none;z-index:9;background:rgba(30,0,60,.12);transition:opacity 1s;}
+.night-owl-overlay.hidden{opacity:0;}
+.night-owl-banner{position:fixed;top:56px;left:50%;transform:translateX(-50%);z-index:200;background:linear-gradient(135deg,rgba(40,0,80,.95),rgba(20,0,40,.95));border:1px solid rgba(191,95,255,.4);border-radius:14px;padding:10px 20px;display:flex;align-items:center;gap:10px;font-size:13px;font-weight:900;color:var(--p);font-family:var(--mono);box-shadow:0 8px 28px rgba(191,95,255,.3);white-space:nowrap;opacity:0;pointer-events:none;transition:all .5s;}
+.night-owl-banner.show{opacity:1;}
 </style>
 
 </head>
@@ -1777,6 +1825,9 @@ textarea.inp{resize:none;min-height:68px;}
           <div class="ddr" onclick="cM();oWin('aiWin')"><div class="ddr-i">🤖</div>KARMA AI</div>
           <div class="ddr" style="background:linear-gradient(135deg,#FFE60022,#FF9F0A11);border:1px solid #FFE60055" onclick="cM();openModal('premiumModal')"><div class="ddr-i">👑</div><span style="color:var(--y);font-weight:900">KARMA PRO</span></div>
         </div>
+        <div class="dd-sec">
+          <div class="ddr" onclick="openFortuneOracle();toggleMenu()"><div class="ddr-i">🔮</div>Fortune Oracle</div>
+        </div>
         <div class="dd-sec" id="ddAuthSection">
           <div id="ddLoginRow" class="ddr" onclick="cM();showAuthScreen()" style="display:none"><div class="ddr-i">🔑</div>Logga in / Registrera</div>
           <div id="ddLogoutRow" class="ddr" onclick="cM();sbSignOut()" style="display:none;color:var(--r)"><div class="ddr-i">🚪</div>Logga ut</div>
@@ -1868,6 +1919,11 @@ textarea.inp{resize:none;min-height:68px;}
       <div style="margin:0 14px 10px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:14px;padding:8px 12px;display:flex;align-items:center;gap:8px;overflow:hidden">
         <span style="font-size:9px;font-weight:900;color:var(--pk);font-family:var(--mono);flex-shrink:0;letter-spacing:.8px">● LIVE</span>
         <div style="font-size:10px;color:var(--t2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis" id="karmaPulse">ella_s tränade sin 🐉 Eldraken · +15 XP</div>
+      </div>
+      <!-- FORTUNE + CARD QUICK ACCESS -->
+      <div style="display:flex;gap:6px;padding:0 14px;margin-bottom:8px">
+        <button class="btn btn-ghost btn-sm" style="flex:1;font-size:11px;border-color:rgba(191,95,255,.3);color:var(--p)" onclick="openFortuneOracle()">🔮 Spådom</button>
+        <button class="btn btn-ghost btn-sm" style="flex:1;font-size:11px" onclick="openPetCard()">✨ Pet Card</button>
       </div>
       <!-- CARE BUTTONS -->
       <div class="care-section-lbl" id="sec-care">🎮 SKÖT DIN PET</div>
@@ -2022,6 +2078,10 @@ textarea.inp{resize:none;min-height:68px;}
           <button class="btn btn-pk" onclick="openModal('flashModal')" style="padding:4px 10px;font-size:12px;border-radius:8px;">+ POST</button>
         </div>
       </div>
+      <!-- KARMA STORIES -->
+      <div id="storiesBar" style="display:flex;gap:10px;overflow-x:auto;padding:8px 14px 4px;scrollbar-width:none;flex-shrink:0;background:rgba(4,4,10,.96);border-bottom:1px solid rgba(255,255,255,.06)">
+        <!-- rendered by renderStoriesBar() -->
+      </div>
       <div class="streak-circles" id="streakCircles"></div>
       <div class="flash-feed" id="flashFeed"></div>
     </div>
@@ -2165,7 +2225,8 @@ textarea.inp{resize:none;min-height:68px;}
       <div class="prof-ava-wr"><div class="prof-ava"><span id="profAvaEm">🐉</span><div class="prof-trust" id="profTrustTag">BRONZE</div></div></div>
       <div class="prof-content">
         <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:7px">
-          <div><div class="prof-name" id="profName">–</div><div class="prof-handle" id="profHandle">@–</div></div>
+          <div><div class="prof-name" id="profName">–</div><div class="prof-handle" id="profHandle">@–</div>
+          <button class="btn btn-ghost btn-sm" onclick="openPetCard()" style="margin-top:6px">✨ PET CARD</button></div>
           <button class="btn btn-ghost btn-sm" onclick="shareProfile()">📤 Dela</button>
         </div>
         <div class="prof-stats">
@@ -3304,6 +3365,7 @@ const G={
   talentPoints:0,talents:[],talentLvls:{},
   diaryEntries:[],
   lastSpin:'',
+  lastFortune:'',
   castle:{lvl:1,buildings:{home:1,farm:0,arena:0,market:0,stable:0,tower:0},lastIncome:0},
   ownedZones:[],
   terrLastIncome:{},
@@ -3669,7 +3731,7 @@ function cp(n){const d=document.createElement('div');d.className='cpop';d.textCo
 function sa(sel,el){document.querySelectorAll(sel+' .topt').forEach(x=>x.className='topt');el.classList.add('on');}
 function dist(la1,lo1,la2,lo2){const R=6371e3,f1=la1*Math.PI/180,f2=la2*Math.PI/180,df=(la2-la1)*Math.PI/180,dl=(lo2-lo1)*Math.PI/180;const a=Math.sin(df/2)**2+Math.cos(f1)*Math.cos(f2)*Math.sin(dl/2)**2;return R*2*Math.atan2(Math.sqrt(a),Math.sqrt(1-a));}
 function fmtD(m){return m<1000?Math.round(m)+'m':+(m/1000).toFixed(1)+'km';}
-function save(){try{const d={n:G.name,p:G.petEmoji,pn:G.petName,l:G.level,c:G.coins,st:G.streak,x:G.exp,as:G.actionStat,cs:G.commerceStat,ss:G.socialStat,g:JSON.stringify(G.gear),eg:G.equippedGear||'',sek:G.totalSEK,ts:G.trustScore,posts:G.postCount,b:G.bountiesDone,hu:G.hunger,en:G.energy,mo:G.mood,brands:JSON.stringify(G.brands),circles:JSON.stringify(G.circles),sw:JSON.stringify(G.streakWeek),petCfg:JSON.stringify(G.petConfig),pm:G.premium?1:0,pt:G.premiumTier,wld:G.world,bond:JSON.stringify(G.todayBond),bdate:G.bondDate,wp:G.worldPoints,bz:JSON.stringify(G.builtZones),wpc:G.wildPetsCaught,wflash:G.wldFlash,wbattle:G.wldBattle,wmarket:G.wldMarket,wstreak:G.wldStreak,wsocial:G.wldSocial,po:G.packsOpened,col:JSON.stringify(G.collectibles),tp:G.talentPoints,tl:JSON.stringify(G.talents),tlvl:JSON.stringify(G.talentLvls||{}),diary:JSON.stringify(G.diaryEntries.slice(-20)),ls:G.lastSpin,ltt:G.lastTalkTime||0,lwb:G.lastWpBoost||0,castle:JSON.stringify(G.castle||{}),ownedZones:JSON.stringify(G.ownedZones||[]),terrLastIncome:JSON.stringify(G.terrLastIncome||{}),dnaMixes:JSON.stringify(G.dnaMixes||[])};for(const k in d)localStorage.setItem('kv8_'+k,d[k]);}catch(e){}sbQueueSync();}
+function save(){try{const d={n:G.name,p:G.petEmoji,pn:G.petName,l:G.level,c:G.coins,st:G.streak,x:G.exp,as:G.actionStat,cs:G.commerceStat,ss:G.socialStat,g:JSON.stringify(G.gear),eg:G.equippedGear||'',sek:G.totalSEK,ts:G.trustScore,posts:G.postCount,b:G.bountiesDone,hu:G.hunger,en:G.energy,mo:G.mood,brands:JSON.stringify(G.brands),circles:JSON.stringify(G.circles),sw:JSON.stringify(G.streakWeek),petCfg:JSON.stringify(G.petConfig),pm:G.premium?1:0,pt:G.premiumTier,wld:G.world,bond:JSON.stringify(G.todayBond),bdate:G.bondDate,wp:G.worldPoints,bz:JSON.stringify(G.builtZones),wpc:G.wildPetsCaught,wflash:G.wldFlash,wbattle:G.wldBattle,wmarket:G.wldMarket,wstreak:G.wldStreak,wsocial:G.wldSocial,po:G.packsOpened,col:JSON.stringify(G.collectibles),tp:G.talentPoints,tl:JSON.stringify(G.talents),tlvl:JSON.stringify(G.talentLvls||{}),diary:JSON.stringify(G.diaryEntries.slice(-20)),ls:G.lastSpin,ltt:G.lastTalkTime||0,lwb:G.lastWpBoost||0,castle:JSON.stringify(G.castle||{}),ownedZones:JSON.stringify(G.ownedZones||[]),terrLastIncome:JSON.stringify(G.terrLastIncome||{}),dnaMixes:JSON.stringify(G.dnaMixes||[]),lastFortune:G.lastFortune||''};for(const k in d)localStorage.setItem('kv8_'+k,d[k]);localStorage.setItem('kv8_lastFortune',G.lastFortune||'');}catch(e){}sbQueueSync();}
 
 // ── DNA + MOOD SYSTEM ──
 function getPetDNA(){
@@ -4050,6 +4112,8 @@ function savePetDesign(){
 // ── GAME ──
 function gainCoins(n){G.coins+=n;updateHUD();if(n>0){cp(n);vibe(20);SFX.coin();advanceQuest('coins',n);}}
 function gainXP(n,stat){
+  const _nightMult = typeof getNightXPMult === 'function' ? getNightXPMult() : 1;
+  n = Math.round(n * _nightMult);
   if(G.premium){n=Math.round(n*(G.premiumTier>=2?2.5:G.premiumTier>=1?1.75:1.25));}
   G.exp+=n;
   if(stat==='action')G.actionStat+=Math.ceil(n/4);
@@ -4291,6 +4355,379 @@ function mgTap(){
   clearTimeout(G.mgTimer);
   G.mgTimer=setTimeout(()=>{if(G.mgScore>0)showT('Rekord: '+G.mgRecord,'y');G.mgScore=0;G.mgCombo=0;},1800);
 }
+
+// ── KARMA STORIES ──
+const STORY_FRIENDS = [
+  {user:'ella_sthlm', em:'🐱', seen:false, slides:[
+    {bg:'linear-gradient(135deg,#1a0828,#2e0a3e)', ico:'🐱', title:'LV 9 ACTIVATE', sub:'Flash streak dag 7 🔥', time:'8 min'},
+    {bg:'linear-gradient(135deg,#0a1828,#0a2840)', ico:'💪', title:'Battle WIN!', sub:'Besegrade bjorn99 med 1 HP kvar 😤', time:'23 min'},
+  ]},
+  {user:'maxruns', em:'🐺', seen:false, slides:[
+    {bg:'linear-gradient(135deg,#1a0808,#2e1008)', ico:'🐺', title:'ALPHA mode', sub:'Level 11 • 14-day streak', time:'1h'},
+  ]},
+  {user:'sagas_world', em:'🦋', seen:true, slides:[
+    {bg:'linear-gradient(135deg,#0d1a10,#182a0d)', ico:'🛍️', title:'Thrift haul 🤌', sub:'Snyggt å billigt @ Myrorna', time:'3h'},
+  ]},
+  {user:'sofiaK', em:'🦊', seen:false, slides:[
+    {bg:'linear-gradient(135deg,#100828,#1e0838)', ico:'🏰', title:'Territorium!', sub:'Claimade Djursholm 👑', time:'5h'},
+  ]},
+];
+
+let _storyViewerUser = null;
+let _storySlideIdx = 0;
+let _storyTimer = null;
+let _storySeenSet = new Set();
+
+function renderStoriesBar() {
+  const bar = $('storiesBar'); if (!bar) return;
+  const myStory = _buildMyStory();
+  const html = [
+    `<div class="story-ring" onclick="openStoryViewer('me')">
+      <div class="story-avatar mine">${G.petEmoji || '🐉'}<div style="position:absolute;bottom:-2px;right:-2px;background:var(--pk);border-radius:50%;width:18px;height:18px;display:flex;align-items:center;justify-content:center;font-size:11px;border:2px solid var(--bg)">+</div></div>
+      <div class="story-lbl mine">Mig</div>
+    </div>`,
+    ...STORY_FRIENDS.map(f => `<div class="story-ring" onclick="openStoryViewer('${f.user}')">
+      <div class="story-avatar ${_storySeenSet.has(f.user)?'seen':'unseen'}">${f.em}</div>
+      <div class="story-lbl">${f.user.split('_')[0]}</div>
+    </div>`)
+  ].join('');
+  bar.innerHTML = html;
+}
+
+function _buildMyStory() {
+  const slides = [];
+  slides.push({
+    bg: 'linear-gradient(135deg,#0a0818,#14082a)',
+    ico: G.petEmoji || '🐉',
+    title: (G.petName || 'Min Pet') + ' — Dag ' + (G.streak || 1),
+    sub: 'LV ' + (G.level || 1) + ' · ' + (G.coins || 0) + ' coins · ' + (G.worldPoints || 0) + ' WP',
+    time: 'Nu'
+  });
+  if ((G.streak || 0) > 3) slides.push({bg:'linear-gradient(135deg,#1a0a00,#2a1200)', ico:'🔥', title:'STREAK x' + G.streak + '!', sub:'Ditt engagemang är galet', time:'3h'});
+  if ((G.ownedZones || []).length > 0) slides.push({bg:'linear-gradient(135deg,#00100a,#001a10)', ico:'🏰', title:(G.ownedZones.length) + ' zoner claimade!', sub:'Ditt imperium växer 👑', time:'1d'});
+  return {user:'me', em:G.petEmoji||'🐉', seen:false, slides};
+}
+
+function openStoryViewer(user) {
+  _storyViewerUser = user;
+  _storySlideIdx = 0;
+  _storySeenSet.add(user);
+  renderStoriesBar();
+  const viewer = $('storyViewer'); if (!viewer) return;
+  viewer.classList.remove('hidden');
+  _renderStorySlide();
+}
+
+function closeStoryViewer() {
+  const v = $('storyViewer'); if (v) v.classList.add('hidden');
+  clearTimeout(_storyTimer);
+  _storyViewerUser = null;
+}
+
+function _getStoryData(user) {
+  if (user === 'me') return _buildMyStory();
+  return STORY_FRIENDS.find(f => f.user === user) || STORY_FRIENDS[0];
+}
+
+function _renderStorySlide() {
+  const v = $('storyViewer'); if (!v) return;
+  const data = _getStoryData(_storyViewerUser);
+  if (!data) return;
+  const slide = data.slides[_storySlideIdx];
+  if (!slide) { closeStoryViewer(); return; }
+
+  const progHtml = data.slides.map((_, i) =>
+    `<div class="story-seg"><div class="story-seg-fill ${i < _storySlideIdx ? '' : i === _storySlideIdx ? 'active' : ''}" id="storySeg${i}" style="width:${i < _storySlideIdx ? '100%' : '0%'}"></div></div>`
+  ).join('');
+
+  v.innerHTML = `
+    <div class="story-progress">${progHtml}</div>
+    <div class="story-hdr">
+      <div style="font-size:22px">${data.em}</div>
+      <div><div style="font-size:12px;font-weight:900;color:#fff">${data.user === 'me' ? (G.name || 'Mig') : data.user}</div><div style="font-size:10px;color:rgba(255,255,255,.5)">${slide.time} sedan</div></div>
+      <div class="story-close" onclick="closeStoryViewer()">✕</div>
+    </div>
+    <div class="story-body">
+      <div class="story-bg" style="background:${slide.bg}"></div>
+      <div class="story-content">
+        <div style="font-size:72px;margin-bottom:14px;filter:drop-shadow(0 0 24px rgba(255,255,255,.3));animation:petBob 1.5s ease-in-out infinite">${slide.ico}</div>
+        <div style="font-size:22px;font-weight:900;color:#fff;margin-bottom:8px;text-shadow:0 2px 8px rgba(0,0,0,.8)">${slide.title}</div>
+        <div style="font-size:14px;color:rgba(255,255,255,.7);text-shadow:0 1px 4px rgba(0,0,0,.6)">${slide.sub}</div>
+      </div>
+      <div class="story-tap-prev" onclick="storyNav(-1)"></div>
+      <div class="story-tap-next" onclick="storyNav(1)"></div>
+    </div>
+  `;
+
+  const seg = $('storySeg' + _storySlideIdx);
+  if (seg) { seg.style.transition = 'none'; seg.style.width = '0%'; requestAnimationFrame(() => { seg.style.transition = 'width 4s linear'; seg.style.width = '100%'; }); }
+
+  clearTimeout(_storyTimer);
+  _storyTimer = setTimeout(() => storyNav(1), 4200);
+}
+
+function storyNav(dir) {
+  clearTimeout(_storyTimer);
+  const data = _getStoryData(_storyViewerUser);
+  if (!data) return;
+  _storySlideIdx += dir;
+  if (_storySlideIdx < 0) { closeStoryViewer(); return; }
+  if (_storySlideIdx >= data.slides.length) { closeStoryViewer(); return; }
+  _renderStorySlide();
+}
+
+// ── HOLOGRAPHIC PET CARD ──
+let _cardCanvas = null;
+
+function openPetCard() {
+  const wrap = $('petCardWrap'); if (!wrap) return;
+  wrap.classList.remove('hidden');
+  _drawPetCard();
+}
+
+function closePetCard() {
+  const w = $('petCardWrap'); if (w) w.classList.add('hidden');
+}
+
+function _drawPetCard() {
+  const canvas = $('petCardCanvas'); if (!canvas) return;
+  _cardCanvas = canvas;
+  const ctx = canvas.getContext('2d');
+  const W = 260, H = 380;
+  canvas.width = W * 2; canvas.height = H * 2;
+  ctx.scale(2, 2);
+
+  const s = gS();
+  const RARITY_COLS = {
+    common: ['#888', '#aaa'],
+    rare: ['#00D9FF', '#0088CC'],
+    epic: ['#BF5FFF', '#7B2FBE'],
+    legendary: ['#FFE600', '#FF9F0A'],
+  };
+  const rlvl = G.level < 5 ? 'common' : G.level < 15 ? 'rare' : G.level < 30 ? 'epic' : 'legendary';
+  const [c1, c2] = RARITY_COLS[rlvl];
+
+  const bg = ctx.createLinearGradient(0, 0, W, H);
+  bg.addColorStop(0, '#0a0818');
+  bg.addColorStop(0.5, '#120a24');
+  bg.addColorStop(1, '#08040e');
+  ctx.fillStyle = bg;
+  ctx.roundRect(0, 0, W, H, 18);
+  ctx.fill();
+
+  ctx.strokeStyle = c1;
+  ctx.lineWidth = 2.5;
+  ctx.shadowColor = c1;
+  ctx.shadowBlur = 12;
+  ctx.roundRect(2, 2, W - 4, H - 4, 17);
+  ctx.stroke();
+  ctx.shadowBlur = 0;
+
+  const banner = ctx.createLinearGradient(0, 0, W, 0);
+  banner.addColorStop(0, c1 + '44');
+  banner.addColorStop(1, c2 + '22');
+  ctx.fillStyle = banner;
+  ctx.fillRect(0, 0, W, 36);
+
+  ctx.fillStyle = c1;
+  ctx.font = 'bold 10px monospace';
+  ctx.textAlign = 'center';
+  ctx.fillText(rlvl.toUpperCase() + ' · KARMA', W / 2, 22);
+
+  ctx.font = '80px serif';
+  ctx.textAlign = 'center';
+  ctx.fillText(s.e || G.petEmoji || '🐉', W / 2, 160);
+
+  ctx.fillStyle = '#ffffff';
+  ctx.font = 'bold 18px sans-serif';
+  ctx.textAlign = 'center';
+  ctx.fillText(G.petName || 'Eldraken', W / 2, 190);
+
+  ctx.fillStyle = c1;
+  ctx.font = 'bold 10px monospace';
+  ctx.fillText((s.s || 'ROOKIE') + '  ·  LV ' + (G.level || 1), W / 2, 206);
+
+  ctx.strokeStyle = c1 + '44';
+  ctx.lineWidth = 1;
+  ctx.beginPath(); ctx.moveTo(20, 220); ctx.lineTo(W - 20, 220); ctx.stroke();
+
+  const stats = [
+    ['HGR', G.hunger || 100, '#FF4466'],
+    ['NRG', G.energy || 100, '#FFE600'],
+    ['MOD', G.mood || 100, '#39FF14'],
+    ['LVL', Math.min(100, (G.level || 1) * 3), '#00D9FF'],
+    ['WP', Math.min(100, (G.worldPoints || 0) / 5), '#BF5FFF'],
+    ['STK', Math.min(100, (G.streak || 0) * 3), '#FF9F0A'],
+  ];
+  stats.forEach(([lbl, val, col], i) => {
+    const x = 16 + (i % 2) * 118;
+    const y = 232 + Math.floor(i / 2) * 34;
+    ctx.fillStyle = 'rgba(255,255,255,.06)';
+    ctx.roundRect(x, y, 108, 24, 6);
+    ctx.fill();
+    ctx.fillStyle = col + '66';
+    ctx.roundRect(x, y, Math.max(4, 108 * val / 100), 24, 6);
+    ctx.fill();
+    ctx.fillStyle = '#fff';
+    ctx.font = 'bold 8px monospace';
+    ctx.textAlign = 'left';
+    ctx.fillText(lbl, x + 6, y + 15);
+  });
+
+  ctx.fillStyle = 'rgba(255,255,255,.04)';
+  ctx.fillRect(0, H - 46, W, 46);
+  ctx.fillStyle = 'rgba(255,255,255,.5)';
+  ctx.font = '9px monospace';
+  ctx.textAlign = 'center';
+  ctx.fillText(G.name || 'KARMA USER', W / 2, H - 28);
+  ctx.fillStyle = c1 + '88';
+  ctx.fillText('KARMA v2 · ' + (G.world || 'COSMIC').toUpperCase() + ' WORLD', W / 2, H - 14);
+}
+
+function downloadPetCard() {
+  if (!_cardCanvas) return;
+  const a = document.createElement('a');
+  a.href = _cardCanvas.toDataURL('image/png');
+  a.download = (G.petName || 'pet') + '-karma-card.png';
+  a.click();
+  showT('📸 Card sparad!', 'g');
+  vibe([20, 10, 40]);
+}
+
+function shareCardToFlash() {
+  closePetCard();
+  showT('✨ PET CARD DELAS SOM FLASH!', 'pk');
+  setTimeout(() => {
+    submitFlash_internal('✨ MINA PET STATS — se mitt Karma Card! LV' + (G.level||1) + ' · ' + (G.petName||'Pet') + ' · ' + (G.worldPoints||0) + ' WP 🏰');
+  }, 300);
+}
+
+function submitFlash_internal(cap) {
+  if (!G.name) return;
+  G.postCount = (G.postCount || 0) + 1;
+  gainXP(20, 'social');
+  addWorldPoints(5, 'flash');
+  FLASH_POSTS.unshift({id:'fl'+Date.now(),user:G.name,pet:gS().e,lvl:G.level,up:'Pet Card Share',cap:cap,xp:'+20 XP',likes:0,live:false,streak:G.streak});
+  save(); updateHUD();
+  renderFlashFeed();
+  showT('⚡ Flash posted!', 'g');
+}
+
+// ── FORTUNE ORACLE ──
+const FORTUNES = {
+  '🐉': [
+    {title:'Drakens Dag Är Kommen',text:'Elden inom dig brinner starkast idag. Varje handling ger dubbelt tillbaka.',event:'2x XP nästa timme 🔥',ef:()=>{G._xpMult2=Date.now()+3600000;showT('🐉 DRAGON HOUR! 2×XP i 1 timme!','p');}},
+    {title:'Gammal Makt Vaknar',text:'En uråldrig kraft cirkulerar runt dig. Sällsynta varelser dras till dig idag.',event:'Legendary wild pet spawn 🌟',ef:()=>{showT('🌟 En legendarisk varelse lurar i vattnet...','y');G._legendarySpawn=true;}},
+    {title:'Skatterna Väntar',text:'Djupet har gömt sin hemlighet länge nog. Den som kastar rätt lina hittar guld.',event:'+100 bonus coins 💰',ef:()=>{gainCoins(100);showT('💰 +100 FORTUNE COINS!','g');}},
+  ],
+  '🐺': [
+    {title:'Ensam Varg, Starkast Varg',text:'Idag bevisar du din styrka ensam. Inga allianser behövs. Du är nog.',event:'+50 WP direkt',ef:()=>{addWorldPoints(50,'fortune');showT('🐺 +50 WOLF POWER WP!','g');}},
+    {title:'Packen Ropar',text:'Dina vänner behöver dig idag. Kontakta någon i ditt klan.',event:'Clan bonus aktiverad',ef:()=>{showT('⚔️ KLAN BONUS! Dubbel raid-belöning idag!','pk');}},
+  ],
+  default: [
+    {title:'Karmas Hjul Snurrar',text:'Idag är din dag. Varje liten handling bygger upp till något stort. Fortsätt.',event:'+75 XP bonus',ef:()=>{gainXP(75,'action');showT('🔮 +75 FORTUNE XP!','p');}},
+    {title:'Mysteriet Uppenbarar Sig',text:'Du är på väg att upptäcka något nytt. Håll ögonen öppna.',event:'Gratis Gacha spin!',ef:()=>{G.lastSpin='';showT('🎰 GRATIS SPIN låst upp!','y');}},
+    {title:'Stjärnorna Talar',text:'En stor förändring är nära. Din pet känner det redan — titta på deras ögon.',event:'+30 mood till ditt pet',ef:()=>{G.mood=Math.min(100,G.mood+30);updatePetView();showT('🌟 +30 MOOD!','g');}},
+    {title:'Tidens Gåva',text:'Något värdefullt driftar mot dig på strömmen. Var redo att ta emot det.',event:'2x coins nästa fiske',ef:()=>{G._fishCoinMult=2;showT('🎣 2×FISH COINS aktiverat!','b');}},
+  ],
+};
+
+let _fortuneRevealed = false;
+
+function openFortuneOracle() {
+  const today = new Date().toDateString();
+  const w = $('fortuneWrap'); if (!w) return;
+  _fortuneRevealed = false;
+  const card = $('fortuneCard'); if (card) card.classList.remove('revealed');
+  w.classList.remove('hidden');
+  const alreadyRead = G.lastFortune === today;
+  const orbEl = $('fortuneOrb');
+  if (orbEl) orbEl.innerHTML = alreadyRead ? (G.petEmoji||'🐉') : '🔮';
+  const subEl = $('fortuneSub');
+  if (subEl) subEl.textContent = alreadyRead ? 'Din dagsspådom' : 'Tryck på orben för att se din spådom';
+}
+
+function closeFortuneOracle() { const w=$('fortuneWrap');if(w)w.classList.add('hidden'); }
+
+function revealFortune() {
+  if (_fortuneRevealed) return;
+  const today = new Date().toDateString();
+  _fortuneRevealed = true;
+
+  const pool = FORTUNES[G.petEmoji||'🐉'] || FORTUNES.default;
+  const allPool = [...pool, ...FORTUNES.default];
+  const rng = (new Date().getDate() + (G.level||1)) % allPool.length;
+  const fortune = allPool[rng];
+
+  const card = $('fortuneCard');
+  const orbEl = $('fortuneOrb');
+  if (orbEl) { orbEl.innerHTML = G.petEmoji||'🐉'; orbEl.style.animation = 'orbPulse 0.3s ease-in-out 3'; }
+
+  if (card) {
+    card.innerHTML = `
+      <div class="fortune-stars">✦ ✦ ✦ ✦ ✦</div>
+      <div class="fortune-title">${fortune.title}</div>
+      <div class="fortune-text">${fortune.text}</div>
+      <div class="fortune-event">⚡ ${fortune.event}</div>
+    `;
+    setTimeout(() => card.classList.add('revealed'), 100);
+  }
+
+  if (G.lastFortune !== today) {
+    G.lastFortune = today;
+    setTimeout(() => { fortune.ef(); save(); }, 1200);
+    vibe([30,20,80,20,100]);
+    SFX.win();
+    addDiaryEntry('Öppnade Fortune Oracle: "' + fortune.title + '" 🔮');
+  }
+}
+
+// ── NIGHT OWL MODE ──
+const NIGHT_OWL_FISH = [
+  {em:'🦑',nm:'Jätte-Bläckfisk',coins:180,xp:72,rarity:'epic',zone:'deep',wt:8},
+  {em:'🌙',nm:'Månfisk',coins:320,xp:128,rarity:'legendary',zone:'any',wt:40,special:'moonlight'},
+  {em:'👻',nm:'Spökfisk',coins:250,xp:100,rarity:'epic',zone:'mid',wt:15,special:'ghost'},
+  {em:'🌟',nm:'Nattjärna',coins:500,xp:200,rarity:'mythic',zone:'any',wt:99,special:'nightstar'},
+];
+
+let _nightOwlActive = false;
+let _nightOwlChecked = false;
+
+function checkNightOwl() {
+  const hour = new Date().getHours();
+  const shouldBeActive = hour >= 22 || hour < 6;
+
+  if (shouldBeActive && !_nightOwlActive) {
+    _nightOwlActive = true;
+    if (!_nightOwlChecked) {
+      _nightOwlChecked = true;
+      _activateNightOwl();
+    }
+  } else if (!shouldBeActive && _nightOwlActive) {
+    _nightOwlActive = false;
+    _deactivateNightOwl();
+  }
+
+  const overlay = $('nightOwlOverlay');
+  if (overlay) overlay.classList.toggle('hidden', !shouldBeActive);
+}
+
+function _activateNightOwl() {
+  const banner = $('nightOwlBanner');
+  if (banner) {
+    banner.classList.add('show');
+    setTimeout(() => banner.classList.remove('show'), 4000);
+  }
+  showT('🦉 NIGHT OWL AKTIVERAD! 1.5×XP till 06:00', 'p');
+  vibe([20, 10, 30, 10, 60]);
+}
+
+function _deactivateNightOwl() {
+  _nightOwlChecked = false;
+  showT('☀️ God morgon! Night Owl mode avslutad.', 'b');
+}
+
+function getNightXPMult() { return _nightOwlActive ? 1.5 : 1; }
 
 // ── FLASH ──
 const _REACT_EMOJIS=['🔥','💖','😂','🤯','👑','💀','🫶','⚡'];
@@ -5050,6 +5487,9 @@ function spawnFishInScene(){
   const accessible=rod.zones;
   // Pick fish appropriate to rod's zones
   const availFish=FISH_TYPES.filter(f=>accessible.includes(f.zone)||f.zone==='any');
+  if (typeof _nightOwlActive !== 'undefined' && _nightOwlActive) {
+    NIGHT_OWL_FISH.forEach(f => availFish.push(f));
+  }
   const count=rod.id==='bamboo'?5:rod.id==='carbon'?7:9;
   for(let i=0;i<count;i++){
     // Weighted random by weather + rarity
@@ -5455,7 +5895,7 @@ function nav(name){
   vibe(8);
   ({
     home:()=>{updatePetView();renderSocialPower();renderFriendCarePackages();renderCareNotifs();renderStreakMilestones();renderFriendLB();updatePetStatusRings();updatePetWeather();renderDailyChallenges();if(!_speechTimer)schedulePetSpeech();startKarmaPulse();renderJackpot();const st=$('spinTeaserSub');if(st)st.textContent=G.lastSpin===new Date().toDateString()?'✅ Spinnat idag — kom tillbaka imorgon':'🎰 Gratis spin tillgängligt nu!';},
-    flash:()=>{renderFlashFeed();startFlashTimeReward();},
+    flash:()=>{renderFlashFeed();renderStoriesBar();startFlashTimeReward();},
     circles:renderCircles,
     social:()=>switchSocial('activity',document.querySelector('#socialTabs .tab')),
     uppdrag:renderUppdrag,
@@ -5897,6 +6337,7 @@ function finishOB(){
   setTimeout(()=>{initPetRoom();renderBondBar();},200);
   setTimeout(startPetAnim,100);
   setTimeout(initQuests,500);setTimeout(scheduleEvents,10000);SFX.lvlup();
+  setTimeout(renderStoriesBar,800);
   // Create cloud profile
   setTimeout(sbCreateProfile,1500);
   setTimeout(sbSubscribeRealtime,2000);
@@ -7326,6 +7767,9 @@ function _loadFromLocalStorage(){
     setTimeout(()=>$('circleDot').style.display='inline-block',1500);
     setTimeout(startPetAnim,150);
     setTimeout(initQuests,300);setTimeout(scheduleEvents,8000);
+    setTimeout(renderStoriesBar,800);
+    G.lastFortune = localStorage.getItem('kv8_lastFortune') || '';
+    checkNightOwl();
     setTimeout(()=>{checkBondDate();initPetRoom();renderBondBar();},400);
     setTimeout(()=>{schedulePetSpeech();schedulePetEvents();},2000);
     setTimeout(()=>{updateEvolBadge();renderSocialPower();renderFriendCarePackages();renderCareNotifs();renderStreakMilestones();renderFriendLB();updatePetStatusRings();},600);
@@ -7337,6 +7781,9 @@ function _loadFromLocalStorage(){
   const mode=await sbCheckOnStart();
   if(mode==='demo') _loadFromLocalStorage();
 })();
+
+// Night Owl — check immediately and every minute
+setTimeout(()=>{checkNightOwl();setInterval(checkNightOwl,60000);},500);
 
 // ══════════════════════════════════════════
 // ── DAILY CHALLENGE SYSTEM ──
@@ -9004,5 +9451,38 @@ document.addEventListener('visibilitychange',()=>{
     <button class="btn btn-full btn-lg" id="dnaMixBtn" style="background:linear-gradient(135deg,var(--p),#7B2FBE);color:#fff;box-shadow:0 0 18px rgba(191,95,255,.4)" onclick="executeDNAMix()">🧬 MIX DNA!</button>
   </div>
 </div>
+
+<!-- KARMA STORIES VIEWER -->
+<div class="story-viewer hidden" id="storyViewer"></div>
+
+<!-- HOLOGRAPHIC PET CARD -->
+<div class="pet-card-wrap hidden" id="petCardWrap">
+  <div style="display:flex;justify-content:space-between;align-items:center;width:260px;margin-bottom:10px">
+    <div style="font-size:13px;font-weight:900;color:#fff;font-family:var(--mono)">✨ DITT KARMA CARD</div>
+    <button onclick="closePetCard()" style="background:none;border:none;color:#fff;font-size:20px;cursor:pointer">✕</button>
+  </div>
+  <div class="pet-card" onclick="_drawPetCard()">
+    <canvas class="pet-card-canvas" id="petCardCanvas"></canvas>
+    <div class="pet-card-holo"></div>
+  </div>
+  <div style="display:flex;gap:8px;margin-top:14px;width:260px">
+    <button class="btn btn-ghost btn-full" onclick="downloadPetCard()">💾 SPARA</button>
+    <button class="btn btn-pk btn-full" onclick="shareCardToFlash()">⚡ FLASH</button>
+  </div>
+  <div style="font-size:10px;color:rgba(255,255,255,.3);margin-top:8px;text-align:center">Tryck på kortet för holografisk effekt</div>
+</div>
+
+<!-- FORTUNE ORACLE -->
+<div class="fortune-wrap hidden" id="fortuneWrap">
+  <div style="font-size:11px;color:rgba(191,95,255,.6);letter-spacing:3px;margin-bottom:16px;font-family:var(--mono)">✦ FORTUNE ORACLE ✦</div>
+  <div class="fortune-orb" id="fortuneOrb" onclick="revealFortune()">🔮</div>
+  <div style="font-size:12px;color:rgba(255,255,255,.4);margin-bottom:20px;text-align:center" id="fortuneSub">Tryck på orben för att se din spådom</div>
+  <div class="fortune-card" id="fortuneCard"></div>
+  <button onclick="closeFortuneOracle()" style="margin-top:20px;background:none;border:1px solid rgba(255,255,255,.15);color:rgba(255,255,255,.5);border-radius:10px;padding:8px 20px;cursor:pointer;font-size:12px">Stäng</button>
+</div>
+
+<!-- NIGHT OWL -->
+<div class="night-owl-overlay hidden" id="nightOwlOverlay"></div>
+<div class="night-owl-banner" id="nightOwlBanner">🦉 NIGHT OWL MODE · 1.5×XP</div>
 </body>
 </html>
