@@ -689,6 +689,50 @@ textarea.inp{resize:none;min-height:68px;}
 .ba-btn-dg{border-color:var(--b);background:rgba(0,217,255,.08);color:var(--b);}
 .ba-btn-bl{border-color:var(--p);background:rgba(191,95,255,.08);color:var(--p);}
 .ba-log{font-size:12px;color:var(--t2);font-family:var(--mono);text-align:center;min-height:22px;padding:0 20px;}
+/* BATTLE ARENA V2 */
+.ba-close{background:none;border:none;color:var(--t2);font-size:22px;cursor:pointer;padding:4px 8px;}
+.ba-wave-lbl{font-size:10px;font-weight:900;color:var(--pk);font-family:var(--mono);letter-spacing:2px;}
+.ba-enemy-title{font-size:11px;color:var(--t3);font-family:var(--mono);}
+.ba-scene{flex:1;display:flex;flex-direction:column;padding:10px 14px;position:relative;overflow:hidden;}
+.ba-bg-glow{position:absolute;inset:0;pointer-events:none;transition:background 1s;}
+.ba-hp-row{display:flex;align-items:center;margin-bottom:8px;}
+.ba-hp-track{height:8px;background:rgba(255,255,255,.08);border-radius:4px;overflow:hidden;flex:1;}
+.ba-hp-bar-fill{height:100%;border-radius:4px;transition:width .4s ease-out;}
+.ba-hp-bar-fill.enemy{background:var(--pk);}
+.ba-hp-bar-fill.player{background:var(--g);}
+.ba-enemy-section{margin-bottom:8px;}
+.ba-enemy-sprite{font-size:72px;text-align:center;line-height:1;margin:8px 0;transition:all .15s;filter:drop-shadow(0 0 20px rgba(255,45,85,.3));}
+.ba-enemy-sprite.hit{animation:baHit .25s ease-out;}
+.ba-enemy-sprite.atk{animation:baAtk .35s ease-out;}
+.ba-enemy-sprite.phase-up{animation:baPhase .6s ease-out;}
+@keyframes baAtk{0%,100%{transform:none;}40%{transform:translateX(20px) scale(1.15);}70%{transform:translateX(-5px) scale(.95);}}
+@keyframes baPhase{0%{transform:scale(1);}30%{transform:scale(1.4) rotate(-10deg);}60%{transform:scale(.7) rotate(15deg);}100%{transform:scale(1) rotate(0);}}
+.ba-phase-dots{display:flex;gap:6px;justify-content:center;margin-bottom:8px;}
+.ba-ph-dot{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,.15);transition:all .3s;}
+.ba-ph-dot.active{background:var(--g);box-shadow:0 0 6px var(--g);}
+.ba-ph-dot.berserk{background:var(--y);box-shadow:0 0 6px var(--y);}
+.ba-ph-dot.desperate{background:var(--r);box-shadow:0 0 8px var(--r);animation:notifPulse .6s ease-in-out infinite;}
+.ba-log-wrap{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.06);border-radius:10px;padding:8px 12px;margin-bottom:10px;min-height:36px;display:flex;align-items:center;}
+.ba-player-section{margin-bottom:8px;}
+.ba-actions{padding:10px 14px;padding-bottom:calc(10px + env(safe-area-inset-bottom,0px));background:rgba(4,4,10,.98);border-top:1px solid rgba(255,255,255,.06);flex-shrink:0;}
+.ba-atk-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;}
+.ba-atk-btn{background:var(--c1);border:1.5px solid var(--line);border-radius:12px;padding:8px 4px;cursor:pointer;transition:all .1s;-webkit-tap-highlight-color:transparent;display:flex;flex-direction:column;align-items:center;gap:2px;}
+.ba-atk-btn:active{transform:scale(.92);}
+.ba-btn-ico{font-size:22px;line-height:1;}
+.ba-btn-nm{font-size:10px;font-weight:900;color:var(--t1);font-family:var(--mono);}
+.ba-btn-sub{font-size:8px;color:var(--t3);}
+.ba-atk-btn.normal{border-color:rgba(57,255,20,.3);} .ba-atk-btn.normal:active{background:rgba(57,255,20,.08);}
+.ba-atk-btn.power{border-color:rgba(255,45,85,.3);} .ba-atk-btn.power:active{background:rgba(255,45,85,.08);}
+.ba-atk-btn.magic{border-color:rgba(0,217,255,.3);} .ba-atk-btn.magic:active{background:rgba(0,217,255,.08);}
+.ba-atk-btn.fusion{border-color:rgba(255,230,0,.6);background:rgba(255,230,0,.08);animation:flashBtnPulse 1s ease-in-out infinite;}
+.ba-atk-btn.dodge{border-color:rgba(191,95,255,.3);} .ba-atk-btn.dodge:active{background:rgba(191,95,255,.08);}
+.ba-atk-btn.block{border-color:rgba(0,217,255,.3);} .ba-atk-btn.block:active{background:rgba(0,217,255,.08);}
+.ba-atk-btn:disabled{opacity:.3;pointer-events:none;}
+.ba-victory,.ba-defeat{position:absolute;inset:0;background:rgba(0,0,0,.92);display:flex;align-items:center;justify-content:center;z-index:20;}
+.ba-victory-content{text-align:center;padding:24px;}
+.ba-rewards{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;}
+.ba-reward-chip{background:var(--c2);border:1px solid var(--line2);border-radius:10px;padding:8px 14px;font-size:13px;font-weight:900;animation:spop .4s cubic-bezier(.34,1.56,.64,1) both;}
+.ba-status-icon{font-size:14px;animation:notifPulse 1s ease-in-out infinite;}
 /* COMBO METER */
 @keyframes comboPop{0%{transform:scale(1.5);}100%{transform:scale(1);}}
 .combo-meter{position:fixed;top:62px;left:12px;z-index:801;background:rgba(0,0,0,.9);border:1.5px solid var(--y);border-radius:22px;padding:5px 13px;display:none;align-items:center;gap:5px;box-shadow:0 0 20px rgba(255,230,0,.2);}
@@ -3337,26 +3381,126 @@ textarea.inp{resize:none;min-height:68px;}
 <div class="combo-meter" id="comboMeter"><div style="font-size:10px;color:var(--t2);font-weight:900">x</div><div class="combo-n" id="comboCnt">5</div><div style="font-size:10px;color:var(--y);font-weight:900">COMBO 🔥</div></div>
 <!-- BATTLE ARENA -->
 <div class="battle-arena" id="battleArena">
+  <!-- Header -->
   <div class="ba-hdr">
-    <button style="background:none;border:none;color:var(--t2);font-size:22px;cursor:pointer;padding:4px" onclick="closeBattle()">←</button>
-    <div style="font-size:16px;font-weight:900;color:var(--pk);flex:1;text-align:center;letter-spacing:1px;font-family:var(--mono)">⚔️ BATTLE ARENA</div>
-    <div id="baWave" style="font-size:11px;color:var(--t3);font-family:var(--mono);flex-shrink:0">WAVE 1</div>
+    <button class="ba-close" onclick="closeBattle()">←</button>
+    <div style="flex:1;text-align:center">
+      <div class="ba-wave-lbl" id="baWave">WAVE 1</div>
+      <div class="ba-enemy-title" id="baEnemyTitle">–</div>
+    </div>
+    <div style="text-align:right;font-size:10px;color:var(--t3);font-family:var(--mono)">
+      <div>COMBO</div>
+      <div id="baComboCount" style="font-size:16px;font-weight:900;color:var(--y)">0</div>
+    </div>
   </div>
-  <div class="ba-field">
-    <div class="ba-hp-wrap" style="text-align:center">
-      <div style="font-size:11px;color:var(--t3);margin-bottom:6px;font-family:var(--mono)" id="baEnemyName">ENEMY</div>
-      <div class="ba-hp-bar"><div class="ba-hp-fill" id="baEnemyHp" style="background:var(--pk);width:100%"></div></div>
+
+  <!-- Battle Scene -->
+  <div class="ba-scene" id="baScene">
+    <!-- Background glow -->
+    <div class="ba-bg-glow" id="baBgGlow"></div>
+    <!-- Enemy section -->
+    <div class="ba-enemy-section">
+      <!-- Enemy HP bar -->
+      <div class="ba-hp-row">
+        <div style="font-size:9px;font-weight:900;color:var(--t3);font-family:var(--mono)" id="baEnemyName">ENEMY</div>
+        <div style="display:flex;align-items:center;gap:6px;flex:1;margin:0 8px">
+          <div class="ba-hp-track"><div class="ba-hp-bar-fill enemy" id="baEnemyHpFill" style="width:100%"></div></div>
+          <div style="font-size:10px;font-weight:900;font-family:var(--mono);min-width:40px;text-align:right" id="baEnemyHpNum">80/80</div>
+        </div>
+        <div id="baEnemyStatus" style="font-size:12px"></div>
+      </div>
+      <!-- Enemy sprite -->
+      <div class="ba-enemy-sprite" id="baEnemySprite">👾</div>
+      <!-- Phase indicator -->
+      <div class="ba-phase-dots" id="baPhaseDots">
+        <div class="ba-ph-dot active" id="baPh0"></div>
+        <div class="ba-ph-dot" id="baPh1"></div>
+        <div class="ba-ph-dot" id="baPh2"></div>
+      </div>
     </div>
-    <div class="ba-enemy-em" id="baEnemyEm">👾</div>
-    <div class="ba-log" id="baLog">Tryck ATTACK för att slåss!</div>
-    <div class="ba-hp-wrap" style="text-align:center">
-      <div class="ba-hp-bar"><div class="ba-hp-fill" id="baPlayerHp" style="background:var(--g);width:100%"></div></div>
-      <div style="font-size:11px;color:var(--t3);margin-top:5px;font-family:var(--mono)" id="baPlayerLbl">DIN PET</div>
+
+    <!-- Battle Log -->
+    <div class="ba-log-wrap">
+      <div class="ba-log" id="baLog">⚔️ Välj din attack!</div>
     </div>
-    <div class="ba-atk-row">
-      <button class="ba-btn ba-btn-atk" onclick="battleAttack()">⚔️ ATTACK</button>
-      <button class="ba-btn ba-btn-dg" onclick="battleDodge()">🌀 DODGE</button>
-      <button class="ba-btn ba-btn-bl" onclick="battleBlock()">🛡️ BLOCK</button>
+
+    <!-- Player section -->
+    <div class="ba-player-section">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
+        <div style="font-size:12px;font-weight:900" id="baPlayerName">DIN PET</div>
+        <div id="baPlayerStatus" style="font-size:12px"></div>
+        <div id="baFusionIndicator" style="font-size:10px;font-weight:900;color:var(--y);display:none">⚡ FUSION REDO!</div>
+      </div>
+      <!-- HP bar -->
+      <div style="display:flex;align-items:center;gap:6px;margin-bottom:4px">
+        <div style="font-size:9px;color:var(--t3);font-family:var(--mono);width:20px">HP</div>
+        <div class="ba-hp-track" style="flex:1"><div class="ba-hp-bar-fill player" id="baPlayerHpFill" style="width:100%"></div></div>
+        <div style="font-size:10px;font-weight:900;font-family:var(--mono);min-width:50px;text-align:right" id="baPlayerHpNum">100/100</div>
+      </div>
+      <!-- MP bar -->
+      <div style="display:flex;align-items:center;gap:6px">
+        <div style="font-size:9px;color:var(--b);font-family:var(--mono);width:20px">MP</div>
+        <div class="ba-hp-track" style="flex:1;height:5px"><div class="ba-hp-bar-fill mp" id="baPlayerMpFill" style="width:100%;background:var(--b)"></div></div>
+        <div style="font-size:10px;font-weight:900;font-family:var(--mono);color:var(--b);min-width:50px;text-align:right" id="baPlayerMpNum">80/80</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Attack Buttons -->
+  <div class="ba-actions">
+    <div class="ba-atk-grid">
+      <button class="ba-atk-btn normal" onclick="battleChooseAtk('normal')">
+        <div class="ba-btn-ico">⚔️</div>
+        <div class="ba-btn-nm">ATTACK</div>
+        <div class="ba-btn-sub">Standard</div>
+      </button>
+      <button class="ba-atk-btn power" onclick="battleChooseAtk('power')">
+        <div class="ba-btn-ico">💥</div>
+        <div class="ba-btn-nm">POWER</div>
+        <div class="ba-btn-sub">2× Skada</div>
+      </button>
+      <button class="ba-atk-btn magic" id="baMagicBtn" onclick="battleChooseAtk('magic')">
+        <div class="ba-btn-ico">✨</div>
+        <div class="ba-btn-nm">MAGIC</div>
+        <div class="ba-btn-sub" id="baMagicCost">-20 MP</div>
+      </button>
+      <button class="ba-atk-btn fusion" id="baFusionBtn" onclick="battleChooseAtk('fusion')" style="display:none">
+        <div class="ba-btn-ico">⚡</div>
+        <div class="ba-btn-nm">FUSION</div>
+        <div class="ba-btn-sub">COMBO MAX</div>
+      </button>
+      <button class="ba-atk-btn dodge" onclick="battleChooseDefend('dodge')">
+        <div class="ba-btn-ico">🌀</div>
+        <div class="ba-btn-nm">DODGE</div>
+        <div class="ba-btn-sub">Undvik</div>
+      </button>
+      <button class="ba-atk-btn block" onclick="battleChooseDefend('block')">
+        <div class="ba-btn-ico">🛡️</div>
+        <div class="ba-btn-nm">BLOCK</div>
+        <div class="ba-btn-sub">-75% dmg</div>
+      </button>
+    </div>
+  </div>
+
+  <!-- Victory Overlay -->
+  <div class="ba-victory" id="baVictory" style="display:none">
+    <div class="ba-victory-content">
+      <div style="font-size:52px;margin-bottom:8px;animation:petBob 1s ease-in-out infinite">🏆</div>
+      <div style="font-size:28px;font-weight:900;color:var(--y);font-family:var(--mono);letter-spacing:2px;margin-bottom:4px">VICTORY!</div>
+      <div style="font-size:14px;color:var(--t2);margin-bottom:16px" id="baVicEnemy">PIXEL BEAST besegrad!</div>
+      <div class="ba-rewards" id="baRewards"></div>
+      <button class="btn btn-g btn-lg" style="margin-top:16px" onclick="battleContinue()" id="baContBtn">NÄSTA WAVE →</button>
+    </div>
+  </div>
+
+  <!-- Defeat Overlay -->
+  <div class="ba-defeat" id="baDefeat" style="display:none">
+    <div style="text-align:center;padding:24px">
+      <div style="font-size:52px;margin-bottom:8px">💀</div>
+      <div style="font-size:24px;font-weight:900;color:var(--r);margin-bottom:8px">KO!</div>
+      <div style="font-size:13px;color:var(--t3);margin-bottom:20px">Du föll i strid. Men kämpa på!</div>
+      <button class="btn btn-pk btn-lg" onclick="battleRetry()">⚔️ FÖRSÖK IGEN</button>
+      <button class="btn btn-ghost" style="margin-top:8px;display:block;width:100%" onclick="closeBattle()">← Avsluta</button>
     </div>
   </div>
 </div>
@@ -3674,76 +3818,500 @@ function updateComboMeter(n){
 
 // ── BATTLE ARENA ──
 const BATTLE_ENEMIES=[
-  {em:'👾',name:'PIXEL BEAST',maxHp:60,dmg:[5,14],reward:{xp:40,coins:25}},
-  {em:'🤖',name:'CYBER BOT',maxHp:90,dmg:[8,18],reward:{xp:60,coins:40}},
-  {em:'🐲',name:'SHADOW DRAGON',maxHp:130,dmg:[12,26],reward:{xp:90,coins:65}},
-  {em:'💀',name:'SKULL LORD',maxHp:170,dmg:[16,32],reward:{xp:130,coins:90}},
-  {em:'⚡',name:'THUNDER GOD',maxHp:220,dmg:[20,42],reward:{xp:180,coins:130}},
-  {em:'🌑',name:'VOID KING',maxHp:300,dmg:[28,55],reward:{xp:250,coins:200}},
+  {
+    id:'pixel', em:['👾','😤','💢'], name:'PIXEL BEAST',
+    title:'Det Digitala Monstret',
+    lore:'Född ur trasig kod. Hatar allt levande.',
+    maxHp:80, dmg:[6,14], atkSpeed:600,
+    phases:[{pct:1,em:'👾',col:'#00D9FF'},{pct:.5,em:'😤',col:'#FF9F0A',msg:'BERSERK! Pixelbesten rasar!'},{pct:.2,em:'💢',col:'#FF2D55',msg:'DESPERATE! Sista kraften!'}],
+    status:null, specialAtk:{name:'PIXEL STORM',dmg:[18,28],msg:'💥 PIXEL STORM! Kod-explosion!'},
+    reward:{xp:50,coins:30,item:null}
+  },
+  {
+    id:'cyborg', em:['🤖','⚠️','🔴'], name:'CYBER BOT',
+    title:'Den Rostiga Maskinen',
+    lore:'En gammal krigsmaskine vaknar till liv igen.',
+    maxHp:120, dmg:[9,20], atkSpeed:750,
+    phases:[{pct:1,em:'🤖',col:'#00D9FF'},{pct:.5,em:'⚠️',col:'#FF9F0A',msg:'BERSERK! Systemen överhettade!'},{pct:.2,em:'🔴',col:'#FF2D55',msg:'DESPERATE! Kärnreaktor kritisk!'}],
+    status:'stun', specialAtk:{name:'LASER BEAM',dmg:[25,38],msg:'🔴 LASER BEAM! Ögon av stål!'},
+    reward:{xp:75,coins:50,item:'⚙️'}
+  },
+  {
+    id:'dragon', em:['🐲','🔥','💀'], name:'SHADOW DRAGON',
+    title:'Skuggdraken',
+    lore:'Inte eld — mörker. Dess andedräkt är fruktan.',
+    maxHp:180, dmg:[13,28], atkSpeed:900,
+    phases:[{pct:1,em:'🐲',col:'#BF5FFF'},{pct:.5,em:'🔥',col:'#FF9F0A',msg:'BERSERK! Draken brinner!'},{pct:.2,em:'💀',col:'#FF2D55',msg:'DESPERATE! Dödsandedräkt!'}],
+    status:'burn', specialAtk:{name:'SHADOW BREATH',dmg:[35,50],msg:'🌑 SHADOW BREATH! Allt mörker!'},
+    reward:{xp:110,coins:80,item:'🔮'}
+  },
+  {
+    id:'skull', em:['💀','👹','☠️'], name:'SKULL LORD',
+    title:'Dödens Herre',
+    lore:'Regerar de dödas rike sedan evigheternas begynnelse.',
+    maxHp:240, dmg:[18,35], atkSpeed:1100,
+    phases:[{pct:1,em:'💀',col:'#888'},{pct:.5,em:'👹',col:'#FF2D55',msg:'BERSERK! Döden vaknar!'},{pct:.2,em:'☠️',col:'#BF5FFF',msg:'DESPERATE! CURSED AURA!',statusToPlayer:'curse'}],
+    status:'curse', specialAtk:{name:'DEATH CURSE',dmg:[45,65],msg:'☠️ DEATH CURSE! Livet tappas!'},
+    reward:{xp:160,coins:120,item:'💎'}
+  },
+  {
+    id:'thunder', em:['⚡','🌩️','🔱'], name:'THUNDER GOD',
+    title:'Blixtarnas Regent',
+    lore:'Åskvädrets skapare. Hans vrede är blixten.',
+    maxHp:320, dmg:[24,45], atkSpeed:500,
+    phases:[{pct:1,em:'⚡',col:'#FFE600'},{pct:.5,em:'🌩️',col:'#FF9F0A',msg:'BERSERK! Stormen rasar!',combo:true},{pct:.2,em:'🔱',col:'#FF2D55',msg:'DESPERATE! THUNDERSTORM!'}],
+    status:'stun', specialAtk:{name:'DIVINE THUNDER',dmg:[60,85],msg:'🌩️ DIVINE THUNDER! Himlen splittras!'},
+    reward:{xp:220,coins:180,item:'👑'}
+  },
+  {
+    id:'void', em:['🌑','🕳️','💫'], name:'VOID KING',
+    title:'Tomhetens Monark',
+    lore:'Bortom tid och rum. Han existerar inte — ändå dödar han.',
+    maxHp:450, dmg:[32,60], atkSpeed:400,
+    phases:[{pct:1,em:'🌑',col:'#BF5FFF'},{pct:.5,em:'🕳️',col:'#888',msg:'BERSERK! Verkligheten kollapsar!'},{pct:.2,em:'💫',col:'#FFE600',msg:'DESPERATE! VOID COLLAPSE!',statusToPlayer:'all'}],
+    status:'all', specialAtk:{name:'VOID COLLAPSE',dmg:[80,120],msg:'💫 VOID COLLAPSE! Allt försvinner!'},
+    reward:{xp:350,coins:280,item:'🌟'}
+  },
+  {
+    id:'demon', em:['👿','😈','🔥'], name:'KARMA DEMON',
+    title:'Karma-Demonen',
+    lore:'Skapad av dåliga handlingar. Ditt eget mörker.',
+    maxHp:600, dmg:[40,75], atkSpeed:350,
+    phases:[{pct:1,em:'👿',col:'#FF2D55'},{pct:.5,em:'😈',col:'#BF5FFF',msg:'BERSERK! Demonen tar form!'},{pct:.2,em:'🔥',col:'#FF9F0A',msg:'DESPERATE! FINAL JUDGMENT!'}],
+    status:'burn', specialAtk:{name:'KARMA BLAST',dmg:[100,150],msg:'🔥 KARMA BLAST! Allt karma frisläpps!'},
+    reward:{xp:500,coins:400,item:'⚡'}
+  },
 ];
-let _bt={active:false,wave:1,eHp:60,eMax:60,pHp:100,pMax:100,blocking:false,dodging:false,enemy:null};
+let _bt={active:false,wave:1,eHp:80,eMax:80,pHp:100,pMax:100,pMp:80,pMaxMp:80,
+     blocking:false,dodging:false,enemy:null,combo:0,fusionReady:false,
+     statusPlayer:null,statusEnemy:null,statusTimer:null,ePhase:0,
+     pendingAtk:null,turnsWon:0,totalDmgDealt:0,earnedXp:0,earnedCoins:0};
+
+// ── SHADOW HEARTS BATTLE SYSTEM ──
+
+const BA_ATK_CONFIGS = {
+  normal: {label:'ATTACK',    ringSpeed:1.6, greenSize:65, mpCost:0,  dmgMult:1.0, col:'#39FF14', zones:1, statusChance:0},
+  power:  {label:'POWER',     ringSpeed:2.4, greenSize:38, mpCost:0,  dmgMult:2.0, col:'#FF9F0A', zones:1, statusChance:.15},
+  magic:  {label:'MAGIC',     ringSpeed:2.0, greenSize:45, mpCost:20, dmgMult:2.5, col:'#00D9FF', zones:3, statusChance:.35},
+  fusion: {label:'FUSION',    ringSpeed:1.8, greenSize:55, mpCost:0,  dmgMult:4.0, col:'#FFE600', zones:3, statusChance:.6},
+};
+
+const BA_STATUS_ICONS = {burn:'🔥',freeze:'❄️',stun:'⚡',curse:'💀',all:'☠️'};
+const BA_STATUS_MSGS = {
+  burn:'🔥 BURN! Fienden tar 8 skada/runda',
+  freeze:'❄️ FREEZE! Fienden hoppar över en runda',
+  stun:'⚡ STUN! Fienden kan inte agera',
+  curse:'💀 CURSE! Du tar extra skada',
+};
+
 function openBattle(){
-  _bt={active:false,wave:1,eHp:60,eMax:60,pHp:100,pMax:100,blocking:false,dodging:false,enemy:null};
+  _bt={active:false,wave:1,eHp:80,eMax:80,pHp:100,pMax:100,pMp:80,pMaxMp:80,
+       blocking:false,dodging:false,enemy:null,combo:0,fusionReady:false,
+       statusPlayer:null,statusEnemy:null,statusTimer:null,ePhase:0,
+       pendingAtk:null,turnsWon:0,totalDmgDealt:0,earnedXp:0,earnedCoins:0};
+  $('baVictory').style.display='none';
+  $('baDefeat').style.display='none';
   startBattleWave();
-  $('battleArena').classList.add('open');SFX.battle();vibe([20,10,20]);
+  $('battleArena').classList.add('open');
+  SFX.battle&&SFX.battle();vibe([20,10,20]);
 }
-function closeBattle(){$('battleArena').classList.remove('open');_bt.active=false;}
+
+function closeBattle(){
+  $('battleArena').classList.remove('open');
+  _bt.active=false;
+  closeJudgmentRing&&closeJudgmentRing();
+}
+
 function startBattleWave(){
   const e=BATTLE_ENEMIES[Math.min(_bt.wave-1,BATTLE_ENEMIES.length-1)];
-  _bt.enemy=e;_bt.eHp=e.maxHp;_bt.eMax=e.maxHp;_bt.active=true;_bt.blocking=false;_bt.dodging=false;
+  _bt.enemy=e;_bt.eHp=e.maxHp;_bt.eMax=e.maxHp;_bt.active=true;
+  _bt.blocking=false;_bt.dodging=false;_bt.ePhase=0;
+  _bt.statusEnemy=null;_bt.fusionReady=false;_bt.combo=0;
+  $('baVictory').style.display='none';
+  $('baDefeat').style.display='none';
   $('baWave').textContent='WAVE '+_bt.wave;
-  $('baEnemyEm').textContent=e.em;$('baEnemyName').textContent=e.name;
-  updateBattleUI();$('baLog').textContent='Wave '+_bt.wave+': '+e.name+' dök upp!';
-}
-function battleAttack(){
-  if(!_bt.active)return;
-  SFX.battle();vibe([20,10,30]);
-  const myDmg=8+Math.floor(Math.random()*18)+Math.floor(G.actionStat/8);
-  _bt.eHp=Math.max(0,_bt.eHp-myDmg);
-  $('baLog').textContent='⚔️ Du dealar '+myDmg+' damage!';
-  const em=$('baEnemyEm');em.classList.remove('hit');void em.offsetWidth;em.classList.add('hit');
-  if(_bt.eHp<=0){battleWin();return;}
-  setTimeout(()=>{
-    if(!_bt.active)return;
-    const e=_bt.enemy;const raw=e.dmg[0]+Math.floor(Math.random()*(e.dmg[1]-e.dmg[0]));
-    let dmg=raw;let logTxt='';
-    if(_bt.blocking){dmg=Math.floor(dmg*.25);logTxt='🛡️ BLOCK! Reducerat till '+dmg+' dmg!';}
-    else if(_bt.dodging){dmg=0;logTxt='🌀 DODGE! Miss!';}
-    else logTxt='👾 '+e.name+' dealar '+dmg+' dmg!';
-    _bt.blocking=false;_bt.dodging=false;
-    if(dmg>0){_bt.pHp=Math.max(0,_bt.pHp-dmg);SFX.hit();const pl=$('baPlayerLbl');pl.classList.remove('shk');void pl.offsetWidth;pl.classList.add('shk');vibe(15);}
-    $('baLog').textContent=logTxt;
-    if(_bt.pHp<=0){battleLose();return;}
-    updateBattleUI();
-  },450);
+  $('baEnemyTitle').textContent=e.title||e.name;
+  _baSetLog('⚔️ '+e.name+' dyker upp! '+e.lore);
+  _baUpdateEnemySprite();
+  _baUpdatePhaseDots();
+  _baUpdateBg();
   updateBattleUI();
+  // Brief lore flash
+  setTimeout(()=>{_baSetLog('⚔️ Välj din attack!');},2000);
 }
-function battleDodge(){_bt.dodging=true;_bt.blocking=false;SFX.tap();showT('🌀 DODGE redo!','b');vibe(15);}
-function battleBlock(){_bt.blocking=true;_bt.dodging=false;SFX.tap();showT('🛡️ BLOCK redo!','p');vibe(15);}
+
+function battleChooseAtk(type){
+  if(!_bt.active)return;
+  const cfg=BA_ATK_CONFIGS[type];if(!cfg)return;
+  if(type==='magic'&&_bt.pMp<cfg.mpCost){showT('❌ Inte tillräckligt med MP!','r');return;}
+  if(type==='fusion'&&!_bt.fusionReady){showT('❌ Fusion inte redo!','r');return;}
+  _bt.pendingAtk=type;
+  _baSetLog(cfg.label+' valt — RING ÖPPNAS!');
+  // Open the judgment ring adapted for battle
+  _openBattleRing(cfg);
+}
+
+function battleChooseDefend(type){
+  if(!_bt.active)return;
+  if(type==='dodge'){_bt.dodging=true;_bt.blocking=false;showT('🌀 DODGE redo!','b');vibe(15);}
+  else{_bt.blocking=true;_bt.dodging=false;showT('🛡️ BLOCK redo!','p');vibe(15);}
+  _baSetLog(type==='dodge'?'🌀 Du förbereder dig att undvika...':'🛡️ Du höjer ditt skydd...');
+  // Enemy attacks immediately after defending
+  setTimeout(_baEnemyAttack, 600);
+}
+
+let _battleRing={active:false,angle:0,speed:2,raf:null,zones:[],zonesHit:null,attempts:0,cfg:null};
+
+function _openBattleRing(cfg){
+  // Remove any existing ring
+  const old=$('battleRingOverlay');if(old)old.remove();
+  const overlay=document.createElement('div');
+  overlay.id='battleRingOverlay';
+  overlay.style.cssText='position:absolute;inset:0;z-index:30;display:flex;flex-direction:column;align-items:center;justify-content:center;background:rgba(0,0,0,.8);backdrop-filter:blur(2px);';
+  const zonesHit=new Set();
+  const numZones=cfg.zones||1;
+  const zoneSize=cfg.greenSize;
+  const greenStart=Math.random()*300;
+  // Build zones
+  const zones=[];
+  for(let i=0;i<numZones;i++){
+    const start=(greenStart+i*(360/numZones))%360;
+    const end=(start+zoneSize)%360;
+    zones.push({start,end});
+  }
+  _battleRing={active:true,angle:0,speed:cfg.ringSpeed,raf:null,zones,zonesHit,attempts:0,cfg};
+  overlay.innerHTML=`
+    <div style="font-size:13px;font-weight:900;color:${cfg.col};margin-bottom:14px;font-family:var(--mono);letter-spacing:2px">${cfg.label}</div>
+    <div style="position:relative;width:220px;height:220px;margin-bottom:16px">
+      <svg id="battleRingSvg" width="220" height="220" viewBox="0 0 220 220"></svg>
+      <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:42px" id="battleRingPetEm">${G.petEmoji||'🐉'}</div>
+    </div>
+    <div style="font-size:12px;color:rgba(255,255,255,.5)">TAP WHEN IN ZONE${numZones>1?' (×'+numZones+')':''}</div>
+    <button onclick="_battleRingTap()" style="margin-top:14px;padding:14px 40px;background:${cfg.col};color:#000;font-size:15px;font-weight:900;border:none;border-radius:16px;cursor:pointer;font-family:var(--ff);-webkit-tap-highlight-color:transparent;touch-action:manipulation">TAP!</button>
+  `;
+  $('battleArena').appendChild(overlay);
+  _battleRingDraw(cfg);
+  let last=null;
+  function tick(ts){
+    if(!_battleRing.active)return;
+    if(last===null)last=ts;
+    const dt=(ts-last)/1000;last=ts;
+    _battleRing.angle=(_battleRing.angle+cfg.ringSpeed*180*dt)%360;
+    // Move needle
+    const svg=$('battleRingSvg');if(!svg){cancelAnimationFrame(_battleRing.raf);return;}
+    svg.querySelectorAll('.br-needle').forEach(n=>n.remove());
+    const toRad=a=>(a-90)*Math.PI/180;
+    const r=90,cx=110,cy=110;
+    const a=_battleRing.angle;
+    const nx=cx+r*Math.cos(toRad(a));
+    const ny=cy+r*Math.sin(toRad(a));
+    const line=document.createElementNS('http://www.w3.org/2000/svg','line');
+    line.setAttribute('x1',cx);line.setAttribute('y1',cy);
+    line.setAttribute('x2',nx);line.setAttribute('y2',ny);
+    line.setAttribute('stroke','#fff');line.setAttribute('stroke-width','3');
+    line.setAttribute('stroke-linecap','round');line.classList.add('br-needle');
+    svg.appendChild(line);
+    _battleRing.raf=requestAnimationFrame(tick);
+  }
+  _battleRing.raf=requestAnimationFrame(tick);
+  // Auto-fail after 6 seconds
+  _battleRing._failTimer=setTimeout(()=>{if(_battleRing.active)_battleRingFail();},6000);
+}
+
+function _battleRingDraw(cfg){
+  const svg=$('battleRingSvg');if(!svg)return;
+  svg.querySelectorAll('.br-zone').forEach(e=>e.remove());
+  function arc(s,e,stroke,sw){
+    const toRad=a=>(a-90)*Math.PI/180;
+    const r=90,cx=110,cy=110;
+    const x1=cx+r*Math.cos(toRad(s)),y1=cy+r*Math.sin(toRad(s));
+    const x2=cx+r*Math.cos(toRad(e)),y2=cy+r*Math.sin(toRad(e));
+    const large=(e-s+360)%360>180?1:0;
+    const path=document.createElementNS('http://www.w3.org/2000/svg','path');
+    path.setAttribute('d',`M${x1},${y1} A${r},${r} 0 ${large} 1 ${x2},${y2}`);
+    path.setAttribute('stroke',stroke);path.setAttribute('stroke-width',sw);
+    path.setAttribute('fill','none');path.setAttribute('stroke-linecap','round');
+    path.classList.add('br-zone');svg.appendChild(path);
+  }
+  // Track
+  arc(0,359,'rgba(255,255,255,.1)',24);
+  // Warn zones
+  _battleRing.zones.forEach(z=>{
+    arc((z.start-8+360)%360,(z.end+8)%360,'rgba(255,230,0,.3)',26);
+  });
+  // Green zones
+  _battleRing.zones.forEach(z=>{
+    arc(z.start,z.end,cfg.col,18);
+  });
+}
+
+function _battleRingTap(){
+  if(!_battleRing.active)return;
+  SFX.tap&&SFX.tap();vibe(12);
+  const a=_battleRing.angle%360;
+  function inArc(a,s,e){const ss=s%360,ee=e%360;return ee>ss?a>=ss&&a<=ee:(a>=ss||a<=ee);}
+  const hitZones=_battleRing.zones.filter(z=>inArc(a,z.start,z.end));
+  if(hitZones.length>0){
+    hitZones.forEach(z=>_battleRing.zonesHit.add(JSON.stringify(z)));
+    const needed=_battleRing.zones.length;
+    const got=_battleRing.zonesHit.size;
+    if(got>=Math.max(1,Math.ceil(needed/2))){
+      // Enough zones hit — success
+      _battleRingSuccess(got===needed);
+    } else {
+      showT('✅ '+got+'/'+needed+' ZONER!','g');
+    }
+  } else {
+    _battleRing.attempts++;
+    vibe([20,10,20]);
+    if(_battleRing.attempts>=3)_battleRingFail();
+    else showT(['❌ Miss! ('+_battleRing.attempts+'/3)','⚠️ Utanför zonen!'][_battleRing.attempts%2],'r');
+  }
+}
+
+function _battleRingSuccess(perfect){
+  clearTimeout(_battleRing._failTimer);
+  _battleRing.active=false;
+  cancelAnimationFrame(_battleRing.raf);
+  const overlay=$('battleRingOverlay');if(overlay)overlay.remove();
+  const cfg=BA_ATK_CONFIGS[_bt.pendingAtk||'normal'];
+  // Deduct MP
+  if(cfg.mpCost){_bt.pMp=Math.max(0,_bt.pMp-cfg.mpCost);}
+  // Restore some MP on hit
+  _bt.pMp=Math.min(_bt.pMaxMp,_bt.pMp+8);
+  // Calculate damage
+  const base=10+Math.floor(G.actionStat/5)+(_bt.wave*3);
+  const dmg=Math.round(base*cfg.dmgMult*(perfect?1.3:1));
+  const isCrit=perfect;
+  _bt.eHp=Math.max(0,_bt.eHp-dmg);
+  _bt.totalDmgDealt+=dmg;
+  _bt.combo++;
+  // Fusion check
+  if(_bt.combo>=3){_bt.fusionReady=true;}
+  if(_bt.pendingAtk==='fusion'){_bt.fusionReady=false;_bt.combo=0;}
+  // Status effect on enemy
+  if(cfg.statusChance>0&&Math.random()<cfg.statusChance&&_bt.enemy.status){
+    _bt.statusEnemy=_bt.enemy.status;
+    _baSetLog((perfect?'🌟 PERFECT! ':'')+'⚔️ '+dmg+' dmg'+(isCrit?' CRIT!':'')+'! '+BA_STATUS_MSGS[_bt.statusEnemy]);
+  } else {
+    _baSetLog((perfect?'🌟 PERFECT! ':'')+'⚔️ '+dmg+' dmg'+(isCrit?' CRIT!':'')+'! Combo: '+_bt.combo);
+  }
+  // Enemy hit animation
+  const sprite=$('baEnemySprite');
+  if(sprite){sprite.classList.remove('hit');void sprite.offsetWidth;sprite.classList.add('hit');}
+  // Screen flash
+  _baFlash(cfg.col+'44');
+  floatNum&&floatNum((perfect?'★PERFECT! ':'')+(isCrit?'💥':'⚔️')+dmg,window.innerWidth/2,window.innerHeight*.3,cfg.col,isCrit?22:18);
+  SFX.hit&&SFX.hit();vibe(perfect?[40,20,80,20,120]:[30,20,60]);
+  updateBattleUI();
+  _baCheckPhase();
+  if(_bt.eHp<=0){setTimeout(battleWin,400);return;}
+  // Enemy counterattack after delay
+  setTimeout(_baEnemyAttack,800);
+}
+
+function _battleRingFail(){
+  clearTimeout(_battleRing._failTimer);
+  _battleRing.active=false;
+  cancelAnimationFrame(_battleRing.raf);
+  const overlay=$('battleRingOverlay');if(overlay)overlay.remove();
+  _bt.combo=0;_bt.fusionReady=false;
+  _baSetLog('❌ Miss! Ingen skada — fienden kontrattackerar!');
+  vibe([30,20,60]);
+  setTimeout(_baEnemyAttack,500);
+}
+
+function _baEnemyAttack(){
+  if(!_bt.active||_bt.eHp<=0)return;
+  const e=_bt.enemy;
+  // Status: freeze/stun → enemy skips
+  if(_bt.statusEnemy==='freeze'||_bt.statusEnemy==='stun'){
+    _baSetLog(BA_STATUS_ICONS[_bt.statusEnemy]+' '+e.name+' kan inte agera!');
+    _bt.statusEnemy=null;
+    updateBattleUI();return;
+  }
+  // Burn tick on enemy
+  if(_bt.statusEnemy==='burn'){
+    _bt.eHp=Math.max(0,_bt.eHp-8);
+    if(_bt.eHp<=0){battleWin();return;}
+  }
+  // Desperate = special attack
+  const isDesp=_bt.ePhase>=2;
+  let dmg;
+  if(isDesp&&Math.random()<0.4){
+    dmg=e.specialAtk.dmg[0]+Math.floor(Math.random()*(e.specialAtk.dmg[1]-e.specialAtk.dmg[0]));
+    _baSetLog(e.specialAtk.msg);
+    shakeScreen&&shakeScreen();
+    vibe([60,30,120,30,180]);
+    // Maybe apply status to player
+    if(e.phases[2]?.statusToPlayer)_bt.statusPlayer=e.phases[2].statusToPlayer;
+  } else {
+    dmg=e.dmg[0]+Math.floor(Math.random()*(e.dmg[1]-e.dmg[0]));
+    // Berserker does +30% dmg
+    if(_bt.ePhase===1)dmg=Math.round(dmg*1.3);
+    if(_bt.blocking){dmg=Math.floor(dmg*.25);_baSetLog('🛡️ BLOCK! Reducerat till '+dmg+' dmg!');}
+    else if(_bt.dodging){dmg=0;_baSetLog('🌀 DODGE! Miss!');}
+    else _baSetLog('👾 '+e.name+' dealar '+dmg+' dmg!');
+  }
+  // Curse: +50% to player
+  if(_bt.statusPlayer==='curse')dmg=Math.round(dmg*1.5);
+  _bt.blocking=false;_bt.dodging=false;
+  if(dmg>0){
+    _bt.pHp=Math.max(0,_bt.pHp-dmg);
+    SFX.hit&&SFX.hit();
+    const ph=$('baPlayerHpFill');if(ph){ph.style.background='var(--r)';setTimeout(()=>{if(ph)ph.style.background='var(--g)';},300);}
+    vibe(20);
+  }
+  updateBattleUI();
+  if(_bt.pHp<=0){setTimeout(battleLose,300);}
+}
+
+function _baCheckPhase(){
+  const pct=_bt.eHp/_bt.eMax;
+  const e=_bt.enemy;
+  let newPhase=0;
+  if(pct<=.2)newPhase=2;
+  else if(pct<=.5)newPhase=1;
+  if(newPhase>_bt.ePhase){
+    _bt.ePhase=newPhase;
+    const ph=e.phases[newPhase];
+    _baSetLog(ph.msg||'PHASE CHANGE!');
+    const sprite=$('baEnemySprite');
+    if(sprite){sprite.classList.remove('hit','atk');void sprite.offsetWidth;sprite.classList.add('phase-up');}
+    _baUpdatePhaseDots();
+    _baUpdateBg();
+    shakeScreen&&shakeScreen();
+    vibe([50,30,100,30,150]);
+    setTimeout(()=>_baUpdateEnemySprite(),200);
+  }
+}
+
+function _baUpdateEnemySprite(){
+  const el=$('baEnemySprite');if(!el)return;
+  const e=_bt.enemy;if(!e)return;
+  el.textContent=e.em[Math.min(_bt.ePhase,e.em.length-1)];
+}
+
+function _baUpdatePhaseDots(){
+  ['baPh0','baPh1','baPh2'].forEach((id,i)=>{
+    const d=$(id);if(!d)return;
+    d.className='ba-ph-dot';
+    if(i<_bt.ePhase)d.classList.add(i===1?'berserk':'desperate');
+    else if(i===_bt.ePhase)d.classList.add(i===0?'active':i===1?'berserk':'desperate');
+  });
+}
+
+function _baUpdateBg(){
+  const bg=$('baBgGlow');if(!bg)return;
+  const e=_bt.enemy;if(!e)return;
+  const col=e.phases[Math.min(_bt.ePhase,e.phases.length-1)].col;
+  bg.style.background=`radial-gradient(ellipse at 50% 0%,${col}18 0%,transparent 70%)`;
+}
+
+function _baFlash(col){
+  const f=$('battleArena');if(!f)return;
+  const flash=document.createElement('div');
+  flash.style.cssText=`position:absolute;inset:0;background:${col};pointer-events:none;z-index:25;animation:none;opacity:.7;`;
+  f.appendChild(flash);
+  setTimeout(()=>{flash.style.opacity='0';flash.style.transition='opacity .15s';setTimeout(()=>flash.remove(),200);},80);
+}
+
+function _baSetLog(msg){
+  const el=$('baLog');if(!el)return;
+  el.style.opacity='0';
+  setTimeout(()=>{el.textContent=msg;el.style.opacity='1';},150);
+}
+
 function battleWin(){
-  const e=_bt.enemy;_bt.active=false;SFX.win();vibe([30,20,100,20,80]);
-  gainXP(e.reward.xp,'action');gainCoins(e.reward.coins);
-  G.battlesWon=(G.battlesWon||0)+1;save();markBond('quest');addWorldPoints(15,'battle');
-  advanceQuest('battle');checkAchievements();
-  addDiaryEntry('VI VANN BATTLE! '+G.petName+' slogs och segrade! Vi är nu LV'+G.level+' och '+(G.battlesWon||0)+' segrar totalt! ⚔️💪');
-  $('baLog').textContent='🏆 SEGER! +'+e.reward.xp+'XP +'+e.reward.coins+'💰';
-  spawnParticles(window.innerWidth/2,window.innerHeight*.5,'stars');
-  setTimeout(()=>{
-    _bt.wave++;
-    if(_bt.wave>BATTLE_ENEMIES.length){$('baLog').textContent='👑 ALLA WAVES KLARADE! KARMA LEGEND!';showAchievement('👑','BATTLE MASTER!');_bt.active=false;setTimeout(()=>{closeBattle();},3000);}
-    else {_bt.pHp=Math.min(_bt.pMax,_bt.pHp+30);startBattleWave();}
-  },2200);
+  const e=_bt.enemy;_bt.active=false;
+  _bt.earnedXp+=e.reward.xp;_bt.earnedCoins+=e.reward.coins;
+  _bt.turnsWon++;
+  const isLast=_bt.wave>=BATTLE_ENEMIES.length;
+  // Show victory overlay
+  $('baVictory').style.display='flex';
+  $('baVicEnemy').textContent=e.name+' besegrad!';
+  const rewards=$('baRewards');
+  const itemHtml=e.reward.item?`<div class="ba-reward-chip" style="animation-delay:.4s">${e.reward.item} ITEM!</div>`:'';
+  rewards.innerHTML=`
+    <div class="ba-reward-chip">+${e.reward.xp} XP</div>
+    <div class="ba-reward-chip" style="animation-delay:.2s;color:var(--y)">+${e.reward.coins} ⚡</div>
+    ${_bt.combo>2?`<div class="ba-reward-chip" style="animation-delay:.3s;color:var(--pk)">🔥 COMBO BONUS!</div>`:''}
+    ${itemHtml}
+    ${isLast?`<div class="ba-reward-chip" style="animation-delay:.5s;color:var(--y);border-color:gold">👑 ALLA WAVES!</div>`:''}
+  `;
+  const btn=$('baContBtn');
+  if(btn){
+    if(isLast){btn.textContent='🏆 AVSLUTA';btn.onclick=()=>{_baFinalRewards();closeBattle();};}
+    else{btn.textContent='NÄSTA WAVE →';btn.onclick=battleContinue;}
+  }
+  SFX.win&&SFX.win();vibe([30,20,100,20,80]);
+  spawnParticles&&spawnParticles(window.innerWidth/2,window.innerHeight*.4,'stars');
 }
+
+function _baFinalRewards(){
+  gainXP(_bt.earnedXp,'action');gainCoins(_bt.earnedCoins);
+  addWorldPoints(Math.floor(_bt.wave*10),'battle');
+  G.battlesWon=(G.battlesWon||0)+1;
+  save&&save();updateHUD&&updateHUD();
+  addDiaryEntry&&addDiaryEntry('Vann '+_bt.turnsWon+' waves i Battle Arena! Delade '+_bt.totalDmgDealt+' total dmg ⚔️');
+  showT('⚔️ BATTLE COMPLETE! +'+_bt.earnedXp+' XP · +'+_bt.earnedCoins+' coins','y');
+}
+
+function battleContinue(){
+  $('baVictory').style.display='none';
+  _baFinalRewards();
+  _bt.wave++;
+  _bt.pHp=Math.min(_bt.pMax,_bt.pHp+30); // heal between waves
+  _bt.pMp=Math.min(_bt.pMaxMp,_bt.pMp+20);
+  _bt.earnedXp=0;_bt.earnedCoins=0;
+  showT('❤️ +30 HP healed!','g');
+  startBattleWave();
+}
+
+function battleRetry(){
+  $('baDefeat').style.display='none';
+  _bt.pHp=_bt.pMax;_bt.pMp=_bt.pMaxMp;
+  _bt.wave=Math.max(1,_bt.wave-1);
+  startBattleWave();
+}
+
 function battleLose(){
-  _bt.active=false;SFX.error();vibe([50,30,100]);
-  $('baLog').textContent='💀 Förlorade! Försök igen... +15XP';
-  gainXP(15,'action');
-  setTimeout(()=>{_bt.pHp=_bt.pMax;_bt.wave=Math.max(1,_bt.wave-1);startBattleWave();},2500);
+  _bt.active=false;
+  SFX.error&&SFX.error();vibe([50,30,100]);
+  $('baDefeat').style.display='flex';
 }
+
 function updateBattleUI(){
-  const ep=Math.max(0,(_bt.eHp/_bt.eMax)*100),pp=Math.max(0,(_bt.pHp/_bt.pMax)*100);
-  $('baEnemyHp').style.width=ep+'%';$('baPlayerHp').style.width=pp+'%';
-  $('baPlayerHp').style.background=pp<30?'var(--pk)':pp<60?'var(--y)':'var(--g)';
+  // Enemy HP
+  const ep=Math.max(0,(_bt.eHp/_bt.eMax)*100);
+  const ehf=$('baEnemyHpFill');
+  if(ehf){ehf.style.width=ep+'%';ehf.style.background=ep>50?'var(--pk)':ep>20?'var(--o)':'var(--r)';}
+  const ehn=$('baEnemyHpNum');if(ehn)ehn.textContent=_bt.eHp+'/'+_bt.eMax;
+  // Player HP
+  const pp=Math.max(0,(_bt.pHp/_bt.pMax)*100);
+  const phf=$('baPlayerHpFill');
+  if(phf){phf.style.width=pp+'%';phf.style.background=pp>50?'var(--g)':pp>20?'var(--y)':'var(--r)';}
+  const phn=$('baPlayerHpNum');if(phn)phn.textContent=_bt.pHp+'/'+_bt.pMax;
+  // MP
+  const mp=Math.max(0,(_bt.pMp/_bt.pMaxMp)*100);
+  const mpf=$('baPlayerMpFill');if(mpf)mpf.style.width=mp+'%';
+  const mpn=$('baPlayerMpNum');if(mpn)mpn.textContent=_bt.pMp+'/'+_bt.pMaxMp;
+  // Combo
+  const cc=$('baComboCount');if(cc)cc.textContent=_bt.combo;
+  // Fusion button
+  const fb=$('baFusionBtn');
+  if(fb)fb.style.display=_bt.fusionReady?'flex':'none';
+  const fi=$('baFusionIndicator');if(fi)fi.style.display=_bt.fusionReady?'block':'none';
+  // Status
+  const es=$('baEnemyStatus');if(es)es.textContent=_bt.statusEnemy?BA_STATUS_ICONS[_bt.statusEnemy]:'';
+  const ps=$('baPlayerStatus');if(ps)ps.textContent=_bt.statusPlayer?BA_STATUS_ICONS[_bt.statusPlayer]:'';
+  // Magic btn
+  const mb=$('baMagicBtn');
+  if(mb)mb.style.opacity=_bt.pMp>=20?'1':'.4';
+  // Player name
+  const pn=$('baPlayerName');if(pn)pn.textContent=(G.petEmoji||'🐉')+' '+(G.petName||'DIN PET')+' LV'+(G.level||1);
+  // Enemy name
+  const en=$('baEnemyName');if(en)en.textContent=(_bt.enemy?.name||'ENEMY')+' — '+_bt.eHp+' HP';
 }
 
 function addH(t,c='var(--g)'){G.hist.unshift({c,t,time:'just nu'});if(G.hist.length>30)G.hist.pop();}
