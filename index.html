@@ -4252,6 +4252,9 @@ function _baFinalRewards(){
   gainXP(_bt.earnedXp,'action');gainCoins(_bt.earnedCoins);
   addWorldPoints(Math.floor(_bt.wave*10),'battle');
   G.battlesWon=(G.battlesWon||0)+1;
+  markBond&&markBond('quest');
+  advanceQuest&&advanceQuest('battle');
+  checkAchievements&&checkAchievements();
   save&&save();updateHUD&&updateHUD();
   addDiaryEntry&&addDiaryEntry('Vann '+_bt.turnsWon+' waves i Battle Arena! Delade '+_bt.totalDmgDealt+' total dmg ⚔️');
   showT('⚔️ BATTLE COMPLETE! +'+_bt.earnedXp+' XP · +'+_bt.earnedCoins+' coins','y');
