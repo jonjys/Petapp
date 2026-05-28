@@ -1508,6 +1508,33 @@ textarea.inp{resize:none;min-height:68px;}
 .auth-skip a{color:var(--t3);text-decoration:underline;cursor:pointer;}
 .auth-user-badge{display:flex;align-items:center;gap:10px;background:rgba(57,255,20,.08);border:1px solid rgba(57,255,20,.22);border-radius:14px;padding:11px 14px;margin-bottom:16px;}
 .auth-sb-status{position:fixed;top:8px;right:8px;z-index:3000;font-size:9px;font-weight:900;padding:3px 8px;border-radius:8px;font-family:var(--mono);}
+
+/* MODAL BOX (centered dialog variant) */
+.modal-box{width:100%;max-width:400px;margin:auto;background:var(--c1);border:1px solid var(--line2);border-radius:20px;padding:18px 16px 22px;max-height:90svh;overflow-y:auto;scrollbar-width:none;transform:scale(.92) translateY(20px);transition:transform .25s cubic-bezier(.34,1.56,.64,1);}
+.modal-box::-webkit-scrollbar{display:none;}
+.modal.open .modal-box{transform:scale(1) translateY(0);}
+.modal{align-items:center;}
+
+/* TERRITORY MAP */
+.terr-row{display:flex;gap:4px;margin-bottom:4px;}
+.terr-cell{width:52px;height:58px;border-radius:8px;border:1.5px solid rgba(255,255,255,.08);background:var(--c1);display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;position:relative;transition:all .12s;flex-shrink:0;-webkit-tap-highlight-color:transparent;}
+.terr-cell:active{transform:scale(.9);}
+.terr-cell.empty{background:transparent;border-color:transparent;cursor:default;}
+.terr-cell.owned{border-color:var(--zc,var(--g));background:rgba(57,255,20,.08);box-shadow:0 0 8px rgba(57,255,20,.15);}
+.terr-cell.locked{opacity:.5;}
+.terr-cell.friend-owned{border-color:rgba(0,217,255,.4);background:rgba(0,217,255,.06);}
+.terr-em{font-size:18px;line-height:1;}
+.terr-nm{font-size:7px;font-weight:700;color:var(--t3);text-align:center;margin-top:1px;max-width:48px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.terr-badge{position:absolute;top:2px;right:2px;font-size:8px;}
+.terr-lock{position:absolute;bottom:2px;right:2px;font-size:8px;opacity:.6;}
+
+/* CASTLE BUILDINGS */
+.castle-building{background:var(--c1);border:1.5px solid var(--bc,var(--line));border-radius:12px;padding:10px 6px;display:flex;flex-direction:column;align-items:center;text-align:center;transition:all .15s;}
+.castle-building.built{border-color:var(--g);background:rgba(57,255,20,.05);}
+
+/* DNA */
+.dna-pet-opt{width:44px;height:44px;border-radius:10px;background:var(--c2);border:1.5px solid var(--line);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .1s;}
+.dna-pet-opt:active{transform:scale(.88);}
 </style>
 
 </head>
@@ -2165,6 +2192,17 @@ textarea.inp{resize:none;min-height:68px;}
         <!-- Districts -->
         <div class="kw-section-ttl">🏗️ DINA DISTRIKT — BYGGS AV DINA ACTIONS</div>
         <div class="kw-district-grid" id="kwDistrictGrid"></div>
+        <!-- Territory Map -->
+        <div class="kw-section-ttl" style="display:flex;align-items:center;justify-content:space-between">
+          <span>🏰 TERRITORIUM — CLAIMIA ZONER</span>
+          <span style="font-size:11px;color:var(--g);font-weight:900" id="terrIncomeVal">+0⚡/hr</span>
+        </div>
+        <div style="padding:0 12px 4px;display:flex;gap:8px;align-items:center">
+          <span style="font-size:11px;color:var(--t3)">Dina zoner:</span>
+          <span style="font-size:13px;font-weight:900;color:var(--y)" id="terrMyCount">0</span>
+          <button class="btn btn-ghost btn-sm" style="margin-left:auto;font-size:10px" onclick="_checkTerritoryIncome();showT('💰 Inkomst insamlad!','g')">💰 SAMLA IN</button>
+        </div>
+        <div id="territoryMapGrid" style="padding:0 12px 12px;overflow-x:auto;scrollbar-width:none"></div>
         <!-- Wild pets -->
         <div class="kw-section-ttl">🎯 VILDA PETS NÄRA DIG <span style="color:var(--pk);animation:notifPulse 2s infinite" id="kwWildCount">3 aktiva</span></div>
         <div class="kw-wild-row" id="kwWildRow"></div>
@@ -2178,6 +2216,8 @@ textarea.inp{resize:none;min-height:68px;}
         <button class="kw-build-btn" style="border-color:rgba(57,255,20,.45);color:var(--g);background:rgba(57,255,20,.06)" onclick="nav('home')">🐾 MIN PET</button>
         <button class="kw-build-btn" style="border-color:rgba(255,45,85,.45);color:var(--pk);background:rgba(255,45,85,.06)" onclick="openClanView()">⚔️ KLAN</button>
         <button class="kw-build-btn" style="border-color:rgba(0,217,255,.45);color:var(--b);background:rgba(0,217,255,.06)" onclick="switchWorldTab('karta')">🗺️ KARTA</button>
+        <button class="kw-build-btn" style="border-color:rgba(57,255,20,.45);color:var(--g);background:rgba(57,255,20,.06)" onclick="openCastle()">🏰 SLOTT</button>
+        <button class="kw-build-btn" style="border-color:rgba(191,95,255,.45);color:var(--p);background:rgba(191,95,255,.06)" onclick="openDNAMixer()">🧬 DNA MIX</button>
       </div>
       </div>
       <div id="world-panel-karta" style="display:none">
@@ -2249,6 +2289,34 @@ textarea.inp{resize:none;min-height:68px;}
           <div style="display:flex;gap:6px"><span style="font-size:9px;font-weight:900;background:rgba(57,255,20,.12);border:1px solid rgba(57,255,20,.3);color:var(--g);padding:2px 7px;border-radius:6px;font-family:var(--mono)">LIVE</span><span style="font-size:9px;font-weight:700;color:var(--t3)">Bygg · Utforska · Fånga wild pets</span></div>
         </div>
         <span style="font-size:22px;color:var(--g)">→</span>
+      </div>
+      <!-- Territory Leaderboard teaser -->
+      <div style="margin:0 14px 12px;background:linear-gradient(135deg,rgba(255,230,0,.08),rgba(191,95,255,.05));border:2px solid rgba(255,230,0,.25);border-radius:22px;padding:14px 16px;cursor:pointer;-webkit-tap-highlight-color:transparent" onclick="nav('world')">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
+          <div style="font-size:14px;font-weight:900;color:var(--y)">🏆 TERRITORIUM TOPPLISTA</div>
+          <div style="font-size:10px;color:var(--t3);font-family:var(--mono)">LIVE</div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:5px">
+          <div style="display:flex;align-items:center;gap:8px;background:rgba(191,95,255,.08);border-radius:10px;padding:6px 10px">
+            <div style="font-size:10px;font-weight:900;color:var(--y);width:18px">#1</div>
+            <div style="font-size:18px">🦊</div>
+            <div style="flex:1;font-size:11px;font-weight:700">sofiaK</div>
+            <div style="font-size:11px;color:var(--p);font-weight:900">4 zoner</div>
+          </div>
+          <div style="display:flex;align-items:center;gap:8px;background:rgba(255,45,85,.06);border-radius:10px;padding:6px 10px">
+            <div style="font-size:10px;font-weight:900;color:rgba(255,255,255,.5);width:18px">#2</div>
+            <div style="font-size:18px">🐱</div>
+            <div style="flex:1;font-size:11px;font-weight:700">ella_sthlm</div>
+            <div style="font-size:11px;color:var(--pk);font-weight:900">3 zoner</div>
+          </div>
+          <div style="display:flex;align-items:center;gap:8px;background:rgba(0,217,255,.06);border-radius:10px;padding:6px 10px">
+            <div style="font-size:10px;font-weight:900;color:rgba(255,255,255,.4);width:18px">#3</div>
+            <div style="font-size:18px">🐺</div>
+            <div style="flex:1;font-size:11px;font-weight:700">bjorn99</div>
+            <div style="font-size:11px;color:var(--b);font-weight:900">2 zoner</div>
+          </div>
+        </div>
+        <div style="margin-top:8px;font-size:10px;color:var(--t3);text-align:center">Klicka för att claim dina egna zoner →</div>
       </div>
       <!-- Quick access grid -->
       <div class="explore-grid">
@@ -2430,6 +2498,19 @@ textarea.inp{resize:none;min-height:68px;}
           </div>
         </div>
         <div style="font-size:22px;color:var(--b)">→</div>
+      </div>
+      <!-- DNA MIXER card -->
+      <div style="margin:0 14px 10px;background:linear-gradient(135deg,rgba(191,95,255,.14),rgba(127,46,190,.07));border:2px solid rgba(191,95,255,.38);border-radius:22px;padding:16px 18px;cursor:pointer;display:flex;align-items:center;gap:14px;-webkit-tap-highlight-color:transparent" onclick="openDNAMixer()">
+        <div style="font-size:44px;filter:drop-shadow(0 0 14px rgba(191,95,255,.7));animation:pf 2s ease-in-out infinite 1s">🧬</div>
+        <div style="flex:1;min-width:0">
+          <div style="font-size:15px;font-weight:900">DNA MIXER</div>
+          <div style="font-size:10px;color:var(--t3);margin-top:3px">Mixa 2 pets → skapa hybrid. Unlock hemliga kombinationer!</div>
+          <div style="display:flex;gap:5px;margin-top:5px;flex-wrap:wrap">
+            <span style="font-size:9px;background:rgba(191,95,255,.15);border:1px solid rgba(191,95,255,.3);color:var(--p);padding:2px 7px;border-radius:8px;font-family:var(--mono)">🧬 Hybrid Pet</span>
+            <span style="font-size:9px;background:rgba(57,255,20,.12);border:1px solid rgba(57,255,20,.25);color:var(--g);padding:2px 7px;border-radius:8px;font-family:var(--mono)">+XP</span>
+          </div>
+        </div>
+        <div style="font-size:22px;color:var(--p)">→</div>
       </div>
       <!-- ACHIEVEMENTS -->
       <div class="sh"><div class="sh-t">🏆 ACHIEVEMENTS</div><div class="sh-a" id="playAchCount" style="color:var(--y)">0 / 17</div></div>
@@ -5529,7 +5610,7 @@ function switchWorldTab(tab){
   if(tab==='world'){
     wp.style.display='';kp.style.display='none';
     if(wb)wb.classList.add('on');if(kb)kb.classList.remove('on');
-    renderKarmaWorld();initKarmaWorld();
+    renderKarmaWorld();initKarmaWorld();renderTerritoryMap();
   }else{
     wp.style.display='none';kp.style.display='';
     if(wb)wb.classList.remove('on');if(kb)kb.classList.add('on');
@@ -6165,6 +6246,300 @@ function renderKarmaWorld(){
     <div class="kw-fw-lv" style="color:${f.col}">LV${f.lv} · ${f.wp}WP</div>
   </div>`).join('');
   _updateKwHomeTeaser();
+  renderTerritoryMap();
+}
+
+// ── TERRITORY MAP ──
+function renderTerritoryMap(){
+  const wrap=$('territoryMapGrid');if(!wrap)return;
+  const myZones=G.ownedZones||[];
+  let rows={};
+  TERRITORY_ZONES.forEach(z=>{
+    if(!rows[z.row])rows[z.row]=[];
+    rows[z.row][z.col_]=z;
+  });
+  let html='';
+  for(let r=0;r<7;r++){
+    html+='<div class="terr-row">';
+    for(let c=0;c<6;c++){
+      const z=(rows[r]||[])[c];
+      if(!z){html+='<div class="terr-cell empty"></div>';continue;}
+      const owned=myZones.includes(z.id);
+      const locked=G.worldPoints<z.wpCost;
+      let friendOwner=null;
+      for(const [fnm,fd] of Object.entries(FRIEND_ZONES)){if(fd.zones.includes(z.id)){friendOwner={nm:fnm,em:fd.em,col:fd.col};break;}}
+      html+=`<div class="terr-cell ${owned?'owned':locked?'locked':friendOwner?'friend-owned':''}" style="--zc:${z.col}" onclick="openZoneDetail('${z.id}')">
+        <div class="terr-em">${owned?(G.petEmoji||'🐉'):friendOwner?friendOwner.em:z.em}</div>
+        <div class="terr-nm">${z.nm.length>8?z.nm.slice(0,7)+'…':z.nm}</div>
+        ${owned?`<div class="terr-badge">🏰</div>`:''}
+        ${locked&&!owned&&!friendOwner?`<div class="terr-lock">🔒</div>`:''}
+      </div>`;
+    }
+    html+='</div>';
+  }
+  wrap.innerHTML=html;
+  const totalInc=_calcTotalPassiveIncome();
+  const incEl=$('terrIncomeVal');if(incEl)incEl.textContent='+'+totalInc+'⚡/hr';
+  const myCount=$('terrMyCount');if(myCount)myCount.textContent=(G.ownedZones||[]).length;
+  _checkTerritoryIncome();
+}
+
+function _calcTerritoryIncome(zone){
+  return Math.floor(zone.inc*(1+(G.level||1)*0.05));
+}
+
+function _calcTotalPassiveIncome(){
+  const myZones=G.ownedZones||[];
+  return TERRITORY_ZONES.filter(z=>myZones.includes(z.id)).reduce((s,z)=>s+_calcTerritoryIncome(z),0);
+}
+
+let _zoneDetailId=null;
+function openZoneDetail(id){
+  const z=TERRITORY_ZONES.find(x=>x.id===id);if(!z)return;
+  _zoneDetailId=id;
+  const owned=(G.ownedZones||[]).includes(id);
+  const locked=G.worldPoints<z.wpCost;
+  let friendOwner=null;
+  for(const [fnm,fd] of Object.entries(FRIEND_ZONES)){if(fd.zones.includes(z.id)){friendOwner={nm:fnm,em:fd.em,col:fd.col};break;}}
+  const inc=_calcTerritoryIncome(z);
+  const md=$('zoneDetailModal');if(!md)return;
+  const body=$('zoneDetailBody');
+  if(body)body.innerHTML=`
+    <div style="font-size:48px;margin-bottom:8px;text-align:center;filter:drop-shadow(0 0 16px ${z.col}88)">${owned?(G.petEmoji||'🐉'):z.em}</div>
+    <div style="text-align:center;font-size:20px;font-weight:900;margin-bottom:2px">${z.nm}</div>
+    <div style="text-align:center;font-size:12px;color:var(--t3);margin-bottom:14px;text-transform:uppercase">${z.type} · ${z.wpCost} WP</div>
+    ${owned?`<div style="background:rgba(57,255,20,.1);border:1px solid rgba(57,255,20,.3);border-radius:12px;padding:10px 14px;margin-bottom:12px;text-align:center">
+      <div style="font-size:11px;color:var(--t3);margin-bottom:2px">DITT TERRITORIUM</div>
+      <div style="font-size:22px;font-weight:900;color:var(--g)">+${inc} ⚡/hr</div>
+    </div>`:
+    friendOwner?`<div style="background:rgba(0,217,255,.1);border:1px solid rgba(0,217,255,.3);border-radius:12px;padding:10px 14px;margin-bottom:12px;text-align:center">
+      <div style="font-size:11px;color:var(--t3)">ÄGS AV</div>
+      <div style="font-size:16px;font-weight:900;color:${friendOwner.col}">${friendOwner.em} ${friendOwner.nm}</div>
+    </div>`:
+    `<div style="background:rgba(255,230,0,.07);border:1px solid rgba(255,230,0,.2);border-radius:12px;padding:10px 14px;margin-bottom:12px">
+      <div style="display:flex;justify-content:space-between;margin-bottom:4px"><span style="color:var(--t3);font-size:11px">Passiv inkomst</span><span style="color:var(--y);font-weight:900">+${inc} ⚡/hr</span></div>
+      <div style="display:flex;justify-content:space-between"><span style="color:var(--t3);font-size:11px">Kräver WP</span><span style="color:${locked?'var(--r)':'var(--g)'};font-weight:900">${z.wpCost} WP ${locked?'('+G.worldPoints+'/'+z.wpCost+')':'✓'}</span></div>
+    </div>`}
+    ${owned?`<button class="btn btn-ghost btn-full btn-lg" onclick="abandonZone('${id}')">🏳️ Lämna zone</button>`:
+    friendOwner?`<button class="btn btn-pk btn-full btn-lg" onclick="raidZone('${id}','${friendOwner.nm}')">⚔️ RAIDA ${friendOwner.nm.toUpperCase()}</button>`:
+    locked?`<button class="btn btn-ghost btn-full btn-lg" style="opacity:.5;pointer-events:none">🔒 Behöver ${z.wpCost} WP</button>`:
+    `<button class="btn btn-g btn-full btn-lg" onclick="claimZone('${id}')">🏰 CLAIM ZONE — ${z.wpCost} WP</button>`}
+  `;
+  md.classList.add('open');
+  vibe(15);
+}
+
+function closeZoneDetail(){const md=$('zoneDetailModal');if(md)md.classList.remove('open');}
+
+function claimZone(id){
+  const z=TERRITORY_ZONES.find(x=>x.id===id);if(!z)return;
+  if((G.ownedZones||[]).includes(id)){showT('✅ Redan ditt!','y');return;}
+  if(G.worldPoints<z.wpCost){showT('❌ Behöver '+z.wpCost+' WP','r');return;}
+  G.worldPoints-=z.wpCost;
+  if(!G.ownedZones)G.ownedZones=[];
+  G.ownedZones.push(id);
+  if(!G.terrLastIncome)G.terrLastIncome={};
+  G.terrLastIncome[id]=Date.now();
+  save();vibe([30,20,80,20,100]);SFX.win();
+  closeZoneDetail();
+  showT('🏰 '+z.nm+' är nu DITT! +'+_calcTerritoryIncome(z)+'⚡/hr','g');
+  spawnParticles(window.innerWidth/2,window.innerHeight*.4,'stars');
+  addDiaryEntry('Claimade '+z.em+' '+z.nm+'! Mitt imperium växer 🏰');
+  renderTerritoryMap();
+  renderKarmaWorld();
+}
+
+function abandonZone(id){
+  G.ownedZones=(G.ownedZones||[]).filter(x=>x!==id);
+  save();closeZoneDetail();showT('🏳️ Zone lämnad','y');renderTerritoryMap();
+}
+
+function raidZone(id,nm){
+  closeZoneDetail();
+  const z=TERRITORY_ZONES.find(x=>x.id===id);if(!z)return;
+  const win=Math.random()>0.4;
+  if(win){
+    if(!G.ownedZones)G.ownedZones=[];
+    G.ownedZones.push(id);
+    G.worldPoints+=Math.floor(z.wpCost*0.3);
+    save();vibe([100,30,100]);SFX.win();
+    showT('⚔️ RAID LYCKADES! '+z.nm+' är nu ditt!','g');
+    spawnParticles(window.innerWidth/2,window.innerHeight*.4,'stars');
+  }else{
+    showT('⚔️ Raid misslyckades... '+nm+' höll stånd','r');
+    vibe([80,30,80]);
+  }
+  renderTerritoryMap();
+}
+
+function _checkTerritoryIncome(){
+  const myZones=G.ownedZones||[];if(!myZones.length)return;
+  const now=Date.now();let totalEarned=0;
+  myZones.forEach(id=>{
+    const z=TERRITORY_ZONES.find(x=>x.id===id);if(!z)return;
+    const last=(G.terrLastIncome||{})[id]||now;
+    const hrsPassed=Math.min(8,(now-last)/3600000);
+    if(hrsPassed>=0.5){
+      totalEarned+=Math.floor(_calcTerritoryIncome(z)*hrsPassed);
+      if(!G.terrLastIncome)G.terrLastIncome={};
+      G.terrLastIncome[id]=now;
+    }
+  });
+  if(totalEarned>0){
+    G.coins+=totalEarned;save();updateHUD();
+    showT('💰 Passiv inkomst: +'+totalEarned+' coins från '+myZones.length+' zoner!','g');
+    vibe([20,10,20]);
+  }
+}
+
+// ── CASTLE / VILLAGE SYSTEM ──
+const CASTLE_BUILDINGS=[
+  {id:'home',   em:'🏰',nm:'Slottet',     desc:'Ditt hem. Uppgradera för mer XP per action.',      costs:[0,50,150,350,800],   bonus:'XP +15%/lvl'},
+  {id:'farm',   em:'🌾',nm:'Gården',      desc:'Genererar coins passivt. Uppgradera = mer income.', costs:[100,200,400,900,2000], bonus:'Coins +10/hr/lvl'},
+  {id:'arena',  em:'⚔️',nm:'Arenan',      desc:'Battle-bonusar. Uppgradera för mer skada.',          costs:[150,300,600,1200,2500],bonus:'Battle DMG +10%/lvl'},
+  {id:'market', em:'🏪',nm:'Torget',      desc:'Unlock special items i shop.',                       costs:[80,180,350,750,1500], bonus:'Shop -5%/lvl'},
+  {id:'stable', em:'🐾',nm:'Stallet',     desc:'Håll fler wild pets. +1 slot per level.',            costs:[120,250,500,1000,2000],bonus:'+1 pet slot/lvl'},
+  {id:'tower',  em:'🔮',nm:'Magitornet',  desc:'Lär dig magi. Lås upp special förmågor.',            costs:[200,450,900,1800,3500],bonus:'Magic power/lvl'},
+];
+
+function openCastle(){
+  const cm=$('castleModal');if(!cm)return;
+  cm.classList.add('open');
+  renderCastle();
+}
+function closeCastle(){const cm=$('castleModal');if(cm)cm.classList.remove('open');}
+
+function renderCastle(){
+  const scene=$('castleScene');
+  if(scene){
+    const blvl=G.castle?.buildings||{home:1};
+    const castleEmojis=['🏚️','🏠','🏡','🏛️','🏰','🗼'];
+    const castleLvl=blvl.home||0;
+    scene.innerHTML=`
+      <div style="position:relative;height:120px;background:linear-gradient(180deg,#020818 0%,#0a1530 60%,#051020 100%);border-radius:14px;overflow:hidden;margin-bottom:12px">
+        <div style="position:absolute;bottom:0;left:50%;transform:translateX(-50%);font-size:52px;filter:drop-shadow(0 0 20px rgba(57,255,20,.5));animation:petBob 2s ease-in-out infinite">${castleEmojis[Math.min(castleLvl,5)]}</div>
+        ${blvl.farm>0?`<div style="position:absolute;bottom:4px;left:12%">🌾</div>`:''}
+        ${blvl.stable>0?`<div style="position:absolute;bottom:4px;right:12%">🐾</div>`:''}
+        ${blvl.tower>0?`<div style="position:absolute;top:12px;right:18%">🔮</div>`:''}
+        ${blvl.arena>0?`<div style="position:absolute;top:12px;left:18%">⚔️</div>`:''}
+        <div style="position:absolute;top:8px;left:50%;transform:translateX(-50%);font-size:22px">${G.petEmoji||'🐉'}</div>
+        <div style="position:absolute;bottom:4px;left:50%;transform:translateX(-50%);font-size:9px;font-weight:900;color:var(--g);font-family:var(--mono);white-space:nowrap">${G.name||'Ditt Imperium'} · CASTLE LV${castleLvl}</div>
+      </div>`;
+  }
+  const grid=$('castleBuildGrid');
+  if(grid){
+    const bl=G.castle?.buildings||{};
+    grid.innerHTML=CASTLE_BUILDINGS.map(b=>{
+      const lvl=bl[b.id]||0;
+      const maxLvl=5;
+      const nextCost=lvl<maxLvl?b.costs[lvl]:null;
+      const canAfford=nextCost&&G.coins>=nextCost;
+      return`<div class="castle-building ${lvl>0?'built':''}" style="--bc:${lvl>0?'var(--g)':'var(--line)'}">
+        <div style="font-size:28px;margin-bottom:4px">${b.em}</div>
+        <div style="font-size:12px;font-weight:900">${b.nm}</div>
+        <div style="font-size:9px;color:var(--t3);margin:2px 0">${b.bonus}</div>
+        <div style="display:flex;gap:3px;justify-content:center;margin:4px 0">${Array.from({length:maxLvl},(_,i)=>`<div style="width:10px;height:4px;border-radius:2px;background:${i<lvl?'var(--g)':'var(--c3)'}"></div>`).join('')}</div>
+        ${lvl<maxLvl
+          ?`<button class="btn btn-sm ${canAfford?'btn-g':'btn-ghost'}" style="font-size:10px;padding:4px 8px;margin-top:2px;width:100%;${canAfford?'':'opacity:.55'}" onclick="upgradeBuilding('${b.id}')">${lvl===0?'BUILD':'UPGRADE'} ${nextCost}⚡</button>`
+          :`<div style="font-size:9px;color:var(--g);font-weight:900;margin-top:4px">✅ MAX LEVEL</div>`}
+      </div>`;
+    }).join('');
+  }
+  const coins=$('castleCoinsDisp');if(coins)coins.textContent=G.coins+'⚡';
+}
+
+function upgradeBuilding(id){
+  const b=CASTLE_BUILDINGS.find(x=>x.id===id);if(!b)return;
+  if(!G.castle)G.castle={lvl:1,buildings:{home:1,farm:0,arena:0,market:0,stable:0,tower:0},lastIncome:0};
+  if(!G.castle.buildings)G.castle.buildings={};
+  const lvl=G.castle.buildings[id]||0;
+  const maxLvl=5;
+  if(lvl>=maxLvl){showT('MAX LEVEL!','y');return;}
+  const cost=b.costs[lvl];
+  if(G.coins<cost){showT('❌ Behöver '+cost+'⚡','r');SFX.error();return;}
+  G.coins-=cost;
+  G.castle.buildings[id]=(lvl+1);
+  if(id==='home')G.castle.lvl=G.castle.buildings.home;
+  SFX.win();vibe([30,20,80]);
+  showT(b.em+' '+b.nm+' LEVEL '+(lvl+1)+'! ','g');
+  spawnParticles(window.innerWidth/2,window.innerHeight*.4,'stars');
+  addDiaryEntry('Uppgraderade '+b.em+' '+b.nm+' till level '+(lvl+1)+'!');
+  save();updateHUD();renderCastle();
+}
+
+// ── DNA PET MIXER ──
+const DNA_COMBOS={
+  '🐉🐺':{em:'🐲',nm:'Dragon Wolf',bonus:'ATK+30,SPEED+20'},
+  '🐺🦊':{em:'🦝',nm:'Shadow Shifter',bonus:'STEALTH+40,SPD+25'},
+  '🦊🐱':{em:'🐈',nm:'Phantom Cat',bonus:'LUCK+35,EVA+20'},
+  '🐱🦋':{em:'🦋',nm:'Neon Butterfly',bonus:'CHARM+50,XP+15%'},
+  '🐸🦋':{em:'🪲',nm:'Chrono Bug',bonus:'TIME+30,WP+20'},
+  '🐉🦁':{em:'🦁',nm:'Thunder King',bonus:'ATK+45,DEF+25'},
+  '🐻🐯':{em:'🐯',nm:'Arctic Tiger',bonus:'DEF+40,STR+30'},
+  '🐺🐯':{em:'🐺',nm:'Dire Tiger',bonus:'ATK+50,SPD+15'},
+  '🦁🦋':{em:'🦁',nm:'Golden Wing',bonus:'CHARM+30,ATK+20'},
+  '🐉🐸':{em:'🐉',nm:'Toxic Dragon',bonus:'POISON+40,ATK+25'},
+};
+
+let _dnaSlot1=null,_dnaSlot2=null;
+function openDNAMixer(){
+  const dm=$('dnaModal');if(!dm)return;
+  _dnaSlot1=G.petEmoji||'🐉';
+  _dnaSlot2=null;
+  dm.classList.add('open');
+  renderDNAMixer();
+}
+function closeDNAMixer(){const dm=$('dnaModal');if(dm)dm.classList.remove('open');}
+
+function renderDNAMixer(){
+  const slot1=$('dnaSlot1');if(slot1)slot1.textContent=_dnaSlot1||'?';
+  const slot2=$('dnaSlot2');if(slot2)slot2.textContent=_dnaSlot2||'?';
+  const res=$('dnaResult');
+  const key1=(_dnaSlot1||'')+''+(_dnaSlot2||'');
+  const key2=(_dnaSlot2||'')+''+(_dnaSlot1||'');
+  const combo=DNA_COMBOS[key1]||DNA_COMBOS[key2];
+  if(res){
+    if(_dnaSlot1&&_dnaSlot2){
+      if(combo){
+        res.innerHTML=`<div style="font-size:42px;filter:drop-shadow(0 0 16px rgba(191,95,255,.7));animation:petBob 1s ease-in-out infinite">${combo.em}</div>
+          <div style="font-size:14px;font-weight:900;color:var(--p);margin:4px 0">${combo.nm}</div>
+          <div style="font-size:11px;color:var(--t3)">${combo.bonus}</div>`;
+      }else{
+        res.innerHTML=`<div style="font-size:32px;margin-bottom:6px">🧬</div><div style="font-size:12px;color:var(--t3)">Okänd kombination — prova mix!</div>`;
+      }
+    }else{
+      res.innerHTML=`<div style="font-size:32px;margin-bottom:6px;opacity:.4">❓</div><div style="font-size:12px;color:var(--t3)">Välj 2 pets att mixa</div>`;
+    }
+  }
+  const picker=$('dnaPetPicker');
+  if(picker){
+    const caughtWP=KW_WILD_PETS.filter(p=>(G.builtZones||[]).includes('caught_'+p.id));
+    const allOpts=[...PETS.map(p=>({em:p,nm:p})),...caughtWP.map(p=>({em:p.em,nm:p.nm}))];
+    picker.innerHTML=allOpts.map((p,i)=>`<div class="dna-pet-opt" onclick="selectDNAPet('${p.em}')" style="${_dnaSlot2===p.em?'border-color:var(--p);background:rgba(191,95,255,.1)':''}">
+      <span style="font-size:22px">${p.em}</span>
+    </div>`).join('');
+  }
+  const mixBtn=$('dnaMixBtn');
+  if(mixBtn)mixBtn.disabled=!(_dnaSlot1&&_dnaSlot2);
+}
+
+function selectDNAPet(em){_dnaSlot2=em;renderDNAMixer();vibe(15);}
+
+function executeDNAMix(){
+  if(!_dnaSlot1||!_dnaSlot2){showT('Välj 2 pets!','y');return;}
+  const key1=_dnaSlot1+_dnaSlot2;const key2=_dnaSlot2+_dnaSlot1;
+  const combo=DNA_COMBOS[key1]||DNA_COMBOS[key2];
+  const result=combo||{em:'🧬',nm:'Mystery Hybrid',bonus:'MYSTERY+50'};
+  const res=$('dnaResult');
+  if(res){res.style.transform='scale(0)';res.style.transition='transform .3s';setTimeout(()=>{res.style.transform='scale(1.2)';setTimeout(()=>{res.style.transform='scale(1)';},150);},50);}
+  gainCoins(combo?100:50);gainXP(combo?120:60,'action');
+  if(!G.dnaMixes)G.dnaMixes=[];
+  G.dnaMixes.push({em:result.em,nm:result.nm,bonus:result.bonus,date:new Date().toLocaleDateString()});
+  save();vibe([30,20,80,20,100]);SFX.win();
+  showT('🧬 DNA MIX! '+result.em+' '+result.nm+' skapad!','p');
+  spawnParticles(window.innerWidth/2,window.innerHeight*.4,'stars');
+  addDiaryEntry('DNA-mixade '+_dnaSlot1+' + '+_dnaSlot2+' → '+result.em+' '+result.nm+'!');
+  closeDNAMixer();
 }
 
 // ── JUDGMENT RING (Shadow Hearts-style wild pet catching) ──
@@ -8370,5 +8745,66 @@ document.addEventListener('visibilitychange',()=>{
   }
 });
 </script>
+
+<!-- ZONE DETAIL MODAL -->
+<div class="modal" id="zoneDetailModal" style="z-index:600">
+  <div class="modal-box" style="max-width:340px">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+      <div style="font-size:13px;font-weight:900;font-family:var(--mono)">ZONE DETALJER</div>
+      <button class="btn btn-ghost btn-sm" onclick="closeZoneDetail()">✕</button>
+    </div>
+    <div id="zoneDetailBody"></div>
+  </div>
+</div>
+
+<!-- CASTLE MODAL -->
+<div class="modal" id="castleModal" style="z-index:600">
+  <div class="modal-box" style="max-width:380px;max-height:85vh;overflow-y:auto">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+      <div style="font-size:16px;font-weight:900;font-family:var(--mono)">🏰 DITT SLOTT</div>
+      <div style="display:flex;gap:8px;align-items:center">
+        <span style="font-size:12px;color:var(--y);font-weight:900" id="castleCoinsDisp">0⚡</span>
+        <button class="btn btn-ghost btn-sm" onclick="closeCastle()">✕</button>
+      </div>
+    </div>
+    <div id="castleScene"></div>
+    <div style="font-size:10px;font-weight:700;color:var(--t3);letter-spacing:.8px;margin-bottom:8px">BYGGNADER</div>
+    <div id="castleBuildGrid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px"></div>
+    <div style="height:12px"></div>
+  </div>
+</div>
+
+<!-- DNA MIXER MODAL -->
+<div class="modal" id="dnaModal" style="z-index:600">
+  <div class="modal-box" style="max-width:360px">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+      <div style="font-size:16px;font-weight:900;font-family:var(--mono)">🧬 DNA MIXER</div>
+      <button class="btn btn-ghost btn-sm" onclick="closeDNAMixer()">✕</button>
+    </div>
+    <!-- Slots -->
+    <div style="display:flex;align-items:center;justify-content:center;gap:12px;margin-bottom:14px">
+      <div style="text-align:center">
+        <div style="font-size:42px;background:var(--c2);border:2px solid var(--p);border-radius:14px;width:64px;height:64px;display:flex;align-items:center;justify-content:center" id="dnaSlot1">?</div>
+        <div style="font-size:9px;color:var(--t3);margin-top:3px">DIN PET</div>
+      </div>
+      <div style="font-size:22px;color:var(--p)">+</div>
+      <div style="text-align:center">
+        <div style="font-size:42px;background:var(--c2);border:2px solid rgba(191,95,255,.35);border-radius:14px;width:64px;height:64px;display:flex;align-items:center;justify-content:center" id="dnaSlot2">?</div>
+        <div style="font-size:9px;color:var(--t3);margin-top:3px">VÄLJ PET</div>
+      </div>
+      <div style="font-size:22px;color:var(--p)">=</div>
+      <div style="text-align:center;min-width:64px">
+        <div style="background:var(--c2);border:2px solid rgba(191,95,255,.35);border-radius:14px;width:64px;height:64px;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:4px" id="dnaResult">
+          <span style="font-size:28px;opacity:.4">❓</span>
+        </div>
+        <div style="font-size:9px;color:var(--t3);margin-top:3px">RESULTAT</div>
+      </div>
+    </div>
+    <!-- Pet picker -->
+    <div style="font-size:10px;font-weight:700;color:var(--t3);margin-bottom:6px;letter-spacing:.8px">VÄLJ MIXPARTNER</div>
+    <div id="dnaPetPicker" style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px"></div>
+    <button class="btn btn-full btn-lg" id="dnaMixBtn" style="background:linear-gradient(135deg,var(--p),#7B2FBE);color:#fff;box-shadow:0 0 18px rgba(191,95,255,.4)" onclick="executeDNAMix()">🧬 MIX DNA!</button>
+  </div>
+</div>
 </body>
 </html>
