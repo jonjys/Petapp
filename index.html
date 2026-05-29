@@ -1776,6 +1776,24 @@ textarea.inp{resize:none;min-height:68px;}
 .night-owl-overlay.hidden{opacity:0;}
 .night-owl-banner{position:fixed;top:56px;left:50%;transform:translateX(-50%);z-index:200;background:linear-gradient(135deg,rgba(40,0,80,.95),rgba(20,0,40,.95));border:1px solid rgba(191,95,255,.4);border-radius:14px;padding:10px 20px;display:flex;align-items:center;gap:10px;font-size:13px;font-weight:900;color:var(--p);font-family:var(--mono);box-shadow:0 8px 28px rgba(191,95,255,.3);white-space:nowrap;opacity:0;pointer-events:none;transition:all .5s;}
 .night-owl-banner.show{opacity:1;}
+.settings-screen{position:fixed;inset:0;z-index:900;background:var(--bg);overflow-y:auto;display:none;flex-direction:column;}
+.settings-screen.open{display:flex;}
+.settings-hdr{display:flex;align-items:center;padding:14px 16px;border-bottom:1px solid var(--line);position:sticky;top:0;background:var(--bg);z-index:2;}
+.settings-section-title{font-size:11px;font-weight:900;color:var(--t3);letter-spacing:1px;padding:16px 16px 6px;text-transform:uppercase;}
+.settings-group{background:var(--c1);border-radius:14px;margin:0 14px 12px;overflow:hidden;border:1px solid var(--line);}
+.settings-row{display:flex;align-items:center;padding:14px 16px;gap:12px;cursor:pointer;border-bottom:1px solid rgba(255,255,255,0.05);-webkit-tap-highlight-color:transparent;}
+.settings-row:last-child{border-bottom:none;}
+.settings-row:active{background:var(--c2);}
+.settings-row-ico{font-size:20px;width:32px;text-align:center;}
+.settings-row-txt{flex:1;}
+.settings-row-lbl{font-size:14px;color:var(--t1);font-weight:600;}
+.settings-row-sub{font-size:11px;color:var(--t3);margin-top:2px;}
+.settings-row-end{font-size:13px;color:var(--t3);}
+.settings-row-arrow{font-size:13px;color:var(--t3);margin-left:6px;}
+.settings-toggle{width:44px;height:26px;border-radius:13px;background:var(--c3);border:none;cursor:pointer;position:relative;transition:background .2s;flex-shrink:0;}
+.settings-toggle.on{background:var(--g);}
+.settings-toggle::after{content:'';position:absolute;top:3px;left:3px;width:20px;height:20px;border-radius:50%;background:#fff;transition:transform .2s;}
+.settings-toggle.on::after{transform:translateX(18px);}
 </style>
 
 </head>
@@ -1963,6 +1981,7 @@ textarea.inp{resize:none;min-height:68px;}
       <div class="pill pill-y">⚡<b id="hCoins">500</b></div>
       <div class="pill pill-r">🔥<b id="hStreak">0</b>d</div>
       <div class="pill" id="premiumBadge" style="display:none;background:linear-gradient(135deg,#FFE600,#FF9F0A);color:#000;font-weight:900;cursor:pointer;border:none" onclick="openModal('premiumModal')">👑</div>
+      <button onclick="openSettings()" style="background:var(--c2);border:1px solid var(--line);border-radius:9px;width:32px;height:32px;display:flex;align-items:center;justify-content:center;font-size:16px;cursor:pointer;flex-shrink:0;-webkit-tap-highlight-color:transparent;">⚙️</button>
     </div>
     <div class="mw" style="display:none">
       <div class="ham" id="hamBtn"><span></span><span></span><span></span></div>
@@ -5797,20 +5816,14 @@ function openClanView(){
   modal.style.display='flex';
   renderClans();
 }
+function _clanPower(){return (G.worldPoints||0)*10+((G.battlesWon||0)*50);}
 function _buildClanModal(){
   const m=document.createElement('div');
   m.id='clanModal';m.className='modal';m.style.display='flex';
   m.innerHTML=`<div class="ms"><div class="mh" onclick="closeModal('clanModal')"></div>
     <div class="mt">⚔️ Klaner <div class="mx" onclick="closeModal('clanModal')">✕</div></div>
-    ${G.clan?`<div style="background:linear-gradient(135deg,rgba(57,255,20,.08),rgba(57,255,20,.02));border:1.5px solid rgba(57,255,20,.3);border-radius:16px;padding:14px;margin-bottom:14px">
-      <div style="font-size:13px;font-weight:900;color:var(--g)">👑 DITT KLAN: ${G.clan}</div>
-      <div style="font-size:10px;color:var(--t3);margin-top:4px">Klanmedlem · Bidra med WP för att växa</div>
-      <div style="display:flex;gap:8px;margin-top:10px">
-        <button class="btn btn-pk btn-sm" onclick="openRaid()">⚔️ RAIDA</button>
-        <button class="btn btn-sm" style="flex:1" onclick="showT('Klan-chat kommer snart!','b')">💬 KLAN-CHAT</button>
-      </div>
-    </div>`:''}
-    <div class="sh"><div class="sh-t">🌍 AKTIVA KLANER</div></div>
+    <div id="clanMySection"></div>
+    <div class="sh"><div class="sh-t">🏆 TOP KLANER</div></div>
     <div id="clanList" style="padding:0 0 18px"></div>
     ${!G.clan?`<button class="btn btn-g btn-lg btn-full" onclick="createClan()">+ SKAPA KLAN</button>`:''}
   </div>`;
@@ -5819,16 +5832,63 @@ function _buildClanModal(){
 }
 function renderClans(){
   const el=$('clanList');if(!el)return;
-  el.innerHTML=MOCK_CLANS.map(c=>`<div class="clan-card" onclick="joinClan('${c.id}','${c.nm}','${c.em}')">
-    <div class="clan-em">${c.em}</div>
-    <div class="clan-info">
-      <div class="clan-nm">${c.nm} <span style="font-size:9px;color:var(--t3)">[${c.tag}]</span></div>
-      <div class="clan-sub">${c.members} medlemmar</div>
-      <div class="clan-pow">⚡ ${c.power.toLocaleString()} Power</div>
-    </div>
-    ${G.clan===c.nm?'<span style="font-size:10px;color:var(--g);font-weight:900">✓ MITT</span>':
-    `<button class="raid-btn" onclick="event.stopPropagation();raidClan('${c.id}','${c.nm}')">⚔️</button>`}
-  </div>`).join('');
+  const mySection=$('clanMySection');
+  // My clan card
+  if(mySection){
+    if(G.clan){
+      const myClan=MOCK_CLANS.find(c=>c.nm===G.clan);
+      const myPow=_clanPower();
+      const maxPow=Math.max(...MOCK_CLANS.map(c=>c.power),myPow)||1;
+      const powPct=Math.round(Math.min(100,myPow/maxPow*100));
+      const weeklyGoal=500;const weeklyProg=Math.min(weeklyGoal,G.worldPoints||0);const weeklyPct=Math.round(weeklyProg/weeklyGoal*100);
+      mySection.innerHTML=`<div style="background:linear-gradient(135deg,rgba(57,255,20,.1),rgba(57,255,20,.03));border:1.5px solid rgba(57,255,20,.35);border-radius:18px;padding:16px;margin-bottom:16px">
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px">
+          <div style="font-size:48px;filter:drop-shadow(0 0 12px rgba(57,255,20,.5))">${G.clanEm||'⚔️'}</div>
+          <div style="flex:1">
+            <div style="font-size:16px;font-weight:900;color:var(--g)">${G.clan}</div>
+            <div style="font-size:10px;color:var(--t3);margin:2px 0">${myClan?myClan.members+' medlemmar · ':''}Klanmedlem</div>
+            <div style="font-size:11px;color:var(--y);font-weight:900;font-family:var(--mono)">⚡ ${myPow.toLocaleString()} Power</div>
+          </div>
+        </div>
+        <div style="margin-bottom:8px">
+          <div style="display:flex;justify-content:space-between;font-size:10px;color:var(--t3);margin-bottom:3px"><span>Klan Power</span><span>${powPct}%</span></div>
+          <div style="height:6px;background:var(--c3);border-radius:4px;overflow:hidden"><div style="height:100%;width:${powPct}%;background:linear-gradient(90deg,var(--g),#00D9FF);border-radius:4px;transition:width .6s"></div></div>
+        </div>
+        <div style="margin-bottom:12px">
+          <div style="display:flex;justify-content:space-between;font-size:10px;color:var(--t3);margin-bottom:3px"><span>Veckobidrag</span><span>${weeklyProg}/${weeklyGoal} WP</span></div>
+          <div style="height:6px;background:var(--c3);border-radius:4px;overflow:hidden"><div style="height:100%;width:${weeklyPct}%;background:linear-gradient(90deg,var(--y),var(--pk));border-radius:4px;transition:width .6s"></div></div>
+        </div>
+        <div style="display:flex;gap:8px">
+          <button class="btn btn-pk btn-sm" style="flex:1" onclick="openRaid()">⚔️ RAIDA</button>
+          <button class="btn btn-sm" style="flex:1" onclick="showT('Klan-chat kommer snart!','b')">💬 KLAN-CHAT</button>
+        </div>
+      </div>`;
+    } else {
+      mySection.innerHTML='';
+    }
+  }
+  // Sorted clan list with rank
+  const sorted=[...MOCK_CLANS].sort((a,b)=>b.power-a.power);
+  const maxPow=sorted[0]?sorted[0].power:1;
+  const crowns=['👑','🥈','🥉'];
+  el.innerHTML=sorted.map((c,i)=>{
+    const pct=Math.round(c.power/maxPow*100);
+    const crown=i<3?`<span style="font-size:18px">${crowns[i]}</span>`:`<span style="font-size:13px;color:var(--t3);font-weight:900">#${i+1}</span>`;
+    const isMine=G.clan===c.nm;
+    return `<div style="background:var(--c1);border:1.5px solid ${isMine?'rgba(57,255,20,.4)':'var(--line)'};border-radius:14px;padding:12px 14px;margin-bottom:8px;cursor:pointer;${isMine?'box-shadow:0 0 12px rgba(57,255,20,.15)':''}" onclick="joinClan('${c.id}','${c.nm}','${c.em}')">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px">
+        ${crown}
+        <div style="font-size:32px">${c.em}</div>
+        <div style="flex:1">
+          <div style="font-size:13px;font-weight:900;color:${c.col||'var(--t1)'};">${c.nm} <span style="font-size:9px;color:var(--t3);font-weight:400">[${c.tag}]</span></div>
+          <div style="font-size:10px;color:var(--t3);">${c.members} medlemmar · ⚡ ${c.power.toLocaleString()} Power</div>
+        </div>
+        ${isMine?'<span style="font-size:10px;color:var(--g);font-weight:900;background:rgba(57,255,20,.12);border:1px solid rgba(57,255,20,.3);border-radius:6px;padding:2px 7px">✓ MITT</span>':
+        `<button class="raid-btn" onclick="event.stopPropagation();raidClan('${c.id}','${c.nm}')">⚔️</button>`}
+      </div>
+      <div style="height:5px;background:var(--c3);border-radius:3px;overflow:hidden"><div style="height:100%;width:${pct}%;background:linear-gradient(90deg,${c.col||'var(--g)'},${c.col||'var(--g)'}88);border-radius:3px"></div></div>
+    </div>`;
+  }).join('');
 }
 function joinClan(id,nm,em){
   if(G.clan===nm){showT('👑 Du är redan i '+nm+'!','y');return;}
@@ -6616,8 +6676,9 @@ function _reelUpHook(){
 // ── Tap on swimming fish ──
 function onStreetFishTap(fishEl,ft){
   if(_fishState.phase==='biting'){fishSpamTap();return;}
-  if(_fishState.phase==='idle'){
+  if(_fishState.phase==='idle'||_fishState.phase==='waiting'){
     // Bait and hook — clicking the actual fish directly = catch attempt
+    clearTimeout(_fishState._failTimer); // cancel any cast timeout
     _sfCurTarget=ft;
     _fishState.phase='biting';_fishState._curFish=ft;
     _dropStreetHook();
@@ -8453,7 +8514,16 @@ function executeDNAMix(){
   showT('🧬 DNA MIX! '+result.em+' '+result.nm+' skapad!','p');
   spawnParticles(window.innerWidth/2,window.innerHeight*.4,'stars');
   addDiaryEntry('DNA-mixade '+_dnaSlot1+' + '+_dnaSlot2+' → '+result.em+' '+result.nm+'!');
-  closeDNAMixer();
+  // Show celebration result before closing
+  const dnaResult=$('dnaResult');
+  if(dnaResult){
+    dnaResult.style.cssText='display:flex;flex-direction:column;align-items:center;justify-content:center;background:linear-gradient(135deg,rgba(191,95,255,.18),rgba(191,95,255,.06));border:2px solid var(--p);border-radius:14px;width:100%;padding:18px 12px;margin:8px 0;';
+    dnaResult.innerHTML=`<div style="font-size:72px;animation:petBob 0.5s ease-in-out 4">${result.em}</div>
+      <div style="font-size:20px;font-weight:900;color:var(--p);margin:6px 0">${result.nm}</div>
+      <div style="font-size:13px;color:var(--y);margin-bottom:4px">${result.bonus}</div>
+      <div style="font-size:12px;color:var(--t2)">+${combo?100:50}⚡ +${combo?120:60} XP</div>`;
+  }
+  setTimeout(closeDNAMixer, 2500);
 }
 
 // ── JUDGMENT RING (Shadow Hearts-style wild pet catching) ──
@@ -9840,6 +9910,21 @@ function _ttDraw(){
     drawLink(n.req);if(n.req2)drawLink(n.req2);
   });
 
+  // Build fog visibility map: owned=visible, 1-hop=discovered, 2+hop=hidden
+  const _fogVisible=new Set(owned);
+  // nexus node (always at center, no branch) is always visible
+  if(owned.length===0){const nexus=TALENT_DEFS.find(n=>n.branch==='nexus'||n.depth===0);if(nexus)_fogVisible.add(nexus.id);}
+  // discovered = adjacent to owned
+  const _fogDiscovered=new Set();
+  TALENT_DEFS.forEach(n=>{
+    if(_fogVisible.has(n.id))return;
+    const neighbors=[n.req,n.req2,n.req_or].filter(Boolean);
+    const isAdj=neighbors.some(r=>_fogVisible.has(r));
+    // also check reverse (this node is required by an owned node)
+    const isParent=TALENT_DEFS.some(o=>_fogVisible.has(o.id)&&(o.req===n.id||o.req2===n.id||o.req_or===n.id));
+    if(isAdj||isParent)_fogDiscovered.add(n.id);
+  });
+
   // Draw nodes
   TALENT_DEFS.forEach(n=>{
     const p=_ttPC[n.id];if(!p)return;
@@ -9852,7 +9937,45 @@ function _ttDraw(){
     const isSel=_ttSel&&_ttSel.id===n.id;
     const col=_TT_BCOL[n.branch]??'#39FF14';
     const isDia=n.type==='keystone'||n.type==='mastery';
+    // Fog state
+    const isVis=_fogVisible.has(n.id);
+    const isDisc=!isVis&&_fogDiscovered.has(n.id);
+    const isHidden=!isVis&&!isDisc;
 
+    if(isHidden){
+      // Draw as dark fog blob — barely visible
+      ctx.beginPath();ctx.arc(sx,sy,r*1.1,0,Math.PI*2);
+      ctx.fillStyle='rgba(8,10,20,0.92)';ctx.fill();
+      ctx.strokeStyle='rgba(255,255,255,0.04)';ctx.lineWidth=1;ctx.stroke();
+      // Faint pulsing center dot
+      ctx.beginPath();ctx.arc(sx,sy,r*0.35,0,Math.PI*2);
+      ctx.fillStyle='rgba(80,80,120,0.3)';ctx.fill();
+      return;
+    }
+
+    if(isDisc&&!isO){
+      // Discovered but locked: dark silhouette with ? symbol
+      ctx.beginPath();
+      if(isDia){const rm=r;ctx.moveTo(sx,sy-rm);ctx.lineTo(sx+rm,sy);ctx.lineTo(sx,sy+rm);ctx.lineTo(sx-rm,sy);ctx.closePath();}
+      else ctx.arc(sx,sy,r,0,Math.PI*2);
+      ctx.fillStyle='rgba(20,24,40,0.95)';ctx.fill();
+      ctx.strokeStyle='rgba(255,255,255,0.18)';ctx.lineWidth=1.2;ctx.stroke();
+      if(r>6){
+        const fs=Math.max(7,Math.min(r*1.1,18));
+        ctx.font=`bold ${fs}px serif`;ctx.textAlign='center';ctx.textBaseline='middle';
+        ctx.fillStyle='rgba(180,180,220,0.45)';
+        ctx.fillText('?',sx,sy);
+      }
+      if(r>11){
+        const fs2=Math.max(6,Math.min(r*0.55,10));
+        ctx.font=`700 ${fs2}px system-ui,sans-serif`;ctx.textAlign='center';ctx.textBaseline='top';
+        ctx.fillStyle='rgba(180,180,220,0.25)';
+        ctx.fillText('???',sx,sy+r+2);
+      }
+      return;
+    }
+
+    // Visible node (owned or available)
     // Outer glow ring
     if(isO||isSel){
       ctx.beginPath();
@@ -9907,6 +10030,38 @@ function _ttDraw(){
       }
     }
   });
+
+  // Fog overlay: dark vignette that clears around owned nodes
+  if(owned.length<TALENT_DEFS.length){
+    const fogCanvas=document.createElement('canvas');
+    fogCanvas.width=W;fogCanvas.height=H;
+    const fc=fogCanvas.getContext('2d');
+    fc.fillStyle='rgba(2,4,12,0.72)';fc.fillRect(0,0,W,H);
+    fc.globalCompositeOperation='destination-out';
+    // Clear fog around owned/visible nodes
+    TALENT_DEFS.forEach(n=>{
+      if(!_fogVisible.has(n.id))return;
+      const p=_ttPC[n.id];if(!p)return;
+      const {sx,sy}=_ttToScreen(p.wx,p.wy);
+      const clearR=Math.max(30,(_TT_RADS[n.type]??9)*_ttScale*8+20);
+      const grad=fc.createRadialGradient(sx,sy,0,sx,sy,clearR);
+      grad.addColorStop(0,'rgba(0,0,0,1)');
+      grad.addColorStop(0.6,'rgba(0,0,0,0.8)');
+      grad.addColorStop(1,'rgba(0,0,0,0)');
+      fc.fillStyle=grad;fc.beginPath();fc.arc(sx,sy,clearR,0,Math.PI*2);fc.fill();
+    });
+    // Partial clear around discovered nodes
+    TALENT_DEFS.forEach(n=>{
+      if(!_fogDiscovered.has(n.id))return;
+      const p=_ttPC[n.id];if(!p)return;
+      const {sx,sy}=_ttToScreen(p.wx,p.wy);
+      const clearR=Math.max(14,(_TT_RADS[n.type]??9)*_ttScale*4);
+      const grad=fc.createRadialGradient(sx,sy,0,sx,sy,clearR);
+      grad.addColorStop(0,'rgba(0,0,0,0.5)');grad.addColorStop(1,'rgba(0,0,0,0)');
+      fc.fillStyle=grad;fc.beginPath();fc.arc(sx,sy,clearR,0,Math.PI*2);fc.fill();
+    });
+    ctx.drawImage(fogCanvas,0,0);
+  }
 
   // Branch labels at center compass
   if(_ttScale<0.22){
@@ -10020,9 +10175,21 @@ function initTalentCanvas(){
 
 function _ttHandleTap(tx,ty){
   if(!_ttPC)_ttBuildPositions();
+  const owned=G.talents||[];
+  // Build fog visibility for tap filtering
+  const _fv=new Set(owned);
+  if(owned.length===0){const nx=TALENT_DEFS.find(n=>n.branch==='nexus'||n.depth===0);if(nx)_fv.add(nx.id);}
+  const _fd=new Set();
+  TALENT_DEFS.forEach(n=>{
+    if(_fv.has(n.id))return;
+    const nbrs=[n.req,n.req2,n.req_or].filter(Boolean);
+    if(nbrs.some(r=>_fv.has(r))||TALENT_DEFS.some(o=>_fv.has(o.id)&&(o.req===n.id||o.req2===n.id||o.req_or===n.id)))_fd.add(n.id);
+  });
   let best=null,bestD=Infinity;
   TALENT_DEFS.forEach(n=>{
     const p=_ttPC&&_ttPC[n.id];if(!p)return;
+    // Hidden nodes (2+ hops from owned) are not tappable
+    if(!_fv.has(n.id)&&!_fd.has(n.id))return;
     const {sx,sy}=_ttToScreen(p.wx,p.wy);
     const r=Math.max(22,(_TT_RADS[n.type]??9)*_ttScale+12);
     const d=Math.hypot(tx-sx,ty-sy);
@@ -10041,9 +10208,19 @@ function _ttShowPanel(n){
   const isO=owned.includes(n.id);
   const reqOk=(!n.req||owned.includes(n.req)||(n.req_or&&owned.includes(n.req_or)))&&(!n.req2||owned.includes(n.req2));
   const col=_TT_BCOL[n.branch]??'#39FF14';
-  const em=$('ttNodeEm');if(em)em.textContent=n.em;
-  const nm=$('ttNodeNm');if(nm){nm.textContent=n.nm+(n.legendary?' ★':'')+(isO?' LV'+curLv:'');nm.style.color=col;}
-  const desc=$('ttNodeDesc');if(desc)desc.textContent=n.desc;
+  // Fog check for discovered nodes
+  const _fv2=new Set(owned);
+  if(owned.length===0){const nx=TALENT_DEFS.find(x=>x.branch==='nexus'||x.depth===0);if(nx)_fv2.add(nx.id);}
+  const _fd2=new Set();
+  TALENT_DEFS.forEach(x=>{
+    if(_fv2.has(x.id))return;
+    const nbrs=[x.req,x.req2,x.req_or].filter(Boolean);
+    if(nbrs.some(r=>_fv2.has(r))||TALENT_DEFS.some(o=>_fv2.has(o.id)&&(o.req===x.id||o.req2===x.id||o.req_or===x.id)))_fd2.add(x.id);
+  });
+  const isDiscovered=_fd2.has(n.id)&&!_fv2.has(n.id);
+  const em=$('ttNodeEm');if(em)em.textContent=isDiscovered?'🌫️':n.em;
+  const nm=$('ttNodeNm');if(nm){nm.textContent=isDiscovered?'??? (Okänd förmåga)':n.nm+(n.legendary?' ★':'')+(isO?' LV'+curLv:'');nm.style.color=isDiscovered?'var(--t3)':col;}
+  const desc=$('ttNodeDesc');if(desc)desc.textContent=isDiscovered?'Lär dig de närmaste noderna för att avslöja denna förmåga.':n.desc;
   const reqEl=$('ttNodeReq');if(reqEl){
     const parts=[];
     if(n.req){const r=TALENT_DEFS.find(x=>x.id===n.req);if(r)parts.push(r.nm);}
@@ -11174,6 +11351,110 @@ document.addEventListener('visibilitychange',()=>{
     _sessionStart=Date.now();
   }
 });
+
+// ══════════════════════════════════════════
+// ── SETTINGS SCREEN ──
+// ══════════════════════════════════════════
+let _settingsSFX=true,_settingsVibe=true,_settingsNotif=true;
+(()=>{_settingsSFX=localStorage.getItem('kv8_sfx')!=='off';_settingsVibe=localStorage.getItem('kv8_vibe')!=='off';_settingsNotif=localStorage.getItem('kv8_notif')!=='off';})();
+
+function openSettings(){
+  const s=$('settingsScreen');if(!s)return;
+  renderSettings();
+  s.classList.add('open');
+}
+function closeSettings(){
+  const s=$('settingsScreen');if(s)s.classList.remove('open');
+}
+function renderSettings(){
+  const c=$('settingsContent');if(!c)return;
+  const row=(ico,lbl,sub,end,action)=>`<div class="settings-row" onclick="${action}">
+    <div class="settings-row-ico">${ico}</div>
+    <div class="settings-row-txt">
+      <div class="settings-row-lbl">${lbl}</div>
+      ${sub?`<div class="settings-row-sub">${sub}</div>`:''}
+    </div>
+    <div class="settings-row-end">${end||''}</div>
+    <div class="settings-row-arrow">›</div>
+  </div>`;
+  const toggleRow=(ico,lbl,sub,stateVar,toggleFn)=>`<div class="settings-row" onclick="${toggleFn}">
+    <div class="settings-row-ico">${ico}</div>
+    <div class="settings-row-txt">
+      <div class="settings-row-lbl">${lbl}</div>
+      ${sub?`<div class="settings-row-sub">${sub}</div>`:''}
+    </div>
+    <button class="settings-toggle ${stateVar?'on':''}" onclick="event.stopPropagation();${toggleFn}"></button>
+  </div>`;
+  const premiumLabel=G.premium?(G.premiumTier==='god'?'👑 GOD':'👑 PRO'):'Gratis';
+  c.innerHTML=`
+    <div class="settings-section-title">Mitt konto</div>
+    <div class="settings-group">
+      ${row('👤',G.name||'Namnlös','Ditt visningsnamn','',`_settingsEditName()`)}
+      ${row('🐾',G.petEmoji+' '+(G.petName||''),'Ditt husdjur','',`nav('home');closeSettings()`)}
+      ${row('⭐','Nivå '+G.level,'Erfarenhet & progress','LV'+G.level,'showT("LV"+G.level+" · "+G.exp+" XP","b")')}
+      ${row('⚡',G.coins+' coins','Din valuta','',`showT("Du har "+G.coins+" coins","y")`)}
+      ${row('👑','Premium-status','Din prenumeration',premiumLabel,`openModal('premiumModal');closeSettings()`)}
+    </div>
+    <div class="settings-section-title">Inställningar</div>
+    <div class="settings-group">
+      ${row('🌐','Språk','Byt gränssnittsspråk',_curLang==='sv'?'🇸🇪 SV':'🇬🇧 EN',`toggleLang();renderSettings()`)}
+      ${toggleRow('🔊','Ljud','Spelljud och effekter',_settingsSFX,`_settingsToggleSFX()`)}
+      ${toggleRow('📳','Vibrationer','Haptic feedback',_settingsVibe,`_settingsToggleVibe()`)}
+      ${toggleRow('🔔','Notiser','Push-notifikationer',_settingsNotif,`_settingsToggleNotif()`)}
+      ${row('🌙','Mörkt läge','Alltid aktivt i KARMA','På',`showT("Mörkt läge är alltid aktivt!","b")`)}
+    </div>
+    <div class="settings-section-title">Social</div>
+    <div class="settings-group">
+      ${row('👁️','Visa mig för','Vem ser din profil','Alla',`showT("Synlighetsinställningar kommer snart!","b")`)}
+      ${row('⚡','Flash-historik','Dina tidigare inlägg','',`nav('flash');closeSettings()`)}
+      ${row('🚫','Blockerade användare','Hantera blockeringar','0',`showT("Inga blockerade användare","b")`)}
+    </div>
+    <div class="settings-section-title">Integritetskontroll</div>
+    <div class="settings-group">
+      ${row('🗑️','Rensa all data','Återställ appen','',`_settingsClearData()`)}
+      ${row('👀','Se min profil','Som andra ser den','',`nav('profile');closeSettings()`)}
+    </div>
+    <div class="settings-section-title">Support och feedback</div>
+    <div class="settings-group">
+      ${row('🐛','Buggar och förslag','Skicka feedback','',`_settingsFeedback()`)}
+      ${row('❓','Hjälpcenter','Vanliga frågor och svar','',`showT("Hjälpcenter kommer snart!","b")`)}
+    </div>
+    <div class="settings-section-title">Mer information</div>
+    <div class="settings-group">
+      ${row('🐾','Om KARMA','Version 2.1.0','v2.1.0',`showT("KARMA v2.1.0 — Svensk youth pet app ⚡","p")`)}
+      ${row('🔒','Integritetspolicy','','',`showT("Integritetspolicy: all data lagras lokalt.","b")`)}
+      ${row('📜','Användarvillkor','','',`showT("Användarvillkor: lek snällt! 🐾","b")`)}
+    </div>
+    <div class="settings-section-title">Kontoåtgärder</div>
+    <div class="settings-group">
+      ${row('🚪','Logga ut','Återställ din session','',`_settingsLogout()`)}
+      ${row('❌','Radera konto','Ta bort all data permanent','',`_settingsDeleteAccount()`)}
+    </div>
+  `;
+}
+function _settingsEditName(){
+  const nm=prompt('Ändra ditt namn:',G.name||'');
+  if(nm&&nm.trim().length>=2){G.name=nm.trim().substring(0,20);save();updateHUD();renderSettings();showT('✅ Namn uppdaterat: '+G.name,'g');}
+}
+function _settingsToggleSFX(){_settingsSFX=!_settingsSFX;localStorage.setItem('kv8_sfx',_settingsSFX?'on':'off');renderSettings();}
+function _settingsToggleVibe(){_settingsVibe=!_settingsVibe;localStorage.setItem('kv8_vibe',_settingsVibe?'on':'off');renderSettings();}
+function _settingsToggleNotif(){_settingsNotif=!_settingsNotif;localStorage.setItem('kv8_notif',_settingsNotif?'on':'off');renderSettings();}
+function _settingsFeedback(){const fb=prompt('Beskriv buggen eller förslaget:');if(fb&&fb.trim()){showT('📨 Tack för din feedback! Vi jobbar på det.','g');addDiaryEntry('Skickade feedback: '+fb.trim().substring(0,60));}}
+function _settingsClearData(){
+  if(confirm('Är du säker? All data raderas och appen återställs!')){
+    localStorage.clear();location.reload();
+  }
+}
+function _settingsLogout(){
+  if(confirm('Logga ut och återställ sessionen?')){
+    localStorage.clear();location.reload();
+  }
+}
+function _settingsDeleteAccount(){
+  const conf=prompt('Skriv "RADERA" för att bekräfta permanent borttagning:');
+  if(conf==='RADERA'){localStorage.clear();location.reload();}
+  else if(conf!==null){showT('Kontot raderades INTE.','y');}
+}
 </script>
 
 <!-- ZONE DETAIL MODAL -->
@@ -11264,6 +11545,16 @@ document.addEventListener('visibilitychange',()=>{
   <div style="font-size:12px;color:rgba(255,255,255,.4);margin-bottom:20px;text-align:center" id="fortuneSub">Tryck på orben för att se din spådom</div>
   <div class="fortune-card" id="fortuneCard"></div>
   <button onclick="closeFortuneOracle()" style="margin-top:20px;background:none;border:1px solid rgba(255,255,255,.15);color:rgba(255,255,255,.5);border-radius:10px;padding:8px 20px;cursor:pointer;font-size:12px">Stäng</button>
+</div>
+
+<!-- SETTINGS SCREEN -->
+<div class="settings-screen" id="settingsScreen">
+  <div class="settings-hdr">
+    <button onclick="closeSettings()" style="background:none;border:none;color:var(--t1);font-size:22px;cursor:pointer;padding:0;margin-right:8px;-webkit-tap-highlight-color:transparent;">←</button>
+    <div style="flex:1;text-align:center;font-size:16px;font-weight:900;font-family:var(--mono)">Inställningar</div>
+    <div style="width:30px"></div>
+  </div>
+  <div id="settingsContent" style="padding-bottom:40px"></div>
 </div>
 
 <!-- NIGHT OWL -->
