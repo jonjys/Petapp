@@ -916,9 +916,12 @@ textarea.inp{resize:none;min-height:68px;}
 .prl-star{position:absolute;border-radius:50%;background:#fff;animation:twk var(--dur) ease-in-out infinite var(--del);}
 .prl-orb{position:absolute;border-radius:50%;background:radial-gradient(circle,var(--orbc,rgba(57,255,20,.35)) 0%,transparent 70%);animation:orbDrift var(--dur) ease-in-out infinite var(--del);pointer-events:none;}
 @keyframes orbDrift{0%,100%{transform:translateY(0) scale(1);opacity:.4;}50%{transform:translateY(-14px) scale(1.2);opacity:.8;}}
-.prl-room-item{position:absolute;pointer-events:none;font-size:var(--sz,18px);line-height:1;filter:drop-shadow(0 2px 8px var(--glow,rgba(57,255,20,.3)));}
+.prl-room-item{position:absolute;pointer-events:none;font-size:var(--sz,18px);line-height:1;filter:drop-shadow(0 2px 8px var(--glow,rgba(57,255,20,.3)));animation:riFloat var(--rf,3.2s) ease-in-out infinite var(--rd,0s);}
 .prl-room-item.wall-item{top:var(--yt,18%);left:var(--xl,10%);}
 .prl-room-item.floor-item{bottom:calc(38% + 2px);left:var(--xl,10%);}
+.prl-room-item.ri-new{animation:riPlace .55s cubic-bezier(.34,1.56,.64,1) forwards, riFloat 3.2s ease-in-out .55s infinite;}
+@keyframes riFloat{0%,100%{transform:translateY(0) rotate(var(--rr,0deg));}50%{transform:translateY(-5px) rotate(var(--rr,0deg));}}
+@keyframes riPlace{0%{transform:scale(0) translateY(30px) rotate(20deg);opacity:0;filter:drop-shadow(0 0 20px rgba(57,255,20,.9));}60%{transform:scale(1.3) translateY(-8px) rotate(-5deg);opacity:1;}80%{transform:scale(.9) translateY(4px) rotate(2deg);}100%{transform:scale(1) translateY(0) rotate(0deg);}}
 .room-scene{position:relative;width:100%;border-radius:20px;overflow:hidden;background:linear-gradient(180deg,#1a0835 0%,#2d1155 45%,#0e2240 45%,#162d50 100%);min-height:160px;}
 .room-floor{position:absolute;bottom:0;left:0;right:0;height:42%;background:linear-gradient(180deg,#1e3a5f,#142840);border-top:2px solid rgba(0,200,255,.25);}
 .room-wall-deco{position:absolute;top:10%;left:50%;transform:translateX(-50%);font-size:28px;opacity:.3;pointer-events:none;}
@@ -2514,6 +2517,15 @@ textarea.inp{resize:none;min-height:68px;}
           <div class="kw-stat"><div class="kw-sv" id="kwBuiltStat" style="color:var(--g)">0</div><div class="kw-sl">Byggt</div></div>
           <div class="kw-stat"><div class="kw-sv" id="kwWildStat" style="color:var(--pk)">0</div><div class="kw-sl">Wild Pets</div></div>
           <div class="kw-stat"><div class="kw-sv" id="kwFriendsStat" style="color:var(--b)">3</div><div class="kw-sl">Vänner</div></div>
+        </div>
+        <!-- Daily Spin in World -->
+        <div style="margin:0 12px 12px;background:linear-gradient(135deg,rgba(191,95,255,.12),rgba(100,0,200,.08));border:1.5px solid rgba(191,95,255,.3);border-radius:18px;padding:12px 14px;display:flex;align-items:center;gap:12px">
+          <div style="font-size:30px;animation:petBob 1.5s ease-in-out infinite">🎰</div>
+          <div style="flex:1">
+            <div style="font-size:12px;font-weight:900;color:var(--p)">DAGLIG KARMA SPIN</div>
+            <div style="font-size:10px;color:var(--t3)" id="kwSpinSub">Vinn coins, XP &amp; gear!</div>
+          </div>
+          <button onclick="openGacha()" style="background:linear-gradient(135deg,var(--p),#7B2FBE);border:none;color:#fff;font-size:11px;font-weight:900;padding:8px 14px;border-radius:12px;cursor:pointer;font-family:var(--ff);white-space:nowrap" id="kwSpinBtn">🎲 SPINN</button>
         </div>
         <!-- Territory Map -->
         <div class="kw-section-ttl" style="display:flex;align-items:center;justify-content:space-between">
@@ -9040,6 +9052,15 @@ function claimDistrict(id){
 }
 
 function renderKarmaWorld(){
+  // update spin button in world
+  const kwSpin=$('kwSpinSub');const kwBtn=$('kwSpinBtn');
+  if(kwSpin&&kwBtn){
+    const spinDone=G.lastSpin===new Date().toDateString();
+    kwSpin.textContent=spinDone?'✅ Spinnat idag — kom tillbaka imorgon':'🎲 Gratis daglig spin tillgänglig!';
+    kwBtn.textContent=spinDone?'✅ KLAR':' 🎲 SPINN';
+    kwBtn.style.opacity=spinDone?'0.5':'1';
+    kwBtn.disabled=spinDone;
+  }
   // update pills + center island
   const s=gS();
   const e=$('kwPetEmoji');if(e)e.textContent=s.e;
@@ -9348,7 +9369,7 @@ function openCastleWorld(){
   _cwRenderPanel();
   const gold=$('cwGold');if(gold)gold.textContent='💰 '+(G.coins||0);
   const sub=$('cwSubtitle');if(sub)sub.textContent=(G.name||'Spelaren')+'s rike';
-  requestAnimationFrame(()=>renderCastleWorld());
+  (function _cwLoop(){if($('castleWorld')?.classList.contains('open')){renderCastleWorld();requestAnimationFrame(_cwLoop);}}());
   const canvas=$('castleCanvas');
   if(canvas){
     canvas.ontouchstart=canvas.ontouchend=null;
@@ -9374,105 +9395,162 @@ function closeCastleWorld(){
   const p=$('cwPopup');if(p)p.style.display='none';
 }
 
+let _cwParticles=null;
 function renderCastleWorld(){
   const canvas=$('castleCanvas');if(!canvas)return;
   const cw=$('castleWorld');if(!cw||!cw.classList.contains('open'))return;
   const W=canvas.offsetWidth||window.innerWidth;
   const H=canvas.offsetHeight||(window.innerHeight-170);
-  canvas.width=W;canvas.height=H;
+  if(canvas.width!==W||canvas.height!==H){canvas.width=W;canvas.height=H;}
   const ctx=canvas.getContext('2d');
-  const cx=W/2,cy=H*0.48;
+  const cx=W/2,cy=H*0.46;
+  const t=Date.now()/1000;
 
-  // Background gradient
-  const bg=ctx.createRadialGradient(cx,cy,0,cx,cy,Math.max(W,H)*.75);
-  bg.addColorStop(0,'#0d1830');bg.addColorStop(1,'#050810');
+  // Atmospheric dark bg with subtle noise
+  const bg=ctx.createRadialGradient(cx,cy,0,cx,cy,Math.max(W,H)*.9);
+  bg.addColorStop(0,'#0e1428');bg.addColorStop(0.5,'#080e1f');bg.addColorStop(1,'#030510');
   ctx.fillStyle=bg;ctx.fillRect(0,0,W,H);
 
-  // Grid
-  const gCell=60;
-  ctx.strokeStyle='rgba(255,255,255,.04)';ctx.lineWidth=1;
-  for(let x=cx%gCell;x<W;x+=gCell){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,H);ctx.stroke();}
-  for(let y=cy%gCell;y<H;y+=gCell){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(W,y);ctx.stroke();}
+  // Hex grid pattern (Diablo-style)
+  ctx.strokeStyle='rgba(80,120,200,.05)';ctx.lineWidth=1;
+  const gCell=40;
+  for(let gx=0;gx<W;gx+=gCell)for(let gy=0;gy<H;gy+=gCell){
+    ctx.strokeRect(gx+(gy/gCell%2)*gCell/2,gy,gCell,gCell);
+  }
 
-  // Stars
-  const t=Date.now()/1000;
+  // Stars / distant ambient lights
   (_cwStars||[]).forEach(s=>{
-    const alpha=0.3+0.5*Math.abs(Math.sin(s.phase+t*0.7));
-    ctx.fillStyle=`rgba(255,255,255,${alpha})`;
-    ctx.beginPath();ctx.arc(s.x*W,s.y*H*0.5,s.r,0,Math.PI*2);ctx.fill();
+    const alpha=0.15+0.35*Math.abs(Math.sin(s.phase+t*0.5));
+    ctx.fillStyle=`rgba(200,220,255,${alpha})`;
+    ctx.beginPath();ctx.arc(s.x*W,s.y*H*0.45,s.r,0,Math.PI*2);ctx.fill();
   });
 
-  // Road from center to edge
-  ctx.strokeStyle='rgba(255,200,0,.18)';ctx.lineWidth=6;ctx.setLineDash([14,10]);
-  ctx.beginPath();ctx.moveTo(cx,cy);ctx.lineTo(cx,H);ctx.stroke();
-  ctx.setLineDash([]);
+  // ── GROUND PLANE INDICATOR ── subtle ellipse to give depth
+  const ground=ctx.createRadialGradient(cx,cy+20,0,cx,cy+20,Math.min(W,H)*0.52);
+  ground.addColorStop(0,'rgba(100,80,30,.12)');ground.addColorStop(1,'rgba(0,0,0,0)');
+  ctx.fillStyle=ground;ctx.fillRect(0,0,W,H);
 
-  // Scattered trees
-  const treePos=[[0.12,0.35],[0.85,0.28],[0.18,0.65],[0.78,0.62],[0.07,0.55],[0.90,0.52],[0.25,0.22],[0.72,0.18]];
-  ctx.font='18px serif';ctx.textAlign='center';ctx.textBaseline='middle';
-  treePos.forEach(([tx,ty])=>ctx.fillText('🌲',tx*W,ty*H));
+  // ── DUNGEON PORTALS ── static positions
+  const portals=[
+    {x:0.2,y:0.22,nm:'Mörka Grottan',col:'rgba(180,0,255,.7)'},
+    {x:0.8,y:0.25,nm:'Isruinerna',col:'rgba(0,180,255,.7)'},
+    {x:0.5,y:0.12,nm:'Helvetesgapet',col:'rgba(255,60,0,.7)'},
+  ];
+  portals.forEach(p=>{
+    const px=p.x*W,py=p.y*H;
+    const pulse=0.6+0.4*Math.sin(t*2+p.x*10);
+    const pr=ctx.createRadialGradient(px,py,0,px,py,20*pulse);
+    pr.addColorStop(0,p.col.replace('.7',',.9'));
+    pr.addColorStop(1,'rgba(0,0,0,0)');
+    ctx.fillStyle=pr;ctx.beginPath();ctx.ellipse(px,py,18*pulse,12*pulse,0,0,Math.PI*2);ctx.fill();
+    ctx.font='16px serif';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText('🕳️',px,py);
+    ctx.font='7px monospace';ctx.fillStyle=p.col;ctx.fillText(p.nm,px,py+16);
+  });
 
-  // NPC castles in a ring
-  const npcRing=Math.min(W,H)*0.35;
+  // ── ROADS ── from center to NPC ring (dotted golden)
+  const npcRing=Math.min(W,H)*0.34;
+  (_cwNpcs||[]).forEach(n=>{
+    const nx=cx+Math.cos(n.ang)*npcRing;
+    const ny=cy+Math.sin(n.ang)*npcRing*0.6;
+    const rc=n.type==='enemy'?'rgba(255,80,80,.2)':n.type==='ally'?'rgba(57,255,20,.18)':'rgba(0,180,255,.15)';
+    ctx.strokeStyle=rc;ctx.lineWidth=2;ctx.setLineDash([8,8]);
+    ctx.beginPath();ctx.moveTo(cx,cy);ctx.lineTo(nx,ny);ctx.stroke();
+    ctx.setLineDash([]);
+  });
+
+  // ── TREES / ROCKS decorations ──
+  const decor=[
+    [0.1,0.3,'🌲'],[0.87,0.28,'🌲'],[0.15,0.68,'🪨'],[0.82,0.65,'🌲'],
+    [0.05,0.55,'🪨'],[0.93,0.5,'🌲'],[0.22,0.18,'🌲'],[0.75,0.16,'🪨'],
+    [0.35,0.8,'🌲'],[0.62,0.78,'🪨'],
+  ];
+  ctx.font='16px serif';ctx.textAlign='center';ctx.textBaseline='middle';
+  decor.forEach(([tx,ty,em])=>ctx.fillText(em,tx*W,ty*H));
+
+  // ── NPC FACTIONS ──
   (_cwNpcs||[]).forEach((n,i)=>{
     const nx=cx+Math.cos(n.ang)*npcRing;
     const ny=cy+Math.sin(n.ang)*npcRing*0.6;
-    // Tint circle
-    const tc=n.type==='enemy'?'rgba(255,60,60,.18)':n.type==='ally'?'rgba(57,255,20,.14)':'rgba(0,180,255,.12)';
-    ctx.fillStyle=tc;ctx.beginPath();ctx.arc(nx,ny,28,0,Math.PI*2);ctx.fill();
-    ctx.font='28px serif';ctx.textAlign='center';ctx.textBaseline='middle';
-    ctx.fillText(n.em,nx,ny-4);
-    // Dot
-    const dc=n.type==='enemy'?'#FF3C3C':n.type==='ally'?'#39FF14':'#00B4FF';
-    ctx.fillStyle=dc;ctx.beginPath();ctx.arc(nx,ny+18,4,0,Math.PI*2);ctx.fill();
-    ctx.fillStyle='rgba(255,255,255,.7)';ctx.font='9px monospace';ctx.textAlign='center';
-    ctx.fillText(n.nm.slice(0,8),nx,ny+30);
-    ctx.fillStyle='rgba(255,200,0,.8)';
-    ctx.fillText('LV'+n.lvl,nx,ny+40);
+    const pulse=0.65+0.35*Math.sin(t*1.5+i);
+    // Threat circle pulsing
+    const tc=n.type==='enemy'?`rgba(255,60,60,${pulse*.22})`:n.type==='ally'?`rgba(57,255,20,${pulse*.16})`:`rgba(0,180,255,${pulse*.14})`;
+    ctx.fillStyle=tc;ctx.beginPath();ctx.arc(nx,ny,30*pulse,0,Math.PI*2);ctx.fill();
+    // Faction icon
+    ctx.font='22px serif';ctx.textAlign='center';ctx.textBaseline='middle';
+    ctx.fillText(n.em,nx,ny-5);
+    // HP bar
+    const barW=36,barH=4;
+    const hp=Math.min(1,n.power/100);
+    const barX=nx-barW/2,barY=ny+12;
+    ctx.fillStyle='rgba(0,0,0,.5)';ctx.fillRect(barX,barY,barW,barH);
+    const hpCol=n.type==='enemy'?'#FF3C3C':n.type==='ally'?'#39FF14':'#00B4FF';
+    ctx.fillStyle=hpCol;ctx.fillRect(barX,barY,barW*hp,barH);
+    // Name
+    ctx.font='bold 8px monospace';ctx.fillStyle='rgba(255,255,255,.7)';ctx.textAlign='center';
+    ctx.fillText(n.nm.slice(0,9),nx,ny+22);
+    ctx.fillStyle='rgba(255,200,0,.9)';
+    ctx.fillText('LV'+n.lvl,nx,ny+32);
   });
 
-  // Player castle area (golden aura)
-  const aura=ctx.createRadialGradient(cx,cy,0,cx,cy,80);
-  aura.addColorStop(0,'rgba(255,200,0,.15)');aura.addColorStop(1,'rgba(255,200,0,0)');
-  ctx.fillStyle=aura;ctx.beginPath();ctx.arc(cx,cy,80,0,Math.PI*2);ctx.fill();
+  // ── PLAYER CASTLE GLOW AURA ──
+  const aura=ctx.createRadialGradient(cx,cy,5,cx,cy,90);
+  const auraPulse=0.08+0.06*Math.sin(t*1.2);
+  aura.addColorStop(0,`rgba(255,200,0,${auraPulse*2})`);
+  aura.addColorStop(0.5,`rgba(255,150,0,${auraPulse})`);
+  aura.addColorStop(1,'rgba(0,0,0,0)');
+  ctx.fillStyle=aura;ctx.beginPath();ctx.arc(cx,cy,90,0,Math.PI*2);ctx.fill();
 
-  // Buildings around castle
+  // ── BUILDINGS AROUND CASTLE ──
   const bl=(G.castle&&G.castle.buildings)||{};
   CW_BUILD_POSITIONS.forEach(bp=>{
     const rad=bp.angle*Math.PI/180;
     const bx=cx+Math.cos(rad)*bp.dist;
-    const by=cy+Math.sin(rad)*bp.dist*0.7;
+    const by=cy+Math.sin(rad)*bp.dist*0.65;
     const bInfo=CASTLE_BUILDINGS.find(x=>x.id===bp.id);if(!bInfo)return;
     const lvl=bl[bp.id]||0;
     if(lvl>0){
-      // Glow
-      const gc=ctx.createRadialGradient(bx,by,0,bx,by,24);
-      gc.addColorStop(0,'rgba(57,255,20,.22)');gc.addColorStop(1,'rgba(57,255,20,0)');
-      ctx.fillStyle=gc;ctx.beginPath();ctx.arc(bx,by,24,0,Math.PI*2);ctx.fill();
+      const gc=ctx.createRadialGradient(bx,by,0,bx,by,20);
+      gc.addColorStop(0,'rgba(57,255,20,.28)');gc.addColorStop(1,'rgba(57,255,20,0)');
+      ctx.fillStyle=gc;ctx.beginPath();ctx.arc(bx,by,20,0,Math.PI*2);ctx.fill();
       ctx.globalAlpha=1;
-    }else{
-      ctx.globalAlpha=0.35;
-    }
-    ctx.font='24px serif';ctx.textAlign='center';ctx.textBaseline='middle';
+    }else{ctx.globalAlpha=0.3;}
+    ctx.font='20px serif';ctx.textAlign='center';ctx.textBaseline='middle';
     ctx.fillText(bInfo.em,bx,by);
     if(lvl>0){
-      ctx.font='8px monospace';ctx.fillStyle='rgba(255,200,0,.9)';
-      ctx.fillText('LV'+lvl,bx,by+18);
+      ctx.font='bold 8px monospace';ctx.fillStyle='rgba(255,200,0,.95)';
+      ctx.fillText('LV'+lvl,bx,by+15);
     }
     ctx.globalAlpha=1;
   });
 
-  // Player castle (center)
-  ctx.font='52px serif';ctx.textAlign='center';ctx.textBaseline='middle';
-  ctx.fillText('🏰',cx,cy-6);
-  ctx.font='bold 10px monospace';ctx.fillStyle='rgba(255,200,0,.9)';
+  // ── PLAYER CASTLE (center) with bob ──
+  const bob=Math.sin(t*1.5)*3;
+  ctx.font='48px serif';ctx.textAlign='center';ctx.textBaseline='middle';
+  ctx.fillText('🏰',cx,cy-6+bob);
+  ctx.font='bold 9px monospace';ctx.fillStyle='rgba(255,215,0,.95)';
   const cLvl=(G.castle&&G.castle.lvl)||1;
-  ctx.fillText((G.name||'Spelaren')+' LV'+cLvl,cx,cy+38);
+  ctx.fillText((G.name||'Spelaren').slice(0,12)+' · LV'+cLvl,cx,cy+32+bob);
 
-  // Fog edges
-  const fog=ctx.createRadialGradient(cx,H*0.5,Math.min(W,H)*0.35,cx,H*0.5,Math.max(W,H)*0.7);
-  fog.addColorStop(0,'rgba(0,0,0,0)');fog.addColorStop(1,'rgba(5,8,16,.75)');
+  // ── PARTICLES / Embers ──
+  if(!_cwParticles)_cwParticles=Array.from({length:18},(_,i)=>({
+    x:cx+(Math.random()-.5)*60,y:cy+(Math.random()-.5)*40,vy:-0.3-Math.random()*.5,vx:(Math.random()-.5)*.4,life:Math.random(),maxLife:2+Math.random()*3
+  }));
+  _cwParticles.forEach(p=>{
+    p.life+=0.016;if(p.life>p.maxLife){p.life=0;p.x=cx+(Math.random()-.5)*60;p.y=cy+10;}
+    const a=1-(p.life/p.maxLife);
+    ctx.fillStyle=`rgba(255,${150+Math.floor(a*80)},0,${a*.7})`;
+    ctx.beginPath();ctx.arc(p.x+Math.sin(p.life*3+p.vx*10)*6,p.y-p.life*30,1.5*a,0,Math.PI*2);ctx.fill();
+  });
+
+  // ── DRAMATIC EDGE FOG ──
+  const fog=ctx.createRadialGradient(cx,H*.5,Math.min(W,H)*.28,cx,H*.5,Math.max(W,H)*.72);
+  fog.addColorStop(0,'rgba(0,0,0,0)');fog.addColorStop(0.7,'rgba(3,5,16,.2)');fog.addColorStop(1,'rgba(3,5,16,.92)');
   ctx.fillStyle=fog;ctx.fillRect(0,0,W,H);
+
+  // ── VIGNETTE ──
+  const vig=ctx.createRadialGradient(cx,cy,0,cx,cy,Math.max(W,H)*.7);
+  vig.addColorStop(0,'rgba(0,0,0,0)');vig.addColorStop(1,'rgba(0,0,5,.6)');
+  ctx.fillStyle=vig;ctx.fillRect(0,0,W,H);
 
   // Gold display update
   const gold=$('cwGold');if(gold)gold.textContent='💰 '+(G.coins||0);
@@ -10494,27 +10572,41 @@ function advanceDailyChallenge(stat,n){
 function renderDailyChallenges(){
   const ct=$('dailyChallengesContainer');if(!ct)return;
   initDailyChallenges();
-  ct.innerHTML=_dailyChallenges.map(dc=>{
+  const doneCount=_dailyChallenges.filter(dc=>_dcProgress[dc.id+'_done']).length;
+  const total=_dailyChallenges.length;
+  const allDone=doneCount===total&&total>0;
+  const summaryBg=allDone?'linear-gradient(135deg,rgba(57,255,20,.15),rgba(57,255,20,.05))':'linear-gradient(135deg,rgba(255,230,0,.1),rgba(191,95,255,.06))';
+  const summaryBorder=allDone?'rgba(57,255,20,.5)':'rgba(255,230,0,.25)';
+  ct.innerHTML=`<div style="background:${summaryBg};border:1.5px solid ${summaryBorder};border-radius:14px;padding:10px 14px;margin-bottom:10px;display:flex;align-items:center;gap:10px">
+    <div style="font-size:22px">${allDone?'🏆':'🎯'}</div>
+    <div style="flex:1">
+      <div style="font-size:13px;font-weight:900;color:${allDone?'var(--g)':'var(--y)'}">${allDone?'ALLA UTMANINGAR KLARA! ⚡':'DAGLIGA UTMANINGAR'}</div>
+      <div style="display:flex;align-items:center;gap:6px;margin-top:3px">
+        ${Array.from({length:total},(_,i)=>`<div style="width:${Math.floor(100/total)-2}%;height:5px;border-radius:100px;background:${i<doneCount?'var(--g)':'rgba(255,255,255,.1)'}"></div>`).join('')}
+        <span style="font-size:10px;font-weight:900;color:${allDone?'var(--g)':'var(--t3)'};font-family:var(--mono);white-space:nowrap">${doneCount}/${total}</span>
+      </div>
+    </div>
+  </div>`+_dailyChallenges.map(dc=>{
     const prog=_dcProgress[dc.id]||0;const done=_dcProgress[dc.id+'_done'];
     const pct=Math.min(100,Math.floor((prog/dc.goal)*100));
-    return`<div style="background:${done?'rgba(57,255,20,.07)':dc.col};border:2px solid ${done?'rgba(57,255,20,.45)':dc.border};border-radius:20px;padding:14px 16px;margin-bottom:10px;transition:all .2s">
-      <div style="display:flex;align-items:center;gap:12px;margin-bottom:10px">
-        <div style="font-size:32px;filter:${done?'grayscale(.3)':'none'}">${dc.ico}</div>
+    const activePulse=!done&&pct>0?';animation:notifPulse 2s ease-in-out infinite':'';
+    return`<div style="background:${done?'rgba(57,255,20,.06)':dc.col};border:2px solid ${done?'rgba(57,255,20,.4)':dc.border};border-radius:18px;padding:12px 14px;margin-bottom:8px;transition:all .25s${activePulse?';box-shadow:0 0 12px '+dc.border:''}">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px">
+        <div style="font-size:28px;filter:${done?'grayscale(.3)':'none'};${done?'':'animation:petBob 2s ease-in-out infinite'}">${dc.ico}</div>
         <div style="flex:1;min-width:0">
-          <div style="font-size:14px;font-weight:900;color:${done?'var(--g)':'var(--t1)'};line-height:1.2">${done?'✅ ':''}<strong>${dc.ttl}</strong></div>
-          <div style="font-size:11px;color:var(--t3);margin-top:2px">${dc.desc}</div>
+          <div style="font-size:13px;font-weight:900;color:${done?'var(--g)':'var(--t1)'}">${done?'✅ ':''}<strong>${dc.ttl}</strong></div>
+          <div style="font-size:10px;color:var(--t3);margin-top:1px">${dc.desc}</div>
         </div>
         ${done
-          ? `<div style="background:rgba(57,255,20,.18);border:2px solid rgba(57,255,20,.5);border-radius:12px;padding:5px 12px;font-size:13px;font-weight:900;color:var(--g);font-family:var(--mono)">KLART! 🏆</div>`
-          : `<div style="background:rgba(255,230,0,.1);border:1px solid rgba(255,230,0,.3);border-radius:10px;padding:4px 10px;text-align:right;font-size:11px;font-weight:900;font-family:var(--mono);color:var(--y);line-height:1.6">+${dc.reward.coins}⚡<br>+${dc.reward.xp}XP</div>`
+          ? `<div style="background:rgba(57,255,20,.2);border:1.5px solid rgba(57,255,20,.6);border-radius:10px;padding:4px 10px;font-size:11px;font-weight:900;color:var(--g);font-family:var(--mono)">✅ KLART</div>`
+          : `<div style="text-align:right;min-width:48px"><div style="font-size:12px;font-weight:900;color:var(--y);font-family:var(--mono)">+${dc.reward.coins}⚡</div><div style="font-size:9px;color:var(--t3);font-family:var(--mono)">+${dc.reward.xp}XP</div></div>`
         }
       </div>
-      <div style="width:100%;height:10px;background:rgba(255,255,255,.06);border-radius:100px;overflow:hidden;box-shadow:inset 0 1px 3px rgba(0,0,0,.3)">
-        <div style="height:100%;width:${pct}%;background:${done?'var(--g)':'linear-gradient(90deg,var(--pk),var(--p))'};border-radius:100px;transition:width .6s ease;${done?'':'box-shadow:0 0 10px rgba(191,95,255,.6)'}"></div>
-      </div>
-      <div style="font-size:10px;font-weight:700;font-family:var(--mono);margin-top:6px;display:flex;justify-content:space-between;align-items:center">
-        <span style="color:var(--t3)">${prog} / ${dc.goal}</span>
-        <span style="color:${done?'var(--g)':'var(--t3)'}">${done?'KLAR! 🏆':pct+'%'}</span>
+      <div style="display:flex;align-items:center;gap:8px">
+        <div style="flex:1;height:8px;background:rgba(255,255,255,.06);border-radius:100px;overflow:hidden">
+          <div style="height:100%;width:${pct}%;background:${done?'linear-gradient(90deg,var(--g),#00ff88)':'linear-gradient(90deg,var(--pk),var(--p))'};border-radius:100px;transition:width .8s cubic-bezier(.34,1.56,.64,1);${done?'':'box-shadow:0 0 8px rgba(191,95,255,.5)'}"></div>
+        </div>
+        <span style="font-size:10px;font-weight:900;font-family:var(--mono);color:${done?'var(--g)':'var(--t3)'}${activePulse?';color:var(--y)':''}">${done?'✓':prog+'/'+dc.goal}</span>
       </div>
     </div>`;
   }).join('');
@@ -12281,18 +12373,22 @@ function renderRoomShopGrid(cat){
     <span class="ric-price" style="color:${owned.includes(it.id)?'var(--g)':'var(--y)'}">${owned.includes(it.id)?'✓ KÖPT':it.price+'⚡'}</span>
   </div>`).join('');
 }
+let _newRoomDecoId=null;
 function buyRoomDeco(id){
   const it=ROOM_DECO_ITEMS.find(x=>x.id===id);if(!it)return;
   if(!G.roomDeco)G.roomDeco=[];
   if(G.roomDeco.includes(id)){showT('✅ Redan köpt! Tryck på tavlan för info.','y');return;}
   if(G.coins<it.price){showT('❌ Behöver '+it.price+'⚡','r');SFX.error();return;}
   G.coins-=it.price;G.roomDeco.push(id);
+  _newRoomDecoId=id;
   SFX.win();vibe([30,20,60]);
-  showT(it.em+' '+it.nm+' placerades i ditt rum!','g');
+  showT(it.em+' '+it.nm+' placerades i ditt rum! ✨','g');
+  spawnParticles&&spawnParticles(window.innerWidth/2,window.innerHeight*.5,'stars');
   addDiaryEntry('Köpte '+it.em+' '+it.nm+' till rummet! Hemmet ser fetare ut nu. 🏠');
   save();updateHUD();
   const rc=$('roomCoinsDisp');if(rc)rc.textContent=G.coins+'⚡';
   renderRoomPreview();renderRoomShopGrid();initPetRoom();
+  setTimeout(()=>{_newRoomDecoId=null;},1000);
   const sub=$('roomDecoSub');if(sub)sub.textContent=(G.roomDeco.length)+' items i ditt rum';
 }
 function openRoomCustomModal(){
@@ -12316,7 +12412,10 @@ function placeCustomRoomItem(){
   const id='ci_'+Date.now();
   const x=10+Math.random()*75;const y=10+Math.random()*45;
   G.customRoomItems.push({id,em,nm:name,x,y});
+  _newRoomDecoId=id;
+  spawnParticles&&spawnParticles(window.innerWidth/2,window.innerHeight*.5,'stars');
   save();closeModal('roomCustomModal');
+  setTimeout(()=>{_newRoomDecoId=null;},1000);
   renderRoomPreview();initPetRoom();
   showT(em+' '+name+' placerat i rummet!','g');vibe([30,20,60]);
 }
@@ -12498,32 +12597,36 @@ initPetRoom=function(){
   if(ph)ph.style.background=theme.bg;
   const sky=$('prlSky');if(sky)sky.style.background=theme.bg;
   // Helper: place item in room (wall = top 62%, floor = sits on floor line at bottom 38%)
-  function placeRoomItem(em,nm,x,isWall,wallY,glow){
+  function placeRoomItem(em,nm,x,isWall,wallY,glow,isNew){
     const d=document.createElement('div');
-    d.className='prl-room-item '+(isWall?'wall-item':'floor-item');
+    d.className='prl-room-item '+(isWall?'wall-item':'floor-item')+(isNew?' ri-new':'');
     const sz=isWall?'16px':'20px';
+    const rf=(2.5+Math.random()*2).toFixed(1)+'s';
+    const rd=(-Math.random()*3).toFixed(2)+'s';
+    const rr=(Math.random()*4-2).toFixed(1)+'deg';
     if(isWall){
-      d.style.cssText=`--sz:${sz};--xl:${x}%;--yt:${wallY}%;`+(glow?`filter:drop-shadow(0 0 6px ${glow});`:'');
+      d.style.cssText=`--sz:${sz};--xl:${x}%;--yt:${wallY}%;--rf:${rf};--rd:${rd};--rr:${rr};`+(glow?`filter:drop-shadow(0 0 6px ${glow});`:'');
     } else {
-      d.style.cssText=`--sz:${sz};--xl:${x}%;`+(glow?`filter:drop-shadow(0 0 6px ${glow});`:'');
+      d.style.cssText=`--sz:${sz};--xl:${x}%;--rf:${rf};--rd:${rd};--rr:${rr};`+(glow?`filter:drop-shadow(0 0 6px ${glow});`:'');
     }
     d.textContent=em;d.title=nm;
     hero.appendChild(d);
   }
+  const _latestDecoId=typeof _newRoomDecoId!=='undefined'?_newRoomDecoId:null;
   // Shop items
   (G.roomDeco||[]).forEach(id=>{
     const it=ROOM_DECO_ITEMS.find(x=>x.id===id);if(!it)return;
     const isWall=it.y<42;
-    placeRoomItem(it.em,it.nm,it.x,isWall,Math.max(5,it.y)+'',null);
+    placeRoomItem(it.em,it.nm,it.x,isWall,Math.max(5,it.y)+'',null,id===_latestDecoId);
   });
   // Custom items
   (G.customRoomItems||[]).forEach(ci=>{
     const isWall=ci.y<42;
-    placeRoomItem(ci.em,ci.nm,ci.x,isWall,Math.max(5,ci.y)+'',null);
+    placeRoomItem(ci.em,ci.nm,ci.x,isWall,Math.max(5,ci.y)+'',null,ci.id===_latestDecoId);
   });
   // Achievement trophies (floor with glow)
   getAchievementRoomItems().forEach(a=>{
-    placeRoomItem(a.em,a.nm,a.x,false,0,theme.accent+'aa');
+    placeRoomItem(a.em,a.nm,a.x,false,0,theme.accent+'aa',false);
   });
   // Update home tab mini room preview
   const hrPet=$('homeRoomPet');if(hrPet)hrPet.textContent=G.petEmoji||'🐉';
