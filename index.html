@@ -1029,7 +1029,7 @@ textarea.inp{resize:none;min-height:68px;}
 .sp-panel{margin:0 12px 10px;background:var(--c1);border:1.5px solid rgba(0,217,255,.2);border-radius:18px;padding:13px 14px;position:relative;overflow:hidden;}
 .sp-panel::before{content:'';position:absolute;top:-30px;right:-30px;width:130px;height:130px;background:radial-gradient(circle,rgba(0,217,255,.08),transparent 70%);pointer-events:none;}
 .sp-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:9px;}
-.sp-ttl{font-size:10px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:.8px;flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.sp-ttl{font-size:9px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:.8px;}
 .sp-boost{font-size:12px;font-weight:900;color:var(--b);font-family:var(--mono);}
 .sp-bar{height:6px;background:var(--c3);border-radius:100px;overflow:hidden;margin-bottom:9px;}
 .sp-bar-fill{height:100%;background:linear-gradient(90deg,var(--b),var(--p));border-radius:100px;transition:width .8s cubic-bezier(.34,1.56,.64,1);box-shadow:0 0 8px rgba(0,217,255,.35);}
@@ -1340,17 +1340,17 @@ textarea.inp{resize:none;min-height:68px;}
 @keyframes wSnow{0%{transform:translateY(-5%) translateX(0);}50%{transform:translateY(50%) translateX(var(--sx));}100%{transform:translateY(108%) translateX(0);}}
 
 /* ── STREAK MILESTONES ── */
-.streak-milestone{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;padding:0 12px 8px;}
+.streak-milestone{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;padding:0 12px 12px;min-height:90px;}
 .streak-milestone::-webkit-scrollbar{display:none;}
-.sm-item{flex-shrink:0;text-align:center;background:var(--c1);border:1px solid var(--line);border-radius:14px;padding:10px 12px;min-width:68px;}
-.sm-item.reached{border-color:rgba(57,255,20,.4);background:rgba(57,255,20,.05);}
-.sm-item.next{border-color:rgba(255,230,0,.4);background:rgba(255,230,0,.04);animation:nextMilestone 2s ease-in-out infinite;}
+.sm-item{flex-shrink:0;text-align:center;background:linear-gradient(180deg,var(--c2),var(--c1));border:1.5px solid rgba(255,255,255,.1);border-radius:16px;padding:10px 14px;min-width:72px;box-shadow:0 2px 8px rgba(0,0,0,.3);}
+.sm-item.reached{border-color:rgba(57,255,20,.5);background:linear-gradient(180deg,rgba(57,255,20,.12),rgba(57,255,20,.04));box-shadow:0 0 12px rgba(57,255,20,.2);}
+.sm-item.next{border-color:rgba(255,230,0,.5);background:linear-gradient(180deg,rgba(255,230,0,.1),rgba(255,230,0,.03));animation:nextMilestone 2s ease-in-out infinite;box-shadow:0 0 10px rgba(255,230,0,.2);}
 @keyframes nextMilestone{0%,100%{box-shadow:0 0 0 0 rgba(255,230,0,.3);}50%{box-shadow:0 0 12px 2px rgba(255,230,0,.2);}}
-.sm-days{font-size:18px;font-weight:900;font-family:var(--mono);line-height:1;}
+.sm-days{font-size:20px;font-weight:900;font-family:var(--mono);line-height:1;color:var(--t2);}
 .sm-item.reached .sm-days{color:var(--g);}
 .sm-item.next .sm-days{color:var(--y);}
-.sm-lbl{font-size:8px;color:var(--t3);margin-top:3px;}
-.sm-ico{font-size:16px;}
+.sm-lbl{font-size:8px;color:var(--t3);margin-top:3px;font-weight:700;}
+.sm-ico{font-size:18px;line-height:1;margin-bottom:2px;}
 
 /* ── PET LEVEL RING ── */
 .pet-lv-ring{display:flex;align-items:center;justify-content:center;gap:12px;padding:4px 0 2px;}
@@ -1767,8 +1767,9 @@ textarea.inp{resize:none;min-height:68px;}
 /* ── FORTUNE ORACLE ── */
 .fortune-wrap{position:fixed;inset:0;z-index:880;background:rgba(0,0,0,.95);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;}
 .fortune-wrap.hidden{display:none;}
-.fortune-orb{width:120px;height:120px;border-radius:50%;background:radial-gradient(circle at 35% 35%,rgba(191,95,255,.8),rgba(63,0,127,.9));box-shadow:0 0 40px rgba(191,95,255,.6),0 0 80px rgba(191,95,255,.3);animation:orbPulse 2s ease-in-out infinite;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:48px;margin-bottom:20px;}
-@keyframes orbPulse{0%,100%{box-shadow:0 0 40px rgba(191,95,255,.6),0 0 80px rgba(191,95,255,.3);}50%{box-shadow:0 0 60px rgba(191,95,255,.9),0 0 120px rgba(191,95,255,.5),0 0 0 8px rgba(191,95,255,.15);}}
+.fortune-orb{width:140px;height:140px;border-radius:50%;background:radial-gradient(circle at 30% 30%,rgba(220,150,255,1),rgba(100,0,200,.95),rgba(30,0,80,1));box-shadow:0 0 40px rgba(191,95,255,.8),0 0 80px rgba(191,95,255,.5),0 0 120px rgba(100,0,200,.3),inset 0 0 30px rgba(255,200,255,.2);animation:orbPulse 1.8s ease-in-out infinite;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:56px;margin-bottom:24px;transition:transform .15s;}
+.fortune-orb:active{transform:scale(.93);}
+@keyframes orbPulse{0%,100%{box-shadow:0 0 40px rgba(191,95,255,.8),0 0 80px rgba(191,95,255,.5),0 0 120px rgba(100,0,200,.3);transform:scale(1);}50%{box-shadow:0 0 60px rgba(191,95,255,1),0 0 120px rgba(191,95,255,.7),0 0 200px rgba(100,0,200,.5);transform:scale(1.04);}}
 .fortune-card{background:linear-gradient(135deg,rgba(63,0,127,.4),rgba(30,0,60,.6));border:1.5px solid rgba(191,95,255,.4);border-radius:18px;padding:20px;max-width:300px;text-align:center;opacity:0;transform:translateY(20px);transition:all .6s cubic-bezier(.34,1.56,.64,1);}
 .fortune-card.revealed{opacity:1;transform:none;}
 .fortune-stars{font-size:11px;color:rgba(191,95,255,.7);letter-spacing:3px;margin-bottom:8px;font-family:var(--mono);}
@@ -2044,6 +2045,7 @@ textarea.inp{resize:none;min-height:68px;}
           <div class="ddr" onclick="cM();nav('flash')"><div class="ddr-i">⚡</div>Flash Feed</div>
           <div class="ddr" onclick="cM();nav('social')"><div class="ddr-i">💬</div>Social & Chat<div class="dd-bdg" id="circleDot" style="display:none">!</div></div>
           <div class="ddr" onclick="cM();nav('uppdrag')"><div class="ddr-i">🎯</div>Uppdrag</div>
+          <div class="ddr" onclick="cM();nav('uppdrag');setTimeout(()=>{const t=document.querySelector('#uppdragTabs .tab:last-child');if(t)t.click();},200)"><div class="ddr-i">📋</div>Bounties</div>
           <div class="ddr" onclick="cM();nav('shop')"><div class="ddr-i">🛍️</div>Marketplace</div>
           <div class="ddr" onclick="cM();nav('map')"><div class="ddr-i">🗺️</div>Live Karta</div>
         </div>
@@ -2082,19 +2084,19 @@ textarea.inp{resize:none;min-height:68px;}
         </div>
         <div style="display:flex;align-items:center;gap:10px;position:relative;z-index:2">
           <!-- Pet avatar with emoji fallback -->
-          <div style="position:relative;width:84px;height:84px;flex-shrink:0;cursor:pointer" onclick="onPetTap(event)">
+          <div style="position:relative;width:96px;height:96px;flex-shrink:0;cursor:pointer" onclick="onPetTap(event)">
             <!-- emoji fallback always visible -->
-            <div id="petHeroEmoji" style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:46px;z-index:1;filter:drop-shadow(0 0 14px rgba(57,255,20,.5))">🐉</div>
+            <div id="petHeroEmoji" style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:54px;z-index:1;filter:drop-shadow(0 0 14px rgba(57,255,20,.5))">🐉</div>
             <div class="pet-aura" id="petAura" style="z-index:3"></div>
             <div style="position:absolute;inset:0;border-radius:50%;border:2.5px solid rgba(57,255,20,.4);animation:ringPulse 3s ease-in-out infinite;z-index:2;pointer-events:none"></div>
-            <canvas id="petCanvas" width="320" height="320" style="position:absolute;inset:0;width:84px;height:84px;border-radius:50%;z-index:3;box-shadow:0 0 24px rgba(0,232,122,.4)"></canvas>
+            <canvas id="petCanvas" width="320" height="320" style="position:absolute;inset:0;width:96px;height:96px;border-radius:50%;z-index:3;box-shadow:0 0 24px rgba(0,232,122,.4)"></canvas>
             <div class="pet-emote" id="petEmote" style="font-size:16px;top:-12px;z-index:5"></div>
             <div class="pet-sad-alert" id="petSadAlert" style="font-size:8px;padding:1px 5px;bottom:-4px;z-index:5">😢</div>
           </div>
           <!-- Right info col -->
           <div style="flex:1;min-width:0">
             <div style="display:flex;align-items:center;gap:5px;margin-bottom:2px">
-              <div id="petName" class="pet-name" style="font-size:14px;margin:0;line-height:1">–</div>
+              <div id="petName" class="pet-name" style="font-size:15px;margin:0;line-height:1">–</div>
               <div class="pet-lv" style="font-size:8px;padding:1px 6px">LV <span id="petLvlN">1</span></div>
               <div class="es-badge es1" id="evolStageBadge" style="font-size:7px;padding:1px 4px">ROOKIE</div>
             </div>
@@ -2223,7 +2225,7 @@ textarea.inp{resize:none;min-height:68px;}
       <div style="margin:0 12px 10px;background:linear-gradient(135deg,rgba(0,232,122,.07),rgba(0,217,255,.04));border:1.5px solid rgba(57,255,20,.22);border-radius:20px;padding:14px 16px;cursor:pointer;-webkit-tap-highlight-color:transparent;display:flex;align-items:center;gap:12px" onclick="nav('world')">
         <span style="font-size:36px;filter:drop-shadow(0 0 8px rgba(57,255,20,.45))">🌍</span>
         <div style="flex:1">
-          <div style="font-size:13px;font-weight:900;color:var(--g);margin-bottom:2px">DIN KARMA WORLD BYGGERI PÅ SIG</div>
+          <div style="font-size:13px;font-weight:900;color:var(--g);margin-bottom:2px">🌍 DIN KARMA WORLD LEVER</div>
           <div id="kwHomeSub" style="font-size:10px;color:var(--t3)">Varje action bygger din stad. Tryck för att se.</div>
         </div>
         <span style="font-size:20px;color:var(--g)">→</span>
@@ -2290,7 +2292,7 @@ textarea.inp{resize:none;min-height:68px;}
         </div>
       </div>
 
-      <div class="sh"><div class="sh-t">GEAR</div><div class="sh-a" onclick="nav('shop');switchShop('gear')">SHOP →</div></div>
+      <div class="sh" id="gearHomeSection" style="display:none"><div class="sh-t">⚡ GEAR</div><div class="sh-a" onclick="nav('shop');switchShop('gear')">SHOP →</div></div>
       <div id="gearRowHome" style="display:flex;gap:7px;overflow-x:auto;scrollbar-width:none;padding:0 12px"></div>
 
       <div class="vend"></div>
@@ -5183,6 +5185,7 @@ function updatePetView(){
 // ── GEAR ──
 function renderGearHome(){
   const el=$('gearRowHome');if(!el)return;
+  const sec=$('gearHomeSection');if(sec)sec.style.display=G.gear.length?'':'none';
   if(G.gear.length){
     el.innerHTML=G.gear.map(gid=>{const g=GEAR.find(x=>x.id===gid);if(!g)return'';return`<div style="width:52px;height:52px;border-radius:13px;background:var(--c1);border:2px solid ${G.equippedGear===g.em?'var(--g)':'var(--line)'};display:flex;align-items:center;justify-content:center;font-size:26px;cursor:pointer;flex-shrink:0;position:relative" onclick="equipGear('${g.em}','${g.id}')">${g.em}${G.equippedGear===g.em?'<div style="position:absolute;top:-5px;right:-5px;background:var(--g);color:var(--bg);font-size:7px;font-weight:900;padding:1px 4px;border-radius:4px">ON</div>':''}</div>`;}).join('')+`<div style="width:52px;height:52px;border-radius:13px;background:var(--c1);border:2px solid var(--line);display:flex;align-items:center;justify-content:center;font-size:18px;cursor:pointer;flex-shrink:0;opacity:.3" onclick="nav('shop');switchShop('gear')">+</div>`;
   }else{el.innerHTML=`<div style="width:52px;height:52px;border-radius:13px;background:var(--c1);border:2px dashed var(--line);display:flex;align-items:center;justify-content:center;font-size:18px;cursor:pointer;flex-shrink:0;opacity:.3" onclick="nav('shop');switchShop('gear')">+</div><span style="font-size:12px;color:var(--t3);display:flex;align-items:center;padding-left:10px">Inget gear ännu</span>`;}
@@ -5989,7 +5992,8 @@ const MOCK_CLANS=[
   {id:'c4',nm:'Gold Hunters',em:'🦁',members:6,power:4100,tag:'GH',col:'var(--y)'},
 ];
 function openClanView(){
-  const modal=$('clanModal');if(!modal){_buildClanModal();return;}
+  if(!$('clanModal'))_buildClanModal();
+  const modal=$('clanModal');if(!modal)return;
   modal.style.display='flex';
   renderClans();
 }
@@ -6678,6 +6682,7 @@ function openPetRunner() {
             <div style="font-size:24px;font-weight:900;color:var(--y);font-family:var(--mono)">PET RUNNER</div>
             <div style="font-size:13px;color:var(--t3);margin:8px 0">Tryck för att hoppa!</div>
             <div style="font-size:11px;color:var(--t3)">BÄST: <span id="prBestScore" style="color:var(--y);font-weight:900">0m</span></div>
+            <div style="font-size:12px;color:var(--b);font-family:var(--mono);margin-top:4px" id="prLevelShow">RUNNER LV1</div>
           </div>
         </div>
         <div id="prGameOver" style="position:absolute;inset:0;display:none;flex-direction:column;align-items:center;justify-content:center;background:rgba(10,10,26,.92);gap:8px;">
@@ -6685,6 +6690,7 @@ function openPetRunner() {
           <div style="font-size:22px;font-weight:900;color:var(--r);font-family:var(--mono)">GAME OVER</div>
           <div id="prFinalScore" style="font-size:16px;color:var(--y);font-weight:900;font-family:var(--mono)">0m</div>
           <div id="prRewards" style="font-size:12px;color:var(--g);margin:4px 0"></div>
+          <div id="prLevelBadge" style="font-size:10px;color:var(--b);font-weight:900;font-family:var(--mono)">RUNNER LV1</div>
           <button onclick="prRestart()" style="background:rgba(57,255,20,.2);border:1.5px solid rgba(57,255,20,.5);border-radius:14px;color:var(--g);padding:12px 28px;font-size:15px;font-weight:900;cursor:pointer;font-family:var(--mono)">🔄 IGEN</button>
           <button onclick="closePetRunner()" style="background:none;border:1px solid rgba(255,255,255,.15);border-radius:12px;color:var(--t3);padding:8px 20px;font-size:12px;cursor:pointer;">← AVSLUTA</button>
         </div>
@@ -6700,6 +6706,7 @@ function openPetRunner() {
   _pr.best = parseInt(localStorage.getItem('kv8_prBest')||'0');
   const bs = $('prBestScore'); if(bs) bs.textContent = _pr.best+'m';
   const sp = $('prStartPet'); if(sp) sp.textContent = (G&&G.petEmoji)||'🐉';
+  const lv=$('prLevelShow');if(lv)lv.textContent='RUNNER LV'+(_pr.level||1);
   const ss = $('prStartScreen'); if(ss) ss.style.display='flex';
   const go = $('prGameOver'); if(go) go.style.display='none';
   _pr.active = false; _pr.started = false;
@@ -6747,7 +6754,7 @@ function _prReset() {
   _pr.obstacles = [];
   _pr.coins = [];
   _pr.score = 0;
-  _pr.speed = 3;
+  _pr.speed = 3 + ((_pr.level||1)-1)*0.3;
   _pr.frame = 0;
   _pr.coinsCollected = 0;
   _pr.gemsCollected = 0;
@@ -7098,6 +7105,15 @@ function _prGameOver() {
   const go = $('prGameOver'); if(go) go.style.display='flex';
   const fs = $('prFinalScore'); if(fs) fs.textContent = _pr.score+'m · BÄST: '+_pr.best+'m';
   const rw = $('prRewards'); if(rw) rw.innerHTML = '+'+xpEarned+'XP  &nbsp; +'+coinsEarned+'⚡';
+  // Level up if score beats level threshold
+  const levelThresholds = [0,50,120,220,360,550,800,1100,1500,2000];
+  const nextThresh = levelThresholds[(_pr.level||1)] || (_pr.level*300);
+  if(_pr.score >= nextThresh && (_pr.level||1) < 10){
+    _pr.level = (_pr.level||1) + 1;
+    gainXP(30*_pr.level,'action');
+    showT('🏃 RUNNER LV'+_pr.level+'! FASTER!','g');
+  }
+  const lvEl=$('prLevelBadge'); if(lvEl)lvEl.textContent='RUNNER LV'+(_pr.level||1);
   addDiaryEntry('Spelade Pet Runner! '+_pr.score+'m · '+_pr.coinsCollected+' coins');
   SFX&&SFX.win&&SFX.win(); vibe&&vibe([50,30,100,30,150]);
   // Draw one static death frame instead of looping
@@ -7421,6 +7437,11 @@ function _sfHitFish(ft,fishEl){
   if(G.fishInventoryBox.length<20){
     G.fishInventoryBox.push({...ft,caughtAt:Date.now(),loc:G.fishLocation||'malaren'});
   } else showT('📦 Låda full! Sälj några fiskar.','y');
+  // Fishing boosts pet stats
+  G.mood=Math.min(100,(G.mood||0)+3+(ft.rarity==='legendary'?10:ft.rarity==='epic'?5:0));
+  if(ft.rarity==='legendary'||ft.rarity==='epic')G.hunger=Math.min(100,(G.hunger||0)+10);
+  updatePetView&&updatePetView();
+  addWorldPoints&&addWorldPoints(ft.rarity==='legendary'?15:ft.rarity==='epic'?8:ft.rarity==='rare'?4:2,'fish');
   // Permanent bonus for special fish
   if(ft.bonus==='xp5pct'&&!(G.fishBonuses||{}).xp5pct){G.fishBonuses=G.fishBonuses||{};G.fishBonuses.xp5pct=true;showT('🦈 Gäddkung! +5% XP permanent!','y');vibe([80,40,120]);}
   if(ft.bonus==='coins10pct'&&!(G.fishBonuses||{}).coins10pct){G.fishBonuses=G.fishBonuses||{};G.fishBonuses.coins10pct=true;showT('🐲 Sjödrake! +10% Coins permanent!','pk');vibe([80,40,120]);}
@@ -7769,6 +7790,12 @@ function _fishCatch(){
   else if(ft.special==='coins2x'){gainCoins(earnedCoins);showT('🧜 SJÖJUNGFRU! Dubbla coins!','pk');}
   else if(ft.special==='all'){gainCoins(earnedCoins);gainXP(earnedXP,'action');showT('🐲 HAVSDRAK!!! MEGA!','y');vibe([80,40,100,40,120]);}
   if(ft.petFood){G.hunger=Math.min(100,G.hunger+30);updatePetView();}
+  // Fishing boosts pet stats
+  G.mood=Math.min(100,(G.mood||0)+3+(ft.rarity==='legendary'?10:ft.rarity==='epic'?5:0));
+  if(ft.rarity==='legendary'||ft.rarity==='epic')G.hunger=Math.min(100,(G.hunger||0)+10);
+  G.energy=Math.max(0,(G.energy||0)-3);
+  updatePetView&&updatePetView();
+  addWorldPoints&&addWorldPoints(ft.rarity==='legendary'?15:ft.rarity==='epic'?8:ft.rarity==='rare'?4:2,'fish');
   const rt=ft.rarity==='ultra'?'y':ft.rarity==='mythic'?'p':ft.rarity==='legendary'?'pk':ft.rarity==='epic'?'o':'g';
   showT(ft.em+' '+ft.nm+'! +'+earnedCoins+'⚡ +'+earnedXP+'XP'+(combo>=3?' 🔥×'+combo:''),rt);
   vibe([30,20,80,20,100]);SFX.win();
@@ -8106,35 +8133,63 @@ function renderMeRum(){
 
 function renderMeProfil(){
   const el=$('meProfilInner');if(!el)return;
-  const pets=G.petEmoji||'🐉';const lvl=G.level||1;const xp=G.xp||0;const nxp=G.nextXP||150;
-  const coins=G.coins||0;const streak=G.streak||0;
+  const pets=G.petEmoji||'🐉';
+  const lvl=G.level||1;
+  const streak=G.streak||0;
+  const coins=G.coins||0;
+  const posts=G.postCount||0;
+  const followers=Math.floor(42+lvl*7+(streak*3));
+  const following=Math.floor(18+lvl*3);
+  const lurkers=Math.floor(followers*0.4);
   const earned=[..._earnedAchs];
-  el.innerHTML=`
-    <div style="padding:16px 14px 0">
-      <div style="display:flex;align-items:center;gap:14px;margin-bottom:14px">
-        <div style="width:72px;height:72px;border-radius:50%;background:var(--c2);border:2px solid var(--g);display:flex;align-items:center;justify-content:center;font-size:38px;flex-shrink:0">${pets}</div>
-        <div style="flex:1;min-width:0">
-          <div style="font-size:18px;font-weight:900">${G.petName||'–'}</div>
-          <div style="font-size:10px;color:var(--t3);font-family:var(--mono)">${G.petSpecies||'Okänd art'}</div>
-          <div style="display:flex;gap:6px;margin-top:6px;flex-wrap:wrap">
-            <span style="background:rgba(57,255,20,.15);color:var(--g);font-size:10px;font-weight:900;padding:3px 8px;border-radius:8px;font-family:var(--mono)">LV ${lvl}</span>
-            <span style="background:rgba(255,159,10,.1);color:var(--o);font-size:10px;font-weight:900;padding:3px 8px;border-radius:8px;font-family:var(--mono)">🔥 ${streak}d</span>
-            <span style="background:rgba(255,215,0,.1);color:var(--y);font-size:10px;font-weight:900;padding:3px 8px;border-radius:8px;font-family:var(--mono)">💰 ${coins}</span>
-          </div>
-        </div>
-      </div>
-      <div style="margin-bottom:14px">
-        <div style="display:flex;justify-content:space-between;font-size:10px;color:var(--t3);margin-bottom:4px"><span>XP Progress</span><span>${xp}/${nxp}</span></div>
-        <div style="height:8px;background:var(--c3);border-radius:100px;overflow:hidden"><div style="height:100%;width:${Math.round(xp/nxp*100)}%;background:linear-gradient(90deg,var(--g),var(--tl));border-radius:100px"></div></div>
-      </div>
-      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:14px">
-        <div style="background:var(--c1);border:1px solid var(--line);border-radius:14px;padding:10px;text-align:center"><div style="font-size:20px;font-weight:900;color:var(--o)">${G.hunger||0}</div><div style="font-size:9px;color:var(--t3)">🍖 Mättnad</div></div>
-        <div style="background:var(--c1);border:1px solid var(--line);border-radius:14px;padding:10px;text-align:center"><div style="font-size:20px;font-weight:900;color:var(--b)">${G.energy||0}</div><div style="font-size:9px;color:var(--t3)">⚡ Energi</div></div>
-        <div style="background:var(--c1);border:1px solid var(--line);border-radius:14px;padding:10px;text-align:center"><div style="font-size:20px;font-weight:900;color:var(--p)">${G.mood||0}</div><div style="font-size:9px;color:var(--t3)">💖 Humör</div></div>
-      </div>
-      <div class="sh" style="padding:0;margin-bottom:8px"><div class="sh-t" style="font-size:12px">🏆 ACHIEVEMENTS (${earned.length}/${ACHIEVEMENTS.length})</div></div>
-      <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px">${earned.map(id=>{const a=ACHIEVEMENTS.find(x=>x.id===id);return a?`<div style="background:rgba(255,215,0,.1);border:1px solid rgba(255,215,0,.3);border-radius:8px;padding:4px 8px;font-size:10px" title="${a.nm}">${a.ico} ${a.nm}</div>`:''}).join('')||'<div style="color:var(--t3);font-size:11px">Inga achievements ännu — börja spela!</div>'}</div>
-    </div>`;
+  const xpNeed=typeof xpN==='function'?xpN(lvl):150;
+  const xpPct=Math.min(100,Math.round(((G.exp||0)%xpNeed)/xpNeed*100));
+  const covers={cosmic:'linear-gradient(135deg,#0d0520,#07040f)',nature:'linear-gradient(135deg,#041a04,#030d03)',city:'linear-gradient(135deg,#04060f,#030415)',pixel:'linear-gradient(135deg,#0a0800,#060500)'};
+  const coverBg=covers[G.world||'cosmic']||covers.cosmic;
+  const isPro=G.premiumTier==='god'||G.premiumTier==='pro';
+  const lurkerClick=isPro?'showT(\'👁️ '+lurkers+' smygkollar dig just nu!\',\'p\')':'openModal(\'premiumModal\')';
+  const lurkerVal=isPro?lurkers:'?';
+  const lurkerCol=isPro?'var(--p)':'var(--t3)';
+  const achHtml=earned.map(id=>{const a=ACHIEVEMENTS.find(x=>x.id===id);return a?'<div style="background:rgba(255,215,0,.1);border:1px solid rgba(255,215,0,.25);border-radius:8px;padding:4px 8px;font-size:10px;cursor:pointer" onclick="showT(\'🏆 '+a.nm+'\',\'y\')" title="'+a.nm+'">'+a.ico+'</div>':''}).join('')||'<div style="color:var(--t3);font-size:11px">Inga achievements ännu — börja spela!</div>';
+  const flashColors=['#FF2D55','#FFE600','#39FF14','#FF9F0A','#00D9FF','#BF5FFF'];
+  const flashEmojis=['🎮','🎵','🌍','⚔️','🎣','🏆'];
+  const flashGrid=Array.from({length:6},(_,i)=>'<div style="aspect-ratio:1;background:linear-gradient(135deg,'+flashColors[i]+'22,'+flashColors[i]+'08);border:1px solid '+flashColors[i]+'33;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:28px;cursor:pointer" onclick="nav(\'flash\')">'+flashEmojis[i]+'</div>').join('');
+  const proSection=isPro?'<div style="background:rgba(191,95,255,.08);border:1px solid rgba(191,95,255,.25);border-radius:14px;padding:10px 12px;margin-bottom:12px;display:flex;align-items:center;gap:10px"><div style="font-size:20px">👁️</div><div style="flex:1"><div style="font-size:11px;font-weight:900;color:var(--p)">SMYGKIKA-LÄGE AKTIVT</div><div style="font-size:9px;color:var(--t3)">Du kan smygkika andra profiler anonymt</div></div><div style="font-size:9px;color:var(--p);font-weight:900;font-family:var(--mono)">PRO</div></div>':'<div style="background:rgba(255,230,0,.05);border:1px solid rgba(255,230,0,.2);border-radius:14px;padding:10px 12px;margin-bottom:12px;display:flex;align-items:center;gap:10px;cursor:pointer" onclick="openModal(\'premiumModal\')"><div style="font-size:20px">👁️</div><div style="flex:1"><div style="font-size:11px;font-weight:900;color:var(--y)">SMYGKIKA ANONYMT</div><div style="font-size:9px;color:var(--t3)">Kräver KARMA PRO — tjuvkika utan att avslöjas</div></div><div style="font-size:9px;color:var(--y);font-weight:900;font-family:var(--mono)">LÅS UPP →</div></div>';
+  el.innerHTML=
+    '<div style="position:relative;height:90px;background:'+coverBg+';overflow:hidden">'+
+    '<div style="position:absolute;inset:0;background:linear-gradient(180deg,transparent 40%,rgba(0,0,0,.5) 100%)"></div>'+
+    '<div style="position:absolute;bottom:0;left:0;right:0;display:flex;justify-content:flex-end;padding:8px 12px;gap:8px">'+
+    '<button onclick="showT(\'✏️ Redigera profil kommer snart!\',\'b\')" style="background:rgba(0,0,0,.5);border:1px solid rgba(255,255,255,.2);color:#fff;font-size:10px;font-weight:900;padding:4px 10px;border-radius:8px;cursor:pointer">✏️ Redigera</button>'+
+    '<button onclick="shareProfile()" style="background:rgba(255,45,85,.8);border:none;color:#fff;font-size:10px;font-weight:900;padding:4px 10px;border-radius:8px;cursor:pointer">↑ Dela</button>'+
+    '</div></div>'+
+    '<div style="padding:0 14px;position:relative">'+
+    '<div style="position:absolute;top:-38px;left:14px;width:76px;height:76px;border-radius:50%;background:var(--c2);border:3px solid var(--bg);display:flex;align-items:center;justify-content:center;font-size:40px;filter:drop-shadow(0 0 12px rgba(57,255,20,.4))">'+pets+'</div>'+
+    '<div style="padding-top:42px;margin-bottom:10px">'+
+    '<div style="font-size:18px;font-weight:900">'+(G.petName||'–')+' <span style="font-size:12px;font-weight:400;color:var(--t3)">'+(G.petSpecies||'')+'</span></div>'+
+    '<div style="font-size:11px;color:var(--t3);font-family:var(--mono)">@'+(G.name||'user').toLowerCase().replace(/\s+/g,'_')+' · KARMA</div>'+
+    '<div style="display:flex;gap:6px;margin-top:6px;flex-wrap:wrap">'+
+    '<span style="background:rgba(57,255,20,.15);color:var(--g);font-size:10px;font-weight:900;padding:2px 8px;border-radius:20px;font-family:var(--mono)">⚡ LV '+lvl+'</span>'+
+    '<span style="background:rgba(255,159,10,.12);color:var(--o);font-size:10px;font-weight:900;padding:2px 8px;border-radius:20px;font-family:var(--mono)">🔥 '+streak+'d streak</span>'+
+    (G.premium?'<span style="background:linear-gradient(135deg,#FFE600,#FF9F0A);color:#000;font-size:10px;font-weight:900;padding:2px 8px;border-radius:20px">👑 PRO</span>':'')+
+    '</div></div>'+
+    '<div style="display:flex;gap:0;margin-bottom:14px;background:var(--c1);border-radius:16px;overflow:hidden;border:1px solid var(--line)">'+
+    '<div style="flex:1;padding:12px 8px;text-align:center;cursor:pointer;border-right:1px solid var(--line)" onclick="showT(\'👥 '+followers+' följare\',\'b\')"><div style="font-size:18px;font-weight:900;color:var(--t1)">'+followers+'</div><div style="font-size:9px;color:var(--t3);font-weight:700">FÖLJARE</div></div>'+
+    '<div style="flex:1;padding:12px 8px;text-align:center;cursor:pointer;border-right:1px solid var(--line)" onclick="showT(\'👁️ '+following+' följer du\',\'b\')"><div style="font-size:18px;font-weight:900;color:var(--t1)">'+following+'</div><div style="font-size:9px;color:var(--t3);font-weight:700">FÖLJER</div></div>'+
+    '<div style="flex:1;padding:12px 8px;text-align:center;cursor:pointer;border-right:1px solid var(--line)" onclick="showT(\'⚡ '+posts+' inlägg\',\'b\')"><div style="font-size:18px;font-weight:900;color:var(--t1)">'+posts+'</div><div style="font-size:9px;color:var(--t3);font-weight:700">INLÄGG</div></div>'+
+    '<div style="flex:1;padding:12px 8px;text-align:center;cursor:pointer;position:relative" onclick="'+lurkerClick+'"><div style="font-size:18px;font-weight:900;color:'+lurkerCol+'">'+lurkerVal+'</div><div style="font-size:9px;color:var(--t3);font-weight:700">TJUVKIK</div>'+(isPro?'':`<div style="position:absolute;top:6px;right:6px;font-size:8px">👑</div>`)+'</div>'+
+    '</div>'+
+    '<div style="margin-bottom:12px"><div style="display:flex;justify-content:space-between;font-size:9px;color:var(--t3);margin-bottom:3px;font-family:var(--mono)"><span>LV'+lvl+' → LV'+(lvl+1)+'</span><span>'+xpPct+'%</span></div><div style="height:6px;background:rgba(255,255,255,.07);border-radius:100px;overflow:hidden"><div style="height:100%;width:'+xpPct+'%;background:linear-gradient(90deg,var(--g),var(--tl));border-radius:100px;transition:width .8s"></div></div></div>'+
+    '<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin-bottom:14px">'+
+    '<div style="background:var(--c1);border:1px solid rgba(255,159,10,.2);border-radius:12px;padding:10px;text-align:center"><div style="font-size:20px;font-weight:900;color:var(--o)">'+(G.hunger||0)+'</div><div style="font-size:8px;color:var(--t3);margin-top:1px">🍖 HUNGER</div><div style="height:3px;background:rgba(255,159,10,.15);border-radius:2px;margin-top:4px;overflow:hidden"><div style="height:100%;width:'+(G.hunger||0)+'%;background:var(--o);border-radius:2px"></div></div></div>'+
+    '<div style="background:var(--c1);border:1px solid rgba(0,217,255,.2);border-radius:12px;padding:10px;text-align:center"><div style="font-size:20px;font-weight:900;color:var(--b)">'+(G.energy||0)+'</div><div style="font-size:8px;color:var(--t3);margin-top:1px">⚡ ENERGI</div><div style="height:3px;background:rgba(0,217,255,.15);border-radius:2px;margin-top:4px;overflow:hidden"><div style="height:100%;width:'+(G.energy||0)+'%;background:var(--b);border-radius:2px"></div></div></div>'+
+    '<div style="background:var(--c1);border:1px solid rgba(191,95,255,.2);border-radius:12px;padding:10px;text-align:center"><div style="font-size:20px;font-weight:900;color:var(--p)">'+(G.mood||0)+'</div><div style="font-size:8px;color:var(--t3);margin-top:1px">💖 HUMÖR</div><div style="height:3px;background:rgba(191,95,255,.15);border-radius:2px;margin-top:4px;overflow:hidden"><div style="height:100%;width:'+(G.mood||0)+'%;background:var(--p);border-radius:2px"></div></div></div>'+
+    '</div>'+
+    proSection+
+    '<div style="font-size:10px;font-weight:900;color:var(--t3);text-transform:uppercase;letter-spacing:.8px;margin-bottom:8px">🏆 Achievements ('+earned.length+'/'+ACHIEVEMENTS.length+')</div>'+
+    '<div style="display:flex;gap:5px;flex-wrap:wrap;margin-bottom:16px">'+achHtml+'</div>'+
+    '<div style="font-size:10px;font-weight:900;color:var(--t3);text-transform:uppercase;letter-spacing:.8px;margin-bottom:8px">⚡ SENASTE FLASHAR</div>'+
+    '<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:2px;margin-bottom:16px">'+flashGrid+'</div>'+
+    '</div>';
 }
 
 function renderMeShop(search){
@@ -9558,21 +9613,41 @@ function closeDNAMixer(){const dm=$('dnaModal');if(dm)dm.classList.remove('open'
 function renderDNAMixer(){
   const emA=$('dnaEmA');if(emA)emA.textContent=_dnaSlot1||'🐉';
   const emB=$('dnaEmB');if(emB)emB.textContent=_dnaSlot2||'❓';
-  // Partner picker grid
+  // Pet stats display
+  const ps=$('dnaPetStats');
+  if(ps){const petBonus={'🐉':'ATK+15 🔥','🐺':'SPD+12 🌪️','🦊':'LCK+10 🍀','🐱':'MAG+10 ✨','🐸':'DEF+8 🛡️','🦋':'MAG+12 💫','🐻':'DEF+15 🏔️','🦁':'ATK+12 ⚔️','🐯':'SPD+10 ⚡','🐨':'DEF+10 🌿'};ps.textContent=petBonus[_dnaSlot1||'🐉']||'???';}
+  // Partner picker
   const allPets=['🐉','🐺','🦊','🐱','🐸','🦋','🐻','🦁','🐯','🐨'];
   const grid=$('dnaGeneGrid');
   if(grid){
     grid.innerHTML=allPets.map(em=>{
-      const isSelf=em===_dnaSlot1;
-      const isSel=_dnaSlot2===em;
-      return`<div onclick="${isSelf?'':'dnaPickSlotB(\''+em+'\')'}"
-       style="font-size:26px;text-align:center;cursor:${isSelf?'default':'pointer'};padding:7px 4px;border-radius:12px;
-       background:${isSel?'rgba(191,95,255,.25)':isSelf?'rgba(255,255,255,.03)':'var(--c1)'};
-       border:2px solid ${isSel?'var(--p)':isSelf?'rgba(255,255,255,.06)':'var(--line)'};
-       -webkit-tap-highlight-color:transparent;transition:all .1s;opacity:${isSelf?.4:1}">${em}
-       ${isSel?'<div style="font-size:7px;color:var(--p);font-weight:900;margin-top:1px">✓</div>':''}
-      </div>`;
+      const isSelf=em===_dnaSlot1;const isSel=_dnaSlot2===em;
+      return'<div onclick="'+(isSelf?'':'dnaPickSlotB(\''+em+'\')')+'" style="flex-shrink:0;width:46px;height:46px;border-radius:12px;background:'+(isSel?'rgba(191,95,255,.3)':isSelf?'rgba(255,255,255,.03)':'var(--c1)')+';border:2px solid '+(isSel?'var(--p)':isSelf?'rgba(255,255,255,.05)':'var(--line)')+';display:flex;align-items:center;justify-content:center;font-size:24px;cursor:'+(isSelf?'default':'pointer')+';opacity:'+(isSelf?0.3:1)+';transition:all .1s;-webkit-tap-highlight-color:transparent">'+em+'</div>';
     }).join('');
+  }
+  // Gene slots with mutation concept
+  const slots=$('dnaSlots');
+  if(slots){
+    const geneNames=['ATK','DEF','SPD','MAG','LCK'];const geneEm=['⚔️','🛡️','⚡','✨','🍀'];
+    const geneCols=['#FF2D55','#00D9FF','#39FF14','#BF5FFF','#FFE600'];
+    slots.innerHTML=geneNames.map((g,i)=>{
+      const src=_dnaGeneChoices[DNA_GENES[i].id]||'a';
+      const isA=src==='a';
+      return'<div id="dnaSlot'+i+'" style="border-radius:12px;background:'+geneCols[i]+(isA?'22':'11')+';border:2px solid '+geneCols[i]+(isA?'88':'33')+';padding:8px 4px;text-align:center;cursor:pointer;transition:all .15s;-webkit-tap-highlight-color:transparent">'+
+        '<div style="font-size:14px">'+geneEm[i]+'</div>'+
+        '<div style="font-size:7px;font-weight:900;color:'+geneCols[i]+';font-family:var(--mono)">'+g+'</div>'+
+        '<div style="font-size:7px;color:rgba(255,255,255,.4);margin-top:1px">'+(isA?'DITT':'PARTNER')+'</div>'+
+        '</div>';
+    }).join('');
+    geneNames.forEach((g,i)=>{
+      const el=$('dnaSlot'+i);
+      if(el){
+        el.onclick=()=>{
+          const cur=_dnaGeneChoices[DNA_GENES[i].id]||'a';
+          dnaPickGene(DNA_GENES[i].id,cur==='a'?'b':'a');
+        };
+      }
+    });
   }
   updateDNAPreview();
   const btn=$('dnaMixBtn');
@@ -12540,6 +12615,7 @@ function closeSettings(){
 }
 function renderSettings(){
   const c=$('settingsContent');if(!c)return;
+  const sl=_curLang==='en';
   const row=(ico,lbl,sub,end,action)=>`<div class="settings-row" onclick="${action}">
     <div class="settings-row-ico">${ico}</div>
     <div class="settings-row-txt">
@@ -12559,45 +12635,45 @@ function renderSettings(){
   </div>`;
   const premiumLabel=G.premium?(G.premiumTier==='god'?'👑 GOD':'👑 PRO'):'Gratis';
   c.innerHTML=`
-    <div class="settings-section-title">Mitt konto</div>
+    <div class="settings-section-title">${sl?'My account':'Mitt konto'}</div>
     <div class="settings-group">
-      ${row('👤',G.name||'Namnlös','Ditt visningsnamn','',`_settingsEditName()`)}
-      ${row('🐾',G.petEmoji+' '+(G.petName||''),'Ditt husdjur','',`nav('home');closeSettings()`)}
-      ${row('⭐','Nivå '+G.level,'Erfarenhet & progress','LV'+G.level,'showT("LV"+G.level+" · "+G.exp+" XP","b")')}
-      ${row('⚡',G.coins+' coins','Din valuta','',`showT("Du har "+G.coins+" coins","y")`)}
-      ${row('👑','Premium-status','Din prenumeration',premiumLabel,`openModal('premiumModal');closeSettings()`)}
+      ${row('👤',G.name||'Namnlös',sl?'Your name':'Ditt visningsnamn','',`_settingsEditName()`)}
+      ${row('🐾',G.petEmoji+' '+(G.petName||''),sl?'Your pet':'Ditt husdjur','',`nav('home');closeSettings()`)}
+      ${row('⭐','Nivå '+G.level,sl?'Experience & progress':'Erfarenhet & progress','LV'+G.level,'showT("LV"+G.level+" · "+G.exp+" XP","b")')}
+      ${row('⚡',G.coins+' coins',sl?'Your currency':'Din valuta','',`showT("Du har "+G.coins+" coins","y")`)}
+      ${row('👑','Premium-status',sl?'Your subscription':'Din prenumeration',premiumLabel,`openModal('premiumModal');closeSettings()`)}
     </div>
-    <div class="settings-section-title">Inställningar</div>
+    <div class="settings-section-title">${sl?'Settings':'Inställningar'}</div>
     <div class="settings-group">
-      ${row('🌐','Språk','Byt gränssnittsspråk',_curLang==='sv'?'🇸🇪 SV':'🇬🇧 EN',`toggleLang();renderSettings()`)}
-      ${toggleRow('🔊','Ljud','Spelljud och effekter',_settingsSFX,`_settingsToggleSFX()`)}
-      ${toggleRow('📳','Vibrationer','Haptic feedback',_settingsVibe,`_settingsToggleVibe()`)}
-      ${toggleRow('🔔','Notiser','Push-notifikationer',_settingsNotif,`_settingsToggleNotif()`)}
-      ${row('🌙','Mörkt läge','Alltid aktivt i KARMA','På',`showT("Mörkt läge är alltid aktivt!","b")`)}
+      ${row('🌐',sl?'Language':'Språk',sl?'Switch interface language':'Byt gränssnittsspråk',_curLang==='sv'?'🇸🇪 SV':'🇬🇧 EN',`toggleLang();renderSettings()`)}
+      ${toggleRow('🔊',sl?'Sound':'Ljud',sl?'Game sounds & effects':'Spelljud och effekter',_settingsSFX,`_settingsToggleSFX()`)}
+      ${toggleRow('📳',sl?'Vibrations':'Vibrationer','Haptic feedback',_settingsVibe,`_settingsToggleVibe()`)}
+      ${toggleRow('🔔',sl?'Notifications':'Notiser',sl?'Push notifications':'Push-notifikationer',_settingsNotif,`_settingsToggleNotif()`)}
+      ${row('🌙',sl?'Dark mode':'Mörkt läge',sl?'Always active in KARMA':'Alltid aktivt i KARMA','På',`showT("Mörkt läge är alltid aktivt!","b")`)}
     </div>
     <div class="settings-section-title">Social</div>
     <div class="settings-group">
-      ${row('👁️','Visa mig för','Vem ser din profil','Alla',`showT("Synlighetsinställningar kommer snart!","b")`)}
-      ${row('⚡','Flash-historik','Dina tidigare inlägg','',`nav('flash');closeSettings()`)}
-      ${row('🚫','Blockerade användare','Hantera blockeringar','0',`showT("Inga blockerade användare","b")`)}
+      ${row('👁️',sl?'Show me to':'Visa mig för',sl?'Who sees your profile':'Vem ser din profil','Alla',`showT("Synlighetsinställningar kommer snart!","b")`)}
+      ${row('⚡',sl?'Flash history':'Flash-historik',sl?'Your previous posts':'Dina tidigare inlägg','',`nav('flash');closeSettings()`)}
+      ${row('🚫',sl?'Blocked users':'Blockerade användare',sl?'Manage blocks':'Hantera blockeringar','0',`showT("Inga blockerade användare","b")`)}
     </div>
-    <div class="settings-section-title">Integritetskontroll</div>
+    <div class="settings-section-title">${sl?'Privacy control':'Integritetskontroll'}</div>
     <div class="settings-group">
-      ${row('🗑️','Rensa all data','Återställ appen','',`_settingsClearData()`)}
-      ${row('👀','Se min profil','Som andra ser den','',`nav('profile');closeSettings()`)}
+      ${row('🗑️',sl?'Clear all data':'Rensa all data',sl?'Reset the app':'Återställ appen','',`_settingsClearData()`)}
+      ${row('👀',sl?'View my profile':'Se min profil',sl?'As others see it':'Som andra ser den','',`nav('profile');closeSettings()`)}
     </div>
-    <div class="settings-section-title">Support och feedback</div>
+    <div class="settings-section-title">${sl?'Support & feedback':'Support och feedback'}</div>
     <div class="settings-group">
-      ${row('🐛','Buggar och förslag','Skicka feedback','',`_settingsFeedback()`)}
-      ${row('❓','Hjälpcenter','Vanliga frågor och svar','',`showT("Hjälpcenter kommer snart!","b")`)}
+      ${row('🐛',sl?'Bugs & suggestions':'Buggar och förslag',sl?'Send feedback':'Skicka feedback','',`_settingsFeedback()`)}
+      ${row('❓',sl?'Help center':'Hjälpcenter',sl?'FAQ':'Vanliga frågor och svar','',`showT("Hjälpcenter kommer snart!","b")`)}
     </div>
-    <div class="settings-section-title">Mer information</div>
+    <div class="settings-section-title">${sl?'More info':'Mer information'}</div>
     <div class="settings-group">
       ${row('🐾','Om KARMA','Version 2.1.0','v2.1.0',`showT("KARMA v2.1.0 — Svensk youth pet app ⚡","p")`)}
-      ${row('🔒','Integritetspolicy','','',`showT("Integritetspolicy: all data lagras lokalt.","b")`)}
-      ${row('📜','Användarvillkor','','',`showT("Användarvillkor: lek snällt! 🐾","b")`)}
+      ${row('🔒',sl?'Privacy policy':'Integritetspolicy','','',`showT("Integritetspolicy: all data lagras lokalt.","b")`)}
+      ${row('📜',sl?'Terms of service':'Användarvillkor','','',`showT("Användarvillkor: lek snällt! 🐾","b")`)}
     </div>
-    <div class="settings-section-title">Kontoåtgärder</div>
+    <div class="settings-section-title">${sl?'Account actions':'Kontoåtgärder'}</div>
     <div class="settings-group">
       ${row('🚪','Logga ut','Återställ din session','',`_settingsLogout()`)}
       ${row('❌','Radera konto','Ta bort all data permanent','',`_settingsDeleteAccount()`)}
@@ -12647,32 +12723,36 @@ function _settingsDeleteAccount(){
 
 <!-- DNA MIXER MODAL -->
 <div class="modal" id="dnaModal" style="z-index:600">
-  <div class="modal-box" style="max-width:380px;padding:0;overflow:hidden">
-    <div style="background:linear-gradient(135deg,#0d0020,#130030);padding:16px 16px 12px;border-bottom:1px solid rgba(191,95,255,.2)">
-      <div style="display:flex;justify-content:space-between;align-items:center">
-        <div style="font-size:15px;font-weight:900;font-family:var(--mono);color:var(--p)">🧬 DNA MIXER</div>
+  <div class="modal-box" style="max-width:390px;padding:0;overflow:hidden">
+    <div style="background:linear-gradient(135deg,#000520,#0a0030);padding:14px 16px 10px">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px">
+        <div style="font-size:15px;font-weight:900;font-family:var(--mono);color:var(--p)">🧬 KARMA GENOME LAB</div>
         <button class="btn btn-ghost btn-sm" onclick="closeDNAMixer()" style="padding:4px 10px">✕</button>
       </div>
-      <div style="font-size:10px;color:rgba(191,95,255,.6);margin-top:2px">Mixa ditt pets DNA med ett annat pet</div>
+      <div style="font-size:9px;color:rgba(191,95,255,.6);font-family:var(--mono);letter-spacing:1px">MUTERA · SPLICA · EVOLVA</div>
     </div>
     <div style="padding:14px">
-      <!-- Step 1: Your pet + pick partner -->
-      <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px">
-        <div style="text-align:center;flex:1">
-          <div style="font-size:46px" id="dnaEmA">🐉</div>
-          <div style="font-size:10px;color:var(--t3);margin-top:2px">DITT PET</div>
+      <!-- Your pet display -->
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px;background:rgba(191,95,255,.08);border:1px solid rgba(191,95,255,.2);border-radius:16px;padding:12px">
+        <div style="font-size:52px" id="dnaEmA">🐉</div>
+        <div style="flex:1">
+          <div style="font-size:11px;font-weight:900;color:var(--p)">DITT PET</div>
+          <div style="font-size:10px;color:var(--t3)" id="dnaPetStats">Loading...</div>
         </div>
-        <div style="font-size:24px;color:var(--p);font-weight:900">🧬</div>
-        <div style="text-align:center;flex:1">
-          <div style="font-size:46px" id="dnaEmB">❓</div>
-          <div style="font-size:10px;color:var(--t3);margin-top:2px">VÄLJ PARTNER</div>
+        <div style="text-align:center">
+          <div style="font-size:22px" id="dnaEmB">❓</div>
+          <div style="font-size:8px;color:var(--t3)">PARTNER</div>
         </div>
       </div>
-      <!-- Partner picker -->
-      <div id="dnaGeneGrid" style="display:grid;grid-template-columns:repeat(5,1fr);gap:6px;margin-bottom:14px"></div>
-      <!-- Result preview -->
-      <div id="dnaResultPreview" style="background:rgba(191,95,255,.08);border:1.5px solid rgba(191,95,255,.25);border-radius:16px;padding:14px;text-align:center;min-height:80px;display:flex;align-items:center;justify-content:center;margin-bottom:12px"></div>
-      <button class="btn btn-full" id="dnaMixBtn" onclick="executeDNAMix()" style="background:linear-gradient(135deg,var(--p),#7B2FBE);color:#fff;font-size:14px;font-weight:900">🧬 SPLICE!</button>
+      <!-- Partner picker row -->
+      <div style="font-size:10px;font-weight:900;color:var(--t3);margin-bottom:6px;text-transform:uppercase;letter-spacing:.5px">Välj DNA-partner:</div>
+      <div id="dnaGeneGrid" style="display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;padding-bottom:6px;margin-bottom:12px"></div>
+      <!-- Mutation slots — 5 gene slots -->
+      <div style="font-size:10px;font-weight:900;color:var(--t3);margin-bottom:6px;text-transform:uppercase;letter-spacing:.5px">Gen-slots (tryck för att mutera):</div>
+      <div id="dnaSlots" style="display:grid;grid-template-columns:repeat(5,1fr);gap:6px;margin-bottom:12px"></div>
+      <!-- Result -->
+      <div id="dnaResultPreview" style="background:rgba(0,0,0,.3);border:1.5px solid rgba(191,95,255,.2);border-radius:16px;padding:14px;text-align:center;min-height:70px;display:flex;align-items:center;justify-content:center;margin-bottom:12px"></div>
+      <button class="btn btn-full" id="dnaMixBtn" onclick="executeDNAMix()" style="background:linear-gradient(135deg,#8B00FF,#4B0082);color:#fff;font-size:14px;font-weight:900;font-family:var(--mono);letter-spacing:1px">⚗️ SPLICE DNA!</button>
     </div>
   </div>
 </div>
