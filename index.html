@@ -10961,6 +10961,7 @@ function advanceDailyChallenge(stat,n){
           addDiaryEntry('Klarade daglig utmaning: "'+dc.ttl+'"! Fick '+dc.reward.coins+' coins och '+dc.reward.xp+' XP. 🎯');
         }
         localStorage.setItem('kv8_dcp_'+today,JSON.stringify(_dcProgress));
+        renderDailyChallenges();
       }
     }
   });
