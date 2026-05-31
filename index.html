@@ -5920,16 +5920,19 @@ function getNightXPMult() { return _nightOwlActive ? 1.5 : 1; }
 const _REACT_EMOJIS=['🔥','💖','😂','🤯','👑','💀','🫶','⚡'];
 let _flashFollowing=new Set(G.flashFollowing||[]);
 function renderFlashFeed(){
+  const _sc=$('streakCircles');const _ff=$('flashFeed');
+  if(!_sc||!_ff)return;
   // Build streak circles from real follows if available, else mock
   const circleUsers=_sbFeedPosts.length>0
     ? _sbFeedPosts.slice(0,8).map(p=>({user:p.username,em:p.pet_emoji,status:'active',streak:0,live:false,add:false}))
     : STREAK_USERS;
-  $('streakCircles').innerHTML=circleUsers.map(s=>`<div class="sc" onclick="showT('${s.add?'📸 Lägg till':'⚡ @'+s.user}','pk')"><div class="sc-ring ${s.add?'empty':s.status==='done'?'done':s.status==='missing'?'empty':s.live?'live':'active'}"><div class="sc-inner">${s.em}</div></div><div class="sc-name">${s.user}</div>${s.streak?`<div class="sc-streak">🔥${s.streak}</div>`:''}</div>`).join('');
+  _sc.innerHTML=circleUsers.map(s=>`<div class="sc" onclick="showT('${s.add?'📸 Lägg till':'⚡ @'+s.user}','pk')"><div class="sc-ring ${s.add?'empty':s.status==='done'?'done':s.status==='missing'?'empty':s.live?'live':'active'}"><div class="sc-inner">${s.em}</div></div><div class="sc-name">${s.user}</div>${s.streak?`<div class="sc-streak">🔥${s.streak}</div>`:''}</div>`).join('');
   // Use real DB posts if loaded, else mock data
-  const feedPosts=_sbFeedPosts.length>0
+  const feedPosts=(_sbFeedPosts.length>0
     ? _sbFeedPosts.map(p=>({id:p.id,user:p.username,pet:p.pet_emoji,lvl:p.pet_level||1,cap:p.caption||'',sound:p.sound||'Original Sound 🎵',tag:p.tag||'',bg:p.bg||'',likes:p.likes_count||0,live:p.is_live||false,streak:0,xp:'+20XP',sbPost:true}))
-    : FLASH_POSTS;
-  $('flashFeed').innerHTML=feedPosts.map((p,pi)=>{
+    : FLASH_POSTS).filter(Boolean);
+  if(!feedPosts.length){_ff.innerHTML='<div style="padding:40px;text-align:center;color:var(--t3)">Inga flashar ännu — var den första!</div>';return;}
+  _ff.innerHTML=feedPosts.map((p,pi)=>{
     const liked=G.likedPosts.has(p.id);
     const following=_flashFollowing.has(p.user);
     const comments=Math.max(1,~~(p.likes/7));
@@ -6336,7 +6339,7 @@ function renderClans(){
         </div>
         <div style="display:flex;gap:8px">
           <button class="btn btn-pk btn-sm" style="flex:1" onclick="openRaid()">⚔️ RAIDA</button>
-          <button class="btn btn-sm" style="flex:1" onclick="showT('Squad-chat kommer snart!','b')">💬 SQUAD-CHAT</button>
+          <button class="btn btn-sm" style="flex:1" onclick="openSquadChat()">💬 SQUAD-CHAT</button>
         </div>
       </div>`;
     } else {
@@ -6389,6 +6392,52 @@ function raidClan(id,nm){
 }
 function openRaid(){closeModal('clanModal');showT('⚔️ Välj ett klan att raida i klanlistan!','pk');setTimeout(openClanView,500);}
 
+let _squadChatMsgs=[
+  {from:'ella_sthlm',em:'🐉',txt:'Hallå gänget! 🔥 Flash idag?',t:'08:12',me:false},
+  {from:'maxruns',em:'🐺',txt:'SJÄLVKLART BRO 💀 Redan klar',t:'08:15',me:false},
+  {from:'sagas',em:'🦋',txt:'haha ni är sjuka 😂 jag med!',t:'08:18',me:false},
+  {from:'carlos_leo',em:'🦊',txt:'lets gooo squad 🔥🔥',t:'08:22',me:false},
+  {from:'Du',em:null,txt:'KARMA SQUAD ⚡ vi kör!',t:'08:25',me:true},
+];
+function openSquadChat(){
+  closeModal('clanModal');
+  const old=$('squadChatModal');if(old)old.remove();
+  const m=document.createElement('div');
+  m.id='squadChatModal';m.className='modal';m.style.display='flex';
+  m.innerHTML=`<div class="ms" style="max-height:90vh;display:flex;flex-direction:column">
+    <div class="mh" onclick="closeModal('squadChatModal')"></div>
+    <div class="mt">💬 Squad Chat <span style="font-size:11px;color:var(--g);margin-left:8px">● LIVE</span><div class="mx" onclick="closeModal('squadChatModal')">✕</div></div>
+    <div id="squadChatMsgs" style="flex:1;overflow-y:auto;padding:10px 14px;display:flex;flex-direction:column;gap:8px;min-height:0;max-height:50vh"></div>
+    <div style="padding:10px 14px;border-top:1px solid var(--line);display:flex;gap:8px">
+      <input id="squadChatInp" placeholder="Skriv till squad..." style="flex:1;background:var(--c2);border:1px solid var(--line);border-radius:20px;padding:10px 14px;font-size:13px;color:var(--t1);font-family:var(--ff);outline:none" onkeydown="if(event.key==='Enter')sendSquadMsg()">
+      <button onclick="sendSquadMsg()" style="background:var(--pk);border:none;border-radius:20px;padding:10px 18px;font-size:13px;font-weight:900;color:#fff;cursor:pointer;font-family:var(--ff)">↑</button>
+    </div>
+  </div>`;
+  document.body.appendChild(m);
+  _renderSquadChatMsgs();
+}
+function _renderSquadChatMsgs(){
+  const el=$('squadChatMsgs');if(!el)return;
+  el.innerHTML=_squadChatMsgs.map(msg=>`<div style="display:flex;flex-direction:${msg.me?'row-reverse':'row'};align-items:flex-end;gap:7px">
+    ${msg.me?'':`<div style="font-size:20px;flex-shrink:0">${msg.em}</div>`}
+    <div style="max-width:72%">
+      ${msg.me?'':`<div style="font-size:9px;color:var(--t3);margin-bottom:2px">${msg.from}</div>`}
+      <div style="background:${msg.me?'var(--pk)':'var(--c2)'};border-radius:${msg.me?'16px 16px 4px 16px':'16px 16px 16px 4px'};padding:8px 12px;font-size:13px;color:${msg.me?'#fff':'var(--t1)'}">${msg.txt}</div>
+      <div style="font-size:9px;color:var(--t3);margin-top:2px;text-align:${msg.me?'right':'left'}">${msg.t}</div>
+    </div>
+  </div>`).join('');
+  setTimeout(()=>{el.scrollTop=el.scrollHeight;},50);
+}
+function sendSquadMsg(){
+  const inp=$('squadChatInp');const txt=inp?.value?.trim();if(!txt)return;
+  inp.value='';vibe(15);SFX.click();
+  const now=new Date();const t=now.getHours()+':'+(now.getMinutes()<10?'0':'')+now.getMinutes();
+  _squadChatMsgs.push({from:G.name||'Du',em:null,txt,t,me:true});
+  _renderSquadChatMsgs();gainXP(2,'social');
+  const replies=['🔥🔥🔥','SICKKK!! 💀','haha jaa 😂','LFG!! ⚡','KARMA!! 👑','fr fr 💯','lets gooo 🚀','lmaooo 😭'];
+  setTimeout(()=>{const from=FRIENDS_DATA[Math.floor(Math.random()*FRIENDS_DATA.length)];_squadChatMsgs.push({from:from.user,em:from.pet,txt:replies[Math.floor(Math.random()*replies.length)],t,me:false});_renderSquadChatMsgs();},500+Math.random()*1200);
+}
+
 // ── SOCIAL ──
 function switchSocial(tab,el){
   document.querySelectorAll('#socialTabs .tab').forEach(t=>t.classList.remove('on'));
@@ -6396,7 +6445,7 @@ function switchSocial(tab,el){
   if(tab==='activity')renderActivity();
   else if(tab==='friends')renderFriends();
   else if(tab==='dm')renderDMList();
-  else if(tab==='circles'){const c=$('socialContent');if(c){c.innerHTML='';renderCircles();const cl=$('circleList');if(cl){const clone=cl.cloneNode(true);c.appendChild(clone);}}}
+  else if(tab==='circles'){const c=$('socialContent');if(c){const all=[...CIRCLES_DATA,...G.circles];c.innerHTML=all.length?all.map(ci=>`<div class="circle-card" onclick="openCircle('${ci.id}')"><div class="cc-banner"><div class="cc-banner-bg" style="background:linear-gradient(135deg,${ci.col}33,${ci.col}11)"></div><div class="cc-emoji">${ci.em}</div><div><div class="cc-name">${ci.name}</div><div class="cc-sub">${ci.desc||''}</div></div><div class="cc-members"><span class="cc-tag">${ci.members.length} 👥</span></div></div><div class="cc-body"><div class="cc-preview">${ci.lastMsg||'Ingen aktivitet'}</div><div class="cc-stats"><div class="cc-streak-ring"><div class="cc-streak-inner">${ci.streak}</div></div><div style="font-size:11px;color:var(--t2)">🔥 <b>${ci.streak}d</b></div>${ci.missedToday?`<span class="tag tr" style="margin-left:auto;font-size:9px">⚠️ ${ci.missedToday} missar</span>`:'<span class="tag tg" style="margin-left:auto;font-size:9px">✅ Alla aktiva</span>'}<div style="display:flex;margin-left:8px">${ci.members.slice(0,4).map(m=>`<div style="width:22px;height:22px;border-radius:50%;background:var(--c2);border:2px solid var(--bg);display:flex;align-items:center;justify-content:center;font-size:12px;margin-right:-6px">${m}</div>`).join('')}</div></div></div></div>`).join(''):`<div style="text-align:center;padding:50px 20px"><div style="font-size:52px;opacity:.15;margin-bottom:12px">⭕</div><div style="font-size:15px;font-weight:800;margin-bottom:6px">Inga circles ännu</div><div style="font-size:13px;color:var(--t2);margin-bottom:20px">Skapa en privat grupp!</div><button class="btn btn-pk btn-md" onclick="openModal('createCircleModal')">⭕ Skapa din första Circle</button></div>`;}}
 }
 function renderActivity(){
   const c=$('socialContent');if(!c)return;
@@ -8455,7 +8504,7 @@ function nav(name){
     flash:()=>{renderFlashFeed();renderStoriesBar();startFlashTimeReward();},
     circles:renderCircles,
     social:()=>switchSocial('activity',document.querySelector('#socialTabs .tab')),
-    uppdrag:()=>{renderKmbDaily();renderKmbBoss();_kmbUpdateTimer();},
+    uppdrag:()=>{if(!_quests.length)initQuests();renderKmbDaily();renderKmbBoss();_kmbUpdateTimer();},
     shop:()=>{renderSrcFilter();renderShop();},
     map:()=>{setTimeout(()=>{if(!G.mapInit)locateMe();},200);renderNearby();},
     lb:()=>renderLB2('level',document.querySelector('#lbTabs .tab')),
@@ -8463,7 +8512,7 @@ function nav(name){
     explore:()=>{const el=$('explorePetLv');if(el)el.textContent='LV '+G.level;const en=$('explorePetEmoji');if(en)en.textContent=G.petEmoji||'🐾';const enm=$('explorePetName');if(enm)enm.textContent=G.petName||'Din pet';renderWeeklyChallenges();renderCraftGrid();const tp=$('talentTeaserPts');if(tp)tp.textContent=(G.talentPoints||0)+' TP';const ts=$('talentTeaserSub');if(ts)ts.textContent=(G.talents&&G.talents.length>0?G.talents.length+' av 147 förmågor inlärda':'Tjäna Talent Points genom att levla upp');},
     market:()=>{renderMkt();},
     play:()=>{renderPlayView();},
-    me:()=>{switchMeTab('rum', document.querySelector('.me-stab.on')||document.querySelector('.me-stab'));},
+    me:()=>{const activeStab=document.querySelector('.me-stab.on');const tab=activeStab?.getAttribute('onclick')?.match(/'(\w+)'/)?.[1]||'rum';switchMeTab(tab,activeStab||document.querySelector('.me-stab'));},
     world:()=>{renderKarmaWorld();initKarmaWorld();switchWorldTab(document.querySelector('.world-toggle-btn.on')?.id==='wtbKarta'?'karta':'world');},
     launch:()=>{}
   }[name]||(() => {}))();
@@ -8490,6 +8539,7 @@ $('flashBtn').addEventListener('click',()=>openModal('flashModal'));
 
 // ── PLAY VIEW ──
 function renderPlayView(){
+  if(!_quests.length)initQuests();
   const sl=$('spinPlayLabel');if(sl)sl.textContent=G.lastSpin===new Date().toDateString()?'✅ Spinnat idag — kom tillbaka imorgon!':'🎰 Gratis spin tillgängligt nu!';
   const pbt=$('pbBestTag');if(pbt)pbt.textContent='Best: '+(localStorage.getItem('kv8_prBest')||0)+'m';
   const gpPet=$('gpRunnerPet');if(gpPet)gpPet.textContent=(G&&G.petEmoji)||'🐉';
