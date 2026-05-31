@@ -1391,10 +1391,9 @@ textarea.inp{resize:none;min-height:68px;}
 .plr-val{font-size:10px;font-weight:900;font-family:var(--mono);}
 
 /* ── GAME PORTALS ── */
-.game-portal{display:flex;align-items:center;gap:0;margin:0 14px 10px;border:1.5px solid rgba(var(--pc),.35);border-radius:18px;overflow:hidden;cursor:pointer;-webkit-tap-highlight-color:transparent;transform:perspective(600px) rotateX(3deg);transition:transform .18s ease,box-shadow .18s ease;box-shadow:0 6px 20px rgba(var(--pc),.12);background:rgba(0,0,0,.5);}
-.game-portal:hover{transform:perspective(600px) rotateX(0deg);box-shadow:0 8px 28px rgba(var(--pc),.22);}
-.game-portal:active{transform:perspective(600px) rotateX(-2deg) scale(.97);box-shadow:0 2px 10px rgba(var(--pc),.15);}
-.gp-preview{width:110px;height:80px;flex-shrink:0;position:relative;overflow:hidden;}
+.game-portal{display:flex;align-items:center;gap:0;margin:0 14px 10px;border:1.5px solid rgba(var(--pc),.4);border-radius:18px;overflow:hidden;cursor:pointer;-webkit-tap-highlight-color:transparent;transition:transform .15s ease,box-shadow .15s ease;box-shadow:0 4px 16px rgba(var(--pc),.15);background:rgba(10,10,20,.8);min-height:90px;}
+.game-portal:active{transform:scale(.97);box-shadow:0 2px 8px rgba(var(--pc),.1);}
+.gp-preview{width:110px;height:90px;flex-shrink:0;position:relative;overflow:hidden;}
 .gp-info{flex:1;padding:10px 10px;min-width:0;}
 .gp-name{font-size:14px;font-weight:900;font-family:var(--mono);color:var(--t1);letter-spacing:.5px;}
 .gp-sub{font-size:9px;color:var(--t3);margin-top:2px;line-height:1.4;}
@@ -8149,9 +8148,9 @@ function onFishSceneTap(event){
 }
 function _calmCatchFish(ft,fishEl){
   _fishState.phase='idle';
+  if(_calmFishTimer){clearTimeout(_calmFishTimer);_calmFishTimer=null;}
   const bar=$('fishCatchBar');if(bar)bar.style.display='none';
   if(!ft){spawnStreetFishInScene();return;}
-  if(fishEl)fishEl.remove();
   _sfHitFish(ft,fishEl);
 }
 
@@ -9770,7 +9769,7 @@ function openCastleWorld(){
   _cwRenderPanel();
   const gold=$('cwGold');if(gold)gold.textContent='💰 '+(G.coins||0);
   const sub=$('cwSubtitle');if(sub)sub.textContent=(G.name||'Spelaren')+'s rike';
-  (function _cwLoop(){if($('castleWorld')?.classList.contains('open')){renderCastleWorld();requestAnimationFrame(_cwLoop);}}());
+  setTimeout(function(){(function _cwLoop(){if($('castleWorld')?.classList.contains('open')){renderCastleWorld();requestAnimationFrame(_cwLoop);}})();},80);
   const canvas=$('castleCanvas');
   if(canvas){
     canvas.ontouchstart=canvas.ontouchend=null;
@@ -10094,41 +10093,17 @@ function closeDNAMixer(){const dm=$('dnaModal');if(dm)dm.classList.remove('open'
 function renderDNAMixer(){
   const emA=$('dnaEmA');if(emA)emA.textContent=_dnaSlot1||'🐉';
   const emB=$('dnaEmB');if(emB)emB.textContent=_dnaSlot2||'❓';
-  // Pet stats display
-  const ps=$('dnaPetStats');
-  if(ps){const petBonus={'🐉':'ATK+15 🔥','🐺':'SPD+12 🌪️','🦊':'LCK+10 🍀','🐱':'MAG+10 ✨','🐸':'DEF+8 🛡️','🦋':'MAG+12 💫','🐻':'DEF+15 🏔️','🦁':'ATK+12 ⚔️','🐯':'SPD+10 ⚡','🐨':'DEF+10 🌿'};ps.textContent=petBonus[_dnaSlot1||'🐉']||'???';}
+  const petNames={'🐉':'Draken','🐺':'Vargen','🦊':'Räven','🐱':'Katten','🐸':'Grodan','🦋':'Fjärilen','🐻':'Björnen','🦁':'Lejonet','🐯':'Tigern','🐨':'Koalan'};
+  const na=$('dnaNameA');if(na)na.textContent=petNames[_dnaSlot1||'🐉']||'Ditt pet';
+  const nb=$('dnaNameB');if(nb)nb.textContent=_dnaSlot2?petNames[_dnaSlot2]||'Partner':'Tryck för att välja';
   // Partner picker
   const allPets=['🐉','🐺','🦊','🐱','🐸','🦋','🐻','🦁','🐯','🐨'];
   const grid=$('dnaGeneGrid');
   if(grid){
     grid.innerHTML=allPets.map(em=>{
       const isSelf=em===_dnaSlot1;const isSel=_dnaSlot2===em;
-      return'<div onclick="'+(isSelf?'':'dnaPickSlotB(\''+em+'\')')+'" style="flex-shrink:0;width:46px;height:46px;border-radius:12px;background:'+(isSel?'rgba(191,95,255,.3)':isSelf?'rgba(255,255,255,.03)':'var(--c1)')+';border:2px solid '+(isSel?'var(--p)':isSelf?'rgba(255,255,255,.05)':'var(--line)')+';display:flex;align-items:center;justify-content:center;font-size:24px;cursor:'+(isSelf?'default':'pointer')+';opacity:'+(isSelf?0.3:1)+';transition:all .1s;-webkit-tap-highlight-color:transparent">'+em+'</div>';
+      return`<div onclick="${isSelf?'':  "dnaPickSlotB('"+em+"')"}" style="width:50px;height:50px;border-radius:14px;background:${isSel?'rgba(191,95,255,.3)':isSelf?'rgba(255,255,255,.02)':'rgba(255,255,255,.06)'};border:2px solid ${isSel?'var(--p)':'rgba(255,255,255,.12)'};display:flex;align-items:center;justify-content:center;font-size:26px;cursor:${isSelf?'default':'pointer'};opacity:${isSelf?.25:1};transition:all .1s;-webkit-tap-highlight-color:transparent">${em}</div>`;
     }).join('');
-  }
-  // Gene slots with mutation concept
-  const slots=$('dnaSlots');
-  if(slots){
-    const geneNames=['ATK','DEF','SPD','MAG','LCK'];const geneEm=['⚔️','🛡️','⚡','✨','🍀'];
-    const geneCols=['#FF2D55','#00D9FF','#39FF14','#BF5FFF','#FFE600'];
-    slots.innerHTML=geneNames.map((g,i)=>{
-      const src=_dnaGeneChoices[DNA_GENES[i].id]||'a';
-      const isA=src==='a';
-      return'<div id="dnaSlot'+i+'" style="border-radius:12px;background:'+geneCols[i]+(isA?'22':'11')+';border:2px solid '+geneCols[i]+(isA?'88':'33')+';padding:8px 4px;text-align:center;cursor:pointer;transition:all .15s;-webkit-tap-highlight-color:transparent">'+
-        '<div style="font-size:14px">'+geneEm[i]+'</div>'+
-        '<div style="font-size:7px;font-weight:900;color:'+geneCols[i]+';font-family:var(--mono)">'+g+'</div>'+
-        '<div style="font-size:7px;color:rgba(255,255,255,.4);margin-top:1px">'+(isA?'DITT':'PARTNER')+'</div>'+
-        '</div>';
-    }).join('');
-    geneNames.forEach((g,i)=>{
-      const el=$('dnaSlot'+i);
-      if(el){
-        el.onclick=()=>{
-          const cur=_dnaGeneChoices[DNA_GENES[i].id]||'a';
-          dnaPickGene(DNA_GENES[i].id,cur==='a'?'b':'a');
-        };
-      }
-    });
   }
   updateDNAPreview();
   const btn=$('dnaMixBtn');
@@ -10143,6 +10118,7 @@ function dnaPickGene(geneId,side){
 
 function dnaPickSlotB(em){
   _dnaSlot2=em;
+  const pr=$('dnaPickerRow');if(pr)pr.style.display='none';
   renderDNAMixer();
   vibe&&vibe(15);
 }
@@ -10211,68 +10187,84 @@ function _openJudgmentRing(p){
   let existing=$('jrOverlay');if(existing)existing.remove();
   const cfg=_JR_RARITY[p.rarity||'common']||_JR_RARITY.common;
   _jr.active=false;cancelAnimationFrame(_jr.raf);
-  _jr.speed=cfg.speed;_jr.angle=0;_jr.petId=p.id;_jr.attempts=0;_jr.zonesHit=new Set();_jr.zones=[];
-  const gs=120+Math.random()*160;
-  _jr.greenStart=gs;_jr.greenEnd=gs+cfg.greenSize;
-  _jr.perfectStart=gs+cfg.greenSize*.35;_jr.perfectEnd=gs+cfg.greenSize*.65;
+  _jr.speed=cfg.speed;_jr.angle=0;_jr.petId=p.id;_jr.attempts=0;_jr.zonesHit=new Set();
+  const gs=80+Math.random()*200;
+  _jr.greenStart=gs;
+  const zoneSize=Math.max(cfg.greenSize,50);
+  _jr.zones=[{start:gs,end:(gs+zoneSize)%360}];
   const ov=document.createElement('div');ov.id='jrOverlay';
-  ov.style.cssText='position:fixed;inset:0;z-index:1100;background:rgba(0,0,0,.93);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px';
-  ov.innerHTML=`<div style="font-size:11px;font-weight:900;color:${cfg.col};letter-spacing:3px;margin-bottom:8px;font-family:var(--mono)">${cfg.label}</div>
-    <div style="font-size:72px;margin-bottom:6px;animation:petBob 1.2s ease-in-out infinite">${p.em}</div>
-    <div style="font-size:18px;font-weight:900;color:#fff;margin-bottom:4px">${p.nm}</div>
-    <div style="font-size:11px;color:var(--t3);margin-bottom:18px">Kostnad: ${p.cost}⚡ · Tryck när nålen är i det gröna!</div>
-    <div id="jrWrap" style="position:relative;width:230px;height:230px;margin-bottom:16px;cursor:pointer" onclick="jrTap()" ontouchstart="event.preventDefault();jrTap()">
-      <svg id="jrSvg" width="230" height="230" viewBox="0 0 230 230" style="position:absolute;inset:0">
-        <circle cx="115" cy="115" r="95" fill="rgba(255,0,0,.12)" stroke="rgba(255,0,0,.35)" stroke-width="22" fill-rule="nonzero"/>
-      </svg>
-      <div id="jrNeedle" style="position:absolute;top:50%;left:50%;width:3px;height:96px;background:linear-gradient(to top,rgba(255,255,255,.1),#fff);transform-origin:bottom center;margin-left:-1.5px;margin-top:-96px;border-radius:2px;box-shadow:0 0 8px rgba(255,255,255,.9)"></div>
-      <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:22px;height:22px;border-radius:50%;background:rgba(255,255,255,.15);border:2.5px solid rgba(255,255,255,.5)"></div>
+  ov.style.cssText='position:fixed;inset:0;z-index:1100;background:rgba(0,0,5,.92);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px;';
+  ov.innerHTML=`
+    <div style="font-size:11px;font-weight:900;color:${cfg.col};letter-spacing:3px;margin-bottom:6px;font-family:var(--mono)">${cfg.label}</div>
+    <div style="font-size:64px;margin-bottom:4px;animation:petBob 1s ease-in-out infinite">${p.em}</div>
+    <div style="font-size:17px;font-weight:900;color:#fff;margin-bottom:2px">${p.nm}</div>
+    <div style="font-size:10px;color:rgba(255,255,255,.45);margin-bottom:14px">Kostnad: ${p.cost}⚡ · Tryck i det gröna!</div>
+    <div style="position:relative;width:240px;height:240px;margin-bottom:12px;cursor:pointer" onclick="jrTap()" ontouchstart="event.preventDefault();jrTap()">
+      <canvas id="jrCanvas" width="240" height="240" style="display:block"></canvas>
+      <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);pointer-events:none;text-align:center">
+        <div style="font-size:32px">${p.em}</div>
+      </div>
     </div>
-    <div id="jrResult" style="font-size:20px;font-weight:900;min-height:28px;font-family:var(--mono);text-align:center;margin-bottom:12px"></div>
-    <div style="font-size:10px;color:var(--t3);margin-bottom:14px">3 missar → peten rymmer</div>
-    <button onclick="closeJudgmentRing()" style="background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.18);border-radius:12px;padding:8px 22px;color:var(--t2);font-size:12px;cursor:pointer;font-family:var(--ff)">Avbryt</button>`;
+    <div id="jrResult" style="font-size:18px;font-weight:900;min-height:26px;font-family:var(--mono);text-align:center;margin-bottom:10px"></div>
+    <div style="font-size:10px;color:rgba(255,255,255,.35);margin-bottom:12px">3 missar → peten rymmer</div>
+    <button onclick="closeJudgmentRing()" style="background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.15);border-radius:12px;padding:8px 22px;color:rgba(255,255,255,.5);font-size:12px;cursor:pointer;font-family:var(--ff)">Avbryt</button>`;
   document.body.appendChild(ov);
-  _jrDrawZones(cfg);
   _jr.active=true;
   let last=null;
-  function tick(ts){if(!_jr.active)return;if(last===null)last=ts;const dt=(ts-last)/1000;last=ts;
+  function tick(ts){
+    if(!_jr.active)return;
+    if(last===null)last=ts;
+    const dt=Math.min((ts-last)/1000,0.05);last=ts;
     _jr.angle=(_jr.angle+_jr.speed*360*dt)%360;
-    const n=$('jrNeedle');if(n)n.style.transform=`rotate(${_jr.angle}deg)`;
-    _jr.raf=requestAnimationFrame(tick);}
+    _jrDrawCanvas(cfg);
+    _jr.raf=requestAnimationFrame(tick);
+  }
   _jr.raf=requestAnimationFrame(tick);
 }
-function _jrDrawZones(cfg){
-  const svg=$('jrSvg');if(!svg)return;
-  svg.querySelectorAll('.jr-zone').forEach(e=>e.remove());
-  function arc(s,e,stroke,sw,cls){
-    const toRad=a=>(a-90)*Math.PI/180;
-    const r=95,cx=115,cy=115;
-    const x1=cx+r*Math.cos(toRad(s)),y1=cy+r*Math.sin(toRad(s));
-    const x2=cx+r*Math.cos(toRad(e)),y2=cy+r*Math.sin(toRad(e));
-    const large=(e-s)>180?1:0;
-    const path=document.createElementNS('http://www.w3.org/2000/svg','path');
-    path.setAttribute('d',`M${x1},${y1} A${r},${r} 0 ${large} 1 ${x2},${y2}`);
-    path.setAttribute('stroke',stroke);path.setAttribute('stroke-width',sw);
-    path.setAttribute('fill','none');path.setAttribute('stroke-linecap','round');
-    path.classList.add('jr-zone');if(cls)path.classList.add(cls);
-    svg.appendChild(path);
+function _jrDrawCanvas(cfg){
+  const canvas=$('jrCanvas');if(!canvas)return;
+  const ctx=canvas.getContext('2d');
+  const W=240,H=240,cx=120,cy=120,r=96;
+  ctx.clearRect(0,0,W,H);
+  const toA=a=>(a-90)*Math.PI/180;
+  function arcStroke(s,e,color,lw){
+    const span=((e-s)+360)%360;if(span<1)return;
+    ctx.beginPath();
+    if(span>=359)ctx.arc(cx,cy,r,0,Math.PI*2);
+    else ctx.arc(cx,cy,r,toA(s),toA(s)+span*Math.PI/180);
+    ctx.strokeStyle=color;ctx.lineWidth=lw;ctx.lineCap='round';ctx.stroke();
   }
-  // 3 separate zones, each cfg.greenSize/3 degrees wide, spaced 120° apart
-  const zoneSize=cfg.greenSize/3;
-  const offsets=[0,120,240];
-  _jr.zones=offsets.map(off=>{
-    const start=(cfg.greenStart+off)%360;
-    const end=(start+zoneSize)%360;
-    return{start,end};
-  });
-  // Draw yellow warning halos around each zone
+  // Dark track
+  ctx.beginPath();ctx.arc(cx,cy,r,0,Math.PI*2);
+  ctx.strokeStyle='rgba(255,255,255,0.06)';ctx.lineWidth=28;ctx.stroke();
+  // Tick marks
+  for(let a=0;a<360;a+=15){
+    const len=a%90===0?10:5;const rad=toA(a);
+    ctx.strokeStyle='rgba(255,255,255,0.18)';ctx.lineWidth=1.5;
+    ctx.beginPath();ctx.moveTo(cx+(r-len)*Math.cos(rad),cy+(r-len)*Math.sin(rad));
+    ctx.lineTo(cx+(r+3)*Math.cos(rad),cy+(r+3)*Math.sin(rad));ctx.stroke();
+  }
+  // Green zone — multi-layer glow
   _jr.zones.forEach(z=>{
-    arc((z.start-8+360)%360,(z.end+8)%360,'#FFE60055',22);
+    arcStroke(z.start,z.end,'rgba(57,255,20,0.18)',52);
+    arcStroke(z.start,z.end,'rgba(57,255,20,0.35)',38);
+    arcStroke(z.start,z.end,cfg.col,26);
+    arcStroke(z.start,z.end,'rgba(255,255,255,0.8)',10);
+    // PERFECT inner
+    const span=((z.end-z.start)+360)%360;
+    const ps=(z.start+span*.3+360)%360,pe=(z.start+span*.7+360)%360;
+    arcStroke(ps,pe,'#FFE600',14);
   });
-  // Draw green zones
-  _jr.zones.forEach(z=>{
-    arc(z.start,z.end,cfg.col,16,'jr-green');
-  });
+  // Needle
+  const na=toA(_jr.angle);
+  ctx.shadowColor='#fff';ctx.shadowBlur=10;
+  ctx.beginPath();ctx.moveTo(cx,cy);
+  ctx.lineTo(cx+(r+4)*Math.cos(na),cy+(r+4)*Math.sin(na));
+  ctx.strokeStyle='#fff';ctx.lineWidth=4;ctx.lineCap='round';ctx.stroke();
+  ctx.beginPath();ctx.arc(cx+(r+4)*Math.cos(na),cy+(r+4)*Math.sin(na),5,0,Math.PI*2);
+  ctx.fillStyle='#fff';ctx.fill();ctx.shadowBlur=0;
+  ctx.beginPath();ctx.arc(cx,cy,6,0,Math.PI*2);
+  ctx.fillStyle='rgba(255,255,255,0.7)';ctx.fill();
 }
 function jrTap(){
   if(!_jr.active)return;
@@ -13306,36 +13298,41 @@ function _settingsDeleteAccount(){
 
 <!-- DNA MIXER MODAL -->
 <div class="modal" id="dnaModal" style="z-index:600">
-  <div class="modal-box" style="max-width:390px;padding:0;overflow:hidden">
-    <div style="background:linear-gradient(135deg,#000520,#0a0030);padding:14px 16px 10px">
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px">
-        <div style="font-size:15px;font-weight:900;font-family:var(--mono);color:var(--p)">🧬 KARMA GENOME LAB</div>
+  <div class="modal-box" style="max-width:390px;padding:0;overflow:hidden;background:linear-gradient(180deg,#06001a,#0a0020)">
+    <div style="padding:14px 16px 10px;background:linear-gradient(135deg,#0a0030,#06001a);border-bottom:1px solid rgba(191,95,255,.2)">
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <div>
+          <div style="font-size:16px;font-weight:900;font-family:var(--mono);color:var(--p)">🧬 DNA SPLICE LAB</div>
+          <div style="font-size:9px;color:rgba(191,95,255,.5);font-family:var(--mono);letter-spacing:1px;margin-top:2px">Välj 2 pets · Kör SPLICE!</div>
+        </div>
         <button class="btn btn-ghost btn-sm" onclick="closeDNAMixer()" style="padding:4px 10px">✕</button>
       </div>
-      <div style="font-size:9px;color:rgba(191,95,255,.6);font-family:var(--mono);letter-spacing:1px">MUTERA · SPLICA · EVOLVA</div>
     </div>
     <div style="padding:14px">
-      <!-- Your pet display -->
-      <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px;background:rgba(191,95,255,.08);border:1px solid rgba(191,95,255,.2);border-radius:16px;padding:12px">
-        <div style="font-size:52px" id="dnaEmA">🐉</div>
-        <div style="flex:1">
-          <div style="font-size:11px;font-weight:900;color:var(--p)">DITT PET</div>
-          <div style="font-size:10px;color:var(--t3)" id="dnaPetStats">Loading...</div>
+      <!-- Two pet slots side by side -->
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px">
+        <div style="flex:1;background:rgba(191,95,255,.1);border:2px solid rgba(191,95,255,.4);border-radius:16px;padding:14px;text-align:center">
+          <div style="font-size:9px;font-weight:900;color:rgba(191,95,255,.7);font-family:var(--mono);margin-bottom:6px">PET A</div>
+          <div style="font-size:48px" id="dnaEmA">🐉</div>
+          <div style="font-size:9px;color:var(--t3);margin-top:4px" id="dnaNameA">Ditt pet</div>
         </div>
-        <div style="text-align:center">
-          <div style="font-size:22px" id="dnaEmB">❓</div>
-          <div style="font-size:8px;color:var(--t3)">PARTNER</div>
+        <div style="font-size:28px;color:rgba(191,95,255,.6);flex-shrink:0">🧬</div>
+        <div id="dnaPetBSlot" style="flex:1;background:rgba(255,255,255,.04);border:2px dashed rgba(191,95,255,.25);border-radius:16px;padding:14px;text-align:center;cursor:pointer" onclick="$('dnaPickerRow').style.display=$('dnaPickerRow').style.display==='none'?'flex':'none'">
+          <div style="font-size:9px;font-weight:900;color:rgba(191,95,255,.7);font-family:var(--mono);margin-bottom:6px">PET B</div>
+          <div style="font-size:48px" id="dnaEmB">❓</div>
+          <div style="font-size:9px;color:var(--t3);margin-top:4px" id="dnaNameB">Tryck för att välja</div>
         </div>
       </div>
-      <!-- Partner picker row -->
-      <div style="font-size:10px;font-weight:900;color:var(--t3);margin-bottom:6px;text-transform:uppercase;letter-spacing:.5px">Välj DNA-partner:</div>
-      <div id="dnaGeneGrid" style="display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;padding-bottom:6px;margin-bottom:12px"></div>
-      <!-- Mutation slots — 5 gene slots -->
-      <div style="font-size:10px;font-weight:900;color:var(--t3);margin-bottom:6px;text-transform:uppercase;letter-spacing:.5px">Gen-slots (tryck för att mutera):</div>
-      <div id="dnaSlots" style="display:grid;grid-template-columns:repeat(5,1fr);gap:6px;margin-bottom:12px"></div>
-      <!-- Result -->
-      <div id="dnaResultPreview" style="background:rgba(0,0,0,.3);border:1.5px solid rgba(191,95,255,.2);border-radius:16px;padding:14px;text-align:center;min-height:70px;display:flex;align-items:center;justify-content:center;margin-bottom:12px"></div>
-      <button class="btn btn-full" id="dnaMixBtn" onclick="executeDNAMix()" style="background:linear-gradient(135deg,#8B00FF,#4B0082);color:#fff;font-size:14px;font-weight:900;font-family:var(--mono);letter-spacing:1px">⚗️ SPLICE DNA!</button>
+      <!-- Partner picker (toggle) -->
+      <div id="dnaPickerRow" style="display:none;flex-wrap:wrap;gap:8px;justify-content:center;margin-bottom:14px;background:rgba(0,0,0,.3);border-radius:14px;padding:10px">
+        <div style="width:100%;text-align:center;font-size:10px;font-weight:900;color:rgba(191,95,255,.6);font-family:var(--mono);margin-bottom:4px">VÄLJ PARTNER-PET:</div>
+        <div id="dnaGeneGrid" style="display:flex;gap:8px;flex-wrap:wrap;justify-content:center"></div>
+      </div>
+      <!-- Result preview -->
+      <div id="dnaResultPreview" style="background:rgba(191,95,255,.06);border:1.5px solid rgba(191,95,255,.2);border-radius:16px;padding:14px;text-align:center;min-height:80px;display:flex;align-items:center;justify-content:center;margin-bottom:14px">
+        <div style="color:rgba(191,95,255,.4);font-size:12px">Välj Pet B för att se hybrid-preview</div>
+      </div>
+      <button class="btn btn-full" id="dnaMixBtn" onclick="executeDNAMix()" style="background:linear-gradient(135deg,#8B00FF,#5500AA);color:#fff;font-size:15px;font-weight:900;font-family:var(--mono);letter-spacing:2px;padding:14px;border-radius:16px;opacity:.5">⚗️ SPLICE!</button>
     </div>
   </div>
 </div>
