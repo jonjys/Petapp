@@ -1095,6 +1095,7 @@ textarea.inp{resize:none;min-height:68px;}
 .fish-water-shimmer{position:absolute;top:0;left:0;right:0;height:30px;background:linear-gradient(90deg,transparent 0%,rgba(0,210,255,.2) 25%,rgba(0,255,200,.15) 50%,rgba(0,210,255,.18) 75%,transparent 100%);animation:waterShimmer 2.5s ease-in-out infinite;}
 @keyframes waterShimmer{0%,100%{opacity:.4;transform:translateX(-10%);}50%{opacity:1;transform:translateX(10%);}}
 .fish-surface-ripple{position:absolute;top:-2px;left:0;right:0;height:6px;overflow:hidden;}
+@keyframes fishCalmSwim{0%,100%{transform:translateX(0) scaleX(1);}30%{transform:translateX(60px) scaleX(1);}50%{transform:translateX(90px) scaleX(-1);}80%{transform:translateX(20px) scaleX(-1);}}
 .fish-surface-ripple::before{content:'';position:absolute;top:0;left:-100%;width:300%;height:100%;background:repeating-linear-gradient(90deg,transparent 0px,rgba(0,220,255,.3) 8px,transparent 16px);animation:rippleScroll 1.8s linear infinite;}
 .fish-surface-ripple::after{content:'';position:absolute;top:2px;left:-100%;width:300%;height:100%;background:repeating-linear-gradient(90deg,transparent 0px,rgba(0,180,255,.2) 12px,transparent 24px);animation:rippleScroll 2.4s linear infinite reverse;}
 @keyframes rippleScroll{from{transform:translateX(0);}to{transform:translateX(33.33%);}}
@@ -2621,7 +2622,7 @@ textarea.inp{resize:none;min-height:68px;}
       <div class="kw-build-bar">
         <button class="kw-build-btn" style="border-color:rgba(255,230,0,.45);color:var(--y);background:rgba(255,230,0,.06)" onclick="addWorldPoints(20,'manual');vibe(30);showT('⚡ +20 World Points!','y')">⚡ BOOST +20WP</button>
         <button class="kw-build-btn" style="border-color:rgba(57,255,20,.45);color:var(--g);background:rgba(57,255,20,.06)" onclick="nav('home')">🐾 MIN PET</button>
-        <button class="kw-build-btn" style="border-color:rgba(255,45,85,.45);color:var(--pk);background:rgba(255,45,85,.06)" onclick="openClanView()">⚔️ KLAN</button>
+        <button class="kw-build-btn" style="border-color:rgba(255,45,85,.45);color:var(--pk);background:rgba(255,45,85,.06)" onclick="openClanView()">⚔️ SQUAD</button>
         <button class="kw-build-btn" style="border-color:rgba(0,217,255,.45);color:var(--b);background:rgba(0,217,255,.06)" onclick="switchWorldTab('karta')">🗺️ KARTA</button>
         <button class="kw-build-btn" style="border-color:rgba(57,255,20,.45);color:var(--g);background:rgba(57,255,20,.06)" onclick="openCastle()">🏰 SLOTT</button>
         <button class="kw-build-btn" style="border-color:rgba(191,95,255,.45);color:var(--p);background:rgba(191,95,255,.06)" onclick="openDNAMixer()">🧬 DNA MIX</button>
@@ -3393,11 +3394,9 @@ textarea.inp{resize:none;min-height:68px;}
     <div class="pack-title">⚡ FÖRMÅGOR</div>
     <div class="talent-pts" id="talentPts">0 TP</div>
   </div>
-  <div style="position:absolute;top:10px;left:50%;transform:translateX(-50%);font-size:9px;color:rgba(255,255,255,.28);pointer-events:none;text-align:center;z-index:2">Nyp för zoom · Dra för att flytta · Tryck på nod</div>
-  <div id="ttLegend" style="position:absolute;top:52px;right:10px;background:rgba(0,0,0,.55);border:1px solid rgba(255,255,255,.1);border-radius:10px;padding:5px 9px;font-size:8px;color:rgba(255,255,255,.45);z-index:2;pointer-events:none;line-height:1.7">
-    ◼ minor &nbsp;● notable<br>○ keystone &nbsp;◆ mastery
+  <div style="flex:1;overflow-y:auto;padding:14px;scrollbar-width:none" id="ttSimpleScroll">
+    <!-- rendered by renderTalentSimple() -->
   </div>
-  <canvas id="talentCanvas" style="position:absolute;top:46px;left:0;right:0;bottom:0;width:100%;height:calc(100% - 46px);touch-action:none;cursor:grab;display:block"></canvas>
   <div id="ttNodePanel" style="position:absolute;bottom:0;left:0;right:0;background:rgba(8,10,18,.97);border-top:1.5px solid rgba(255,255,255,.12);padding:14px 14px 20px;transform:translateY(100%);transition:transform .22s cubic-bezier(.4,0,.2,1);z-index:10;border-radius:24px 24px 0 0">
     <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
       <div id="ttNodeEm" style="font-size:34px;flex-shrink:0">⚡</div>
@@ -3576,6 +3575,11 @@ textarea.inp{resize:none;min-height:68px;}
     <div class="fish-bob" id="fishBob" style="display:none"></div>
     <div class="fish-catch-fx" id="fishCatchFx"></div>
     <div class="fish-tap-prompt" id="fishTapPrompt" style="display:none;bottom:38%">🎯 TAP!</div>
+    <!-- Calm catch bar -->
+    <div id="fishCatchBar" style="display:none;position:absolute;bottom:8%;left:10%;right:10%;z-index:10;background:rgba(0,0,0,.7);border-radius:12px;padding:8px 12px;border:1.5px solid rgba(0,217,255,.4)">
+      <div id="fishCatchLabel" style="font-size:11px;font-weight:900;color:#00D9FF;font-family:var(--mono);margin-bottom:5px;text-align:center">🎣 Dra in fisken!</div>
+      <div style="height:8px;background:rgba(255,255,255,.1);border-radius:100px;overflow:hidden"><div id="fishCatchFill" style="height:100%;width:0%;background:linear-gradient(90deg,#00D9FF,#39FF14);border-radius:100px"></div></div>
+    </div>
     <!-- Precision catch bar -->
     <div class="fish-perfect-bar" id="fishPerfectBar" onclick="catchFish()" style="display:none;cursor:pointer">
       <div class="fpb-label">🎯 TIMING — TRYCK I DET GRÖNA!</div>
@@ -4504,16 +4508,14 @@ function battleChooseDefend(type){
 let _battleRing={active:false,angle:0,speed:2,raf:null,zones:[],zonesHit:null,attempts:0,cfg:null};
 
 function _openBattleRing(cfg){
-  // Remove any existing ring
   const old=$('battleRingOverlay');if(old)old.remove();
   const overlay=document.createElement('div');
   overlay.id='battleRingOverlay';
-  overlay.style.cssText='position:absolute;inset:0;z-index:30;display:flex;flex-direction:column;align-items:center;justify-content:center;background:rgba(0,0,0,.8);backdrop-filter:blur(2px);';
+  overlay.style.cssText='position:absolute;inset:0;z-index:30;display:flex;flex-direction:column;align-items:center;justify-content:center;background:rgba(0,0,5,.88);';
   const zonesHit=new Set();
   const numZones=cfg.zones||1;
-  const zoneSize=Math.max(cfg.greenSize, 65);
+  const zoneSize=Math.max(cfg.greenSize||70,80);
   const greenStart=Math.random()*300;
-  // Build zones
   const zones=[];
   for(let i=0;i<numZones;i++){
     const start=(greenStart+i*(360/numZones))%360;
@@ -4522,95 +4524,87 @@ function _openBattleRing(cfg){
   }
   _battleRing={active:true,angle:0,speed:cfg.ringSpeed,raf:null,zones,zonesHit,attempts:0,cfg};
   overlay.innerHTML=`
-    <div style="font-size:13px;font-weight:900;color:${cfg.col};margin-bottom:10px;font-family:var(--mono);letter-spacing:2px">${cfg.label}</div>
-    <div id="brHitHint" style="font-size:12px;font-weight:900;color:#39FF14;font-family:var(--mono);letter-spacing:1px;margin-bottom:10px;text-shadow:0 0 10px rgba(57,255,20,.8);opacity:1;transition:opacity .5s">⚡ KLAR! TRYCK NÄR I GRÖN ZON!</div>
-    <div style="position:relative;width:220px;height:220px;margin-bottom:14px">
-      <svg id="battleRingSvg" width="220" height="220" viewBox="0 0 220 220"></svg>
-      <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center">
-        <div style="font-size:38px" id="battleRingPetEm">${G.petEmoji||'🐉'}</div>
-        <div style="font-size:8px;color:rgba(255,255,255,.5);font-family:var(--mono);margin-top:2px">HIT<br><span style="color:#FFE600">PERFECT</span></div>
+    <div style="font-size:13px;font-weight:900;color:${cfg.col};margin-bottom:8px;font-family:var(--mono);letter-spacing:2px">${cfg.label}</div>
+    <div id="brHitHint" style="font-size:12px;font-weight:900;color:#39FF14;font-family:var(--mono);margin-bottom:10px;text-shadow:0 0 12px #39FF14">⚡ TRYCK I GRÖN ZON!</div>
+    <div style="position:relative;width:240px;height:240px;margin-bottom:12px">
+      <canvas id="brCanvas" width="240" height="240" style="display:block"></canvas>
+      <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;pointer-events:none">
+        <div style="font-size:42px" id="battleRingPetEm">${G.petEmoji||'🐉'}</div>
       </div>
     </div>
-    <div style="font-size:10px;color:rgba(255,255,255,.4);margin-bottom:4px;font-family:var(--mono)"><span style="color:#39FF14">■</span> HIT &nbsp; <span style="color:#FFE600">■</span> PERFECT</div>
-    <button onclick="_battleRingTap()" style="margin-top:8px;padding:14px 44px;background:${cfg.col};color:#000;font-size:15px;font-weight:900;border:none;border-radius:16px;cursor:pointer;font-family:var(--ff);-webkit-tap-highlight-color:transparent;touch-action:manipulation;box-shadow:0 0 18px ${cfg.col}88">TAP!</button>
+    <div style="font-size:10px;color:rgba(255,255,255,.5);margin-bottom:8px;font-family:var(--mono)"><span style="color:#39FF14">■</span> HIT &nbsp;<span style="color:#FFE600">■</span> PERFECT</div>
+    <button onclick="_battleRingTap()" style="padding:14px 50px;background:${cfg.col};color:#000;font-size:16px;font-weight:900;border:none;border-radius:18px;cursor:pointer;font-family:var(--ff);-webkit-tap-highlight-color:transparent;touch-action:manipulation;box-shadow:0 0 24px ${cfg.col}aa;letter-spacing:1px">⚡ TAP!</button>
   `;
-  setTimeout(()=>{const h=$('brHitHint');if(h)h.style.opacity='0';},1200);
+  setTimeout(()=>{const h=$('brHitHint');if(h)h.style.opacity='0';},1400);
   $('battleArena').appendChild(overlay);
-  _battleRingDraw(cfg);
   let last=null;
   function tick(ts){
     if(!_battleRing.active)return;
     if(last===null)last=ts;
-    const dt=(ts-last)/1000;last=ts;
+    const dt=Math.min((ts-last)/1000,0.05);last=ts;
     _battleRing.angle=(_battleRing.angle+cfg.ringSpeed*180*dt)%360;
-    // Move needle
-    const svg=$('battleRingSvg');if(!svg){cancelAnimationFrame(_battleRing.raf);return;}
-    svg.querySelectorAll('.br-needle').forEach(n=>n.remove());
-    const toRad=a=>(a-90)*Math.PI/180;
-    const r=90,cx=110,cy=110;
-    const a=_battleRing.angle;
-    const nx=cx+r*Math.cos(toRad(a));
-    const ny=cy+r*Math.sin(toRad(a));
-    const line=document.createElementNS('http://www.w3.org/2000/svg','line');
-    line.setAttribute('x1',cx);line.setAttribute('y1',cy);
-    line.setAttribute('x2',nx);line.setAttribute('y2',ny);
-    line.setAttribute('stroke','#fff');line.setAttribute('stroke-width','3');
-    line.setAttribute('stroke-linecap','round');line.classList.add('br-needle');
-    svg.appendChild(line);
+    _battleRingDrawCanvas(cfg);
     _battleRing.raf=requestAnimationFrame(tick);
   }
   _battleRing.raf=requestAnimationFrame(tick);
-  // Auto-fail after 6 seconds
-  _battleRing._failTimer=setTimeout(()=>{if(_battleRing.active)_battleRingFail();},6000);
+  _battleRing._failTimer=setTimeout(()=>{if(_battleRing.active)_battleRingFail();},7000);
 }
 
-function _battleRingDraw(cfg){
-  const svg=$('battleRingSvg');if(!svg)return;
-  svg.querySelectorAll('.br-zone').forEach(e=>e.remove());
-  const toRad=a=>(a-90)*Math.PI/180;
-  const r=90,cx=110,cy=110;
-  function arc(s,e,stroke,sw,extra){
-    const x1=cx+r*Math.cos(toRad(s)),y1=cy+r*Math.sin(toRad(s));
-    const x2=cx+r*Math.cos(toRad(e)),y2=cy+r*Math.sin(toRad(e));
-    const large=(e-s+360)%360>180?1:0;
-    const path=document.createElementNS('http://www.w3.org/2000/svg','path');
-    path.setAttribute('d',`M${x1},${y1} A${r},${r} 0 ${large} 1 ${x2},${y2}`);
-    path.setAttribute('stroke',stroke);path.setAttribute('stroke-width',sw);
-    path.setAttribute('fill','none');path.setAttribute('stroke-linecap','round');
-    if(extra){Object.entries(extra).forEach(([k,v])=>path.setAttribute(k,v));}
-    path.classList.add('br-zone');svg.appendChild(path);
+function _battleRingDrawCanvas(cfg){
+  const canvas=$('brCanvas');if(!canvas)return;
+  const ctx=canvas.getContext('2d');
+  const W=240,H=240,cx=120,cy=120,r=96;
+  ctx.clearRect(0,0,W,H);
+  const toA=a=>(a-90)*Math.PI/180;
+  function arcStroke(s,e,color,lw){
+    let sa=toA(s),ea=toA(e);
+    const span=((e-s)+360)%360;
+    if(span<1)return;
+    ctx.beginPath();
+    if(span>=359){ctx.arc(cx,cy,r,0,Math.PI*2);}
+    else{ctx.arc(cx,cy,r,sa,sa+span*Math.PI/180);}
+    ctx.strokeStyle=color;ctx.lineWidth=lw;ctx.lineCap='round';ctx.stroke();
   }
   // Dark track
-  arc(0,359,'rgba(255,255,255,.06)',28);
+  ctx.beginPath();ctx.arc(cx,cy,r,0,Math.PI*2);
+  ctx.strokeStyle='rgba(255,255,255,0.07)';ctx.lineWidth=30;ctx.stroke();
   // Tick marks
+  ctx.lineWidth=1.5;
   for(let a=0;a<360;a+=15){
-    const tickLen=a%90===0?10:5;
-    const r1=90-tickLen,r2=90+2;
-    const x1=cx+r1*Math.cos(toRad(a)),y1=cy+r1*Math.sin(toRad(a));
-    const x2=cx+r2*Math.cos(toRad(a)),y2=cy+r2*Math.sin(toRad(a));
-    const line=document.createElementNS('http://www.w3.org/2000/svg','line');
-    line.setAttribute('x1',x1);line.setAttribute('y1',y1);line.setAttribute('x2',x2);line.setAttribute('y2',y2);
-    line.setAttribute('stroke','rgba(255,255,255,.18)');line.setAttribute('stroke-width','1.5');
-    line.classList.add('br-zone');svg.appendChild(line);
+    const len=a%90===0?10:5;
+    const ir=r-len,or=r+3;
+    const rad=toA(a);
+    ctx.strokeStyle='rgba(255,255,255,0.2)';
+    ctx.beginPath();
+    ctx.moveTo(cx+ir*Math.cos(rad),cy+ir*Math.sin(rad));
+    ctx.lineTo(cx+or*Math.cos(rad),cy+or*Math.sin(rad));
+    ctx.stroke();
   }
-  // Outer glow for green zones
+  // Green zones — multi-layer glow
   _battleRing.zones.forEach(z=>{
-    arc((z.start-5+360)%360,(z.end+5)%360,'rgba(57,255,20,.15)',38);
+    arcStroke(z.start,z.end,'rgba(57,255,20,0.18)',52);
+    arcStroke(z.start,z.end,'rgba(57,255,20,0.35)',38);
+    arcStroke(z.start,z.end,'#39FF14',26);
+    arcStroke(z.start,z.end,'rgba(200,255,200,0.85)',10);
+    // PERFECT center
+    const span=((z.end-z.start)+360)%360;
+    const pm=span/3;
+    const ps=(z.start+pm+360)%360,pe=(z.start+pm*2+360)%360;
+    arcStroke(ps,pe,'#FFE600',14);
+    arcStroke(ps,pe,'rgba(255,240,100,0.6)',22);
   });
-  // Green zones — bright neon with glow filter
-  const glowFilt=document.createElementNS('http://www.w3.org/2000/svg','filter');
-  glowFilt.setAttribute('id','br-glow');glowFilt.classList.add('br-zone');
-  glowFilt.innerHTML='<feGaussianBlur stdDeviation="3" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>';
-  svg.appendChild(glowFilt);
-  _battleRing.zones.forEach(z=>{
-    arc(z.start,z.end,'#39FF14',22,{'filter':'url(#br-glow)','stroke-opacity':'0.9'});
-    arc(z.start,z.end,'#39FF14',20);
-    // Yellow PERFECT inner zone (8% of arc = ~29 degrees)
-    const perfSize=29;const mid=((z.start+z.end)/2+360)%360;
-    const ps=(mid-perfSize/2+360)%360;const pe=(mid+perfSize/2)%360;
-    arc(ps,pe,'#FFE600',20);
-    arc(ps,pe,'rgba(255,230,0,.4)',30);
-  });
+  // Needle
+  const na=toA(_battleRing.angle);
+  const nx=cx+(r+4)*Math.cos(na),ny=cy+(r+4)*Math.sin(na);
+  ctx.shadowColor='#fff';ctx.shadowBlur=10;
+  ctx.beginPath();ctx.moveTo(cx,cy);ctx.lineTo(nx,ny);
+  ctx.strokeStyle='#fff';ctx.lineWidth=4;ctx.lineCap='round';ctx.stroke();
+  ctx.beginPath();ctx.arc(nx,ny,5,0,Math.PI*2);
+  ctx.fillStyle='#fff';ctx.fill();
+  ctx.shadowBlur=0;
+  // Center dot
+  ctx.beginPath();ctx.arc(cx,cy,6,0,Math.PI*2);
+  ctx.fillStyle='rgba(255,255,255,0.8)';ctx.fill();
 }
 
 function _battleRingTap(){
@@ -6304,11 +6298,11 @@ function _buildClanModal(){
   const m=document.createElement('div');
   m.id='clanModal';m.className='modal';m.style.display='flex';
   m.innerHTML=`<div class="ms"><div class="mh" onclick="closeModal('clanModal')"></div>
-    <div class="mt">⚔️ Klaner <div class="mx" onclick="closeModal('clanModal')">✕</div></div>
+    <div class="mt">⚔️ Squads <div class="mx" onclick="closeModal('clanModal')">✕</div></div>
     <div id="clanMySection"></div>
-    <div class="sh"><div class="sh-t">🏆 TOP KLANER</div></div>
+    <div class="sh"><div class="sh-t">🏆 TOP SQUADS</div></div>
     <div id="clanList" style="padding:0 0 18px"></div>
-    ${!G.clan?`<button class="btn btn-g btn-lg btn-full" onclick="createClan()">+ SKAPA KLAN</button>`:''}
+    ${!G.clan?`<button class="btn btn-g btn-lg btn-full" onclick="createClan()">+ SKAPA SQUAD</button>`:''}
   </div>`;
   document.body.appendChild(m);
   renderClans();
@@ -6329,12 +6323,12 @@ function renderClans(){
           <div style="font-size:48px;filter:drop-shadow(0 0 12px rgba(57,255,20,.5))">${G.clanEm||'⚔️'}</div>
           <div style="flex:1">
             <div style="font-size:16px;font-weight:900;color:var(--g)">${G.clan}</div>
-            <div style="font-size:10px;color:var(--t3);margin:2px 0">${myClan?myClan.members+' medlemmar · ':''}Klanmedlem</div>
+            <div style="font-size:10px;color:var(--t3);margin:2px 0">${myClan?myClan.members+' medlemmar · ':''}Squad-medlem</div>
             <div style="font-size:11px;color:var(--y);font-weight:900;font-family:var(--mono)">⚡ ${myPow.toLocaleString()} Power</div>
           </div>
         </div>
         <div style="margin-bottom:8px">
-          <div style="display:flex;justify-content:space-between;font-size:10px;color:var(--t3);margin-bottom:3px"><span>Klan Power</span><span>${powPct}%</span></div>
+          <div style="display:flex;justify-content:space-between;font-size:10px;color:var(--t3);margin-bottom:3px"><span>Squad Power</span><span>${powPct}%</span></div>
           <div style="height:6px;background:var(--c3);border-radius:4px;overflow:hidden"><div style="height:100%;width:${powPct}%;background:linear-gradient(90deg,var(--g),#00D9FF);border-radius:4px;transition:width .6s"></div></div>
         </div>
         <div style="margin-bottom:12px">
@@ -6343,7 +6337,7 @@ function renderClans(){
         </div>
         <div style="display:flex;gap:8px">
           <button class="btn btn-pk btn-sm" style="flex:1" onclick="openRaid()">⚔️ RAIDA</button>
-          <button class="btn btn-sm" style="flex:1" onclick="showT('Klan-chat kommer snart!','b')">💬 KLAN-CHAT</button>
+          <button class="btn btn-sm" style="flex:1" onclick="showT('Squad-chat kommer snart!','b')">💬 SQUAD-CHAT</button>
         </div>
       </div>`;
     } else {
@@ -6380,14 +6374,14 @@ function joinClan(id,nm,em){
   closeModal('clanModal');
 }
 function createClan(){
-  const nm=prompt('Namnge ditt klan (max 20 tecken):');
+  const nm=prompt('Namnge ditt squad (max 20 tecken):');
   if(!nm||nm.length<2)return;
   G.clan=nm.substring(0,20);G.clanEm='⚔️';save();
-  showT('👑 Klan "'+G.clan+'" skapat!','g');
+  showT('👑 Squad "'+G.clan+'" skapat!','g');
   closeModal('clanModal');
 }
 function raidClan(id,nm){
-  if(!G.clan){showT('⚔️ Gå med i ett klan först!','r');return;}
+  if(!G.clan){showT('⚔️ Gå med i ett squad först!','r');return;}
   const power=G.worldPoints||0;const enemy=MOCK_CLANS.find(c=>c.id===id);
   const win=Math.random()<(power/(power+enemy.power)*2);
   if(win){const loot=Math.floor(Math.random()*200)+50;gainCoins(loot);addWorldPoints(30,'raid');showT('🏆 RAID LYCKADES! +'+loot+'⚡ +30WP','y');vibe([50,30,100,30,80]);}
@@ -7719,50 +7713,32 @@ function _applyLocScene(locId){
   const hs=$('fishHotspot');if(hs)hs.style.display=_sfStreak>=3?'block':'none';
 }
 
-// ── Spawn street fish using swimming targets ──
+// ── Spawn street fish using calm swimming targets ──
 function spawnStreetFishInScene(){
   const scene=$('fishScene');if(!scene)return;
-  scene.querySelectorAll('.fish-em,.fish-bubble,.fish-swim-target').forEach(f=>f.remove());
+  // Remove old fish
+  scene.querySelectorAll('.sf-fish,.fish-em,.fish-bubble,.fish-swim-target').forEach(f=>f.remove());
   const locId=G.fishLocation||'malaren';
-  const hour=new Date().getHours();const isNight=hour>=22||hour<6;
+  const isNight=new Date().getHours()>=20||new Date().getHours()<6;
   const locFish=(STREET_FISH[locId]||STREET_FISH.malaren).filter(f=>!f.nightOnly||isNight);
-  const wth=FISH_WEATHERS[_fishState._weather]||FISH_WEATHERS[0];
-  const sh=scene.clientHeight||Math.round(window.innerHeight*.55);
-  const rod=_getCurRod();
-  const count=rod.id==='bamboo'?6:rod.id==='carbon'?8:10;
+  const count=4+Math.floor(Math.random()*3);
   for(let i=0;i<count;i++){
-    const roll=Math.random();
-    let ft=locFish[0];
-    if(roll<.5)ft=locFish[0];
-    else if(roll<.8&&locFish[1])ft=locFish[1];
-    else ft=locFish[locFish.length-1]||locFish[0];
-    // Also mix in some classic fish for variety
-    if(Math.random()<.3){const cl=FISH_TYPES.filter(f=>f.rarity==='common'||f.rarity==='uncommon');ft={...cl[Math.floor(Math.random()*cl.length)],loc:locId};}
-    const startX=5+Math.random()*80;
-    const yBase=sh*.42+Math.random()*sh*.5;
-    const dur=(0.9+Math.random()*1.4)/(ft.speed||1);
-    const sw=((Math.random()<.5?1:-1)*(30+Math.random()*55))+'px';
-    const del=(-Math.random()*2).toFixed(1)+'s';
+    const ft=locFish[Math.floor(Math.random()*locFish.length)];
     const fish=document.createElement('div');
-    fish.className='fish-swim-target';
-    const rarityGlow=ft.rarity==='mythic'?'filter:drop-shadow(0 0 12px #BF5FFF) drop-shadow(0 0 4px #fff);font-size:42px;':ft.rarity==='legendary'?'filter:drop-shadow(0 0 10px #FF3B30) drop-shadow(0 0 4px #ffa);font-size:40px;':ft.rarity==='epic'?'filter:drop-shadow(0 0 8px #FF9F0A);font-size:38px;':ft.rarity==='rare'?'filter:drop-shadow(0 0 6px rgba(0,180,255,.9));font-size:36px;':'font-size:34px;';
-    fish.style.cssText=`left:${startX}%;top:${yBase}px;--sw:${sw};--dur:${dur.toFixed(1)}s;--del:${del};animation:fishSwim ${dur.toFixed(1)}s ease-in-out infinite ${del};${rarityGlow}position:absolute;z-index:4;cursor:pointer;-webkit-tap-highlight-color:transparent;user-select:none;transition:transform .15s;`;
-    fish.textContent=ft.em;
-    fish._ftData=ft;
-    fish.onclick=(e)=>{e.stopPropagation();onStreetFishTap(fish,ft);};
+    fish.className='sf-fish';
+    const depth=30+Math.random()*45;
+    const startX=Math.random()*80;
+    const spd=4+Math.random()*6;
+    const sz=ft.rarity==='legendary'?32:ft.rarity==='rare'?26:20;
+    fish.style.cssText=`position:absolute;bottom:${depth}%;left:${startX}%;font-size:${sz}px;cursor:pointer;animation:fishCalmSwim ${spd}s ease-in-out infinite;animation-delay:-${Math.random()*spd}s;transition:transform .2s;z-index:2;`;
+    fish.textContent=ft.em||'🐟';
+    fish.onclick=(e)=>{e.stopPropagation();_calmFishTap(fish,ft);};
     scene.appendChild(fish);
   }
-  // bubbles
-  for(let i=0;i<5;i++){
-    const b=document.createElement('div');b.className='fish-bubble';
-    const sz=(3+Math.random()*6)+'px';
-    const bY=sh*.42+Math.random()*sh*.5;
-    b.style.cssText=`--dur:${(2+Math.random()*3).toFixed(1)}s;--del:${(-Math.random()*3).toFixed(1)}s;width:${sz};height:${sz};left:${8+Math.random()*84}%;top:${bY}px`;
-    scene.appendChild(b);
-  }
-  // Rainy weather bonus fish hint
-  if(wth.id==='rain'){const hint=$('fishWeatherBadge');if(hint)hint.textContent='🌧️ Regn — +30% sällsynt!';}
-  if(wth.id==='storm'){const hint=$('fishWeatherBadge');if(hint)hint.textContent='⛈️ Storm — Epic/Legendary only!';}
+  _fishState.phase='idle';
+  const bobber=scene.querySelector('.fish-bobber');
+  if(bobber)bobber.style.display='none';
+  const bar=$('fishCatchBar');if(bar)bar.style.display='none';
 }
 
 // ── Hook drop animation + catch zone ──
@@ -7789,41 +7765,32 @@ function _reelUpHook(){
   if(line){line.style.height='0';}if(hook)hook.style.display='none';if(zone)zone.style.display='none';
 }
 
-// ── Tap on swimming fish ──
-function onStreetFishTap(fishEl,ft){
-  if(_fishState.phase==='biting'){fishSpamTap();return;}
-  if(_fishState.phase==='idle'||_fishState.phase==='waiting'){
-    // Bait and hook — clicking the actual fish directly = catch attempt
-    clearTimeout(_fishState._failTimer); // cancel any cast timeout
-    _sfCurTarget=ft;
-    _fishState.phase='biting';_fishState._curFish=ft;
-    _dropStreetHook();
-    // Check if fish is near hook
-    const scene=$('fishScene');if(!scene)return;
-    const fishRect=fishEl.getBoundingClientRect();
-    const hookEl=$('fishHook');const hookRect=hookEl?hookEl.getBoundingClientRect():{left:0,top:0,right:0,bottom:0};
-    const dist=Math.abs(fishRect.left-hookRect.left)+Math.abs(fishRect.top-hookRect.top);
-    if(dist<120){
-      // Close enough — trigger catch sequence
-      _sfStreak++;G.fishStreak=_sfStreak;
-      _sfHitFish(ft,fishEl);
-    } else {
-      // Not close, start spam phase
-      _fishState._spamPct=0;
-      const ring=$('fishSpamRing');if(ring)ring.classList.add('on');
-      const hint=$('fishTapHint');if(hint)hint.classList.add('on');
-      _fishUpdateSpamUI(0);
-      _fishSetStatus('🎣 '+ft.em+' '+ft.nm+' — SPAMMA för att dra in!');
-      vibe([30,20,50]);
-      _fishStartDrain(ft);
-      const failMs=ft.rarity==='mythic'?1800:ft.rarity==='legendary'||ft.rarity==='epic'?2200:ft.rarity==='rare'?2800:3500;
-      _fishState._failTimer=setTimeout(_fishFail,failMs);
-      fishEl.style.animation='none';fishEl.style.filter='drop-shadow(0 0 12px rgba(255,220,0,.8))';
-      _sfCurFishEl=fishEl;
-    }
-    return;
+// ── Calm fish tap ──
+let _calmFishTimer=null;
+function _calmFishTap(fishEl,ft){
+  if(_fishState.phase==='catching')return;
+  _fishState.phase='catching';_fishState._curFish=ft;
+  if(_calmFishTimer)clearTimeout(_calmFishTimer);
+  // Animate fish wiggle
+  fishEl.style.transform='scale(1.4)';
+  setTimeout(()=>{fishEl.style.transform='';},300);
+  // Show catch bar
+  const bar=$('fishCatchBar');
+  const barFill=$('fishCatchFill');
+  const barLabel=$('fishCatchLabel');
+  if(bar){
+    bar.style.display='block';
+    if(barLabel)barLabel.textContent='🎣 Dra in '+ft.nm+'!';
+    if(barFill){barFill.style.width='0%';barFill.style.transition='width 2.5s linear';}
+    setTimeout(()=>{if(barFill)barFill.style.width='100%';},50);
   }
-  fishSpamTap();
+  showT('🐟 BETT! Dra in den!','b');
+  _calmFishTimer=setTimeout(()=>{
+    if(_fishState.phase==='catching')_calmCatchFish(ft,fishEl);
+  },2600);
+}
+function onStreetFishTap(fishEl,ft){
+  _calmFishTap(fishEl,ft);
 }
 let _sfCurFishEl=null;
 
@@ -8167,11 +8134,25 @@ function fishSpamTap(){
   }
 }
 
-function onFishSceneTap(e){
-  if(e&&e.type==='touchstart')e.preventDefault();
-  if(_fishState.phase==='biting'){fishSpamTap();return;}
-  if(_fishState.phase==='idle'){fishCast();return;}
-  if(_fishState.phase==='waiting'){_fishSetStatus('🎣 Klicka direkt på en fisk!');return;}
+function onFishSceneTap(event){
+  if(event&&event.type==='touchstart')event.preventDefault();
+  if(_fishState.phase==='catching'){
+    if(_calmFishTimer)clearTimeout(_calmFishTimer);
+    _calmCatchFish(_fishState._curFish,null);
+    return;
+  }
+  if(_fishState.phase==='idle'){
+    _fishState.phase='casting';
+    showT('🎣 Kastas...','b');
+    setTimeout(()=>{_fishState.phase='idle';},1500);
+  }
+}
+function _calmCatchFish(ft,fishEl){
+  _fishState.phase='idle';
+  const bar=$('fishCatchBar');if(bar)bar.style.display='none';
+  if(!ft){spawnStreetFishInScene();return;}
+  if(fishEl)fishEl.remove();
+  _sfHitFish(ft,fishEl);
 }
 
 function onFishTap(fishEl,ft){
@@ -8960,7 +8941,7 @@ const STRINGS={
     home:'HEM',flash:'FLASH',petTab:'PET',world:'VÄRLD',me:'JAG',play:'SPELA',create:'SKAPA',
     train:'TRÄNA',feed:'MATA',sleep:'SOVA',bath:'BAD',lek:'LEK',
     coins:'mynt',xp:'XP',level:'NIVÅ',streak:'STREAK',
-    battle:'STRID',fishing:'FISKE',shop:'BUTIK',clan:'KLAN',
+    battle:'STRID',fishing:'FISKE',shop:'BUTIK',clan:'SQUAD',
     questActive:'AKTIVA',questDone:'AVKLARADE',questNone:'Inga uppdrag tillgängliga',
   },
   en:{
@@ -9819,9 +9800,11 @@ let _cwParticles=null;
 function renderCastleWorld(){
   const canvas=$('castleCanvas');if(!canvas)return;
   const cw=$('castleWorld');if(!cw||!cw.classList.contains('open'))return;
-  const W=canvas.offsetWidth||window.innerWidth;
-  const H=canvas.offsetHeight||(window.innerHeight-170);
+  const rect=canvas.getBoundingClientRect();
+  const W=rect.width>0?Math.round(rect.width):window.innerWidth;
+  const H=rect.height>0?Math.round(rect.height):(window.innerHeight-150);
   if(canvas.width!==W||canvas.height!==H){canvas.width=W;canvas.height=H;}
+  if(W<10||H<10)return;
   const ctx=canvas.getContext('2d');
   const cx=W/2,cy=H*0.46;
   const t=Date.now()/1000;
@@ -10922,6 +10905,7 @@ function _loadFromLocalStorage(){
     const _today=new Date().toDateString();const _last=localStorage.getItem('kv8_lastLogin');
     if(_last!==_today){localStorage.setItem('kv8_lastLogin',_today);if(_last){const _b=G.premium?300:75;G.coins+=_b;setTimeout(()=>{showT('🎁 DAILY LOGIN BONUS! +'+_b+' COINS','g');vibe([30,20,60,20,80]);},2500);}}
     $('ob').style.display='none';$('app').style.display='flex';updateHUD();nav('home');
+    initDailyChallenges();
     setTimeout(startKarmaPulse,1200);setTimeout(renderJackpot,800);
     setTimeout(()=>$('circleDot').style.display='inline-block',1500);
     setTimeout(startPetAnim,150);
@@ -11489,12 +11473,81 @@ const TALENT_DEFS=[
   {id:'x20',branch:'nexus',em:'🌌',nm:'UNIVERSE',desc:'Alla branches maxade: oändlig passive XP.',cost:6,req:'m6a',req2:'kr7a',type:'mastery',legendary:true,ef:()=>{G._talentX20=true;gainXP(200,'action');gainCoins(500);addWorldPoints(200);spawnParticles(window.innerWidth/2,window.innerHeight*.3,'stars');spawnParticles(window.innerWidth*.2,window.innerHeight*.5,'stars');spawnParticles(window.innerWidth*.8,window.innerHeight*.5,'stars');showT('🌌 UNIVERSE UNLOCKED!!! ALLT ÄR DITT!!!','y');vibe([100,50,200,50,300,50,400,50,300]);}},
   {id:'x21',branch:'nexus',em:'☀️',nm:'SOLAR GOD',desc:'Du är solen. Alla actions ×3. Total dominans.',cost:6,req:'k9',req2:'s9',type:'mastery',legendary:true,ef:()=>{G._talentX21=true;gainXP(300,'action');gainCoins(1000);addWorldPoints(300);G.talentPoints=(G.talentPoints||0)+10;spawnParticles(window.innerWidth/2,window.innerHeight*.3,'stars');spawnParticles(window.innerWidth*.3,window.innerHeight*.4,'stars');spawnParticles(window.innerWidth*.7,window.innerHeight*.4,'stars');spawnParticles(window.innerWidth/2,window.innerHeight*.6,'stars');showT('☀️ SOLAR GOD!!! +1000 COINS +300 XP +10 TP!!!','y');vibe([200,50,300,50,400,50,300,50,200,50,100]);}},
 ];
+const TT_PATHS=[
+  {id:'power',em:'⚔️',nm:'POWER',col:'rgba(255,45,85,.8)',nodes:[
+    {id:'p1',em:'💪',nm:'Styrka+',desc:'+10% tränings-XP',cost:1,req:null},
+    {id:'p2',em:'🗡️',nm:'Vapenmästare',desc:'+15% battle damage',cost:1,req:'p1'},
+    {id:'p3',em:'🔥',nm:'Berserker',desc:'2× XP vid battle-vinst',cost:2,req:'p2'},
+    {id:'p4',em:'👑',nm:'KRIGSGUD',desc:'Låser upp Epic battles',cost:3,req:'p3'},
+  ]},
+  {id:'luck',em:'🍀',nm:'LUCK',col:'rgba(255,230,0,.8)',nodes:[
+    {id:'l1',em:'🌟',nm:'Tur+',desc:'+5% bonus coins',cost:1,req:null},
+    {id:'l2',em:'🎰',nm:'Spin Mästare',desc:'Gacha: alltid 3+ items',cost:1,req:'l1'},
+    {id:'l3',em:'💎',nm:'Sällsynt Magnet',desc:'+20% sällsynta drops',cost:2,req:'l2'},
+    {id:'l4',em:'🌈',nm:'LYCKOGUD',desc:'Dubbel coins dagligen',cost:3,req:'l3'},
+  ]},
+  {id:'social',em:'⚡',nm:'SOCIAL',col:'rgba(57,255,20,.8)',nodes:[
+    {id:'s1',em:'📱',nm:'Flash Star',desc:'+10% flash streak bonus',cost:1,req:null},
+    {id:'s2',em:'👥',nm:'Circle Ledare',desc:'+25% circle XP',cost:1,req:'s1'},
+    {id:'s3',em:'🌐',nm:'Karma Influencer',desc:'+50 WP/dag',cost:2,req:'s2'},
+    {id:'s4',em:'🏆',nm:'KARMA LEGEND',desc:'Profil: Legendary badge',cost:3,req:'s3'},
+  ]},
+];
+function renderTalentSimple(){
+  const scroll=$('ttSimpleScroll');if(!scroll)return;
+  const pts=G.talentPts||G.talentPoints||0;
+  const owned=G.talents||{};
+  const pt=$('talentPts');if(pt)pt.textContent=pts+' TP';
+  scroll.innerHTML=TT_PATHS.map(path=>`
+    <div style="margin-bottom:18px">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
+        <div style="font-size:22px">${path.em}</div>
+        <div style="font-size:14px;font-weight:900;color:${path.col};font-family:var(--mono);letter-spacing:2px">${path.nm}</div>
+      </div>
+      <div style="display:flex;gap:0;align-items:center;overflow-x:auto;padding-bottom:4px">
+        ${path.nodes.map((n,i)=>{
+          const isOwned=owned[n.id];
+          const reqMet=!n.req||owned[n.req];
+          const canBuy=!isOwned&&reqMet&&pts>=n.cost;
+          const locked=!isOwned&&(!reqMet||pts<n.cost);
+          return`${i>0?`<div style="width:24px;height:2px;background:${owned[path.nodes[i-1].id]?path.col:'rgba(255,255,255,.12)'};flex-shrink:0"></div>`:''}
+          <div onclick="${canBuy?`buyTalentNode('${n.id}')`:`_ttShowLocked(${JSON.stringify(n).replace(/"/g,"'")})`}" style="flex-shrink:0;width:72px;background:${isOwned?'rgba(57,255,20,.12)':canBuy?'rgba(255,255,255,.06)':'rgba(0,0,0,.3)'};border:2px solid ${isOwned?'rgba(57,255,20,.6)':canBuy?path.col:'rgba(255,255,255,.12)'};border-radius:14px;padding:10px 6px;text-align:center;cursor:${canBuy?'pointer':'default'};opacity:${locked&&!isOwned?'.45':'1'};transition:all .15s">
+            <div style="font-size:24px">${n.em}</div>
+            <div style="font-size:9px;font-weight:900;color:${isOwned?'var(--g)':canBuy?'var(--t1)':'var(--t3)'};line-height:1.2;margin:4px 0">${n.nm}</div>
+            <div style="font-size:8px;color:var(--t3);line-height:1.3">${n.desc}</div>
+            ${isOwned?'<div style="font-size:10px;color:var(--g);margin-top:3px">✅</div>':`<div style="font-size:9px;color:var(--y);font-family:var(--mono);margin-top:4px">${n.cost} TP</div>`}
+          </div>`;
+        }).join('')}
+      </div>
+    </div>
+  `).join('');
+}
+function buyTalentNode(id){
+  const all=TT_PATHS.flatMap(p=>p.nodes);
+  const n=all.find(x=>x.id===id);if(!n)return;
+  if(!G.talents)G.talents={};
+  if(G.talents[id]){showT('Redan lärd!','y');return;}
+  if(n.req&&!G.talents[n.req]){showT('Lär dig föregående först!','r');return;}
+  const pts=G.talentPts||G.talentPoints||0;
+  if(pts<n.cost){showT('Inte nog TP!','r');return;}
+  if(G.talentPts!==undefined)G.talentPts=G.talentPts-n.cost;
+  else G.talentPoints=(G.talentPoints||0)-n.cost;
+  G.talents[id]=true;
+  SFX.win&&SFX.win();vibe([20,10,40]);
+  showT('⚡ '+n.nm+' lärt!','g');
+  save();renderTalentSimple();
+}
+function _ttShowLocked(n){
+  if(typeof n==='string'){try{n=JSON.parse(n);}catch(e){return;}}
+  if(n.req){const all=TT_PATHS.flatMap(p=>p.nodes);const req=all.find(x=>x.id===n.req);showT('🔒 Kräver: '+(req?req.nm:n.req),'y');}
+  else{showT('💎 Behöver '+n.cost+' TP','y');}
+}
 function openTalentTree(){
   const tm=$('talentModal');if(!tm)return;
   tm.classList.add('open');
   _ttPC=null;_ttSel=null;
-  const TP_EL=$('talentPts');if(TP_EL)TP_EL.textContent=(G.talentPoints||0)+' TP';
-  setTimeout(initTalentCanvas,60);
+  const TP_EL=$('talentPts');if(TP_EL)TP_EL.textContent=(G.talentPts||G.talentPoints||0)+' TP';
+  renderTalentSimple();
 }
 function closeTalentTree(){
   const tm=$('talentModal');if(tm)tm.classList.remove('open');
