@@ -287,10 +287,12 @@ textarea.inp{resize:none;min-height:68px;}
 .fv-bg{font-size:160px;opacity:.05;pointer-events:none;position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);}
 .fv-right{position:absolute;right:10px;display:flex;flex-direction:column;align-items:center;gap:10px;z-index:10;}
 @keyframes musicSpin{0%{transform:rotate(0);}100%{transform:rotate(360deg);}}
-.fv-action{display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer;}
-.fv-action-ico{font-size:22px;transition:transform .15s;}
+.fv-action{display:flex;flex-direction:column;align-items:center;gap:4px;cursor:pointer;padding:8px 4px;-webkit-tap-highlight-color:transparent;}
+.fv-action:active>div:first-child{transform:scale(.8);}
+.fv-action-ico{font-size:26px;transition:transform .15s;}
 .fv-action:active .fv-action-ico{transform:scale(.78);}
-.fv-action-cnt{font-size:11px;font-weight:700;color:#fff;font-family:var(--mono);}
+.fv-action-cnt{font-size:11px;font-weight:700;color:rgba(255,255,255,.85);font-family:var(--mono);}
+@keyframes heartPop{0%{transform:scale(1);}40%{transform:scale(1.5);}70%{transform:scale(.85);}100%{transform:scale(1);}}
 .fv-tl{position:absolute;top:10px;left:10px;display:flex;flex-direction:column;gap:5px;z-index:5;}
 .fv-bl{position:absolute;bottom:10px;left:10px;right:60px;z-index:5;}
 .flash-stamp{display:inline-block;background:linear-gradient(135deg,var(--pk),var(--p));color:#fff;font-size:9px;font-weight:900;padding:3px 9px;border-radius:20px;letter-spacing:1px;font-family:var(--mono);}
@@ -1607,8 +1609,10 @@ textarea.inp{resize:none;min-height:68px;}
 .talent-legend-node{border-style:solid;position:relative;overflow:hidden;}
 .talent-legend-node::before{content:'LEGENDARY';position:absolute;top:6px;right:10px;font-size:7px;font-weight:900;letter-spacing:1px;color:var(--y);opacity:.6;}
 /* ── GACHA WHEEL ── */
-.gacha-modal{position:fixed;inset:0;z-index:870;background:rgba(0,0,0,.96);display:flex;flex-direction:column;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .3s;padding:20px;}
-.gacha-modal.open{opacity:1;pointer-events:all;}
+.gacha-modal{position:fixed;inset:0;z-index:870;background:rgba(0,0,0,.96);display:flex;flex-direction:column;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .35s,transform .35s;padding:20px;transform:translateY(0);}
+.gacha-modal.open{opacity:1;pointer-events:all;transform:translateY(0);}
+.gacha-modal.gm-closing{animation:gachaFlyOut .45s cubic-bezier(.4,0,.8,1) forwards;}
+@keyframes gachaFlyOut{0%{opacity:1;transform:translateY(0) scale(1);}100%{opacity:0;transform:translateY(60%) scale(.85);}}
 .gacha-wheel-wrap{position:relative;width:260px;height:260px;margin:0 auto 20px;}
 .gacha-wheel{width:260px;height:260px;border-radius:50%;position:relative;transition:transform 3s cubic-bezier(.17,.67,.12,.99);border:4px solid rgba(255,255,255,.15);box-shadow:0 0 40px rgba(255,230,0,.2);}
 .gacha-slice{position:absolute;inset:0;border-radius:50%;clip-path:polygon(50% 50%,50% 0%,100% 0%);}
@@ -2047,8 +2051,8 @@ textarea.inp{resize:none;min-height:68px;}
           <div class="ddr" onclick="cM();nav('home')"><div class="ddr-i">🐾</div>Din Pet</div>
           <div class="ddr" onclick="cM();nav('flash')"><div class="ddr-i">⚡</div>Flash Feed</div>
           <div class="ddr" onclick="cM();nav('social')"><div class="ddr-i">💬</div>Social & Chat<div class="dd-bdg" id="circleDot" style="display:none">!</div></div>
-          <div class="ddr" onclick="cM();nav('uppdrag')"><div class="ddr-i">🎯</div>Uppdrag</div>
-          <div class="ddr" onclick="cM();nav('uppdrag');setTimeout(()=>{const t=document.querySelector('#uppdragTabs .tab:last-child');if(t)t.click();},200)"><div class="ddr-i">📋</div>Bounties</div>
+          <div class="ddr" onclick="cM();nav('uppdrag')"><div class="ddr-i">🎯</div>Uppdrag &amp; Bounties</div>
+          <div class="ddr" onclick="cM();nav('home');setTimeout(()=>{const el=$('dailyChallengesContainer');if(el)el.scrollIntoView({behavior:'smooth'});},400)"><div class="ddr-i">📅</div>Dagliga Utmaningar</div>
           <div class="ddr" onclick="cM();nav('shop')"><div class="ddr-i">🛍️</div>Marketplace</div>
           <div class="ddr" onclick="cM();nav('map')"><div class="ddr-i">🗺️</div>Live Karta</div>
         </div>
@@ -2914,10 +2918,10 @@ textarea.inp{resize:none;min-height:68px;}
           <div class="shop-srch"><span style="font-size:17px">🔍</span><input placeholder="Sök..." id="meShopInp" oninput="renderMeShop(this.value)"></div>
         </div>
         <div class="tabs" id="meShopTabs">
-          <div class="tab on" onclick="switchMeShopTab('all',this)">✨ ALLA</div>
-          <div class="tab" onclick="switchMeShopTab('food',this)">🍖 Mat</div>
-          <div class="tab" onclick="switchMeShopTab('skin',this)">🎨 Skins</div>
-          <div class="tab" onclick="switchMeShopTab('gear',this)">⚡ Gear</div>
+          <div class="tab on" data-cat="all" onclick="switchMeShopTab('all',this)">✨ ALLA</div>
+          <div class="tab" data-cat="food" onclick="switchMeShopTab('food',this)">🍖 Mat</div>
+          <div class="tab" data-cat="skin" onclick="switchMeShopTab('skin',this)">🎨 Skins</div>
+          <div class="tab" data-cat="gear" onclick="switchMeShopTab('gear',this)">⚡ Gear</div>
         </div>
         <div id="meShopGrid" style="padding:8px 14px"></div>
       </div>
@@ -5667,29 +5671,21 @@ function renderFlashFeed(){
             <div class="fv-ava" style="width:36px;height:36px;font-size:20px;border:2px solid ${following?'var(--g)':'#fff'}">${p.pet}</div>
             ${!following?`<div onclick="flashFollow('${p.user}')" style="position:absolute;bottom:-6px;left:50%;transform:translateX(-50%);width:15px;height:15px;background:var(--pk);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:900;cursor:pointer;border:2px solid #000">+</div>`:''}
           </div>
-          <div class="fv-action ${liked?'liked':''}" onclick="likeFlash('${p.id}')" oncontextmenu="event.preventDefault();openReactionPanel('${p.id}',event)" ontouchstart="_startLongPress('${p.id}',event)" ontouchend="_cancelLongPress()" ontouchmove="_cancelLongPress()" style="font-size:${liked?'24px':'22px'};color:${liked?'var(--r)':'inherit'}">
-            <div id="fli${p.id}" style="font-size:${liked?'24px':'22px'};transition:transform .15s">${liked?'❤️':'🤍'}</div>
-            <div class="fv-action-cnt" id="flc${p.id}" style="color:${liked?'var(--pk)':'#fff'}">${p.likes>=1000?(p.likes/1000).toFixed(1)+'K':p.likes}</div>
+          <div class="fv-action ${liked?'liked':''}" onclick="likeFlash('${p.id}')" oncontextmenu="event.preventDefault();openReactionPanel('${p.id}',event)" ontouchstart="_startLongPress('${p.id}',event)" ontouchend="_cancelLongPress()" ontouchmove="_cancelLongPress()">
+            <div id="fli${p.id}" style="font-size:28px;transition:transform .15s;${liked?'filter:drop-shadow(0 0 8px rgba(255,45,85,.8));':''}animation:${liked?'heartPop .3s cubic-bezier(.34,1.56,.64,1)':'none'}">${liked?'❤️':'🤍'}</div>
+            <div class="fv-action-cnt" id="flc${p.id}" style="color:${liked?'var(--pk)':'rgba(255,255,255,.85)'};font-size:12px">${p.likes>=1000?(p.likes/1000).toFixed(1)+'K':p.likes}</div>
           </div>
           <div class="fv-action" onclick="flashQuickComment('${p.id}')">
-            <div style="font-size:22px">💬</div>
-            <div class="fv-action-cnt">${comments}</div>
-          </div>
-          <div class="fv-action" onclick="flashSave('${p.id}')">
-            <div id="fsv${p.id}" style="font-size:22px">${(G.savedFlash||new Set()).has(p.id)?'🔖':'📌'}</div>
-            <div class="fv-action-cnt">${saves}</div>
-          </div>
-          <div class="fv-action" onclick="doShare('${p.id}')">
-            <div style="font-size:22px">↗️</div>
-            <div class="fv-action-cnt">Dela</div>
+            <div style="font-size:26px">💬</div>
+            <div class="fv-action-cnt" style="font-size:12px">${comments}</div>
           </div>
           <div class="fv-action" onclick="flashSendGift('${p.id}','${p.pet}','${p.user}')">
-            <div style="font-size:22px">🎁</div>
-            <div class="fv-action-cnt">Gift</div>
+            <div style="font-size:26px;filter:drop-shadow(0 0 6px rgba(255,159,10,.5))">🎁</div>
+            <div class="fv-action-cnt" style="font-size:12px">Gift</div>
           </div>
-          <div class="fv-action" onclick="flashRecast('${p.id}','${p.user}')">
-            <div style="font-size:22px">🔄</div>
-            <div class="fv-action-cnt">Recast</div>
+          <div class="fv-action" onclick="flashRecast('${p.id}','${p.user}');doShare('${p.id}')">
+            <div style="font-size:26px;filter:drop-shadow(0 0 6px rgba(57,255,20,.4))">🔁</div>
+            <div class="fv-action-cnt" style="font-size:12px">Dela</div>
           </div>
         </div>
         <!-- bottom info (TikTok style) -->
@@ -6199,6 +6195,7 @@ function submitShoutout(){
 function renderSrcFilter(){$('srcRow').innerHTML=SOURCES.map(s=>`<div class="src ${G.shopSource===s.id?'on':''}" onclick="G.shopSource='${s.id}';renderSrcFilter();renderShop()">${s.n}</div>`).join('');}
 function switchShop(tab,el){G.shopTab=tab;document.querySelectorAll('#shopTabs .tab').forEach(x=>x.classList.remove('on'));if(el)el.classList.add('on');else{const t=document.querySelector(`#shopTabs .tab[data-t="${tab}"]`);if(t)t.classList.add('on');}renderShop();}
 function renderShop(){
+  if(!G.shopTab)G.shopTab='shop';
   const c=$('shopContent'),q=G.shopSearch;
   if(G.shopTab==='shop'){c.innerHTML=`<div class="pgrid">${SHOP_P.shop.filter(p=>!q||p.name.toLowerCase().includes(q)).map(p=>`<div class="pcard" onclick="showT('🛍️ ${p.name}!','g')"><div class="pc-img"><div style="font-size:50px">${p.em}</div>${p.badge?`<div class="pc-badge ${p.badge}">${p.badge==='new'?'NY':p.badge==='hot'?'🔥':'REA'}</div>`:''}</div><div class="pc-info"><div class="pc-name">${p.name}</div><div class="pc-src">📦 ${p.src}</div><div><span class="pc-price">${p.price}</span>${p.orig?`<span class="pc-orig">${p.orig}</span>`:''}</div><div class="pc-stars">${p.stars}</div></div></div>`).join('')}</div>`;}
   else if(G.shopTab==='second'){c.innerHTML=SHOP_P.second.filter(p=>!q||p.name.toLowerCase().includes(q)).map(p=>`<div class="lr-row" onclick="showT('📦 Kontakta!','g')"><div class="lr-img">${p.em}</div><div style="flex:1;min-width:0"><div class="lr-title">${p.name}</div><div class="lr-desc">${p.desc}</div><div class="lr-meta"><div class="lr-price">${p.price}</div><span class="tag tb2" style="font-size:9px">${p.src}</span><div class="lr-age">${p.age}</div></div><div style="font-size:11px;color:var(--t3);margin-top:3px">📍 ${p.loc}</div></div></div>`).join('');}
@@ -8206,7 +8203,7 @@ function renderMeProfil(){
 
 function renderMeShop(search){
   const grid=$('meShopGrid');if(!grid)return;
-  const tab=document.querySelector('#meShopTabs .tab.on');const cat=tab?tab.dataset.cat:'all';
+  const tab=document.querySelector('#meShopTabs .tab.on');const cat=tab?.dataset.cat||'all';
   const ITEMS_DEF=[
     {em:'🍖',nm:'Köttstycke',cat:'food',price:15,desc:'+30 Hunger'},
     {em:'🍕',nm:'Pizza Slice',cat:'food',price:25,desc:'+50 Hunger'},
@@ -11573,6 +11570,9 @@ const GACHA_PRIZES=[
   {em:'👑',nm:'2 VECKORS PREMIUM',col:'#FFD700',ultra:true,ef:()=>{G.premium=true;G.premiumTier='gold';G.premiumUntil=Date.now()+14*86400000;save();showT('👑 2 VECKORS PREMIUM AKTIVERAT! GRATTIS!!!','y');spawnParticles(window.innerWidth/2,window.innerHeight*.3,'stars');vibe([100,50,200,50,400,50,300]);addDiaryEntry('VANN 2 VECKORS PREMIUM i gacha! Omöjligt sällsynt! 👑');}},
   {em:'🌌',nm:'SECRET PET SKIN: COSMIC',col:'#BF5FFF',ultra:true,ef:()=>{G.petConfig=Object.assign(G.petConfig||{},{bodyColor:'#1a0a3d',eyeColor:'#BF5FFF',glowColor:'rgba(191,95,255,.9)',hasWings:true,accessory:'halo'});save();redrawPetCanvas();showT('🌌 COSMIC SECRET SKIN UPPLÅST! ULTRA RARE!!!','p');spawnParticles(window.innerWidth/2,window.innerHeight*.3,'stars');vibe([80,40,160,40,240,40,320]);}},
   {em:'💠',nm:'500 COINS + 5 TP MEGA',col:'#00D9FF',ultra:true,ef:()=>{gainCoins(500);G.talentPoints=(G.talentPoints||0)+5;save();showT('💠 500 COINS + 5 TP MEGA DROP! SJUKT SÄLLSYNT!','b');spawnParticles(window.innerWidth/2,window.innerHeight*.3,'stars');vibe([60,30,120,30,200]);}},
+  // ── BAD LUCK outcomes ──
+  {em:'💨',nm:'Pust! Ingen tur idag',col:'#444466',noluck:true,ef:()=>{showT('💨 Ingen tur idag... försök imorgon!','y');}},
+  {em:'🌑',nm:'Mörkt öde — inget idag',col:'#332244',noluck:true,ef:()=>{showT('🌑 Ödet var emot dig... prova imorgon!','y');}},
 ];
 // ── KARMA JACKPOT ──
 function getJackpotPot(){
@@ -11661,7 +11661,11 @@ function openGacha(){
   if(res){if(spun&&_lastSpinResultHTML)res.innerHTML=_lastSpinResultHTML;else res.innerHTML='';}
   const invBtn=$('gachaInventoryBtn');if(invBtn)invBtn.style.display=(spun&&_lastSpinResultHTML)?'block':'none';
 }
-function closeGacha(){const gm=$('gachaModal');if(gm)gm.classList.remove('open');_gachaSpinning=false;}
+function closeGacha(){
+  const gm=$('gachaModal');if(!gm)return;
+  gm.classList.add('gm-closing');
+  setTimeout(()=>{gm.classList.remove('open','gm-closing');_gachaSpinning=false;},450);
+}
 function drawGachaWheel(){
   const canvas=$('gachaCanvas');if(!canvas)return;
   const ctx=canvas.getContext('2d');const n=GACHA_PRIZES.length;const arc=2*Math.PI/n;
@@ -12742,7 +12746,7 @@ function renderSettings(){
     <div class="settings-group">
       ${row('👤',G.name||'Namnlös',sl?'Your name':'Ditt visningsnamn','',`_settingsEditName()`)}
       ${row('🐾',G.petEmoji+' '+(G.petName||''),sl?'Your pet':'Ditt husdjur','',`nav('home');closeSettings()`)}
-      ${row('⭐','Nivå '+G.level,sl?'Experience & progress':'Erfarenhet & progress','LV'+G.level,'showT("LV"+G.level+" · "+G.exp+" XP","b")')}
+      ${row('⭐',sl?'Level '+G.level:'Nivå '+G.level,sl?'Experience & progress':'Erfarenhet & progress','LV'+G.level,'showT("LV"+G.level+" · "+G.exp+" XP","b")')}
       ${row('⚡',G.coins+' coins',sl?'Your currency':'Din valuta','',`showT("Du har "+G.coins+" coins","y")`)}
       ${row('👑','Premium-status',sl?'Your subscription':'Din prenumeration',premiumLabel,`openModal('premiumModal');closeSettings()`)}
     </div>
