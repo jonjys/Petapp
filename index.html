@@ -5725,6 +5725,20 @@ const MOCK_CLANS=[
 function openClanView(){
   if(!$('clanModal'))_buildClanModal();
   const modal=$('clanModal');if(!modal)return;
+  // Rebuild clan membership section each open (G.clan may have changed)
+  const clanSect=$('clanMemberSect');
+  if(clanSect){
+    clanSect.innerHTML=G.clan?`<div style="background:linear-gradient(135deg,rgba(57,255,20,.08),rgba(57,255,20,.02));border:1.5px solid rgba(57,255,20,.3);border-radius:16px;padding:14px;margin-bottom:14px">
+      <div style="font-size:13px;font-weight:900;color:var(--g)">👑 DITT KLAN: ${G.clan}</div>
+      <div style="font-size:10px;color:var(--t3);margin-top:4px">Klanmedlem · Bidra med WP för att växa</div>
+      <div style="display:flex;gap:8px;margin-top:10px">
+        <button class="btn btn-pk btn-sm" onclick="openRaid()">⚔️ RAIDA</button>
+        <button class="btn btn-sm" style="flex:1" onclick="showT('Klan-chat kommer snart!','b')">💬 KLAN-CHAT</button>
+      </div>
+    </div>`:'';
+  }
+  const createBtn=$('clanCreateBtn');
+  if(createBtn)createBtn.style.display=G.clan?'none':'block';
   modal.classList.add('open');
   renderClans();
 }
@@ -5732,21 +5746,13 @@ function _buildClanModal(){
   const m=document.createElement('div');
   m.id='clanModal';m.className='modal';
   m.innerHTML=`<div class="ms"><div class="mh" onclick="closeModal('clanModal')"></div>
-    <div class="mt">⚔️ Klaner <div class="mx" onclick="closeModal('clanModal')">✕</div></div>
-    ${G.clan?`<div style="background:linear-gradient(135deg,rgba(57,255,20,.08),rgba(57,255,20,.02));border:1.5px solid rgba(57,255,20,.3);border-radius:16px;padding:14px;margin-bottom:14px">
-      <div style="font-size:13px;font-weight:900;color:var(--g)">👑 DITT KLAN: ${G.clan}</div>
-      <div style="font-size:10px;color:var(--t3);margin-top:4px">Klanmedlem · Bidra med WP för att växa</div>
-      <div style="display:flex;gap:8px;margin-top:10px">
-        <button class="btn btn-pk btn-sm" onclick="openRaid()">⚔️ RAIDA</button>
-        <button class="btn btn-sm" style="flex:1" onclick="showT('Klan-chat kommer snart!','b')">💬 KLAN-CHAT</button>
-      </div>
-    </div>`:''}
+    <div class="mt">⚔️ SQUAD / KLAN <div class="mx" onclick="closeModal('clanModal')">✕</div></div>
+    <div id="clanMemberSect"></div>
     <div class="sh"><div class="sh-t">🌍 AKTIVA KLANER</div></div>
     <div id="clanList" style="padding:0 0 18px"></div>
-    ${!G.clan?`<button class="btn btn-g btn-lg btn-full" onclick="createClan()">+ SKAPA KLAN</button>`:''}
+    <div id="clanCreateBtn"><button class="btn btn-g btn-lg btn-full" onclick="createClan()">+ SKAPA KLAN</button></div>
   </div>`;
   document.body.appendChild(m);
-  renderClans();
 }
 function renderClans(){
   const el=$('clanList');if(!el)return;
@@ -8000,21 +8006,36 @@ const KW_DISTRICTS=[
 ];
 
 const KW_WILD_PETS=[
+  // Common — 30% drop rate zone
   {id:'wp1', em:'🦊',nm:'Vild Räv',     rarity:'common',   cost:30,  xpR:25,  desc:'Smyger runt Södermalm'},
-  {id:'wp2', em:'🐺',nm:'Urban Wolf',   rarity:'rare',     cost:80,  xpR:60,  desc:'Sedd vid Globen'},
-  {id:'wp3', em:'🦋',nm:'Neon Wing',    rarity:'epic',     cost:150, xpR:100, desc:'Glimmar vid vattnet'},
   {id:'wp4', em:'🐸',nm:'Tunnel Frog',  rarity:'common',   cost:25,  xpR:20,  desc:'Lever i tunnelbanan'},
-  {id:'wp5', em:'🐉',nm:'City Dragon',  rarity:'legendary',cost:300, xpR:250, desc:'Bevakar Gamla Stan'},
-  {id:'wp6', em:'🦁',nm:'Solar Lion',   rarity:'epic',     cost:180, xpR:130, desc:'Jaktar i Djurgården'},
   {id:'wp7', em:'🐧',nm:'Ice Walker',   rarity:'common',   cost:20,  xpR:15,  desc:'Badar i Riddarfjärden'},
+  {id:'wp13',em:'🦩',nm:'Flamingo',     rarity:'common',   cost:35,  xpR:28,  desc:'Vilar vid Brunnsviken'},
+  {id:'wp16',em:'🐇',nm:'Metro Rabbit', rarity:'common',   cost:22,  xpR:18,  desc:'Springer i Tunnelbanan'},
+  {id:'wp17',em:'🦔',nm:'Park Hedgehog',rarity:'common',   cost:28,  xpR:22,  desc:'Gömmer sig i Humlegården'},
+  {id:'wp18',em:'🐿️',nm:'Chip Squirrel',rarity:'common',  cost:18,  xpR:14,  desc:'Samlar nötter vid Djurgården'},
+  {id:'wp19',em:'🦜',nm:'Neon Parrot',  rarity:'common',   cost:32,  xpR:26,  desc:'Skriker i Gamla Stan'},
+  // Rare — medium challenge
+  {id:'wp2', em:'🐺',nm:'Urban Wolf',   rarity:'rare',     cost:80,  xpR:60,  desc:'Sedd vid Globen'},
   {id:'wp8', em:'🦈',nm:'Dark Shark',   rarity:'rare',     cost:90,  xpR:70,  desc:'Simmar under broarna'},
   {id:'wp9', em:'🦅',nm:'Storm Eagle',  rarity:'rare',     cost:100, xpR:80,  desc:'Cirklar över Stadshuset'},
-  {id:'wp10',em:'🐻',nm:'Neon Bear',    rarity:'epic',     cost:160, xpR:110, desc:'Dansar i Vasaparken'},
-  {id:'wp11',em:'🦄',nm:'Ghost Unicorn',rarity:'legendary',cost:280, xpR:220, desc:'Syns bara midnatt'},
   {id:'wp12',em:'🐊',nm:'Sewer Croc',   rarity:'rare',     cost:75,  xpR:55,  desc:'Döljer sig under T-banan'},
-  {id:'wp13',em:'🦩',nm:'Flamingo',     rarity:'common',   cost:35,  xpR:28,  desc:'Vilar vid Brunnsviken'},
+  {id:'wp20',em:'🦝',nm:'Gang Raccoon', rarity:'rare',     cost:85,  xpR:65,  desc:'Stjäl snacks i Hornstull'},
+  {id:'wp21',em:'🐍',nm:'Cyber Snake',  rarity:'rare',     cost:95,  xpR:75,  desc:'Glider längs Skeppsbron'},
+  {id:'wp22',em:'🦦',nm:'Hacker Otter', rarity:'rare',     cost:70,  xpR:52,  desc:'Hackar WiFi vid Stureplan'},
+  // Epic — hard catch
+  {id:'wp3', em:'🦋',nm:'Neon Wing',    rarity:'epic',     cost:150, xpR:100, desc:'Glimmar vid vattnet'},
+  {id:'wp6', em:'🦁',nm:'Solar Lion',   rarity:'epic',     cost:180, xpR:130, desc:'Jaktar i Djurgården'},
+  {id:'wp10',em:'🐻',nm:'Neon Bear',    rarity:'epic',     cost:160, xpR:110, desc:'Dansar i Vasaparken'},
   {id:'wp14',em:'🐯',nm:'Cyber Tiger',  rarity:'epic',     cost:200, xpR:150, desc:'Stalkar i Kista Science'},
+  {id:'wp23',em:'🦏',nm:'Data Rhino',   rarity:'epic',     cost:170, xpR:125, desc:'Lastar server vid Nacka'},
+  {id:'wp24',em:'🐘',nm:'Memory Elephant',rarity:'epic',   cost:190, xpR:140, desc:'Minns allt vid Tekniska'},
+  // Legendary — very hard
+  {id:'wp5', em:'🐉',nm:'City Dragon',  rarity:'legendary',cost:300, xpR:250, desc:'Bevakar Gamla Stan'},
+  {id:'wp11',em:'🦄',nm:'Ghost Unicorn',rarity:'legendary',cost:280, xpR:220, desc:'Syns bara midnatt'},
   {id:'wp15',em:'🐬',nm:'Neon Dolphin', rarity:'legendary',cost:350, xpR:300, desc:'Hoppar vid Fjäderholmarna'},
+  {id:'wp25',em:'🌟',nm:'Star Spirit',  rarity:'legendary',cost:400, xpR:350, desc:'Existerar bara i drömmar'},
+  {id:'wp26',em:'🐲',nm:'Thunder Wyrm', rarity:'legendary',cost:450, xpR:380, desc:'Sover under Stockholm'},
 ];
 
 const KW_FRIENDS=[
@@ -8138,31 +8159,38 @@ function renderKarmaWorld(){
   // wild pets — game-like scattered field
   const wr=$('kwWildRow');
   if(wr){
-    const rarCol={common:'rgba(255,255,255,.65)',rare:'rgba(0,217,255,.9)',epic:'rgba(191,95,255,.9)',legendary:'rgba(255,230,0,1)'};
-    const rarGlow={common:'rgba(255,255,255,.08)',rare:'rgba(0,217,255,.18)',epic:'rgba(191,95,255,.22)',legendary:'rgba(255,230,0,.32)'};
-    const rarBorder={common:'rgba(255,255,255,.15)',rare:'rgba(0,217,255,.38)',epic:'rgba(191,95,255,.48)',legendary:'rgba(255,230,0,.65)'};
+    const rarCol={common:'rgba(255,255,255,.7)',rare:'rgba(0,217,255,.95)',epic:'rgba(191,95,255,.95)',legendary:'rgba(255,230,0,1)'};
+    const rarGlow={common:'rgba(255,255,255,.05)',rare:'rgba(0,217,255,.15)',epic:'rgba(191,95,255,.2)',legendary:'rgba(255,230,0,.28)'};
+    const rarBorder={common:'rgba(255,255,255,.12)',rare:'rgba(0,217,255,.35)',epic:'rgba(191,95,255,.45)',legendary:'rgba(255,230,0,.6)'};
+    const rarLabel={common:'⚪ COM',rare:'💙 SÄLLSYNT',epic:'💜 EPISK',legendary:'⭐ LEGENDÄR'};
     const uncaught=KW_WILD_PETS.filter(p=>!G.builtZones.includes('caught_'+p.id));
     const caughtPets=KW_WILD_PETS.filter(p=>G.builtZones.includes('caught_'+p.id));
+    const sections=['legendary','epic','rare','common'];
+    let sectHTML='';
+    sections.forEach(rar=>{
+      const pets=uncaught.filter(p=>p.rarity===rar);
+      if(pets.length===0)return;
+      sectHTML+=`<div style="margin-bottom:10px">
+        <div style="font-size:8px;font-weight:900;color:${rarCol[rar]};font-family:var(--mono);letter-spacing:1px;margin-bottom:5px;padding:2px 6px;background:${rarGlow[rar]};border-radius:6px;display:inline-block">${rarLabel[rar]} · ${pets.length} kvar</div>
+        <div style="display:flex;flex-wrap:wrap;gap:5px">
+          ${pets.map((p,i)=>`<div onclick="catchWildPet('${p.id}')" style="display:flex;flex-direction:column;align-items:center;cursor:pointer;-webkit-tap-highlight-color:transparent;padding:7px 5px;border-radius:14px;background:${rarGlow[rar]};border:1.5px solid ${rarBorder[rar]};min-width:60px;flex:1;max-width:80px;position:relative" ontouchstart="this.style.transform='scale(.88)'" ontouchend="this.style.transform=''">
+            <div style="font-size:28px;animation:petBob ${1.8+i*.3}s ease-in-out infinite">${p.em}</div>
+            <div style="font-size:7px;font-weight:900;color:${rarCol[rar]};font-family:var(--mono);margin-top:2px;text-align:center;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:68px">${p.nm}</div>
+            <div style="margin-top:3px;background:rgba(255,45,85,.15);border:1px solid rgba(255,45,85,.3);border-radius:6px;color:var(--pk);font-size:6px;font-weight:900;padding:1px 4px;font-family:var(--mono)">${p.cost}⚡</div>
+          </div>`).join('')}
+        </div>
+      </div>`;
+    });
     wr.innerHTML=`
-      <div style="position:relative;width:100%;min-height:180px;background:linear-gradient(180deg,#030812 0%,#020510 60%,#04081a 100%);border-radius:18px;overflow:hidden;margin-bottom:8px;border:1px solid rgba(57,255,20,.12)">
-        <div style="position:absolute;inset:0;pointer-events:none">
-          ${Array.from({length:18},()=>`<div style="position:absolute;width:${1+Math.random()*2}px;height:${1+Math.random()*2}px;background:#fff;border-radius:50%;left:${Math.random()*100}%;top:${Math.random()*65}%;opacity:${.15+Math.random()*.4}"></div>`).join('')}
+      <div style="background:linear-gradient(180deg,#030812 0%,#020510 60%,#04081a 100%);border-radius:18px;overflow:hidden;margin-bottom:8px;border:1px solid rgba(57,255,20,.12)">
+        <div style="padding:10px 10px 8px;position:relative">
+          ${sectHTML||`<div style="text-align:center;padding:20px;color:var(--g);font-size:11px;font-weight:900;font-family:var(--mono)">🎉 ALLA FÅNGADE!</div>`}
         </div>
-        <div style="position:absolute;bottom:24px;left:0;right:0;height:1px;background:rgba(57,255,20,.12)"></div>
-        <div style="display:flex;flex-wrap:wrap;gap:5px;padding:10px 8px 36px;position:relative;z-index:2">
-          ${uncaught.map((p,i)=>
-            `<div onclick="catchWildPet('${p.id}')" style="display:flex;flex-direction:column;align-items:center;cursor:pointer;-webkit-tap-highlight-color:transparent;padding:7px 5px;border-radius:14px;background:${rarGlow[p.rarity]};border:1.5px solid ${rarBorder[p.rarity]};min-width:65px;flex:1;max-width:85px" ontouchstart="this.style.transform='scale(.88)'" ontouchend="this.style.transform=''">
-              <div style="font-size:30px;animation:petBob ${1.8+i*.25}s ease-in-out infinite ${(i*.2)%2}s">${p.em}</div>
-              <div style="font-size:7px;font-weight:900;color:${rarCol[p.rarity]};font-family:var(--mono);margin-top:2px;text-align:center;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:70px">${p.nm}</div>
-              <div style="font-size:6px;color:${rarCol[p.rarity]};opacity:.7;font-family:var(--mono)">${p.rarity==='legendary'?'⭐ LEG':p.rarity==='epic'?'💜 EPIC':p.rarity==='rare'?'💙 RARE':'⚪ COM'}</div>
-              <div style="margin-top:3px;background:rgba(255,45,85,.18);border:1px solid rgba(255,45,85,.38);border-radius:7px;color:var(--pk);font-size:6px;font-weight:900;padding:1px 5px;font-family:var(--mono)">${p.cost}⚡</div>
-            </div>`
-          ).join('')}
-          ${uncaught.length===0?`<div style="width:100%;text-align:center;padding:20px;color:var(--g);font-size:11px;font-weight:900;font-family:var(--mono)">🎉 ALLA FÅNGADE!</div>`:''}
+        <div style="padding:4px 10px 8px;border-top:1px solid rgba(57,255,20,.1);display:flex;align-items:center;justify-content:space-between">
+          <div style="font-size:8px;color:var(--g);font-weight:900;font-family:var(--mono)">✅ ${caughtPets.length}/${KW_WILD_PETS.length} FÅNGADE</div>
+          ${caughtPets.length>0?`<div style="display:flex;gap:3px;flex-wrap:wrap">${caughtPets.map(p=>`<span title="${p.nm}" style="font-size:14px">${p.em}</span>`).join('')}</div>`:''}
         </div>
-        <div style="position:absolute;bottom:5px;right:8px;font-size:8px;color:var(--g);font-weight:900;font-family:var(--mono)">✅ ${caughtPets.length}/${KW_WILD_PETS.length}</div>
       </div>
-      ${caughtPets.length>0?`<div style="display:flex;gap:5px;flex-wrap:wrap">${caughtPets.map(p=>`<div style="display:flex;align-items:center;gap:3px;background:rgba(57,255,20,.06);border:1px solid rgba(57,255,20,.22);border-radius:10px;padding:3px 7px"><span style="font-size:12px">${p.em}</span><span style="font-size:7px;color:var(--g)">✅</span></div>`).join('')}</div>`:''}
     `;
   }
   // friend worlds
@@ -8394,20 +8422,30 @@ function upgradeBuilding(id){
   spawnParticles(window.innerWidth/2,window.innerHeight*.4,'stars');
   addDiaryEntry('Uppgraderade '+b.em+' '+b.nm+' till level '+(lvl+1)+'!');
   save();updateHUD();renderCastle();
+  // Flash the castle grid to show it updated
+  const cg=$('castleBuildGrid');if(cg){cg.style.transition='opacity .1s';cg.style.opacity='.3';setTimeout(()=>{cg.style.opacity='1';},120);}
 }
 
 // ── DNA PET MIXER ──
 const DNA_COMBOS={
-  '🐉🐺':{em:'🐲',nm:'Dragon Wolf',bonus:'ATK+30,SPEED+20'},
-  '🐺🦊':{em:'🦝',nm:'Shadow Shifter',bonus:'STEALTH+40,SPD+25'},
-  '🦊🐱':{em:'🐈',nm:'Phantom Cat',bonus:'LUCK+35,EVA+20'},
-  '🐱🦋':{em:'🦋',nm:'Neon Butterfly',bonus:'CHARM+50,XP+15%'},
-  '🐸🦋':{em:'🪲',nm:'Chrono Bug',bonus:'TIME+30,WP+20'},
-  '🐉🦁':{em:'🦁',nm:'Thunder King',bonus:'ATK+45,DEF+25'},
-  '🐻🐯':{em:'🐯',nm:'Arctic Tiger',bonus:'DEF+40,STR+30'},
-  '🐺🐯':{em:'🐺',nm:'Dire Tiger',bonus:'ATK+50,SPD+15'},
-  '🦁🦋':{em:'🦁',nm:'Golden Wing',bonus:'CHARM+30,ATK+20'},
-  '🐉🐸':{em:'🐉',nm:'Toxic Dragon',bonus:'POISON+40,ATK+25'},
+  '🐉🐺':{em:'🐲',nm:'Dragon Wolf',bonus:'⚔️ ATK+30 · SPEED+20',desc:'Ursinnet möter draken'},
+  '🐺🦊':{em:'🦝',nm:'Shadow Shifter',bonus:'🌑 STEALTH+40 · SPD+25',desc:'Skuggans mästare'},
+  '🦊🐱':{em:'🐈',nm:'Phantom Cat',bonus:'🍀 LUCK+35 · EVA+20',desc:'Lika mjuk som oanfäktad'},
+  '🐱🦋':{em:'🦋',nm:'Neon Butterfly',bonus:'💜 CHARM+50 · XP+15%',desc:'Skönhetens varelse'},
+  '🐸🦋':{em:'🪲',nm:'Chrono Bug',bonus:'⏱️ TIME+30 · WP+20',desc:'Tidsmaskinen i fickformat'},
+  '🐉🦁':{em:'👑',nm:'Thunder King',bonus:'⚡ ATK+45 · DEF+25',desc:'Legendarisk krigarkung'},
+  '🐻🐯':{em:'🐯',nm:'Arctic Tiger',bonus:'🛡️ DEF+40 · STR+30',desc:'Naturens starkaste'},
+  '🐺🐯':{em:'🐺',nm:'Dire Tiger',bonus:'🔴 ATK+50 · SPD+15',desc:'Ultimat rovdjur'},
+  '🦁🦋':{em:'🦁',nm:'Golden Wing',bonus:'✨ CHARM+30 · ATK+20',desc:'Guldets härlighet'},
+  '🐉🐸':{em:'🐉',nm:'Toxic Dragon',bonus:'☣️ POISON+40 · ATK+25',desc:'Gift och eld i ett'},
+  '🦊🐺':{em:'🦝',nm:'Shadow Shifter',bonus:'🌑 STEALTH+40 · SPD+25',desc:'Skuggans mästare'},
+  '🐱🦊':{em:'🐈',nm:'Phantom Cat',bonus:'🍀 LUCK+35 · EVA+20',desc:'Lika mjuk som oanfäktad'},
+  '🦋🐱':{em:'🦋',nm:'Neon Butterfly',bonus:'💜 CHARM+50 · XP+15%',desc:'Skönhetens varelse'},
+  '🦊🦋':{em:'🦜',nm:'Rainbow Fox',bonus:'🌈 CHARM+45 · LUCK+30',desc:'Lyckans budbärare'},
+  '🐧🐸':{em:'🐧',nm:'Cryo Frog',bonus:'❄️ ICE+35 · DEF+20',desc:'Kall som isen, snabb som vattnet'},
+  '🐸🐺':{em:'🐊',nm:'Swamp Wolf',bonus:'🌿 POISON+25 · ATK+30',desc:'Träskets väktare'},
+  '🐉🐯':{em:'🐲',nm:'Imperial Dragon',bonus:'👑 ATK+55 · PRESTIGE+40',desc:'Det kejserliga odjuret'},
+  '🦈🐺':{em:'🦈',nm:'Apex Predator',bonus:'🦷 ATK+60 · SPEED+35',desc:'Absolut topprovdjur'},
 };
 
 let _dnaSlot1=null,_dnaSlot2=null;
@@ -8415,10 +8453,12 @@ function openDNAMixer(){
   const dm=$('dnaModal');if(!dm)return;
   _dnaSlot1=G.petEmoji||'🐉';
   _dnaSlot2=null;
+  _dnaPhase='pick';
   dm.classList.add('open');
   const mixBtn=$('dnaMixBtn');if(mixBtn){mixBtn.textContent='🧬 MIX DNA!';mixBtn.style.background='linear-gradient(135deg,var(--p),#7B2FBE)';mixBtn.style.color='#fff';mixBtn.onclick=executeDNAMix;}
   renderDNAMixer();
 }
+let _dnaPhase='pick';
 function closeDNAMixer(){const dm=$('dnaModal');if(dm)dm.classList.remove('open');}
 
 function renderDNAMixer(){
@@ -8432,22 +8472,49 @@ function renderDNAMixer(){
     if(_dnaSlot1&&_dnaSlot2){
       if(combo){
         res.innerHTML=`<div style="font-size:42px;filter:drop-shadow(0 0 16px rgba(191,95,255,.7));animation:petBob 1s ease-in-out infinite">${combo.em}</div>
-          <div style="font-size:14px;font-weight:900;color:var(--p);margin:4px 0">${combo.nm}</div>
-          <div style="font-size:11px;color:var(--t3)">${combo.bonus}</div>`;
+          <div style="font-size:13px;font-weight:900;color:var(--p);margin:4px 0">${combo.nm}</div>
+          <div style="font-size:10px;color:var(--g);font-weight:900">${combo.bonus}</div>
+          <div style="font-size:9px;color:var(--t3);margin-top:2px">${combo.desc}</div>`;
       }else{
-        res.innerHTML=`<div style="font-size:32px;margin-bottom:6px">🧬</div><div style="font-size:12px;color:var(--t3)">Okänd kombination — prova mix!</div>`;
+        res.innerHTML=`<div style="font-size:32px;margin-bottom:4px">🧬</div><div style="font-size:11px;color:var(--t3)">Mystery Hybrid!</div><div style="font-size:9px;color:var(--t3)">Prova – du kan ha tur</div>`;
       }
     }else{
-      res.innerHTML=`<div style="font-size:32px;margin-bottom:6px;opacity:.4">❓</div><div style="font-size:12px;color:var(--t3)">Välj 2 pets att mixa</div>`;
+      res.innerHTML=`<div style="font-size:32px;margin-bottom:4px;opacity:.4">❓</div><div style="font-size:10px;color:var(--t3)">Välj en mix-partner</div>`;
+    }
+  }
+  // combo hint strip — show which pets your current pet can mix with
+  const hintEl=$('dnaComboHints');
+  if(hintEl&&_dnaSlot1){
+    const hints=Object.entries(DNA_COMBOS).filter(([k])=>k.startsWith(_dnaSlot1)||k.endsWith(_dnaSlot1));
+    if(hints.length>0){
+      hintEl.innerHTML='<div style="font-size:9px;color:var(--p);font-weight:900;margin-bottom:5px;font-family:var(--mono)">✨ KÄNDA KOMBINATIONER MED '+_dnaSlot1+':</div>'+
+        hints.slice(0,4).map(([k,v])=>{
+          const other=k.replace(_dnaSlot1,'');
+          return`<div onclick="selectDNAPet('${other}')" style="display:flex;align-items:center;gap:6px;background:rgba(191,95,255,.06);border:1px solid rgba(191,95,255,.2);border-radius:10px;padding:4px 8px;margin-bottom:4px;cursor:pointer">
+            <span style="font-size:16px">${_dnaSlot1}</span>
+            <span style="font-size:10px;color:var(--t3)">+</span>
+            <span style="font-size:16px">${other}</span>
+            <span style="font-size:10px;color:var(--t3)">→</span>
+            <span style="font-size:16px">${v.em}</span>
+            <span style="font-size:9px;font-weight:900;color:var(--p)">${v.nm}</span>
+          </div>`;
+        }).join('');
+    }else{
+      hintEl.innerHTML='<div style="font-size:9px;color:var(--t3);text-align:center;padding:8px">Fånga fler pets för att hitta hemliga kombinationer!</div>';
     }
   }
   const picker=$('dnaPetPicker');
   if(picker){
     const caughtWP=KW_WILD_PETS.filter(p=>(G.builtZones||[]).includes('caught_'+p.id));
     const allOpts=[...PETS.map(p=>({em:p,nm:p})),...caughtWP.map(p=>({em:p.em,nm:p.nm}))];
-    picker.innerHTML=allOpts.map((p,i)=>`<div class="dna-pet-opt" onclick="selectDNAPet('${p.em}')" style="${_dnaSlot2===p.em?'border-color:var(--p);background:rgba(191,95,255,.1)':''}">
-      <span style="font-size:22px">${p.em}</span>
-    </div>`).join('');
+    picker.innerHTML=allOpts.map(p=>{
+      const k1=(_dnaSlot1||'')+p.em,k2=p.em+(_dnaSlot1||'');
+      const hasCombo=!!(DNA_COMBOS[k1]||DNA_COMBOS[k2]);
+      return`<div class="dna-pet-opt" onclick="selectDNAPet('${p.em}')" style="${_dnaSlot2===p.em?'border-color:var(--p);background:rgba(191,95,255,.15)':hasCombo?'border-color:rgba(191,95,255,.45);background:rgba(191,95,255,.06)':''}">
+        <span style="font-size:22px">${p.em}</span>
+        ${hasCombo?'<div style="position:absolute;top:-3px;right:-3px;width:8px;height:8px;background:var(--p);border-radius:50%"></div>':''}
+      </div>`;
+    }).join('');
   }
   const mixBtn=$('dnaMixBtn');
   if(mixBtn)mixBtn.disabled=!(_dnaSlot1&&_dnaSlot2);
@@ -8500,9 +8567,45 @@ const _JR_RARITY={
 function catchWildPet(id){
   const p=KW_WILD_PETS.find(x=>x.id===id);if(!p)return;
   if(G.builtZones.includes('caught_'+id)){showT('✅ Redan fångad!','y');return;}
-  if(G.coins<p.cost){showT('❌ Behöver '+p.cost+'⚡','r');SFX.error();return;}
-  // Open judgment ring instead of instant catch
-  _openJudgmentRing(p);
+  _openWildEncounter(p);
+}
+function _openWildEncounter(p){
+  let ex=$('wildEncounter');if(ex)ex.remove();
+  const rarCol={common:'#aaa',rare:'#00D9FF',epic:'#BF5FFF',legendary:'#FFE600'};
+  const rarGlow={common:'rgba(255,255,255,.1)',rare:'rgba(0,217,255,.25)',epic:'rgba(191,95,255,.3)',legendary:'rgba(255,230,0,.35)'};
+  const rarLbl={common:'VANLIG',rare:'SÄLLSYNT',epic:'EPISK',legendary:'LEGENDÄR'};
+  const col=rarCol[p.rarity]||'#aaa';
+  const ov=document.createElement('div');ov.id='wildEncounter';
+  ov.style.cssText='position:fixed;inset:0;z-index:1050;background:rgba(0,0,0,.96);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;overflow:hidden';
+  ov.innerHTML=`
+    <div style="position:absolute;inset:0;pointer-events:none;overflow:hidden">
+      ${Array.from({length:20},()=>`<div style="position:absolute;width:${1+Math.random()*3}px;height:${1+Math.random()*3}px;background:${col};border-radius:50%;left:${Math.random()*100}%;top:${Math.random()*100}%;opacity:${.1+Math.random()*.4};animation:petBob ${2+Math.random()*3}s ease-in-out infinite ${Math.random()*2}s"></div>`).join('')}
+    </div>
+    <div style="font-size:10px;font-weight:900;color:${col};letter-spacing:4px;margin-bottom:12px;font-family:var(--mono)">⚠️ VILT MÖTE!</div>
+    <div style="position:relative;width:140px;height:140px;margin-bottom:16px">
+      <div style="position:absolute;inset:0;border-radius:50%;background:${rarGlow[p.rarity]};filter:blur(20px);animation:ringPulse 2s ease-in-out infinite"></div>
+      <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:88px;animation:petBob 1.2s ease-in-out infinite;filter:drop-shadow(0 0 24px ${col})">${p.em}</div>
+    </div>
+    <div style="font-size:11px;font-weight:900;color:${col};letter-spacing:2px;margin-bottom:4px;font-family:var(--mono)">${rarLbl[p.rarity]||p.rarity.toUpperCase()}</div>
+    <div style="font-size:24px;font-weight:900;color:#fff;margin-bottom:6px">${p.nm}</div>
+    <div style="font-size:12px;color:var(--t2);margin-bottom:20px;text-align:center;max-width:260px">${p.desc}</div>
+    <div style="display:flex;gap:12px;margin-bottom:20px">
+      <div style="text-align:center;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:12px;padding:8px 14px">
+        <div style="font-size:18px;font-weight:900;color:var(--y)">${p.cost}⚡</div>
+        <div style="font-size:8px;color:var(--t3)">KOSTNAD</div>
+      </div>
+      <div style="text-align:center;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:12px;padding:8px 14px">
+        <div style="font-size:18px;font-weight:900;color:var(--g)">${p.xpR}XP</div>
+        <div style="font-size:8px;color:var(--t3)">BELÖNING</div>
+      </div>
+    </div>
+    ${G.coins<p.cost?`<div style="font-size:12px;color:var(--r);font-weight:900;margin-bottom:12px">❌ Inte tillräckligt med mynt! (${G.coins}/${p.cost}⚡)</div>
+    <button onclick="document.getElementById('wildEncounter').remove()" style="background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.2);border-radius:14px;padding:12px 32px;color:var(--t2);font-size:14px;cursor:pointer;font-family:var(--ff)">Gå tillbaka</button>`:
+    `<button onclick="document.getElementById('wildEncounter').remove();_openJudgmentRing(KW_WILD_PETS.find(x=>x.id==='${p.id}'))" style="background:linear-gradient(135deg,${col},rgba(255,255,255,.1));border:none;border-radius:16px;padding:16px 40px;color:#000;font-size:15px;font-weight:900;cursor:pointer;font-family:var(--mono);box-shadow:0 0 24px ${col};letter-spacing:1px;-webkit-tap-highlight-color:transparent">🎯 FÅNGA!</button>
+    <button onclick="document.getElementById('wildEncounter').remove()" style="background:none;border:none;color:var(--t3);font-size:12px;cursor:pointer;margin-top:12px;font-family:var(--ff)">Avbryt</button>`}
+  `;
+  document.body.appendChild(ov);
+  vibe(30);
 }
 function _openJudgmentRing(p){
   let existing=$('jrOverlay');if(existing)existing.remove();
@@ -10883,32 +10986,37 @@ document.addEventListener('visibilitychange',()=>{
 
 <!-- DNA MIXER MODAL -->
 <div class="modal" id="dnaModal" style="z-index:600">
-  <div class="modal-box" style="max-width:360px">
-    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
-      <div style="font-size:16px;font-weight:900;font-family:var(--mono)">🧬 DNA MIXER</div>
+  <div class="modal-box" style="max-width:360px;max-height:88vh;overflow-y:auto">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px">
+      <div>
+        <div style="font-size:16px;font-weight:900;font-family:var(--mono)">🧬 DNA MIXER</div>
+        <div style="font-size:10px;color:var(--t3)">Kombinera 2 pets → skapa en hybrid!</div>
+      </div>
       <button class="btn btn-ghost btn-sm" onclick="closeDNAMixer()">✕</button>
     </div>
-    <!-- Slots -->
-    <div style="display:flex;align-items:center;justify-content:center;gap:12px;margin-bottom:14px">
+    <!-- Slots row -->
+    <div style="display:flex;align-items:center;justify-content:center;gap:10px;margin:12px 0">
       <div style="text-align:center">
-        <div style="font-size:42px;background:var(--c2);border:2px solid var(--p);border-radius:14px;width:64px;height:64px;display:flex;align-items:center;justify-content:center" id="dnaSlot1">?</div>
-        <div style="font-size:9px;color:var(--t3);margin-top:3px">DIN PET</div>
+        <div style="font-size:36px;background:linear-gradient(135deg,rgba(191,95,255,.15),rgba(127,46,190,.05));border:2px solid var(--p);border-radius:14px;width:62px;height:62px;display:flex;align-items:center;justify-content:center;box-shadow:0 0 16px rgba(191,95,255,.3)" id="dnaSlot1">?</div>
+        <div style="font-size:8px;color:var(--p);margin-top:3px;font-weight:900;font-family:var(--mono)">DIN PET</div>
       </div>
-      <div style="font-size:22px;color:var(--p)">+</div>
+      <div style="font-size:24px;color:var(--p);animation:petBob 1s ease-in-out infinite">+</div>
       <div style="text-align:center">
-        <div style="font-size:42px;background:var(--c2);border:2px solid rgba(191,95,255,.35);border-radius:14px;width:64px;height:64px;display:flex;align-items:center;justify-content:center" id="dnaSlot2">?</div>
-        <div style="font-size:9px;color:var(--t3);margin-top:3px">VÄLJ PET</div>
+        <div style="font-size:36px;background:rgba(255,255,255,.04);border:2px dashed rgba(191,95,255,.4);border-radius:14px;width:62px;height:62px;display:flex;align-items:center;justify-content:center" id="dnaSlot2">?</div>
+        <div style="font-size:8px;color:var(--t3);margin-top:3px;font-weight:900;font-family:var(--mono)">VÄLJ NEDAN</div>
       </div>
-      <div style="font-size:22px;color:var(--p)">=</div>
-      <div style="text-align:center;min-width:64px">
-        <div style="background:var(--c2);border:2px solid rgba(191,95,255,.35);border-radius:14px;width:64px;height:64px;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:4px" id="dnaResult">
-          <span style="font-size:28px;opacity:.4">❓</span>
+      <div style="font-size:24px;color:var(--p)">=</div>
+      <div style="text-align:center;min-width:62px">
+        <div style="background:linear-gradient(135deg,rgba(191,95,255,.1),rgba(0,217,255,.05));border:2px solid rgba(191,95,255,.35);border-radius:14px;width:62px;min-height:62px;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:4px;transition:all .3s" id="dnaResult">
+          <span style="font-size:28px;opacity:.3">❓</span>
         </div>
-        <div style="font-size:9px;color:var(--t3);margin-top:3px">RESULTAT</div>
+        <div style="font-size:8px;color:var(--t3);margin-top:3px;font-weight:900;font-family:var(--mono)">HYBRID</div>
       </div>
     </div>
-    <!-- Pet picker -->
-    <div style="font-size:10px;font-weight:700;color:var(--t3);margin-bottom:6px;letter-spacing:.8px">VÄLJ MIXPARTNER</div>
+    <!-- Known combos with my pet -->
+    <div id="dnaComboHints" style="margin-bottom:10px"></div>
+    <!-- Pet picker label -->
+    <div style="font-size:10px;font-weight:700;color:var(--t3);margin-bottom:6px;letter-spacing:.8px">VÄLJ MIX-PARTNER <span style="color:var(--p)">● = känd kombo</span></div>
     <div id="dnaPetPicker" style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px"></div>
     <button class="btn btn-full btn-lg" id="dnaMixBtn" style="background:linear-gradient(135deg,var(--p),#7B2FBE);color:#fff;box-shadow:0 0 18px rgba(191,95,255,.4)" onclick="executeDNAMix()">🧬 MIX DNA!</button>
   </div>
