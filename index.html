@@ -1659,6 +1659,9 @@ textarea.inp{resize:none;min-height:68px;}
 /* ── PET BLOCKS MINIGAME ── */
 .pet-blocks-game{position:fixed;inset:0;z-index:800;background:var(--bg);display:flex;flex-direction:column;transform:translateY(100%);transition:transform .32s cubic-bezier(.32,.72,0,1);}
 .pet-blocks-game.open{transform:translateY(0);}
+.pet-runner-game{position:fixed;inset:0;z-index:800;background:#010614;display:flex;flex-direction:column;transform:translateY(100%);transition:transform .32s cubic-bezier(.32,.72,0,1);}
+.pet-runner-game.open{transform:translateY(0);}
+.pr-hdr{height:52px;display:flex;align-items:center;padding:0 8px;gap:8px;border-bottom:1px solid rgba(57,255,20,.2);flex-shrink:0;background:rgba(0,10,4,.8);}
 .pb-header{height:56px;display:flex;align-items:center;padding:0 14px;gap:12px;border-bottom:1px solid rgba(255,255,255,.08);flex-shrink:0;}
 .pb-back{background:none;border:none;color:var(--t1);font-size:22px;cursor:pointer;padding:4px 8px;}
 .pb-cell{border-radius:5px;transition:background .08s;}
@@ -2352,8 +2355,8 @@ textarea.inp{resize:none;min-height:68px;}
         </div>
         <div id="territoryMapGrid" style="padding:0 12px 12px;overflow-x:auto;scrollbar-width:none"></div>
         <!-- Wild pets -->
-        <div class="kw-section-ttl">🎯 VILDA PETS NÄRA DIG <span style="color:var(--pk);animation:notifPulse 2s infinite" id="kwWildCount">3 aktiva</span></div>
-        <div class="kw-wild-row" id="kwWildRow"></div>
+        <div class="kw-section-ttl">🎯 VILDA PETS — TRYCK FÖR ATT FÅNGA! <span style="color:var(--pk);animation:notifPulse 2s infinite" id="kwWildCount"></span></div>
+        <div id="kwWildRow" style="margin-bottom:6px"></div>
         <!-- Friend worlds -->
         <div class="kw-section-ttl" style="margin-top:14px">🌉 VÄNNERS VÄRLDAR</div>
         <div class="kw-friends-row" id="kwFriendsRow"></div>
@@ -2362,7 +2365,7 @@ textarea.inp{resize:none;min-height:68px;}
       <div class="kw-build-bar">
         <button class="kw-build-btn" style="border-color:rgba(255,230,0,.45);color:var(--y);background:rgba(255,230,0,.06)" onclick="addWorldPoints(20,'manual');vibe(30);showT('⚡ +20 World Points!','y')">⚡ BOOST +20WP</button>
         <button class="kw-build-btn" style="border-color:rgba(57,255,20,.45);color:var(--g);background:rgba(57,255,20,.06)" onclick="nav('home')">🐾 MIN PET</button>
-        <button class="kw-build-btn" style="border-color:rgba(255,45,85,.45);color:var(--pk);background:rgba(255,45,85,.06)" onclick="openClanView()">⚔️ KLAN</button>
+        <button class="kw-build-btn" style="border-color:rgba(255,45,85,.45);color:var(--pk);background:rgba(255,45,85,.06)" onclick="openClanView()">⚔️ SQUAD</button>
         <button class="kw-build-btn" style="border-color:rgba(0,217,255,.45);color:var(--b);background:rgba(0,217,255,.06)" onclick="switchWorldTab('karta')">🗺️ KARTA</button>
         <button class="kw-build-btn" style="border-color:rgba(57,255,20,.45);color:var(--g);background:rgba(57,255,20,.06)" onclick="openCastle()">🏰 SLOTT</button>
         <button class="kw-build-btn" style="border-color:rgba(191,95,255,.45);color:var(--p);background:rgba(191,95,255,.06)" onclick="openDNAMixer()">🧬 DNA MIX</button>
@@ -2659,6 +2662,20 @@ textarea.inp{resize:none;min-height:68px;}
           </div>
         </div>
         <div style="font-size:22px;color:var(--p)">→</div>
+      </div>
+      <!-- PET RUNNER card -->
+      <div style="margin:0 14px 10px;background:linear-gradient(135deg,rgba(57,255,20,.12),rgba(0,180,80,.06));border:2px solid rgba(57,255,20,.4);border-radius:22px;padding:16px 18px;cursor:pointer;display:flex;align-items:center;gap:14px;-webkit-tap-highlight-color:transparent" onclick="openPetRunner()">
+        <div style="font-size:44px;filter:drop-shadow(0 0 14px rgba(57,255,20,.7));animation:pf 1.2s ease-in-out infinite" id="gpRunnerPet">🐉</div>
+        <div style="flex:1;min-width:0">
+          <div style="font-size:15px;font-weight:900">PET RUNNER</div>
+          <div style="font-size:10px;color:var(--t3);margin-top:3px">Hoppa · dodge · samla gems — levels &amp; highscore!</div>
+          <div style="display:flex;gap:5px;margin-top:5px;flex-wrap:wrap">
+            <span style="font-size:9px;background:rgba(57,255,20,.15);border:1px solid rgba(57,255,20,.3);color:var(--g);padding:2px 7px;border-radius:8px;font-family:var(--mono)">🏃 Runner</span>
+            <span style="font-size:9px;background:rgba(255,230,0,.12);border:1px solid rgba(255,230,0,.28);color:var(--y);padding:2px 7px;border-radius:8px;font-family:var(--mono)" id="prBestTag">Best: 0m</span>
+            <span style="font-size:9px;background:rgba(0,217,255,.1);border:1px solid rgba(0,217,255,.25);color:var(--b);padding:2px 7px;border-radius:8px;font-family:var(--mono)" id="prLvBadge">LV 1</span>
+          </div>
+        </div>
+        <div style="font-size:22px;color:var(--g)">→</div>
       </div>
       <!-- PET BLOCKS card -->
       <div style="margin:0 14px 10px;background:linear-gradient(135deg,rgba(191,95,255,.14),rgba(127,46,190,.07));border:2px solid rgba(191,95,255,.38);border-radius:22px;padding:16px 18px;cursor:pointer;display:flex;align-items:center;gap:14px;-webkit-tap-highlight-color:transparent" onclick="openPetBlocks()">
@@ -4883,7 +4900,8 @@ function updatePetView(){
   updateDNABadge();
   renderSegXPBar();
   redrawPetCanvas();
-  $('petName').textContent=G.petName;$('petSpecies').textContent=s.s;$('petLvlN').textContent=G.level;
+  const _pnEl=$('petName');if(_pnEl){_pnEl.textContent=G.petName||'Döp ditt pet! ✏️';_pnEl.style.color=G.petName?'':'var(--t3)';_pnEl.style.cursor='pointer';_pnEl.onclick=()=>{const n=prompt('Vad heter din pet?',G.petName||'');if(n&&n.trim().length>=1){G.petName=n.trim().substring(0,20);save();updatePetView();showT('✅ Pet döpt till: '+G.petName,'g');}};}
+  $('petSpecies').textContent=s.s;$('petLvlN').textContent=G.level;
   const phe=$('petHeroEmoji');if(phe)phe.textContent=G.petEmoji||'🐉';
   const ne=gNE();$('petEvol').textContent=ne?'NEXT EVOL: LV'+ne:'MAX EVOLUTION ⚡';
   $('xpNums').textContent=G.exp+'/'+need;
@@ -5643,13 +5661,14 @@ const MOCK_CLANS=[
   {id:'c4',nm:'Gold Hunters',em:'🦁',members:6,power:4100,tag:'GH',col:'var(--y)'},
 ];
 function openClanView(){
-  const modal=$('clanModal');if(!modal){_buildClanModal();return;}
-  modal.style.display='flex';
+  if(!$('clanModal'))_buildClanModal();
+  const modal=$('clanModal');if(!modal)return;
+  modal.classList.add('open');
   renderClans();
 }
 function _buildClanModal(){
   const m=document.createElement('div');
-  m.id='clanModal';m.className='modal';m.style.display='flex';
+  m.id='clanModal';m.className='modal';
   m.innerHTML=`<div class="ms"><div class="mh" onclick="closeModal('clanModal')"></div>
     <div class="mt">⚔️ Klaner <div class="mx" onclick="closeModal('clanModal')">✕</div></div>
     ${G.clan?`<div style="background:linear-gradient(135deg,rgba(57,255,20,.08),rgba(57,255,20,.02));border:1.5px solid rgba(57,255,20,.3);border-radius:16px;padding:14px;margin-bottom:14px">
@@ -6239,6 +6258,226 @@ function _pbUpdateScore() {
   const s = $('pbScore'); if (s) s.textContent = _pbScore;
   const b = $('pbBest'); if (b) b.textContent = _pbBest;
   const co = $('pbCoins'); if (co) co.textContent = _pbCoinsEarned;
+}
+
+// ── PET RUNNER ENDLESS RUNNER ──
+const _pr={active:false,started:false,score:0,best:0,level:1,raf:null,
+  x:60,y:0,vy:0,grounded:true,jumping:false,
+  obstacles:[],gems:[],clouds:[],bgOffset:0,gemsCollected:0,nextObstacle:80,nextGem:40,
+  pHp:3,maxHp:3,shield:false,combo:0,
+  GRAVITY:0.55,JUMP_F:-11,SPEED:4.5,OBS_H:[30,50,70],GEM_Y:[35,55,75]};
+
+function openPetRunner(){
+  let g=$('petRunnerGame');
+  if(!g){
+    g=document.createElement('div');g.className='pet-runner-game';g.id='petRunnerGame';
+    g.innerHTML=`
+      <div class="pr-hdr">
+        <button onclick="closePetRunner()" style="background:none;border:none;color:#fff;font-size:22px;cursor:pointer;padding:4px 8px">←</button>
+        <div style="flex:1;text-align:center;font-size:14px;font-weight:900;font-family:var(--mono);color:var(--y)">⚡ PET RUNNER</div>
+        <div style="font-size:15px;font-weight:900;color:var(--g);font-family:var(--mono)" id="prScore">0m</div>
+      </div>
+      <div style="position:relative;flex:1;overflow:hidden">
+        <canvas id="prCanvas" style="display:block;width:100%;height:100%;touch-action:none"></canvas>
+        <div id="prHud" style="position:absolute;top:10px;left:12px;display:flex;gap:8px;align-items:center">
+          <span id="prHpDots" style="font-size:16px">❤️❤️❤️</span>
+          <span style="font-size:10px;color:var(--g);font-weight:900;font-family:var(--mono)" id="prLvBadge2">LV1</span>
+        </div>
+        <div id="prStartScreen" style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(10,10,26,.88)">
+          <div style="text-align:center">
+            <div style="font-size:70px;animation:petBob 1s ease-in-out infinite" id="prStartPet">🐉</div>
+            <div style="font-size:22px;font-weight:900;color:var(--y);font-family:var(--mono)">PET RUNNER</div>
+            <div style="font-size:12px;color:var(--t3);margin:8px 0">Tryck för att hoppa!</div>
+            <div style="font-size:11px;color:var(--t3)">BÄST: <span id="prBestDisp" style="color:var(--y);font-weight:900">0m</span></div>
+            <div style="font-size:11px;color:var(--b);font-family:var(--mono);margin-top:4px" id="prLvShow">RUNNER LV1</div>
+          </div>
+        </div>
+        <div id="prGameOver" style="position:absolute;inset:0;display:none;flex-direction:column;align-items:center;justify-content:center;background:rgba(10,10,26,.93);gap:8px">
+          <div style="font-size:50px">💀</div>
+          <div style="font-size:22px;font-weight:900;color:var(--r);font-family:var(--mono)">GAME OVER</div>
+          <div id="prFinalScore" style="font-size:16px;color:var(--y);font-weight:900;font-family:var(--mono)">0m</div>
+          <div id="prRewards" style="font-size:12px;color:var(--g);margin:4px 0"></div>
+          <div id="prLvBadge3" style="font-size:10px;color:var(--b);font-weight:900;font-family:var(--mono)">RUNNER LV1</div>
+          <button onclick="prRestart()" style="background:rgba(57,255,20,.2);border:1.5px solid rgba(57,255,20,.5);border-radius:14px;color:var(--g);padding:12px 28px;font-size:15px;font-weight:900;cursor:pointer;font-family:var(--mono)">🔄 IGEN</button>
+          <button onclick="closePetRunner()" style="background:none;border:1px solid rgba(255,255,255,.15);border-radius:12px;color:var(--t3);padding:8px 20px;font-size:12px;cursor:pointer">← AVSLUTA</button>
+        </div>
+      </div>`;
+    document.body.appendChild(g);
+    g.addEventListener('touchstart',e=>{if(e.target.closest('button'))return;e.preventDefault();_prJump(true);},{passive:false});
+    g.addEventListener('touchend',e=>{if(e.target.closest('button'))return;e.preventDefault();_prJump(false);},{passive:false});
+    g.addEventListener('mousedown',()=>_prJump(true));
+    g.addEventListener('mouseup',()=>_prJump(false));
+  }
+  g.classList.add('open');
+  _pr.best=parseInt(localStorage.getItem('kv8_prBest')||'0');
+  const sp=$('prStartPet');if(sp)sp.textContent=G.petEmoji||'🐉';
+  const bd=$('prBestDisp');if(bd)bd.textContent=_pr.best+'m';
+  const bt=$('prBestTag');if(bt)bt.textContent='Best: '+_pr.best+'m';
+  _pr.level=parseInt(localStorage.getItem('kv8_prLv')||'1');
+  const ls=$('prLvShow');if(ls)ls.textContent='RUNNER LV'+_pr.level;
+  const lb=$('prLvBadge');if(lb)lb.textContent='LV '+_pr.level;
+  const ss=$('prStartScreen');if(ss)ss.style.display='flex';
+  const go=$('prGameOver');if(go)go.style.display='none';
+  _pr.active=false;_pr.started=false;
+  if(_pr.raf){cancelAnimationFrame(_pr.raf);_pr.raf=null;}
+}
+function closePetRunner(){const g=$('petRunnerGame');if(g)g.classList.remove('open');_pr.active=false;if(_pr.raf){cancelAnimationFrame(_pr.raf);_pr.raf=null;}}
+function prRestart(){
+  const ss=$('prStartScreen');if(ss)ss.style.display='flex';
+  const go=$('prGameOver');if(go)go.style.display='none';
+  _pr.active=false;_pr.started=false;
+  if(_pr.raf){cancelAnimationFrame(_pr.raf);_pr.raf=null;}
+}
+function _prJump(on){
+  if(!_pr.started){
+    // Start game on first tap
+    _pr.started=true;
+    const ss=$('prStartScreen');if(ss)ss.style.display='none';
+    _prInitGame();
+    _prLoop();
+    return;
+  }
+  if(on&&_pr.grounded){_pr.vy=_pr.JUMP_F;_pr.grounded=false;vibe&&vibe(15);}
+}
+function _prInitGame(){
+  const canvas=$('prCanvas');if(!canvas)return;
+  const rect=canvas.getBoundingClientRect();
+  canvas.width=Math.round(rect.width||window.innerWidth);
+  canvas.height=Math.round(rect.height||(window.innerHeight-60));
+  const H=canvas.height;
+  _pr.active=true;_pr.score=0;_pr.gemsCollected=0;
+  _pr.x=70;_pr.y=H*.65;_pr.vy=0;_pr.grounded=true;
+  _pr.obstacles=[];_pr.gems=[];_pr.clouds=[];_pr.bgOffset=0;
+  _pr.nextObstacle=90;_pr.nextGem=50;
+  _pr.pHp=3;_pr.combo=0;_pr.shield=false;
+  _prInitClouds(canvas);
+}
+function _prInitClouds(canvas){
+  _pr.clouds=Array.from({length:5},()=>({x:Math.random()*canvas.width,y:20+Math.random()*(canvas.height*.3),w:60+Math.random()*80,spd:0.5+Math.random()}));
+}
+function _prLoop(){
+  if(!_pr.active){_pr.raf=null;return;}
+  const canvas=$('prCanvas');if(!canvas){_pr.active=false;return;}
+  const ctx=canvas.getContext('2d');if(!ctx){_pr.active=false;return;}
+  _prUpdate(canvas);_prDraw(canvas,ctx);
+  _pr.raf=requestAnimationFrame(_prLoop);
+}
+function _prUpdate(canvas){
+  const W=canvas.width,H=canvas.height;
+  const groundY=H*.65;
+  const spd=_pr.SPEED+((_pr.score/200)*0.6);
+  // Physics
+  if(!_pr.grounded){_pr.vy+=_pr.GRAVITY;}
+  _pr.y+=_pr.vy;
+  if(_pr.y>=groundY){_pr.y=groundY;_pr.vy=0;_pr.grounded=true;}
+  _pr.score++;
+  _pr.bgOffset=((_pr.bgOffset||0)+spd*.3)%W;
+  // Level check
+  const newLv=Math.floor(_pr.score/300)+1;
+  if(newLv>_pr.level){
+    _pr.level=newLv;
+    localStorage.setItem('kv8_prLv',_pr.level);
+    const lb=$('prLvBadge');if(lb)lb.textContent='LV '+_pr.level;
+    const lb2=$('prLvBadge2');if(lb2)lb2.textContent='LV'+_pr.level;
+    showT('🏃 RUNNER LEVEL '+_pr.level+'! 🔥','y');
+  }
+  // Score display
+  const sc=$('prScore');if(sc)sc.textContent=Math.floor(_pr.score/10)+'m';
+  // HP display
+  const hp=$('prHpDots');if(hp)hp.textContent=['❤️','🤍','🤍','🤍'].fill('❤️',0,_pr.pHp).join('');
+  // Obstacles
+  _pr.nextObstacle-=spd;
+  if(_pr.nextObstacle<0){
+    const h=[30,45,60][Math.floor(Math.random()*3)];
+    _pr.obstacles.push({x:W+10,y:groundY-h+8,w:18,h:h,em:['🌵','⬛','🔴','🟥'][Math.floor(Math.random()*4)]});
+    _pr.nextObstacle=80+Math.random()*100;
+  }
+  // Gems
+  _pr.nextGem-=spd;
+  if(_pr.nextGem<0){
+    _pr.gems.push({x:W+10,y:groundY-[40,70,100][Math.floor(Math.random()*3)],em:'💎',alive:true});
+    _pr.nextGem=60+Math.random()*80;
+  }
+  // Move & collide obstacles
+  const petR=20;
+  for(let i=_pr.obstacles.length-1;i>=0;i--){
+    const ob=_pr.obstacles[i];ob.x-=spd;
+    if(ob.x+ob.w<0){_pr.obstacles.splice(i,1);continue;}
+    // Collision
+    if(!_pr.shield&&_pr.x+petR>ob.x&&_pr.x-petR<ob.x+ob.w&&_pr.y+petR>ob.y&&_pr.y-petR<ob.y+ob.h){
+      _pr.pHp--;vibe&&vibe([40,20,60]);_pr.shield=true;setTimeout(()=>{_pr.shield=false;},800);
+      _pr.obstacles.splice(i,1);
+      if(_pr.pHp<=0){_prGameOver();return;}
+    }
+  }
+  // Move & collect gems
+  for(let i=_pr.gems.length-1;i>=0;i--){
+    const gm=_pr.gems[i];gm.x-=spd;
+    if(gm.x+10<0){_pr.gems.splice(i,1);continue;}
+    if(gm.alive&&Math.abs(_pr.x-gm.x)<25&&Math.abs(_pr.y-gm.y)<25){
+      gm.alive=false;_pr.gemsCollected++;_pr.combo++;
+      gainCoins(1+(Math.floor(_pr.combo/3)));gainXP(2,'action');
+      _pr.gems.splice(i,1);vibe&&vibe(8);
+    }
+  }
+  // Clouds
+  (_pr.clouds||[]).forEach(c=>{c.x-=c.spd;if(c.x+c.w<0)c.x=W+c.w;});
+}
+function _prDraw(canvas,ctx){
+  const W=canvas.width,H=canvas.height;
+  const groundY=H*.65;
+  // Sky gradient
+  ctx.clearRect(0,0,W,H);
+  const sky=ctx.createLinearGradient(0,0,0,H);
+  sky.addColorStop(0,'#010614');sky.addColorStop(.5,'#020a22');sky.addColorStop(1,'#030d18');
+  ctx.fillStyle=sky;ctx.fillRect(0,0,W,H);
+  // Stars
+  ctx.fillStyle='rgba(255,255,255,.4)';
+  for(let s=0;s<30;s++){ctx.beginPath();ctx.arc((s*137+_pr.bgOffset*.2)%W,20+s*12%groundY,s%3===0?1.5:0.8,0,Math.PI*2);ctx.fill();}
+  // Ground
+  const grdGrd=ctx.createLinearGradient(0,groundY+8,0,H);
+  grdGrd.addColorStop(0,'#0a2010');grdGrd.addColorStop(1,'#050e08');
+  ctx.fillStyle=grdGrd;ctx.fillRect(0,groundY+8,W,H-groundY-8);
+  ctx.fillStyle='rgba(57,255,20,.35)';ctx.fillRect(0,groundY+7,W,2);
+  // Running grid lines on ground
+  for(let gx=0;gx<W;gx+=40){const lx=(gx+W-(_pr.bgOffset*2)%W)%W;ctx.strokeStyle='rgba(57,255,20,.06)';ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(lx,groundY+8);ctx.lineTo(lx+20,H);ctx.stroke();}
+  // Clouds
+  (_pr.clouds||[]).forEach(c=>{ctx.fillStyle='rgba(100,150,255,.04)';ctx.beginPath();ctx.ellipse(c.x,c.y,c.w/2,12,0,0,Math.PI*2);ctx.fill();});
+  // Obstacles
+  ctx.font='22px serif';
+  _pr.obstacles.forEach(ob=>{ctx.fillText(ob.em||'⬛',ob.x,ob.y+ob.h);});
+  // Gems
+  ctx.font='18px serif';
+  _pr.gems.forEach(gm=>{if(gm.alive)ctx.fillText(gm.em,gm.x,gm.y);});
+  // Pet emoji
+  if(_pr.shield){ctx.globalAlpha=0.5+0.5*Math.sin(Date.now()*.02);}
+  ctx.font='38px serif';
+  const petX=_pr.x-19,petY=_pr.y-30;
+  if(!_pr.grounded){ctx.font='36px serif';ctx.fillText(G.petEmoji||'🐉',petX,petY-4);}
+  else{const bob=Math.sin(Date.now()*.008)*3;ctx.fillText(G.petEmoji||'🐉',petX,petY+bob);}
+  ctx.globalAlpha=1;
+  // Shield glow
+  if(_pr.shield){ctx.strokeStyle='rgba(0,217,255,.5)';ctx.lineWidth=3;ctx.beginPath();ctx.arc(_pr.x,_pr.y-15,24,0,Math.PI*2);ctx.stroke();}
+  // Score overlay
+  ctx.fillStyle='rgba(57,255,20,.9)';ctx.font='bold 14px monospace';
+  ctx.fillText(Math.floor(_pr.score/10)+'m',W-70,28);
+  ctx.fillStyle='rgba(255,230,0,.8)';ctx.font='12px monospace';
+  ctx.fillText('💎×'+_pr.gemsCollected,W-70,46);
+}
+function _prGameOver(){
+  _pr.active=false;
+  const m=Math.floor(_pr.score/10);
+  const isNew=m>_pr.best;
+  if(isNew){_pr.best=m;localStorage.setItem('kv8_prBest',m);const bt=$('prBestTag');if(bt)bt.textContent='Best: '+m+'m';}
+  const coins=Math.floor(_pr.gemsCollected*2+m*.3);
+  gainCoins(coins);gainXP(Math.floor(m*.5),'action');
+  advanceDailyChallenge&&advanceDailyChallenge('play',1);
+  const go=$('prGameOver');if(go)go.style.display='flex';
+  const fs=$('prFinalScore');if(fs)fs.textContent=(isNew?'🏆 NY REKORD! ':'')+'Distans: '+m+'m';
+  const rw=$('prRewards');if(rw)rw.textContent='+'+coins+'⚡ +'+Math.floor(m*.5)+'XP'+(_pr.gemsCollected>0?' · '+_pr.gemsCollected+'💎 samlad':'');
+  const lb=$('prLvBadge3');if(lb)lb.textContent='RUNNER LV'+_pr.level;
+  vibe&&vibe([50,30,100]);SFX.error&&SFX.error();
+  save();updateHUD();
 }
 
 // ── FISHING MINI-GAME ──
@@ -7474,11 +7713,21 @@ const KW_DISTRICTS=[
 ];
 
 const KW_WILD_PETS=[
-  {id:'wp1',em:'🦊',nm:'Vild Räv',rarity:'common', cost:30, xpR:25, desc:'Smyger runt Södermalm'},
-  {id:'wp2',em:'🐺',nm:'Urban Wolf',rarity:'rare',   cost:80, xpR:60, desc:'Sedd vid Globen'},
-  {id:'wp3',em:'🦋',nm:'Neon Wing',rarity:'epic',   cost:150,xpR:100,desc:'Glimmar vid vattnet'},
-  {id:'wp4',em:'🐸',nm:'Tunnel Frog',rarity:'common',cost:25, xpR:20, desc:'Lever i tunnelbanan'},
-  {id:'wp5',em:'🐉',nm:'City Dragon',rarity:'legendary',cost:300,xpR:250,desc:'Bevakar Gamla Stan'},
+  {id:'wp1', em:'🦊',nm:'Vild Räv',     rarity:'common',   cost:30,  xpR:25,  desc:'Smyger runt Södermalm'},
+  {id:'wp2', em:'🐺',nm:'Urban Wolf',   rarity:'rare',     cost:80,  xpR:60,  desc:'Sedd vid Globen'},
+  {id:'wp3', em:'🦋',nm:'Neon Wing',    rarity:'epic',     cost:150, xpR:100, desc:'Glimmar vid vattnet'},
+  {id:'wp4', em:'🐸',nm:'Tunnel Frog',  rarity:'common',   cost:25,  xpR:20,  desc:'Lever i tunnelbanan'},
+  {id:'wp5', em:'🐉',nm:'City Dragon',  rarity:'legendary',cost:300, xpR:250, desc:'Bevakar Gamla Stan'},
+  {id:'wp6', em:'🦁',nm:'Solar Lion',   rarity:'epic',     cost:180, xpR:130, desc:'Jaktar i Djurgården'},
+  {id:'wp7', em:'🐧',nm:'Ice Walker',   rarity:'common',   cost:20,  xpR:15,  desc:'Badar i Riddarfjärden'},
+  {id:'wp8', em:'🦈',nm:'Dark Shark',   rarity:'rare',     cost:90,  xpR:70,  desc:'Simmar under broarna'},
+  {id:'wp9', em:'🦅',nm:'Storm Eagle',  rarity:'rare',     cost:100, xpR:80,  desc:'Cirklar över Stadshuset'},
+  {id:'wp10',em:'🐻',nm:'Neon Bear',    rarity:'epic',     cost:160, xpR:110, desc:'Dansar i Vasaparken'},
+  {id:'wp11',em:'🦄',nm:'Ghost Unicorn',rarity:'legendary',cost:280, xpR:220, desc:'Syns bara midnatt'},
+  {id:'wp12',em:'🐊',nm:'Sewer Croc',   rarity:'rare',     cost:75,  xpR:55,  desc:'Döljer sig under T-banan'},
+  {id:'wp13',em:'🦩',nm:'Flamingo',     rarity:'common',   cost:35,  xpR:28,  desc:'Vilar vid Brunnsviken'},
+  {id:'wp14',em:'🐯',nm:'Cyber Tiger',  rarity:'epic',     cost:200, xpR:150, desc:'Stalkar i Kista Science'},
+  {id:'wp15',em:'🐬',nm:'Neon Dolphin', rarity:'legendary',cost:350, xpR:300, desc:'Hoppar vid Fjäderholmarna'},
 ];
 
 const KW_FRIENDS=[
@@ -7598,21 +7847,37 @@ function renderKarmaWorld(){
   // map badges
   const tb=$('kwTerrBadge');if(tb)tb.textContent='🌍 '+terrPct+'% territorium';
   const wb=$('kwWildBadge');if(wb)wb.textContent='🎯 '+KW_WILD_PETS.filter(p=>!G.builtZones.includes('caught_'+p.id)).length+' WILD PETS HÄR';
-  // wild pets
+  const kwWc=$('kwWildCount');if(kwWc){const nc=KW_WILD_PETS.filter(p=>!G.builtZones.includes('caught_'+p.id)).length;kwWc.textContent=nc>0?nc+' kvar':'alla fångade! 🎉';}
+  // wild pets — game-like scattered field
   const wr=$('kwWildRow');
-  if(wr)wr.innerHTML=KW_WILD_PETS.map(p=>{
-    const caught=G.builtZones.includes('caught_'+p.id);
-    const rarCol={common:'var(--t2)',rare:'var(--b)',epic:'var(--p)',legendary:'var(--y)'};
-    return`<div class="kw-wild-pet ${caught?'caught':''}" onclick="${caught?'':  `catchWildPet('${p.id}')`}">
-      <div class="kw-wp-em">${p.em}</div>
-      <div>
-        <div class="kw-wp-nm">${p.nm}</div>
-        <div class="kw-wp-sub" style="color:${rarCol[p.rarity]||'var(--t2)'}">${p.rarity.toUpperCase()}</div>
-        <div class="kw-wp-sub">${p.desc}</div>
-        <button class="kw-wp-btn ${caught?'caught':'catch'}">${caught?'✅ FÅNGAD':p.cost+'⚡ FÅNGA'}</button>
+  if(wr){
+    const rarCol={common:'rgba(255,255,255,.65)',rare:'rgba(0,217,255,.9)',epic:'rgba(191,95,255,.9)',legendary:'rgba(255,230,0,1)'};
+    const rarGlow={common:'rgba(255,255,255,.08)',rare:'rgba(0,217,255,.18)',epic:'rgba(191,95,255,.22)',legendary:'rgba(255,230,0,.32)'};
+    const rarBorder={common:'rgba(255,255,255,.15)',rare:'rgba(0,217,255,.38)',epic:'rgba(191,95,255,.48)',legendary:'rgba(255,230,0,.65)'};
+    const uncaught=KW_WILD_PETS.filter(p=>!G.builtZones.includes('caught_'+p.id));
+    const caughtPets=KW_WILD_PETS.filter(p=>G.builtZones.includes('caught_'+p.id));
+    wr.innerHTML=`
+      <div style="position:relative;width:100%;min-height:180px;background:linear-gradient(180deg,#030812 0%,#020510 60%,#04081a 100%);border-radius:18px;overflow:hidden;margin-bottom:8px;border:1px solid rgba(57,255,20,.12)">
+        <div style="position:absolute;inset:0;pointer-events:none">
+          ${Array.from({length:18},()=>`<div style="position:absolute;width:${1+Math.random()*2}px;height:${1+Math.random()*2}px;background:#fff;border-radius:50%;left:${Math.random()*100}%;top:${Math.random()*65}%;opacity:${.15+Math.random()*.4}"></div>`).join('')}
+        </div>
+        <div style="position:absolute;bottom:24px;left:0;right:0;height:1px;background:rgba(57,255,20,.12)"></div>
+        <div style="display:flex;flex-wrap:wrap;gap:5px;padding:10px 8px 36px;position:relative;z-index:2">
+          ${uncaught.map((p,i)=>
+            `<div onclick="catchWildPet('${p.id}')" style="display:flex;flex-direction:column;align-items:center;cursor:pointer;-webkit-tap-highlight-color:transparent;padding:7px 5px;border-radius:14px;background:${rarGlow[p.rarity]};border:1.5px solid ${rarBorder[p.rarity]};min-width:65px;flex:1;max-width:85px" ontouchstart="this.style.transform='scale(.88)'" ontouchend="this.style.transform=''">
+              <div style="font-size:30px;animation:petBob ${1.8+i*.25}s ease-in-out infinite ${(i*.2)%2}s">${p.em}</div>
+              <div style="font-size:7px;font-weight:900;color:${rarCol[p.rarity]};font-family:var(--mono);margin-top:2px;text-align:center;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:70px">${p.nm}</div>
+              <div style="font-size:6px;color:${rarCol[p.rarity]};opacity:.7;font-family:var(--mono)">${p.rarity==='legendary'?'⭐ LEG':p.rarity==='epic'?'💜 EPIC':p.rarity==='rare'?'💙 RARE':'⚪ COM'}</div>
+              <div style="margin-top:3px;background:rgba(255,45,85,.18);border:1px solid rgba(255,45,85,.38);border-radius:7px;color:var(--pk);font-size:6px;font-weight:900;padding:1px 5px;font-family:var(--mono)">${p.cost}⚡</div>
+            </div>`
+          ).join('')}
+          ${uncaught.length===0?`<div style="width:100%;text-align:center;padding:20px;color:var(--g);font-size:11px;font-weight:900;font-family:var(--mono)">🎉 ALLA FÅNGADE!</div>`:''}
+        </div>
+        <div style="position:absolute;bottom:5px;right:8px;font-size:8px;color:var(--g);font-weight:900;font-family:var(--mono)">✅ ${caughtPets.length}/${KW_WILD_PETS.length}</div>
       </div>
-    </div>`;
-  }).join('');
+      ${caughtPets.length>0?`<div style="display:flex;gap:5px;flex-wrap:wrap">${caughtPets.map(p=>`<div style="display:flex;align-items:center;gap:3px;background:rgba(57,255,20,.06);border:1px solid rgba(57,255,20,.22);border-radius:10px;padding:3px 7px"><span style="font-size:12px">${p.em}</span><span style="font-size:7px;color:var(--g)">✅</span></div>`).join('')}</div>`:''}
+    `;
+  }
   // friend worlds
   const fr=$('kwFriendsRow');
   if(fr)fr.innerHTML=KW_FRIENDS.map(f=>`<div class="kw-friend-world" style="width:90px" onclick="showT('🌉 Besöker ${f.nm}s värld...','b')">
@@ -7864,6 +8129,7 @@ function openDNAMixer(){
   _dnaSlot1=G.petEmoji||'🐉';
   _dnaSlot2=null;
   dm.classList.add('open');
+  const mixBtn=$('dnaMixBtn');if(mixBtn){mixBtn.textContent='🧬 MIX DNA!';mixBtn.style.background='linear-gradient(135deg,var(--p),#7B2FBE)';mixBtn.style.color='#fff';mixBtn.onclick=executeDNAMix;}
   renderDNAMixer();
 }
 function closeDNAMixer(){const dm=$('dnaModal');if(dm)dm.classList.remove('open');}
@@ -7907,16 +8173,32 @@ function executeDNAMix(){
   const key1=_dnaSlot1+_dnaSlot2;const key2=_dnaSlot2+_dnaSlot1;
   const combo=DNA_COMBOS[key1]||DNA_COMBOS[key2];
   const result=combo||{em:'🧬',nm:'Mystery Hybrid',bonus:'MYSTERY+50'};
-  const res=$('dnaResult');
-  if(res){res.style.transform='scale(0)';res.style.transition='transform .3s';setTimeout(()=>{res.style.transform='scale(1.2)';setTimeout(()=>{res.style.transform='scale(1)';},150);},50);}
-  gainCoins(combo?100:50);gainXP(combo?120:60,'action');
+  const coins=combo?100:50;const xpAmt=combo?120:60;
+  gainCoins(coins);gainXP(xpAmt,'action');
   if(!G.dnaMixes)G.dnaMixes=[];
   G.dnaMixes.push({em:result.em,nm:result.nm,bonus:result.bonus,date:new Date().toLocaleDateString()});
   save();vibe([30,20,80,20,100]);SFX.win();
-  showT('🧬 DNA MIX! '+result.em+' '+result.nm+' skapad!','p');
   spawnParticles(window.innerWidth/2,window.innerHeight*.4,'stars');
   addDiaryEntry('DNA-mixade '+_dnaSlot1+' + '+_dnaSlot2+' → '+result.em+' '+result.nm+'!');
-  closeDNAMixer();
+  // Dramatic reveal with adopt option
+  const res=$('dnaResult');
+  if(res){
+    res.style.transition='transform .2s';
+    res.style.transform='scale(0)';
+    setTimeout(()=>{
+      res.innerHTML=`<div style="font-size:44px;filter:drop-shadow(0 0 20px rgba(191,95,255,.9));animation:petBob .5s ease-in-out infinite">${result.em}</div>`;
+      res.style.transform='scale(1.3)';
+      setTimeout(()=>{res.style.transform='scale(1)';},180);
+    },100);
+  }
+  const mixBtn=$('dnaMixBtn');
+  if(mixBtn){
+    mixBtn.textContent='🐾 ADOPTERA '+result.em;
+    mixBtn.style.background='linear-gradient(135deg,#39FF14,#00D9FF)';
+    mixBtn.style.color='#000';
+    mixBtn.onclick=()=>{G.petEmoji=result.em;save();updatePetView();closeDNAMixer();showT('🧬 '+result.em+' adopterad! Snyggt!','p');const pe=$('gpRunnerPet');if(pe)pe.textContent=result.em;};
+  }
+  showT('🧬 '+result.em+' '+result.nm+' splicad! +'+coins+'⚡ +'+xpAmt+'XP','p');
 }
 
 // ── JUDGMENT RING (Shadow Hearts-style wild pet catching) ──
@@ -8703,22 +8985,39 @@ function advanceDailyChallenge(stat,n){
 function renderDailyChallenges(){
   const ct=$('dailyChallengesContainer');if(!ct)return;
   initDailyChallenges();
-  ct.innerHTML=_dailyChallenges.map(dc=>{
+  const _dcNavMap={flash:'flash',streak:'flash',wp:'world',feed:'home',train:'home',talk:'home'};
+  const doneCount=_dailyChallenges.filter(dc=>_dcProgress[dc.id+'_done']).length;
+  const total=_dailyChallenges.length;
+  const allDone=doneCount===total&&total>0;
+  ct.innerHTML=`<div style="background:${allDone?'linear-gradient(135deg,rgba(57,255,20,.12),rgba(57,255,20,.04))':'linear-gradient(135deg,rgba(255,230,0,.08),rgba(191,95,255,.04))'};border:1.5px solid ${allDone?'rgba(57,255,20,.45)':'rgba(255,230,0,.2)'};border-radius:14px;padding:10px 14px;margin-bottom:10px;display:flex;align-items:center;gap:10px">
+    <div style="font-size:20px">${allDone?'🏆':'🎯'}</div>
+    <div style="flex:1">
+      <div style="font-size:12px;font-weight:900;color:${allDone?'var(--g)':'var(--y)'}">${allDone?'ALLA KLARA! ⚡':'DAGLIGA UTMANINGAR'}</div>
+      <div style="display:flex;align-items:center;gap:4px;margin-top:3px">
+        ${Array.from({length:total},(_,i)=>`<div style="flex:1;height:4px;border-radius:100px;background:${i<doneCount?'var(--g)':'rgba(255,255,255,.1)'}"></div>`).join('')}
+        <span style="font-size:9px;font-weight:900;color:${allDone?'var(--g)':'var(--t3)'};font-family:var(--mono);white-space:nowrap;margin-left:4px">${doneCount}/${total}</span>
+      </div>
+    </div>
+  </div>`+_dailyChallenges.map(dc=>{
     const prog=_dcProgress[dc.id]||0;const done=_dcProgress[dc.id+'_done'];
     const pct=Math.min(100,Math.floor((prog/dc.goal)*100));
-    return`<div style="background:${done?'rgba(57,255,20,.08)':dc.col};border:1.5px solid ${done?'rgba(57,255,20,.4)':dc.border};border-radius:18px;padding:14px 16px;margin-bottom:10px">
+    const navTarget=_dcNavMap[dc.stat];
+    const tapHint=navTarget&&!done?`<span style="font-size:7px;color:var(--b);font-family:var(--mono);margin-left:4px">${dc.stat==='flash'||dc.stat==='streak'?'→ FLASH ⚡':dc.stat==='wp'?'→ WORLD 🌍':'→ HEM 🐾'}</span>`:'';
+    return`<div onclick="${!done&&navTarget?`nav('${navTarget}');${navTarget==='flash'?`setTimeout(()=>openModal('flashModal'),200);`:''}`:'void(0)'}" style="background:${done?'rgba(57,255,20,.06)':dc.col};border:1.5px solid ${done?'rgba(57,255,20,.4)':dc.border};border-radius:18px;padding:12px 14px;margin-bottom:8px;cursor:${!done&&navTarget?'pointer':'default'}">
       <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px">
-        <span style="font-size:28px">${dc.ico}</span>
-        <div style="flex:1">
-          <div style="font-size:13px;font-weight:900;color:${done?'var(--g)':'var(--t1)'}">${done?'✅ ':''} ${dc.ttl}</div>
-          <div style="font-size:10px;color:var(--t3)">${dc.desc}</div>
+        <span style="font-size:26px;${done?'':'animation:petBob 2s ease-in-out infinite'}">${dc.ico}</span>
+        <div style="flex:1;min-width:0">
+          <div style="font-size:13px;font-weight:900;color:${done?'var(--g)':'var(--t1)'}">${done?'✅ ':''}${dc.ttl}${tapHint}</div>
+          <div style="font-size:10px;color:var(--t3);margin-top:1px">${dc.desc}</div>
         </div>
-        <div style="text-align:right;font-size:10px;font-weight:900;font-family:var(--mono);color:var(--y)">${dc.reward.coins}⚡<br>${dc.reward.xp}XP</div>
+        ${done?`<div style="background:rgba(57,255,20,.15);border:1px solid rgba(57,255,20,.5);border-radius:8px;color:var(--g);font-size:10px;font-weight:900;padding:3px 8px;font-family:var(--mono)">KLAR ✅</div>`:`<div style="text-align:right;font-size:10px;font-weight:900;font-family:var(--mono);color:var(--y);white-space:nowrap">+${dc.reward.coins}⚡<br>+${dc.reward.xp}XP</div>`}
       </div>
-      <div style="width:100%;height:6px;background:rgba(255,255,255,.08);border-radius:100px;overflow:hidden">
-        <div style="height:100%;width:${pct}%;background:${done?'var(--g)':'linear-gradient(90deg,var(--pk),var(--p))'};border-radius:100px;transition:width .5s"></div>
+      <div style="display:flex;align-items:center;gap:6px">
+        <div style="flex:1;height:7px;background:rgba(255,255,255,.07);border-radius:100px;overflow:hidden">
+          <div style="height:100%;width:${pct}%;background:${done?'var(--g)':'linear-gradient(90deg,var(--pk),var(--p))'};border-radius:100px;transition:width .6s"></div>
+        </div>
+        <span style="font-size:9px;font-weight:900;font-family:var(--mono);color:${done?'var(--g)':'var(--t3)'}">${done?'✓':prog+'/'+dc.goal}</span>
       </div>
-      <div style="font-size:9px;font-weight:900;font-family:var(--mono);color:var(--t3);margin-top:4px">${prog}/${dc.goal} ${done?'— KLAR! 🏆':''}</div>
     </div>`;
   }).join('');
 }
