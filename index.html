@@ -127,8 +127,9 @@ textarea.inp{resize:none;min-height:68px;}
 .mt{font-size:17px;font-weight:800;margin-bottom:14px;display:flex;align-items:center;justify-content:space-between;}
 .mx{width:28px;height:28px;background:var(--c2);border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:14px;cursor:pointer;color:var(--t2);border:1px solid var(--line);}
 .trow{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px;}
-.topt{padding:6px 13px;border-radius:20px;background:var(--c2);border:1px solid var(--line);font-size:11px;font-weight:700;cursor:pointer;color:var(--t2);white-space:nowrap;transition:all .15s;}
-.topt.on{background:var(--g);color:var(--bg);border-color:var(--g);}
+.topt{padding:6px 13px;border-radius:4px;background:#111;border:2px solid rgba(255,255,255,.2);font-size:11px;font-weight:900;cursor:pointer;color:var(--t2);white-space:nowrap;transition:transform .08s,box-shadow .08s;font-family:var(--mono);text-transform:uppercase;letter-spacing:.4px;box-shadow:3px 3px 0px rgba(255,255,255,.08);}
+.topt.on{background:var(--g);color:#000;border-color:#000;box-shadow:3px 3px 0px #000;}
+.topt:active{transform:translate(3px,3px);box-shadow:0px 0px 0px rgba(255,255,255,.08)!important;}
 .fsw{position:fixed;inset:0;z-index:700;background:var(--bg);display:flex;flex-direction:column;transform:translateX(100%);transition:transform .28s cubic-bezier(.32,.72,0,1);}
 .fsw.open{transform:translateX(0);}
 .fsh{height:50px;display:flex;align-items:center;padding:0 14px;gap:10px;border-bottom:1px solid var(--line);flex-shrink:0;background:rgba(4,4,10,.97);}
@@ -182,8 +183,9 @@ button:active{opacity:.85;}
 .ob-h{font-size:28px;font-weight:900;margin-bottom:8px;}
 .ob-p{font-size:14px;color:var(--t2);line-height:1.65;margin-bottom:20px;}
 .ob-pets{display:flex;gap:9px;flex-wrap:wrap;justify-content:center;margin-bottom:16px;}
-.obp{font-size:36px;cursor:pointer;padding:10px;background:var(--c2);border:2px solid var(--line);border-radius:14px;transition:all .15s;}
-.obp.sel{border-color:var(--g);background:rgba(0,255,136,.08);transform:scale(1.1);}
+.obp{font-size:36px;cursor:pointer;padding:10px;background:#111;border:3px solid rgba(255,255,255,.2);border-radius:6px;box-shadow:4px 4px 0px rgba(255,255,255,.08);transition:transform .08s,box-shadow .08s;}
+.obp:active{transform:translate(4px,4px);box-shadow:0px 0px 0px rgba(255,255,255,.08)!important;}
+.obp.sel{border-color:var(--g);background:rgba(57,255,20,.1);box-shadow:4px 4px 0px var(--g);transform:translate(-2px,-2px);}
 .ob-loop{background:var(--c2);border:1px solid var(--line);border-radius:14px;padding:14px;margin-bottom:20px;}
 .ob-lr{display:flex;align-items:center;gap:11px;padding:8px 0;border-bottom:1px solid var(--line);}
 .ob-lr:last-child{border-bottom:none;}
@@ -318,7 +320,7 @@ button:active{opacity:.85;}
 .fv-action-cnt{font-size:11px;font-weight:700;color:#fff;font-family:var(--mono);}
 .fv-tl{position:absolute;top:10px;left:10px;display:flex;flex-direction:column;gap:5px;z-index:5;}
 .fv-bl{position:absolute;bottom:10px;left:10px;right:60px;z-index:5;}
-.flash-stamp{display:inline-block;background:linear-gradient(135deg,var(--pk),var(--p));color:#fff;font-size:9px;font-weight:900;padding:3px 9px;border-radius:20px;letter-spacing:1px;font-family:var(--mono);}
+.flash-stamp{display:inline-block;background:var(--pk);color:#fff;font-size:9px;font-weight:900;padding:3px 9px;border-radius:3px;border:2px solid #000;box-shadow:2px 2px 0px #000;letter-spacing:1px;font-family:var(--mono);text-transform:uppercase;}
 .live-pill{background:var(--r);color:#fff;font-size:9px;font-weight:900;padding:3px 8px;border-radius:5px;display:inline-flex;align-items:center;gap:4px;}
 .ldot{width:5px;height:5px;border-radius:50%;background:#fff;animation:blink .8s infinite;}
 @keyframes blink{0%,100%{opacity:1;}50%{opacity:.3;}}
@@ -384,7 +386,7 @@ button:active{opacity:.85;}
 .ufilters::-webkit-scrollbar{display:none;}
 .uf{padding:6px 12px;border-radius:20px;background:var(--c2);border:1px solid var(--line);font-size:11px;font-weight:700;cursor:pointer;color:var(--t2);white-space:nowrap;transition:all .15s;flex-shrink:0;}
 .uf.on{background:var(--g);color:var(--bg);border-color:var(--g);}
-.uc{margin:0 12px 10px;background:var(--c1);border:1px solid var(--line);border-radius:16px;overflow:hidden;cursor:pointer;transition:all .15s;}
+.uc{margin:0 12px 10px;background:#0d0d0d;border:2px solid rgba(255,255,255,.15);border-radius:6px;box-shadow:4px 4px 0px rgba(57,255,20,.15);overflow:hidden;cursor:pointer;transition:transform .08s,box-shadow .08s;}
 .uc:active{transform:scale(.98);}
 .uc.verified-gold{border-color:rgba(255,204,0,.35);}
 .uc.verified-co{border-color:rgba(0,255,136,.32);}
@@ -423,8 +425,8 @@ button:active{opacity:.85;}
 .src{flex-shrink:0;padding:5px 11px;border-radius:20px;background:var(--c2);border:1px solid var(--line);font-size:11px;font-weight:700;cursor:pointer;color:var(--t2);transition:all .15s;white-space:nowrap;}
 .src.on{background:var(--g);color:var(--bg);border-color:var(--g);}
 .pgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:12px;}
-.pcard{background:var(--c1);border:1px solid var(--line);border-radius:14px;overflow:hidden;cursor:pointer;transition:all .15s;}
-.pcard:active{transform:scale(.97);}
+.pcard{background:#0d0d0d;border:2px solid rgba(255,255,255,.15);border-radius:6px;box-shadow:3px 3px 0px rgba(255,255,255,.08);overflow:hidden;cursor:pointer;transition:transform .08s,box-shadow .08s;}
+.pcard:active{transform:translate(3px,3px);box-shadow:0px 0px 0px rgba(255,255,255,.08)!important;}
 .pc-img{height:128px;background:var(--c2);display:flex;align-items:center;justify-content:center;font-size:52px;position:relative;}
 .pc-badge{position:absolute;top:7px;left:7px;font-size:9px;font-weight:900;padding:2px 7px;border-radius:5px;font-family:var(--mono);}
 .pc-badge.new{background:var(--g);color:var(--bg);}
@@ -445,7 +447,7 @@ button:active{opacity:.85;}
 .lr-price{font-size:16px;font-weight:900;color:var(--g);font-family:var(--mono);}
 .lr-age{font-size:10px;color:var(--t3);margin-left:auto;}
 .cmp-wrap{padding:12px;display:flex;flex-direction:column;gap:12px;}
-.cmp-card{background:var(--c1);border:1px solid var(--line);border-radius:14px;overflow:hidden;}
+.cmp-card{background:#0d0d0d;border:2px solid rgba(255,255,255,.15);border-radius:6px;box-shadow:3px 3px 0px rgba(255,255,255,.08);overflow:hidden;}
 .cmp-prod{padding:12px 13px 9px;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:10px;}
 .cmp-row{display:flex;align-items:center;padding:11px 13px;border-bottom:1px solid var(--line);cursor:pointer;transition:background .1s;}
 .cmp-row:last-child{border-bottom:none;}
@@ -455,7 +457,7 @@ button:active{opacity:.85;}
 .cmp-price{font-size:14px;font-weight:900;font-family:var(--mono);}
 .cmp-price.best{color:var(--g);}
 .cmp-best{background:rgba(0,255,136,.1);color:var(--g);font-size:9px;font-weight:800;padding:2px 7px;border-radius:4px;margin-left:7px;}
-.brand-card{margin:0 12px 10px;background:var(--c1);border:1px solid var(--line);border-radius:14px;overflow:hidden;cursor:pointer;transition:all .15s;}
+.brand-card{margin:0 12px 10px;background:#0d0d0d;border:2px solid rgba(57,255,20,.3);border-radius:6px;box-shadow:4px 4px 0px rgba(57,255,20,.2);overflow:hidden;cursor:pointer;transition:transform .08s,box-shadow .08s;}
 .brand-card:active{transform:scale(.98);}
 .brand-banner{height:68px;display:flex;align-items:center;justify-content:center;font-size:40px;}
 .brand-info{padding:10px 12px 12px;}
@@ -465,7 +467,7 @@ button:active{opacity:.85;}
 .bs{font-size:11px;color:var(--t2);}
 .bs b{font-weight:800;color:var(--t1);}
 .gear-shop-grid{padding:12px;display:grid;grid-template-columns:1fr 1fr;gap:10px;}
-.gear-item{background:var(--c1);border:1px solid var(--line);border-radius:14px;padding:13px;text-align:center;cursor:pointer;transition:all .15s;}
+.gear-item{background:#0d0d0d;border:2px solid rgba(255,255,255,.15);border-radius:6px;box-shadow:3px 3px 0px rgba(255,255,255,.08);padding:13px;text-align:center;cursor:pointer;transition:transform .08s,box-shadow .08s;}
 .gear-item:active{transform:scale(.96);}
 .gear-item.owned{border-color:var(--g);}
 .gear-em{font-size:38px;display:block;margin-bottom:4px;}
@@ -1287,8 +1289,8 @@ button:active{opacity:.85;}
 /* ── EXPLORE QUICK GAMES ── */
 .xgame-row{display:flex;gap:9px;padding:0 14px 12px;overflow-x:auto;scrollbar-width:none;}
 .xgame-row::-webkit-scrollbar{display:none;}
-.xgame-card{flex-shrink:0;width:130px;min-height:90px;background:var(--c1);border:1px solid var(--line);border-radius:18px;overflow:hidden;cursor:pointer;-webkit-tap-highlight-color:transparent;transition:transform .1s;}
-.xgame-card:active{transform:scale(.93);}
+.xgame-card{flex-shrink:0;width:130px;min-height:90px;background:#0d0d0d;border:2px solid rgba(255,255,255,.15);border-radius:6px;box-shadow:3px 3px 0px rgba(57,255,20,.2);overflow:hidden;cursor:pointer;-webkit-tap-highlight-color:transparent;transition:transform .08s,box-shadow .08s;}
+.xgame-card:active{transform:translate(3px,3px);box-shadow:0px 0px 0px rgba(57,255,20,.2)!important;}
 .xgame-banner{height:70px;display:flex;align-items:center;justify-content:center;font-size:38px;position:relative;}
 .xgame-info{padding:10px 10px 12px;}
 .xgame-nm{font-size:12px;font-weight:900;margin-bottom:2px;}
@@ -2708,7 +2710,7 @@ button:active{opacity:.85;}
         <div style="font-size:22px;color:var(--b)">→</div>
       </div>
       <!-- DNA MIXER card -->
-      <div style="margin:0 14px 10px;background:linear-gradient(135deg,rgba(191,95,255,.14),rgba(127,46,190,.07));border:2px solid rgba(191,95,255,.38);border-radius:22px;padding:16px 18px;cursor:pointer;display:flex;align-items:center;gap:14px;-webkit-tap-highlight-color:transparent" onclick="openDNAMixer()">
+      <div style="margin:0 14px 10px;background:#0d0d0d;border:3px solid var(--p);border-radius:6px;box-shadow:5px 5px 0px var(--p);padding:16px 18px;cursor:pointer;display:flex;align-items:center;gap:14px;-webkit-tap-highlight-color:transparent;transition:transform .08s,box-shadow .08s" onclick="openDNAMixer()" ontouchstart="this.style.transform='translate(5px,5px)';this.style.boxShadow='0px 0px 0px var(--p)'" ontouchend="this.style.transform='';this.style.boxShadow='5px 5px 0px var(--p)'" >
         <div style="font-size:44px;filter:drop-shadow(0 0 14px rgba(191,95,255,.7));animation:pf 2s ease-in-out infinite 1s">🧬</div>
         <div style="flex:1;min-width:0">
           <div style="font-size:15px;font-weight:900">DNA MIXER</div>
@@ -2721,7 +2723,7 @@ button:active{opacity:.85;}
         <div style="font-size:22px;color:var(--p)">→</div>
       </div>
       <!-- PET RUNNER card -->
-      <div style="margin:0 14px 10px;background:linear-gradient(135deg,rgba(57,255,20,.12),rgba(0,180,80,.06));border:2px solid rgba(57,255,20,.4);border-radius:22px;padding:16px 18px;cursor:pointer;display:flex;align-items:center;gap:14px;-webkit-tap-highlight-color:transparent" onclick="openPetRunner()">
+      <div style="margin:0 14px 10px;background:#0d0d0d;border:3px solid var(--g);border-radius:6px;box-shadow:5px 5px 0px var(--g);padding:16px 18px;cursor:pointer;display:flex;align-items:center;gap:14px;-webkit-tap-highlight-color:transparent;transition:transform .08s,box-shadow .08s" onclick="openPetRunner()" ontouchstart="this.style.transform='translate(5px,5px)';this.style.boxShadow='0px 0px 0px var(--g)'" ontouchend="this.style.transform='';this.style.boxShadow='5px 5px 0px var(--g)'" >
         <div style="font-size:44px;filter:drop-shadow(0 0 14px rgba(57,255,20,.7));animation:pf 1.2s ease-in-out infinite" id="gpRunnerPet">🐉</div>
         <div style="flex:1;min-width:0">
           <div style="font-size:15px;font-weight:900">PET RUNNER</div>
@@ -2735,7 +2737,7 @@ button:active{opacity:.85;}
         <div style="font-size:22px;color:var(--g)">→</div>
       </div>
       <!-- PET BLOCKS card -->
-      <div style="margin:0 14px 10px;background:linear-gradient(135deg,rgba(191,95,255,.14),rgba(127,46,190,.07));border:2px solid rgba(191,95,255,.38);border-radius:22px;padding:16px 18px;cursor:pointer;display:flex;align-items:center;gap:14px;-webkit-tap-highlight-color:transparent" onclick="openPetBlocks()">
+      <div style="margin:0 14px 10px;background:#0d0d0d;border:3px solid var(--p);border-radius:6px;box-shadow:5px 5px 0px var(--p);padding:16px 18px;cursor:pointer;display:flex;align-items:center;gap:14px;-webkit-tap-highlight-color:transparent;transition:transform .08s,box-shadow .08s" onclick="openPetBlocks()" ontouchstart="this.style.transform='translate(5px,5px)';this.style.boxShadow='0px 0px 0px var(--p)'" ontouchend="this.style.transform='';this.style.boxShadow='5px 5px 0px var(--p)'" >
         <div style="font-size:44px;filter:drop-shadow(0 0 14px rgba(191,95,255,.7));animation:pf 2s ease-in-out infinite 1.5s">🧩</div>
         <div style="flex:1;min-width:0">
           <div style="font-size:15px;font-weight:900">PET BLOCKS</div>
