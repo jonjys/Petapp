@@ -2272,7 +2272,7 @@ button:active{opacity:.85;}
 
     <!-- MAP -->
     <div class="view" id="view-map" style="padding:0">
-      <div class="map-wrap">
+      <div class="map-wrap" style="position:relative">
         <div class="map-canvas-wrap">
           <div id="realMap"></div>
           <div class="map-top">
@@ -2296,6 +2296,10 @@ button:active{opacity:.85;}
         </div>
         <div style="padding:8px 13px;border-top:1px solid var(--line);border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between"><div class="sh-t">UPPDRAG NÄRA DIG</div><div class="sh-a" onclick="nav('uppdrag')">ALLA →</div></div>
         <div class="nearby-list" id="nearbyList"></div>
+      </div>
+      <div id="mapModeToggle" style="position:absolute;bottom:80px;left:50%;transform:translateX(-50%);z-index:500;display:flex;background:#000;border:3px solid var(--g);border-radius:6px;box-shadow:4px 4px 0px var(--g);overflow:hidden">
+        <button id="mapModeFriends" onclick="setMapMode('friends')" style="padding:10px 22px;background:var(--g);color:#000;border:none;font-size:11px;font-weight:900;font-family:var(--mono);cursor:pointer;letter-spacing:1px">👥 VÄNNER</button>
+        <button id="mapModePublic" onclick="setMapMode('public')" style="padding:10px 22px;background:transparent;color:var(--g);border:none;font-size:11px;font-weight:900;font-family:var(--mono);cursor:pointer;letter-spacing:1px">🌍 OFFENTLIG</button>
       </div>
     </div>
 
@@ -6009,7 +6013,7 @@ function submitSell(){const name=$('sellProductName').value.trim();if(!name){sho
 // ── MAP ──
 function initMap(lat,lon){
   if(G.mapInit)return;G.mapInit=true;
-  const m=L.map('realMap',{zoomControl:false,attributionControl:false}).setView([lat,lon],15);G.lMap=m;
+  const m=window._leafletMap=L.map('realMap',{zoomControl:false,attributionControl:false}).setView([lat,lon],15);G.lMap=m;
   L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:19}).addTo(m);
   const yIco=L.divIcon({html:`<div style="width:46px;height:46px;background:rgba(0,255,136,.2);border:3px solid #00ff88;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:20px;box-shadow:0 0 0 8px rgba(0,255,136,.1)">${gS().e}</div>`,className:'',iconAnchor:[23,23]});
   G.uMarker=L.marker([lat,lon],{icon:yIco}).addTo(m).bindPopup(`<b>${G.name||'Du'}</b><br>LV${G.level}`);
@@ -6042,6 +6046,45 @@ function renderNearby(lat,lon){
   $('nearbyList').innerHTML=sorted.slice(0,5).map(u=>`<div class="nbr" onclick="openUppdragDetail('${u.id}')"><div class="nbr-ico">${u.coEm||'🎯'}</div><div style="flex:1;min-width:0"><div class="nbr-title">${u.title.substring(0,30)}${u.title.length>30?'...':''}</div><div class="nbr-loc">${u.co||''}</div></div><div style="text-align:right;flex-shrink:0"><div class="nbr-rwd">${u.sek?u.sek+' SEK':u.coins+'⚡'}</div><div class="nbr-dist">${fmtD(u.d)}</div></div></div>`).join('');
 }
 function setShare(m){G.shareMode=m;$('shF').className='sh-o'+(m==='friends'?' fo':'');$('shP').className='sh-o'+(m==='public'?' po':'');if(m==='public'){$('shareChip').textContent='PUBLIK';$('shareChip').className='tag tpk';showT('🌍 PUBLIK!','y');}else{$('shareChip').textContent='PRIVAT';$('shareChip').className='tag tg';showT('👥 Privat','g');}}
+
+// ── MAP MODE TOGGLE (Friends / Public) ──
+let _mapMode='friends';
+function setMapMode(m){
+  _mapMode=m;
+  const fb=$('mapModeFriends');const pb=$('mapModePublic');
+  if(fb){fb.style.background=m==='friends'?'var(--g)':'transparent';fb.style.color=m==='friends'?'#000':'var(--g)';}
+  if(pb){pb.style.background=m==='public'?'var(--pk)':'transparent';pb.style.color=m==='public'?'#fff':'var(--g)';}
+  if(m==='public'){
+    showT('🌍 OFFENTLIGT LÄGE! Alla kan se dig nu!','pk');
+    _spawnPublicPets();
+  } else {
+    showT('👥 Vänläge aktivt','g');
+    _clearPublicPets();
+  }
+}
+let _publicPetMarkers=[];
+function _spawnPublicPets(){
+  _clearPublicPets();
+  if(!window._leafletMap)return;
+  const pets=['🐉','🦊','🤖','👻','🔥','💎','⚡'];
+  const names=['KarmaUser_4821','neonpet_sw','dragonmaster','ghostrun_99'];
+  const count=5+Math.floor(Math.random()*4);
+  for(let i=0;i<count;i++){
+    const lat=(window._leafletMap.getCenter().lat)+(Math.random()-.5)*.008;
+    const lng=(window._leafletMap.getCenter().lng)+(Math.random()-.5)*.008;
+    const em=pets[Math.floor(Math.random()*pets.length)];
+    const nm=names[Math.floor(Math.random()*names.length)];
+    const mk=L.marker([lat,lng],{
+      icon:L.divIcon({html:`<div style="font-size:24px;filter:drop-shadow(0 0 8px rgba(57,255,20,.8))">${em}</div>`,className:'',iconAnchor:[12,12]})
+    }).addTo(window._leafletMap);
+    mk.bindPopup(`<b>${nm}</b><br>Pet: ${em}`);
+    _publicPetMarkers.push(mk);
+  }
+}
+function _clearPublicPets(){
+  _publicPetMarkers.forEach(m=>{try{window._leafletMap.removeLayer(m);}catch(e){}});
+  _publicPetMarkers=[];
+}
 
 // ── LEADERBOARD ──
 function renderLB(cat,el){
@@ -8876,7 +8919,7 @@ function renderDNASpliceLab(){
       <button class="btn btn-ghost btn-sm" onclick="closeDNAMixer()">✕</button>
     </div>
     <!-- Current pet DNA sequence -->
-    <div style="background:linear-gradient(135deg,rgba(191,95,255,.12),rgba(0,217,255,.06));border:2px solid rgba(191,95,255,.35);border-radius:18px;padding:12px 14px;margin-bottom:12px">
+    <div style="background:#0d0d0d;border:3px solid var(--p);border-radius:6px;box-shadow:4px 4px 0px var(--p);padding:12px 14px;margin-bottom:12px">
       <div style="font-size:9px;font-weight:900;color:var(--p);font-family:var(--mono);letter-spacing:1px;margin-bottom:8px">▶ DIN NUVARANDE DNA-SEKVENS</div>
       <div style="display:flex;gap:6px;margin-bottom:6px;align-items:center">
         <div style="font-size:28px">${G.petEmoji||'🐉'}</div>
@@ -8885,7 +8928,7 @@ function renderDNASpliceLab(){
             ${['body','element','perk'].map(t=>{
               const f=t==='body'?bodyFrag:t==='element'?elemFrag:perkFrag;
               const col=f?(_dnaRarCol[f.rarity]||'#aaa'):'rgba(255,255,255,.25)';
-              return`<div style="text-align:center;background:${f?'rgba(191,95,255,.1)':'rgba(255,255,255,.03)'};border:1px solid ${f?col+'55':'rgba(255,255,255,.1)'};border-radius:10px;padding:5px 4px">
+              return`<div style="background:#0d0d0d;border:3px solid var(--p);border-radius:6px;box-shadow:4px 4px 0px var(--p);text-align:center;padding:5px 4px">
                 <div style="font-size:16px">${f?f.em:'—'}</div>
                 <div style="font-size:7px;font-weight:900;color:${col};font-family:var(--mono)">${_dnaTypeLabel[t]}</div>
                 <div style="font-size:7px;color:var(--t3)">${f?f.nm:'BASIS'}</div>
@@ -8899,32 +8942,29 @@ function renderDNASpliceLab(){
     <!-- DNA Fragment Inventory -->
     <div style="font-size:10px;font-weight:900;color:var(--t3);letter-spacing:.8px;margin-bottom:6px;font-family:var(--mono)">🧪 DINA DNA-FRAGMENT (${invFrags.length}) <span style="color:var(--b);font-weight:400;font-size:9px">Fiskas från sällsynta fiskar!</span></div>
     ${invFrags.length===0?`
-      <div style="background:rgba(255,255,255,.03);border:2px dashed rgba(255,255,255,.1);border-radius:14px;padding:20px;text-align:center;margin-bottom:12px">
+      <div style="background:#0d0d0d;border:3px solid var(--p);border-radius:6px;box-shadow:4px 4px 0px var(--p);padding:20px;text-align:center;margin-bottom:12px">
         <div style="font-size:28px;margin-bottom:6px">🎣</div>
         <div style="font-size:12px;font-weight:900;color:var(--t2)">Inga DNA-fragment ännu!</div>
         <div style="font-size:10px;color:var(--t3);margin-top:4px">Fiska upp sällsynta &amp; episka fiskar för att samla DNA</div>
         <button class="btn btn-sm btn-ghost" style="margin-top:10px;border-color:rgba(0,217,255,.4);color:var(--b)" onclick="closeDNAMixer();openFishingGame()">🎣 Gå till Fiskespelet</button>
       </div>`:
-    `<div style="display:flex;flex-direction:column;gap:5px;max-height:200px;overflow-y:auto;margin-bottom:12px">
+    `<div style="display:grid;grid-template-columns:repeat(2,1fr);gap:6px;max-height:200px;overflow-y:auto;margin-bottom:12px">
       ${invFrags.map((f,i)=>{
         const col=_dnaRarCol[f.rarity]||'#aaa';
         const isSelected=_dnaSelectedFrag&&_dnaSelectedFrag.id===f.id;
         const currentVal=dna[f.type];
         const isActive=currentVal===f.variant;
-        return`<div onclick="_dnaSelectFrag('${f.id}')" style="display:flex;align-items:center;gap:10px;background:${isSelected?'rgba(191,95,255,.15)':'rgba(255,255,255,.03)'};border:1.5px solid ${isSelected?col:'rgba(255,255,255,.1)'};border-radius:12px;padding:8px 10px;cursor:pointer;transition:all .15s">
+        return`<div onclick="_dnaSelectFrag('${f.id}')" ontouchstart="this.style.transform='translate(3px,3px)';this.style.boxShadow='0px 0px 0px var(--p)'" ontouchend="this.style.transform='';this.style.boxShadow='3px 3px 0px var(--p)'" style="background:#111;border:2px solid ${isSelected?'var(--g)':'var(--p)'};border-radius:5px;box-shadow:3px 3px 0px ${isSelected?'var(--g)':'var(--p)'};padding:8px;cursor:pointer;transition:transform .08s,box-shadow .08s;text-align:center">
           <div style="font-size:24px">${f.em}</div>
-          <div style="flex:1;min-width:0">
-            <div style="font-size:12px;font-weight:900;color:#fff">${f.nm} <span style="font-size:9px;color:${col};font-family:var(--mono)">[${_dnaTypeLabel[f.type]}]</span>${isActive?'<span style="font-size:8px;color:var(--g);margin-left:4px">✅ AKTIV</span>':''}</div>
-            <div style="font-size:10px;color:var(--g);font-family:var(--mono)">${f.bonus}</div>
-            <div style="font-size:9px;color:var(--t3)">${f.desc}</div>
-          </div>
-          ${isSelected?`<div style="font-size:18px;color:${col}">◀</div>`:''}
+          <div style="font-size:11px;font-weight:900;color:#fff;font-family:var(--mono)">${f.nm}</div>
+          <div style="font-size:9px;color:${col};font-family:var(--mono)">[${_dnaTypeLabel[f.type]}]${isActive?' ✅':''}</div>
+          <div style="font-size:9px;color:var(--g);font-family:var(--mono)">${f.bonus}</div>
         </div>`;
       }).join('')}
     </div>`}
     <div id="dnaSpliceResult" style="min-height:20px;margin-bottom:10px"></div>
     <div style="display:flex;gap:6px">
-      <button class="btn btn-lg btn-full" id="dnaSpliceBtn" style="background:linear-gradient(135deg,var(--p),#7B2FBE);color:#fff;box-shadow:0 0 18px rgba(191,95,255,.4)" onclick="executeDNASplice()" ${invFrags.length===0||!_dnaSelectedFrag?'disabled':''}>🧬 SPLICE DNA!</button>
+      <button id="dnaSpliceBtn" style="background:var(--p);color:#fff;border:4px solid #000;border-radius:6px;box-shadow:5px 5px 0px #000;padding:14px 40px;font-size:16px;font-weight:900;font-family:var(--mono);cursor:pointer;text-transform:uppercase;width:100%" ontouchstart="this.style.transform='translate(5px,5px)';this.style.boxShadow='0px 0px 0px #000'" ontouchend="this.style.transform='';this.style.boxShadow='5px 5px 0px #000'" onclick="executeDNASplice()" ${invFrags.length===0||!_dnaSelectedFrag?'disabled':''}>🧬 SPLICE DNA!</button>
     </div>`;
 }
 
@@ -8952,6 +8992,17 @@ function executeDNASplice(){
   if(!_dnaSelectedFrag){showT('Välj ett DNA-fragment!','y');return;}
   const f=_dnaSelectedFrag;
   if(!G.petDNA)G.petDNA={body:'base',element:'none',perk:'none'};
+  // 10% chance of Glitch Mutation
+  if(Math.random() < 0.10) {
+    // Glitch mutation!
+    showT('⚠️ INSTABIL MUTATION! Ditt pet glitchar!','r');
+    G.petEmoji = ['👾','🤖','👻','💀','🌀'][Math.floor(Math.random()*5)];
+    save(); updatePetView();
+    spawnParticles(window.innerWidth/2, window.innerHeight*.4, 'stars');
+    vibe([30,20,80,20,120,40,200]);
+    closeDNAMixer();
+    return; // don't apply fragment normally
+  }
   G.petDNA[f.type]=f.variant;
   // Remove ONE copy from inventory
   const idx=(G.dnaInventory||[]).indexOf(f.id);
