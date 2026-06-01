@@ -698,11 +698,11 @@ button:active{opacity:.85;}
 @keyframes eEntry{from{transform:translateY(-30px) scale(0.5);opacity:0;}to{transform:translateY(0) scale(1);opacity:1;}}
 .battle-arena{position:fixed;inset:0;z-index:750;background:radial-gradient(ellipse at 50% 30%,rgba(255,45,85,.08) 0%,var(--bg) 60%);display:flex;flex-direction:column;transform:translateY(100%);transition:transform .32s cubic-bezier(.32,.72,0,1);}
 .battle-arena.open{transform:translateY(0);}
-.ba-hdr{height:54px;display:flex;align-items:center;padding:0 14px;gap:10px;border-bottom:1px solid rgba(255,45,85,.3);flex-shrink:0;background:rgba(255,45,85,.06);}
+.ba-hdr{height:54px;display:flex;align-items:center;padding:0 14px;gap:10px;border-bottom:3px solid var(--pk);flex-shrink:0;background:#000;}
 .ba-field{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:16px;gap:16px;}
 .ba-hp-wrap{width:220px;}
-.ba-hp-bar{height:12px;border-radius:6px;background:var(--c2);overflow:hidden;border:1px solid var(--line);}
-.ba-hp-fill{height:100%;border-radius:6px;transition:width .4s ease;}
+.ba-hp-bar{height:12px;border-radius:2px;background:#111;overflow:hidden;border:2px solid rgba(255,255,255,.15);}
+.ba-hp-fill{height:100%;border-radius:1px;transition:width .4s ease;}
 .ba-enemy-em{font-size:72px;line-height:1;filter:drop-shadow(0 0 20px rgba(255,45,85,.4));}
 .ba-enemy-em.hit{animation:baHit .3s ease-out;}
 .ba-player-lbl.shk{animation:baShk .3s ease-out;}
@@ -721,8 +721,8 @@ button:active{opacity:.85;}
 .ba-scene{flex:1;display:flex;flex-direction:column;padding:10px 14px;position:relative;overflow:hidden;}
 .ba-bg-glow{position:absolute;inset:0;pointer-events:none;transition:background 1s;}
 .ba-hp-row{display:flex;align-items:center;margin-bottom:8px;}
-.ba-hp-track{height:8px;background:rgba(255,255,255,.08);border-radius:4px;overflow:hidden;flex:1;}
-.ba-hp-bar-fill{height:100%;border-radius:4px;transition:width .4s ease-out;}
+.ba-hp-track{height:8px;background:#111;border:1px solid rgba(255,255,255,.1);border-radius:2px;overflow:hidden;flex:1;}
+.ba-hp-bar-fill{height:100%;border-radius:1px;transition:width .4s ease-out;}
 .ba-hp-bar-fill.enemy{background:var(--pk);}
 .ba-hp-bar-fill.player{background:var(--g);}
 .ba-enemy-section{margin-bottom:8px;}
@@ -741,17 +741,17 @@ button:active{opacity:.85;}
 .ba-player-section{margin-bottom:8px;}
 .ba-actions{padding:10px 14px;padding-bottom:calc(10px + env(safe-area-inset-bottom,0px));background:rgba(4,4,10,.98);border-top:1px solid rgba(255,255,255,.06);flex-shrink:0;}
 .ba-atk-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;}
-.ba-atk-btn{background:var(--c1);border:1.5px solid var(--line);border-radius:12px;padding:8px 4px;cursor:pointer;transition:all .1s;-webkit-tap-highlight-color:transparent;display:flex;flex-direction:column;align-items:center;gap:2px;}
-.ba-atk-btn:active{transform:scale(.92);}
+.ba-atk-btn{background:#0d0d0d;border:3px solid rgba(255,255,255,.2);border-radius:5px;box-shadow:3px 3px 0px rgba(255,255,255,.1);padding:8px 4px;cursor:pointer;transition:transform .08s,box-shadow .08s;-webkit-tap-highlight-color:transparent;display:flex;flex-direction:column;align-items:center;gap:2px;}
+.ba-atk-btn:active{transform:translate(3px,3px);box-shadow:0px 0px 0px rgba(255,255,255,.1)!important;}
 .ba-btn-ico{font-size:22px;line-height:1;}
 .ba-btn-nm{font-size:10px;font-weight:900;color:var(--t1);font-family:var(--mono);}
 .ba-btn-sub{font-size:8px;color:var(--t3);}
-.ba-atk-btn.normal{border-color:rgba(57,255,20,.3);} .ba-atk-btn.normal:active{background:rgba(57,255,20,.08);}
-.ba-atk-btn.power{border-color:rgba(255,45,85,.3);} .ba-atk-btn.power:active{background:rgba(255,45,85,.08);}
-.ba-atk-btn.magic{border-color:rgba(0,217,255,.3);} .ba-atk-btn.magic:active{background:rgba(0,217,255,.08);}
-.ba-atk-btn.fusion{border-color:rgba(255,230,0,.6);background:rgba(255,230,0,.08);animation:flashBtnPulse 1s ease-in-out infinite;}
-.ba-atk-btn.dodge{border-color:rgba(191,95,255,.3);} .ba-atk-btn.dodge:active{background:rgba(191,95,255,.08);}
-.ba-atk-btn.block{border-color:rgba(0,217,255,.3);} .ba-atk-btn.block:active{background:rgba(0,217,255,.08);}
+.ba-atk-btn.normal{border-color:var(--g);box-shadow:3px 3px 0px var(--g);}
+.ba-atk-btn.power{border-color:var(--pk);box-shadow:3px 3px 0px var(--pk);}
+.ba-atk-btn.magic{border-color:var(--b);box-shadow:3px 3px 0px var(--b);}
+.ba-atk-btn.fusion{border-color:var(--y);box-shadow:3px 3px 0px var(--y);background:rgba(255,230,0,.06);animation:bitePulse .8s ease-in-out infinite;}
+.ba-atk-btn.dodge{border-color:var(--p);box-shadow:3px 3px 0px var(--p);}
+.ba-atk-btn.block{border-color:var(--b);box-shadow:3px 3px 0px var(--b);}
 .ba-atk-btn:disabled{opacity:.3;pointer-events:none;}
 .ba-victory,.ba-defeat{position:absolute;inset:0;background:rgba(0,0,0,.92);display:flex;align-items:center;justify-content:center;z-index:20;}
 .ba-victory-content{text-align:center;padding:24px;}
@@ -6448,10 +6448,12 @@ function openPetRunner(){
   if(!g){
     g=document.createElement('div');g.className='pet-runner-game';g.id='petRunnerGame';
     g.innerHTML=`
-      <div class="pr-hdr">
-        <button onclick="closePetRunner()" style="background:none;border:none;color:#fff;font-size:22px;cursor:pointer;padding:4px 8px">←</button>
-        <div style="flex:1;text-align:center;font-size:14px;font-weight:900;font-family:var(--mono);color:var(--y)">⚡ PET RUNNER</div>
-        <div style="font-size:15px;font-weight:900;color:var(--g);font-family:var(--mono)" id="prScore">0m</div>
+      <div class="pr-hdr" style="background:#000;border-bottom:3px solid var(--g)">
+        <button onclick="closePetRunner()" style="background:#111;border:2px solid rgba(255,255,255,.2);border-radius:4px;color:#fff;font-size:18px;cursor:pointer;padding:4px 10px;font-family:var(--mono)">←</button>
+        <div style="flex:1;text-align:center;font-size:13px;font-weight:900;font-family:var(--mono);color:var(--g);letter-spacing:2px">⚡ PET RUNNER</div>
+        <div style="background:#0d0d0d;border:2px solid var(--y);border-radius:4px;padding:3px 10px">
+          <span style="font-size:13px;font-weight:900;color:var(--y);font-family:var(--mono)" id="prScore">0m</span>
+        </div>
       </div>
       <div style="position:relative;flex:1;overflow:hidden">
         <canvas id="prCanvas" style="display:block;width:100%;height:100%;touch-action:none"></canvas>
@@ -6459,23 +6461,31 @@ function openPetRunner(){
           <span id="prHpDots" style="font-size:16px">❤️❤️❤️</span>
           <span style="font-size:10px;color:var(--g);font-weight:900;font-family:var(--mono)" id="prLvBadge2">LV1</span>
         </div>
-        <div id="prStartScreen" style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(10,10,26,.88)">
-          <div style="text-align:center">
-            <div style="font-size:70px;animation:petBob 1s ease-in-out infinite" id="prStartPet">🐉</div>
-            <div style="font-size:22px;font-weight:900;color:var(--y);font-family:var(--mono)">PET RUNNER</div>
-            <div style="font-size:12px;color:var(--t3);margin:8px 0">Tryck för att hoppa!</div>
-            <div style="font-size:11px;color:var(--t3)">BÄST: <span id="prBestDisp" style="color:var(--y);font-weight:900">0m</span></div>
-            <div style="font-size:11px;color:var(--b);font-family:var(--mono);margin-top:4px" id="prLvShow">RUNNER LV1</div>
+        <div id="prStartScreen" style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.92)">
+          <div style="text-align:center;padding:24px">
+            <div style="font-size:80px;animation:petBob 1s ease-in-out infinite;margin-bottom:8px" id="prStartPet">🐉</div>
+            <div style="font-size:24px;font-weight:900;color:#39FF14;font-family:var(--mono);letter-spacing:2px;text-shadow:0 0 20px rgba(57,255,20,.5)">PET RUNNER</div>
+            <div style="font-size:10px;color:rgba(255,255,255,.4);font-family:var(--mono);letter-spacing:3px;text-transform:uppercase;margin:6px 0 16px">ENDLESS RUNNER</div>
+            <div style="display:inline-block;background:#0d0d0d;border:3px solid var(--y);border-radius:6px;box-shadow:4px 4px 0px var(--y);padding:8px 18px;margin-bottom:16px">
+              <span style="font-size:10px;color:rgba(255,255,255,.5);font-family:var(--mono)">BÄST: </span>
+              <span id="prBestDisp" style="color:var(--y);font-weight:900;font-family:var(--mono);font-size:16px">0m</span>
+            </div>
+            <div style="font-size:11px;color:var(--b);font-family:var(--mono);margin-bottom:4px;letter-spacing:1px" id="prLvShow">RUNNER LV1</div>
+            <div style="font-size:10px;color:rgba(255,255,255,.35);font-family:var(--mono);margin-bottom:20px" id="prGhostInfo">👻 Spöke: Ditt bästa lopp visas</div>
+            <div style="font-size:12px;color:var(--g);font-family:var(--mono);letter-spacing:2px;animation:bitePulse .6s ease-in-out infinite">▶ TRYCK FÖR ATT STARTA</div>
           </div>
         </div>
-        <div id="prGameOver" style="position:absolute;inset:0;display:none;flex-direction:column;align-items:center;justify-content:center;background:rgba(10,10,26,.93);gap:8px">
-          <div style="font-size:50px">💀</div>
-          <div style="font-size:22px;font-weight:900;color:var(--r);font-family:var(--mono)">GAME OVER</div>
-          <div id="prFinalScore" style="font-size:16px;color:var(--y);font-weight:900;font-family:var(--mono)">0m</div>
-          <div id="prRewards" style="font-size:12px;color:var(--g);margin:4px 0"></div>
-          <div id="prLvBadge3" style="font-size:10px;color:var(--b);font-weight:900;font-family:var(--mono)">RUNNER LV1</div>
-          <button onclick="prRestart()" style="background:rgba(57,255,20,.2);border:1.5px solid rgba(57,255,20,.5);border-radius:14px;color:var(--g);padding:12px 28px;font-size:15px;font-weight:900;cursor:pointer;font-family:var(--mono)">🔄 IGEN</button>
-          <button onclick="closePetRunner()" style="background:none;border:1px solid rgba(255,255,255,.15);border-radius:12px;color:var(--t3);padding:8px 20px;font-size:12px;cursor:pointer">← AVSLUTA</button>
+        <div id="prGameOver" style="position:absolute;inset:0;display:none;flex-direction:column;align-items:center;justify-content:center;background:rgba(0,0,0,.95);gap:10px">
+          <div style="font-size:9px;font-weight:900;color:var(--r);font-family:var(--mono);letter-spacing:3px;margin-bottom:4px">GAME OVER</div>
+          <div style="font-size:52px">💀</div>
+          <div id="prFinalScore" style="font-size:28px;font-weight:900;color:var(--y);font-family:var(--mono)">0m</div>
+          <div id="prRewards" style="font-size:12px;color:var(--g);font-family:var(--mono);font-weight:900;min-height:18px"></div>
+          <div id="prNewBest" style="font-size:16px;font-weight:900;color:var(--g);font-family:var(--mono);display:none">🏆 NYTT REKORD!</div>
+          <div id="prLvBadge3" style="font-size:10px;color:var(--b);font-weight:900;font-family:var(--mono);padding:4px 12px;border:2px solid var(--b);border-radius:4px">RUNNER LV1</div>
+          <div style="display:flex;gap:10px;margin-top:8px">
+            <button onclick="prRestart()" style="background:#39FF14;color:#000;border:4px solid #000;border-radius:6px;padding:13px 28px;font-size:15px;font-weight:900;cursor:pointer;font-family:var(--mono);box-shadow:5px 5px 0px #000;text-transform:uppercase;touch-action:manipulation" ontouchstart="this.style.transform='translate(5px,5px)';this.style.boxShadow='0px 0px 0px #000'" ontouchend="this.style.transform='';this.style.boxShadow='5px 5px 0px #000'">🔄 IGEN</button>
+            <button onclick="closePetRunner()" style="background:#111;color:rgba(255,255,255,.5);border:3px solid rgba(255,255,255,.2);border-radius:6px;padding:13px 20px;font-size:13px;cursor:pointer;font-family:var(--mono);box-shadow:3px 3px 0px rgba(255,255,255,.1)" >← UPP</button>
+          </div>
         </div>
       </div>`;
     document.body.appendChild(g);
@@ -6527,6 +6537,8 @@ function _prInitGame(){
   _pr.obstacles=[];_pr.gems=[];_pr.clouds=[];_pr.bgOffset=0;
   _pr.nextObstacle=90;_pr.nextGem=50;
   _pr.pHp=3;_pr.combo=0;_pr.shield=false;
+  // Ghost runner — shows your best run pace
+  _pr.ghost={score:0,x:70,y:H*.65,active:_pr.best>0};
   _prInitClouds(canvas);
 }
 function _prInitClouds(canvas){
@@ -6549,6 +6561,11 @@ function _prUpdate(canvas){
   if(_pr.y>=groundY){_pr.y=groundY;_pr.vy=0;_pr.grounded=true;}
   _pr.score++;
   _pr.bgOffset=((_pr.bgOffset||0)+spd*.3)%W;
+  // Advance ghost at constant pace matching best run
+  if(_pr.ghost&&_pr.ghost.active&&_pr.best>0){
+    _pr.ghost.score+=(_pr.best*10)/(Math.max(_pr.best,100)*10/spd);
+    _pr.ghost.score=Math.min(_pr.ghost.score,_pr.best*10+1);
+  }
   // Level check — new level every 250m
   const newLv=Math.floor(_pr.score/2500)+1;
   if(newLv>_pr.level){
@@ -6709,6 +6726,27 @@ function _prDraw(canvas,ctx){
     ctx.font='18px serif';ctx.fillText(gm.em,gm.x,gm.y);
     ctx.restore();
   });
+  // Ghost runner (best run pace visualization)
+  if(_pr.ghost&&_pr.ghost.active&&_pr.best>0){
+    const ghostDist=Math.floor(_pr.ghost.score/10);
+    const myDist=Math.floor(_pr.score/10);
+    const ahead=myDist>=ghostDist;
+    // Draw ghost pet slightly offset
+    ctx.save();
+    ctx.globalAlpha=0.28;
+    ctx.font='34px serif';ctx.textAlign='center';ctx.textBaseline='middle';
+    // Ghost is positioned relative to player based on score diff
+    const scoreDiff=(_pr.ghost.score-_pr.score)/10;
+    const ghostX=Math.max(20,Math.min(W-20,_pr.x+scoreDiff*0.8));
+    ctx.fillText(pet,ghostX,_pr.y-15+Math.sin(t*.008)*2);
+    ctx.restore();
+    // "GHOST" label above it
+    ctx.save();
+    ctx.font='bold 8px monospace';ctx.textAlign='center';
+    ctx.fillStyle=ahead?'rgba(57,255,20,.6)':'rgba(255,0,127,.6)';
+    ctx.fillText(ahead?'▲ GHOST':'▼ GHOST',ghostX,_pr.y-50);
+    ctx.restore();
+  }
   // Pet with trail effect
   if(_pr.shield){ctx.globalAlpha=0.5+0.5*Math.sin(t*.015);}
   const pet=G.petEmoji||'🐉';
@@ -6742,10 +6780,12 @@ function _prGameOver(){
   gainCoins(coins);gainXP(Math.floor(m*.5),'action');
   advanceDailyChallenge&&advanceDailyChallenge('play',1);
   const go=$('prGameOver');if(go)go.style.display='flex';
-  const fs=$('prFinalScore');if(fs)fs.textContent=(isNew?'🏆 NY REKORD! ':'')+'Distans: '+m+'m';
-  const rw=$('prRewards');if(rw)rw.textContent='+'+coins+'⚡ +'+Math.floor(m*.5)+'XP'+(_pr.gemsCollected>0?' · '+_pr.gemsCollected+'💎 samlad':'');
+  const fs=$('prFinalScore');if(fs)fs.textContent=m+'m';
+  const nb=$('prNewBest');if(nb)nb.style.display=isNew?'block':'none';
+  const rw=$('prRewards');if(rw)rw.textContent='+'+coins+'⚡  +'+Math.floor(m*.5)+'XP'+(_pr.gemsCollected>0?'  '+_pr.gemsCollected+'💎':'');
   const lb=$('prLvBadge3');if(lb)lb.textContent='RUNNER LV'+_pr.level;
   vibe&&vibe([50,30,100]);SFX.error&&SFX.error();
+  if(isNew)setTimeout(()=>{spawnParticles&&spawnParticles(window.innerWidth/2,window.innerHeight*.4,'stars');},200);
   save();updateHUD();
 }
 
