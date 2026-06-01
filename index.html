@@ -3565,6 +3565,8 @@ const G={
   ownedZones:[],
   terrLastIncome:{},
   dnaMixes:[],
+  petDNA:{body:'base',element:'none',perk:'none'},
+  dnaInventory:[],
 };
 
 const EVOL={
@@ -4391,7 +4393,7 @@ function cp(n){const d=document.createElement('div');d.className='cpop';d.textCo
 function sa(sel,el){document.querySelectorAll(sel+' .topt').forEach(x=>x.className='topt');el.classList.add('on');}
 function dist(la1,lo1,la2,lo2){const R=6371e3,f1=la1*Math.PI/180,f2=la2*Math.PI/180,df=(la2-la1)*Math.PI/180,dl=(lo2-lo1)*Math.PI/180;const a=Math.sin(df/2)**2+Math.cos(f1)*Math.cos(f2)*Math.sin(dl/2)**2;return R*2*Math.atan2(Math.sqrt(a),Math.sqrt(1-a));}
 function fmtD(m){return m<1000?Math.round(m)+'m':+(m/1000).toFixed(1)+'km';}
-function save(){try{const d={n:G.name,p:G.petEmoji,pn:G.petName,l:G.level,c:G.coins,st:G.streak,x:G.exp,as:G.actionStat,cs:G.commerceStat,ss:G.socialStat,g:JSON.stringify(G.gear),eg:G.equippedGear||'',sek:G.totalSEK,ts:G.trustScore,posts:G.postCount,b:G.bountiesDone,hu:G.hunger,en:G.energy,mo:G.mood,brands:JSON.stringify(G.brands),circles:JSON.stringify(G.circles),sw:JSON.stringify(G.streakWeek),petCfg:JSON.stringify(G.petConfig),pm:G.premium?1:0,pt:G.premiumTier,wld:G.world,bond:JSON.stringify(G.todayBond),bdate:G.bondDate,wp:G.worldPoints,bz:JSON.stringify(G.builtZones),wpc:G.wildPetsCaught,wflash:G.wldFlash,wbattle:G.wldBattle,wmarket:G.wldMarket,wstreak:G.wldStreak,wsocial:G.wldSocial,po:G.packsOpened,col:JSON.stringify(G.collectibles),tp:G.talentPoints,tl:JSON.stringify(G.talents),tlvl:JSON.stringify(G.talentLvls||{}),diary:JSON.stringify(G.diaryEntries.slice(-20)),ls:G.lastSpin,ltt:G.lastTalkTime||0,lwb:G.lastWpBoost||0,castle:JSON.stringify(G.castle||{}),ownedZones:JSON.stringify(G.ownedZones||[]),terrLastIncome:JSON.stringify(G.terrLastIncome||{}),dnaMixes:JSON.stringify(G.dnaMixes||[]),lastFortune:G.lastFortune||'',lft:G.lastFlashTime||0,lfd:G.lastFlashDate||''};for(const k in d)localStorage.setItem('kv8_'+k,d[k]);localStorage.setItem('kv8_lastFortune',G.lastFortune||'');}catch(e){}sbQueueSync();}
+function save(){try{const d={n:G.name,p:G.petEmoji,pn:G.petName,l:G.level,c:G.coins,st:G.streak,x:G.exp,as:G.actionStat,cs:G.commerceStat,ss:G.socialStat,g:JSON.stringify(G.gear),eg:G.equippedGear||'',sek:G.totalSEK,ts:G.trustScore,posts:G.postCount,b:G.bountiesDone,hu:G.hunger,en:G.energy,mo:G.mood,brands:JSON.stringify(G.brands),circles:JSON.stringify(G.circles),sw:JSON.stringify(G.streakWeek),petCfg:JSON.stringify(G.petConfig),pm:G.premium?1:0,pt:G.premiumTier,wld:G.world,bond:JSON.stringify(G.todayBond),bdate:G.bondDate,wp:G.worldPoints,bz:JSON.stringify(G.builtZones),wpc:G.wildPetsCaught,wflash:G.wldFlash,wbattle:G.wldBattle,wmarket:G.wldMarket,wstreak:G.wldStreak,wsocial:G.wldSocial,po:G.packsOpened,col:JSON.stringify(G.collectibles),tp:G.talentPoints,tl:JSON.stringify(G.talents),tlvl:JSON.stringify(G.talentLvls||{}),diary:JSON.stringify(G.diaryEntries.slice(-20)),ls:G.lastSpin,ltt:G.lastTalkTime||0,lwb:G.lastWpBoost||0,castle:JSON.stringify(G.castle||{}),ownedZones:JSON.stringify(G.ownedZones||[]),terrLastIncome:JSON.stringify(G.terrLastIncome||{}),dnaMixes:JSON.stringify(G.dnaMixes||[]),lastFortune:G.lastFortune||'',lft:G.lastFlashTime||0,lfd:G.lastFlashDate||'',pdna:JSON.stringify(G.petDNA||{body:'base',element:'none',perk:'none'}),dinv:JSON.stringify(G.dnaInventory||[])};for(const k in d)localStorage.setItem('kv8_'+k,d[k]);localStorage.setItem('kv8_lastFortune',G.lastFortune||'');}catch(e){}sbQueueSync();}
 
 // ── DNA + MOOD SYSTEM ──
 function getPetDNA(){
@@ -6721,6 +6723,7 @@ function openFishingGame(){
   _fcSpawnFish();
   _fcStartLoop();
   _fishSetStatus('🐠 Tryck på en fisk för att fånga!');
+  _showPetCorner('fishing');
 }
 
 function closeFishingGame(){
@@ -6729,6 +6732,7 @@ function closeFishingGame(){
   const ov=$('fishReelOverlay');if(ov){ov.style.opacity='0';ov.style.pointerEvents='none';}
   _fc.phase='idle';
   closeModal('rodShopModal');closeModal('fishJournalModal');
+  _hidePetCorner();
 }
 
 function _fishSetStatus(msg){if($('fishStatus'))$('fishStatus').textContent=msg;}
@@ -6924,6 +6928,7 @@ function fishReelMiss(){
 
 function _fcCatch(ft){
   _fc.phase='catching';
+  _setPetCornerMood('catching');
   const ov=$('fishReelOverlay');if(ov){ov.style.opacity='0';ov.style.pointerEvents='none';}
   const tf=_fc.hook.targetFish;if(tf)tf.caught=true;
   _fc.hook.active=false;_fc.hook.targetFish=null;
@@ -6950,6 +6955,28 @@ function _fcCatch(ft){
   showT(ft.em+' '+ft.nm+'! +'+earnedCoins+'⚡ +'+earnedXP+'XP'+(combo>=3?' 🔥×'+combo:''),rt);
   vibe([30,20,80,20,100]);SFX.win();
   updateFishUI();save();advanceQuest('fish');
+  // DNA fragment drop from rare+ fish
+  const _dnaDrop={ultra:.55,mythic:.50,legendary:.40,epic:.22,rare:.10,uncommon:.04,common:.008};
+  if(Math.random()<(_dnaDrop[ft.rarity]||.01)){
+    let pool;
+    if(ft.rarity==='ultra'||ft.rarity==='mythic'||ft.rarity==='legendary'){
+      pool=DNA_FRAGMENTS.filter(d=>d.rarity==='legendary'||d.rarity==='epic');
+    }else if(ft.rarity==='epic'){
+      pool=DNA_FRAGMENTS.filter(d=>d.rarity==='epic'||d.rarity==='rare');
+    }else{
+      pool=DNA_FRAGMENTS.filter(d=>d.rarity==='rare'||d.rarity==='uncommon');
+    }
+    if(pool.length>0){
+      const frag=pool[Math.floor(Math.random()*pool.length)];
+      if(!G.dnaInventory)G.dnaInventory=[];
+      G.dnaInventory.push(frag.id);
+      save();
+      setTimeout(()=>{
+        showT('🧬 DNA FRAGMENT HITTAD! '+frag.em+' '+frag.nm+' ('+frag.rarity.toUpperCase()+')','p');
+        vibe([20,10,40,10,60]);
+      },800);
+    }
+  }
   _fcShowSplash(ft,earnedCoins,earnedXP,combo);
   setTimeout(()=>{
     _fc.phase='idle';
@@ -8425,6 +8452,31 @@ function upgradeBuilding(id){
   const cg=$('castleBuildGrid');if(cg){cg.style.transition='opacity .1s';cg.style.opacity='.3';setTimeout(()=>{cg.style.opacity='1';},120);}
 }
 
+// ── DNA GENETIC SYSTEM ──
+const DNA_FRAGMENTS=[
+  // Body fragments — change pet base type
+  {id:'dna_dragon',type:'body',variant:'dragon',em:'🐲',nm:'Dragon Code',bonus:'⚔️ ATK+25 · FIRE',rarity:'legendary',desc:'Den ursinniga drakens kärna'},
+  {id:'dna_wolf',type:'body',variant:'wolf',em:'🐺',nm:'Wolf Strand',bonus:'🌑 SPD+20 · DARK',rarity:'epic',desc:'Nattens rovdjur'},
+  {id:'dna_cyber',type:'body',variant:'cyber',em:'🤖',nm:'Cyber Core',bonus:'🛡️ DEF+30 · TECH',rarity:'rare',desc:'Datorns hjärtslag'},
+  {id:'dna_ghost',type:'body',variant:'ghost',em:'👻',nm:'Ghost Fragment',bonus:'🌀 EVA+35 · VOID',rarity:'epic',desc:'Existens bortom tid'},
+  {id:'dna_beast',type:'body',variant:'beast',em:'🦁',nm:'Beast Strand',bonus:'💥 STR+30 · PRIMAL',rarity:'rare',desc:'Djurets urinstinkt'},
+  // Element fragments — aura/glow effect
+  {id:'dna_neon',type:'element',variant:'neon',em:'⚡',nm:'Neon Pulse',bonus:'✨ XP+15% · GLOW',rarity:'rare',desc:'Elektrisk neon-aura'},
+  {id:'dna_matrix',type:'element',variant:'matrix',em:'💚',nm:'Matrix Code',bonus:'🔮 HACK+20 · GREEN',rarity:'epic',desc:'Grön kod-ström'},
+  {id:'dna_fire',type:'element',variant:'fire',em:'🔥',nm:'Fire Essence',bonus:'🔥 ATK+20% · FLAME',rarity:'rare',desc:'Renande eldkraft'},
+  {id:'dna_ice',type:'element',variant:'ice',em:'❄️',nm:'Cryo Strand',bonus:'🛡️ DEF+25 · FREEZE',rarity:'rare',desc:'Absolut nollpunkt'},
+  {id:'dna_void',type:'element',variant:'void',em:'🌑',nm:'Void Signal',bonus:'🕳️ STEALTH+40 · DARK',rarity:'legendary',desc:'Det tomma rummets kraft'},
+  {id:'dna_aqua',type:'element',variant:'aqua',em:'🌊',nm:'Aqua Gene',bonus:'💧 +25% FISH XP',rarity:'rare',desc:'Havets minne'},
+  // Perk fragments — stat multipliers
+  {id:'dna_xp',type:'perk',variant:'xp_boost',em:'📈',nm:'XP Catalyst',bonus:'⬆️ +20% ALL XP',rarity:'uncommon',desc:'Accelererad inlärning'},
+  {id:'dna_coins',type:'perk',variant:'coin_boost',em:'💰',nm:'Karma Amplifier',bonus:'💰 +15% COINS',rarity:'rare',desc:'Ekonomisk optimering'},
+  {id:'dna_battle',type:'perk',variant:'battle_boost',em:'⚔️',nm:'Combat DNA',bonus:'⚔️ +30% BATTLE DMG',rarity:'epic',desc:'Stridsinstinkten'},
+  {id:'dna_speed',type:'perk',variant:'speed',em:'💨',nm:'Speed Strand',bonus:'💨 +40% RUNNER',rarity:'rare',desc:'Vindens frihet'},
+  {id:'dna_luck',type:'perk',variant:'luck',em:'🍀',nm:'Luck Helix',bonus:'🍀 +25% DROP RATE',rarity:'uncommon',desc:'Lyckans DNA'},
+];
+const _dnaTypeLabel={body:'KROPP',element:'ELEMENT',perk:'PERK'};
+const _dnaRarCol={legendary:'#FFE600',epic:'#BF5FFF',rare:'#00D9FF',uncommon:'#39FF14'};
+
 // ── DNA PET MIXER ──
 const DNA_COMBOS={
   '🐉🐺':{em:'🐲',nm:'Dragon Wolf',bonus:'⚔️ ATK+30 · SPEED+20',desc:'Ursinnet möter draken'},
@@ -8552,6 +8604,37 @@ function executeDNAMix(){
     mixBtn.onclick=()=>{G.petEmoji=result.em;save();updatePetView();closeDNAMixer();showT('🧬 '+result.em+' adopterad! Snyggt!','p');const pe=$('gpRunnerPet');if(pe)pe.textContent=result.em;};
   }
   showT('🧬 '+result.em+' '+result.nm+' splicad! +'+coins+'⚡ +'+xpAmt+'XP','p');
+}
+
+// ── PET CORNER WIDGET — pet reacts during minigames ──
+function _showPetCorner(mood){
+  let pc=$('petCornerWidget');
+  if(!pc){pc=document.createElement('div');pc.id='petCornerWidget';
+    pc.style.cssText='position:fixed;bottom:80px;left:10px;z-index:950;display:flex;flex-direction:column;align-items:center;pointer-events:none;opacity:0;transition:opacity .3s;';
+    document.body.appendChild(pc);
+  }
+  const em=G.petEmoji||'🐉';
+  const moods={
+    fishing:{msg:'🎣',col:'#00D9FF',spd:'.9s'},
+    catching:{msg:'YES!',col:'#39FF14',spd:'.4s'},
+    running:{msg:'🏃',col:'#FFE600',spd:'.6s'},
+    tired:{msg:'😴',col:'#BF5FFF',spd:'2s'},
+    excited:{msg:'🔥',col:'#FF9F0A',spd:'.5s'},
+    miss:{msg:'😅',col:'#FF2D55',spd:'.8s'},
+    happy:{msg:'✨',col:'#39FF14',spd:'1.2s'},
+  };
+  const m=moods[mood]||moods.happy;
+  pc.innerHTML=`<div style="font-size:8px;font-weight:900;color:${m.col};font-family:var(--mono);background:rgba(0,0,0,.8);border:1px solid ${m.col}55;border-radius:6px;padding:2px 6px;margin-bottom:3px;white-space:nowrap">${m.msg}</div>
+    <div style="font-size:34px;animation:petBob ${m.spd} ease-in-out infinite;filter:drop-shadow(0 0 10px ${m.col})">${em}</div>`;
+  pc.style.opacity='1';
+}
+function _hidePetCorner(){
+  const pc=$('petCornerWidget');
+  if(pc){pc.style.opacity='0';setTimeout(()=>{if(pc&&pc.parentNode)pc.parentNode.removeChild(pc);},400);}
+}
+function _setPetCornerMood(mood){
+  const pc=$('petCornerWidget');if(!pc)return;
+  _showPetCorner(mood);
 }
 
 // ── JUDGMENT RING (Shadow Hearts-style wild pet catching) ──
@@ -9299,6 +9382,8 @@ function _loadFromLocalStorage(){
     try{const oz=localStorage.getItem('kv8_ownedZones');if(oz)G.ownedZones=JSON.parse(oz);}catch(e){}
     try{const ti=localStorage.getItem('kv8_terrLastIncome');if(ti)G.terrLastIncome=JSON.parse(ti);}catch(e){}
     try{const dm=localStorage.getItem('kv8_dnaMixes');if(dm)G.dnaMixes=JSON.parse(dm);}catch(e){}
+    G.petDNA=JSON.parse(localStorage.getItem('kv8_pdna')||'{"body":"base","element":"none","perk":"none"}');
+    G.dnaInventory=JSON.parse(localStorage.getItem('kv8_dinv')||'[]');
     G.lastFlashTime=parseInt(localStorage.getItem('kv8_lft')||'0');
     G.lastFlashDate=localStorage.getItem('kv8_lfd')||'';
     const _today=new Date().toDateString();const _last=localStorage.getItem('kv8_lastLogin');
