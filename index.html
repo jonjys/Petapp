@@ -1987,6 +1987,13 @@ textarea.inp{resize:none;min-height:68px;}
           <span id="tamaFace"></span><span id="tamaState"></span><div class="pet-scanlines"></div>
         </div>
       </div>
+      <!-- EVOLUTION TREE -->
+      <div style="margin:0 14px 8px;background:linear-gradient(135deg,rgba(255,230,0,.08),rgba(191,95,255,.04));border:1.5px solid rgba(255,230,0,.2);border-radius:18px;padding:12px 14px;overflow:hidden;position:relative">
+        <div style="font-size:9px;font-weight:900;color:var(--y);font-family:var(--mono);letter-spacing:1px;margin-bottom:8px">🌳 EVOLUTION PATH</div>
+        <div style="display:flex;align-items:center;gap:0;overflow-x:auto;scrollbar-width:none;padding-bottom:4px" id="evolTreeRow">
+          <!-- rendered by renderEvolTree() -->
+        </div>
+      </div>
       <!-- KARMA PULSE — live community activity -->
       <div style="margin:0 14px 10px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:14px;padding:8px 12px;display:flex;align-items:center;gap:8px;overflow:hidden">
         <span style="font-size:9px;font-weight:900;color:var(--pk);font-family:var(--mono);flex-shrink:0;letter-spacing:.8px">● LIVE</span>
@@ -1998,7 +2005,10 @@ textarea.inp{resize:none;min-height:68px;}
         <button class="btn btn-ghost btn-sm" style="flex:1;font-size:11px" onclick="openPetCard()">✨ Pet Card</button>
       </div>
       <!-- CARE BUTTONS -->
-      <div class="care-section-lbl" id="sec-care">🎮 SKÖT DIN PET</div>
+      <div style="display:flex;align-items:center;justify-content:space-between;padding:3px 14px 4px">
+        <div class="care-section-lbl" style="padding:0">🎮 SKÖT DIN PET</div>
+        <button id="expedBtn" onclick="openExpedition()" style="background:rgba(0,217,255,.08);border:1.5px solid rgba(0,217,255,.35);border-radius:10px;padding:4px 10px;color:var(--b);font-size:10px;font-weight:900;cursor:pointer;font-family:var(--mono)">🗺️ EXPEDITION</button>
+      </div>
       <div class="care-hero">
         <div class="chb chb-feed" onclick="pcFeed()"><span class="chb-ico">🍖</span><span class="chb-lbl">MATA</span><span class="chb-val">+HUNGER</span></div>
         <div class="chb chb-train" onclick="pcTrain()"><span class="chb-ico">🏋️</span><span class="chb-lbl">TRÄNA</span><span class="chb-val">+15XP</span></div>
@@ -3567,6 +3577,8 @@ const G={
   dnaMixes:[],
   petDNA:{body:'base',element:'none',perk:'none'},
   dnaInventory:[],
+  petMemory:{lastFed:0,lastTrained:0,lastBattle:0,lastFish:0,totalFeeds:0,favouriteAct:'none'},
+  expedition:{active:false,id:null,startTime:0,endTime:0},
 };
 
 const EVOL={
@@ -4393,7 +4405,7 @@ function cp(n){const d=document.createElement('div');d.className='cpop';d.textCo
 function sa(sel,el){document.querySelectorAll(sel+' .topt').forEach(x=>x.className='topt');el.classList.add('on');}
 function dist(la1,lo1,la2,lo2){const R=6371e3,f1=la1*Math.PI/180,f2=la2*Math.PI/180,df=(la2-la1)*Math.PI/180,dl=(lo2-lo1)*Math.PI/180;const a=Math.sin(df/2)**2+Math.cos(f1)*Math.cos(f2)*Math.sin(dl/2)**2;return R*2*Math.atan2(Math.sqrt(a),Math.sqrt(1-a));}
 function fmtD(m){return m<1000?Math.round(m)+'m':+(m/1000).toFixed(1)+'km';}
-function save(){try{const d={n:G.name,p:G.petEmoji,pn:G.petName,l:G.level,c:G.coins,st:G.streak,x:G.exp,as:G.actionStat,cs:G.commerceStat,ss:G.socialStat,g:JSON.stringify(G.gear),eg:G.equippedGear||'',sek:G.totalSEK,ts:G.trustScore,posts:G.postCount,b:G.bountiesDone,hu:G.hunger,en:G.energy,mo:G.mood,brands:JSON.stringify(G.brands),circles:JSON.stringify(G.circles),sw:JSON.stringify(G.streakWeek),petCfg:JSON.stringify(G.petConfig),pm:G.premium?1:0,pt:G.premiumTier,wld:G.world,bond:JSON.stringify(G.todayBond),bdate:G.bondDate,wp:G.worldPoints,bz:JSON.stringify(G.builtZones),wpc:G.wildPetsCaught,wflash:G.wldFlash,wbattle:G.wldBattle,wmarket:G.wldMarket,wstreak:G.wldStreak,wsocial:G.wldSocial,po:G.packsOpened,col:JSON.stringify(G.collectibles),tp:G.talentPoints,tl:JSON.stringify(G.talents),tlvl:JSON.stringify(G.talentLvls||{}),diary:JSON.stringify(G.diaryEntries.slice(-20)),ls:G.lastSpin,ltt:G.lastTalkTime||0,lwb:G.lastWpBoost||0,castle:JSON.stringify(G.castle||{}),ownedZones:JSON.stringify(G.ownedZones||[]),terrLastIncome:JSON.stringify(G.terrLastIncome||{}),dnaMixes:JSON.stringify(G.dnaMixes||[]),lastFortune:G.lastFortune||'',lft:G.lastFlashTime||0,lfd:G.lastFlashDate||'',pdna:JSON.stringify(G.petDNA||{body:'base',element:'none',perk:'none'}),dinv:JSON.stringify(G.dnaInventory||[])};for(const k in d)localStorage.setItem('kv8_'+k,d[k]);localStorage.setItem('kv8_lastFortune',G.lastFortune||'');}catch(e){}sbQueueSync();}
+function save(){try{const d={n:G.name,p:G.petEmoji,pn:G.petName,l:G.level,c:G.coins,st:G.streak,x:G.exp,as:G.actionStat,cs:G.commerceStat,ss:G.socialStat,g:JSON.stringify(G.gear),eg:G.equippedGear||'',sek:G.totalSEK,ts:G.trustScore,posts:G.postCount,b:G.bountiesDone,hu:G.hunger,en:G.energy,mo:G.mood,brands:JSON.stringify(G.brands),circles:JSON.stringify(G.circles),sw:JSON.stringify(G.streakWeek),petCfg:JSON.stringify(G.petConfig),pm:G.premium?1:0,pt:G.premiumTier,wld:G.world,bond:JSON.stringify(G.todayBond),bdate:G.bondDate,wp:G.worldPoints,bz:JSON.stringify(G.builtZones),wpc:G.wildPetsCaught,wflash:G.wldFlash,wbattle:G.wldBattle,wmarket:G.wldMarket,wstreak:G.wldStreak,wsocial:G.wldSocial,po:G.packsOpened,col:JSON.stringify(G.collectibles),tp:G.talentPoints,tl:JSON.stringify(G.talents),tlvl:JSON.stringify(G.talentLvls||{}),diary:JSON.stringify(G.diaryEntries.slice(-20)),ls:G.lastSpin,ltt:G.lastTalkTime||0,lwb:G.lastWpBoost||0,castle:JSON.stringify(G.castle||{}),ownedZones:JSON.stringify(G.ownedZones||[]),terrLastIncome:JSON.stringify(G.terrLastIncome||{}),dnaMixes:JSON.stringify(G.dnaMixes||[]),lastFortune:G.lastFortune||'',lft:G.lastFlashTime||0,lfd:G.lastFlashDate||'',pdna:JSON.stringify(G.petDNA||{body:'base',element:'none',perk:'none'}),dinv:JSON.stringify(G.dnaInventory||[]),pmem:JSON.stringify(G.petMemory||{}),expd:JSON.stringify(G.expedition||{})};for(const k in d)localStorage.setItem('kv8_'+k,d[k]);localStorage.setItem('kv8_lastFortune',G.lastFortune||'');}catch(e){}sbQueueSync();}
 
 // ── DNA + MOOD SYSTEM ──
 function getPetDNA(){
@@ -4860,6 +4872,7 @@ function _triggerCombo(baseLabel){
   return 1;
 }
 function pcFeed(){
+  if(!G.petMemory)G.petMemory={};G.petMemory.lastFed=Date.now();G.petMemory.totalFeeds=(G.petMemory.totalFeeds||0)+1;
   const CD_MIN=30;const now=Date.now();const last=G._lastFeed||0;const elapsed=(now-last)/60000;
   if(elapsed<CD_MIN){const rem=Math.ceil(CD_MIN-elapsed);showT('🍖 Mätt! Vänta '+rem+' min','y');SFX.error();return;}
   if(G.coins<10){showT('❌ Need 10 coins!','r');SFX.error();return;}
@@ -4872,6 +4885,7 @@ function pcFeed(){
   SFX.click();advanceQuest('feed');advanceDailyChallenge('feed');updateHUD();updatePetView();save();
 }
 function pcTrain(){
+  if(!G.petMemory)G.petMemory={};G.petMemory.lastTrained=Date.now();
   if(G.energy<20){showT('❌ Låg energi! Sova först.','r');SFX.error();return;}
   G.energy-=20;
   const mult=_triggerCombo('+'+Math.floor(15*mult2())+' XP');
@@ -4971,6 +4985,31 @@ function updateHUD(){
   if(wd){const days=['M','T','O','T','F','L','S'];wd.innerHTML=days.map((d,i)=>`<div style="width:20px;height:20px;border-radius:5px;background:${G.streakWeek[i]?'var(--g)':'var(--c3)'};display:flex;align-items:center;justify-content:center;font-size:8px;font-weight:800;color:${G.streakWeek[i]?'var(--bg)':'var(--t3)'}">${d}</div>`).join('');}
   save();
 }
+const EVOL_STAGES=[
+  {id:'egg',   em:'🥚', nm:'Ägg',      lv:0,  col:'#aaa'},
+  {id:'baby',  em:'🐣', nm:'Baby',     lv:1,  col:'#39FF14'},
+  {id:'child', em:'🌱', nm:'Unge',     lv:3,  col:'#00D9FF'},
+  {id:'teen',  em:'⚡', nm:'Teen',     lv:5,  col:'#FFE600'},
+  {id:'adult', em:'🔥', nm:'Vuxen',    lv:10, col:'#FF9F0A'},
+  {id:'prime', em:'💎', nm:'Prime',    lv:15, col:'#BF5FFF'},
+  {id:'mutant',em:'🧬', nm:'Mutant',   lv:20, col:'#FF2D55'},
+  {id:'legend',em:'👑', nm:'Legend',   lv:30, col:'#FFE600'},
+];
+function renderEvolTree(){
+  const row=$('evolTreeRow');if(!row)return;
+  const lv=G.level||1;
+  const curIdx=EVOL_STAGES.reduce((best,s,i)=>lv>=s.lv?i:best,0);
+  row.innerHTML=EVOL_STAGES.map((s,i)=>{
+    const done=lv>=s.lv;
+    const current=i===curIdx;
+    const locked=!done&&!current;
+    return`${i>0?`<div style="flex-shrink:0;width:16px;height:2px;background:${done?s.col:'rgba(255,255,255,.1)'};align-self:center;margin-bottom:12px"></div>`:''}
+    <div style="display:flex;flex-direction:column;align-items:center;flex-shrink:0;gap:2px">
+      <div style="width:36px;height:36px;border-radius:50%;background:${current?`linear-gradient(135deg,${s.col}44,${s.col}22)`:done?`rgba(255,255,255,.06)`:'rgba(255,255,255,.02)'};border:${current?`2.5px solid ${s.col}`:done?`1.5px solid ${s.col}55`:'1.5px solid rgba(255,255,255,.1)'};display:flex;align-items:center;justify-content:center;font-size:${current?'18':'15'}px;${locked?'filter:grayscale(1);opacity:.35':''}${current?`;box-shadow:0 0 14px ${s.col}66`:''}">${done||current?s.em:'🔒'}</div>
+      <div style="font-size:7px;font-weight:900;color:${current?s.col:done?'rgba(255,255,255,.5)':'rgba(255,255,255,.2)'};font-family:var(--mono);text-align:center;max-width:38px">${current?s.nm:done?s.nm:'LV'+s.lv}</div>
+    </div>`;
+  }).join('');
+}
 function updatePetView(){
   const s=gS();const need=xpN(G.level);const pct=Math.min(100,(G.exp/need)*100);
   updateDNABadge();
@@ -5017,13 +5056,30 @@ function updatePetView(){
   const _st=$('petSpeechText');
   if(_st&&!_speechTimer){
     const _pet=G.petName||'Din pet';
-    if(G.hunger<20)_st.textContent='😢 '+_pet+' är HUNGRIG! Mata mig snälla!';
-    else if(G.energy<15)_st.textContent='😴 '+_pet+' är TRÖTT... vill sova lite.';
-    else if(G.mood<25)_st.textContent='😔 '+_pet+' mår inte bra. Kom och lek!';
-    else if(G.hunger>80&&G.mood>75)_st.textContent='🤩 '+_pet+' mår SUPERBRA! Tack!';
-    else if(G.level>=5)_st.textContent='⚡ LV'+G.level+'! '+_pet+' är stark!';
-    else _st.textContent='✨ '+_pet+' längtar efter dig!';
+    const _mem=G.petMemory||{};
+    const _now=Date.now();
+    const _hrsSinceFed=_mem.lastFed?Math.floor((_now-_mem.lastFed)/3600000):99;
+    const _hrsSinceTrained=_mem.lastTrained?Math.floor((_now-_mem.lastTrained)/3600000):99;
+    const _hrsSinceFish=_mem.lastFish?Math.floor((_now-_mem.lastFish)/3600000):99;
+    const _dna=G.petDNA||{};
+    // Priority: urgent needs first, then memories
+    if(G.hunger<15) _st.textContent='😭 '+_pet+' SVÄLTER! Mata mig NU!';
+    else if(G.energy<10) _st.textContent='😴 '+_pet+' kraschar... behöver sova.';
+    else if(G.mood<20) _st.textContent='💔 '+_pet+' mår verkligen illa. Lek med mig!';
+    else if(_hrsSinceFed>12) _st.textContent='😤 Du matade mig inte på '+_hrsSinceFed+'h... jag minns!';
+    else if(_hrsSinceFed>6) _st.textContent='🍖 Lite hungrig... det är ett tag sen jag åt!';
+    else if(_hrsSinceFish<1) _st.textContent='🎣 Fiske är SÅ kul! Kan vi gå igen snart?';
+    else if(_hrsSinceTrained<1) _st.textContent='💪 TRÄNADE! Jag känner mig starkare!';
+    else if(_mem.totalFeeds>50) _st.textContent='🐾 Vi har hängt ihop länge. Jag gillar dig.';
+    else if(_dna.element==='fire') _st.textContent='🔥 Fire-genen gör mig varm inuti...';
+    else if(_dna.element==='void') _st.textContent='🌑 Void-energin... jag ser saker du inte ser.';
+    else if(_dna.body==='ghost') _st.textContent='👻 Ghost-DNA: halvt här, halvt bortom...';
+    else if(G.hunger>80&&G.mood>75) _st.textContent='🤩 '+_pet+' mår SUPERBRA just nu!';
+    else if(G.level>=10) _st.textContent='⚡ LV'+G.level+'! Vi är ett riktigt team nu.';
+    else if(G.level>=5) _st.textContent='🌟 Halvvägs till nästa evolution!';
+    else _st.textContent='✨ '+_pet+' hänger med dig. Vad gör vi nu?';
   }
+  renderEvolTree();
 }
 
 // ── GEAR ──
@@ -5982,14 +6038,14 @@ function sendAI(){
 // MEGA UPDATE — NEW SYSTEMS
 // ══════════════════════════════════════════════
 
-// ── EVOLUTION STAGES ──
-const EVOL_STAGES=[
+// ── EVOLUTION STAGES (battle/badge system, 4 tiers) ──
+const BATTLE_EVOL_STAGES=[
   {min:1, max:4,  stage:1, name:'ROOKIE',    badge:'es1', power:'BABY',   ico:'🌱', bonuses:'+10 HP',          desc:'Din pet håller på att växa upp. Mata den varje dag!'},
   {min:5, max:9,  stage:2, name:'CHALLENGER',badge:'es2', power:'TEEN',   ico:'💫', bonuses:'+25 HP · +5% ATK', desc:'Din pet är starkare nu! Fortsätt streaket.'},
   {min:10,max:19, stage:3, name:'ELITE',     badge:'es3', power:'ADULT',  ico:'⚡', bonuses:'+50 HP · +15% ATK',desc:'Elite-level! Din pet lyser med kraft.'},
   {min:20,max:999,stage:4, name:'LEGENDARY', badge:'es4', power:'LEGEND', ico:'👑', bonuses:'+100 HP · +30% ALL',desc:'LEGENDARY! Världens starkaste pet.'},
 ];
-function getEvolStage(lv=G.level){return EVOL_STAGES.find(s=>lv>=s.min&&lv<=s.max)||EVOL_STAGES[0];}
+function getEvolStage(lv=G.level){return BATTLE_EVOL_STAGES.find(s=>lv>=s.min&&lv<=s.max)||BATTLE_EVOL_STAGES[0];}
 function updateEvolBadge(){
   const s=getEvolStage();const el=$('evolStageBadge');
   if(el){el.className='es-badge '+s.badge;el.textContent=s.ico+' '+s.name;}
@@ -6692,6 +6748,14 @@ const FISH_TYPES=[
   {em:'🌟',nm:'Gyllene Fisk',coins:888,xp:350,rarity:'ultra',zone:'any',wt:99,special:'luckburst'},
   {em:'👑',nm:'Kungsfisk',coins:777,xp:300,rarity:'ultra',zone:'any',wt:99,special:'crowns'},
   {em:'💀',nm:'Skeletfisk',coins:666,xp:260,rarity:'ultra',zone:'any',wt:99,special:'cursed'},
+  // DNA Special Fish — catch these for specific DNA drops
+  {id:'lava_fish',nm:'Lava Fish',em:'🔴',rarity:'legendary',pts:280,coins:280,xp:110,zone:'deep',wt:2,dna:'dna_fire',desc:'Lever i vulkanisk bergart'},
+  {id:'ghost_fish',nm:'Ghost Fish',em:'👻',rarity:'epic',pts:190,coins:190,xp:76,zone:'deep',wt:4,dna:'dna_ghost',desc:'Halvtransparent, halfexisterande'},
+  {id:'cyber_fish',nm:'Cyber Fish',em:'🤖',rarity:'epic',pts:175,coins:175,xp:70,zone:'mid',wt:5,dna:'dna_cyber',desc:'Datorkod i fiskform'},
+  {id:'void_fish',nm:'Void Fish',em:'🌑',rarity:'legendary',pts:260,coins:260,xp:104,zone:'deep',wt:2,dna:'dna_void',desc:'Absorberar allt ljus'},
+  {id:'neon_fish',nm:'Neon Fish',em:'⚡',rarity:'rare',pts:120,coins:120,xp:48,zone:'mid',wt:8,dna:'dna_neon',desc:'Pulserar med elektricitet'},
+  {id:'aqua_fish',nm:'Aqua Fish',em:'🌊',rarity:'rare',pts:110,coins:110,xp:44,zone:'surface',wt:9,dna:'dna_aqua',desc:'Rent hav i kristallform'},
+  {id:'matrix_fish',nm:'Matrix Fish',em:'💚',rarity:'epic',pts:165,coins:165,xp:66,zone:'mid',wt:4,dna:'dna_matrix',desc:'Grön kod under vattnet'},
 ];
 const JUNK_TYPES=[
   {em:'👟',nm:'Gammal Sko',coins:2,xp:1,msg:'En gammal sneaker... inte vad du hoppades på',rarity:'junk'},
@@ -6953,6 +7017,7 @@ function fishReelMiss(){
 }
 
 function _fcCatch(ft){
+  if(!G.petMemory)G.petMemory={};G.petMemory.lastFish=Date.now();
   _fc.phase='catching';
   _setPetCornerMood('catching');
   const ov=$('fishReelOverlay');if(ov){ov.style.opacity='0';ov.style.pointerEvents='none';}
@@ -6981,26 +7046,38 @@ function _fcCatch(ft){
   showT(ft.em+' '+ft.nm+'! +'+earnedCoins+'⚡ +'+earnedXP+'XP'+(combo>=3?' 🔥×'+combo:''),rt);
   vibe([30,20,80,20,100]);SFX.win();
   updateFishUI();save();advanceQuest('fish');
-  // DNA fragment drop from rare+ fish
-  const _dnaDrop={ultra:.55,mythic:.50,legendary:.40,epic:.22,rare:.10,uncommon:.04,common:.008};
-  if(Math.random()<(_dnaDrop[ft.rarity]||.01)){
-    let pool;
-    if(ft.rarity==='ultra'||ft.rarity==='mythic'||ft.rarity==='legendary'){
-      pool=DNA_FRAGMENTS.filter(d=>d.rarity==='legendary'||d.rarity==='epic');
-    }else if(ft.rarity==='epic'){
-      pool=DNA_FRAGMENTS.filter(d=>d.rarity==='epic'||d.rarity==='rare');
-    }else{
-      pool=DNA_FRAGMENTS.filter(d=>d.rarity==='rare'||d.rarity==='uncommon');
-    }
-    if(pool.length>0){
-      const frag=pool[Math.floor(Math.random()*pool.length)];
-      if(!G.dnaInventory)G.dnaInventory=[];
-      G.dnaInventory.push(frag.id);
-      save();
+  // DNA fragment drop — specific fish drop specific DNA
+  if(!G.dnaInventory)G.dnaInventory=[];
+  if(ft.dna){
+    // Named DNA fish: guaranteed drop of their specific fragment
+    G.dnaInventory.push(ft.dna);
+    save();
+    const frag=DNA_FRAGMENTS.find(f=>f.id===ft.dna);
+    if(frag){
       setTimeout(()=>{
-        showT('🧬 DNA FRAGMENT HITTAD! '+frag.em+' '+frag.nm+' ('+frag.rarity.toUpperCase()+')','p');
-        vibe([20,10,40,10,60]);
-      },800);
+        showT('🧬 SPECIELL DROPPE! '+frag.em+' '+frag.nm+' — '+frag.bonus,'p');
+        spawnParticles(window.innerWidth/2,window.innerHeight*.35,'stars');
+        vibe([30,15,60,15,100]);
+      },900);
+    }
+  }else{
+    // Random DNA drop by rarity
+    const _dnaDrop={ultra:.55,mythic:.50,legendary:.40,epic:.22,rare:.10,uncommon:.04,common:.008};
+    if(Math.random()<(_dnaDrop[ft.rarity]||.01)){
+      let pool;
+      if(ft.rarity==='ultra'||ft.rarity==='mythic'||ft.rarity==='legendary'){
+        pool=DNA_FRAGMENTS.filter(d=>d.rarity==='legendary'||d.rarity==='epic');
+      }else if(ft.rarity==='epic'){
+        pool=DNA_FRAGMENTS.filter(d=>d.rarity==='epic'||d.rarity==='rare');
+      }else{
+        pool=DNA_FRAGMENTS.filter(d=>d.rarity==='rare'||d.rarity==='uncommon');
+      }
+      if(pool.length>0){
+        const frag=pool[Math.floor(Math.random()*pool.length)];
+        G.dnaInventory.push(frag.id);
+        save();
+        setTimeout(()=>showT('🧬 DNA FRAGMENT: '+frag.em+' '+frag.nm+' ('+frag.rarity.toUpperCase()+')','p'),800);
+      }
     }
   }
   _fcShowSplash(ft,earnedCoins,earnedXP,combo);
@@ -7016,7 +7093,8 @@ function _fcShowSplash(ft,coins,xp,combo){
   const splash=$('fishCatchSplash');if(!splash)return;
   const em=$('fishSplashEm');if(em)em.textContent=ft.em;
   const nm=$('fishSplashName');if(nm)nm.textContent=ft.nm;
-  const rw=$('fishSplashReward');if(rw)rw.textContent=coins?'+'+coins+'⚡ +'+xp+'XP'+(combo>=3?' 🔥×'+combo:''):'';
+  const rw=$('fishSplashReward');if(rw)rw.innerHTML=(coins?'+'+coins+'⚡ +'+xp+'XP'+(combo>=3?' 🔥×'+combo:''):'')+
+    (ft.dna?'<div style="font-size:11px;color:#BF5FFF;font-weight:900;margin-top:2px">🧬 DNA DROP!</div>':'');
   splash.style.opacity='1';setTimeout(()=>{splash.style.opacity='0';},1400);
 }
 
@@ -8056,6 +8134,138 @@ const KW_DISTRICTS=[
   {id:'streak',nm:'Streak Tower',ico:'🔥',col:'#FFE600',wpReq:120,statKey:'wldStreak', maxStat:14, desc:'Byggs av streak-dagar'},
   {id:'palace',nm:'Pet Palace',ico:'🏰',col:'#39FF14',wpReq:200,statKey:'wldFlash',  maxStat:50, desc:'Toppen av ditt rike — kräver 200 WP'},
 ];
+
+// ── PET EXPEDITION SYSTEM ──
+const EXPEDITIONS=[
+  {id:'park',     em:'🌳',nm:'Stadsparken',    dur:30,  minLv:1,  coins:[15,35], xp:[20,40],  items:['dna_xp','dna_luck'],        desc:'30 min · Enkel promenad'},
+  {id:'forest',   em:'🌲',nm:'Djurgårdsskogen',dur:120, minLv:3,  coins:[40,80], xp:[60,120], items:['dna_neon','dna_aqua'],       desc:'2 h · Spårning i skogen'},
+  {id:'city',     em:'🏙️',nm:'Innerstaden',    dur:60,  minLv:2,  coins:[25,55], xp:[35,75],  items:['dna_cyber','dna_matrix'],    desc:'1 h · Urban exploration'},
+  {id:'deep',     em:'🌊',nm:'Djuphavet',       dur:240, minLv:5,  coins:[80,180],xp:[120,250],items:['dna_void','dna_ghost'],     desc:'4 h · Extremt djupdyk'},
+  {id:'volcano',  em:'🌋',nm:'Vulkanzonen',     dur:180, minLv:8,  coins:[100,200],xp:[180,350],items:['dna_fire','dna_dragon'],   desc:'3 h · Inferno-expedition'},
+  {id:'space',    em:'🌌',nm:'Rymden',          dur:480, minLv:15, coins:[200,500],xp:[400,800],items:['dna_void','dna_matrix','dna_ghost'],desc:'8 h · Stjärnkarta'},
+];
+function openExpedition(){
+  // Check if expedition is already active
+  const exp=G.expedition||{};
+  if(exp.active&&exp.endTime>Date.now()){
+    _renderExpeditionActive(exp);return;
+  }else if(exp.active&&exp.endTime<=Date.now()){
+    _claimExpedition();return;
+  }
+  // Show expedition picker
+  let ov=$('expeditionOverlay');if(ov)ov.remove();
+  ov=document.createElement('div');ov.id='expeditionOverlay';
+  ov.style.cssText='position:fixed;inset:0;z-index:1080;background:rgba(0,0,0,.95);display:flex;flex-direction:column;overflow-y:auto;padding:20px 14px';
+  const lv=G.level||1;
+  ov.innerHTML=`<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
+    <div>
+      <div style="font-size:18px;font-weight:900;font-family:var(--mono)">🗺️ EXPEDITION</div>
+      <div style="font-size:11px;color:var(--t3)">Skicka ut din pet — den samlar grejer åt dig!</div>
+    </div>
+    <button onclick="document.getElementById('expeditionOverlay').remove()" style="background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.2);border-radius:10px;padding:6px 14px;color:var(--t2);font-size:12px;cursor:pointer">✕</button>
+  </div>
+  ${EXPEDITIONS.map(e=>{
+    const canGo=lv>=e.minLv;
+    const hrs=e.dur>=60?Math.floor(e.dur/60)+'h'+(e.dur%60>0?e.dur%60+'m':''):e.dur+'m';
+    return`<div onclick="${canGo?`_startExpedition('${e.id}')`:''}" style="background:${canGo?'rgba(255,255,255,.04)':'rgba(255,255,255,.02)'};border:1.5px solid ${canGo?'rgba(255,255,255,.12)':'rgba(255,255,255,.05)'};border-radius:16px;padding:14px;margin-bottom:8px;cursor:${canGo?'pointer':'not-allowed'};${!canGo?'opacity:.4':''}">
+      <div style="display:flex;align-items:center;gap:12px">
+        <div style="font-size:38px">${e.em}</div>
+        <div style="flex:1">
+          <div style="font-size:14px;font-weight:900;color:#fff">${e.nm}</div>
+          <div style="font-size:10px;color:var(--t3);margin:2px 0">${e.desc}</div>
+          <div style="display:flex;gap:8px;font-size:10px;font-family:var(--mono)">
+            <span style="color:var(--y)">💰 ${e.coins[0]}-${e.coins[1]}</span>
+            <span style="color:var(--g)">⬆️ ${e.xp[0]}-${e.xp[1]}XP</span>
+            <span style="color:var(--p)">🧬 DNA möjlig</span>
+          </div>
+        </div>
+        <div style="text-align:right">
+          <div style="font-size:13px;font-weight:900;color:var(--b)">${hrs}</div>
+          ${!canGo?`<div style="font-size:9px;color:var(--r)">LV${e.minLv}+</div>`:''}
+        </div>
+      </div>
+    </div>`;
+  }).join('')}`;
+  document.body.appendChild(ov);
+}
+function _startExpedition(id){
+  const e=EXPEDITIONS.find(x=>x.id===id);if(!e)return;
+  const now=Date.now();
+  G.expedition={active:true,id,startTime:now,endTime:now+e.dur*60000};
+  save();vibe([20,10,40]);
+  document.getElementById('expeditionOverlay')?.remove();
+  showT(e.em+' '+e.nm+' expedition startad! '+( e.dur>=60?Math.floor(e.dur/60)+'h':e.dur+'m')+' kvar','b');
+  _checkExpeditionStatus();
+}
+function _renderExpeditionActive(exp){
+  const e=EXPEDITIONS.find(x=>x.id===exp.id);if(!e)return;
+  document.getElementById('expeditionOverlay')?.remove();
+  const ov=document.createElement('div');ov.id='expeditionOverlay';
+  ov.style.cssText='position:fixed;inset:0;z-index:1080;background:rgba(0,0,0,.95);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px';
+  const timeLeft=Math.max(0,exp.endTime-Date.now());
+  const mins=Math.ceil(timeLeft/60000);
+  ov.innerHTML=`<div style="font-size:72px;animation:petBob 1.5s ease-in-out infinite">${G.petEmoji||'🐉'}</div>
+    <div style="font-size:18px;font-weight:900;color:#fff;margin:12px 0 4px">${G.petName||'Din pet'} är på expedition!</div>
+    <div style="font-size:14px;font-weight:900;color:var(--b);font-family:var(--mono)">${e.em} ${e.nm}</div>
+    <div style="font-size:24px;font-weight:900;color:var(--y);font-family:var(--mono);margin:16px 0">${mins>=60?Math.floor(mins/60)+'h '+mins%60+'m':mins+' min kvar'}</div>
+    <div style="font-size:11px;color:var(--t3);text-align:center;max-width:240px">Stäng appen — din pet fortsätter expeditionen! Kom tillbaka om ${mins>=60?Math.floor(mins/60)+'h':mins+'min'}.</div>
+    <button onclick="document.getElementById('expeditionOverlay').remove()" style="margin-top:20px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.2);border-radius:12px;padding:10px 28px;color:var(--t2);font-size:13px;cursor:pointer">Stäng</button>`;
+  document.body.appendChild(ov);
+}
+function _claimExpedition(){
+  const exp=G.expedition||{};
+  const e=EXPEDITIONS.find(x=>x.id===exp.id);
+  if(!e){G.expedition={active:false};save();return;}
+  G.expedition={active:false};
+  // Calculate rewards
+  const coins=e.coins[0]+Math.floor(Math.random()*(e.coins[1]-e.coins[0]));
+  const xpAmt=e.xp[0]+Math.floor(Math.random()*(e.xp[1]-e.xp[0]));
+  gainCoins(coins);gainXP(xpAmt,'action');
+  // DNA drop chance ~35% per item slot
+  const drops=[];
+  e.items.forEach(itemId=>{
+    if(Math.random()<0.35){
+      if(!G.dnaInventory)G.dnaInventory=[];
+      G.dnaInventory.push(itemId);
+      const frag=DNA_FRAGMENTS.find(f=>f.id===itemId);
+      if(frag)drops.push(frag.em+' '+frag.nm);
+    }
+  });
+  save();vibe([50,20,80,20,120,20,100]);SFX.win&&SFX.win();
+  spawnParticles(window.innerWidth/2,window.innerHeight*.4,'stars');
+  document.getElementById('expeditionOverlay')?.remove();
+  const ov=document.createElement('div');ov.id='expeditionOverlay';
+  ov.style.cssText='position:fixed;inset:0;z-index:1080;background:rgba(0,0,0,.96);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px';
+  ov.innerHTML=`<div style="font-size:9px;font-weight:900;color:var(--g);letter-spacing:3px;margin-bottom:12px;font-family:var(--mono)">EXPEDITION KLAR! 🎉</div>
+    <div style="font-size:72px;margin-bottom:8px;animation:petBob 1s ease-in-out infinite">${G.petEmoji||'🐉'}</div>
+    <div style="font-size:18px;font-weight:900;color:#fff;margin-bottom:16px">${G.petName||'Din pet'} är tillbaka!</div>
+    <div style="background:rgba(255,255,255,.05);border:1.5px solid rgba(57,255,20,.3);border-radius:18px;padding:16px 24px;text-align:center;min-width:220px;margin-bottom:16px">
+      <div style="font-size:24px;font-weight:900;color:var(--y);font-family:var(--mono)">+${coins}⚡</div>
+      <div style="font-size:18px;font-weight:900;color:var(--g);font-family:var(--mono)">+${xpAmt} XP</div>
+      ${drops.length>0?`<div style="margin-top:8px;font-size:11px;color:var(--p);font-weight:900">🧬 DNA FUNNET:<br>${drops.join(', ')}</div>`:''}
+    </div>
+    <button onclick="document.getElementById('expeditionOverlay').remove();updateHUD();updatePetView();" style="background:linear-gradient(135deg,var(--g),#00D9FF);border:none;border-radius:14px;padding:14px 40px;color:#000;font-size:14px;font-weight:900;cursor:pointer;font-family:var(--mono)">✨ CLAIMA!</button>`;
+  document.body.appendChild(ov);
+}
+function _checkExpeditionStatus(){
+  const exp=G.expedition||{};
+  if(!exp.active)return;
+  const expBtn=$('expedBtn');
+  const now=Date.now();
+  if(expBtn){
+    if(exp.endTime<=now){
+      expBtn.textContent='🗺️ EXPEDITION KLAR! ✅';expBtn.style.background='linear-gradient(135deg,rgba(57,255,20,.3),rgba(57,255,20,.1))';expBtn.style.borderColor='rgba(57,255,20,.6)';expBtn.style.color='var(--g)';
+    }else{
+      const mins=Math.ceil((exp.endTime-now)/60000);
+      expBtn.textContent='🗺️ EXPEDITION '+(mins>=60?Math.floor(mins/60)+'h '+mins%60+'m':mins+'m');expBtn.style.color='var(--b)';
+    }
+  }
+}
+// Check expedition on app open
+setTimeout(()=>{
+  const exp=G.expedition||{};
+  if(exp.active&&exp.endTime<=Date.now()){showT('🗺️ '+( (EXPEDITIONS.find(x=>x.id===exp.id)||{}).nm||'Expedition')+' klar! Gå till Hem för att claima!','g');}
+},2000);
 
 const KW_WILD_PETS=[
   // Common — 30% drop rate zone
@@ -9471,6 +9681,8 @@ function _loadFromLocalStorage(){
     G.dnaInventory=JSON.parse(localStorage.getItem('kv8_dinv')||'[]');
     G.lastFlashTime=parseInt(localStorage.getItem('kv8_lft')||'0');
     G.lastFlashDate=localStorage.getItem('kv8_lfd')||'';
+    try{const pm=localStorage.getItem('kv8_pmem');if(pm)G.petMemory=JSON.parse(pm);}catch(e){}
+    try{const ex=localStorage.getItem('kv8_expd');if(ex)G.expedition=JSON.parse(ex);}catch(e){}
     const _today=new Date().toDateString();const _last=localStorage.getItem('kv8_lastLogin');
     if(_last!==_today){localStorage.setItem('kv8_lastLogin',_today);if(_last){const _b=G.premium?300:75;G.coins+=_b;setTimeout(()=>{showT('🎁 DAILY LOGIN BONUS! +'+_b+' COINS','g');vibe([30,20,60,20,80]);},2500);}}
     $('ob').style.display='none';$('app').style.display='flex';updateHUD();nav('home');
