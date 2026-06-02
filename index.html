@@ -7086,6 +7086,7 @@ function _fcRespawnIfNeeded(){
 }
 
 function fishCast(){
+  if(_fc.phase==='reel'){fishReelTap();return;}
   if(_fc.phase!=='idle')return;
   _fc.phase='casting';
   const btn=$('fishCastBtn');if(btn){btn.className='fish-cast-btn casting';btn.textContent='🎣 Kastar...';}
