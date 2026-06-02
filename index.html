@@ -323,8 +323,8 @@ button:active{opacity:.85;}
 .flash-feed{position:absolute;inset:0;overflow-y:scroll;scroll-snap-type:y mandatory;scrollbar-width:none;}
 .flash-feed::-webkit-scrollbar{display:none;}
 #view-flash{overflow:hidden;}
-.fv{scroll-snap-align:start;height:100svh;min-height:100svh;display:flex;flex-direction:column;background:#000;position:relative;}
-.fv-media{flex:1;min-height:calc(100svh - 52px);background:var(--c1);display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;cursor:pointer;}
+.fv{scroll-snap-align:start;height:calc(100dvh - 60px);min-height:calc(100dvh - 60px);display:flex;flex-direction:column;background:#000;position:relative;overflow:hidden;}
+.fv-media{flex:1;background:var(--c1);display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;cursor:pointer;min-height:0;}
 .fv-bg{font-size:160px;opacity:.05;pointer-events:none;position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);}
 .fv-right{position:absolute;right:10px;display:flex;flex-direction:column;align-items:center;gap:10px;z-index:10;}
 @keyframes musicSpin{0%{transform:rotate(0);}100%{transform:rotate(360deg);}}
@@ -712,7 +712,7 @@ button:active{opacity:.85;}
 @keyframes baHit{0%{transform:scale(1.2) translateX(-10px);}50%{transform:scale(.9) translateX(5px);}100%{transform:scale(1) translateX(0);}}
 @keyframes baShk{0%,100%{transform:translateX(0);}20%,60%{transform:translateX(-8px);}40%,80%{transform:translateX(8px);}}
 @keyframes eEntry{from{transform:translateY(-30px) scale(0.5);opacity:0;}to{transform:translateY(0) scale(1);opacity:1;}}
-.battle-arena{position:fixed;inset:0;z-index:750;background:radial-gradient(ellipse at 50% 30%,rgba(255,45,85,.08) 0%,var(--bg) 60%);display:flex;flex-direction:column;transform:translateY(100%);transition:transform .32s cubic-bezier(.32,.72,0,1);}
+.battle-arena{position:fixed;inset:0;z-index:900;background:#000;display:flex;flex-direction:column;transform:translateY(100%);transition:transform .32s cubic-bezier(.32,.72,0,1);overflow:hidden;}
 .battle-arena.open{transform:translateY(0);}
 .ba-hdr{height:54px;display:flex;align-items:center;padding:0 14px;gap:10px;border-bottom:3px solid var(--pk);flex-shrink:0;background:#000;}
 .ba-field{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:16px;gap:16px;}
@@ -755,13 +755,13 @@ button:active{opacity:.85;}
 .ba-ph-dot.desperate{background:var(--r);box-shadow:0 0 8px var(--r);animation:notifPulse .6s ease-in-out infinite;}
 .ba-log-wrap{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.06);border-radius:10px;padding:8px 12px;margin-bottom:10px;min-height:36px;display:flex;align-items:center;}
 .ba-player-section{margin-bottom:8px;}
-.ba-actions{padding:10px 14px;padding-bottom:calc(10px + env(safe-area-inset-bottom,0px));background:rgba(4,4,10,.98);border-top:1px solid rgba(255,255,255,.06);flex-shrink:0;}
-.ba-atk-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;}
-.ba-atk-btn{background:#0d0d0d;border:3px solid rgba(255,255,255,.2);border-radius:5px;box-shadow:3px 3px 0px rgba(255,255,255,.1);padding:8px 4px;cursor:pointer;transition:transform .08s,box-shadow .08s;-webkit-tap-highlight-color:transparent;display:flex;flex-direction:column;align-items:center;gap:2px;}
-.ba-atk-btn:active{transform:translate(3px,3px);box-shadow:0px 0px 0px rgba(255,255,255,.1)!important;}
-.ba-btn-ico{font-size:22px;line-height:1;}
-.ba-btn-nm{font-size:10px;font-weight:900;color:var(--t1);font-family:var(--mono);}
-.ba-btn-sub{font-size:8px;color:var(--t3);}
+.ba-actions{padding:12px 14px;padding-bottom:calc(12px + env(safe-area-inset-bottom,0px));background:#000;border-top:3px solid rgba(255,0,127,.25);flex-shrink:0;}
+.ba-atk-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;}
+.ba-atk-btn{background:#0d0d0d;border:3px solid rgba(255,255,255,.2);border-radius:6px;box-shadow:4px 4px 0px rgba(255,255,255,.1);padding:12px 4px;cursor:pointer;transition:transform .08s,box-shadow .08s;-webkit-tap-highlight-color:transparent;display:flex;flex-direction:column;align-items:center;gap:3px;min-height:62px;}
+.ba-atk-btn:active{transform:translate(4px,4px);box-shadow:0px 0px 0px rgba(255,255,255,.1)!important;}
+.ba-btn-ico{font-size:26px;line-height:1;}
+.ba-btn-nm{font-size:11px;font-weight:900;color:var(--t1);font-family:var(--mono);}
+.ba-btn-sub{font-size:9px;color:var(--t3);}
 .ba-atk-btn.normal{border-color:var(--g);box-shadow:3px 3px 0px var(--g);}
 .ba-atk-btn.power{border-color:var(--pk);box-shadow:3px 3px 0px var(--pk);}
 .ba-atk-btn.magic{border-color:var(--b);box-shadow:3px 3px 0px var(--b);}
@@ -979,25 +979,39 @@ button:active{opacity:.85;}
 .room-window{position:absolute;top:6%;right:6%;width:22%;height:30%;border:2px solid rgba(255,255,255,.18);border-radius:8px;background:rgba(255,255,255,.04);backdrop-filter:blur(1px);overflow:hidden;}
 .room-window-scene{position:absolute;inset:0;display:flex;flex-direction:column;}
 .room-pet-v2{position:absolute;bottom:30%;font-size:36px;transition:left 2.2s cubic-bezier(.45,0,.55,1);z-index:10;user-select:none;cursor:pointer;}
-.room-pet-v2.state-sleeping{font-size:34px;bottom:28%;}
-.room-pet-v2.state-playing{animation:petPlay .4s ease-in-out infinite;}
-.room-pet-v2.state-dancing{animation:petDance .6s ease-in-out infinite;}
-.room-pet-v2.state-exploring{/* transition handles it */}
-@keyframes petPlay{0%,100%{transform:translateY(0) scale(1);}50%{transform:translateY(-12px) scale(1.15);}}
-@keyframes petDance{0%{transform:rotate(-15deg) scale(1);}50%{transform:rotate(15deg) scale(1.1);}100%{transform:rotate(-15deg) scale(1);}}
+.room-pet-v2.state-sleeping{font-size:34px;bottom:28%;animation:petSleep 3s ease-in-out infinite!important;}
+.room-pet-v2.state-playing{animation:petPlay .5s ease-in-out infinite;}
+.room-pet-v2.state-dancing{animation:petDance .55s ease-in-out infinite;}
+.room-pet-v2.state-exploring{animation:petBob 2.8s ease-in-out infinite;}
+.room-pet-v2.state-hungry{animation:petHungry .7s ease-in-out infinite;}
+@keyframes petSleep{0%,100%{transform:rotate(-5deg) scale(.95);}50%{transform:rotate(5deg) scale(1);}}
+@keyframes petHungry{0%,100%{transform:translateX(0);}25%{transform:translateX(-4px);}75%{transform:translateX(4px);}}
+@keyframes petPlay{0%,100%{transform:translateY(0) scale(1);}50%{transform:translateY(-14px) scale(1.2);}}
+@keyframes petDance{0%{transform:rotate(-18deg) scale(.95);}50%{transform:rotate(18deg) scale(1.12);}100%{transform:rotate(-18deg) scale(.95);}}
 .room-zzz{position:absolute;font-size:14px;animation:zzzFloat 2s ease-out infinite;pointer-events:none;z-index:11;}
 @keyframes zzzFloat{0%{transform:translateY(0);opacity:1;}100%{transform:translateY(-40px) translateX(8px);opacity:0;}}
 .room-heart{position:absolute;font-size:16px;animation:heartFloat 1.4s ease-out forwards;pointer-events:none;z-index:11;}
 @keyframes heartFloat{0%{transform:translateY(0) scale(0);opacity:1;}100%{transform:translateY(-50px) scale(1.2);opacity:0;}}
 .room-bowl{position:absolute;bottom:31%;left:42%;font-size:18px;z-index:5;cursor:pointer;}
-.room-bowl.empty{filter:grayscale(1);animation:bowlShake .15s ease-in-out infinite;}
-@keyframes bowlShake{0%,100%{transform:rotate(-3deg);}50%{transform:rotate(3deg);}}
+.room-bowl.empty{filter:grayscale(1) brightness(.6);animation:bowlShake .18s ease-in-out infinite;}
+@keyframes bowlShake{0%,100%{transform:rotate(-4deg);}50%{transform:rotate(4deg);}}
 .room-note{position:absolute;font-size:12px;animation:noteFloat 1.8s ease-out forwards;pointer-events:none;z-index:11;}
 @keyframes noteFloat{0%{transform:translateY(0) rotate(-10deg);opacity:1;}100%{transform:translateY(-60px) rotate(20deg);opacity:0;}}
-.room-deco-v2{position:absolute;font-size:20px;z-index:6;transition:transform .15s;cursor:pointer;}
-.room-deco-v2:active{transform:scale(1.2);}
+.room-deco-v2{position:absolute;font-size:20px;z-index:6;transition:transform .15s;cursor:pointer;animation:iFloat var(--fdur,3.5s) ease-in-out infinite var(--fdel,0s);}
+.room-deco-v2:active{transform:scale(1.25);}
 .room-glow{position:absolute;border-radius:50%;pointer-events:none;animation:roomGlow 3s ease-in-out infinite;}
 @keyframes roomGlow{0%,100%{opacity:.4;transform:scale(1);}50%{opacity:.7;transform:scale(1.15);}}
+/* Pet room sparkle particles */
+.room-spark{position:absolute;pointer-events:none;z-index:12;font-size:10px;animation:sparkDrift var(--sdur,2.5s) ease-out forwards;}
+@keyframes sparkDrift{0%{opacity:1;transform:translate(0,0) scale(1);}100%{opacity:0;transform:translate(var(--sx,10px),var(--sy,-50px)) scale(.3);}}
+/* Room stat bars */
+.room-stat-bars{position:absolute;bottom:2px;left:0;right:0;display:flex;gap:3px;padding:0 8px;z-index:13;pointer-events:none;}
+.room-stat-bar{height:2px;border-radius:1px;flex:1;overflow:hidden;background:rgba(255,255,255,.08);}
+.room-stat-fill{height:100%;border-radius:1px;transition:width 1s ease;}
+/* Dynamic room glow based on mood */
+.room-scene-v2.sad-room{filter:brightness(.7) saturate(.5);}
+.room-scene-v2.happy-room::after{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 60%,rgba(57,255,20,.06),transparent 70%);pointer-events:none;z-index:1;border-radius:16px;animation:happyGlow 2s ease-in-out infinite;}
+@keyframes happyGlow{0%,100%{opacity:.6;}50%{opacity:1;}}
 /* ── FISHING JUNK ── */
 .fish-junk-tag{background:rgba(255,159,10,.12);border:1px solid rgba(255,159,10,.3);border-radius:10px;padding:4px 10px;}
 .fish-miss-overlay{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;pointer-events:none;z-index:50;}
@@ -1697,14 +1711,29 @@ button:active{opacity:.85;}
 .fortune-event{background:rgba(255,230,0,.1);border:1px solid rgba(255,230,0,.3);border-radius:10px;padding:8px 12px;font-size:11px;color:var(--y);font-weight:700;}
 
 /* ── NIGHT OWL MODE ── */
-/* ── PET BLOCKS MINIGAME ── */
-.pet-blocks-game{position:fixed;inset:0;z-index:800;background:var(--bg);display:flex;flex-direction:column;transform:translateY(100%);transition:transform .32s cubic-bezier(.32,.72,0,1);}
+/* ── DNA BREAKER (Pet Blocks Redesign) ── */
+.pet-blocks-game{position:fixed;inset:0;z-index:800;background:#000;display:flex;flex-direction:column;transform:translateY(100%);transition:transform .32s cubic-bezier(.32,.72,0,1);}
 .pet-blocks-game.open{transform:translateY(0);}
 .pet-runner-game{position:fixed;inset:0;z-index:800;background:#010614;display:flex;flex-direction:column;transform:translateY(100%);transition:transform .32s cubic-bezier(.32,.72,0,1);}
 .pet-runner-game.open{transform:translateY(0);}
 .pr-hdr{height:52px;display:flex;align-items:center;padding:0 8px;gap:8px;border-bottom:1px solid rgba(57,255,20,.2);flex-shrink:0;background:rgba(0,10,4,.8);}
-.pb-header{height:56px;display:flex;align-items:center;padding:0 14px;gap:12px;border-bottom:1px solid rgba(255,255,255,.08);flex-shrink:0;}
+.pb-header{height:54px;display:flex;align-items:center;padding:0 12px;gap:10px;border-bottom:3px solid var(--pk);flex-shrink:0;background:#000;}
 .pb-back{background:none;border:none;color:var(--t1);font-size:22px;cursor:pointer;padding:4px 8px;}
+/* DNA Breaker canvas */
+#dnaCanvas{display:block;touch-action:none;cursor:crosshair;}
+.dna-hud{display:flex;justify-content:space-between;align-items:center;padding:6px 14px;background:#000;border-bottom:1px solid rgba(255,0,127,.2);flex-shrink:0;}
+.dna-stat{display:flex;flex-direction:column;align-items:center;}
+.dna-stat-val{font-size:18px;font-weight:900;font-family:var(--mono);color:var(--g);}
+.dna-stat-lbl{font-size:8px;color:var(--t3);font-family:var(--mono);letter-spacing:.5px;}
+.dna-lives{display:flex;gap:4px;}
+.dna-combo-banner{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:28px;font-weight:900;font-family:var(--mono);color:var(--y);text-shadow:0 0 20px var(--y),0 0 40px rgba(255,230,0,.5);pointer-events:none;z-index:10;opacity:0;transition:opacity .3s;}
+.dna-combo-banner.show{opacity:1;}
+.dna-fusion-btn{background:rgba(255,230,0,.08);border:3px solid var(--y);border-radius:6px;color:var(--y);font-size:14px;font-weight:900;font-family:var(--mono);padding:10px 20px;cursor:pointer;box-shadow:4px 4px 0px var(--y);transition:transform .08s,box-shadow .08s;letter-spacing:1px;-webkit-tap-highlight-color:transparent;animation:fusionPulse .6s ease-in-out infinite;}
+.dna-fusion-btn:active{transform:translate(4px,4px);box-shadow:0 0 0 var(--y);}
+.dna-fusion-btn:disabled{opacity:.25;pointer-events:none;animation:none;}
+@keyframes fusionPulse{0%,100%{box-shadow:4px 4px 0px var(--y),0 0 10px rgba(255,230,0,.3);}50%{box-shadow:4px 4px 0px var(--y),0 0 25px rgba(255,230,0,.7);}}
+.dna-game-over{position:absolute;inset:0;background:rgba(0,0,0,.92);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:20;}
+/* Pet Blocks legacy (kept for fallback) */
 .pb-cell{border-radius:5px;transition:background .08s;}
 .pb-cell.filled{box-shadow:inset 0 1px 0 rgba(255,255,255,.2);}
 .pb-cell.preview{opacity:.5;}
@@ -6347,215 +6376,430 @@ function doCraft(i){
   spawnParticles(window.innerWidth/2,window.innerHeight*.5,'stars');
 }
 
-// ── PET BLOCKS MINIGAME ──
-const PB_GRID_SIZE = 7;
-const PB_COLORS = ['#FF2D55','#FF9F0A','#FFE600','#39FF14','#00D9FF','#BF5FFF','#FF6B35'];
-
-const PB_SHAPES = [
-  {name:'I-3',cells:[[0,0],[0,1],[0,2]],color:PB_COLORS[2]},
-  {name:'I-4',cells:[[0,0],[0,1],[0,2],[0,3]],color:PB_COLORS[0]},
-  {name:'I-V',cells:[[0,0],[1,0],[2,0]],color:PB_COLORS[1]},
-  {name:'Square',cells:[[0,0],[0,1],[1,0],[1,1]],color:PB_COLORS[3]},
-  {name:'L',cells:[[0,0],[1,0],[2,0],[2,1]],color:PB_COLORS[4]},
-  {name:'J',cells:[[0,1],[1,1],[2,0],[2,1]],color:PB_COLORS[5]},
-  {name:'T',cells:[[0,0],[0,1],[0,2],[1,1]],color:PB_COLORS[6]},
-  {name:'S',cells:[[0,1],[0,2],[1,0],[1,1]],color:PB_COLORS[0]},
-  {name:'Z',cells:[[0,0],[0,1],[1,1],[1,2]],color:PB_COLORS[2]},
-  {name:'Single',cells:[[0,0]],color:PB_COLORS[1]},
-  {name:'Duo-H',cells:[[0,0],[0,1]],color:PB_COLORS[3]},
-  {name:'Duo-V',cells:[[0,0],[1,0]],color:PB_COLORS[4]},
-  {name:'BigL',cells:[[0,0],[0,1],[1,0],[2,0],[2,1]],color:PB_COLORS[0]},
-  {name:'Corner',cells:[[0,0],[0,1],[1,0]],color:PB_COLORS[5]},
-  {name:'Plus',cells:[[0,1],[1,0],[1,1],[1,2],[2,1]],color:PB_COLORS[6]},
+// ── DNA BREAKER MINIGAME (Brick-Breaker with DNA/pet theme) ──
+const DNA_COLS = 7;
+const DNA_ROWS = 6;
+const DNA_COLORS = [
+  {col:'#FF2D55',glow:'rgba(255,45,85,.7)',pts:10,stat:'Hunger'},
+  {col:'#FF9F0A',glow:'rgba(255,159,10,.7)',pts:15,stat:'Energy'},
+  {col:'#FFE600',glow:'rgba(255,230,0,.7)',pts:20,stat:'Mood'},
+  {col:'#39FF14',glow:'rgba(57,255,20,.7)',pts:25,stat:'DNA'},
+  {col:'#00D9FF',glow:'rgba(0,217,255,.7)',pts:30,stat:'Cyber'},
+  {col:'#BF5FFF',glow:'rgba(191,95,255,.7)',pts:35,stat:'Fusion'},
+  {col:'#FF6B35',glow:'rgba(255,107,53,.7)',pts:12,stat:'Fire'},
 ];
+// DNA block type: 0=normal, 1=tough(2 hits), 2=explosive, 3=dna-fragment(bonus)
+const DNA_BLOCK_TYPES = [0,0,0,1,2,3];
 
-let _pbGrid = [];
-let _pbScore = 0;
-let _pbCoinsEarned = 0;
-let _pbBest = parseInt(localStorage.getItem('kv8_pbBest')||'0');
-let _pbPieces = [];
-let _pbSelected = null;
-let _pbCombo = 0;
-let _pbCellSize = 44;
+let _dna = {
+  active:false, raf:null,
+  bx:0, by:0, br:8, // ball
+  vx:3, vy:-4,
+  px:0, pw:0, ph:0, // paddle
+  blocks:[], wave:1,
+  score:0, coins:0, lives:3,
+  fusionCharge:0, combo:0,
+  best:parseInt(localStorage.getItem('kv8_dnaBest')||'0'),
+  W:0, H:0, paddleY:0,
+  dnaFrags:[], // drifting dna pickup orbs
+  particles:[],
+  ballTrail:[],
+};
 
-function openPetBlocks() {
-  const g = $('petBlocksGame'); if (!g) return;
-  // Calculate cell size at open time
-  _pbCellSize = Math.min(44, Math.floor((Math.min(window.innerWidth, 430) - 32) / PB_GRID_SIZE));
+function openPetBlocks(){
+  const g=$('petBlocksGame');if(!g)return;
   g.classList.add('open');
   startPetBlocks();
 }
-
-function closePetBlocks() {
-  const g = $('petBlocksGame'); if (!g) return;
+function closePetBlocks(){
+  const g=$('petBlocksGame');if(!g)return;
   g.classList.remove('open');
-  if (_pbCoinsEarned > 0) { gainCoins(_pbCoinsEarned); _pbCoinsEarned = 0; updateHUD(); }
+  _dna.active=false;
+  if(_dna.raf){cancelAnimationFrame(_dna.raf);_dna.raf=null;}
+  if(_dna.coins>0){gainCoins(_dna.coins);_dna.coins=0;updateHUD();}
 }
-
-function startPetBlocks() {
-  _pbGrid = Array.from({length: PB_GRID_SIZE}, () => Array(PB_GRID_SIZE).fill(null));
-  _pbScore = 0; _pbCoinsEarned = 0; _pbSelected = null; _pbCombo = 0;
-  const go = $('pbGameOver'); if (go) go.style.display = 'none';
-  _pbSpawnPieces();
-  _pbRenderGrid();
-  _pbRenderPieces();
+function startPetBlocks(){
+  const go=$('pbGameOver');if(go)go.style.display='none';
+  const canvas=$('dnaCanvas');if(!canvas)return;
+  // size canvas
+  const wrap=canvas.parentElement;
+  const W=wrap.offsetWidth||window.innerWidth;
+  const H=wrap.offsetHeight||(window.innerHeight-170);
+  canvas.width=W;canvas.height=H;
+  _dna.W=W;_dna.H=H;
+  _dna.paddleY=H-28;
+  _dna.pw=Math.min(90,W*.28);
+  _dna.ph=10;
+  _dna.px=W/2-_dna.pw/2;
+  // ball start
+  _dna.bx=W/2;_dna.by=H-60;
+  const spd=3.5+_dna.wave*.3;
+  const ang=-Math.PI/2+(Math.random()-.5)*.8;
+  _dna.vx=Math.cos(ang)*spd;_dna.vy=Math.sin(ang)*spd;
+  _dna.br=7;
+  // reset state
+  _dna.score=0;_dna.coins=0;_dna.lives=3;
+  _dna.fusionCharge=0;_dna.combo=0;_dna.wave=1;
+  _dna.blocks=[];_dna.dnaFrags=[];_dna.particles=[];_dna.ballTrail=[];
+  _dna.active=true;
+  _dnaBuildWave();
+  _dnaUpdateHUD();
+  // touch/mouse paddle control
+  canvas.onmousemove=e=>{const r=canvas.getBoundingClientRect();_dna.px=e.clientX-r.left-_dna.pw/2;_dna.px=Math.max(0,Math.min(_dna.W-_dna.pw,_dna.px));};
+  canvas.ontouchmove=e=>{e.preventDefault();const r=canvas.getBoundingClientRect();_dna.px=e.touches[0].clientX-r.left-_dna.pw/2;_dna.px=Math.max(0,Math.min(_dna.W-_dna.pw,_dna.px));};
+  if(_dna.raf){cancelAnimationFrame(_dna.raf);_dna.raf=null;}
+  _dna.raf=requestAnimationFrame(_dnaLoop);
   _pbUpdateScore();
 }
 
-function _pbSpawnPieces() {
-  _pbPieces = Array.from({length:3}, () => ({
-    shape: PB_SHAPES[Math.floor(Math.random()*PB_SHAPES.length)],
-    used: false
-  }));
-  _pbSelected = null;
-}
-
-function _pbRenderGrid() {
-  const grid = $('pbGrid'); if (!grid) return;
-  const cs = _pbCellSize;
-  grid.style.cssText = `display:grid;grid-template-columns:repeat(${PB_GRID_SIZE},${cs}px);gap:3px;`;
-  grid.innerHTML = '';
-  for (let r = 0; r < PB_GRID_SIZE; r++) {
-    for (let c = 0; c < PB_GRID_SIZE; c++) {
-      const cell = document.createElement('div');
-      cell.className = 'pb-cell' + (_pbGrid[r][c] ? ' filled' : '');
-      cell.style.cssText = `width:${cs}px;height:${cs}px;background:${_pbGrid[r][c] || 'rgba(255,255,255,.05)'};border-radius:5px;`;
-      cell.dataset.r = r; cell.dataset.c = c;
-      cell.addEventListener('click', () => _pbTryPlace(r, c));
-      cell.addEventListener('mouseover', () => _pbShowPreview(r, c));
-      grid.appendChild(cell);
+function _dnaBuildWave(){
+  const blockW=(_dna.W-20)/(DNA_COLS+.5);
+  const blockH=Math.min(26,(_dna.H*.45)/DNA_ROWS);
+  const cols=DNA_COLORS;
+  _dna.blocks=[];
+  for(let r=0;r<DNA_ROWS;r++){
+    for(let c=0;c<DNA_COLS;c++){
+      const ci=(r+c+_dna.wave)%cols.length;
+      const typeI=Math.floor(Math.random()*DNA_BLOCK_TYPES.length);
+      const type=DNA_BLOCK_TYPES[typeI];
+      // skip some blocks for pattern variety
+      if(_dna.wave===1&&r>3&&Math.random()>.7)continue;
+      if(_dna.wave>1&&Math.random()>.88)continue;
+      _dna.blocks.push({
+        x:12+c*(blockW+2),y:38+r*(blockH+3),
+        w:blockW-2,h:blockH-2,
+        col:cols[ci].col,glow:cols[ci].glow,pts:cols[ci].pts*(1+(_dna.wave-1)*.3)|0,
+        stat:cols[ci].stat,
+        type:type,// 0=normal,1=tough,2=explosive,3=dna
+        hp:type===1?2:1,
+        alive:true,flash:0
+      });
     }
   }
 }
 
-function _pbShowPreview(r, c) {
-  if (_pbSelected === null) return;
-  const piece = _pbPieces[_pbSelected];
-  if (!piece || piece.used) return;
-  document.querySelectorAll('.pb-cell.preview').forEach(el => {
-    el.classList.remove('preview');
-    const gr = parseInt(el.dataset.r), gc = parseInt(el.dataset.c);
-    el.style.background = _pbGrid[gr][gc] || 'rgba(255,255,255,.05)';
-  });
-  const canPlace = _pbCanPlace(piece.shape, r, c);
-  piece.shape.cells.forEach(([dr, dc]) => {
-    const nr = r + dr, nc = c + dc;
-    if (nr >= 0 && nr < PB_GRID_SIZE && nc >= 0 && nc < PB_GRID_SIZE) {
-      const cellEl = document.querySelector(`[data-r="${nr}"][data-c="${nc}"]`);
-      if (cellEl && !_pbGrid[nr][nc]) {
-        cellEl.classList.add('preview');
-        cellEl.style.background = canPlace ? piece.shape.color + '88' : 'rgba(255,45,85,.3)';
+function _dnaLoop(){
+  if(!_dna.active){_dna.raf=null;return;}
+  const canvas=$('dnaCanvas');if(!canvas){_dna.active=false;_dna.raf=null;return;}
+  const ctx=canvas.getContext('2d');if(!ctx){_dna.active=false;_dna.raf=null;return;}
+  _dnaUpdate();
+  _dnaDraw(canvas,ctx);
+  _dna.raf=requestAnimationFrame(_dnaLoop);
+}
+
+function _dnaUpdate(){
+  const {W,H}=_dna;
+  // Ball trail
+  _dna.ballTrail.push({x:_dna.bx,y:_dna.by,t:1});
+  if(_dna.ballTrail.length>14)_dna.ballTrail.shift();
+  _dna.ballTrail.forEach(t=>{t.t-=.07;});
+
+  // Move ball
+  _dna.bx+=_dna.vx;
+  _dna.by+=_dna.vy;
+  const br=_dna.br;
+
+  // Wall bounce
+  if(_dna.bx<=br){_dna.bx=br;_dna.vx=Math.abs(_dna.vx);_dnaSparkAt(_dna.bx,_dna.by,'#00D9FF');}
+  if(_dna.bx>=W-br){_dna.bx=W-br;_dna.vx=-Math.abs(_dna.vx);_dnaSparkAt(_dna.bx,_dna.by,'#00D9FF');}
+  if(_dna.by<=br){_dna.by=br;_dna.vy=Math.abs(_dna.vy);_dnaSparkAt(_dna.bx,_dna.by,'#39FF14');}
+
+  // Paddle collision
+  const py=_dna.paddleY;
+  if(_dna.by+br>=py&&_dna.by<py+_dna.ph&&_dna.bx>=_dna.px&&_dna.bx<=_dna.px+_dna.pw){
+    _dna.by=py-br;
+    // Add angle based on hit position on paddle
+    const hitPos=(_dna.bx-_dna.px)/_dna.pw;// 0..1
+    const angle=-Math.PI+hitPos*Math.PI*.9-.05;// -π..~0 range → upward
+    const speed=Math.sqrt(_dna.vx*_dna.vx+_dna.vy*_dna.vy);
+    _dna.vx=Math.cos(angle)*speed;
+    _dna.vy=Math.sin(angle)*speed;
+    if(_dna.vy>0)_dna.vy=-Math.abs(_dna.vy);// ensure upward
+    _dna.combo=0;
+    vibe&&vibe(6);
+  }
+
+  // Ball out of bounds (bottom) — lose life
+  if(_dna.by>H+br*2){
+    _dna.lives--;
+    _dna.combo=0;
+    vibe&&vibe([40,20,60]);
+    _dnaUpdateHUD();
+    if(_dna.lives<=0){_dnaGameOver();return;}
+    // Reset ball
+    _dna.bx=_dna.px+_dna.pw/2;
+    _dna.by=_dna.paddleY-br-2;
+    const spd=3.5+_dna.wave*.3;
+    _dna.vx=(Math.random()>.5?1:-1)*spd*.7;
+    _dna.vy=-spd;
+  }
+
+  // Block collisions
+  let hitAny=false;
+  for(let i=_dna.blocks.length-1;i>=0;i--){
+    const bl=_dna.blocks[i];
+    if(!bl.alive)continue;
+    bl.flash=Math.max(0,bl.flash-.06);
+    if(_dna.bx+br>bl.x&&_dna.bx-br<bl.x+bl.w&&_dna.by+br>bl.y&&_dna.by-br<bl.y+bl.h){
+      // which side?
+      const overlapL=_dna.bx+br-bl.x;
+      const overlapR=bl.x+bl.w-(_dna.bx-br);
+      const overlapT=_dna.by+br-bl.y;
+      const overlapB=bl.y+bl.h-(_dna.by-br);
+      const minOv=Math.min(overlapL,overlapR,overlapT,overlapB);
+      if(minOv===overlapL||minOv===overlapR)_dna.vx*=-1;
+      else _dna.vy*=-1;
+      bl.hp--;bl.flash=1;
+      if(bl.hp<=0){
+        bl.alive=false;
+        _dna.score+=bl.pts;_dna.combo++;
+        const coinGain=bl.type===3?5:bl.type===2?3:1;
+        _dna.coins+=coinGain;
+        _dna.fusionCharge=Math.min(100,_dna.fusionCharge+(bl.type===3?15:bl.type===2?10:5));
+        // Explosive block: destroy neighbors
+        if(bl.type===2){
+          _dna.blocks.forEach(nb=>{
+            if(nb.alive&&Math.abs(nb.x-bl.x)<bl.w*2&&Math.abs(nb.y-bl.y)<bl.h*2){
+              nb.alive=false;_dna.score+=nb.pts;_dna.coins+=1;
+              _dnaSparkAt(nb.x+nb.w/2,nb.y+nb.h/2,nb.glow);
+            }
+          });
+        }
+        _dnaSparkAt(bl.x+bl.w/2,bl.y+bl.h/2,bl.glow);
+        hitAny=true;
+        if(_dna.combo>=3){
+          const comboEl=$('dnaCombo');
+          if(comboEl){
+            comboEl.textContent=(_dna.combo>=10?'🔥 MEGA ':'💥 COMBO ')+'×'+_dna.combo+'!';
+            comboEl.classList.add('show');
+            clearTimeout(comboEl._t);
+            comboEl._t=setTimeout(()=>comboEl.classList.remove('show'),900);
+          }
+        }
+        if(_dna.score>_dna.best){_dna.best=_dna.score;localStorage.setItem('kv8_dnaBest',_dna.best);}
+        _pbUpdateScore();
+        _dnaUpdateHUD();
+        // Speed up slightly
+        const spd=Math.sqrt(_dna.vx*_dna.vx+_dna.vy*_dna.vy);
+        const maxSpd=7+_dna.wave*.5;
+        if(spd<maxSpd){const f=(spd+.04)/spd;_dna.vx*=f;_dna.vy*=f;}
+      } else {
+        bl.flash=.7;
       }
+      if(!hitAny)hitAny=true;
+      SFX&&SFX.tap&&SFX.tap();
+      vibe&&vibe(5);
+    }
+  }
+
+  // DNA fragment pickups (floating orbs)
+  _dna.dnaFrags=_dna.dnaFrags.filter(f=>{
+    f.y-=.4;f.t-=.005;
+    if(_dna.bx+br>f.x-f.r&&_dna.bx-br<f.x+f.r&&_dna.by+br>f.y-f.r&&_dna.by-br<f.y+f.r){
+      _dna.score+=50;_dna.coins+=3;gainXP(2,'action');
+      _dnaSparkAt(f.x,f.y,'#FFE600');
+      showT('🧬 DNA Fragment! +50','pk');
+      vibe&&vibe([10,5,15]);
+      return false;
+    }
+    return f.t>0&&f.y>0;
+  });
+  // Spawn dna frag occasionally
+  if(Math.random()<.002){
+    _dna.dnaFrags.push({x:20+Math.random()*(_dna.W-40),y:_dna.H*.6+Math.random()*_dna.H*.2,r:9,t:1});
+  }
+
+  // Particles
+  _dna.particles=_dna.particles.filter(p=>{
+    p.x+=p.vx;p.y+=p.vy;p.vy+=.15;p.t-=.04;p.r=Math.max(.5,p.r-.1);
+    return p.t>0;
+  });
+
+  // Fusion bar UI
+  const fb=$('dnaFusionBar');if(fb)fb.style.width=_dna.fusionCharge+'%';
+  const fBtn=$('dnaFusionBtn');if(fBtn)fBtn.disabled=_dna.fusionCharge<100;
+
+  // Check wave clear
+  if(_dna.blocks.every(b=>!b.alive)){
+    _dna.wave++;
+    showT('🌊 WAVE '+_dna.wave+'! +100','y');
+    _dna.score+=100;gainXP(10,'action');
+    const spd=Math.sqrt(_dna.vx*_dna.vx+_dna.vy*_dna.vy);
+    const maxSpd=6+_dna.wave*.6;
+    if(spd<maxSpd){const f=maxSpd/spd;_dna.vx*=f;_dna.vy*=f;}
+    _dnaBuildWave();
+    vibe&&vibe([30,15,60,15,90]);
+    SFX&&SFX.win&&SFX.win();
+    const wv=$('dnaWave');if(wv)wv.textContent=_dna.wave;
+  }
+}
+
+function _dnaSparkAt(x,y,col){
+  for(let i=0;i<8;i++){
+    const a=Math.random()*Math.PI*2;const spd=1+Math.random()*4;
+    _dna.particles.push({x,y,vx:Math.cos(a)*spd,vy:Math.sin(a)*spd,col:col||'#fff',r:2+Math.random()*3,t:1});
+  }
+}
+
+function _dnaDraw(canvas,ctx){
+  const {W,H}=_dna;
+  ctx.clearRect(0,0,W,H);
+  // background gradient
+  const bgGrad=ctx.createLinearGradient(0,0,0,H);
+  bgGrad.addColorStop(0,'#01020a');bgGrad.addColorStop(1,'#000208');
+  ctx.fillStyle=bgGrad;ctx.fillRect(0,0,W,H);
+  // scanlines
+  ctx.strokeStyle='rgba(255,255,255,.02)';ctx.lineWidth=1;
+  for(let y=0;y<H;y+=4){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(W,y);ctx.stroke();}
+
+  // Blocks
+  _dna.blocks.forEach(bl=>{
+    if(!bl.alive)return;
+    const grd=ctx.createLinearGradient(bl.x,bl.y,bl.x,bl.y+bl.h);
+    if(bl.flash>.01){
+      grd.addColorStop(0,'#ffffff');grd.addColorStop(1,bl.col);
+    } else {
+      grd.addColorStop(0,bl.col+'cc');grd.addColorStop(1,bl.col+'88');
+    }
+    ctx.fillStyle=grd;
+    ctx.shadowColor=bl.glow;ctx.shadowBlur=bl.flash>0?16:6;
+    // Draw block with neo-brutalist border
+    const bx=bl.x,by=bl.y,bw=bl.w,bh=bl.h;
+    ctx.beginPath();ctx.roundRect?ctx.roundRect(bx,by,bw,bh,3):ctx.rect(bx,by,bw,bh);
+    ctx.fill();
+    ctx.shadowBlur=0;
+    // Border
+    ctx.strokeStyle=bl.col;ctx.lineWidth=1.5;
+    ctx.beginPath();ctx.roundRect?ctx.roundRect(bx,by,bw,bh,3):ctx.rect(bx,by,bw,bh);ctx.stroke();
+    // Hard shadow (neo-brutalist)
+    ctx.fillStyle='rgba(0,0,0,.6)';
+    ctx.fillRect(bx+3,by+bh,bw,2);
+    ctx.fillRect(bx+bw,by+3,2,bh);
+    // Type indicator
+    if(bl.type===1){ctx.fillStyle='rgba(255,255,255,.5)';ctx.fillRect(bx+2,by+2,bw-4,3);}
+    if(bl.type===2){ctx.fillStyle='rgba(255,68,85,.8)';ctx.font='9px monospace';ctx.textAlign='center';ctx.fillText('💥',bx+bw/2,by+bh/2+3);}
+    if(bl.type===3){ctx.fillStyle='rgba(255,230,0,.9)';ctx.font='9px monospace';ctx.textAlign='center';ctx.fillText('🧬',bx+bw/2,by+bh/2+3);}
+    // HP indicator for tough blocks
+    if(bl.type===1&&bl.hp===1){ctx.fillStyle='rgba(255,255,255,.3)';ctx.fillRect(bx+2,by+2,bw-4,3);}
+  });
+
+  // DNA fragment pickups
+  ctx.shadowBlur=0;
+  _dna.dnaFrags.forEach(f=>{
+    const grd=ctx.createRadialGradient(f.x,f.y,0,f.x,f.y,f.r*1.5);
+    grd.addColorStop(0,'rgba(255,230,0,.9)');grd.addColorStop(1,'rgba(255,230,0,0)');
+    ctx.fillStyle=grd;ctx.shadowColor='rgba(255,230,0,.7)';ctx.shadowBlur=14;
+    ctx.beginPath();ctx.arc(f.x,f.y,f.r,0,Math.PI*2);ctx.fill();
+    ctx.shadowBlur=0;
+    ctx.fillStyle='rgba(255,255,255,.9)';ctx.font='10px sans-serif';ctx.textAlign='center';
+    ctx.fillText('🧬',f.x,f.y+4);
+  });
+
+  // Particles
+  _dna.particles.forEach(p=>{
+    ctx.fillStyle=p.col;ctx.globalAlpha=p.t;
+    ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fill();
+  });
+  ctx.globalAlpha=1;
+
+  // Ball trail
+  _dna.ballTrail.forEach((t,i)=>{
+    if(t.t<=0)return;
+    const tr=_dna.br*(t.t*.6);
+    const grad=ctx.createRadialGradient(t.x,t.y,0,t.x,t.y,tr);
+    grad.addColorStop(0,`rgba(57,255,20,${t.t*.35})`);
+    grad.addColorStop(1,'rgba(57,255,20,0)');
+    ctx.fillStyle=grad;ctx.beginPath();ctx.arc(t.x,t.y,tr,0,Math.PI*2);ctx.fill();
+  });
+
+  // Ball
+  const bGrad=ctx.createRadialGradient(_dna.bx-2,_dna.by-2,0,_dna.bx,_dna.by,_dna.br);
+  bGrad.addColorStop(0,'#ffffff');bGrad.addColorStop(.5,'#39FF14');bGrad.addColorStop(1,'rgba(57,255,20,.8)');
+  ctx.shadowColor='rgba(57,255,20,.9)';ctx.shadowBlur=16;
+  ctx.fillStyle='#39FF14';ctx.beginPath();ctx.arc(_dna.bx,_dna.by,_dna.br,0,Math.PI*2);ctx.fill();
+  // Ball highlight
+  ctx.fillStyle='rgba(255,255,255,.7)';ctx.beginPath();ctx.arc(_dna.bx-2,_dna.by-2,_dna.br*.35,0,Math.PI*2);ctx.fill();
+  ctx.shadowBlur=0;
+
+  // Paddle
+  const padGrad=ctx.createLinearGradient(_dna.px,_dna.paddleY,_dna.px,_dna.paddleY+_dna.ph);
+  padGrad.addColorStop(0,'#00D9FF');padGrad.addColorStop(1,'#0088aa');
+  ctx.shadowColor='rgba(0,217,255,.8)';ctx.shadowBlur=14;
+  ctx.fillStyle=padGrad;
+  ctx.beginPath();if(ctx.roundRect){ctx.roundRect(_dna.px,_dna.paddleY,_dna.pw,_dna.ph,4);}else{ctx.rect(_dna.px,_dna.paddleY,_dna.pw,_dna.ph);}
+  ctx.fill();
+  // Paddle neo-brutalist bottom shadow
+  ctx.shadowBlur=0;
+  ctx.fillStyle='rgba(0,0,0,.7)';ctx.fillRect(_dna.px+3,_dna.paddleY+_dna.ph,_dna.pw,3);
+  // Paddle highlight stripe
+  ctx.fillStyle='rgba(255,255,255,.35)';
+  ctx.fillRect(_dna.px+4,_dna.paddleY+1,_dna.pw-8,3);
+  ctx.shadowBlur=0;
+
+  // Floor danger line
+  ctx.strokeStyle='rgba(255,45,85,.25)';ctx.lineWidth=1;ctx.setLineDash([4,4]);
+  ctx.beginPath();ctx.moveTo(0,H-4);ctx.lineTo(W,H-4);ctx.stroke();
+  ctx.setLineDash([]);
+}
+
+function _dnaUpdateHUD(){
+  const lv=$('dnaLives');
+  if(lv)lv.innerHTML=Array.from({length:3},(_,i)=>`<span style="font-size:16px">${i<_dna.lives?'💜':'🖤'}</span>`).join('');
+  const bl=$('dnaBlocks');
+  if(bl)bl.textContent=_dna.blocks.filter(b=>b.alive).length;
+  const wv=$('dnaWave');if(wv)wv.textContent=_dna.wave;
+}
+
+function _dnaFusion(){
+  if(_dna.fusionCharge<100)return;
+  _dna.fusionCharge=0;
+  // Destroy all blocks in bottom 2 rows
+  let cleared=0;
+  _dna.blocks.forEach(bl=>{
+    if(bl.alive&&bl.y>_dna.H*.5){
+      bl.alive=false;_dna.score+=bl.pts*2;_dna.coins+=2;cleared++;
+      _dnaSparkAt(bl.x+bl.w/2,bl.y+bl.h/2,bl.glow);
     }
   });
-}
-
-function _pbCanPlace(shape, r, c) {
-  return shape.cells.every(([dr, dc]) => {
-    const nr = r + dr, nc = c + dc;
-    return nr >= 0 && nr < PB_GRID_SIZE && nc >= 0 && nc < PB_GRID_SIZE && !_pbGrid[nr][nc];
-  });
-}
-
-function _pbTryPlace(r, c) {
-  if (_pbSelected === null) { showT('👆 Välj en form först!', 'y'); return; }
-  const piece = _pbPieces[_pbSelected];
-  if (!piece || piece.used) return;
-  if (!_pbCanPlace(piece.shape, r, c)) { vibe([20, 10, 20]); showT('❌ Passar inte!', 'r'); return; }
-  piece.shape.cells.forEach(([dr, dc]) => { _pbGrid[r + dr][c + dc] = piece.shape.color; });
-  piece.used = true;
-  vibe(15); SFX.tap();
-  _pbCheckClears();
-  if (_pbPieces.every(p => p.used)) _pbSpawnPieces();
-  _pbSelected = null;
-  _pbRenderGrid();
-  _pbRenderPieces();
-  if (_pbCheckGameOver()) _pbEndGame();
-}
-
-function _pbCheckClears() {
-  const clearedRows = [], clearedCols = [];
-  for (let r = 0; r < PB_GRID_SIZE; r++) {
-    if (_pbGrid[r].every(c => c !== null)) clearedRows.push(r);
+  // also give a score burst for all remaining blocks if cleared is good
+  if(cleared>=4){
+    _dna.score+=cleared*20;
+    showT('⚡ FUSION STRIKE! ×'+cleared+' blocks! +'+cleared*20,'y');
+  } else {
+    // if not enough blocks in bottom, just nuke random 4
+    const alive=_dna.blocks.filter(b=>b.alive);
+    alive.sort(()=>Math.random()-.5).slice(0,6).forEach(bl=>{
+      bl.alive=false;_dna.score+=bl.pts*2;_dna.coins+=2;cleared++;
+      _dnaSparkAt(bl.x+bl.w/2,bl.y+bl.h/2,bl.glow);
+    });
+    showT('⚡ FUSION STRIKE! '+cleared+' blocks destroyed!','y');
   }
-  for (let c = 0; c < PB_GRID_SIZE; c++) {
-    if (_pbGrid.every(row => row[c] !== null)) clearedCols.push(c);
-  }
-  const totalCleared = clearedRows.length + clearedCols.length;
-  if (totalCleared === 0) { _pbCombo = 0; return; }
-  _pbCombo++;
-  const basePoints = totalCleared * PB_GRID_SIZE;
-  const pts = basePoints * _pbCombo;
-  _pbScore += pts;
-  _pbCoinsEarned += totalCleared * 3;
-  if (_pbScore > _pbBest) { _pbBest = _pbScore; localStorage.setItem('kv8_pbBest', _pbBest); }
-  clearedRows.forEach(r => { _pbGrid[r] = Array(PB_GRID_SIZE).fill(null); });
-  clearedCols.forEach(c => { for (let r = 0; r < PB_GRID_SIZE; r++) _pbGrid[r][c] = null; });
-  SFX.win(); vibe([30, 20, 60]);
-  const comboEl = $('pbCombo');
-  if (comboEl) {
-    comboEl.textContent = _pbCombo > 1 ? '🔥 COMBO ×' + _pbCombo + '!' : '';
-    setTimeout(() => { if (comboEl) comboEl.textContent = ''; }, 1500);
-  }
-  showT('✅ ' + totalCleared + ' rader! +' + pts + ' poäng' + (_pbCombo > 1 ? ' ×' + _pbCombo + ' COMBO!' : ''), 'g');
-  _pbUpdateScore();
+  vibe&&vibe([30,15,60,15,100]);
+  SFX&&SFX.win&&SFX.win();
+  _pbUpdateScore();_dnaUpdateHUD();
+  const fb=$('dnaFusionBar');if(fb)fb.style.width='0%';
+  const fBtn=$('dnaFusionBtn');if(fBtn)fBtn.disabled=true;
 }
 
-function _pbCheckGameOver() {
-  const remaining = _pbPieces.filter(p => !p.used);
-  if (remaining.length === 0) return false;
-  return remaining.every(p => {
-    for (let r = 0; r < PB_GRID_SIZE; r++) {
-      for (let c = 0; c < PB_GRID_SIZE; c++) {
-        if (_pbCanPlace(p.shape, r, c)) return false;
-      }
-    }
-    return true;
-  });
+function _dnaGameOver(){
+  _dna.active=false;
+  if(_dna.raf){cancelAnimationFrame(_dna.raf);_dna.raf=null;}
+  const go=$('pbGameOver');if(go)go.style.display='flex';
+  const fs=$('pbFinalScore');if(fs)fs.textContent=_dna.score+' poäng';
+  const fc=$('pbFinalCoins');if(fc)fc.textContent='+'+_dna.coins+' coins 🧬';
+  gainCoins(_dna.coins);gainXP(Math.floor(_dna.score/8),'action');
+  _dna.coins=0;
+  save();updateHUD();
+  SFX&&SFX.win&&SFX.win();
+  vibe&&vibe([50,30,100,30,150]);
+  addDiaryEntry('Spelade DNA Breaker och fick '+_dna.score+' poäng!');
 }
 
-function _pbEndGame() {
-  const go = $('pbGameOver'); if (!go) return;
-  const fs = $('pbFinalScore'); if (fs) fs.textContent = _pbScore + ' poäng';
-  const fc = $('pbFinalCoins'); if (fc) fc.textContent = '+' + _pbCoinsEarned + ' coins';
-  go.style.display = 'flex';
-  gainCoins(_pbCoinsEarned); gainXP(Math.floor(_pbScore/10), 'action');
-  _pbCoinsEarned = 0;
-  save(); updateHUD();
-  SFX.win(); vibe([50, 30, 100, 30, 150]);
-  addDiaryEntry('Spelade Pet Blocks och fick ' + _pbScore + ' poäng!');
-}
-
-function _pbRenderPieces() {
-  const el = $('pbPieces'); if (!el) return;
-  const cs = Math.floor(_pbCellSize * 0.75);
-  el.innerHTML = _pbPieces.map((p, i) => {
-    if (p.used) return `<div class="pb-piece-card used" style="min-width:80px;min-height:80px"></div>`;
-    const maxR = Math.max(...p.shape.cells.map(([r]) => r));
-    const maxC = Math.max(...p.shape.cells.map(([, c]) => c));
-    let inner = `<div style="display:grid;grid-template-columns:repeat(${maxC+1},${cs}px);grid-template-rows:repeat(${maxR+1},${cs}px);gap:2px;">`;
-    for (let r = 0; r <= maxR; r++) {
-      for (let c = 0; c <= maxC; c++) {
-        const filled = p.shape.cells.some(([dr, dc]) => dr === r && dc === c);
-        inner += `<div style="width:${cs}px;height:${cs}px;border-radius:3px;background:${filled ? p.shape.color : 'transparent'};${filled?'box-shadow:inset 0 1px 0 rgba(255,255,255,.25)':''}"></div>`;
-      }
-    }
-    inner += '</div>';
-    return `<div class="pb-piece-card ${_pbSelected===i?'selected':''}" onclick="_pbSelectPiece(${i})">${inner}</div>`;
-  }).join('');
-}
-
-function _pbSelectPiece(i) {
-  if (_pbPieces[i]?.used) return;
-  _pbSelected = _pbSelected === i ? null : i;
-  _pbRenderPieces();
-  vibe(10);
-}
-
-function _pbUpdateScore() {
-  const s = $('pbScore'); if (s) s.textContent = _pbScore;
-  const b = $('pbBest'); if (b) b.textContent = _pbBest;
-  const co = $('pbCoins'); if (co) co.textContent = _pbCoinsEarned;
+function _pbUpdateScore(){
+  const s=$('pbScore');if(s)s.textContent=_dna.score;
+  const b=$('pbBest');if(b)b.textContent=_dna.best;
+  const co=$('pbCoins');if(co)co.textContent=_dna.coins;
+  const cb=$('pbCombo');if(cb){cb.textContent=_dna.combo>1?'×'+_dna.combo+'!':'';}
 }
 
 // ── PET RUNNER ENDLESS RUNNER ──
@@ -6650,18 +6894,33 @@ function _prJump(on){
 }
 function _prInitGame(){
   const canvas=$('prCanvas');if(!canvas)return;
-  const rect=canvas.getBoundingClientRect();
-  canvas.width=Math.round(rect.width||window.innerWidth);
-  canvas.height=Math.round(rect.height||(window.innerHeight-60));
-  const H=canvas.height;
+  // Ensure canvas fills its container properly
+  const parent=canvas.parentElement;
+  const W=parent?parent.offsetWidth:window.innerWidth;
+  const H=parent?parent.offsetHeight:(window.innerHeight-52);
+  canvas.width=Math.max(W,200);
+  canvas.height=Math.max(H,300);
   _pr.active=true;_pr.score=0;_pr.gemsCollected=0;
-  _pr.x=70;_pr.y=H*.65;_pr.vy=0;_pr.grounded=true;
+  const cH=canvas.height;
+  _pr.x=70;_pr.y=cH*.65;_pr.vy=0;_pr.grounded=true;
   _pr.obstacles=[];_pr.gems=[];_pr.clouds=[];_pr.bgOffset=0;
   _pr.nextObstacle=90;_pr.nextGem=50;
   _pr.pHp=3;_pr.combo=0;_pr.shield=false;
   // Ghost runner — shows your best run pace
-  _pr.ghost={score:0,x:70,y:H*.65,active:_pr.best>0};
+  _pr.ghost={score:0,x:70,y:cH*.65,active:_pr.best>0};
   _prInitClouds(canvas);
+  // Second resize after paint to catch layout reflows
+  setTimeout(()=>{
+    const canvas2=$('prCanvas');if(!canvas2||!_pr.active)return;
+    const p2=canvas2.parentElement;
+    const W2=p2?p2.offsetWidth:window.innerWidth;
+    const H2=p2?p2.offsetHeight:(window.innerHeight-52);
+    if(W2>20&&H2>80&&(Math.abs(W2-canvas2.width)>12||Math.abs(H2-canvas2.height)>12)){
+      canvas2.width=W2;canvas2.height=H2;
+      _pr.y=H2*.65;_pr.ghost.y=H2*.65;
+      _prInitClouds(canvas2);
+    }
+  },120);
 }
 function _prInitClouds(canvas){
   _pr.clouds=Array.from({length:5},()=>({x:Math.random()*canvas.width,y:20+Math.random()*(canvas.height*.3),w:60+Math.random()*80,spd:0.5+Math.random()}));
@@ -6727,6 +6986,7 @@ function _prUpdate(canvas){
   }
   // Move & collide obstacles
   const petR=20;
+  try{
   for(let i=_pr.obstacles.length-1;i>=0;i--){
     const ob=_pr.obstacles[i];ob.x-=spd;
     if(ob.x+ob.w<0){_pr.obstacles.splice(i,1);continue;}
@@ -6737,7 +6997,9 @@ function _prUpdate(canvas){
       if(_pr.pHp<=0){_prGameOver();return;}
     }
   }
+  }catch(e){/* ignore collision errors to prevent loop freeze */}
   // Move & collect gems
+  try{
   for(let i=_pr.gems.length-1;i>=0;i--){
     const gm=_pr.gems[i];gm.x-=spd;
     if(gm.x+10<0){_pr.gems.splice(i,1);continue;}
@@ -6748,6 +7010,7 @@ function _prUpdate(canvas){
       _pr.gems.splice(i,1);vibe&&vibe(8);
     }
   }
+  }catch(e){/* ignore gem errors to prevent loop freeze */}
   // Clouds
   (_pr.clouds||[]).forEach(c=>{c.x-=c.spd;if(c.x+c.w<0)c.x=W+c.w;});
 }
@@ -8156,36 +8419,70 @@ const WORLD_ROOMS={
 function initPetRoom(){
   const w=G.world||'cosmic';const rm=WORLD_ROOMS[w]||WORLD_ROOMS.cosmic;
   const hero=$('petRoomLayer');if(!hero)return;
+  // Mood-based opacity: sad dims the room, happy glows it
+  const petMoodVal=Math.min(G.hunger||100,G.energy||100,G.mood||100);
+  hero.style.opacity=petMoodVal<30?'0.25':petMoodVal<60?'0.35':'0.5';
   const sky=$('prlSky');if(sky)sky.style.background=rm.sky;
   const fl=hero.querySelector('.prl-floor');if(fl)fl.style.background=rm.floor;
   // clear old stars/items
-  hero.querySelectorAll('.prl-star,.prl-item,.prl-orb').forEach(e=>e.remove());
+  hero.querySelectorAll('.prl-star,.prl-item,.prl-orb,.prl-cityline').forEach(e=>e.remove());
   // generate stars (more = better)
-  const starCount=Math.max(rm.stars,28);
+  const starCount=Math.max(rm.stars,32);
   for(let i=0;i<starCount;i++){
     const s=document.createElement('div');s.className='prl-star';
-    const sz=0.6+Math.random()*2.4;
-    s.style.cssText=`left:${Math.random()*100}%;top:${Math.random()*65}%;width:${sz}px;height:${sz}px;--dur:${1.5+Math.random()*4}s;--del:${-Math.random()*4}s;`;
+    const sz=0.5+Math.random()*2.5;
+    s.style.cssText=`left:${Math.random()*100}%;top:${Math.random()*62}%;width:${sz}px;height:${sz}px;--dur:${1.2+Math.random()*4}s;--del:${-Math.random()*5}s;opacity:${0.4+Math.random()*.6}`;
     hero.appendChild(s);
   }
+  // City skyline silhouette for city/cosmic worlds
+  if(w==='city'||w==='cosmic'){
+    const cline=document.createElement('div');cline.className='prl-cityline';
+    cline.style.cssText='position:absolute;bottom:37%;left:0;right:0;height:28%;pointer-events:none;overflow:hidden;';
+    const bh=[18,28,22,35,20,30,16,26,32,18,24];
+    const bw=[6,8,5,9,6,8,5,7,9,6,7];
+    const cWin=w==='city'?'rgba(0,217,255,.5)':'rgba(191,95,255,.4)';
+    let svg='<svg width="100%" height="100%" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">';
+    let bx=0;
+    bh.forEach((h,i)=>{
+      const bwi=bw[i];
+      const col=w==='city'?`rgba(0,15,30,${0.7+Math.random()*.3})`:`rgba(10,0,25,${0.7+Math.random()*.3})`;
+      svg+=`<rect x="${bx}%" y="${100-h}%" width="${bwi}%" height="${h}%" fill="${col}" stroke="${cWin}" stroke-width=".5" stroke-opacity=".3"/>`;
+      // tiny windows
+      for(let r=0;r<3;r++){for(let c=0;c<2;c++){if(Math.random()>.45){svg+=`<rect x="${bx+1+c*3}%" y="${100-h+3+r*8}%" width="1.5%" height="3%" fill="${cWin}" opacity="${0.4+Math.random()*.5}"/>"`;}}}
+      bx+=bwi+(1+Math.random()*1.5);
+    });
+    svg+='</svg>';
+    cline.innerHTML=svg;
+    hero.appendChild(cline);
+  }
   // ambient glow orbs
-  const orbColors=['rgba(57,255,20,.35)','rgba(0,217,255,.3)','rgba(191,95,255,.28)','rgba(255,230,0,.25)'];
-  for(let i=0;i<4;i++){
+  const orbColors=petMoodVal<40
+    ?['rgba(255,45,85,.25)','rgba(100,50,150,.2)']
+    :['rgba(57,255,20,.35)','rgba(0,217,255,.3)','rgba(191,95,255,.28)','rgba(255,230,0,.25)'];
+  for(let i=0;i<orbColors.length;i++){
     const o=document.createElement('div');o.className='prl-orb';
-    const sz=20+Math.random()*30;
-    o.style.cssText=`left:${10+i*22}%;top:${15+Math.random()*35}%;width:${sz}px;height:${sz}px;--orbc:${orbColors[i%orbColors.length]};--dur:${2.5+Math.random()*3}s;--del:${-i*0.7}s;`;
+    const sz=22+Math.random()*28;
+    o.style.cssText=`left:${8+i*24}%;top:${12+Math.random()*38}%;width:${sz}px;height:${sz}px;--orbc:${orbColors[i%orbColors.length]};--dur:${2.2+Math.random()*3.5}s;--del:${-i*0.8}s;`;
     hero.appendChild(o);
   }
-  // floating emojis (world-specific)
-  for(let i=0;i<4;i++){
+  // floating world emojis with DNA/sparkle flair
+  const worldEmojis=petMoodVal<40?['😴','💔','🌧️']:rm.emojis;
+  for(let i=0;i<5;i++){
     const e=document.createElement('div');e.className='prl-item';
-    const em=rm.emojis[i%rm.emojis.length];
-    e.style.cssText=`left:${4+i*24}%;top:${16+Math.random()*28}%;--sz:${14+Math.random()*6}px;--dur:${1.2+Math.random()*1.2}s;--del:${-i*0.45}s;`;
+    const em=worldEmojis[i%worldEmojis.length];
+    e.style.cssText=`left:${2+i*20}%;top:${12+Math.random()*30}%;--sz:${13+Math.random()*7}px;--dur:${1.4+Math.random()*1.6}s;--del:${-i*0.55}s;`;
     e.textContent=em;e.title='Dekor';
     hero.appendChild(e);
   }
-  // room items based on level
-  ROOM_ITEMS.filter(it=>G.level>=it.lv).forEach(it=>{
+  // DNA helix fragments drifting (always present)
+  ['🧬','✨','💫'].forEach((em,i)=>{
+    const d=document.createElement('div');d.className='prl-item';
+    d.style.cssText=`left:${15+i*30}%;top:${40+Math.random()*20}%;--sz:11px;--dur:${2+i*.5}s;--del:${-i*.7}s;opacity:.55;`;
+    d.textContent=em;d.title='DNA';
+    hero.appendChild(d);
+  });
+  // room items based on level (now with float animation delay staggering)
+  ROOM_ITEMS.filter(it=>G.level>=it.lv).forEach((it,idx)=>{
     const d=document.createElement('div');d.className='prl-item';
     d.style.cssText=`left:${it.x}%;top:${it.y}%;--sz:${it.sz};--dur:${it.dur}s;--del:${it.del}s;`;
     d.textContent=it.ico;d.title=it.ico;
@@ -11198,7 +11495,19 @@ function renderRoomPreview(){
     ${extraItems}
     <div class="room-pet-v2 state-exploring" id="roomPetV2" onclick="onPetTap(event)" style="left:35%">${G.petEmoji||'🐉'}</div>
     ${petMood?`<div style="position:absolute;bottom:${(G.energy||100)<30?'46%':'52%'};left:35%;font-size:16px;animation:heartFloat 1s ease-out infinite;pointer-events:none;z-index:12">${petMood}</div>`:''}
+    <div class="room-stat-bars">
+      <div class="room-stat-bar"><div class="room-stat-fill" style="width:${G.hunger||0}%;background:var(--g)"></div></div>
+      <div class="room-stat-bar"><div class="room-stat-fill" style="width:${G.energy||0}%;background:var(--b)"></div></div>
+      <div class="room-stat-bar"><div class="room-stat-fill" style="width:${G.mood||0}%;background:var(--pk)"></div></div>
+    </div>
   </div>`;
+  // Apply mood class
+  const sceneEl=$('roomSceneV2');
+  if(sceneEl){
+    const avgMood=((G.hunger||0)+(G.energy||0)+(G.mood||0))/3;
+    sceneEl.classList.toggle('sad-room',avgMood<35);
+    sceneEl.classList.toggle('happy-room',avgMood>75);
+  }
   _startRoomPetLife();
 }
 let _roomLifeTimer=null;
@@ -11715,35 +12024,52 @@ document.addEventListener('visibilitychange',()=>{
 <div class="night-owl-banner" id="nightOwlBanner">🦉 NIGHT OWL MODE · 1.5×XP</div>
 
 <!-- PET BLOCKS MINIGAME -->
-<div class="pet-blocks-game" id="petBlocksGame">
+<div class="pet-blocks-game" id="petBlocksGame" style="position:relative;">
+  <!-- DNA BREAKER Header -->
   <div class="pb-header">
     <button class="pb-back" onclick="closePetBlocks()">←</button>
-    <div>
-      <div style="font-size:14px;font-weight:900;font-family:var(--mono)">🧩 PET BLOCKS</div>
-      <div style="font-size:10px;color:var(--t3)">Fyll rader för att rensa!</div>
+    <div style="flex:1">
+      <div style="font-size:15px;font-weight:900;font-family:var(--mono);color:var(--pk);letter-spacing:1px">🧬 DNA BREAKER</div>
+      <div style="font-size:9px;color:var(--t3);letter-spacing:.5px">BREAK BLOCKS · COLLECT DNA · FUSE</div>
     </div>
-    <div style="text-align:right;margin-left:auto">
-      <div style="font-size:18px;font-weight:900;color:var(--y);font-family:var(--mono)" id="pbScore">0</div>
-      <div style="font-size:9px;color:var(--t3)">POÄNG</div>
+    <div style="text-align:right">
+      <div style="font-size:20px;font-weight:900;color:var(--y);font-family:var(--mono)" id="pbScore">0</div>
+      <div style="font-size:8px;color:var(--t3);font-family:var(--mono)">SCORE</div>
     </div>
   </div>
-  <div style="display:flex;justify-content:space-between;align-items:center;padding:4px 14px 8px">
-    <div style="font-size:11px;color:var(--t3)">Best: <span id="pbBest" style="color:var(--y);font-weight:900">0</span></div>
-    <div style="font-size:11px;color:var(--g);font-weight:900" id="pbCombo"></div>
-    <div style="font-size:11px;color:var(--t3)">Coins: <span id="pbCoins" style="color:var(--g);font-weight:900">0</span></div>
+  <!-- HUD row -->
+  <div class="dna-hud">
+    <div class="dna-stat"><div class="dna-stat-val" id="dnaWave">1</div><div class="dna-stat-lbl">WAVE</div></div>
+    <div class="dna-stat"><div class="dna-stat-val" style="color:var(--b)" id="dnaBlocks">0</div><div class="dna-stat-lbl">BLOCKS</div></div>
+    <div class="dna-lives" id="dnaLives"></div>
+    <div class="dna-stat"><div class="dna-stat-val" style="color:var(--g)" id="pbCoins">0</div><div class="dna-stat-lbl">COINS</div></div>
+    <div class="dna-stat"><div class="dna-stat-val" style="color:var(--t3);font-size:13px" id="pbBest">0</div><div class="dna-stat-lbl">BEST</div></div>
   </div>
-  <div id="pbGridWrap" style="display:flex;justify-content:center;padding:0 10px 10px">
-    <div id="pbGrid"></div>
+  <!-- Game canvas -->
+  <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;position:relative;overflow:hidden;">
+    <canvas id="dnaCanvas" style="display:block;touch-action:none;cursor:crosshair;"></canvas>
+    <div class="dna-combo-banner" id="dnaCombo"></div>
   </div>
-  <div style="font-size:11px;font-weight:700;color:var(--t3);text-align:center;margin-bottom:8px;letter-spacing:.5px">VÄLJ EN FORM ↓</div>
-  <div id="pbPieces" style="display:flex;justify-content:center;gap:16px;padding:0 14px 20px"></div>
-  <div id="pbGameOver" style="display:none;position:absolute;inset:0;background:rgba(0,0,0,.9);flex-direction:column;align-items:center;justify-content:center;z-index:10">
-    <div style="font-size:52px;margin-bottom:12px">😵</div>
-    <div style="font-size:24px;font-weight:900;color:var(--r);margin-bottom:6px">GAME OVER!</div>
-    <div style="font-size:16px;color:var(--y);font-weight:900;margin-bottom:4px" id="pbFinalScore">0 poäng</div>
-    <div style="font-size:13px;color:var(--t3);margin-bottom:20px" id="pbFinalCoins">+0 coins earned</div>
-    <button class="btn btn-g btn-lg" onclick="startPetBlocks()" style="margin-bottom:10px">▶️ SPELA IGEN</button>
-    <button class="btn btn-ghost" onclick="closePetBlocks()">← Tillbaka</button>
+  <!-- Fusion button -->
+  <div style="padding:10px 14px 20px;display:flex;gap:10px;align-items:center;background:#000;border-top:1px solid rgba(255,0,127,.15)">
+    <button class="dna-fusion-btn" id="dnaFusionBtn" onclick="_dnaFusion()" disabled>⚡ FUSION STRIKE!</button>
+    <div style="flex:1;display:flex;flex-direction:column;gap:4px">
+      <div style="font-size:9px;color:var(--t3);font-family:var(--mono)">FUSION CHARGE</div>
+      <div style="height:6px;background:#111;border:1px solid rgba(255,230,0,.25);border-radius:3px;overflow:hidden"><div id="dnaFusionBar" style="height:100%;background:linear-gradient(90deg,var(--pk),var(--y));border-radius:3px;transition:width .3s;width:0%"></div></div>
+    </div>
+    <div id="pbCombo" style="font-size:14px;font-weight:900;color:var(--pk);font-family:var(--mono);min-width:60px;text-align:right"></div>
+  </div>
+  <!-- Game Over overlay -->
+  <div class="dna-game-over" id="pbGameOver" style="display:none">
+    <div style="text-align:center;padding:24px 20px">
+      <div style="font-size:60px;margin-bottom:10px;animation:petBob 1s ease-in-out infinite">🧬</div>
+      <div style="font-size:26px;font-weight:900;color:var(--pk);font-family:var(--mono);letter-spacing:2px;margin-bottom:6px">GAME OVER</div>
+      <div style="font-size:15px;color:var(--y);font-weight:900;margin-bottom:4px;font-family:var(--mono)" id="pbFinalScore">0 poäng</div>
+      <div style="font-size:13px;color:var(--g);margin-bottom:4px" id="pbFinalCoins">+0 coins</div>
+      <div style="font-size:11px;color:var(--t3);margin-bottom:22px">DNA fragmenterat! Försök igen!</div>
+      <button class="btn btn-pk btn-lg" onclick="startPetBlocks()" style="margin-bottom:10px;width:100%">🧬 SPELA IGEN</button>
+      <button class="btn btn-ghost" style="width:100%" onclick="closePetBlocks()">← Tillbaka</button>
+    </div>
   </div>
 </div>
 </body>
