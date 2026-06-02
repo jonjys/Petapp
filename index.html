@@ -117,6 +117,19 @@ textarea.inp{resize:none;min-height:68px;}
 .toast.pk{border-color:var(--pk);color:var(--pk);box-shadow:4px 4px 0px var(--pk);}
 .toast.b{border-color:var(--b);color:var(--b);box-shadow:4px 4px 0px var(--b);}
 @keyframes cpop{0%{opacity:1;transform:translateY(0) translateX(-50%);}100%{opacity:0;transform:translateY(-50px) translateX(-50%);}}
+/* ── FISH CINEMATIC ── */
+@keyframes cinPop{from{transform:scale(0.05) rotate(-15deg);opacity:0}50%{opacity:1}to{transform:scale(1) rotate(0deg);opacity:1}}
+@keyframes cinFade{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+@keyframes cinRings{from{transform:translate(-50%,-50%) scale(.1);opacity:.9}to{transform:translate(-50%,-50%) scale(4);opacity:0}}
+@keyframes cinRaysSpin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+@keyframes cinScreen{0%{opacity:0}15%{opacity:1}85%{opacity:1}100%{opacity:0}}
+/* ── PET EVENT BANNER ── */
+@keyframes petEvBannerIn{from{transform:translateY(100px);opacity:0}to{transform:translateY(0);opacity:1}}
+@keyframes petEvBannerOut{from{transform:translateY(0);opacity:1}to{transform:translateY(100px);opacity:0}}
+/* ── KARMA TICKER ── */
+@keyframes karmaTick{from{transform:translateX(100%)}to{transform:translateX(-100%)}}
+/* ── NEO BUTTON POP ── */
+@keyframes neoPop{0%{transform:scale(1)}50%{transform:scale(1.06) translate(-2px,-2px)}100%{transform:scale(1)}}
 .cpop{position:fixed;pointer-events:none;z-index:9999;font-size:14px;font-weight:900;color:var(--y);animation:cpop .7s ease-out forwards;font-family:var(--mono);}
 .modal{position:fixed;inset:0;z-index:800;background:rgba(0,0,0,.8);backdrop-filter:blur(8px);display:flex;align-items:flex-end;opacity:0;pointer-events:none;transition:opacity .2s;}
 .modal.open{opacity:1;pointer-events:all;}
@@ -7242,12 +7255,51 @@ function _fcCatch(ft){
 }
 
 function _fcShowSplash(ft,coins,xp,combo){
+  const isEpic=['epic','legendary','mythic','ultra'].includes(ft.rarity);
+  if(isEpic){_fcShowCinematic(ft,coins,xp,combo);return;}
   const splash=$('fishCatchSplash');if(!splash)return;
   const em=$('fishSplashEm');if(em)em.textContent=ft.em;
   const nm=$('fishSplashName');if(nm)nm.textContent=ft.nm;
   const rw=$('fishSplashReward');if(rw)rw.innerHTML=(coins?'+'+coins+'⚡ +'+xp+'XP'+(combo>=3?' 🔥×'+combo:''):'')+
     (ft.dna?'<div style="font-size:11px;color:#BF5FFF;font-weight:900;margin-top:2px">🧬 DNA DROP!</div>':'');
   splash.style.opacity='1';setTimeout(()=>{splash.style.opacity='0';},1400);
+}
+function _fcShowCinematic(ft,coins,xp,combo){
+  let cin=$('fishCinematic');if(cin)cin.remove();
+  cin=document.createElement('div');cin.id='fishCinematic';
+  const rCol={ultra:'#FFE600',mythic:'#BF5FFF',legendary:'#FF007F',epic:'#FF9F0A',rare:'#00D9FF'};
+  const rNm={ultra:'💀 ULTRA SÄLLSYNT',mythic:'✨ MYTISK',legendary:'🔥 LEGENDÄR',epic:'⚡ EPISK',rare:'💎 SÄLLSYNT'};
+  const col=rCol[ft.rarity]||'#39FF14';const rnm=rNm[ft.rarity]||'SÄLLSYNT';
+  cin.style.cssText=`position:fixed;inset:0;z-index:1200;background:#000;display:flex;flex-direction:column;align-items:center;justify-content:center;overflow:hidden;cursor:pointer;animation:cinScreen 4.2s ease forwards;`;
+  // Spinning rays
+  const raysDiv=document.createElement('div');
+  raysDiv.style.cssText=`position:absolute;inset:0;display:flex;align-items:center;justify-content:center;animation:cinRaysSpin 3s linear infinite;pointer-events:none`;
+  raysDiv.innerHTML=Array.from({length:12},(_,i)=>`<div style="position:absolute;width:3px;height:42%;background:linear-gradient(to bottom,${col},transparent);transform-origin:bottom center;transform:rotate(${i*30}deg) translateY(-50%);opacity:.18"></div>`).join('');
+  cin.appendChild(raysDiv);
+  // Expanding rings
+  for(let i=0;i<3;i++){const r=document.createElement('div');r.style.cssText=`position:absolute;top:50%;left:50%;width:100px;height:100px;border-radius:50%;border:2px solid ${col};animation:cinRings 1.8s ease-out ${i*.25}s forwards;pointer-events:none`;cin.appendChild(r);}
+  // Content
+  const content=document.createElement('div');
+  content.style.cssText='position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;text-align:center;padding:24px';
+  content.innerHTML=`
+    <div style="font-size:120px;animation:cinPop .55s cubic-bezier(.34,1.56,.64,1) forwards;filter:drop-shadow(0 0 50px ${col})line-height:1">${ft.em}</div>
+    <div style="font-size:9px;font-weight:900;letter-spacing:4px;color:${col};font-family:var(--mono);margin-top:14px;animation:cinFade .4s .35s ease-out both;text-transform:uppercase">${rnm}</div>
+    <div style="font-size:30px;font-weight:900;color:#fff;font-family:var(--mono);letter-spacing:1px;animation:cinFade .4s .5s ease-out both;text-transform:uppercase">${ft.nm}</div>
+    <div style="margin-top:18px;background:#0d0d0d;border:4px solid ${col};border-radius:6px;box-shadow:6px 6px 0px ${col};padding:14px 32px;animation:cinFade .4s .65s ease-out both">
+      <div style="font-size:28px;font-weight:900;color:var(--y);font-family:var(--mono)">+${coins}⚡</div>
+      <div style="font-size:20px;font-weight:900;color:var(--g);font-family:var(--mono)">+${xp} XP</div>
+      ${combo>=3?`<div style="font-size:13px;color:var(--o);font-family:var(--mono);margin-top:4px">🔥 COMBO ×${combo}</div>`:''}
+      ${ft.dna?`<div style="font-size:13px;color:var(--p);font-family:var(--mono);font-weight:900;margin-top:4px">🧬 DNA: ${ft.dna.replace('dna_','').toUpperCase()} DROPPAT!</div>`:''}
+    </div>
+    <div style="font-size:9px;color:rgba(255,255,255,.3);font-family:var(--mono);margin-top:18px;animation:cinFade .3s .9s ease-out both;letter-spacing:2px">TRYCK FÖR ATT FORTSÄTTA</div>`;
+  cin.appendChild(content);
+  cin.onclick=()=>{cin.style.opacity='0';cin.style.transition='opacity .3s';setTimeout(()=>cin.remove(),350);};
+  document.body.appendChild(cin);
+  setTimeout(()=>{if(cin.parentNode){cin.style.opacity='0';cin.style.transition='opacity .4s';setTimeout(()=>cin.remove(),420);}},4200);
+  spawnParticles(window.innerWidth/2,window.innerHeight*.4,'stars');
+  setTimeout(()=>spawnParticles(window.innerWidth*.25,window.innerHeight*.55,'stars'),300);
+  setTimeout(()=>spawnParticles(window.innerWidth*.75,window.innerHeight*.45,'stars'),600);
+  vibe([60,30,120,30,200,50,100,30,200]);SFX.win&&SFX.win();
 }
 
 // Main canvas draw loop
