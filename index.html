@@ -2035,10 +2035,12 @@ button:active{opacity:.85;}
           <!-- rendered by renderEvolTree() -->
         </div>
       </div>
-      <!-- KARMA PULSE — live community activity -->
-      <div style="margin:0 14px 10px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:14px;padding:8px 12px;display:flex;align-items:center;gap:8px;overflow:hidden">
-        <span style="font-size:9px;font-weight:900;color:var(--pk);font-family:var(--mono);flex-shrink:0;letter-spacing:.8px">● LIVE</span>
-        <div style="font-size:10px;color:var(--t2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis" id="karmaPulse">ella_s tränade sin 🐉 Eldraken · +15 XP</div>
+      <!-- KARMA PULSE — live community activity ticker -->
+      <div style="margin:0 14px 10px;background:#050505;border:3px solid var(--g);border-radius:6px;padding:5px 10px;display:flex;align-items:center;gap:8px;overflow:hidden;box-shadow:3px 3px 0px var(--g)">
+        <span style="font-size:8px;font-weight:900;color:#000;font-family:var(--mono);flex-shrink:0;letter-spacing:.5px;background:var(--g);border-radius:3px;padding:2px 5px;box-shadow:2px 2px 0px #000">● LIVE</span>
+        <div style="flex:1;overflow:hidden">
+          <div id="karmaTicker" style="display:inline-flex;gap:60px;animation:karmaTick 28s linear infinite;white-space:nowrap;font-size:10px;color:rgba(255,255,255,.75);font-family:var(--mono);font-weight:700"></div>
+        </div>
       </div>
       <!-- FORTUNE + CARD QUICK ACCESS -->
       <div style="display:flex;gap:6px;padding:0 14px;margin-bottom:8px">
@@ -3895,6 +3897,57 @@ function triggerLiveEvent(){
   setTimeout(()=>{el.classList.remove('show');_leShowing=false;},5500);
 }
 function scheduleEvents(){setTimeout(()=>{if(G.name)triggerLiveEvent();scheduleEvents();},(180+Math.random()*240)*1000);}
+
+// ── KARMA TICKER ──
+const _TICKER_MSGS=[
+  '⚡ ella_s tränade sin 🐉 Eldraken · +15 XP',
+  '💰 max_97 fångade 🐡 SÄLLSYNT FISK · +120⚡',
+  '🔥 lucia_w steg till NIVÅ 14 · 3 dagars streak',
+  '🧬 ghostrun_99 DNA-mix → mutation uppstod!',
+  '👑 KarmaUser_4821 klarade BOUNTY · +250 SEK',
+  '🐾 dragonmaster vann BATTLE ARENA · 5-0',
+  '💎 neonpet_sw hittade ULTRA SÄLLSYNT fisk!',
+  '🏃 Räven sprang 4.2km · personbästa!',
+  '🌍 Fjärilsqueen gick OFFENTLIG · 1 247 ser dig',
+  '⚡ DOUBLE XP — aktiv nu · 8 min kvar',
+  '🎯 BOUNTY BLITZ — 3× coins på alla uppdrag',
+  '🐉 ella_s besegrat LEGENDARY BOSS · +500 XP',
+  '🦋 starseeker vann EVOLUTION RACE · 42h kvar',
+  '🎣 angler_sw fångade 🌟 MYTISK HAVSORM · sinnessjukt!',
+];
+function _startKarmaTicker(){
+  const el=$('karmaTicker');if(!el)return;
+  el.innerHTML=_TICKER_MSGS.map(m=>`<span style="flex-shrink:0">${m}</span>`).join('');
+}
+
+// ── PET RANDOM EVENTS ──
+const _PET_EVENTS=[
+  {ico:'💰',msg:'Din {pet} hittade mynt under soffan!',sub:'+8 coins',fn(){gainCoins(8);}},
+  {ico:'🧬',msg:'Din {pet} pulserar med DNA-energi!',sub:'Nytt DNA-fragment dropp!',fn(){if(!G.dnaInventory)G.dnaInventory=[];G.dnaInventory.push({type:['dna_wildfire','dna_frostbite','dna_thunder','dna_venom'][Math.floor(Math.random()*4)],rarity:'uncommon',acquired:Date.now()});save();}},
+  {ico:'💪',msg:'Din {pet} tränade hemligen medan du sov!',sub:'+12 XP gratis',fn(){gainXP(12,'action');}},
+  {ico:'⭐',msg:'Din {pet} drömde om stjärnor...',sub:'Mood +8 — bra vibrationer',fn(){G.mood=Math.min(100,(G.mood||70)+8);save();updatePetView();}},
+  {ico:'🎁',msg:'Din {pet} hittade ett gömme utomhus!',sub:'+20 coins + 10 XP',fn(){gainCoins(20);gainXP(10,'action');}},
+  {ico:'🔥',msg:'Din {pet} känner power-surge!',sub:'Energy +25 — go time!',fn(){G.energy=Math.min(100,(G.energy||80)+25);save();updatePetView();}},
+  {ico:'🌊',msg:'Din {pet} ber dig om att gå ut!',sub:'Hungerokej · vill träna',fn(){showT((G.petName||'Ditt pet')+' vill ut! Gå en promenad 🏃','pk');}},
+  {ico:'✨',msg:'Din {pet} glöder med mysterieenergi!',sub:'Sällsynt aura aktiverad',fn(){spawnParticles(window.innerWidth/2,window.innerHeight*.5,'stars');}},
+];
+function _triggerPetEvent(){
+  if(!G.name)return;
+  const ev=_PET_EVENTS[Math.floor(Math.random()*_PET_EVENTS.length)];
+  const petNm=G.petName||(G.petEmoji||'🐾');
+  const msg=ev.msg.replace('{pet}',petNm);
+  ev.fn();
+  const nt=document.createElement('div');
+  nt.style.cssText='position:fixed;bottom:90px;left:50%;transform:translateX(-50%);z-index:1100;background:#0d0d0d;border:3px solid var(--g);border-radius:6px;box-shadow:5px 5px 0px var(--g);padding:14px 22px;text-align:center;max-width:290px;font-family:var(--mono);animation:cinFade .3s ease-out both;pointer-events:none';
+  nt.innerHTML=`<div style="font-size:30px;margin-bottom:6px">${ev.ico}</div><div style="font-size:13px;font-weight:900;color:#fff;margin-bottom:3px">${msg}</div><div style="font-size:11px;color:var(--g);font-weight:900;letter-spacing:.5px">${ev.sub}</div>`;
+  document.body.appendChild(nt);
+  vibe([30,20,60]);
+  setTimeout(()=>{nt.style.transition='opacity .4s,transform .4s';nt.style.opacity='0';nt.style.transform='translateX(-50%) translateY(20px)';setTimeout(()=>nt.remove(),450);},3600);
+}
+function _schedulePetEvent(){
+  const delay=(3+Math.random()*5)*60*1000;
+  setTimeout(()=>{_triggerPetEvent();_schedulePetEvent();},delay);
+}
 
 // ── COMBO METER ──
 function updateComboMeter(n){
@@ -6038,6 +6091,16 @@ function initMap(lat,lon){
     const ico=L.divIcon({html:`<div style="width:34px;height:34px;background:rgba(0,255,136,.1);border:2px solid #00ff88;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:16px">${f.em}</div>`,className:'',iconAnchor:[17,17]});
     L.marker([f.lat,f.lon],{icon:ico}).addTo(m).bindPopup(`<b>${f.nm}</b>`);
   });
+  // Company bounty pins
+  [{em:'🍔',nm:'McDonalds',task:'Posta selfie från McD!',sek:25,col:'#FFE600',dlat:.005,dlon:.009},
+   {em:'🏪',nm:'7-Eleven',task:'Köp & posta kvitto',sek:15,col:'#FF007F',dlat:-.007,dlon:.004},
+   {em:'👟',nm:'Nike Store',task:'Try-on haul video',sek:50,col:'#00D9FF',dlat:.008,dlon:-.006},
+   {em:'☕',nm:'Starbucks',task:'Berätta om din drink',sek:20,col:'#39FF14',dlat:-.004,dlon:-.009},
+   {em:'🎮',nm:'GameStop',task:'Visa ett köp i butiken',sek:35,col:'#BF5FFF',dlat:.002,dlon:.011}
+  ].forEach(b=>{
+    const bIco=L.divIcon({html:`<div style="position:relative;text-align:center"><div style="width:40px;height:40px;background:#0d0d0d;border:3px solid ${b.col};border-radius:6px;box-shadow:3px 3px 0px ${b.col};display:flex;align-items:center;justify-content:center;font-size:18px">${b.em}</div><div style="position:absolute;top:-14px;right:-8px;background:${b.col};color:#000;font-size:8px;font-weight:900;padding:1px 5px;border-radius:3px;font-family:monospace;white-space:nowrap;box-shadow:1px 1px 0px #000">${b.sek} SEK</div></div>`,className:'',iconAnchor:[20,40]});
+    L.marker([lat+b.dlat,lon+b.dlon],{icon:bIco}).addTo(m).bindPopup(`<div style="font-family:monospace"><b>${b.em} ${b.nm}</b><br><span style="font-size:11px">${b.task}</span><br><b style="color:green">💰 ${b.sek} SEK bounty</b></div>`);
+  });
   renderNearby(lat,lon);
 }
 function locateMe(){
@@ -8063,6 +8126,8 @@ function finishOB(){
   setTimeout(startPetAnim,100);
   setTimeout(initQuests,500);setTimeout(scheduleEvents,10000);SFX.lvlup();
   setTimeout(renderStoriesBar,800);
+  setTimeout(_startKarmaTicker,400);
+  setTimeout(_schedulePetEvent,12000);
   // Create cloud profile
   setTimeout(sbCreateProfile,1500);
   setTimeout(sbSubscribeRealtime,2000);
@@ -8260,7 +8325,7 @@ function tickKarmaPulse(){
   },300);
   _pulseTimer=setTimeout(tickKarmaPulse,4000+Math.random()*3000);
 }
-function startKarmaPulse(){clearTimeout(_pulseTimer);tickKarmaPulse();}
+function startKarmaPulse(){clearTimeout(_pulseTimer);tickKarmaPulse();_startKarmaTicker();}
 let _speechTimer=null;
 function showPetSpeech(msg,dur=4000){
   const st=$('petSpeechText');if(st){st.textContent=msg;}
@@ -9544,7 +9609,7 @@ async function _sbAfterLogin(){
     setTimeout(startPetAnim,150);
     setTimeout(()=>{checkBondDate();initPetRoom();renderBondBar();},400);
     setTimeout(startKarmaPulse,1200);setTimeout(renderJackpot,800);
-    setTimeout(initQuests,300);setTimeout(scheduleEvents,8000);
+    setTimeout(initQuests,300);setTimeout(scheduleEvents,8000);setTimeout(_schedulePetEvent,15000);
     sbSubscribeRealtime();
     setTimeout(sbFetchFeed,1000);
     setTimeout(()=>{$('circleDot').style.display='inline-block';},1500);
@@ -9817,7 +9882,7 @@ async function sbCheckOnStart(){
         setTimeout(startPetAnim,150);
         setTimeout(()=>{checkBondDate();initPetRoom();renderBondBar();},400);
         setTimeout(startKarmaPulse,1200);setTimeout(renderJackpot,800);
-        setTimeout(initQuests,300);setTimeout(scheduleEvents,8000);
+        setTimeout(initQuests,300);setTimeout(scheduleEvents,8000);setTimeout(_schedulePetEvent,15000);
         setTimeout(()=>$('circleDot').style.display='inline-block',1500);
         setTimeout(()=>{schedulePetSpeech();schedulePetEvents();},2500);
         setTimeout(()=>{updateEvolBadge();renderSocialPower();renderFriendCarePackages();renderCareNotifs();},700);
@@ -9901,7 +9966,7 @@ function _loadFromLocalStorage(){
     setTimeout(startKarmaPulse,1200);setTimeout(renderJackpot,800);
     setTimeout(()=>$('circleDot').style.display='inline-block',1500);
     setTimeout(startPetAnim,150);
-    setTimeout(initQuests,300);setTimeout(scheduleEvents,8000);
+    setTimeout(initQuests,300);setTimeout(scheduleEvents,8000);setTimeout(_schedulePetEvent,15000);
     setTimeout(renderStoriesBar,800);
     G.lastFortune = localStorage.getItem('kv8_lastFortune') || '';
     checkNightOwl();
