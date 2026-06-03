@@ -1934,6 +1934,110 @@ button:active{opacity:.85;}
 .cw-bld-btn:active{transform:scale(.93);}
 .cw-popup{position:absolute;bottom:140px;left:50%;transform:translateX(-50%);z-index:10;min-width:200px;}
 .cw-popup-inner{background:#101828;border:1.5px solid rgba(255,200,0,.4);border-radius:18px;padding:16px 20px;text-align:center;box-shadow:0 0 30px rgba(255,200,0,.15);}
+
+/* ═══════════════════════════════════════════════════
+   PREMIUM REDESIGN — bort med neo-brutalism, in med glow
+═══════════════════════════════════════════════════ */
+
+/* TOPBAR */
+.tb{border-bottom:1px solid rgba(57,255,20,.18);background:rgba(0,0,0,.96);backdrop-filter:blur(20px);}
+.logo{background:transparent;color:var(--g);border:1.5px solid rgba(57,255,20,.5);box-shadow:0 0 14px rgba(57,255,20,.25),inset 0 0 10px rgba(57,255,20,.05);letter-spacing:2px;border-radius:8px;}
+.pill{border-radius:20px;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.04);}
+.pill-y{border-color:rgba(255,230,0,.25);background:rgba(255,230,0,.06);}
+.pill-r{border-color:rgba(255,68,85,.25);background:rgba(255,68,85,.06);}
+.ham{border-radius:8px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.05);}
+
+/* BOTTOM NAV */
+.bnav{border-top:1px solid rgba(255,255,255,.08);background:rgba(0,0,0,.97);backdrop-filter:blur(24px);}
+.nb.on .ni{filter:drop-shadow(0 0 12px var(--g));}
+
+/* FLASH BUTTON — glowing circle */
+.flash-btn{border-radius:50%;width:56px;height:56px;margin-top:-24px;border:none;background:linear-gradient(135deg,var(--pk),#ff6eb4);box-shadow:0 0 20px rgba(255,0,127,.5),0 0 40px rgba(255,0,127,.2);transition:all .15s;}
+.nb-flash:active .flash-btn{transform:scale(.88);box-shadow:0 0 10px rgba(255,0,127,.3)!important;}
+
+/* PET CORNER WIDGET */
+.pc-b{border-radius:12px;border:1px solid rgba(57,255,20,.4);box-shadow:0 0 12px rgba(57,255,20,.2);background:rgba(0,0,0,.85);backdrop-filter:blur(10px);}
+
+/* CARE BUTTONS — sleek glow style */
+.chb{border-radius:14px;border:1px solid;min-height:60px;gap:2px;transition:transform .12s,box-shadow .12s;}
+.chb:active{transform:scale(.92);box-shadow:none!important;}
+.chb-feed{background:linear-gradient(145deg,rgba(255,159,10,.08),rgba(255,159,10,.03));border-color:rgba(255,159,10,.3);box-shadow:0 0 12px rgba(255,159,10,.12),inset 0 1px 0 rgba(255,255,255,.05);}
+.chb-feed .chb-lbl,.chb-feed .chb-val{color:var(--o);}
+.chb-train{background:linear-gradient(145deg,rgba(255,0,127,.08),rgba(255,0,127,.03));border-color:rgba(255,0,127,.3);box-shadow:0 0 12px rgba(255,0,127,.12),inset 0 1px 0 rgba(255,255,255,.05);}
+.chb-train .chb-lbl,.chb-train .chb-val{color:var(--pk);}
+.chb-sleep{background:linear-gradient(145deg,rgba(0,217,255,.08),rgba(0,217,255,.03));border-color:rgba(0,217,255,.3);box-shadow:0 0 12px rgba(0,217,255,.12),inset 0 1px 0 rgba(255,255,255,.05);}
+.chb-sleep .chb-lbl,.chb-sleep .chb-val{color:var(--b);}
+.chb-play{background:linear-gradient(145deg,rgba(191,95,255,.08),rgba(191,95,255,.03));border-color:rgba(191,95,255,.3);box-shadow:0 0 12px rgba(191,95,255,.12),inset 0 1px 0 rgba(255,255,255,.05);}
+.chb-play .chb-lbl,.chb-play .chb-val{color:var(--p);}
+.chb-bath{background:linear-gradient(145deg,rgba(0,221,204,.08),rgba(0,221,204,.03));border-color:rgba(0,221,204,.3);box-shadow:0 0 12px rgba(0,221,204,.12),inset 0 1px 0 rgba(255,255,255,.05);}
+.chb-bath .chb-lbl,.chb-bath .chb-val{color:var(--tl);}
+.chb-talk{background:linear-gradient(145deg,rgba(57,255,20,.08),rgba(57,255,20,.03));border-color:rgba(57,255,20,.3);box-shadow:0 0 12px rgba(57,255,20,.12),inset 0 1px 0 rgba(255,255,255,.05);}
+.chb-talk .chb-lbl,.chb-talk .chb-val{color:var(--g);}
+.chb-ico{font-size:24px;}
+
+/* BUTTONS — bort med offset shadow */
+.btn{border:none;border-radius:10px;transition:transform .1s,opacity .1s,box-shadow .1s;}
+.btn:active{transform:scale(.93);box-shadow:none!important;opacity:.9;}
+.btn-g{background:linear-gradient(135deg,#39FF14,#2acc10);color:#000;box-shadow:0 0 18px rgba(57,255,20,.35);}
+.btn-pk{background:linear-gradient(135deg,#FF007F,#ff4da6);color:#fff;box-shadow:0 0 18px rgba(255,0,127,.35);}
+.btn-y{background:linear-gradient(135deg,#FFE600,#ffc800);color:#000;box-shadow:0 0 18px rgba(255,230,0,.35);}
+.btn-ghost{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.15);box-shadow:none;color:var(--t1);}
+
+/* CARDS */
+.card{border:1px solid rgba(57,255,20,.2);border-radius:16px;box-shadow:0 4px 20px rgba(0,0,0,.4),0 0 0 0 transparent;}
+
+/* TABS */
+.tabs{border-bottom:1px solid rgba(255,255,255,.08);background:rgba(0,0,0,.9);}
+.tab.on{background:rgba(57,255,20,.06);border-bottom-color:var(--g);}
+
+/* DROPDOWN */
+.dd{border:1px solid rgba(57,255,20,.25);border-radius:14px;box-shadow:0 8px 32px rgba(0,0,0,.6),0 0 20px rgba(57,255,20,.1);background:rgba(10,10,10,.97);backdrop-filter:blur(20px);}
+
+/* MODALS */
+.ms{border:1px solid rgba(255,255,255,.1);border-radius:24px 24px 0 0;box-shadow:0 -8px 40px rgba(0,0,0,.6);}
+.topt{border-radius:8px;border:1px solid rgba(255,255,255,.12);box-shadow:none;}
+.topt.on{background:var(--g);border-color:var(--g);}
+.topt:active{transform:scale(.93);box-shadow:none!important;}
+
+/* TOAST */
+.toast{border-radius:12px;box-shadow:0 4px 20px rgba(0,0,0,.5),0 0 20px rgba(57,255,20,.15);border-width:1px;}
+.toast.g{box-shadow:0 4px 20px rgba(0,0,0,.5),0 0 20px rgba(57,255,20,.25);}
+.toast.r{box-shadow:0 4px 20px rgba(0,0,0,.5),0 0 20px rgba(255,68,85,.25);}
+.toast.y{box-shadow:0 4px 20px rgba(0,0,0,.5),0 0 20px rgba(255,230,0,.25);}
+.toast.pk{box-shadow:0 4px 20px rgba(0,0,0,.5),0 0 20px rgba(255,0,127,.25);}
+.toast.p{box-shadow:0 4px 20px rgba(0,0,0,.5),0 0 20px rgba(191,95,255,.25);}
+.toast.b{box-shadow:0 4px 20px rgba(0,0,0,.5),0 0 20px rgba(0,217,255,.25);}
+
+/* GAME PORTAL CARDS — already good, minor tweaks */
+.game-portal{border-radius:20px;border-width:1px;}
+
+/* NEO BUTTON POP override */
+.shop-item-card{border:1px solid rgba(255,255,255,.1);border-radius:16px;box-shadow:0 4px 12px rgba(0,0,0,.3);}
+.shop-item-card:active{transform:scale(.94);box-shadow:none!important;}
+.xgame-card{border:1px solid rgba(255,255,255,.1);border-radius:14px;box-shadow:0 4px 14px rgba(0,0,0,.3);}
+.xgame-card:active{transform:scale(.94);box-shadow:none!important;}
+
+/* OBP onboarding pet picker */
+.obp{border:1px solid rgba(255,255,255,.14);border-radius:14px;box-shadow:none;}
+.obp:active{transform:scale(.9);box-shadow:none!important;}
+
+/* KARMA LIVE TICKER — cleaner */
+#homeKarmaTicker,div[style*="karmaTick"]{border-radius:12px!important;border:1px solid rgba(57,255,20,.2)!important;box-shadow:0 0 12px rgba(57,255,20,.08)!important;}
+
+/* INLINE neo-brutalism overrides for inline styles with box-shadow:3px offset */
+[style*="box-shadow:3px 3px 0"],[style*="box-shadow: 3px 3px 0"],[style*="box-shadow:4px 4px 0"],[style*="box-shadow:5px 5px 0"],[style*="box-shadow:6px 6px 0"]{box-shadow:none!important;}
+[style*="border:3px solid var(--g)"]{border:1px solid rgba(57,255,20,.3)!important;border-radius:14px!important;}
+[style*="border:2px solid var(--g)"]{border:1px solid rgba(57,255,20,.25)!important;}
+
+/* FISH CAST BUTTON */
+.fish-cast-btn{border:none!important;border-radius:14px!important;}
+.fish-cast-btn.idle{box-shadow:0 0 20px rgba(57,255,20,.35)!important;}
+.fish-cast-btn.biting{box-shadow:0 0 20px rgba(255,0,127,.4)!important;animation:bitePulse .4s ease-in-out infinite!important;}
+.fish-cast-btn.reeling{box-shadow:0 0 20px rgba(255,230,0,.35)!important;}
+@keyframes bitePulse{from{box-shadow:0 0 14px rgba(255,0,127,.3)!important;}to{box-shadow:0 0 28px rgba(255,0,127,.6)!important;}}
+
+/* NB-CARD */
+.nb-card{border:1px solid rgba(255,255,255,.1);border-radius:16px;box-shadow:none;}
 </style>
 
 </head>
@@ -2255,8 +2359,8 @@ button:active{opacity:.85;}
         </div>
       </div>
       <!-- KARMA PULSE — live community activity ticker -->
-      <div style="margin:0 14px 10px;background:#050505;border:3px solid var(--g);border-radius:6px;padding:5px 10px;display:flex;align-items:center;gap:8px;overflow:hidden;box-shadow:3px 3px 0px var(--g)">
-        <span style="font-size:8px;font-weight:900;color:#000;font-family:var(--mono);flex-shrink:0;letter-spacing:.5px;background:var(--g);border-radius:3px;padding:2px 5px;box-shadow:2px 2px 0px #000">● LIVE</span>
+      <div style="margin:0 14px 10px;background:rgba(57,255,20,.04);border:1px solid rgba(57,255,20,.2);border-radius:12px;padding:5px 10px;display:flex;align-items:center;gap:8px;overflow:hidden;box-shadow:0 0 16px rgba(57,255,20,.08)">
+        <span style="font-size:8px;font-weight:900;color:#000;font-family:var(--mono);flex-shrink:0;letter-spacing:.5px;background:var(--g);border-radius:6px;padding:2px 6px">● LIVE</span>
         <div style="flex:1;overflow:hidden">
           <div id="karmaTicker" style="display:inline-flex;gap:60px;animation:karmaTick 28s linear infinite;white-space:nowrap;font-size:10px;color:rgba(255,255,255,.75);font-family:var(--mono);font-weight:700"></div>
         </div>
