@@ -1924,6 +1924,16 @@ button:active{opacity:.85;}
 .settings-toggle.on{background:var(--g);}
 .settings-toggle::after{content:'';position:absolute;top:3px;left:3px;width:20px;height:20px;border-radius:50%;background:#fff;transition:transform .2s;}
 .settings-toggle.on::after{transform:translateX(18px);}
+/* ── CASTLE WORLD ── */
+.castle-world{position:fixed;inset:0;z-index:700;background:#050810;display:none;flex-direction:column;}
+.castle-world.open{display:flex;}
+.castle-world .cw-hdr{display:flex;align-items:center;padding:12px 14px;border-bottom:1px solid rgba(255,255,255,.06);background:#080d18;flex-shrink:0;height:auto;}
+.cw-build-panel{background:#080d18;border-top:1px solid rgba(255,255,255,.08);padding:10px 14px;overflow-x:auto;display:flex;gap:10px;flex-shrink:0;}
+.cw-bld-btn{background:#101828;border:1.5px solid rgba(255,255,255,.12);border-radius:12px;padding:8px 12px;cursor:pointer;min-width:70px;text-align:center;flex-shrink:0;-webkit-tap-highlight-color:transparent;color:var(--t1);}
+.cw-bld-btn.owned{border-color:rgba(255,200,0,.5);background:rgba(255,200,0,.06);}
+.cw-bld-btn:active{transform:scale(.93);}
+.cw-popup{position:absolute;bottom:140px;left:50%;transform:translateX(-50%);z-index:10;min-width:200px;}
+.cw-popup-inner{background:#101828;border:1.5px solid rgba(255,200,0,.4);border-radius:18px;padding:16px 20px;text-align:center;box-shadow:0 0 30px rgba(255,200,0,.15);}
 </style>
 
 </head>
@@ -10412,6 +10422,307 @@ function upgradeBuilding(id){
   save();updateHUD();renderCastle();
   // Flash the castle grid to show it updated
   const cg=$('castleBuildGrid');if(cg){cg.style.transition='opacity .1s';cg.style.opacity='.3';setTimeout(()=>{cg.style.opacity='1';},120);}
+  // Also update castle world if open
+  if($('castleWorld')?.classList.contains('open')){_cwRenderPanel();renderCastleWorld();}
+}
+
+// ── CASTLE WORLD (Diablo-style map) ──
+const CW_BUILD_POSITIONS=[
+  {id:'farm',   angle:-90, dist:90},
+  {id:'market', angle:-30, dist:90},
+  {id:'arena',  angle:30,  dist:90},
+  {id:'stable', angle:90,  dist:90},
+  {id:'tower',  angle:150, dist:90},
+  {id:'home',   angle:-150,dist:90},
+];
+const _CW_NPC_NAMES=['Drakkungen','Skuggfuran','Eld-Elias','Frost-Frida','Storm-Sara','Järn-Johan','Mörker-Max','Silv-Sofia'];
+const _CW_NPC_EMOJIS=['🗼','⛩️','🕌','🏯','🗿','⚔️','🛡️','🌑'];
+let _cwStars=null;
+let _cwNpcs=null;
+
+function openCastleWorld(){
+  let cw=$('castleWorld');
+  if(!cw){
+    cw=document.createElement('div');
+    cw.className='castle-world';
+    cw.id='castleWorld';
+    cw.innerHTML=`
+      <div class="cw-hdr">
+        <button onclick="closeCastleWorld()" style="background:none;border:none;color:#fff;font-size:22px;cursor:pointer;padding:4px 8px;">←</button>
+        <div style="flex:1;text-align:center">
+          <div style="font-size:12px;font-weight:900;color:var(--y);font-family:var(--mono)" id="cwTitle">⚔️ KASTELVÄRLDEN</div>
+          <div style="font-size:10px;color:var(--t3)" id="cwSubtitle">Ditt rike</div>
+        </div>
+        <div style="font-size:10px;color:var(--y);font-family:var(--mono)" id="cwGold">💰 0</div>
+      </div>
+      <canvas id="castleCanvas" style="display:block;width:100%;touch-action:none;flex:1;"></canvas>
+      <div class="cw-build-panel" id="cwBuildPanel"></div>
+      <div class="cw-popup" id="cwPopup" style="display:none">
+        <div class="cw-popup-inner" id="cwPopupInner"></div>
+      </div>`;
+    document.body.appendChild(cw);
+  }
+  if(!_cwStars){
+    _cwStars=Array.from({length:50},()=>({x:Math.random(),y:Math.random(),r:0.5+Math.random()*1.5,phase:Math.random()*Math.PI*2}));
+  }
+  if(!_cwNpcs){
+    _cwNpcs=_CW_NPC_NAMES.map((nm,i)=>{
+      const ang=(i/8)*Math.PI*2;
+      return{nm,em:_CW_NPC_EMOJIS[i],lvl:1+Math.floor(Math.random()*5),power:20+Math.floor(Math.random()*80),type:['enemy','neutral','ally'][i%3],ang};
+    });
+  }
+  cw.classList.add('open');
+  _cwRenderPanel();
+  const gold=$('cwGold');if(gold)gold.textContent='💰 '+(G.coins||0);
+  const sub=$('cwSubtitle');if(sub)sub.textContent=(G.name||'Spelaren')+'s rike';
+  setTimeout(function(){(function _cwLoop(){if($('castleWorld')?.classList.contains('open')){renderCastleWorld();requestAnimationFrame(_cwLoop);}})();},80);
+  const canvas=$('castleCanvas');
+  if(canvas){
+    canvas.ontouchstart=canvas.ontouchend=null;
+    canvas.addEventListener('click',function(e){
+      const rect=canvas.getBoundingClientRect();
+      const scaleX=canvas.width/rect.width;
+      const scaleY=canvas.height/rect.height;
+      _cwTap((e.clientX-rect.left)*scaleX,(e.clientY-rect.top)*scaleY);
+    },{once:false});
+    canvas.addEventListener('touchend',function(e){
+      e.preventDefault();
+      const rect=canvas.getBoundingClientRect();
+      const t=e.changedTouches[0];
+      const scaleX=canvas.width/rect.width;
+      const scaleY=canvas.height/rect.height;
+      _cwTap((t.clientX-rect.left)*scaleX,(t.clientY-rect.top)*scaleY);
+    },{passive:false});
+  }
+}
+
+function closeCastleWorld(){
+  const cw=$('castleWorld');if(cw)cw.classList.remove('open');
+  const p=$('cwPopup');if(p)p.style.display='none';
+}
+
+let _cwParticles=null;
+function renderCastleWorld(){
+  const canvas=$('castleCanvas');if(!canvas)return;
+  const cw=$('castleWorld');if(!cw||!cw.classList.contains('open'))return;
+  const rect=canvas.getBoundingClientRect();
+  const W=rect.width>0?Math.round(rect.width):window.innerWidth;
+  const H=rect.height>0?Math.round(rect.height):(window.innerHeight-150);
+  if(canvas.width!==W||canvas.height!==H){canvas.width=W;canvas.height=H;}
+  if(W<10||H<10)return;
+  const ctx=canvas.getContext('2d');
+  const cx=W/2,cy=H*0.46;
+  const t=Date.now()/1000;
+  // Dark bg
+  const bg=ctx.createRadialGradient(cx,cy,0,cx,cy,Math.max(W,H)*.9);
+  bg.addColorStop(0,'#0e1428');bg.addColorStop(0.5,'#080e1f');bg.addColorStop(1,'#030510');
+  ctx.fillStyle=bg;ctx.fillRect(0,0,W,H);
+  // Hex grid
+  ctx.strokeStyle='rgba(80,120,200,.05)';ctx.lineWidth=1;
+  const gCell=40;
+  for(let gx=0;gx<W;gx+=gCell)for(let gy=0;gy<H;gy+=gCell){
+    ctx.strokeRect(gx+(gy/gCell%2)*gCell/2,gy,gCell,gCell);
+  }
+  // Stars
+  (_cwStars||[]).forEach(s=>{
+    const alpha=0.15+0.35*Math.abs(Math.sin(s.phase+t*0.5));
+    ctx.fillStyle=`rgba(200,220,255,${alpha})`;
+    ctx.beginPath();ctx.arc(s.x*W,s.y*H*0.45,s.r,0,Math.PI*2);ctx.fill();
+  });
+  // Ground plane
+  const ground=ctx.createRadialGradient(cx,cy+20,0,cx,cy+20,Math.min(W,H)*0.52);
+  ground.addColorStop(0,'rgba(100,80,30,.12)');ground.addColorStop(1,'rgba(0,0,0,0)');
+  ctx.fillStyle=ground;ctx.fillRect(0,0,W,H);
+  // Portals
+  const portals=[
+    {x:0.2,y:0.22,nm:'Mörka Grottan',col:'rgba(180,0,255,.7)'},
+    {x:0.8,y:0.25,nm:'Isruinerna',col:'rgba(0,180,255,.7)'},
+    {x:0.5,y:0.12,nm:'Helvetesgapet',col:'rgba(255,60,0,.7)'},
+  ];
+  portals.forEach(p=>{
+    const px=p.x*W,py=p.y*H;
+    const pulse=0.6+0.4*Math.sin(t*2+p.x*10);
+    const pr=ctx.createRadialGradient(px,py,0,px,py,20*pulse);
+    pr.addColorStop(0,p.col.replace('.7',',.9'));
+    pr.addColorStop(1,'rgba(0,0,0,0)');
+    ctx.fillStyle=pr;ctx.beginPath();ctx.ellipse(px,py,18*pulse,12*pulse,0,0,Math.PI*2);ctx.fill();
+    ctx.font='16px serif';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText('🕳️',px,py);
+    ctx.font='7px monospace';ctx.fillStyle=p.col;ctx.fillText(p.nm,px,py+16);
+  });
+  // Roads
+  const npcRing=Math.min(W,H)*0.34;
+  (_cwNpcs||[]).forEach(n=>{
+    const nx=cx+Math.cos(n.ang)*npcRing;
+    const ny=cy+Math.sin(n.ang)*npcRing*0.6;
+    const rc=n.type==='enemy'?'rgba(255,80,80,.2)':n.type==='ally'?'rgba(57,255,20,.18)':'rgba(0,180,255,.15)';
+    ctx.strokeStyle=rc;ctx.lineWidth=2;ctx.setLineDash([8,8]);
+    ctx.beginPath();ctx.moveTo(cx,cy);ctx.lineTo(nx,ny);ctx.stroke();
+    ctx.setLineDash([]);
+  });
+  // Decorations
+  const decor=[[0.1,0.3,'🌲'],[0.87,0.28,'🌲'],[0.15,0.68,'🪨'],[0.82,0.65,'🌲'],[0.05,0.55,'🪨'],[0.93,0.5,'🌲'],[0.22,0.18,'🌲'],[0.75,0.16,'🪨'],[0.35,0.8,'🌲'],[0.62,0.78,'🪨']];
+  ctx.font='16px serif';ctx.textAlign='center';ctx.textBaseline='middle';
+  decor.forEach(([tx,ty,em])=>ctx.fillText(em,tx*W,ty*H));
+  // NPCs
+  (_cwNpcs||[]).forEach((n,i)=>{
+    const nx=cx+Math.cos(n.ang)*npcRing;
+    const ny=cy+Math.sin(n.ang)*npcRing*0.6;
+    const pulse=0.65+0.35*Math.sin(t*1.5+i);
+    const tc=n.type==='enemy'?`rgba(255,60,60,${pulse*.22})`:n.type==='ally'?`rgba(57,255,20,${pulse*.16})`:`rgba(0,180,255,${pulse*.14})`;
+    ctx.fillStyle=tc;ctx.beginPath();ctx.arc(nx,ny,30*pulse,0,Math.PI*2);ctx.fill();
+    ctx.font='22px serif';ctx.textAlign='center';ctx.textBaseline='middle';
+    ctx.fillText(n.em,nx,ny-5);
+    const barW=36,barH=4;
+    const hp=Math.min(1,n.power/100);
+    const barX=nx-barW/2,barY=ny+12;
+    ctx.fillStyle='rgba(0,0,0,.5)';ctx.fillRect(barX,barY,barW,barH);
+    const hpCol=n.type==='enemy'?'#FF3C3C':n.type==='ally'?'#39FF14':'#00B4FF';
+    ctx.fillStyle=hpCol;ctx.fillRect(barX,barY,barW*hp,barH);
+    ctx.font='bold 8px monospace';ctx.fillStyle='rgba(255,255,255,.7)';ctx.textAlign='center';
+    ctx.fillText(n.nm.slice(0,9),nx,ny+22);
+    ctx.fillStyle='rgba(255,200,0,.9)';
+    ctx.fillText('LV'+n.lvl,nx,ny+32);
+  });
+  // Castle aura
+  const aura=ctx.createRadialGradient(cx,cy,5,cx,cy,90);
+  const auraPulse=0.08+0.06*Math.sin(t*1.2);
+  aura.addColorStop(0,`rgba(255,200,0,${auraPulse*2})`);
+  aura.addColorStop(0.5,`rgba(255,150,0,${auraPulse})`);
+  aura.addColorStop(1,'rgba(0,0,0,0)');
+  ctx.fillStyle=aura;ctx.beginPath();ctx.arc(cx,cy,90,0,Math.PI*2);ctx.fill();
+  // Buildings
+  const bl=(G.castle&&G.castle.buildings)||{};
+  CW_BUILD_POSITIONS.forEach(bp=>{
+    const rad=bp.angle*Math.PI/180;
+    const bx=cx+Math.cos(rad)*bp.dist;
+    const by=cy+Math.sin(rad)*bp.dist*0.65;
+    const bInfo=CASTLE_BUILDINGS.find(x=>x.id===bp.id);if(!bInfo)return;
+    const lvl=bl[bp.id]||0;
+    if(lvl>0){
+      const gc=ctx.createRadialGradient(bx,by,0,bx,by,20);
+      gc.addColorStop(0,'rgba(57,255,20,.28)');gc.addColorStop(1,'rgba(57,255,20,0)');
+      ctx.fillStyle=gc;ctx.beginPath();ctx.arc(bx,by,20,0,Math.PI*2);ctx.fill();
+      ctx.globalAlpha=1;
+    }else{ctx.globalAlpha=0.3;}
+    ctx.font='20px serif';ctx.textAlign='center';ctx.textBaseline='middle';
+    ctx.fillText(bInfo.em,bx,by);
+    if(lvl>0){
+      ctx.font='bold 8px monospace';ctx.fillStyle='rgba(255,200,0,.95)';
+      ctx.fillText('LV'+lvl,bx,by+15);
+    }
+    ctx.globalAlpha=1;
+  });
+  // Player castle
+  const bob=Math.sin(t*1.5)*3;
+  ctx.font='48px serif';ctx.textAlign='center';ctx.textBaseline='middle';
+  ctx.fillText('🏰',cx,cy-6+bob);
+  ctx.font='bold 9px monospace';ctx.fillStyle='rgba(255,215,0,.95)';
+  const cLvl=(G.castle&&G.castle.lvl)||1;
+  ctx.fillText((G.name||'Spelaren').slice(0,12)+' · LV'+cLvl,cx,cy+32+bob);
+  // Embers
+  if(!_cwParticles)_cwParticles=Array.from({length:18},(_,i)=>({
+    x:cx+(Math.random()-.5)*60,y:cy+(Math.random()-.5)*40,vy:-0.3-Math.random()*.5,vx:(Math.random()-.5)*.4,life:Math.random(),maxLife:2+Math.random()*3
+  }));
+  _cwParticles.forEach(p=>{
+    p.life+=0.016;if(p.life>p.maxLife){p.life=0;p.x=cx+(Math.random()-.5)*60;p.y=cy+10;}
+    const a=1-(p.life/p.maxLife);
+    ctx.fillStyle=`rgba(255,${150+Math.floor(a*80)},0,${a*.7})`;
+    ctx.beginPath();ctx.arc(p.x+Math.sin(p.life*3+p.vx*10)*6,p.y-p.life*30,1.5*a,0,Math.PI*2);ctx.fill();
+  });
+  // Edge fog
+  const fog=ctx.createRadialGradient(cx,H*.5,Math.min(W,H)*.28,cx,H*.5,Math.max(W,H)*.72);
+  fog.addColorStop(0,'rgba(0,0,0,0)');fog.addColorStop(0.7,'rgba(3,5,16,.2)');fog.addColorStop(1,'rgba(3,5,16,.92)');
+  ctx.fillStyle=fog;ctx.fillRect(0,0,W,H);
+  // Vignette
+  const vig=ctx.createRadialGradient(cx,cy,0,cx,cy,Math.max(W,H)*.7);
+  vig.addColorStop(0,'rgba(0,0,0,0)');vig.addColorStop(1,'rgba(0,0,5,.6)');
+  ctx.fillStyle=vig;ctx.fillRect(0,0,W,H);
+  const gold=$('cwGold');if(gold)gold.textContent='💰 '+(G.coins||0);
+}
+
+function _cwTap(x,y){
+  const canvas=$('castleCanvas');if(!canvas)return;
+  const W=canvas.width,H=canvas.height;
+  const cx=W/2,cy=H*0.48;
+  const popup=$('cwPopup');
+  const inner=$('cwPopupInner');
+  const dCastle=Math.hypot(x-cx,y-cy);
+  if(dCastle<45){
+    const cLvl=(G.castle&&G.castle.lvl)||1;
+    inner.innerHTML=`<div style="font-size:36px">🏰</div>
+      <div style="font-weight:900;color:var(--y);margin:4px 0">${G.name||'Spelaren'}s Kastel</div>
+      <div style="font-size:11px;color:var(--t3)">Nivå ${cLvl} · Byggnader: ${Object.values((G.castle&&G.castle.buildings)||{}).filter(v=>v>0).length}</div>
+      <div style="font-size:11px;color:var(--y);margin-top:6px">💰 ${G.coins||0} coins</div>
+      <button onclick="_cwDismissPopup()" style="margin-top:10px;background:rgba(255,200,0,.15);border:1px solid rgba(255,200,0,.4);border-radius:10px;color:#fff;padding:6px 18px;cursor:pointer;font-size:11px">Stäng</button>`;
+    popup.style.display='block';return;
+  }
+  const bl=(G.castle&&G.castle.buildings)||{};
+  for(const bp of CW_BUILD_POSITIONS){
+    const rad=bp.angle*Math.PI/180;
+    const bx=cx+Math.cos(rad)*bp.dist;
+    const by=cy+Math.sin(rad)*bp.dist*0.7;
+    if(Math.hypot(x-bx,y-by)<28){
+      const bInfo=CASTLE_BUILDINGS.find(z=>z.id===bp.id);if(!bInfo)return;
+      const lvl=bl[bp.id]||0;
+      const maxLvl=5;
+      const nextCost=lvl<maxLvl?bInfo.costs[lvl]:null;
+      const canAfford=nextCost&&G.coins>=nextCost;
+      inner.innerHTML=`<div style="font-size:32px">${bInfo.em}</div>
+        <div style="font-weight:900;color:var(--y);margin:4px 0">${bInfo.nm}</div>
+        <div style="font-size:10px;color:var(--t3)">${bInfo.desc}</div>
+        <div style="font-size:10px;color:var(--g);margin:4px 0">${bInfo.bonus}</div>
+        <div style="font-size:11px;color:var(--t3);margin:4px 0">Nivå: ${lvl}/${maxLvl}</div>
+        ${lvl<maxLvl?`<button onclick="_cwUpgrade('${bp.id}')" style="margin-top:8px;background:${canAfford?'rgba(57,255,20,.2)':'rgba(255,255,255,.05)'};border:1px solid ${canAfford?'rgba(57,255,20,.5)':'rgba(255,255,255,.1)'};border-radius:10px;color:${canAfford?'var(--g)':'var(--t3)'};padding:8px 18px;cursor:pointer;font-size:12px;font-weight:900">${lvl===0?'BYGG':'UPPGRADERA'} · ${nextCost}⚡</button>`
+        :'<div style="color:var(--g);font-weight:900;font-size:11px;margin-top:6px">✅ MAX LEVEL</div>'}
+        <button onclick="_cwDismissPopup()" style="margin-top:8px;background:none;border:1px solid rgba(255,255,255,.1);border-radius:10px;color:var(--t3);padding:5px 14px;cursor:pointer;font-size:11px">Stäng</button>`;
+      popup.style.display='block';return;
+    }
+  }
+  const npcRing=Math.min(W,H)*0.35;
+  for(const n of (_cwNpcs||[])){
+    const nx=cx+Math.cos(n.ang)*npcRing;
+    const ny=cy+Math.sin(n.ang)*npcRing*0.6;
+    if(Math.hypot(x-nx,y-ny)<32){
+      const tCol=n.type==='enemy'?'var(--r)':n.type==='ally'?'var(--g)':'var(--b)';
+      const tLbl=n.type==='enemy'?'FIENDE':n.type==='ally'?'ALLIERAD':'NEUTRAL';
+      inner.innerHTML=`<div style="font-size:32px">${n.em}</div>
+        <div style="font-weight:900;color:${tCol};margin:4px 0">${n.nm}</div>
+        <div style="font-size:10px;color:${tCol}">${tLbl}</div>
+        <div style="font-size:10px;color:var(--t3);margin:4px 0">Nivå ${n.lvl} · Kraft ${n.power}</div>
+        <button onclick="_cwRaid('${n.nm}')" style="margin-top:8px;background:rgba(255,60,60,.2);border:1px solid rgba(255,60,60,.4);border-radius:10px;color:#FF3C3C;padding:8px 18px;cursor:pointer;font-size:12px;font-weight:900">⚔️ RAID!</button>
+        <button onclick="_cwDismissPopup()" style="margin-top:8px;background:none;border:1px solid rgba(255,255,255,.1);border-radius:10px;color:var(--t3);padding:5px 14px;cursor:pointer;font-size:11px">Stäng</button>`;
+      popup.style.display='block';return;
+    }
+  }
+  _cwDismissPopup();
+}
+
+function _cwDismissPopup(){const p=$('cwPopup');if(p)p.style.display='none';}
+function _cwUpgrade(id){_cwDismissPopup();upgradeBuilding(id);}
+function _cwRaid(nm){
+  _cwDismissPopup();
+  const reward=Math.floor(5+Math.random()*20);
+  gainCoins(reward);
+  showT('⚔️ Du raidade '+nm+'! +'+reward+'⚡','pk');
+  vibe([30,20,80]);
+  SFX.win&&SFX.win();
+}
+
+function _cwRenderPanel(){
+  const panel=$('cwBuildPanel');if(!panel)return;
+  const bl=(G.castle&&G.castle.buildings)||{};
+  panel.innerHTML=CASTLE_BUILDINGS.map(b=>{
+    const lvl=bl[b.id]||0;
+    const maxLvl=5;
+    const nextCost=lvl<maxLvl?b.costs[lvl]:null;
+    const canAfford=nextCost&&G.coins>=nextCost;
+    return`<div class="cw-bld-btn ${lvl>0?'owned':''}" onclick="_cwUpgrade('${b.id}')">
+      <div style="font-size:20px">${b.em}</div>
+      <div style="font-size:9px;font-weight:900;color:${lvl>0?'var(--y)':'var(--t3)'}">${b.nm.slice(0,6)}</div>
+      <div style="font-size:8px;color:${lvl>0?'rgba(255,200,0,.7)':'var(--t3)'}">${lvl>0?'LV'+lvl:'BYGG'}</div>
+      ${nextCost?`<div style="font-size:8px;color:${canAfford?'var(--g)':'var(--t3)'}">${nextCost}⚡</div>`:'<div style="font-size:8px;color:var(--g)">MAX</div>'}
+    </div>`;
+  }).join('');
 }
 
 // ── DNA GENETIC SYSTEM ──
