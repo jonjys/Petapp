@@ -2958,14 +2958,13 @@ button:active{opacity:.85;}
   </div>
 
     <!-- SPELA VIEW -->
-    <div class="view" id="view-play" style="padding:0;background:linear-gradient(180deg,#04020e,#06040e,#040210);">
+    <div class="view" id="view-play" style="padding:0;background:#000;">
       <!-- KARMA ARCADE header -->
-      <div style="padding:14px 14px 10px;background:linear-gradient(135deg,rgba(60,0,120,.4),rgba(20,0,80,.3));border-bottom:2px solid rgba(120,0,255,.3);position:relative;overflow:hidden">
-        <div style="position:absolute;inset:0;background:repeating-linear-gradient(45deg,transparent,transparent 6px,rgba(100,0,255,.03) 6px,rgba(100,0,255,.03) 7px);pointer-events:none"></div>
-        <div style="display:flex;align-items:center;justify-content:space-between;position:relative">
+      <div style="padding:14px 14px 10px;background:#0d0d0d;border-bottom:3px solid var(--p);position:relative">
+        <div style="display:flex;align-items:center;justify-content:space-between">
           <div>
-            <div style="font-size:20px;font-weight:900;font-family:var(--mono);color:#BF5FFF;letter-spacing:3px;text-shadow:0 0 20px rgba(191,95,255,.9),0 0 40px rgba(100,0,255,.5)">🎮 KARMA ARCADE</div>
-            <div style="font-size:9px;color:rgba(191,95,255,.5);font-family:var(--mono);letter-spacing:2px;margin-top:2px">VÄLJ DIN VÄRLD · SAMLA XP</div>
+            <div style="font-size:20px;font-weight:900;font-family:var(--mono);color:var(--p);letter-spacing:3px;text-transform:uppercase">🎮 KARMA ARCADE</div>
+            <div style="font-size:9px;color:rgba(255,255,255,.4);font-family:var(--mono);letter-spacing:2px;margin-top:2px">VÄLJ DIN VÄRLD · SAMLA XP</div>
           </div>
           <div style="font-size:10px;font-weight:900;color:var(--o);font-family:var(--mono)" id="playStreakLabel"></div>
         </div>
@@ -2987,93 +2986,58 @@ button:active{opacity:.85;}
         </div>
         <div class="gp-arrow" style="color:rgba(255,159,10,.8)">▶</div>
       </div>
-      <!-- DNA MIXER card -->
-      <div style="margin:0 14px 10px;background:#0d0d0d;border:3px solid var(--p);border-radius:6px;box-shadow:5px 5px 0px var(--p);padding:16px 18px;cursor:pointer;display:flex;align-items:center;gap:14px;-webkit-tap-highlight-color:transparent;transition:transform .08s,box-shadow .08s" onclick="openDNAMixer()" ontouchstart="this.style.transform='translate(5px,5px)';this.style.boxShadow='0px 0px 0px var(--p)'" ontouchend="this.style.transform='';this.style.boxShadow='5px 5px 0px var(--p)'" >
-        <div style="font-size:44px;filter:drop-shadow(0 0 14px rgba(191,95,255,.7));animation:pf 2s ease-in-out infinite 1s">🧬</div>
+      <!-- DNA BREAKER card -->
+      <div onclick="openPetBlocks()" style="margin:0 14px 10px;background:#0d0d0d;border:3px solid var(--g);border-radius:6px;box-shadow:5px 5px 0px var(--g);padding:16px;display:flex;align-items:center;gap:14px;cursor:pointer;-webkit-tap-highlight-color:transparent;transition:transform .08s,box-shadow .08s" ontouchstart="this.style.transform='translate(3px,3px)';this.style.boxShadow='0px 0px 0px var(--g)'" ontouchend="this.style.transform='';this.style.boxShadow='5px 5px 0px var(--g)'">
+        <div style="font-size:44px">🧬</div>
         <div style="flex:1;min-width:0">
-          <div style="font-size:15px;font-weight:900">DNA MIXER</div>
-          <div style="font-size:10px;color:var(--t3);margin-top:3px">Mixa 2 pets → skapa hybrid. Unlock hemliga kombinationer!</div>
-          <div style="display:flex;gap:5px;margin-top:5px;flex-wrap:wrap">
-            <span style="font-size:9px;background:rgba(191,95,255,.15);border:1px solid rgba(191,95,255,.3);color:var(--p);padding:2px 7px;border-radius:8px;font-family:var(--mono)">🧬 Hybrid Pet</span>
-            <span style="font-size:9px;background:rgba(57,255,20,.12);border:1px solid rgba(57,255,20,.25);color:var(--g);padding:2px 7px;border-radius:8px;font-family:var(--mono)">+XP</span>
+          <div style="font-size:15px;font-weight:900;color:#fff;font-family:var(--mono)">DNA BREAKER</div>
+          <div style="font-size:11px;color:rgba(255,255,255,.5);margin-top:3px">Brick-breaker med DNA-tema — krossa alla block!</div>
+          <div style="margin-top:8px;display:flex;gap:6px">
+            <span style="background:#000;border:2px solid var(--g);border-radius:4px;padding:2px 8px;font-size:9px;font-weight:900;font-family:var(--mono);color:var(--g)">ARCADE</span>
+            <span style="background:#000;border:2px solid var(--g);border-radius:4px;padding:2px 8px;font-size:9px;font-weight:900;font-family:var(--mono);color:var(--g)" id="pbBestTag">Best: 0pts</span>
           </div>
-          <div style="position:absolute;bottom:0;left:0;right:0;height:8px;background:repeating-linear-gradient(90deg,rgba(0,217,255,.3) 0px,rgba(0,217,255,.3) 4px,transparent 4px,transparent 8px)"></div>
         </div>
-        <div class="gp-info">
-          <div class="gp-name">FISKA</div>
-          <div class="gp-sub">Fånga fiskar · vinn mat &amp; coins</div>
-          <div class="gp-tags"><span class="gp-tag" style="color:rgba(0,217,255,.9)">🐟 Fisk</span><span class="gp-tag" style="color:rgba(57,255,20,.9)">🍖 Mat</span></div>
-        </div>
-        <div class="gp-arrow" style="color:rgba(0,217,255,.8)">▶</div>
+        <div style="margin-left:auto;font-size:24px;color:var(--g)">→</div>
       </div>
       <!-- PET RUNNER card -->
-      <div style="margin:0 14px 10px;background:#0d0d0d;border:3px solid var(--g);border-radius:6px;box-shadow:5px 5px 0px var(--g);padding:16px 18px;cursor:pointer;display:flex;align-items:center;gap:14px;-webkit-tap-highlight-color:transparent;transition:transform .08s,box-shadow .08s" onclick="openPetRunner()" ontouchstart="this.style.transform='translate(5px,5px)';this.style.boxShadow='0px 0px 0px var(--g)'" ontouchend="this.style.transform='';this.style.boxShadow='5px 5px 0px var(--g)'" >
-        <div style="font-size:44px;filter:drop-shadow(0 0 14px rgba(57,255,20,.7));animation:pf 1.2s ease-in-out infinite" id="gpRunnerPet">🐉</div>
+      <div onclick="openPetRunner()" style="margin:0 14px 10px;background:#0d0d0d;border:3px solid var(--g);border-radius:6px;box-shadow:5px 5px 0px var(--g);padding:16px;display:flex;align-items:center;gap:14px;cursor:pointer;-webkit-tap-highlight-color:transparent;transition:transform .08s,box-shadow .08s" ontouchstart="this.style.transform='translate(3px,3px)';this.style.boxShadow='0px 0px 0px var(--g)'" ontouchend="this.style.transform='';this.style.boxShadow='5px 5px 0px var(--g)'">
+        <div style="font-size:44px" id="gpRunnerPet">🐉</div>
         <div style="flex:1;min-width:0">
-          <div style="font-size:15px;font-weight:900">PET RUNNER</div>
-          <div style="font-size:10px;color:var(--t3);margin-top:3px">Hoppa · dodge · samla gems — levels &amp; highscore!</div>
-          <div style="display:flex;gap:5px;margin-top:5px;flex-wrap:wrap">
-            <span style="font-size:9px;background:rgba(57,255,20,.15);border:1px solid rgba(57,255,20,.3);color:var(--g);padding:2px 7px;border-radius:8px;font-family:var(--mono)">🏃 Runner</span>
-            <span style="font-size:9px;background:rgba(255,230,0,.12);border:1px solid rgba(255,230,0,.28);color:var(--y);padding:2px 7px;border-radius:8px;font-family:var(--mono)" id="prBestTag">Best: 0m</span>
-            <span style="font-size:9px;background:rgba(0,217,255,.1);border:1px solid rgba(0,217,255,.25);color:var(--b);padding:2px 7px;border-radius:8px;font-family:var(--mono)" id="prLvBadge">LV 1</span>
+          <div style="font-size:15px;font-weight:900;color:#fff;font-family:var(--mono)">PET RUNNER</div>
+          <div style="font-size:11px;color:rgba(255,255,255,.5);margin-top:3px">Hoppa · dodge · samla gems — levels &amp; highscore!</div>
+          <div style="margin-top:8px;display:flex;gap:6px">
+            <span style="background:#000;border:2px solid var(--g);border-radius:4px;padding:2px 8px;font-size:9px;font-weight:900;font-family:var(--mono);color:var(--g)">RUNNER</span>
+            <span style="background:#000;border:2px solid var(--y);border-radius:4px;padding:2px 8px;font-size:9px;font-weight:900;font-family:var(--mono);color:var(--y)" id="prBestTag">Best: 0m</span>
+            <span style="background:#000;border:2px solid var(--b);border-radius:4px;padding:2px 8px;font-size:9px;font-weight:900;font-family:var(--mono);color:var(--b)" id="prLvBadge">LV 1</span>
           </div>
         </div>
-        <div style="font-size:22px;color:var(--g)">→</div>
+        <div style="margin-left:auto;font-size:24px;color:var(--g)">→</div>
       </div>
-      <!-- PET BLOCKS card -->
-      <div style="margin:0 14px 10px;background:#0d0d0d;border:3px solid var(--p);border-radius:6px;box-shadow:5px 5px 0px var(--p);padding:16px 18px;cursor:pointer;display:flex;align-items:center;gap:14px;-webkit-tap-highlight-color:transparent;transition:transform .08s,box-shadow .08s" onclick="openPetBlocks()" ontouchstart="this.style.transform='translate(5px,5px)';this.style.boxShadow='0px 0px 0px var(--p)'" ontouchend="this.style.transform='';this.style.boxShadow='5px 5px 0px var(--p)'" >
-        <div style="font-size:44px;filter:drop-shadow(0 0 14px rgba(191,95,255,.7));animation:pf 2s ease-in-out infinite 1.5s">🧩</div>
+      <!-- BATTLE ARENA card -->
+      <div onclick="openBattle()" style="margin:0 14px 10px;background:#0d0d0d;border:3px solid var(--pk);border-radius:6px;box-shadow:5px 5px 0px var(--pk);padding:16px;display:flex;align-items:center;gap:14px;cursor:pointer;-webkit-tap-highlight-color:transparent;transition:transform .08s,box-shadow .08s" ontouchstart="this.style.transform='translate(3px,3px)';this.style.boxShadow='0px 0px 0px var(--pk)'" ontouchend="this.style.transform='';this.style.boxShadow='5px 5px 0px var(--pk)'">
+        <div style="font-size:44px">⚔️</div>
         <div style="flex:1;min-width:0">
-          <div style="font-size:15px;font-weight:900">PET BLOCKS</div>
-          <div style="font-size:10px;color:var(--t3);margin-top:3px">Block Blast-stil — fyll rader &amp; kolumner!</div>
-          <div style="display:flex;gap:5px;margin-top:5px;flex-wrap:wrap">
-            <span style="font-size:9px;background:rgba(191,95,255,.15);border:1px solid rgba(191,95,255,.3);color:var(--p);padding:2px 7px;border-radius:8px;font-family:var(--mono)">🧩 Pussel</span>
-            <span style="font-size:9px;background:rgba(57,255,20,.12);border:1px solid rgba(57,255,20,.25);color:var(--g);padding:2px 7px;border-radius:8px;font-family:var(--mono)" id="pbBestTag">Best: 0pts</span>
+          <div style="font-size:15px;font-weight:900;color:#fff;font-family:var(--mono)">BATTLE ARENA</div>
+          <div style="font-size:11px;color:rgba(255,255,255,.5);margin-top:3px">Slåss mot bossar · vinn XP &amp; coins!</div>
+          <div style="margin-top:8px;display:flex;gap:6px">
+            <span style="background:#000;border:2px solid var(--pk);border-radius:4px;padding:2px 8px;font-size:9px;font-weight:900;font-family:var(--mono);color:var(--pk)">PvE</span>
+            <span style="background:#000;border:2px solid var(--pk);border-radius:4px;padding:2px 8px;font-size:9px;font-weight:900;font-family:var(--mono);color:var(--pk)">+XP</span>
           </div>
-          <div style="position:absolute;bottom:0;left:0;right:0;height:8px;background:repeating-linear-gradient(90deg,rgba(191,95,255,.3) 0px,rgba(191,95,255,.3) 4px,transparent 4px,transparent 8px)"></div>
         </div>
-        <div class="gp-info">
-          <div class="gp-name">DNA MIXER</div>
-          <div class="gp-sub">Mixa 2 pets → skapa hybrid</div>
-          <div class="gp-tags"><span class="gp-tag" style="color:rgba(191,95,255,.9)">🧬 Hybrid</span><span class="gp-tag" style="color:rgba(57,255,20,.9)">+XP</span></div>
-        </div>
-        <div class="gp-arrow" style="color:rgba(191,95,255,.8)">▶</div>
+        <div style="margin-left:auto;font-size:24px;color:var(--pk)">→</div>
       </div>
-      <!-- PET RUNNER portal -->
-      <div class="game-portal" onclick="openPetBlocks()" style="--pc:57,255,20">
-        <div class="gp-preview" style="background:linear-gradient(135deg,#010d01,#000800)">
-          <div style="position:absolute;inset:0;overflow:hidden">
-            <!-- Mini runner track -->
-            <div style="position:absolute;bottom:30%;left:0;right:0;height:2px;background:rgba(57,255,20,.4)"></div>
-            <div style="position:absolute;bottom:30%;left:25%;width:12px;height:14px;background:rgba(255,100,0,.8);clip-path:polygon(50% 0%,0% 100%,100% 100%)"></div>
-            <div style="position:absolute;bottom:30%;left:60%;width:10px;height:18px;background:rgba(255,45,85,.7)"></div>
-            <div style="position:absolute;bottom:50%;left:45%;font-size:22px;filter:drop-shadow(0 0 8px rgba(57,255,20,.8));animation:runnerMiniAnim 1s ease-in-out infinite" id="gpRunnerPet">🐉</div>
-            <div style="position:absolute;top:15%;left:5%;right:5%;height:1px;background:rgba(57,255,20,.2)"></div>
+      <!-- DNA MIXER card -->
+      <div onclick="openDNAMixer()" style="margin:0 14px 10px;background:#0d0d0d;border:3px solid var(--p);border-radius:6px;box-shadow:5px 5px 0px var(--p);padding:16px;display:flex;align-items:center;gap:14px;cursor:pointer;-webkit-tap-highlight-color:transparent;transition:transform .08s,box-shadow .08s" ontouchstart="this.style.transform='translate(3px,3px)';this.style.boxShadow='0px 0px 0px var(--p)'" ontouchend="this.style.transform='';this.style.boxShadow='5px 5px 0px var(--p)'">
+        <div style="font-size:44px">🧪</div>
+        <div style="flex:1;min-width:0">
+          <div style="font-size:15px;font-weight:900;color:#fff;font-family:var(--mono)">DNA MIXER</div>
+          <div style="font-size:11px;color:rgba(255,255,255,.5);margin-top:3px">Mixa 2 pets → skapa hybrid. Unlock hemliga kombinationer!</div>
+          <div style="margin-top:8px;display:flex;gap:6px">
+            <span style="background:#000;border:2px solid var(--p);border-radius:4px;padding:2px 8px;font-size:9px;font-weight:900;font-family:var(--mono);color:var(--p)">HYBRID</span>
+            <span style="background:#000;border:2px solid var(--p);border-radius:4px;padding:2px 8px;font-size:9px;font-weight:900;font-family:var(--mono);color:var(--p)">+XP</span>
           </div>
-          <div style="position:absolute;bottom:0;left:0;right:0;height:8px;background:repeating-linear-gradient(90deg,rgba(57,255,20,.3) 0px,rgba(57,255,20,.3) 4px,transparent 4px,transparent 8px)"></div>
         </div>
-        <div class="gp-info">
-          <div class="gp-name">GEO DASH</div>
-          <div class="gp-sub">Hoppa · dodge · samla gems!</div>
-          <div class="gp-tags"><span class="gp-tag" style="color:rgba(57,255,20,.9)">🏃 Runner</span><span class="gp-tag gp-best" id="pbBestTag">Best: 0m</span></div>
-        </div>
-        <div class="gp-arrow" style="color:rgba(57,255,20,.8)">▶</div>
-      </div>
-      <!-- BATTLE portal -->
-      <div class="game-portal" onclick="openBattle()" style="--pc:255,45,85">
-        <div class="gp-preview" style="background:linear-gradient(135deg,#0d0003,#060001)">
-          <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;gap:8px">
-            <div style="font-size:36px;animation:pf 1.4s ease-in-out infinite;filter:drop-shadow(0 0 12px rgba(255,45,85,.7))">⚔️</div>
-            <div style="font-size:26px;animation:pf 1.8s ease-in-out infinite .3s">👾</div>
-          </div>
-          <div style="position:absolute;bottom:0;left:0;right:0;height:8px;background:repeating-linear-gradient(90deg,rgba(255,45,85,.3) 0px,rgba(255,45,85,.3) 4px,transparent 4px,transparent 8px)"></div>
-        </div>
-        <div class="gp-info">
-          <div class="gp-name">BATTLE ARENA</div>
-          <div class="gp-sub">Slåss mot bossar · vinn XP</div>
-          <div class="gp-tags"><span class="gp-tag" style="color:rgba(255,45,85,.9)">⚔️ PvE</span><span class="gp-tag" style="color:rgba(255,159,10,.9)">+XP</span></div>
-        </div>
-        <div class="gp-arrow" style="color:rgba(255,45,85,.8)">▶</div>
+        <div style="margin-left:auto;font-size:24px;color:var(--p)">→</div>
       </div>
       <!-- ACHIEVEMENTS -->
       <div class="sh" style="margin-top:8px"><div class="sh-t">🏆 ACHIEVEMENTS</div><div class="sh-a" id="playAchCount" style="color:var(--y)">0 / 17</div></div>
