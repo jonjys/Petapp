@@ -2156,7 +2156,7 @@ button:active{opacity:.85;}
     <!-- HOME -->
     <div class="view active" id="view-home">
       <!-- PET HERO — TAMAGOTCHI FOCUS -->
-      <div class="pet-hero" id="sec-pet" style="padding:0;border-bottom:1px solid rgba(57,255,20,.2);background:linear-gradient(180deg,#070b14 0%,#050d12 100%);overflow:hidden">
+      <div class="pet-hero" id="sec-pet" style="padding:0;overflow:hidden">
         <div class="pet-hero-bg"></div>
         <div class="pet-room-layer" id="petRoomLayer" style="opacity:.4;pointer-events:none">
           <div class="prl-sky" id="prlSky"></div>
@@ -2238,7 +2238,7 @@ button:active{opacity:.85;}
         </div>
       </div>
       <!-- EVOLUTION TREE -->
-      <div style="margin:0 14px 8px;background:linear-gradient(135deg,rgba(255,230,0,.08),rgba(191,95,255,.04));border:1.5px solid rgba(255,230,0,.2);border-radius:18px;padding:12px 14px;overflow:hidden;position:relative">
+      <div style="margin:0 14px 8px;background:#0d0d0d;border:2px solid var(--y);border-radius:6px;box-shadow:3px 3px 0px var(--y);padding:12px 14px;overflow:hidden;position:relative">
         <div style="font-size:9px;font-weight:900;color:var(--y);font-family:var(--mono);letter-spacing:1px;margin-bottom:8px">🌳 EVOLUTION PATH</div>
         <div style="display:flex;align-items:center;gap:0;overflow-x:auto;scrollbar-width:none;padding-bottom:4px" id="evolTreeRow">
           <!-- rendered by renderEvolTree() -->
@@ -2337,7 +2337,7 @@ button:active{opacity:.85;}
 
       <!-- DAILY SPIN TEASER -->
       <div id="dailySpinTeaser" style="margin:0 12px 10px;cursor:pointer" onclick="openGacha()">
-        <div style="background:linear-gradient(135deg,rgba(255,230,0,.09),rgba(191,95,255,.05));border:1.5px solid rgba(255,230,0,.28);border-radius:18px;padding:12px 16px;display:flex;align-items:center;gap:12px">
+        <div style="background:#0d0d0d;border:2px solid var(--y);border-radius:6px;box-shadow:3px 3px 0px var(--y);padding:12px 16px;display:flex;align-items:center;gap:12px">
           <span style="font-size:30px;animation:petBob 2s ease-in-out infinite">🎰</span>
           <div style="flex:1">
             <div style="font-size:13px;font-weight:900;color:var(--y)">DAGLIGT SPIN</div>
@@ -2445,9 +2445,9 @@ button:active{opacity:.85;}
     </div>
 
     <!-- UPPDRAG -->
-    <div class="view" id="view-uppdrag" style="padding:0;background:linear-gradient(180deg,#080010,#0a0018,#050010);">
+    <div class="view" id="view-uppdrag" style="padding:0;background:#000;">
       <!-- KARMA MISSION BOARD header -->
-      <div style="padding:14px 14px 10px;background:linear-gradient(135deg,rgba(100,0,180,.25),rgba(50,0,100,.15));border-bottom:2px solid rgba(120,0,255,.35);position:relative;overflow:hidden">
+      <div style="padding:14px 14px 10px;background:#0d0d0d;border-bottom:3px solid var(--p);position:relative;overflow:hidden">
         <div style="position:absolute;inset:0;background:url('data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%228%22 height=%228%22><rect width=%228%22 height=%228%22 fill=%22none%22/><circle cx=%224%22 cy=%224%22 r=%221%22 fill=%22rgba(150%2C0%2C255%2C.12)%22/></svg>') repeat;pointer-events:none;"></div>
         <div style="display:flex;align-items:center;justify-content:space-between;position:relative">
           <div>
@@ -2509,7 +2509,7 @@ button:active{opacity:.85;}
       </div>
       <div class="src-row" id="srcRow"></div>
       <div id="shopContent"></div>
-      <div onclick="openModal('premiumModal')" style="margin:12px 16px;padding:14px 16px;background:linear-gradient(135deg,#FFE60018,#FF9F0A0a);border:1.5px solid #FFE60055;border-radius:16px;display:flex;align-items:center;gap:12px;cursor:pointer">
+      <div onclick="openModal('premiumModal')" style="margin:12px 16px;padding:14px 16px;background:#0d0d0d;border:2px solid var(--y);border-radius:6px;box-shadow:3px 3px 0px var(--y);display:flex;align-items:center;gap:12px;cursor:pointer">
         <div style="font-size:32px">👑</div>
         <div><div style="font-size:13px;font-weight:900;color:var(--y)">KARMA PRO</div><div style="font-size:11px;color:var(--t2)">2.5× XP · Mer coins · Exklusiva skins</div></div>
         <div style="margin-left:auto;font-size:11px;font-weight:900;color:var(--y);white-space:nowrap">FRÅN 49 →</div>
@@ -2670,7 +2670,7 @@ button:active{opacity:.85;}
           <div class="kw-stat"><div class="kw-sv" id="kwFriendsStat" style="color:var(--b)">3</div><div class="kw-sl">Vänner</div></div>
         </div>
         <!-- Daily Spin in World -->
-        <div style="margin:0 12px 12px;background:linear-gradient(135deg,rgba(191,95,255,.12),rgba(100,0,200,.08));border:1.5px solid rgba(191,95,255,.3);border-radius:18px;padding:12px 14px;display:flex;align-items:center;gap:12px">
+        <div style="margin:0 12px 12px;background:#0d0d0d;border:2px solid var(--p);border-radius:6px;box-shadow:3px 3px 0px var(--p);padding:12px 14px;display:flex;align-items:center;gap:12px">
           <div style="font-size:30px;animation:petBob 1.5s ease-in-out infinite">🎰</div>
           <div style="flex:1">
             <div style="font-size:12px;font-weight:900;color:var(--p)">DAGLIG KARMA SPIN</div>
@@ -2712,7 +2712,7 @@ button:active{opacity:.85;}
           <div style="font-size:10px;color:var(--t3)" id="kartaPlayerCount">👥 247 aktiva nu</div>
         </div>
         <!-- Fake but beautiful map of Stockholm zones -->
-        <div id="meMapWrap" style="height:340px;position:relative;background:linear-gradient(180deg,#020810,#030d1e);border-radius:0;overflow:hidden;margin:0 12px;border-radius:16px;border:1px solid rgba(0,217,255,.15)">
+        <div id="meMapWrap" style="height:340px;position:relative;background:#000;overflow:hidden;margin:0 12px;border-radius:6px;border:2px solid var(--b);box-shadow:4px 4px 0px var(--b)">
           <canvas id="kartaCanvas" style="width:100%;height:100%;display:block"></canvas>
           <div id="kartaOverlay" style="position:absolute;inset:0;pointer-events:none"></div>
         </div>
@@ -2783,7 +2783,7 @@ button:active{opacity:.85;}
         <span style="font-size:22px;color:var(--g)">→</span>
       </div>
       <!-- Territory Leaderboard teaser -->
-      <div style="margin:0 14px 12px;background:linear-gradient(135deg,rgba(255,230,0,.08),rgba(191,95,255,.05));border:2px solid rgba(255,230,0,.25);border-radius:22px;padding:14px 16px;cursor:pointer;-webkit-tap-highlight-color:transparent" onclick="nav('world')">
+      <div style="margin:0 14px 12px;background:#0d0d0d;border:2px solid var(--y);border-radius:6px;box-shadow:3px 3px 0px var(--y);padding:14px 16px;cursor:pointer;-webkit-tap-highlight-color:transparent" onclick="nav('world')">
         <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
           <div style="font-size:14px;font-weight:900;color:var(--y)">🏆 TERRITORIUM TOPPLISTA</div>
           <div style="font-size:10px;color:var(--t3);font-family:var(--mono)">LIVE</div>
@@ -2838,7 +2838,7 @@ button:active{opacity:.85;}
       <div style="display:flex;gap:12px;overflow-x:auto;padding:0 14px 16px;scrollbar-width:none;-webkit-overflow-scrolling:touch">
         <!-- #1 Trending -->
         <div style="flex-shrink:0;width:130px;cursor:pointer" onclick="showT('🐉 Eldraken · 12.4K KARMA · Sänd vänförfrågan!','pk')">
-          <div style="width:130px;height:140px;border-radius:22px;background:linear-gradient(135deg,rgba(57,255,20,.18),rgba(0,217,255,.1));border:2px solid rgba(57,255,20,.5);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;position:relative;overflow:hidden">
+          <div style="width:130px;height:140px;border-radius:6px;background:#0d0d0d;border:2px solid var(--p);box-shadow:3px 3px 0px var(--p);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;position:relative;overflow:hidden">
             <div style="position:absolute;inset:0;background:radial-gradient(ellipse at 50% 80%,rgba(57,255,20,.12),transparent 65%)"></div>
             <div style="position:absolute;top:8px;left:8px;background:#FFD700;color:#000;font-size:9px;font-weight:900;padding:2px 7px;border-radius:7px;font-family:var(--mono);letter-spacing:.5px">#1</div>
             <div style="position:absolute;top:8px;right:8px;font-size:12px;filter:drop-shadow(0 0 4px #ff6600)">🔥</div>
@@ -2853,7 +2853,7 @@ button:active{opacity:.85;}
         </div>
         <!-- #2 -->
         <div style="flex-shrink:0;width:130px;cursor:pointer" onclick="showT('🐺 Nightwolf · 9.8K KARMA · Sänd vänförfrågan!','pk')">
-          <div style="width:130px;height:140px;border-radius:22px;background:linear-gradient(135deg,rgba(191,95,255,.18),rgba(255,45,85,.08));border:2px solid rgba(191,95,255,.45);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;position:relative;overflow:hidden">
+          <div style="width:130px;height:140px;border-radius:6px;background:#0d0d0d;border:2px solid var(--p);box-shadow:3px 3px 0px var(--p);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;position:relative;overflow:hidden">
             <div style="position:absolute;inset:0;background:radial-gradient(ellipse at 50% 80%,rgba(191,95,255,.12),transparent 65%)"></div>
             <div style="position:absolute;top:8px;left:8px;background:rgba(255,255,255,.15);color:#fff;font-size:9px;font-weight:900;padding:2px 7px;border-radius:7px;font-family:var(--mono)">#2</div>
             <div style="position:absolute;top:8px;right:8px;font-size:12px">🔥</div>
@@ -2868,7 +2868,7 @@ button:active{opacity:.85;}
         </div>
         <!-- #3 -->
         <div style="flex-shrink:0;width:130px;cursor:pointer" onclick="showT('🦋 Fjärilsqueen · 7.2K KARMA · Sänd vänförfrågan!','pk')">
-          <div style="width:130px;height:140px;border-radius:22px;background:linear-gradient(135deg,rgba(0,217,255,.18),rgba(191,95,255,.08));border:2px solid rgba(0,217,255,.4);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;position:relative;overflow:hidden">
+          <div style="width:130px;height:140px;border-radius:6px;background:#0d0d0d;border:2px solid var(--p);box-shadow:3px 3px 0px var(--p);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;position:relative;overflow:hidden">
             <div style="position:absolute;inset:0;background:radial-gradient(ellipse at 50% 80%,rgba(0,217,255,.12),transparent 65%)"></div>
             <div style="position:absolute;top:8px;left:8px;background:rgba(255,255,255,.15);color:#fff;font-size:9px;font-weight:900;padding:2px 7px;border-radius:7px;font-family:var(--mono)">#3</div>
             <div style="position:absolute;top:8px;right:8px;font-size:12px">⭐</div>
@@ -2883,7 +2883,7 @@ button:active{opacity:.85;}
         </div>
         <!-- #4 -->
         <div style="flex-shrink:0;width:130px;cursor:pointer" onclick="showT('🦊 Räven · 5.5K KARMA · Sänd vänförfrågan!','pk')">
-          <div style="width:130px;height:140px;border-radius:22px;background:linear-gradient(135deg,rgba(255,159,10,.18),rgba(255,45,85,.08));border:2px solid rgba(255,159,10,.4);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;position:relative;overflow:hidden">
+          <div style="width:130px;height:140px;border-radius:6px;background:#0d0d0d;border:2px solid var(--p);box-shadow:3px 3px 0px var(--p);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;position:relative;overflow:hidden">
             <div style="position:absolute;inset:0;background:radial-gradient(ellipse at 50% 80%,rgba(255,159,10,.12),transparent 65%)"></div>
             <div style="position:absolute;top:8px;left:8px;background:rgba(255,255,255,.15);color:#fff;font-size:9px;font-weight:900;padding:2px 7px;border-radius:7px;font-family:var(--mono)">#4</div>
             <div style="position:absolute;top:8px;right:8px;font-size:12px">💫</div>
@@ -2914,23 +2914,23 @@ button:active{opacity:.85;}
       <div class="sh"><div class="sh-t">🎮 MINI-GAMES</div><div class="sh-a" style="color:var(--p)">SPELA & VINN</div></div>
       <div class="xgame-row">
         <div class="xgame-card" onclick="openFishingGame()">
-          <div class="xgame-banner" style="background:linear-gradient(135deg,#020c18,#031828)">🎣</div>
+          <div class="xgame-banner" style="background:#0d0d0d">🎣</div>
           <div class="xgame-info"><div class="xgame-nm">FISKA</div><div class="xgame-sub">Fånga fiskar, vinn mat</div><div class="xgame-rew">+XP +MAT</div></div>
         </div>
         <div class="xgame-card" onclick="openBattle()">
-          <div class="xgame-banner" style="background:linear-gradient(135deg,#180210,#200412)">⚔️</div>
+          <div class="xgame-banner" style="background:#0d0d0d">⚔️</div>
           <div class="xgame-info"><div class="xgame-nm">BATTLE</div><div class="xgame-sub">Slåss mot monster</div><div class="xgame-rew">+COINS +XP</div></div>
         </div>
         <div class="xgame-card" onclick="openModal('flashModal')">
-          <div class="xgame-banner" style="background:linear-gradient(135deg,#180208,#200210)">⚡</div>
+          <div class="xgame-banner" style="background:#0d0d0d">⚡</div>
           <div class="xgame-info"><div class="xgame-nm">FLASH</div><div class="xgame-sub">Posta daglig Flash</div><div class="xgame-rew">+STREAK</div></div>
         </div>
         <div class="xgame-card" onclick="nav('world');setTimeout(()=>document.querySelector('.kw-wild-pet')?.scrollIntoView({behavior:'smooth'}),400)">
-          <div class="xgame-banner" style="background:linear-gradient(135deg,#181208,#28200a)">🦎</div>
+          <div class="xgame-banner" style="background:#0d0d0d">🦎</div>
           <div class="xgame-info"><div class="xgame-nm">FÅNGA PETS</div><div class="xgame-sub">Judgment Ring ⭕</div><div class="xgame-rew">+XP +WP</div></div>
         </div>
         <div class="xgame-card" onclick="openBattle()">
-          <div class="xgame-banner" style="background:linear-gradient(135deg,#180210,#200412)">⚔️</div>
+          <div class="xgame-banner" style="background:#0d0d0d">⚔️</div>
           <div class="xgame-info"><div class="xgame-nm">BATTLE</div><div class="xgame-sub">Slåss mot monster</div><div class="xgame-rew">+COINS +XP</div></div>
         </div>
       </div>
