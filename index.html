@@ -257,24 +257,24 @@ button:active{opacity:.85;}
 .vr-mini.vr-k .vr-big-num{color:var(--g);}
 /* CARE HERO — Tamagotchi big buttons */
 .care-section-lbl{font-size:9px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:1px;padding:3px 14px 4px;display:flex;align-items:center;gap:6px;}
-.care-hero{display:grid;grid-template-columns:repeat(3,1fr);gap:5px;margin:0 12px 5px;}
-.care-hero-row2{display:grid;grid-template-columns:repeat(3,1fr);gap:5px;margin:0 12px 8px;}
-.chb{border-radius:6px;padding:10px 5px 10px;text-align:center;cursor:pointer;transition:transform .08s,box-shadow .08s;-webkit-tap-highlight-color:transparent;position:relative;overflow:hidden;border:3px solid;min-height:68px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;}
-.chb:active{transform:translate(3px,3px);box-shadow:0px 0px 0px transparent!important;}
+.care-hero{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin:0 12px 6px;}
+.care-hero-row2{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin:0 12px 8px;}
+.chb{border-radius:12px;padding:10px 4px;text-align:center;cursor:pointer;transition:transform .1s,opacity .1s;-webkit-tap-highlight-color:transparent;position:relative;overflow:hidden;border:1.5px solid;min-height:60px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;background:#111;}
+.chb:active{transform:scale(.92);opacity:.8;}
 .chb-ico{font-size:22px;display:block;line-height:1.1;}
 .chb-lbl{font-size:8px;font-weight:900;display:block;letter-spacing:.5px;text-transform:uppercase;}
-.chb-val{font-size:7px;display:block;font-weight:700;opacity:.72;font-family:var(--mono);}
-.chb-feed{background:#0d0d0d;border-color:var(--o);box-shadow:3px 3px 0px var(--o);}
+.chb-val{font-size:7px;display:block;font-weight:700;opacity:.65;font-family:var(--mono);}
+.chb-feed{border-color:rgba(255,159,10,.45);box-shadow:0 0 12px rgba(255,159,10,.1);}
 .chb-feed .chb-lbl,.chb-feed .chb-val{color:var(--o);}
-.chb-train{background:#0d0d0d;border-color:var(--pk);box-shadow:3px 3px 0px var(--pk);}
+.chb-train{border-color:rgba(255,0,127,.45);box-shadow:0 0 12px rgba(255,0,127,.1);}
 .chb-train .chb-lbl,.chb-train .chb-val{color:var(--pk);}
-.chb-sleep{background:#0d0d0d;border-color:var(--b);box-shadow:3px 3px 0px var(--b);}
+.chb-sleep{border-color:rgba(0,217,255,.45);box-shadow:0 0 12px rgba(0,217,255,.1);}
 .chb-sleep .chb-lbl,.chb-sleep .chb-val{color:var(--b);}
-.chb-play{background:#0d0d0d;border-color:var(--p);box-shadow:3px 3px 0px var(--p);}
+.chb-play{border-color:rgba(191,95,255,.45);box-shadow:0 0 12px rgba(191,95,255,.1);}
 .chb-play .chb-lbl,.chb-play .chb-val{color:var(--p);}
-.chb-bath{background:#0d0d0d;border-color:var(--tl);box-shadow:3px 3px 0px var(--tl);}
-.chb-bath .chb-lbl,.chb-bath .chb-val{color:var(--tl);}
-.chb-talk{background:#0d0d0d;border-color:var(--pk);box-shadow:3px 3px 0px var(--pk);}
+.chb-bath{border-color:rgba(57,255,20,.45);box-shadow:0 0 12px rgba(57,255,20,.1);}
+.chb-bath .chb-lbl,.chb-bath .chb-val{color:var(--g);}
+.chb-talk{border-color:rgba(255,0,127,.45);box-shadow:0 0 12px rgba(255,0,127,.1);}
 .chb-talk .chb-lbl,.chb-talk .chb-val{color:var(--pk);}
 .chb.urgent{animation:urgentPulse .75s ease-in-out infinite;}
 @keyframes urgentPulse{0%,100%{transform:scale(1);}50%{transform:scale(1.03);}}
@@ -289,7 +289,7 @@ button:active{opacity:.85;}
 .vf{height:100%;border-radius:100px;transition:width .5s;}
 .vv{font-size:10px;font-weight:700;width:28px;text-align:right;flex-shrink:0;font-family:var(--mono);}
 /* Streak hero */
-.streak-hero{margin:0 12px 10px;background:#0d0d0d;border:3px solid var(--y);border-radius:6px;box-shadow:4px 4px 0px var(--y);padding:13px;display:flex;align-items:center;gap:12px;}
+.streak-hero{margin:0 12px 10px;background:#111;border:1px solid rgba(255,230,0,.25);border-radius:14px;padding:12px;display:flex;align-items:center;gap:12px;}
 .streak-ring-big{width:58px;height:58px;border-radius:50%;padding:3px;background:conic-gradient(var(--c3),var(--c3));flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:all .3s;}
 .streak-ring-big.on{background:conic-gradient(var(--g),var(--tl),var(--g));}
 .streak-inner-big{width:50px;height:50px;border-radius:50%;background:var(--c2);display:flex;flex-direction:column;align-items:center;justify-content:center;}
@@ -1966,14 +1966,7 @@ button:active{opacity:.85;}
 /* PET CORNER WIDGET */
 .pc-b{border-radius:12px;border:1px solid rgba(57,255,20,.4);box-shadow:0 0 12px rgba(57,255,20,.2);background:rgba(0,0,0,.85);backdrop-filter:blur(10px);}
 
-/* CARE BUTTONS — sleek glow style */
-.chb{border-radius:6px;border:2px solid;min-height:56px;gap:1px;transition:transform .08s,box-shadow .08s;}
-.chb:active{transform:translate(2px,2px);box-shadow:0px 0px 0px transparent!important;}
-.chb-feed{background:#0d0d0d;border-color:var(--o);box-shadow:3px 3px 0px var(--o);}
-.chb-feed .chb-lbl,.chb-feed .chb-val{color:var(--o);}
-.chb-train{background:#0d0d0d;border-color:var(--pk);box-shadow:3px 3px 0px var(--pk);}
-.chb-train .chb-lbl,.chb-train .chb-val{color:var(--pk);}
-.chb-sleep{background:#0d0d0d;border-color:var(--b);box-shadow:3px 3px 0px var(--b);}
+/* CARE BUTTONS — override reset (defined earlier) */
 
 /* BUTTONS — bort med offset shadow */
 .btn{border:none;border-radius:10px;transition:transform .1s,opacity .1s,box-shadow .1s;}
@@ -2360,7 +2353,7 @@ button:active{opacity:.85;}
         </div>
       </div>
       <!-- EVOLUTION TREE -->
-      <div style="margin:0 14px 8px;background:#0d0d0d;border:2px solid var(--y);border-radius:6px;box-shadow:3px 3px 0px var(--y);padding:12px 14px;overflow:hidden;position:relative">
+      <div style="margin:0 14px 8px;background:#111;border:1px solid rgba(255,230,0,.25);border-radius:12px;padding:10px 14px;overflow:hidden;position:relative">
         <div style="font-size:9px;font-weight:900;color:var(--y);font-family:var(--mono);letter-spacing:1px;margin-bottom:8px">🌳 EVOLUTION PATH</div>
         <div style="display:flex;align-items:center;gap:0;overflow-x:auto;scrollbar-width:none;padding-bottom:4px" id="evolTreeRow">
           <!-- rendered by renderEvolTree() -->
