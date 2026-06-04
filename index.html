@@ -915,49 +915,57 @@ button:active{opacity:.85;}
 /* ═══════════════════════════════════
    CINEMATIC ONBOARDING
 ═══════════════════════════════════ */
-.ob{position:fixed;inset:0;background:#04040a;z-index:9999;display:flex;flex-direction:column;overflow:hidden;}
+.ob{position:fixed;inset:0;background:#000;z-index:9999;display:flex;flex-direction:column;overflow:hidden;}
 .ob-bg{position:absolute;inset:0;pointer-events:none;}
 .ob-bg-star{position:absolute;border-radius:50%;background:#fff;animation:obStar var(--dur) ease-in-out infinite var(--del);}
 @keyframes obStar{0%,100%{opacity:.1;}50%{opacity:.85;}}
 .ob-float-em{position:absolute;animation:obFloatUp var(--dur) linear infinite var(--del);font-size:var(--sz);pointer-events:none;}
 @keyframes obFloatUp{0%{transform:translateY(100vh) scale(0);opacity:0;}10%{opacity:.7;}90%{opacity:.5;}100%{transform:translateY(-20vh) scale(1);opacity:0;}}
-.ob-content{position:relative;z-index:2;padding:24px 24px 32px;flex:1;display:flex;flex-direction:column;justify-content:center;overflow-y:auto;scrollbar-width:none;}
+.ob-content{position:relative;z-index:2;padding:20px 20px 28px;flex:1;display:flex;flex-direction:column;justify-content:center;overflow-y:auto;scrollbar-width:none;}
 .ob-content::-webkit-scrollbar{display:none;}
-.ob-logo-hero{font-size:52px;font-weight:900;font-family:var(--mono);text-align:center;letter-spacing:-3px;margin-bottom:2px;animation:obLogoIn .75s cubic-bezier(.34,1.56,.64,1);}
-@keyframes obLogoIn{from{transform:scale(0) rotate(-8deg);opacity:0;}to{transform:none;opacity:1;}}
-.ob-logo-hero .ok{color:var(--g);text-shadow:0 0 40px rgba(57,255,20,.7);}
-.ob-tag2{font-size:11px;color:var(--t3);letter-spacing:3px;text-transform:uppercase;text-align:center;margin-bottom:28px;font-family:var(--mono);}
-.ob-prog2{display:flex;gap:6px;margin-bottom:14px;justify-content:center;}
-.ob-d2{height:4px;flex:1;max-width:36px;border-radius:100px;background:rgba(255,255,255,.12);transition:all .35s;}
-.ob-d2.on{background:var(--g);box-shadow:0 0 8px rgba(57,255,20,.6);}
-.ob-h2{font-size:26px;font-weight:900;line-height:1.15;margin-bottom:6px;}
-.ob-p2{font-size:13px;color:var(--t2);line-height:1.55;margin-bottom:14px;}
+.ob-logo-hero{font-size:64px;font-weight:900;font-family:var(--mono);text-align:center;letter-spacing:-2px;margin-bottom:4px;animation:obLogoIn .6s cubic-bezier(.34,1.56,.64,1);}
+@keyframes obLogoIn{from{transform:scale(0) rotate(-12deg);opacity:0;}to{transform:none;opacity:1;}}
+.ob-logo-hero .ok{color:var(--g);text-shadow:0 0 40px rgba(57,255,20,.9),0 0 80px rgba(57,255,20,.4);}
+.ob-tag2{font-size:10px;color:rgba(57,255,20,.6);letter-spacing:4px;text-transform:uppercase;text-align:center;margin-bottom:24px;font-family:var(--mono);border:1px solid rgba(57,255,20,.2);display:inline-block;padding:4px 12px;border-radius:4px;margin-left:auto;margin-right:auto;}
+.ob-prog2{display:flex;gap:8px;margin-bottom:16px;justify-content:center;}
+.ob-d2{height:4px;flex:1;max-width:40px;border-radius:0px;background:rgba(255,255,255,.1);transition:all .35s;}
+.ob-d2.on{background:var(--g);box-shadow:0 0 10px rgba(57,255,20,.8);}
+.ob-h2{font-size:28px;font-weight:900;line-height:1.1;margin-bottom:6px;font-family:var(--mono);}
+.ob-p2{font-size:12px;color:rgba(255,255,255,.55);line-height:1.6;margin-bottom:16px;font-family:var(--mono);}
 /* Step animations */
 .ob-step{animation:stepIn .35s cubic-bezier(.4,0,.2,1);}
 @keyframes stepIn{from{opacity:0;transform:translateX(24px);}to{opacity:1;transform:none;}}
-/* World selection */
-.ob-worlds{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:22px;}
-.ob-world{border-radius:20px;padding:18px 12px;text-align:center;cursor:pointer;border:2px solid rgba(255,255,255,.1);transition:all .18s;-webkit-tap-highlight-color:transparent;background:rgba(255,255,255,.03);}
-.ob-world.sel{border-color:rgba(255,255,255,.55);transform:scale(1.04);background:rgba(255,255,255,.07);}
-.ob-world-ico{font-size:38px;display:block;margin-bottom:6px;animation:petBob 2.5s ease-in-out infinite;}
+/* World selection — neo-brutalism */
+.ob-worlds{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px;}
+.ob-world{border-radius:6px;padding:16px 10px;text-align:center;cursor:pointer;border:3px solid rgba(255,255,255,.18);transition:transform .08s,box-shadow .08s;-webkit-tap-highlight-color:transparent;background:#0d0d0d;box-shadow:4px 4px 0px rgba(255,255,255,.15);}
+.ob-world.sel{transform:translate(3px,3px);box-shadow:0px 0px 0px transparent;}
+.ob-world[data-world="cosmic"].sel,.ob-world[data-world="cosmic"]:active{border-color:var(--p);box-shadow:0 0 0;transform:translate(3px,3px);}
+.ob-world[data-world="cosmic"]{border-color:var(--p);box-shadow:4px 4px 0px var(--p);background:#0a0010;}
+.ob-world[data-world="nature"]{border-color:var(--g);box-shadow:4px 4px 0px var(--g);background:#001a00;}
+.ob-world[data-world="nature"].sel{border-color:var(--g);box-shadow:0 0 0;transform:translate(3px,3px);}
+.ob-world[data-world="city"]{border-color:var(--b);box-shadow:4px 4px 0px var(--b);background:#000d1a;}
+.ob-world[data-world="city"].sel{border-color:var(--b);box-shadow:0 0 0;transform:translate(3px,3px);}
+.ob-world[data-world="pixel"]{border-color:var(--pk);box-shadow:4px 4px 0px var(--pk);background:#1a000d;}
+.ob-world[data-world="pixel"].sel{border-color:var(--pk);box-shadow:0 0 0;transform:translate(3px,3px);}
+.ob-world-ico{font-size:42px;display:block;margin-bottom:8px;animation:petBob 2.5s ease-in-out infinite;}
 @keyframes petBob{0%,100%{transform:translateY(0);}50%{transform:translateY(-6px);}}
-.ob-world-nm{font-size:14px;font-weight:900;color:#fff;display:block;margin-bottom:2px;}
-.ob-world-ds{font-size:10px;color:rgba(255,255,255,.5);}
+.ob-world-nm{font-size:13px;font-weight:900;color:#fff;display:block;margin-bottom:3px;font-family:var(--mono);letter-spacing:1px;}
+.ob-world-ds{font-size:9px;color:rgba(255,255,255,.5);font-family:var(--mono);}
 /* Pet selection — 5 cols so all 10 fit in 2 rows, button always visible */
 .ob-pet-big{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;margin-bottom:14px;}
-.ob-pb{border-radius:16px;padding:10px 3px;text-align:center;cursor:pointer;border:2.5px solid rgba(255,255,255,.08);transition:all .13s;background:rgba(255,255,255,.04);-webkit-tap-highlight-color:transparent;}
-.ob-pb.sel{border-color:var(--g);background:rgba(57,255,20,.09);transform:scale(1.07);box-shadow:0 0 18px rgba(57,255,20,.22);}
+.ob-pb{border-radius:6px;padding:10px 3px;text-align:center;cursor:pointer;border:2px solid rgba(255,255,255,.12);transition:transform .08s,box-shadow .08s;background:#0d0d0d;-webkit-tap-highlight-color:transparent;box-shadow:3px 3px 0px rgba(255,255,255,.1);}
+.ob-pb.sel{border-color:var(--g);background:#001200;transform:translate(3px,3px);box-shadow:0 0 0 transparent;}
 .ob-pb-em{font-size:32px;display:block;margin-bottom:3px;animation:petBob 2s ease-in-out infinite;}
 .ob-pb-nm{font-size:8px;font-weight:700;color:var(--t2);}
 /* Big animated pet preview */
 .ob-pet-preview{font-size:88px;text-align:center;display:block;margin:4px auto 16px;animation:petBob 1.8s ease-in-out infinite;filter:drop-shadow(0 0 28px rgba(57,255,20,.45));}
 /* Tutorial feed action */
-.ob-feed-btn{width:100%;padding:18px 16px;border-radius:22px;background:rgba(255,159,10,.08);border:2px solid rgba(255,159,10,.4);display:flex;align-items:center;gap:14px;cursor:pointer;margin-bottom:14px;-webkit-tap-highlight-color:transparent;transition:all .15s;}
-.ob-feed-btn:active{transform:scale(.95);}
-.ob-feed-btn.done{background:rgba(57,255,20,.08);border-color:rgba(57,255,20,.4);}
-.ob-feed-ico{font-size:38px;flex-shrink:0;}
-.ob-feed-main{font-size:15px;font-weight:900;margin-bottom:3px;}
-.ob-feed-sub{font-size:12px;color:var(--t2);}
+.ob-feed-btn{width:100%;padding:18px 16px;border-radius:6px;background:#0d0d0d;border:3px solid var(--o);box-shadow:5px 5px 0px var(--o);display:flex;align-items:center;gap:14px;cursor:pointer;margin-bottom:14px;-webkit-tap-highlight-color:transparent;transition:transform .08s,box-shadow .08s;}
+.ob-feed-btn:active{transform:translate(5px,5px);box-shadow:0px 0px 0px transparent;}
+.ob-feed-btn.done{background:#001a00;border-color:var(--g);box-shadow:5px 5px 0px var(--g);}
+.ob-feed-ico{font-size:40px;flex-shrink:0;}
+.ob-feed-main{font-size:15px;font-weight:900;margin-bottom:3px;font-family:var(--mono);}
+.ob-feed-sub{font-size:11px;color:rgba(255,255,255,.5);font-family:var(--mono);}
 
 /* ═══════════════════════════════════
    PET ROOM — Neko Atsume style
@@ -2086,10 +2094,10 @@ button:active{opacity:.85;}
   <div class="ob-step" id="obsw">
     <div class="ob-content">
       <div class="ob-logo-hero"><span class="ok">K</span>ARMA</div>
-      <div class="ob-tag2">Real Life · Game Engine ⚡</div>
+      <div style="text-align:center;margin-bottom:20px"><span class="ob-tag2">REAL LIFE · GAME ENGINE ⚡</span></div>
       <div class="ob-prog2"><div class="ob-d2 on"></div><div class="ob-d2"></div><div class="ob-d2"></div><div class="ob-d2"></div></div>
-      <div class="ob-h2" id="obWorldTitle">Välj din värld.</div>
-      <div class="ob-p2" id="obWorldSub">Din värld är hemmet för din pet. Välj den miljö du vill leva i.</div>
+      <div class="ob-h2" id="obWorldTitle">VÄLJ DIN VÄRLD.</div>
+      <div class="ob-p2" id="obWorldSub">Din värld = hemmet för din pet. Välj miljön du vill leva i.</div>
       <div class="ob-worlds">
         <div class="ob-world sel" data-world="cosmic" onclick="pickWorld(this)">
           <span class="ob-world-ico">🌌</span>
@@ -2112,7 +2120,7 @@ button:active{opacity:.85;}
           <div class="ob-world-ds">8-bit retro pixel</div>
         </div>
       </div>
-      <button class="btn btn-g btn-lg btn-full" onclick="obNext(0)">VÄLJ VÄRLD →</button>
+      <button class="btn btn-g btn-lg btn-full" style="font-family:var(--mono);font-size:16px;letter-spacing:2px;border-radius:6px;border:3px solid var(--g);box-shadow:5px 5px 0px var(--g);transition:transform .08s,box-shadow .08s" ontouchstart="this.style.transform='translate(5px,5px)';this.style.boxShadow='0px 0px 0px var(--g)'" ontouchend="this.style.transform='';this.style.boxShadow='5px 5px 0px var(--g)'" onclick="obNext(0)">VÄLJ VÄRLD →</button>
     </div>
   </div>
 
@@ -2120,13 +2128,13 @@ button:active{opacity:.85;}
   <div class="ob-step" id="obs0" style="display:none">
     <div class="ob-content">
       <div class="ob-logo-hero"><span class="ok">K</span>ARMA</div>
-      <div class="ob-tag2">Real Life · Game Engine ⚡</div>
+      <div style="text-align:center;margin-bottom:20px"><span class="ob-tag2">REAL LIFE · GAME ENGINE ⚡</span></div>
       <div class="ob-prog2"><div class="ob-d2 on"></div><div class="ob-d2 on"></div><div class="ob-d2"></div><div class="ob-d2"></div></div>
-      <div class="ob-h2">Vad heter du?</div>
+      <div class="ob-h2">VAD HETER DU?</div>
       <div class="ob-p2">Välj ett smeknamn — det är din KARMA-identitet i appen.</div>
       <label class="lbl">DITT NAMN</label>
-      <input class="inp" id="obName" placeholder="Ex: ella_runs / axelsthlm" maxlength="18" style="font-size:16px;margin-bottom:16px">
-      <button class="btn btn-g btn-lg btn-full" onclick="obNext(1)">NÄSTA →</button>
+      <input class="inp" id="obName" placeholder="Ex: ella_runs / axelsthlm" maxlength="18" style="font-size:16px;margin-bottom:16px;border-radius:6px;border:3px solid rgba(57,255,20,.4);background:#0d0d0d;color:#fff;font-family:var(--mono)">
+      <button class="btn btn-g btn-lg btn-full" style="font-family:var(--mono);letter-spacing:2px;border-radius:6px;border:3px solid var(--g);box-shadow:5px 5px 0px var(--g);transition:transform .08s,box-shadow .08s" ontouchstart="this.style.transform='translate(5px,5px)';this.style.boxShadow='0'" ontouchend="this.style.transform='';this.style.boxShadow='5px 5px 0px var(--g)'" onclick="obNext(1)">NÄSTA →</button>
     </div>
   </div>
 
@@ -2169,17 +2177,17 @@ button:active{opacity:.85;}
       <div class="ob-h2" id="obAgeTitle">Hur gammal är du? 🎂</div>
       <div class="ob-p2" id="obAgeSub">Anpassar appen efter dig</div>
       <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:20px">
-        <div class="ob-world sel" id="obAge1" onclick="setObAge('kid',this)" style="text-align:left;padding:14px 16px;display:flex;align-items:center;gap:12px">
-          <span style="font-size:28px">🧒</span><div><div id="obAge1Lbl" style="font-size:14px;font-weight:900">Under 13</div><div id="obAge1Desc" style="font-size:10px;color:rgba(255,255,255,.5)">Pet &amp; spel-läge — ingen social</div></div>
+        <div class="ob-world" id="obAge1" onclick="setObAge('kid',this)" style="text-align:left;padding:14px 16px;display:flex;align-items:center;gap:12px;border-color:var(--b);box-shadow:4px 4px 0px var(--b);background:#000d1a">
+          <span style="font-size:28px">🧒</span><div><div id="obAge1Lbl" style="font-size:14px;font-weight:900;font-family:var(--mono)">UNDER 13</div><div id="obAge1Desc" style="font-size:10px;color:rgba(255,255,255,.5);font-family:var(--mono)">Pet &amp; spel-läge — ingen social</div></div>
         </div>
-        <div class="ob-world" id="obAge2" onclick="setObAge('teen',this)" style="text-align:left;padding:14px 16px;display:flex;align-items:center;gap:12px">
-          <span style="font-size:28px">🧑</span><div><div id="obAge2Lbl" style="font-size:14px;font-weight:900">13–17</div><div id="obAge2Desc" style="font-size:10px;color:rgba(255,255,255,.5)">Full app — socialt + spel + pet</div></div>
+        <div class="ob-world" id="obAge2" onclick="setObAge('teen',this)" style="text-align:left;padding:14px 16px;display:flex;align-items:center;gap:12px;border-color:var(--pk);box-shadow:4px 4px 0px var(--pk);background:#1a000d">
+          <span style="font-size:28px">🧑</span><div><div id="obAge2Lbl" style="font-size:14px;font-weight:900;font-family:var(--mono)">13–17</div><div id="obAge2Desc" style="font-size:10px;color:rgba(255,255,255,.5);font-family:var(--mono)">Full app — socialt + spel + pet</div></div>
         </div>
-        <div class="ob-world" id="obAge3" onclick="setObAge('adult',this)" style="text-align:left;padding:14px 16px;display:flex;align-items:center;gap:12px">
-          <span style="font-size:28px">👤</span><div><div id="obAge3Lbl" style="font-size:14px;font-weight:900">18+</div><div id="obAge3Desc" style="font-size:10px;color:rgba(255,255,255,.5)">Full app + exklusivt innehåll</div></div>
+        <div class="ob-world" id="obAge3" onclick="setObAge('adult',this)" style="text-align:left;padding:14px 16px;display:flex;align-items:center;gap:12px;border-color:var(--g);box-shadow:4px 4px 0px var(--g);background:#001200">
+          <span style="font-size:28px">👤</span><div><div id="obAge3Lbl" style="font-size:14px;font-weight:900;font-family:var(--mono)">18+</div><div id="obAge3Desc" style="font-size:10px;color:rgba(255,255,255,.5);font-family:var(--mono)">Full app + exklusivt innehåll</div></div>
         </div>
       </div>
-      <button class="btn btn-g btn-lg btn-full ob-next-btn" onclick="obNext(4)">Nästa →</button>
+      <button class="btn btn-g btn-lg btn-full ob-next-btn" style="font-family:var(--mono);letter-spacing:2px;border-radius:6px;border:3px solid var(--g);box-shadow:5px 5px 0px var(--g);transition:transform .08s,box-shadow .08s" ontouchstart="this.style.transform='translate(5px,5px)';this.style.boxShadow='0'" ontouchend="this.style.transform='';this.style.boxShadow='5px 5px 0px var(--g)'" onclick="obNext(4)">NÄSTA →</button>
     </div>
   </div>
 
@@ -2190,28 +2198,28 @@ button:active{opacity:.85;}
       <div class="ob-h2">Vad lockar dig mest? ✨</div>
       <div class="ob-p2" id="obModeSub">Vi anpassar din startsida</div>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:20px">
-        <div class="ob-world" id="obMode1" onclick="setObMode('games',this)" style="padding:18px 10px">
+        <div class="ob-world" id="obMode1" onclick="setObMode('games',this)" style="padding:16px 10px;border-color:var(--pk);box-shadow:4px 4px 0px var(--pk);background:#1a000d">
           <span class="ob-world-ico">🎮</span>
-          <span class="ob-world-nm" id="obMode1Lbl">Minispel</span>
+          <span class="ob-world-nm" id="obMode1Lbl">MINISPEL</span>
           <span class="ob-world-ds" id="obMode1Desc">Battle, fiska, spin</span>
         </div>
-        <div class="ob-world sel" id="obMode2" onclick="setObMode('social',this)" style="padding:18px 10px">
+        <div class="ob-world sel" id="obMode2" onclick="setObMode('social',this)" style="padding:16px 10px;border-color:var(--y);box-shadow:4px 4px 0px var(--y);background:#1a1400">
           <span class="ob-world-ico">⚡</span>
-          <span class="ob-world-nm" id="obMode2Lbl">Socialt</span>
+          <span class="ob-world-nm" id="obMode2Lbl">SOCIALT</span>
           <span class="ob-world-ds" id="obMode2Desc">Flash, följ, chat</span>
         </div>
-        <div class="ob-world" id="obMode3" onclick="setObMode('pet',this)" style="padding:18px 10px">
+        <div class="ob-world" id="obMode3" onclick="setObMode('pet',this)" style="padding:16px 10px;border-color:var(--g);box-shadow:4px 4px 0px var(--g);background:#001200">
           <span class="ob-world-ico">🐾</span>
-          <span class="ob-world-nm" id="obMode3Lbl">Pet</span>
+          <span class="ob-world-nm" id="obMode3Lbl">PET</span>
           <span class="ob-world-ds" id="obMode3Desc">Träna, mata, vård</span>
         </div>
-        <div class="ob-world" id="obMode4" onclick="setObMode('full',this)" style="padding:18px 10px">
+        <div class="ob-world" id="obMode4" onclick="setObMode('full',this)" style="padding:16px 10px;border-color:var(--p);box-shadow:4px 4px 0px var(--p);background:#0a0010">
           <span class="ob-world-ico">🌟</span>
-          <span class="ob-world-nm" id="obMode4Lbl">Allt!</span>
+          <span class="ob-world-nm" id="obMode4Lbl">ALLT!</span>
           <span class="ob-world-ds" id="obMode4Desc">Ge mig hela paketet</span>
         </div>
       </div>
-      <button class="btn btn-g btn-lg btn-full" id="obStartKarmaBtn" onclick="finishOB()">🚀 STARTA KARMA!</button>
+      <button class="btn btn-g btn-lg btn-full" id="obStartKarmaBtn" style="font-family:var(--mono);font-size:18px;letter-spacing:2px;border-radius:6px;border:3px solid var(--g);box-shadow:6px 6px 0px var(--g);transition:transform .08s,box-shadow .08s" ontouchstart="this.style.transform='translate(6px,6px)';this.style.boxShadow='0'" ontouchend="this.style.transform='';this.style.boxShadow='6px 6px 0px var(--g)'" onclick="finishOB()">🚀 STARTA KARMA!</button>
     </div>
   </div>
 </div>
