@@ -508,8 +508,11 @@ button:active{opacity:.85;}
 .map-wrap{display:flex;flex-direction:column;height:100%;}
 .map-canvas-wrap{flex:1;position:relative;min-height:280px;}
 #realMap{width:100%;height:100%;}
-.leaflet-container{background:#0c0c16!important;}
-.leaflet-tile-pane{filter:brightness(.78) saturate(.85) hue-rotate(180deg) invert(1) hue-rotate(185deg) brightness(.62);}
+.leaflet-container{background:#080810!important;}
+.leaflet-tile-pane{filter:brightness(.95) saturate(1.1) contrast(1.05);}
+.leaflet-popup-content-wrapper{background:rgba(10,12,24,.97)!important;border:1px solid rgba(57,255,20,.3)!important;border-radius:12px!important;color:var(--t1)!important;box-shadow:0 0 20px rgba(57,255,20,.15)!important;}
+.leaflet-popup-tip-container{display:none!important;}
+.leaflet-popup-content{font-family:var(--mono)!important;font-size:12px!important;color:#fff!important;}
 .map-top{position:absolute;top:12px;left:0;right:0;z-index:500;display:flex;align-items:flex-start;justify-content:space-between;padding:0 12px;pointer-events:none;}
 .map-top>*{pointer-events:all;}
 .share-tog{display:flex;background:rgba(4,4,10,.92);border:1px solid var(--line2);border-radius:10px;overflow:hidden;}
@@ -888,6 +891,7 @@ button:active{opacity:.85;}
 .world-toggle-btn.on{background:rgba(57,255,20,.14);color:var(--g);}
 .nb-notif{position:absolute;top:-1px;right:-3px;width:8px;height:8px;border-radius:50%;background:var(--pk);border:1.5px solid #06060e;animation:notifPulse 2s ease infinite;}
 @keyframes notifPulse{0%,100%{transform:scale(1);}50%{transform:scale(1.4);}}
+@keyframes mapPulse{0%{transform:scale(1);opacity:.8;}100%{transform:scale(2.5);opacity:0;}}
 .nb-create{flex:1;background:none;border:none;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:2px;-webkit-tap-highlight-color:transparent;}
 .create-btn{width:52px;height:52px;border-radius:17px;background:linear-gradient(135deg,#FF2D55 0%,#BF5FFF 100%);display:flex;align-items:center;justify-content:center;font-size:26px;margin-top:-18px;box-shadow:0 6px 24px rgba(255,45,85,.5),0 0 0 1px rgba(255,255,255,.1);transition:all .1s;}
 .nb-create:active .create-btn{transform:scale(.86);}
@@ -934,8 +938,8 @@ button:active{opacity:.85;}
 .ob-prog2{display:flex;gap:8px;margin-bottom:16px;justify-content:center;}
 .ob-d2{height:4px;flex:1;max-width:40px;border-radius:0px;background:rgba(255,255,255,.1);transition:all .35s;}
 .ob-d2.on{background:var(--g);box-shadow:0 0 10px rgba(57,255,20,.8);}
-.ob-h2{font-size:28px;font-weight:900;line-height:1.1;margin-bottom:6px;font-family:var(--mono);}
-.ob-p2{font-size:12px;color:rgba(255,255,255,.55);line-height:1.6;margin-bottom:16px;font-family:var(--mono);}
+.ob-h2{font-size:24px;font-weight:900;line-height:1.1;margin-bottom:4px;font-family:var(--mono);}
+.ob-p2{font-size:11px;color:rgba(255,255,255,.5);line-height:1.5;margin-bottom:12px;font-family:var(--mono);}
 /* Step animations */
 .ob-step{animation:stepIn .35s cubic-bezier(.4,0,.2,1);}
 @keyframes stepIn{from{opacity:0;transform:translateX(24px);}to{opacity:1;transform:none;}}
@@ -956,11 +960,11 @@ button:active{opacity:.85;}
 .ob-world-nm{font-size:13px;font-weight:900;color:#fff;display:block;margin-bottom:3px;font-family:var(--mono);letter-spacing:1px;}
 .ob-world-ds{font-size:9px;color:rgba(255,255,255,.5);font-family:var(--mono);}
 /* Pet selection — 5 cols so all 10 fit in 2 rows, button always visible */
-.ob-pet-big{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;margin-bottom:14px;}
-.ob-pb{border-radius:6px;padding:10px 3px;text-align:center;cursor:pointer;border:2px solid rgba(255,255,255,.12);transition:transform .08s,box-shadow .08s;background:#0d0d0d;-webkit-tap-highlight-color:transparent;box-shadow:3px 3px 0px rgba(255,255,255,.1);}
-.ob-pb.sel{border-color:var(--g);background:#001200;transform:translate(3px,3px);box-shadow:0 0 0 transparent;}
-.ob-pb-em{font-size:32px;display:block;margin-bottom:3px;animation:petBob 2s ease-in-out infinite;}
-.ob-pb-nm{font-size:8px;font-weight:700;color:var(--t2);}
+.ob-pet-big{display:grid;grid-template-columns:repeat(5,1fr);gap:5px;margin-bottom:12px;}
+.ob-pb{border-radius:10px;padding:8px 2px;text-align:center;cursor:pointer;border:2px solid rgba(255,255,255,.12);transition:all .12s;background:#0a0a0a;-webkit-tap-highlight-color:transparent;}
+.ob-pb.sel{border-color:var(--g);background:rgba(57,255,20,.08);box-shadow:0 0 12px rgba(57,255,20,.25);}
+.ob-pb-em{font-size:26px;display:block;margin-bottom:2px;}
+.ob-pb-nm{font-size:7px;font-weight:700;color:var(--t2);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
 /* Big animated pet preview */
 .ob-pet-preview{font-size:88px;text-align:center;display:block;margin:4px auto 16px;animation:petBob 1.8s ease-in-out infinite;filter:drop-shadow(0 0 28px rgba(57,255,20,.45));}
 /* Tutorial feed action */
@@ -6447,9 +6451,33 @@ function flashReact(id,em){
   document.body.appendChild(floater);setTimeout(()=>floater.remove(),600);
 }
 function flashQuickComment(id){
-  const cmts=['🔥 Sjukt bra!!','❤️ Grymmt!','😂 LOL','👑 Legendary!','🤯 Wow!!'];
-  const cmt=cmts[~~(Math.random()*cmts.length)];
-  showT('💬 "'+cmt+'" +2 XP','p');gainXP(2,'social');vibe([15,10,20]);
+  const p=FLASH_POSTS.find(x=>x.id===id)||_sbFeedPosts.find(x=>x.id===id);
+  const quickCmts=['🔥 Sjukt bra!!','❤️ Grymmt!','😂 LOL','👑 Legendary!','🤯 Wow!!','💯 För sjukt!','🐉 GOAT!','✨ Perfekt!'];
+  // Show a quick-comment popup above the flash card
+  const existing=$('flashCommentPop');if(existing)existing.remove();
+  const pop=document.createElement('div');pop.id='flashCommentPop';
+  pop.style.cssText='position:fixed;bottom:90px;left:50%;transform:translateX(-50%);z-index:600;background:rgba(12,14,24,.97);border:1.5px solid rgba(255,255,255,.15);border-radius:20px;padding:12px 14px;width:min(320px,90vw);box-shadow:0 8px 40px rgba(0,0,0,.8);';
+  pop.innerHTML=`<div style="font-size:11px;font-weight:900;color:var(--t2);font-family:var(--mono);margin-bottom:8px;letter-spacing:.5px">💬 KOMMENTERA</div>
+  <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px">
+    ${quickCmts.map(c=>`<div onclick="flashPostComment('${id}','${c}');document.getElementById('flashCommentPop')?.remove()" style="background:var(--c1);border:1px solid var(--line);border-radius:14px;padding:5px 10px;font-size:11px;font-weight:700;cursor:pointer;-webkit-tap-highlight-color:transparent">${c}</div>`).join('')}
+  </div>
+  <div style="display:flex;gap:6px">
+    <input id="flashCommentInput" placeholder="Skriv en kommentar..." style="flex:1;background:var(--c1);border:1px solid var(--line);border-radius:12px;padding:8px 12px;font-size:12px;color:var(--t1);outline:none;font-family:var(--ff)">
+    <button onclick="flashPostComment('${id}',document.getElementById('flashCommentInput')?.value);document.getElementById('flashCommentPop')?.remove()" style="background:var(--pk);color:#fff;border:none;border-radius:12px;padding:8px 14px;font-size:12px;font-weight:900;cursor:pointer">↑</button>
+  </div>`;
+  document.body.appendChild(pop);
+  setTimeout(()=>{document.addEventListener('click',e=>{if(!pop.contains(e.target)){pop.remove();}},{once:true});},100);
+  setTimeout(()=>{const inp=$('flashCommentInput');if(inp)inp.focus();},80);
+}
+function flashPostComment(id,txt){
+  if(!txt||!txt.trim())return;
+  txt=txt.trim().substring(0,120);
+  const p=FLASH_POSTS.find(x=>x.id===id)||_sbFeedPosts.find(x=>x.id===id);
+  if(p&&p.comments!==undefined){if(Array.isArray(p.comments))p.comments.push({u:G.name||'du',c:txt});else p.comments=(p.comments||0)+1;}
+  showT('💬 "'+txt.substring(0,30)+(txt.length>30?'..':'')+'" +3 XP','p');
+  gainXP(3,'social');vibe([15,10,20]);
+  // Update comment count in feed
+  const cntEl=document.querySelector(`[id^="fla${id}"]`)||document.querySelector(`.fv-action-cnt`);
 }
 function flashSendGift(id,pet,user){
   openGiftModal();
@@ -6960,8 +6988,8 @@ function submitSell(){const name=$('sellProductName').value.trim();if(!name){sho
 function initMap(lat,lon){
   if(G.mapInit)return;G.mapInit=true;
   const m=window._leafletMap=L.map('realMap',{zoomControl:false,attributionControl:false}).setView([lat,lon],15);G.lMap=m;
-  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:19}).addTo(m);
-  const yIco=L.divIcon({html:`<div style="width:46px;height:46px;background:rgba(0,255,136,.2);border:3px solid #00ff88;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:20px;box-shadow:0 0 0 8px rgba(0,255,136,.1)">${gS().e}</div>`,className:'',iconAnchor:[23,23]});
+  L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png',{maxZoom:19,subdomains:'abcd'}).addTo(m);
+  const yIco=L.divIcon({html:`<div style="width:48px;height:48px;position:relative;display:flex;align-items:center;justify-content:center"><div style="position:absolute;inset:0;border-radius:50%;border:2px solid rgba(57,255,20,.4);animation:mapPulse 1.8s ease-out infinite"></div><div style="width:42px;height:42px;background:rgba(57,255,20,.15);border:2.5px solid #39FF14;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:22px;box-shadow:0 0 20px rgba(57,255,20,.4),inset 0 0 10px rgba(57,255,20,.1)">${gS().e||'🐉'}</div></div>`,className:'',iconAnchor:[24,24]});
   G.uMarker=L.marker([lat,lon],{icon:yIco}).addTo(m).bindPopup(`<b>${G.name||'Du'}</b><br>LV${G.level}`);
   [{em:'☕',nm:'Espresso House',lat:lat+.003,lon:lon+.004,sek:150,id:'u1'},{em:'👤',nm:'Anna Berg',lat:lat+.001,lon:lon-.003,sek:500,id:'u2'},{em:'👟',nm:'Stadium Nike',lat:lat-.005,lon:lon+.006,sek:500,id:'u3'}].forEach(p=>{
     const ico=L.divIcon({html:`<div style="position:relative"><div style="width:36px;height:36px;background:rgba(255,204,0,.2);border:2px solid #ffcc00;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:16px">${p.em}</div><div style="position:absolute;top:-13px;right:-8px;background:#ffcc00;color:#04040a;font-size:9px;font-weight:900;padding:1px 4px;border-radius:3px">${p.sek}SEK</div><div style="width:0;height:0;border-left:5px solid transparent;border-right:5px solid transparent;border-top:6px solid #ffcc00;margin:0 auto"></div></div>`,className:'',iconAnchor:[18,42]});
