@@ -5626,9 +5626,11 @@ function _talentXPMult(stat){
   if(G._talentK4a&&stat==='action')m*=2;   // Berserker: 2× train XP
   if(G._talentK9)m*=2;                     // GOD OF WAR: all XP ×2
   // SOCIAL branch: social XP boosts
-  if(G._talentS1&&stat==='social')m+=0.15/n||0; // Flash Master: handled per-flash
   if(G._talentS4a&&stat==='social')m*=1.5; // Influencer: social XP ×1.5
   if(G._talentS7a)m*=1.2;                  // Global Icon: all XP ×1.2
+  // MÄSTER branch
+  if(G._talentM2)m*=1.3;                   // Gold Standard: all rewards ×1.3
+  if(G._talentM7)m*=2;                     // GRAND MASTER: all XP ×2
   return m;
 }
 function gainXP(n,stat){
@@ -5662,7 +5664,9 @@ function triggerLvlUp(){
   pcReact('happy');showPetEmote('🤩');petAnimState.jumpVY=-16;shakeScreen();
   for(let i=0;i<5;i++)setTimeout(()=>spawnParticles(window.innerWidth*(.2+Math.random()*.6),window.innerHeight*(.2+Math.random()*.5),'stars'),i*120);
   addH('⬆️ Level '+G.level+'!');
-  G.talentPoints=(G.talentPoints||0)+1;if(G.talentPoints===1)showT('🌳 +1 TALENT POINT! Öppna Talent Träd','g');
+  // M6a Prime Form: level-ups give +2 TP instead of 1
+  const tpGain=G._talentM6a?2:1;
+  G.talentPoints=(G.talentPoints||0)+tpGain;if(G.talentPoints===tpGain)showT('🌳 +'+tpGain+' TALENT POINT! Öppna Talent Träd','g');
   checkEvolution(prevLv,G.level);updateEvolBadge();
 }
 function buyPremium(tier){
