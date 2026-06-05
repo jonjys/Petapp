@@ -12322,6 +12322,11 @@ function _loadFromLocalStorage(){
     G.talentPoints=parseInt(localStorage.getItem('kv8_tp')||'0');
     try{const tl=localStorage.getItem('kv8_tl');if(tl)G.talents=JSON.parse(tl);}catch(e){}
     try{const tlvl=localStorage.getItem('kv8_tlvl');if(tlvl)G.talentLvls=JSON.parse(tlvl);}catch(e){}
+    // Re-apply talent effect flags from owned nodes (silent, no XP/coins granted on reload)
+    if(G.talents&&typeof G.talents==='object'){TALENT_DEFS.forEach(n=>{if(G.talents[n.id]){try{const f=n.id;const _nm=n.nm;// Only set the flag, don't call full ef() which grants coins/XP
+          const k=`_talent${n.id.replace(/[^a-zA-Z0-9]/g,'_')}`;G[k]=true;// Also set named flags for known nodes
+          if(n.id==='k1')G._talentK1=true;else if(n.id==='k2')G._talentK2=true;else if(n.id==='k3')G._talentK3=true;else if(n.id==='k4a')G._talentK4a=true;else if(n.id==='k4b')G._talentK4b=true;else if(n.id==='k5a')G._talentK5a=true;else if(n.id==='k5b')G._talentK5b=true;else if(n.id==='k5c')G._talentK5c=true;else if(n.id==='k6a')G._talentK6a=true;else if(n.id==='k6b')G._talentK6b=true;else if(n.id==='k6c')G._talentK6c=true;else if(n.id==='k7a')G._talentK7a=true;else if(n.id==='k7b')G._talentK7b=true;else if(n.id==='k7c')G._talentK7c=true;else if(n.id==='k8a')G._talentK8a=true;else if(n.id==='k8b')G._talentK8b=true;else if(n.id==='k8c')G._talentK8c=true;else if(n.id==='k9')G._talentK9=true;else if(n.id==='s1')G._talentS1=true;else if(n.id==='s2')G._talentS2=true;else if(n.id==='s3')G._talentS3=true;else if(n.id==='s4a')G._talentS4a=true;else if(n.id==='s4b')G._talentS4b=true;else if(n.id==='s5a')G._talentS5a=true;else if(n.id==='s5b')G._talentS5b=true;else if(n.id==='s6a')G._talentS6a=true;else if(n.id==='s6b')G._talentS6b=true;else if(n.id==='s7a')G._talentS7a=true;else if(n.id==='s7b')G._talentS7b=true;else if(n.id==='s8a')G._talentS8a=true;else if(n.id==='s8b')G._talentS8b=true;else if(n.id==='s9')G._talentS9=true;
+        }catch(e){}}}));}
     try{const di=localStorage.getItem('kv8_diary');if(di)G.diaryEntries=JSON.parse(di);}catch(e){}
     G.lastSpin=localStorage.getItem('kv8_ls')||'';
     G.lastTalkTime=parseInt(localStorage.getItem('kv8_ltt')||'0');
@@ -12337,7 +12342,9 @@ function _loadFromLocalStorage(){
     try{const pm=localStorage.getItem('kv8_pmem');if(pm)G.petMemory=JSON.parse(pm);}catch(e){}
     try{const ex=localStorage.getItem('kv8_expd');if(ex)G.expedition=JSON.parse(ex);}catch(e){}
     const _today=new Date().toDateString();const _last=localStorage.getItem('kv8_lastLogin');
-    if(_last!==_today){localStorage.setItem('kv8_lastLogin',_today);if(_last){const _b=G.premium?300:75;G.coins+=_b;setTimeout(()=>{showT('🎁 DAILY LOGIN BONUS! +'+_b+' COINS','g');vibe([30,20,60,20,80]);},2500);}}
+    if(_last!==_today){localStorage.setItem('kv8_lastLogin',_today);if(_last){const _b=G.premium?300:75;G.coins+=_b;// S4b Hype Builder: +20 XP on daily login
+      if(G._talentS4b)setTimeout(()=>{gainXP(20,'social');showT('🤝 HYPE BUILDER! +20 XP login bonus','pk');},3200);
+      setTimeout(()=>{showT('🎁 DAILY LOGIN BONUS! +'+_b+' COINS','g');vibe([30,20,60,20,80]);},2500);}}
     $('ob').style.display='none';$('app').style.display='flex';updateHUD();nav('home');
     initDailyChallenges();
     setTimeout(startKarmaPulse,1200);setTimeout(renderJackpot,800);
