@@ -2361,7 +2361,7 @@ button:active{opacity:.85;}
         </div>
       </div>
       <!-- EVOLUTION TREE -->
-      <div style="margin:0 14px 8px;background:#111;border:1px solid rgba(255,230,0,.25);border-radius:12px;padding:10px 14px;overflow:hidden;position:relative">
+      <div style="margin:0 14px 8px;background:#111;border:1px solid rgba(255,230,0,.25);border-radius:12px;padding:10px 14px;overflow:visible;position:relative">
         <div style="font-size:9px;font-weight:900;color:var(--y);font-family:var(--mono);letter-spacing:1px;margin-bottom:8px">🌳 EVOLUTION PATH</div>
         <div style="display:flex;align-items:center;gap:0;overflow-x:auto;scrollbar-width:none;padding-bottom:4px" id="evolTreeRow">
           <!-- rendered by renderEvolTree() -->
@@ -5678,6 +5678,7 @@ function pcFeed(){
   floatStat('🍖 +35 HUNGER  +3XP','#FF9F0A');
   if(Math.random()<.3)addDiaryEntry(G.petName+' åt mat med stor aptit! Hunger är nu '+Math.min(100,G.hunger)+'%. Mums! 🍖');
   SFX.click();advanceQuest('feed');advanceDailyChallenge('feed');updateHUD();updatePetView();save();
+  if(G.mood>80&&Math.random()<0.35)setTimeout(()=>showT('📸 '+G.petName+' är glad — posta en Flash! +bonus XP','pk'),1800);
 }
 function pcTrain(){
   if(!G.petMemory)G.petMemory={};G.petMemory.lastTrained=Date.now();
@@ -5812,7 +5813,7 @@ function renderEvolTree(){
     const locked=!done&&!current;
     return`${i>0?`<div style="flex-shrink:0;width:16px;height:2px;background:${done?s.col:'rgba(255,255,255,.1)'};align-self:center;margin-bottom:12px"></div>`:''}
     <div style="display:flex;flex-direction:column;align-items:center;flex-shrink:0;gap:2px">
-      <div style="width:36px;height:36px;border-radius:50%;background:${current?`linear-gradient(135deg,${s.col}44,${s.col}22)`:done?`rgba(255,255,255,.06)`:'rgba(255,255,255,.02)'};border:${current?`2.5px solid ${s.col}`:done?`1.5px solid ${s.col}55`:'1.5px solid rgba(255,255,255,.1)'};display:flex;align-items:center;justify-content:center;font-size:${current?'18':'15'}px;${locked?'filter:grayscale(1);opacity:.35':''}${current?`;box-shadow:0 0 14px ${s.col}66`:''}">${done||current?s.em:'🔒'}</div>
+      <div style="width:40px;height:40px;border-radius:50%;background:${current?`linear-gradient(135deg,${s.col}44,${s.col}22)`:done?`rgba(255,255,255,.06)`:'rgba(255,255,255,.02)'};border:${current?`2.5px solid ${s.col}`:done?`1.5px solid ${s.col}55`:'1.5px solid rgba(255,255,255,.1)'};display:flex;align-items:center;justify-content:center;font-size:${current?'20':'16'}px;${locked?'filter:grayscale(1);opacity:.3':''}${current?`;box-shadow:0 0 18px ${s.col}88`:done?`;box-shadow:0 0 6px ${s.col}33`:'';}">${done||current?s.em:'🔒'}</div>
       <div style="font-size:7px;font-weight:900;color:${current?s.col:done?'rgba(255,255,255,.5)':'rgba(255,255,255,.2)'};font-family:var(--mono);text-align:center;max-width:38px">${current?s.nm:done?s.nm:'LV'+s.lv}</div>
     </div>`;
   }).join('');
@@ -10148,7 +10149,13 @@ function renderMkt(){
     return;
   }
   const items=MKT_ITEMS[_mktTab]||[];
-  el.innerHTML=statBar+`<div class="mkt-grid">${items.map((it,i)=>{
+  // Pet link banner (food tab only)
+  const petBanner=_mktTab==='food'?`<div onclick="nav('me');switchMeTab('rum',document.querySelector('.me-stab'))" style="margin:0 14px 8px;background:rgba(57,255,20,.06);border:1px solid rgba(57,255,20,.2);border-radius:12px;padding:10px 14px;display:flex;align-items:center;gap:10px;cursor:pointer">
+    <div style="font-size:28px">${G.petEmoji||'🐉'}</div>
+    <div style="flex:1"><div style="font-size:11px;font-weight:900;color:var(--g)">${G.petName||'Din pet'}</div><div style="font-size:10px;color:var(--t3)">Hunger: ${Math.round(G.hunger||0)}% · Mat köpt här matar din pet direkt</div></div>
+    <div style="font-size:10px;color:var(--g);font-weight:900">MITT RUM →</div>
+  </div>`:'';
+  el.innerHTML=statBar+petBanner+`<div class="mkt-grid">${items.map((it,i)=>{
     // stat delta badges for food tab
     const deltas=_mktTab==='food'?it.desc.replace('All stats','Hunger & Energy & Mood').split(',').map(d=>d.trim()).map(d=>{
       const m=d.match(/([A-Za-z]+)\s*([+\-]\d+)/);
@@ -10172,7 +10179,14 @@ function buyMktItem(i){
   const items=MKT_ITEMS[_mktTab]||[];const it=items[i];if(!it)return;
   if(G.coins<it.price){showT('❌ Behöver '+it.price+'⚡','r');SFX.error();return;}
   G.coins-=it.price;it.eff();gainXP(5,'commerce');addWorldPoints(8,'market');
-  vibe([20,10,40]);SFX.coin();showT(it.ico+' '+it.nm+' köpt!','g');
+  vibe([20,10,40]);SFX.coin&&SFX.coin();
+  showT(it.ico+' '+it.nm+' köpt!','g');
+  floatStat&&floatStat(it.ico+' '+it.nm,'#FFE040');
+  // If food, show pet room connection toast
+  if(_mktTab==='food'){
+    setTimeout(()=>{showT('🐾 '+G.petName+' verkar glad! Se Mitt Rum →','p');},1200);
+    if(G.mood>85)spawnParticles&&spawnParticles(window.innerWidth/2,window.innerHeight*.5,'stars');
+  }
   updateHUD();updatePetView();renderMkt();
 }
 function sellItem(id,price){
