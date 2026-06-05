@@ -7687,7 +7687,7 @@ const _pr={active:false,started:false,score:0,best:0,level:1,raf:null,
   x:60,y:0,vy:0,grounded:true,jumping:false,
   obstacles:[],gems:[],clouds:[],bgOffset:0,gemsCollected:0,nextObstacle:80,nextGem:40,
   pHp:3,maxHp:3,shield:false,combo:0,shake:0,scoreParticles:[],
-  GRAVITY:0.55,JUMP_F:-11,SPEED:4.5,OBS_H:[30,50,70],GEM_Y:[35,55,75]};
+  GRAVITY:0.52,JUMP_F:-12,SPEED:3.5,OBS_H:[28,44,60],GEM_Y:[35,55,75]};
 
 function openPetRunner(){
   let g=$('petRunnerGame');
@@ -7815,7 +7815,7 @@ function _prLoop(){
 function _prUpdate(canvas){
   const W=canvas.width,H=canvas.height;
   const groundY=H*.65;
-  const spd=_pr.SPEED+((_pr.score/200)*0.6);
+  const spd=_pr.SPEED+Math.min((_pr.score/400)*0.5,3.5); // gradual speed increase, max 7px/frame
   // Physics
   if(!_pr.grounded){_pr.vy+=_pr.GRAVITY;}
   _pr.y+=_pr.vy;
@@ -7850,9 +7850,9 @@ function _prUpdate(canvas){
     const obEmojis=[['🌵','🪨','🔴'],['💀','⬛','🌑'],['💥','🔴','☠️'],['🌿','🍃','💚'],['🔥','🌋','⚡']];
     const ems=obEmojis[Math.min(lvl-1,obEmojis.length-1)];
     const obTypes=['spike','block','orb'];
-    _pr.obstacles.push({x:W+10,y:groundY-h+8,w:20,h:h,em:ems[Math.floor(Math.random()*ems.length)],type:obTypes[Math.floor(Math.random()*obTypes.length)]});
-    const gapMin=Math.max(60,90-lvl*8);
-    _pr.nextObstacle=gapMin+Math.random()*80;
+    _pr.obstacles.push({x:W+10,y:groundY-h+8,w:18,h:h,em:ems[Math.floor(Math.random()*ems.length)],type:obTypes[Math.floor(Math.random()*obTypes.length)]});
+    const gapMin=Math.max(180,240-lvl*12); // generous gap that increases with level
+    _pr.nextObstacle=gapMin+Math.random()*120;
   }
   // Gems
   _pr.nextGem-=spd;
@@ -7866,13 +7866,13 @@ function _prUpdate(canvas){
     _pr.nextGem=50+Math.random()*70;
   }
   // Move & collide obstacles
-  const petR=20;
+  const petR=14; // slightly forgiving hitbox (visual is bigger)
   try{
   for(let i=_pr.obstacles.length-1;i>=0;i--){
     const ob=_pr.obstacles[i];ob.x-=spd;
     if(ob.x+ob.w<0){_pr.obstacles.splice(i,1);continue;}
-    // Collision
-    if(!_pr.shield&&_pr.x+petR>ob.x&&_pr.x-petR<ob.x+ob.w&&_pr.y+petR>ob.y&&_pr.y-petR<ob.y+ob.h){
+    // Collision (with 3px shrink on obstacle edges for forgiveness)
+    if(!_pr.shield&&_pr.x+petR>ob.x+3&&_pr.x-petR<ob.x+ob.w-3&&_pr.y+petR>ob.y+4&&_pr.y-petR<ob.y+ob.h){
       _pr.pHp--;vibe&&vibe([40,20,60]);_pr.shield=true;_pr.shake=8;setTimeout(()=>{_pr.shield=false;},800);
       _pr.obstacles.splice(i,1);
       if(_pr.pHp<=0){_prGameOver();return;}
