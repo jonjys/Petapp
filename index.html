@@ -7326,7 +7326,8 @@ function startPetBlocks(){
   _dnaUpdateHUD();
   // touch/mouse paddle control
   canvas.onmousemove=e=>{const r=canvas.getBoundingClientRect();_dna.px=e.clientX-r.left-_dna.pw/2;_dna.px=Math.max(0,Math.min(_dna.W-_dna.pw,_dna.px));};
-  canvas.ontouchmove=e=>{e.preventDefault();const r=canvas.getBoundingClientRect();_dna.px=e.touches[0].clientX-r.left-_dna.pw/2;_dna.px=Math.max(0,Math.min(_dna.W-_dna.pw,_dna.px));};
+  const _dnaTouchHandler=e=>{e.preventDefault();const r=canvas.getBoundingClientRect();_dna.px=e.touches[0].clientX-r.left-_dna.pw/2;_dna.px=Math.max(0,Math.min(_dna.W-_dna.pw,_dna.px));};
+  canvas.ontouchstart=_dnaTouchHandler;canvas.ontouchmove=_dnaTouchHandler;
   if(_dna.raf){cancelAnimationFrame(_dna.raf);_dna.raf=null;}
   _dna.raf=requestAnimationFrame(_dnaLoop);
   _pbUpdateScore();
@@ -7685,8 +7686,8 @@ function _pbUpdateScore(){
 // ── PET RUNNER ENDLESS RUNNER ──
 const _pr={active:false,started:false,score:0,best:0,level:1,raf:null,
   x:60,y:0,vy:0,grounded:true,jumping:false,
-  obstacles:[],gems:[],clouds:[],bgOffset:0,gemsCollected:0,nextObstacle:80,nextGem:40,
-  pHp:3,maxHp:3,shield:false,combo:0,shake:0,scoreParticles:[],
+  obstacles:[],gems:[],clouds:[],powerups:[],bgOffset:0,gemsCollected:0,nextObstacle:80,nextGem:40,nextPowerup:400,
+  pHp:3,maxHp:3,shield:false,shieldTimer:0,magnetTimer:0,boostTimer:0,combo:0,shake:0,scoreParticles:[],
   GRAVITY:0.52,JUMP_F:-12,SPEED:3.5,OBS_H:[28,44,60],GEM_Y:[35,55,75]};
 
 function openPetRunner(){
@@ -7783,9 +7784,9 @@ function _prInitGame(){
   _pr.active=true;_pr.score=0;_pr.gemsCollected=0;
   const cH=canvas.height;
   _pr.x=70;_pr.y=cH*.65;_pr.vy=0;_pr.grounded=true;
-  _pr.obstacles=[];_pr.gems=[];_pr.clouds=[];_pr.bgOffset=0;
-  _pr.nextObstacle=90;_pr.nextGem=50;
-  _pr.pHp=3;_pr.combo=0;_pr.shield=false;
+  _pr.obstacles=[];_pr.gems=[];_pr.clouds=[];_pr.powerups=[];_pr.bgOffset=0;
+  _pr.nextObstacle=90;_pr.nextGem=50;_pr.nextPowerup=400;
+  _pr.pHp=3;_pr.combo=0;_pr.shield=false;_pr.shieldTimer=0;_pr.magnetTimer=0;_pr.boostTimer=0;
   // Ghost runner — shows your best run pace
   _pr.ghost={score:0,x:70,y:cH*.65,active:_pr.best>0};
   _prInitClouds(canvas);
@@ -7872,19 +7873,21 @@ function _prUpdate(canvas){
     const ob=_pr.obstacles[i];ob.x-=spd;
     if(ob.x+ob.w<0){_pr.obstacles.splice(i,1);continue;}
     // Collision (with 3px shrink on obstacle edges for forgiveness)
-    if(!_pr.shield&&_pr.x+petR>ob.x+3&&_pr.x-petR<ob.x+ob.w-3&&_pr.y+petR>ob.y+4&&_pr.y-petR<ob.y+ob.h){
-      _pr.pHp--;vibe&&vibe([40,20,60]);_pr.shield=true;_pr.shake=8;setTimeout(()=>{_pr.shield=false;},800);
+    if(!_pr.shield&&!(_pr.shieldTimer>0)&&_pr.x+petR>ob.x+3&&_pr.x-petR<ob.x+ob.w-3&&_pr.y+petR>ob.y+4&&_pr.y-petR<ob.y+ob.h){
+      _pr.pHp--;vibe&&vibe([40,20,60]);_pr.shield=true;_pr.shieldTimer=Math.max(_pr.shieldTimer,48);_pr.shake=8;
       _pr.obstacles.splice(i,1);
       if(_pr.pHp<=0){_prGameOver();return;}
     }
   }
   }catch(e){/* ignore collision errors to prevent loop freeze */}
   // Move & collect gems
+  const magnetR=_pr.magnetTimer>0?80:26;
   try{
   for(let i=_pr.gems.length-1;i>=0;i--){
     const gm=_pr.gems[i];gm.x-=spd;
+    if(_pr.magnetTimer>0&&gm.alive){const dx=_pr.x-gm.x;const dy=_pr.y-gm.y;const d=Math.sqrt(dx*dx+dy*dy)||1;if(d<120){gm.x+=dx/d*4;gm.y+=dy/d*3;}}
     if(gm.x+10<0){_pr.gems.splice(i,1);continue;}
-    if(gm.alive&&Math.abs(_pr.x-gm.x)<26&&Math.abs(_pr.y-gm.y)<26){
+    if(gm.alive&&Math.abs(_pr.x-gm.x)<magnetR&&Math.abs(_pr.y-gm.y)<magnetR){
       gm.alive=false;_pr.gemsCollected++;_pr.combo++;
       const v=gm.val||1;
       gainCoins(v+(Math.floor(_pr.combo/3)));gainXP(v,'action');
@@ -7894,6 +7897,37 @@ function _prUpdate(canvas){
     }
   }
   }catch(e){/* ignore gem errors to prevent loop freeze */}
+  // Powerups — spawn occasionally
+  _pr.nextPowerup-=spd;
+  if(_pr.nextPowerup<0){
+    const types=['shield','magnet','boost','hp'];
+    const t=types[Math.floor(Math.random()*types.length)];
+    const ems={shield:'🛡️',magnet:'🧲',boost:'⚡',hp:'❤️'};
+    const cols={shield:'#00D9FF',magnet:'#FFE040',boost:'#FF007F',hp:'#FF4455'};
+    _pr.powerups.push({x:W+10,y:groundY-70-Math.random()*50,type:t,em:ems[t],col:cols[t],alive:true});
+    _pr.nextPowerup=350+Math.random()*400;
+  }
+  // Move & collect powerups
+  try{
+  for(let i=_pr.powerups.length-1;i>=0;i--){
+    const pw=_pr.powerups[i];pw.x-=spd;
+    if(pw.x+20<0){_pr.powerups.splice(i,1);continue;}
+    if(pw.alive&&Math.abs(_pr.x-pw.x)<28&&Math.abs(_pr.y-pw.y)<28){
+      pw.alive=false;_pr.powerups.splice(i,1);vibe&&vibe([20,10,30]);
+      if(pw.type==='shield'){_pr.shield=true;_pr.shieldTimer=180;showT('🛡️ SHIELD! 3 sek','b');}
+      else if(pw.type==='magnet'){_pr.magnetTimer=300;showT('🧲 MAGNET! Gems dras!','y');}
+      else if(pw.type==='boost'){_pr.boostTimer=180;_pr.SPEED=Math.min(6,_pr.SPEED+1.5);showT('⚡ SPEED BOOST!','pk');}
+      else if(pw.type==='hp'&&_pr.pHp<_pr.maxHp){_pr.pHp=Math.min(_pr.maxHp,_pr.pHp+1);showT('❤️ +1 HP!','g');}
+      else if(pw.type==='hp'){gainCoins(5);showT('❤️ Full HP! +5⚡','g');}
+      if(!_pr.scoreParticles)_pr.scoreParticles=[];
+      _pr.scoreParticles.push({x:pw.x,y:pw.y,val:'!',life:1,col:pw.col});
+    }
+  }
+  }catch(e){}
+  // Decay powerup timers
+  if(_pr.shieldTimer>0){_pr.shieldTimer--;if(_pr.shieldTimer<=0){_pr.shield=false;}}
+  if(_pr.magnetTimer>0)_pr.magnetTimer--;
+  if(_pr.boostTimer>0){_pr.boostTimer--;if(_pr.boostTimer<=0&&_pr.SPEED>3.5){_pr.SPEED=Math.max(3.5,_pr.SPEED-1.5);}}
   // Clouds
   (_pr.clouds||[]).forEach(c=>{c.x-=c.spd;if(c.x+c.w<0)c.x=W+c.w;});
 }
@@ -8066,9 +8100,13 @@ function _prDraw(canvas,ctx){
   _pr.scoreParticles=(_pr.scoreParticles||[]).filter(p=>p.life>0);
   _pr.scoreParticles.forEach(p=>{
     p.y-=1.5;p.life-=0.025;
-    ctx.save();ctx.globalAlpha=p.life;ctx.fillStyle='#ffe040';
-    ctx.font=`bold ${10+p.val}px monospace`;ctx.textAlign='center';
-    ctx.fillText('+'+p.val,p.x,p.y);ctx.restore();
+    const pCol=p.col||'#ffe040';
+    const pTxt=typeof p.val==='string'?p.val:'+'+p.val;
+    const pSize=typeof p.val==='string'?14:Math.min(22,10+(p.val||1));
+    ctx.save();ctx.globalAlpha=p.life;ctx.fillStyle=pCol;
+    ctx.shadowBlur=8;ctx.shadowColor=pCol;
+    ctx.font=`bold ${pSize}px monospace`;ctx.textAlign='center';
+    ctx.fillText(pTxt,p.x,p.y);ctx.restore();
   });
 
   // Particle trail
@@ -8106,6 +8144,25 @@ function _prDraw(canvas,ctx){
     ctx.fillStyle='rgba(255,220,40,.9)';
     ctx.beginPath();ctx.moveTo(0,-10*pulse);ctx.lineTo(7*pulse,0);ctx.lineTo(0,10*pulse);ctx.lineTo(-7*pulse,0);ctx.closePath();ctx.fill();
     ctx.strokeStyle='rgba(255,255,255,.7)';ctx.lineWidth=1.5;ctx.stroke();
+    ctx.restore();
+  });
+
+  // Powerups — pulsing orbs with labels
+  (_pr.powerups||[]).forEach(pw=>{
+    if(!pw.alive)return;
+    const pulse=0.9+0.1*Math.sin(t*.008+pw.x*.04);
+    const px=pw.x+10,py=pw.y;
+    ctx.save();
+    ctx.shadowBlur=20;ctx.shadowColor=pw.col;
+    // Outer glow ring
+    ctx.strokeStyle=pw.col;ctx.lineWidth=2;ctx.globalAlpha=0.4+0.3*pulse;
+    ctx.beginPath();ctx.arc(px,py,16*pulse,0,Math.PI*2);ctx.stroke();
+    ctx.globalAlpha=0.15*pulse;
+    ctx.fillStyle=pw.col;ctx.beginPath();ctx.arc(px,py,16*pulse,0,Math.PI*2);ctx.fill();
+    ctx.globalAlpha=1;
+    // Emoji
+    ctx.font='18px serif';ctx.textAlign='center';ctx.textBaseline='middle';
+    ctx.fillText(pw.em,px,py);
     ctx.restore();
   });
 
@@ -8154,19 +8211,26 @@ function _prDraw(canvas,ctx){
   ctx.globalAlpha=1;
 
   // Shield orb ring
-  if(_pr.shield){
-    ctx.save();
-    ctx.shadowBlur=22;ctx.shadowColor=acGlow;
-    ctx.strokeStyle=acFull;ctx.lineWidth=2.5;
+  if(_pr.shield||_pr.shieldTimer>0){
+    const shieldAlpha=_pr.shieldTimer>0?Math.min(1,_pr.shieldTimer/30):1;
+    ctx.save();ctx.globalAlpha=shieldAlpha;
+    ctx.shadowBlur=22;ctx.shadowColor='rgba(0,217,255,1)';
+    ctx.strokeStyle='rgba(0,217,255,1)';ctx.lineWidth=2.5;
     const ringR=26+Math.sin(t*.02)*3;
     ctx.beginPath();ctx.arc(petX,petY,ringR,0,Math.PI*2);ctx.stroke();
-    // Rotating dots
     for(let d=0;d<6;d++){
       const da=t*.003+d*Math.PI/3;
-      ctx.fillStyle=acFull;
+      ctx.fillStyle='rgba(0,217,255,1)';
       ctx.beginPath();ctx.arc(petX+Math.cos(da)*ringR,petY+Math.sin(da)*ringR,2,0,Math.PI*2);ctx.fill();
     }
     ctx.restore();
+  }
+  // Magnet field ring
+  if(_pr.magnetTimer>0){
+    ctx.save();ctx.globalAlpha=0.3+0.1*Math.sin(t*.02);
+    ctx.strokeStyle='#FFE040';ctx.lineWidth=1.5;ctx.setLineDash([4,4]);
+    ctx.beginPath();ctx.arc(petX,petY,80,0,Math.PI*2);ctx.stroke();
+    ctx.setLineDash([]);ctx.restore();
   }
 
   // Combo flash overlay
@@ -8179,6 +8243,24 @@ function _prDraw(canvas,ctx){
     ctx.fillText(`COMBO x${_pr.combo}!`,W/2,40);
     ctx.restore();
   }
+
+  // Active powerup indicators (top-right HUD)
+  const activePws=[];
+  if(_pr.shieldTimer>0)activePws.push({em:'🛡️',col:'#00D9FF',t:_pr.shieldTimer,max:180});
+  if(_pr.magnetTimer>0)activePws.push({em:'🧲',col:'#FFE040',t:_pr.magnetTimer,max:300});
+  if(_pr.boostTimer>0)activePws.push({em:'⚡',col:'#FF007F',t:_pr.boostTimer,max:180});
+  ctx.save();
+  activePws.forEach((pw,i)=>{
+    const bx=W-44-i*44,by=10;
+    ctx.shadowBlur=8;ctx.shadowColor=pw.col;
+    ctx.fillStyle=`${pw.col}33`;ctx.fillRect(bx,by,38,38);
+    ctx.strokeStyle=pw.col;ctx.lineWidth=1.5;ctx.strokeRect(bx,by,38,38);
+    // bar
+    const ratio=pw.t/pw.max;
+    ctx.fillStyle=pw.col;ctx.fillRect(bx,by+34,38*ratio,4);
+    ctx.font='18px serif';ctx.textAlign='center';ctx.fillText(pw.em,bx+19,by+24);
+  });
+  ctx.restore();
 
   ctx.restore(); // screen shake
   ctx.textAlign='left';ctx.textBaseline='alphabetic';
