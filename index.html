@@ -4750,7 +4750,9 @@ function battleNormalAtk(){
   _bt.totalDmgDealt+=dmg;
   _bt.combo++;_bt.pMp=Math.min(_bt.pMaxMp,_bt.pMp+5);
   if(_bt.combo>=3){_bt.fusionReady=true;}
-  _baSetLog((isCrit?'💥 CRIT! ':'⚔️ ')+dmg+' dmg! Combo: '+_bt.combo);
+  // K6c Whirlwind: each attack gives +5 coins
+  if(G._talentK6c)gainCoins(5);
+  _baSetLog((isCrit?'💥 CRIT! ':'⚔️ ')+dmg+' dmg! Combo: '+_bt.combo+(G._talentK6c?' +5⚡':''));
   const sprite=$('baEnemySprite');
   if(sprite){sprite.classList.remove('hit');void sprite.offsetWidth;sprite.classList.add('hit');}
   _baFlash('#39FF14'+'33');
@@ -5116,7 +5118,12 @@ function battleWin(){
 }
 
 function _baFinalRewards(){
-  gainXP(_bt.earnedXp,'action');gainCoins(_bt.earnedCoins);
+  let xp=_bt.earnedXp,coins=_bt.earnedCoins;
+  // K7a Warlord: battle rewards ×3
+  if(G._talentK7a){xp=Math.round(xp*3);coins=Math.round(coins*3);}
+  // K6b Fortress: heal 20% of max HP per win
+  if(G._talentK6b){_bt.pHp=Math.min(_bt.pMax,_bt.pHp+Math.floor(_bt.pMax*.2));showT('🏰 FORTRESS! +'+Math.floor(_bt.pMax*.2)+' HP!','b');}
+  gainXP(xp,'battle');gainCoins(coins);
   addWorldPoints(Math.floor(_bt.wave*10),'battle');
   G.battlesWon=(G.battlesWon||0)+1;
   markBond&&markBond('quest');
@@ -5124,7 +5131,7 @@ function _baFinalRewards(){
   checkAchievements&&checkAchievements();
   save&&save();updateHUD&&updateHUD();
   addDiaryEntry&&addDiaryEntry('Vann '+_bt.turnsWon+' waves i Battle Arena! Delade '+_bt.totalDmgDealt+' total dmg ⚔️');
-  showT('⚔️ BATTLE COMPLETE! +'+_bt.earnedXp+' XP · +'+_bt.earnedCoins+' coins','y');
+  showT('⚔️ BATTLE COMPLETE! +'+xp+' XP · +'+coins+' coins'+(G._talentK7a?' (WARLORD ×3!)':''),'y');
 }
 
 function battleContinue(){
@@ -5146,6 +5153,8 @@ function battleRetry(){
 }
 
 function battleLose(){
+  // K8b Eternal Knight: never lose battles
+  if(G._talentK8b){_bt.pHp=Math.max(1,Math.floor(_bt.pMax*.3));showT('⚜️ ETERNAL KNIGHT! Nekad förlust!','y');vibe([20,10,30]);updateBattleUI();return;}
   _bt.active=false;
   SFX.error&&SFX.error();vibe([50,30,100]);
   $('baDefeat').style.display='flex';
@@ -5602,10 +5611,27 @@ function savePetDesign(){
 }
 
 // ── GAME ──
-function gainCoins(n){G.coins+=n;updateHUD();if(n>0){cp(n);vibe(20);SFX.coin();advanceQuest('coins',n);}}
+function gainCoins(n,stat){
+  if(G._talentK9)n=Math.round(n*2);        // GOD OF WAR: coins ×2
+  if(G._talentS5a&&stat==='social')n=Math.round(n*2); // Viral Legend: social coins ×2
+  G.coins+=n;updateHUD();if(n>0){cp(n);vibe(20);SFX.coin();advanceQuest('coins',n);}
+}
+function _talentXPMult(stat){
+  let m=1;
+  // KÄMPE branch: training/battle XP boosts
+  if(G._talentK1&&stat==='action')m*=1.25; // Iron Fist: +25% train XP
+  if(G._talentK3&&stat==='battle')m*=1.5;  // Warrior Spirit: +50% battle XP
+  if(G._talentK4a&&stat==='action')m*=2;   // Berserker: 2× train XP
+  if(G._talentK9)m*=2;                     // GOD OF WAR: all XP ×2
+  // SOCIAL branch: social XP boosts
+  if(G._talentS1&&stat==='social')m+=0.15/n||0; // Flash Master: handled per-flash
+  if(G._talentS4a&&stat==='social')m*=1.5; // Influencer: social XP ×1.5
+  if(G._talentS7a)m*=1.2;                  // Global Icon: all XP ×1.2
+  return m;
+}
 function gainXP(n,stat){
   const _nightMult = typeof getNightXPMult === 'function' ? getNightXPMult() : 1;
-  n = Math.round(n * _nightMult);
+  n = Math.round(n * _nightMult * _talentXPMult(stat||''));
   if(G.premium){n=Math.round(n*(G.premiumTier>=2?2.5:G.premiumTier>=1?1.75:1.25));}
   G.exp+=n;
   if(stat==='action')G.actionStat+=Math.ceil(n/4);
@@ -5682,10 +5708,23 @@ function pcFeed(){
 }
 function pcTrain(){
   if(!G.petMemory)G.petMemory={};G.petMemory.lastTrained=Date.now();
-  if(G.energy<20){showT('❌ Låg energi! Sova först.','r');SFX.error();return;}
-  G.energy-=20;
+  // Blood Fury: every 3rd train is free
+  const _bloodFury=G._talentK8a&&((G.petMemory.totalTrains||0)%3===2);
+  if(!_bloodFury&&G.energy<20){showT('❌ Låg energi! Sova först.','r');SFX.error();return;}
+  if(!_bloodFury)G.energy-=20;
+  G.petMemory.totalTrains=(G.petMemory.totalTrains||0)+1;
   const mult=_triggerCombo('+'+Math.floor(15*mult2())+' XP');
-  const xp=Math.floor(15*mult2());gainXP(xp,'action');
+  const base=15;
+  // K4a Berserker: train gives +10 coins too
+  if(G._talentK4a)gainCoins(10);
+  // K5a Death Strike: 15% chance to double XP
+  const deathStrike=G._talentK5a&&Math.random()<0.15;
+  const xp=Math.floor(base*mult2()*(deathStrike?2:1));
+  gainXP(xp,'action');
+  if(deathStrike)showT('💀 DEATH STRIKE! 2× XP!','r');
+  // K8c Star Slayer: every 10th train gives +1 TP
+  if(G._talentK8c&&G.petMemory.totalTrains%10===0){if(G.talentPts!==undefined)G.talentPts++;else G.talentPoints=(G.talentPoints||0)+1;showT('🌠 STAR SLAYER! +1 TP','y');}
+  if(_bloodFury)showT('🩸 BLOOD FURY! Fri träning!','r');
   pcReact('happy');showPetEmote('💪');
   if(mult===1)showT('🏋️ +15 XP','g');
   floatStat('💪 +15 XP','#FF007F');
@@ -6630,7 +6669,13 @@ function submitFlash(){
   FLASH_POSTS.unshift({id:'fl'+Date.now(),user:G.name||'Du',pet:gS().e,lvl:G.level,up:'Daglig Flash #'+G.postCount,cap:cap||'⚡ Flash! '+new Date().toLocaleTimeString('sv',{hour:'2-digit',minute:'2-digit'}),xp:'+20 XP',likes:0,live:false,streak:G.streak});
   // Post to Supabase (real)
   sbPostFlash(cap||'⚡ Flash! 🐾');
-  if(!alreadyPostedToday){gainXP(20,'social');gainCoins(10);}
+  if(!alreadyPostedToday){
+    // S1 Flash Master: +15 XP bonus per flash
+    const flashXpBonus=G._talentS1?15:0;
+    // S2 Viral Starter: +5 MOOD per flash
+    if(G._talentS2)G.mood=Math.min(100,G.mood+5);
+    gainXP(20+flashXpBonus,'social');gainCoins(10);
+  }
   markBond('flash');addWorldPoints(10,'flash');
   G.flashImg=null;$('flashCaption').value='';$('flashPrev').style.display='none';$('flashPH').style.display='';$('flashUpArea').style.borderColor='';
   closeModal('flashModal');
