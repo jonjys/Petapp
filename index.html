@@ -2043,6 +2043,56 @@ button:active{opacity:.85;}
 .fish-cast-btn.reeling{box-shadow:0 0 20px rgba(255,230,0,.35)!important;}
 @keyframes bitePulse{from{box-shadow:0 0 14px rgba(255,0,127,.3)!important;}to{box-shadow:0 0 28px rgba(255,0,127,.6)!important;}}
 
+/* ═══════════════════════════════════
+   LAYOUT POLISH — compact & clean
+═══════════════════════════════════ */
+/* Pet hero: soft gradient separator instead of hard border */
+.pet-hero{border-bottom:none!important;padding-bottom:10px!important;}
+.pet-hero::after{content:'';display:block;height:1px;background:linear-gradient(90deg,transparent,rgba(57,255,20,.18),transparent);margin:0 20px;}
+
+/* Care buttons: slightly larger, more breathable */
+.chb{border-radius:16px!important;padding:11px 4px!important;min-height:64px!important;}
+.chb-ico{font-size:24px!important;}
+.chb-lbl{font-size:9px!important;}
+
+/* Home sections: consistent card style */
+.bond-section{margin:6px 12px 10px!important;}
+.bond-item{border-radius:14px!important;}
+.sp-panel{margin:0 12px 10px!important;border-radius:18px!important;}
+
+/* Evolution tree: softer border */
+div[style*="border:1px solid rgba(255,230,0"]{border-color:rgba(255,200,0,.18)!important;}
+
+/* Section labels: slightly larger */
+.care-section-lbl{font-size:10px!important;}
+
+/* Nav bar: cleaner background */
+.bnav{background:rgba(4,4,12,.98)!important;border-top:1px solid rgba(255,255,255,.06)!important;}
+
+/* Flash header: cleaner */
+.flash-title{font-size:20px!important;font-weight:900!important;font-family:var(--mono)!important;letter-spacing:1px!important;}
+
+/* Modals: more rounded, softer */
+.ms{border-radius:28px 28px 0 0!important;}
+
+/* Tabs: cleaner active state */
+.tab.on{background:rgba(57,255,20,.08)!important;}
+
+/* Onboarding: clean step transitions */
+.ob-h2{font-size:22px!important;font-weight:900!important;font-family:var(--mono)!important;letter-spacing:1px!important;margin-bottom:6px!important;}
+.ob-p2{font-size:12px!important;color:rgba(255,255,255,.55)!important;line-height:1.5!important;}
+.ob-world{border-radius:14px!important;}
+
+/* Explore cards: consistent radius */
+.eg-card{border-radius:18px!important;}
+
+/* Quests/missions: cleaner */
+.kmb-card{border-radius:16px!important;}
+
+/* World selection: clean pills/tags */
+.ob-d2{border-radius:2px!important;}
+.ob-d2.on{background:var(--g)!important;}
+
 /* NB-CARD */
 .nb-card{border:1px solid rgba(255,255,255,.1);border-radius:16px;box-shadow:none;}
 @keyframes floatUp{0%{opacity:0;transform:translateX(-50%) translateY(20px) scale(.7);}12%{opacity:1;transform:translateX(-50%) translateY(0) scale(1.05);}20%{transform:translateX(-50%) translateY(0) scale(1);}80%{opacity:1;}100%{opacity:0;transform:translateX(-50%) translateY(-90px) scale(.9);}}
@@ -2091,37 +2141,35 @@ button:active{opacity:.85;}
   <button id="langToggle" onclick="toggleLang()" style="position:absolute;top:14px;right:14px;z-index:100;background:rgba(255,255,255,.1);border:1.5px solid rgba(255,255,255,.2);border-radius:12px;padding:6px 12px;font-size:15px;cursor:pointer;backdrop-filter:blur(8px);-webkit-tap-highlight-color:transparent;color:#fff;font-weight:900;letter-spacing:.5px">🇸🇪 SV</button>
 
   <!-- WORLD SELECTION — shown first -->
-  <div class="ob-step" id="obsw">
-    <div class="ob-content" style="justify-content:flex-start;padding-top:24px;">
-      <div style="font-size:44px;font-weight:900;font-family:var(--mono);text-align:center;letter-spacing:-1px;margin-bottom:2px"><span class="ok">K</span>ARMA</div>
-      <div style="text-align:center;margin-bottom:12px"><span class="ob-tag2">REAL LIFE · GAME ENGINE ⚡</span></div>
-      <div class="ob-prog2"><div class="ob-d2 on"></div><div class="ob-d2"></div><div class="ob-d2"></div><div class="ob-d2"></div></div>
-      <div class="ob-h2" id="obWorldTitle" style="margin-bottom:4px">VÄLJ DIN VÄRLD.</div>
-      <div class="ob-p2" id="obWorldSub" style="margin-bottom:14px">Din värld = hemmet för din pet. Välj miljön du vill leva i.</div>
-      <div class="ob-worlds" style="margin-bottom:14px">
-        <div class="ob-world sel" data-world="cosmic" onclick="pickWorld(this)">
-          <span class="ob-world-ico">🌌</span>
-          <span class="ob-world-nm">COSMIC</span>
-          <div class="ob-world-ds">Universum & stjärnor</div>
-        </div>
-        <div class="ob-world" data-world="nature" onclick="pickWorld(this)">
-          <span class="ob-world-ico">🌿</span>
-          <span class="ob-world-nm">NATURE</span>
-          <div class="ob-world-ds">Skog & natur</div>
-        </div>
-        <div class="ob-world" data-world="city" onclick="pickWorld(this)">
-          <span class="ob-world-ico">🏙️</span>
-          <span class="ob-world-nm">CITY</span>
-          <div class="ob-world-ds">Neon city vibes</div>
-        </div>
-        <div class="ob-world" data-world="pixel" onclick="pickWorld(this)">
-          <span class="ob-world-ico">🎮</span>
-          <span class="ob-world-nm">PIXEL</span>
-          <div class="ob-world-ds">8-bit retro pixel</div>
-        </div>
+  <div class="ob-step" id="obsw" style="min-height:100svh;display:flex;flex-direction:column;justify-content:center;padding:16px 20px max(env(safe-area-inset-bottom,16px),16px)">
+    <div class="ob-logo-hero" style="font-size:40px;margin-bottom:0"><span class="ok">K</span>ARMA</div>
+    <div style="text-align:center;margin-bottom:10px"><span class="ob-tag2" style="font-size:9px;padding:3px 10px;margin-bottom:0">REAL LIFE · GAME ENGINE ⚡</span></div>
+    <div class="ob-prog2" style="margin-bottom:10px"><div class="ob-d2 on"></div><div class="ob-d2"></div><div class="ob-d2"></div><div class="ob-d2"></div></div>
+    <div class="ob-h2" id="obWorldTitle" style="margin-bottom:3px">VÄLJ DIN VÄRLD.</div>
+    <div class="ob-p2" id="obWorldSub" style="margin-bottom:12px;font-size:12px">Välj miljön din pet ska leva i.</div>
+    <div class="ob-worlds" style="margin-bottom:12px;gap:8px">
+      <div class="ob-world sel" data-world="cosmic" ontouchstart="pickWorld(this)" onclick="pickWorld(this)">
+        <span class="ob-world-ico">🌌</span>
+        <span class="ob-world-nm">COSMIC</span>
+        <div class="ob-world-ds">Universum & stjärnor</div>
       </div>
-      <button class="btn btn-g btn-lg btn-full" style="font-family:var(--mono);font-size:16px;letter-spacing:2px;border-radius:6px;border:3px solid var(--g);box-shadow:5px 5px 0px var(--g);transition:transform .08s,box-shadow .08s;flex-shrink:0" ontouchstart="this.style.transform='translate(5px,5px)';this.style.boxShadow='0px 0px 0px var(--g)'" ontouchend="this.style.transform='';this.style.boxShadow='5px 5px 0px var(--g)';obNext(0)" onclick="obNext(0)">VÄLJ VÄRLD →</button>
+      <div class="ob-world" data-world="nature" ontouchstart="pickWorld(this)" onclick="pickWorld(this)">
+        <span class="ob-world-ico">🌿</span>
+        <span class="ob-world-nm">NATURE</span>
+        <div class="ob-world-ds">Skog & natur</div>
+      </div>
+      <div class="ob-world" data-world="city" ontouchstart="pickWorld(this)" onclick="pickWorld(this)">
+        <span class="ob-world-ico">🏙️</span>
+        <span class="ob-world-nm">CITY</span>
+        <div class="ob-world-ds">Neon city vibes</div>
+      </div>
+      <div class="ob-world" data-world="pixel" ontouchstart="pickWorld(this)" onclick="pickWorld(this)">
+        <span class="ob-world-ico">🎮</span>
+        <span class="ob-world-nm">PIXEL</span>
+        <div class="ob-world-ds">8-bit retro pixel</div>
+      </div>
     </div>
+    <button class="btn btn-g btn-lg btn-full" id="obwBtn" style="font-family:var(--mono);font-size:15px;letter-spacing:2px;padding:14px;border-radius:8px;border:none;box-shadow:0 0 24px rgba(57,255,20,.5)" ontouchstart="if(!window._obwBusy){window._obwBusy=true;this.style.opacity='.7';obNext(0);}" onclick="obNext(0)">VÄLJ VÄRLD →</button>
   </div>
 
   <!-- STEP 0: Name -->
@@ -2134,7 +2182,7 @@ button:active{opacity:.85;}
       <div class="ob-p2">Välj ett smeknamn — det är din KARMA-identitet i appen.</div>
       <label class="lbl">DITT NAMN</label>
       <input class="inp" id="obName" placeholder="Ex: ella_runs / axelsthlm" maxlength="18" style="font-size:16px;margin-bottom:16px;border-radius:6px;border:3px solid rgba(57,255,20,.4);background:#0d0d0d;color:#fff;font-family:var(--mono)">
-      <button class="btn btn-g btn-lg btn-full" style="font-family:var(--mono);letter-spacing:2px;border-radius:6px;border:3px solid var(--g);box-shadow:5px 5px 0px var(--g);transition:transform .08s,box-shadow .08s" ontouchstart="this.style.transform='translate(5px,5px)';this.style.boxShadow='0'" ontouchend="this.style.transform='';this.style.boxShadow='5px 5px 0px var(--g)'" onclick="obNext(1)">NÄSTA →</button>
+      <button class="btn btn-g btn-lg btn-full" style="font-family:var(--mono);font-size:15px;letter-spacing:2px;padding:14px;border-radius:8px;border:none;box-shadow:0 0 24px rgba(57,255,20,.5)" ontouchstart="obNext(1)" onclick="obNext(1)">NÄSTA →</button>
     </div>
   </div>
 
@@ -2147,7 +2195,7 @@ button:active{opacity:.85;}
       <div class="ob-pet-big" id="obPetGrid"></div>
       <label class="lbl">PET-NAMN</label>
       <input class="inp" id="obPetName" placeholder="Ex: Eldrake / Luna / Shadow" style="font-size:16px;margin-bottom:16px">
-      <button class="btn btn-g btn-lg btn-full" onclick="obNext(2)">NÄSTA →</button>
+      <button class="btn btn-g btn-lg btn-full" style="font-family:var(--mono);font-size:15px;letter-spacing:2px;padding:14px;border-radius:8px;border:none;box-shadow:0 0 24px rgba(57,255,20,.5)" ontouchstart="obNext(2)" onclick="obNext(2)">NÄSTA →</button>
     </div>
   </div>
 
@@ -2219,7 +2267,7 @@ button:active{opacity:.85;}
           <span class="ob-world-ds" id="obMode4Desc">Ge mig hela paketet</span>
         </div>
       </div>
-      <button class="btn btn-g btn-lg btn-full" id="obStartKarmaBtn" style="font-family:var(--mono);font-size:18px;letter-spacing:2px;border-radius:6px;border:3px solid var(--g);box-shadow:6px 6px 0px var(--g);transition:transform .08s,box-shadow .08s" ontouchstart="this.style.transform='translate(6px,6px)';this.style.boxShadow='0'" ontouchend="this.style.transform='';this.style.boxShadow='6px 6px 0px var(--g)'" onclick="finishOB()">🚀 STARTA KARMA!</button>
+      <button class="btn btn-g btn-lg btn-full" id="obStartKarmaBtn" style="font-family:var(--mono);font-size:17px;letter-spacing:2px;padding:16px;border-radius:8px;border:none;box-shadow:0 0 28px rgba(57,255,20,.6)" ontouchstart="finishOB()" onclick="finishOB()">🚀 STARTA KARMA!</button>
     </div>
   </div>
 </div>
@@ -9933,6 +9981,7 @@ function applyWorldTheme(world,container){
   }
 }
 function obNext(step){
+  window._obwBusy=false; // reset world-btn lock so back navigation works
   if(step===0){G.world=obWorld;applyWorldTheme(obWorld,$('obBg'));}
   if(step===1){const n=$('obName').value.trim();if(!n){showT('❌ Skriv ditt namn','r');return;}G.name=n;}
   if(step===2){
