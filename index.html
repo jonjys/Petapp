@@ -12397,7 +12397,7 @@ function _loadFromLocalStorage(){
     if(G.talents&&typeof G.talents==='object'){TALENT_DEFS.forEach(n=>{if(G.talents[n.id]){try{const f=n.id;const _nm=n.nm;// Only set the flag, don't call full ef() which grants coins/XP
           // Capitalize first letter of id to match the ef()-set flag names (k1→_talentK1, fi1→_talentFi1, kr3→_talentKr3, etc.)
           const k=`_talent${n.id.charAt(0).toUpperCase()+n.id.slice(1)}`;G[k]=true;
-        }catch(e){}}}));}
+        }catch(e){}}});}
     try{const di=localStorage.getItem('kv8_diary');if(di)G.diaryEntries=JSON.parse(di);}catch(e){}
     G.lastSpin=localStorage.getItem('kv8_ls')||'';
     G.lastTalkTime=parseInt(localStorage.getItem('kv8_ltt')||'0');
