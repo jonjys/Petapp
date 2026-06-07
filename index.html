@@ -7502,13 +7502,14 @@ function _dnaUpdate(){
   const py=_dna.paddleY;
   if(_dna.by+br>=py&&_dna.by<py+_dna.ph&&_dna.bx>=_dna.px&&_dna.bx<=_dna.px+_dna.pw){
     _dna.by=py-br;
-    // Add angle based on hit position on paddle
-    const hitPos=(_dna.bx-_dna.px)/_dna.pw;// 0..1
-    const angle=-Math.PI+hitPos*Math.PI*.9-.05;// -π..~0 range → upward
-    const speed=Math.sqrt(_dna.vx*_dna.vx+_dna.vy*_dna.vy);
+    // Angle: hitPos 0=left→-150°, 0.5=center→-90°, 1=right→-30°
+    const hitPos=(_dna.bx-_dna.px)/_dna.pw;
+    const angle=(hitPos-0.5)*(Math.PI*(2/3))-Math.PI/2;
+    const speed=Math.max(3.5,Math.sqrt(_dna.vx*_dna.vx+_dna.vy*_dna.vy));
     _dna.vx=Math.cos(angle)*speed;
     _dna.vy=Math.sin(angle)*speed;
-    if(_dna.vy>0)_dna.vy=-Math.abs(_dna.vy);// ensure upward
+    // Guarantee meaningful upward component (≥30% of speed)
+    if(_dna.vy>-speed*0.3)_dna.vy=-speed*0.3;
     _dna.combo=0;
     vibe&&vibe(6);
   }
