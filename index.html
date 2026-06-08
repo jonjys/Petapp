@@ -4955,9 +4955,12 @@ function _battleRingTap(){
     hitZones.forEach(z=>_battleRing.zonesHit.add(JSON.stringify(z)));
     const needed=_battleRing.zones.length;
     const got=_battleRing.zonesHit.size;
-    if(got>=Math.max(1,Math.ceil(needed/2))){
-      // Enough zones hit — success
-      _battleRingSuccess(got===needed);
+    if(got===needed){
+      // All zones hit — perfect
+      _battleRingSuccess(true);
+    } else if(got>=Math.max(1,Math.ceil(needed/2))){
+      // Enough zones hit — partial success
+      _battleRingSuccess(false);
     } else {
       showT('✅ '+got+'/'+needed+' ZONER!','g');
     }
@@ -7502,13 +7505,14 @@ function _dnaUpdate(){
   const py=_dna.paddleY;
   if(_dna.by+br>=py&&_dna.by<py+_dna.ph&&_dna.bx>=_dna.px&&_dna.bx<=_dna.px+_dna.pw){
     _dna.by=py-br;
-    // Add angle based on hit position on paddle
-    const hitPos=(_dna.bx-_dna.px)/_dna.pw;// 0..1
-    const angle=-Math.PI+hitPos*Math.PI*.9-.05;// -π..~0 range → upward
-    const speed=Math.sqrt(_dna.vx*_dna.vx+_dna.vy*_dna.vy);
+    // Angle: hitPos 0=left→-150°, 0.5=center→-90°, 1=right→-30°
+    const hitPos=(_dna.bx-_dna.px)/_dna.pw;
+    const angle=(hitPos-0.5)*(Math.PI*(2/3))-Math.PI/2;
+    const speed=Math.max(3.5,Math.sqrt(_dna.vx*_dna.vx+_dna.vy*_dna.vy));
     _dna.vx=Math.cos(angle)*speed;
     _dna.vy=Math.sin(angle)*speed;
-    if(_dna.vy>0)_dna.vy=-Math.abs(_dna.vy);// ensure upward
+    // Guarantee meaningful upward component (≥30% of speed)
+    if(_dna.vy>-speed*0.3)_dna.vy=-speed*0.3;
     _dna.combo=0;
     vibe&&vibe(6);
   }
@@ -7577,6 +7581,8 @@ function _dnaUpdate(){
         const spd=Math.sqrt(_dna.vx*_dna.vx+_dna.vy*_dna.vy);
         const maxSpd=7+_dna.wave*.5;
         if(spd<maxSpd){const f=(spd+.04)/spd;_dna.vx*=f;_dna.vy*=f;}
+        SFX&&SFX.tap&&SFX.tap();vibe&&vibe(5);
+        break;
       } else {
         bl.flash=.7;
       }
@@ -7851,7 +7857,7 @@ function openPetRunner(){
     document.body.appendChild(g);
     g.addEventListener('touchstart',e=>{if(e.target.closest('button'))return;e.preventDefault();_prJump(true);},{passive:false});
     g.addEventListener('touchend',e=>{if(e.target.closest('button'))return;e.preventDefault();_prJump(false);},{passive:false});
-    g.addEventListener('mousedown',()=>_prJump(true));
+    g.addEventListener('mousedown',e=>{if(e.pointerType==='touch'||e.pointerType==='pen')return;_prJump(true);});
     g.addEventListener('mouseup',()=>_prJump(false));
   }
   g.classList.add('open');
@@ -8381,6 +8387,7 @@ function _prDraw(canvas,ctx){
 }
 function _prGameOver(){
   _pr.active=false;
+  if(_pr.raf){cancelAnimationFrame(_pr.raf);_pr.raf=null;}
   const m=Math.floor(_pr.score/10);
   const isNew=m>_pr.best;
   if(isNew){_pr.best=m;localStorage.setItem('kv8_prBest',m);const bt=$('prBestTag');if(bt)bt.textContent='Best: '+m+'m';}
@@ -8921,6 +8928,7 @@ function _fcBite(){
 let _fishTB={cursor:0,dir:1,speed:1.2,zoneLeft:30,zoneWidth:24,hits:0,hitsNeeded:3,misfires:0,raf:null,fish:null};
 
 function _fishTBLoop(){
+  if(_fc.phase!=='reel'){_fishTB.raf=null;return;}
   _fishTB.cursor+=_fishTB.dir*_fishTB.speed;
   if(_fishTB.cursor>=100){_fishTB.cursor=100;_fishTB.dir=-1;}
   if(_fishTB.cursor<=0){_fishTB.cursor=0;_fishTB.dir=1;}
@@ -9253,7 +9261,7 @@ function _fcDrawReel(){
   const w=canvas.width,h=canvas.height,cx=w/2,cy=h/2,r=82;
   ctx.clearRect(0,0,w,h);
   const reel=_fc.reel;
-  reel.angle+=reel.speed;
+  reel.angle+=reel.speed;reel.angle%=Math.PI*2;
   if(reel.flashT>0)reel.flashT--;
   // Track ring
   ctx.beginPath();ctx.arc(cx,cy,r,0,Math.PI*2);
@@ -13699,6 +13707,7 @@ function openGacha(){
   const invBtn=$('gachaInventoryBtn');if(invBtn)invBtn.style.display=(spun&&_lastSpinResultHTML)?'block':'none';
 }
 function closeGacha(){
+  _gachaSpinning=false;
   const gm=$('gachaModal');if(!gm)return;
   gm.classList.add('gm-closing');
   setTimeout(()=>{gm.classList.remove('open','gm-closing');_gachaSpinning=false;},450);
