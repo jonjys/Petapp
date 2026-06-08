@@ -2044,57 +2044,93 @@ button:active{opacity:.85;}
 @keyframes bitePulse{from{box-shadow:0 0 14px rgba(255,0,127,.3)!important;}to{box-shadow:0 0 28px rgba(255,0,127,.6)!important;}}
 
 /* ═══════════════════════════════════
-   LAYOUT POLISH — compact & clean
+   VISUAL OVERHAUL v2 — clean & cinematic
 ═══════════════════════════════════ */
-/* Pet hero: soft gradient separator instead of hard border */
-.pet-hero{border-bottom:none!important;padding-bottom:10px!important;}
-.pet-hero::after{content:'';display:block;height:1px;background:linear-gradient(90deg,transparent,rgba(57,255,20,.18),transparent);margin:0 20px;}
 
-/* Care buttons: slightly larger, more breathable */
-.chb{border-radius:16px!important;padding:11px 4px!important;min-height:64px!important;}
-.chb-ico{font-size:24px!important;}
-.chb-lbl{font-size:9px!important;}
+/* ── TOPBAR ── */
+.tb{border-bottom:1px solid rgba(255,255,255,.05)!important;}
+.logo{box-shadow:0 0 18px rgba(57,255,20,.35)!important;border:none!important;letter-spacing:-1px!important;}
 
-/* Home sections: consistent card style */
-.bond-section{margin:6px 12px 10px!important;}
-.bond-item{border-radius:14px!important;}
-.sp-panel{margin:0 12px 10px!important;border-radius:18px!important;}
+/* ── BOTTOM NAV ── */
+.bnav{background:rgba(4,4,14,.99)!important;border-top:1px solid rgba(255,255,255,.05)!important;padding:8px 0 calc(8px + var(--sab))!important;}
 
-/* Evolution tree: softer border */
-div[style*="border:1px solid rgba(255,230,0"]{border-color:rgba(255,200,0,.18)!important;}
+/* ── PET HERO ── */
+.pet-hero{background:linear-gradient(180deg,#06040f 0%,#030209 100%)!important;border-bottom:1px solid rgba(255,255,255,.04)!important;padding-bottom:12px!important;}
+.pet-hero::after{display:none!important;}
 
-/* Section labels: slightly larger */
-.care-section-lbl{font-size:10px!important;}
+/* ── CARE BUTTONS — glassmorphism ── */
+.chb{border-radius:20px!important;border:none!important;padding:14px 4px!important;min-height:72px!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.06)!important;transition:transform .12s,opacity .1s!important;}
+.chb:active{transform:scale(.88)!important;opacity:1!important;}
+.chb-feed{background:rgba(255,159,10,.13)!important;}
+.chb-train{background:rgba(255,45,85,.13)!important;}
+.chb-sleep{background:rgba(0,217,255,.11)!important;}
+.chb-play{background:rgba(191,95,255,.11)!important;}
+.chb-bath{background:rgba(57,255,20,.11)!important;}
+.chb-talk{background:rgba(255,45,85,.1)!important;}
+.chb-ico{font-size:28px!important;display:block!important;margin-bottom:4px!important;}
+.chb-lbl{font-size:9px!important;font-weight:900!important;letter-spacing:.5px!important;color:rgba(255,255,255,.75)!important;}
+.chb-val{font-size:8px!important;color:rgba(255,255,255,.35)!important;margin-top:1px!important;}
 
-/* Nav bar: cleaner background */
-.bnav{background:rgba(4,4,12,.98)!important;border-top:1px solid rgba(255,255,255,.06)!important;}
+/* ── BOND / DAILY ACTIONS ── */
+.bond-section{margin:0 14px 12px!important;background:rgba(255,255,255,.025)!important;border:1px solid rgba(255,255,255,.06)!important;border-radius:22px!important;padding:14px!important;}
+.bond-ttl{font-size:9px!important;color:rgba(255,255,255,.4)!important;letter-spacing:1px!important;}
+.bond-tag{font-size:8px!important;color:var(--pk)!important;background:rgba(255,45,85,.15)!important;border:none!important;border-radius:6px!important;padding:2px 8px!important;}
+.bond-row{gap:6px!important;}
+.bond-item{border-radius:16px!important;background:rgba(255,255,255,.05)!important;border:none!important;flex-direction:column!important;align-items:center!important;justify-content:center!important;padding:10px 4px!important;gap:2px!important;min-height:64px!important;transition:transform .1s!important;}
+.bond-item.done{background:rgba(57,255,20,.1)!important;border:1px solid rgba(57,255,20,.2)!important;}
+.bond-item:active{transform:scale(.9)!important;}
+.bond-ico{font-size:22px!important;}
+.bond-lbl{font-size:8px!important;font-weight:900!important;color:rgba(255,255,255,.75)!important;}
+.bond-eff{font-size:8px!important;color:rgba(57,255,20,.7)!important;font-weight:900!important;}
+.bond-check{display:none!important;}
 
-/* Flash header: cleaner */
-.flash-title{font-size:20px!important;font-weight:900!important;font-family:var(--mono)!important;letter-spacing:1px!important;}
+/* ── SOCIAL POWER PANEL ── */
+.sp-panel{margin:0 14px 12px!important;border-radius:20px!important;background:rgba(255,255,255,.025)!important;border:1px solid rgba(255,255,255,.06)!important;}
 
-/* Modals: more rounded, softer */
-.ms{border-radius:28px 28px 0 0!important;}
+/* ── EVOLUTION PATH ── */
+div[style*="border:1px solid rgba(255,230,0"]{background:rgba(255,230,0,.025)!important;border-color:rgba(255,200,0,.14)!important;border-radius:18px!important;}
 
-/* Tabs: cleaner active state */
-.tab.on{background:rgba(57,255,20,.08)!important;}
+/* ── KARMA TICKER ── */
+div[style*="LIVE"]{border-radius:16px!important;background:rgba(57,255,20,.03)!important;border-color:rgba(57,255,20,.12)!important;}
 
-/* Onboarding: clean step transitions */
-.ob-h2{font-size:22px!important;font-weight:900!important;font-family:var(--mono)!important;letter-spacing:1px!important;margin-bottom:6px!important;}
-.ob-p2{font-size:12px!important;color:rgba(255,255,255,.55)!important;line-height:1.5!important;}
-.ob-world{border-radius:14px!important;}
+/* ── SECTION LABELS ── */
+.care-section-lbl{font-size:9px!important;color:rgba(255,255,255,.4)!important;letter-spacing:1px!important;}
 
-/* Explore cards: consistent radius */
-.eg-card{border-radius:18px!important;}
+/* ── FLASH FEED ── */
+.flash-title{font-size:22px!important;font-weight:900!important;font-family:var(--mono)!important;letter-spacing:0!important;}
 
-/* Quests/missions: cleaner */
-.kmb-card{border-radius:16px!important;}
+/* ── MODALS ── */
+.ms{border-radius:28px 28px 0 0!important;background:rgba(6,6,16,.98)!important;}
 
-/* World selection: clean pills/tags */
-.ob-d2{border-radius:2px!important;}
-.ob-d2.on{background:var(--g)!important;}
+/* ── GENERAL CARDS ── */
+.eg-card{border-radius:20px!important;}
+.kmb-card{border-radius:18px!important;}
+.nb-card{border:1px solid rgba(255,255,255,.08)!important;border-radius:18px!important;box-shadow:none!important;}
+.tab.on{background:rgba(57,255,20,.07)!important;}
 
-/* NB-CARD */
-.nb-card{border:1px solid rgba(255,255,255,.1);border-radius:16px;box-shadow:none;}
+/* ── ONBOARDING WORLD CARDS ── */
+.ob-world{border-radius:18px!important;transition:all .18s cubic-bezier(.34,1.56,.64,1)!important;}
+.ob-world.sel{transform:scale(1.05) translate(-2px,-2px)!important;}
+.ob-h2{font-size:22px!important;font-weight:900!important;font-family:var(--mono)!important;letter-spacing:.5px!important;margin-bottom:6px!important;}
+.ob-p2{font-size:12px!important;color:rgba(255,255,255,.5)!important;line-height:1.5!important;}
+
+/* ── PROGRESS DOTS — glow when active ── */
+.ob-d2{border-radius:3px!important;transition:all .4s cubic-bezier(.34,1.56,.64,1)!important;}
+.ob-d2.on{background:var(--g)!important;box-shadow:0 0 10px var(--g),0 0 20px rgba(57,255,20,.3)!important;transform:scaleX(1.5)!important;}
+
+/* ── STARTA KARMA BUTTON PULSE ── */
+#obStartKarmaBtn{animation:skPulse 2.2s ease-in-out infinite!important;}
+@keyframes skPulse{0%,100%{box-shadow:0 0 20px rgba(57,255,20,.35),0 0 40px rgba(57,255,20,.08);}50%{box-shadow:0 0 40px rgba(57,255,20,.65),0 0 80px rgba(57,255,20,.2),0 0 130px rgba(57,255,20,.06);}}
+
+/* ── PARTICLE BURST ── */
+.ob-ptcl{position:fixed;border-radius:50%;pointer-events:none;z-index:99999;animation:ptclFly var(--d,.9s) ease-out forwards;}
+@keyframes ptclFly{0%{opacity:1;transform:translate(0,0) scale(1);}100%{opacity:0;transform:translate(var(--tx,0px),var(--ty,-180px)) scale(0);}}
+
+/* ── APP ENTRANCE ── */
+@keyframes appFadeIn{from{opacity:0;transform:translateY(12px);}to{opacity:1;transform:none;}}
+.app-entering{animation:appFadeIn .5s cubic-bezier(.4,0,.2,1) both!important;}
+
+/* NB-CARD + floatUp */
 @keyframes floatUp{0%{opacity:0;transform:translateX(-50%) translateY(20px) scale(.7);}12%{opacity:1;transform:translateX(-50%) translateY(0) scale(1.05);}20%{transform:translateX(-50%) translateY(0) scale(1);}80%{opacity:1;}100%{opacity:0;transform:translateX(-50%) translateY(-90px) scale(.9);}}
 </style>
 
@@ -9959,6 +9995,9 @@ function pickWorld(el){
   el.classList.add('sel');obWorld=el.dataset.world;
   applyWorldTheme(obWorld,$('obBg'));
   vibe(15);
+  // Particle burst on world card
+  const wColors={cosmic:'#BF5FFF',nature:'#39FF14',city:'#00D9FF',pixel:'#FF9F0A'};
+  if(typeof _obBurst==='function')_obBurst(el,wColors[obWorld]||'#39FF14');
 }
 function applyWorldTheme(world,container){
   const themes={
@@ -10141,25 +10180,54 @@ function obFeedPet(){
   G.hunger=Math.min(100,G.hunger+30);vibe([20,10,40]);SFX.click();
   floatNum('🍖+30',window.innerWidth/2,window.innerHeight*.35,'var(--o)',16);
 }
+// ── Particle burst for onboarding ──
+function _obBurst(el,color){
+  const r=el?el.getBoundingClientRect():{left:window.innerWidth/2,top:window.innerHeight/2,width:0,height:0};
+  const cx=r.left+r.width/2,cy=r.top+r.height/2;
+  const colors=color?[color]:[
+    '#39FF14','#00D9FF','#FFE600','#FF2D55','#BF5FFF','#FF9F0A'
+  ];
+  for(let i=0;i<32;i++){
+    const p=document.createElement('div');
+    p.className='ob-ptcl';
+    const ang=(i/32)*Math.PI*2;
+    const dist=60+Math.random()*130;
+    const col=colors[i%colors.length];
+    const sz=3+Math.random()*6;
+    p.style.cssText=`left:${cx}px;top:${cy}px;width:${sz}px;height:${sz}px;background:${col};box-shadow:0 0 ${sz*2}px ${col};--tx:${Math.cos(ang)*dist}px;--ty:${Math.sin(ang)*dist-60}px;--d:${.5+Math.random()*.7}s;`;
+    document.body.appendChild(p);
+    setTimeout(()=>p.remove(),1300);
+  }
+}
+
 function finishOB(){
-  $('ob').style.display='none';$('app').style.display='flex';
-  G.world=obWorld;
-  // Use pending username from Supabase registration if available
-  const pendingUn=localStorage.getItem('kv8_pending_username');
-  if(pendingUn&&!G.name){G.name=pendingUn;}
-  localStorage.removeItem('kv8_pending_username');
-  save();updateHUD();nav('home');
-  vibe([50,30,100,30,80]);showT('⚡ WELCOME '+(G.name||'').toUpperCase()+'!','g');
-  addH('🎮 '+G.name+' joined KARMA v2!');
-  setTimeout(()=>{initPetRoom();renderBondBar();},200);
-  setTimeout(startPetAnim,100);
-  setTimeout(initQuests,500);setTimeout(scheduleEvents,10000);SFX.lvlup();
-  setTimeout(renderStoriesBar,800);
-  setTimeout(_startKarmaTicker,400);
-  setTimeout(_schedulePetEvent,12000);
-  // Create cloud profile
-  setTimeout(sbCreateProfile,1500);
-  setTimeout(sbSubscribeRealtime,2000);
+  // Particle burst + screen flash
+  _obBurst($('obStartKarmaBtn'));
+  const flash=document.createElement('div');
+  flash.style.cssText='position:fixed;inset:0;background:rgba(57,255,20,.15);z-index:99998;pointer-events:none;animation:ptclFly .4s ease-out forwards;';
+  document.body.appendChild(flash);
+  setTimeout(()=>flash.remove(),500);
+
+  setTimeout(()=>{
+    $('ob').style.display='none';
+    const app=$('app');app.style.display='flex';app.classList.add('app-entering');
+    setTimeout(()=>app.classList.remove('app-entering'),600);
+    G.world=obWorld;
+    const pendingUn=localStorage.getItem('kv8_pending_username');
+    if(pendingUn&&!G.name){G.name=pendingUn;}
+    localStorage.removeItem('kv8_pending_username');
+    save();updateHUD();nav('home');
+    vibe([50,30,100,30,80]);showT('⚡ WELCOME '+(G.name||'').toUpperCase()+'!','g');
+    addH('🎮 '+G.name+' joined KARMA v2!');
+    setTimeout(()=>{initPetRoom();renderBondBar();},200);
+    setTimeout(startPetAnim,100);
+    setTimeout(initQuests,500);setTimeout(scheduleEvents,10000);SFX.lvlup();
+    setTimeout(renderStoriesBar,800);
+    setTimeout(_startKarmaTicker,400);
+    setTimeout(_schedulePetEvent,12000);
+    setTimeout(sbCreateProfile,1500);
+    setTimeout(sbSubscribeRealtime,2000);
+  },180);
 }
 // Init onboarding background
 setTimeout(()=>{applyWorldTheme('cosmic',$('obBg'));},100);
