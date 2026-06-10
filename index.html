@@ -54,14 +54,16 @@ html,body{height:100%;width:100%;overflow:hidden;background:var(--bg);font-famil
 .view::-webkit-scrollbar{display:none;}
 .view.active{display:flex;}
 .vend{height:76px;flex-shrink:0;}
-.bnav{display:flex;align-items:center;background:#000;border-top:3px solid var(--g);padding:6px 0;padding-bottom:calc(6px + var(--sab));flex-shrink:0;z-index:100;}
+.bnav{display:flex;align-items:center;background:rgba(0,0,0,.97);border-top:1px solid rgba(57,255,20,.3);padding:6px 0;padding-bottom:calc(6px + var(--sab));flex-shrink:0;z-index:100;backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);box-shadow:0 -4px 30px rgba(0,0,0,.8),0 -1px 0 rgba(57,255,20,.15);}
 .nb{flex:1;background:none;border:none;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:2px;padding:4px;}
 .nb .ni{font-size:22px;transition:transform .15s;}
 .nb .nl{font-size:9px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:.3px;}
-.nb.on .ni{transform:scale(1.18);filter:drop-shadow(0 0 10px var(--g));}
-.nb.on .nl{color:var(--g);font-weight:900;}
+.nb.on .ni{transform:scale(1.22);filter:drop-shadow(0 0 12px var(--g));}
+.nb.on .nl{color:var(--g);font-weight:900;text-shadow:0 0 10px rgba(57,255,20,.5);}
+.nb:active .ni{transform:scale(.92);}
 .nb-flash{flex:1;background:none;border:none;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:2px;}
-.flash-btn{width:58px;height:58px;border-radius:8px;background:var(--pk);border:3px solid #000;display:flex;align-items:center;justify-content:center;font-size:26px;margin-top:-22px;box-shadow:4px 4px 0px #000;transition:all .1s;}
+.flash-btn{width:60px;height:60px;border-radius:14px;background:linear-gradient(135deg,var(--pk),#ff5555);border:2px solid rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center;font-size:28px;margin-top:-24px;box-shadow:0 4px 20px rgba(255,0,127,.45),0 0 40px rgba(255,0,127,.15),inset 0 1px 0 rgba(255,255,255,.2);transition:all .12s;animation:flashBtnGlow 2.5s ease-in-out infinite;}
+@keyframes flashBtnGlow{0%,100%{box-shadow:0 4px 20px rgba(255,0,127,.45),0 0 40px rgba(255,0,127,.15),inset 0 1px 0 rgba(255,255,255,.2);}50%{box-shadow:0 4px 30px rgba(255,0,127,.7),0 0 60px rgba(255,0,127,.3),inset 0 1px 0 rgba(255,255,255,.25);}}
 .nb-flash:active .flash-btn{transform:translate(4px,4px);box-shadow:0px 0px 0px #000!important;}
 @keyframes flashBtnPulse{}
 .nb-flash:active .flash-btn{transform:scale(.88);}
