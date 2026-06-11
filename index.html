@@ -424,6 +424,13 @@ textarea.inp{resize:none;min-height:68px;}
 .rank-sub{font-size:9px;color:rgba(255,255,255,.35);}
 .rank-val{font-size:14px;font-weight:900;font-family:var(--mono);}
 
+@keyframes lvUpPop{0%{transform:scale(0) rotate(-10deg);opacity:0}60%{transform:scale(1.2) rotate(3deg);opacity:1}100%{transform:scale(1);opacity:1}}
+@keyframes streakBoom{0%{transform:scale(0) rotate(-15deg)}60%{transform:scale(1.3) rotate(5deg)}100%{transform:scale(1) rotate(0)}}
+@keyframes fireFlicker{0%,100%{transform:scaleY(1) scaleX(1);opacity:1}25%{transform:scaleY(1.08) scaleX(.95);opacity:.9}50%{transform:scaleY(.95) scaleX(1.05);opacity:1}75%{transform:scaleY(1.05) scaleX(.97);opacity:.95}}
+@keyframes fireRise{0%{transform:translateY(0) scale(1);opacity:.9}100%{transform:translateY(-40px) scale(.3);opacity:0}}
+@keyframes neonPulse{0%,100%{opacity:.7}50%{opacity:1}}
+@keyframes slideInUp{from{transform:translateY(30px);opacity:0}to{transform:translateY(0);opacity:1}}
+@keyframes gameCardHover{0%,100%{box-shadow:0 0 20px rgba(var(--gc),0.2)}50%{box-shadow:0 0 40px rgba(var(--gc),0.5),0 0 80px rgba(var(--gc),0.1)}}
 /* NEO-BRUTALISM GLOBAL OVERRIDES */
 .nb-card{background:#0d0d0d;border:2px solid rgba(255,255,255,.18);border-radius:6px;box-shadow:4px 4px 0px rgba(57,255,20,.22);}
 .nb-section{font-size:9px;font-weight:900;color:var(--g);font-family:var(--mono);letter-spacing:2px;text-transform:uppercase;padding:10px 14px 4px;}
@@ -2730,12 +2737,12 @@ div[style*="LIVE"]{border-radius:16px!important;background:rgba(57,255,20,.03)!i
         <button id="expedBtn" onclick="openExpedition()" style="background:rgba(0,217,255,.08);border:1.5px solid rgba(0,217,255,.35);border-radius:10px;padding:4px 10px;color:var(--b);font-size:10px;font-weight:900;cursor:pointer;font-family:var(--mono)">🗺️ EXPEDITION</button>
       </div>
       <div class="care-hero">
-        <div class="chb chb-feed" onclick="pcFeed()"><span class="chb-ico">🍖</span><span class="chb-lbl">MATA</span><span class="chb-val">+HUN</span></div>
-        <div class="chb chb-train" onclick="pcTrain()"><span class="chb-ico">🏋️</span><span class="chb-lbl">TRÄNA</span><span class="chb-val">+XP</span></div>
-        <div class="chb chb-sleep" onclick="pcSleep()"><span class="chb-ico">😴</span><span class="chb-lbl">SOVA</span><span class="chb-val">+ENE</span></div>
-        <div class="chb chb-play" onclick="pcPlay()"><span class="chb-ico">🎮</span><span class="chb-lbl">LEK</span><span class="chb-val">+MOO</span></div>
-        <div class="chb chb-bath" onclick="pcBath()"><span class="chb-ico">🛁</span><span class="chb-lbl">BADA</span><span class="chb-val">+KRM</span></div>
-        <div class="chb chb-talk" onclick="pcTalk()"><span class="chb-ico">💬</span><span class="chb-lbl">PRATA</span><span class="chb-val">+BND</span></div>
+        <div class="chb chb-feed" onclick="pcFeed();_careEffect(this,'feed')"><span class="chb-ico">🍖</span><span class="chb-lbl">MATA</span><span class="chb-val">+HUN</span></div>
+        <div class="chb chb-train" onclick="pcTrain();_careEffect(this,'train')"><span class="chb-ico">🏋️</span><span class="chb-lbl">TRÄNA</span><span class="chb-val">+XP</span></div>
+        <div class="chb chb-sleep" onclick="pcSleep();_careEffect(this,'sleep')"><span class="chb-ico">😴</span><span class="chb-lbl">SOVA</span><span class="chb-val">+ENE</span></div>
+        <div class="chb chb-play" onclick="pcPlay();_careEffect(this,'play')"><span class="chb-ico">🎮</span><span class="chb-lbl">LEK</span><span class="chb-val">+MOO</span></div>
+        <div class="chb chb-bath" onclick="pcBath();_careEffect(this,'bath')"><span class="chb-ico">🛁</span><span class="chb-lbl">BADA</span><span class="chb-val">+KRM</span></div>
+        <div class="chb chb-talk" onclick="pcTalk();_careEffect(this,'talk')"><span class="chb-ico">💬</span><span class="chb-lbl">PRATA</span><span class="chb-val">+BND</span></div>
       </div>
       <!-- DAILY BOND — social actions feed your pet -->
       <div class="bond-section">
@@ -2777,20 +2784,25 @@ div[style*="LIVE"]{border-radius:16px!important;background:rgba(57,255,20,.03)!i
       <!-- CARE NOTIFICATIONS -->
       <div class="care-notif-section" id="careNotifSection"></div>
 
-      <!-- Streak hero -->
-      <div class="streak-hero">
-        <div class="streak-ring-big" id="streakRingBig">
-          <div class="streak-inner-big">
-            <div class="streak-n" id="streakN">0</div>
-            <div class="streak-lbl-sm">STREAK</div>
+      <!-- Streak hero — FIRE edition -->
+      <div class="streak-hero" style="background:linear-gradient(135deg,rgba(255,100,0,.08),rgba(255,159,10,.05));border:1px solid rgba(255,100,0,.25);border-radius:20px;margin:0 12px 10px;padding:16px;display:flex;align-items:center;gap:14px;position:relative;overflow:hidden">
+        <div style="position:absolute;inset:0;background:radial-gradient(ellipse at 20% 50%,rgba(255,80,0,.1) 0%,transparent 70%);pointer-events:none"></div>
+        <div style="position:relative;flex-shrink:0">
+          <div class="streak-ring-big" id="streakRingBig" style="width:68px;height:68px;border-radius:50%;background:conic-gradient(#FF5500 0%,#FF9F0A 60%,rgba(255,100,0,.1) 60%);display:flex;align-items:center;justify-content:center;box-shadow:0 0 25px rgba(255,100,0,.4),0 0 50px rgba(255,100,0,.15);border:2px solid rgba(255,100,0,.4)">
+            <div class="streak-inner-big" style="width:56px;height:56px;border-radius:50%;background:#0a0a0a;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0">
+              <div class="streak-n" id="streakN" style="font-size:24px;font-weight:900;color:#FF5500;font-family:var(--mono);line-height:1;text-shadow:0 0 12px rgba(255,80,0,.7)">0</div>
+              <div class="streak-lbl-sm" style="font-size:6px;font-weight:900;color:rgba(255,100,0,.6);letter-spacing:1px">DAGAR</div>
+            </div>
           </div>
+          <!-- Mini fire particles -->
+          <div style="position:absolute;bottom:-4px;left:50%;transform:translateX(-50%);font-size:20px;animation:fireFlicker 1.2s ease-in-out infinite">🔥</div>
         </div>
-        <div style="flex:1">
-          <div style="font-size:14px;font-weight:800;margin-bottom:2px">🔥 Flash Streak</div>
-          <div style="font-size:12px;color:var(--t2)" id="streakMsg">Posta din första Flash!</div>
-          <div style="margin-top:6px;display:flex;gap:5px" id="streakWeekDots"></div>
+        <div style="flex:1;min-width:0">
+          <div style="font-size:14px;font-weight:900;margin-bottom:2px;color:#fff">Flash Streak</div>
+          <div style="font-size:11px;color:rgba(255,255,255,.5)" id="streakMsg">Posta din första Flash!</div>
+          <div style="margin-top:8px;display:flex;gap:4px" id="streakWeekDots"></div>
         </div>
-        <button class="btn btn-pk btn-sm" onclick="openModal('flashModal')">⚡ POST</button>
+        <button style="background:linear-gradient(135deg,var(--pk),#ff5500);border:none;border-radius:14px;padding:10px 14px;color:#fff;font-size:11px;font-weight:900;cursor:pointer;font-family:var(--mono);text-transform:uppercase;letter-spacing:.5px;box-shadow:0 4px 15px rgba(255,0,127,.35);flex-shrink:0" onclick="openModal('flashModal')">⚡ POST</button>
       </div>
 
       <!-- WORLD TEASER -->
@@ -3443,15 +3455,18 @@ div[style*="LIVE"]{border-radius:16px!important;background:rgba(57,255,20,.03)!i
   </div>
 
     <!-- SPELA VIEW -->
-    <div class="view" id="view-play" style="padding:0;background:#000;">
+    <div class="view" id="view-play" style="padding:0;background:radial-gradient(ellipse at 50% 0%,rgba(191,95,255,.08) 0%,#000 60%);">
       <!-- KARMA ARCADE header — sticky -->
-      <div style="padding:14px 14px 10px;background:#0d0d0d;border-bottom:3px solid var(--p);position:sticky;top:0;z-index:10">
+      <div style="padding:16px 14px 12px;background:rgba(0,0,0,.9);border-bottom:1px solid rgba(191,95,255,.3);position:sticky;top:0;z-index:10;backdrop-filter:blur(20px)">
         <div style="display:flex;align-items:center;justify-content:space-between">
           <div>
-            <div style="font-size:20px;font-weight:900;font-family:var(--mono);color:var(--p);letter-spacing:3px;text-transform:uppercase">🎮 KARMA ARCADE</div>
-            <div style="font-size:9px;color:rgba(255,255,255,.4);font-family:var(--mono);letter-spacing:2px;margin-top:2px">VÄLJ DIN VÄRLD · SAMLA XP</div>
+            <div style="font-size:22px;font-weight:900;font-family:var(--mono);letter-spacing:2px;background:linear-gradient(135deg,var(--p),var(--b));-webkit-background-clip:text;-webkit-text-fill-color:transparent">KARMA ARCADE</div>
+            <div style="font-size:9px;color:rgba(255,255,255,.4);font-family:var(--mono);letter-spacing:2px;margin-top:2px">VÄLJ DITT SPEL · SAMLA XP & COINS</div>
           </div>
-          <div style="font-size:10px;font-weight:900;color:var(--o);font-family:var(--mono)" id="playStreakLabel"></div>
+          <div style="display:flex;flex-direction:column;align-items:flex-end;gap:3px">
+            <div style="font-size:10px;font-weight:900;color:var(--o);font-family:var(--mono)" id="playStreakLabel"></div>
+            <div style="background:rgba(191,95,255,.15);border:1px solid rgba(191,95,255,.3);border-radius:20px;padding:3px 10px;font-size:8px;font-weight:900;color:var(--p);font-family:var(--mono)">🎮 ARCADE MODE</div>
+          </div>
         </div>
       </div>
       <!-- GAME PORTAL GRID -->
@@ -3472,70 +3487,101 @@ div[style*="LIVE"]{border-radius:16px!important;background:rgba(57,255,20,.03)!i
         <div class="gp-arrow" style="color:rgba(255,159,10,.8)">▶</div>
       </div>
       <!-- DNA BREAKER card -->
-      <div onclick="openPetBlocks()" style="margin:0 14px 10px;background:#0d0d0d;border:3px solid var(--g);border-radius:6px;box-shadow:5px 5px 0px var(--g);padding:16px;display:flex;align-items:center;gap:14px;cursor:pointer;-webkit-tap-highlight-color:transparent;transition:transform .08s,box-shadow .08s" ontouchstart="this.style.transform='translate(3px,3px)';this.style.boxShadow='0px 0px 0px var(--g)'" ontouchend="this.style.transform='';this.style.boxShadow='5px 5px 0px var(--g)'">
-        <div style="font-size:44px">🧬</div>
-        <div style="flex:1;min-width:0">
-          <div style="font-size:15px;font-weight:900;color:#fff;font-family:var(--mono)">DNA BREAKER</div>
-          <div style="font-size:11px;color:rgba(255,255,255,.5);margin-top:3px">Brick-breaker med DNA-tema — krossa alla block!</div>
-          <div style="margin-top:8px;display:flex;gap:6px">
-            <span style="background:#000;border:2px solid var(--g);border-radius:4px;padding:2px 8px;font-size:9px;font-weight:900;font-family:var(--mono);color:var(--g)">ARCADE</span>
-            <span style="background:#000;border:2px solid var(--g);border-radius:4px;padding:2px 8px;font-size:9px;font-weight:900;font-family:var(--mono);color:var(--g)" id="pbBestTag">Best: 0pts</span>
+      <div onclick="openPetBlocks()" style="margin:8px 14px;border-radius:20px;overflow:hidden;cursor:pointer;-webkit-tap-highlight-color:transparent;position:relative;background:linear-gradient(135deg,rgba(57,255,20,.08),rgba(0,0,0,.95));border:1px solid rgba(57,255,20,.3);box-shadow:0 0 30px rgba(57,255,20,.1),inset 0 1px 0 rgba(57,255,20,.1);transition:transform .12s,box-shadow .12s;animation:gameCardHover 3s ease-in-out infinite" style="--gc:57,255,20" ontouchstart="this.style.transform='scale(.97)'" ontouchend="this.style.transform=''">
+        <div style="display:flex;align-items:center;gap:14px;padding:16px 16px 12px">
+          <div style="width:60px;height:60px;border-radius:16px;background:rgba(57,255,20,.1);border:1px solid rgba(57,255,20,.3);display:flex;align-items:center;justify-content:center;font-size:32px;flex-shrink:0;box-shadow:0 0 20px rgba(57,255,20,.2)">🧬</div>
+          <div style="flex:1;min-width:0">
+            <div style="display:flex;align-items:center;gap:6px;margin-bottom:3px">
+              <div style="font-size:16px;font-weight:900;color:#fff;font-family:var(--mono)">DNA BREAKER</div>
+              <span style="background:rgba(57,255,20,.2);border:1px solid rgba(57,255,20,.5);border-radius:20px;padding:2px 7px;font-size:7px;font-weight:900;color:var(--g);font-family:var(--mono)">HOT 🔥</span>
+            </div>
+            <div style="font-size:10px;color:rgba(255,255,255,.5);line-height:1.4">Krossa DNA-block med bollen · Combo multiplier · Bossar!</div>
+            <div style="display:flex;gap:6px;margin-top:8px;align-items:center">
+              <span style="background:rgba(57,255,20,.1);border:1px solid rgba(57,255,20,.25);border-radius:20px;padding:2px 8px;font-size:8px;font-weight:900;color:var(--g)">ARCADE</span>
+              <span style="background:rgba(255,230,0,.1);border:1px solid rgba(255,230,0,.25);border-radius:20px;padding:2px 8px;font-size:8px;font-weight:900;color:var(--y)" id="pbBestTag">Best: 0pts</span>
+              <span style="background:rgba(0,217,255,.1);border:1px solid rgba(0,217,255,.25);border-radius:20px;padding:2px 8px;font-size:8px;font-weight:900;color:var(--b)">+50XP</span>
+            </div>
           </div>
+          <div style="font-size:22px;color:rgba(57,255,20,.7)">›</div>
         </div>
-        <div style="margin-left:auto;font-size:24px;color:var(--g)">→</div>
+        <div style="height:3px;background:linear-gradient(90deg,transparent,rgba(57,255,20,.6),transparent)"></div>
       </div>
       <!-- PET RUNNER card -->
-      <div onclick="openPetRunner()" style="margin:0 14px 10px;background:#0d0d0d;border:3px solid var(--g);border-radius:6px;box-shadow:5px 5px 0px var(--g);padding:16px;display:flex;align-items:center;gap:14px;cursor:pointer;-webkit-tap-highlight-color:transparent;transition:transform .08s,box-shadow .08s" ontouchstart="this.style.transform='translate(3px,3px)';this.style.boxShadow='0px 0px 0px var(--g)'" ontouchend="this.style.transform='';this.style.boxShadow='5px 5px 0px var(--g)'">
-        <div style="font-size:44px" id="gpRunnerPet">🐉</div>
-        <div style="flex:1;min-width:0">
-          <div style="font-size:15px;font-weight:900;color:#fff;font-family:var(--mono)">PET RUNNER</div>
-          <div style="font-size:11px;color:rgba(255,255,255,.5);margin-top:3px">Hoppa · dodge · samla gems — levels &amp; highscore!</div>
-          <div style="margin-top:8px;display:flex;gap:6px">
-            <span style="background:#000;border:2px solid var(--g);border-radius:4px;padding:2px 8px;font-size:9px;font-weight:900;font-family:var(--mono);color:var(--g)">RUNNER</span>
-            <span style="background:#000;border:2px solid var(--y);border-radius:4px;padding:2px 8px;font-size:9px;font-weight:900;font-family:var(--mono);color:var(--y)" id="prBestTag">Best: 0m</span>
-            <span style="background:#000;border:2px solid var(--b);border-radius:4px;padding:2px 8px;font-size:9px;font-weight:900;font-family:var(--mono);color:var(--b)" id="prLvBadge">LV 1</span>
+      <div onclick="openPetRunner()" style="margin:8px 14px;border-radius:20px;overflow:hidden;cursor:pointer;-webkit-tap-highlight-color:transparent;position:relative;background:linear-gradient(135deg,rgba(0,217,255,.08),rgba(0,0,0,.95));border:1px solid rgba(0,217,255,.3);box-shadow:0 0 30px rgba(0,217,255,.1),inset 0 1px 0 rgba(0,217,255,.1);transition:transform .12s" ontouchstart="this.style.transform='scale(.97)'" ontouchend="this.style.transform=''">
+        <div style="display:flex;align-items:center;gap:14px;padding:16px 16px 12px">
+          <div style="width:60px;height:60px;border-radius:16px;background:rgba(0,217,255,.1);border:1px solid rgba(0,217,255,.3);display:flex;align-items:center;justify-content:center;font-size:32px;flex-shrink:0;animation:petBob 2s ease-in-out infinite;box-shadow:0 0 20px rgba(0,217,255,.2)" id="gpRunnerPet">🐉</div>
+          <div style="flex:1;min-width:0">
+            <div style="display:flex;align-items:center;gap:6px;margin-bottom:3px">
+              <div style="font-size:16px;font-weight:900;color:#fff;font-family:var(--mono)">PET RUNNER</div>
+              <span style="background:rgba(0,217,255,.2);border:1px solid rgba(0,217,255,.5);border-radius:20px;padding:2px 7px;font-size:7px;font-weight:900;color:var(--b);font-family:var(--mono)">ENDLESS</span>
+            </div>
+            <div style="font-size:10px;color:rgba(255,255,255,.5);line-height:1.4">Hoppa · dodge hinder · samla gems · level upp!</div>
+            <div style="display:flex;gap:6px;margin-top:8px;align-items:center">
+              <span style="background:rgba(0,217,255,.1);border:1px solid rgba(0,217,255,.25);border-radius:20px;padding:2px 8px;font-size:8px;font-weight:900;color:var(--b)">RUNNER</span>
+              <span style="background:rgba(255,230,0,.1);border:1px solid rgba(255,230,0,.25);border-radius:20px;padding:2px 8px;font-size:8px;font-weight:900;color:var(--y)" id="prBestTag">Best: 0m</span>
+              <span style="background:rgba(0,217,255,.1);border:1px solid rgba(0,217,255,.25);border-radius:20px;padding:2px 8px;font-size:8px;font-weight:900;color:var(--b)" id="prLvBadge">LV 1</span>
+            </div>
           </div>
+          <div style="font-size:22px;color:rgba(0,217,255,.7)">›</div>
         </div>
-        <div style="margin-left:auto;font-size:24px;color:var(--g)">→</div>
+        <div style="height:3px;background:linear-gradient(90deg,transparent,rgba(0,217,255,.6),transparent)"></div>
       </div>
       <!-- BATTLE ARENA card -->
-      <div onclick="openBattle()" style="margin:0 14px 10px;background:#0d0d0d;border:3px solid var(--pk);border-radius:6px;box-shadow:5px 5px 0px var(--pk);padding:16px;display:flex;align-items:center;gap:14px;cursor:pointer;-webkit-tap-highlight-color:transparent;transition:transform .08s,box-shadow .08s" ontouchstart="this.style.transform='translate(3px,3px)';this.style.boxShadow='0px 0px 0px var(--pk)'" ontouchend="this.style.transform='';this.style.boxShadow='5px 5px 0px var(--pk)'">
-        <div style="font-size:44px">⚔️</div>
-        <div style="flex:1;min-width:0">
-          <div style="font-size:15px;font-weight:900;color:#fff;font-family:var(--mono)">BATTLE ARENA</div>
-          <div style="font-size:11px;color:rgba(255,255,255,.5);margin-top:3px">Slåss mot bossar · vinn XP &amp; coins!</div>
-          <div style="margin-top:8px;display:flex;gap:6px">
-            <span style="background:#000;border:2px solid var(--pk);border-radius:4px;padding:2px 8px;font-size:9px;font-weight:900;font-family:var(--mono);color:var(--pk)">PvE</span>
-            <span style="background:#000;border:2px solid var(--pk);border-radius:4px;padding:2px 8px;font-size:9px;font-weight:900;font-family:var(--mono);color:var(--pk)">+XP</span>
+      <div onclick="openBattle()" style="margin:8px 14px;border-radius:20px;overflow:hidden;cursor:pointer;-webkit-tap-highlight-color:transparent;position:relative;background:linear-gradient(135deg,rgba(255,0,127,.08),rgba(0,0,0,.95));border:1px solid rgba(255,0,127,.3);box-shadow:0 0 30px rgba(255,0,127,.1),inset 0 1px 0 rgba(255,0,127,.1);transition:transform .12s" ontouchstart="this.style.transform='scale(.97)'" ontouchend="this.style.transform=''">
+        <div style="display:flex;align-items:center;gap:14px;padding:16px 16px 12px">
+          <div style="width:60px;height:60px;border-radius:16px;background:rgba(255,0,127,.1);border:1px solid rgba(255,0,127,.3);display:flex;align-items:center;justify-content:center;font-size:32px;flex-shrink:0;box-shadow:0 0 20px rgba(255,0,127,.2)">⚔️</div>
+          <div style="flex:1;min-width:0">
+            <div style="display:flex;align-items:center;gap:6px;margin-bottom:3px">
+              <div style="font-size:16px;font-weight:900;color:#fff;font-family:var(--mono)">BATTLE ARENA</div>
+              <span style="background:rgba(255,0,127,.2);border:1px solid rgba(255,0,127,.5);border-radius:20px;padding:2px 7px;font-size:7px;font-weight:900;color:var(--pk);font-family:var(--mono)">PvE ⚔️</span>
+            </div>
+            <div style="font-size:10px;color:rgba(255,255,255,.5);line-height:1.4">Slåss mot bossar · rytmbaserade attacker · vinn coins!</div>
+            <div style="display:flex;gap:6px;margin-top:8px;align-items:center">
+              <span style="background:rgba(255,0,127,.1);border:1px solid rgba(255,0,127,.25);border-radius:20px;padding:2px 8px;font-size:8px;font-weight:900;color:var(--pk)">BOSS FIGHT</span>
+              <span style="background:rgba(255,230,0,.1);border:1px solid rgba(255,230,0,.25);border-radius:20px;padding:2px 8px;font-size:8px;font-weight:900;color:var(--y)">+100XP</span>
+            </div>
           </div>
+          <div style="font-size:22px;color:rgba(255,0,127,.7)">›</div>
         </div>
-        <div style="margin-left:auto;font-size:24px;color:var(--pk)">→</div>
+        <div style="height:3px;background:linear-gradient(90deg,transparent,rgba(255,0,127,.6),transparent)"></div>
       </div>
       <!-- DNA MIXER card -->
-      <div onclick="openDNAMixer()" style="margin:0 14px 10px;background:#0d0d0d;border:3px solid var(--p);border-radius:6px;box-shadow:5px 5px 0px var(--p);padding:16px;display:flex;align-items:center;gap:14px;cursor:pointer;-webkit-tap-highlight-color:transparent;transition:transform .08s,box-shadow .08s" ontouchstart="this.style.transform='translate(3px,3px)';this.style.boxShadow='0px 0px 0px var(--p)'" ontouchend="this.style.transform='';this.style.boxShadow='5px 5px 0px var(--p)'">
-        <div style="font-size:44px">🧪</div>
-        <div style="flex:1;min-width:0">
-          <div style="font-size:15px;font-weight:900;color:#fff;font-family:var(--mono)">DNA MIXER</div>
-          <div style="font-size:11px;color:rgba(255,255,255,.5);margin-top:3px">Mixa 2 pets → skapa hybrid. Unlock hemliga kombinationer!</div>
-          <div style="margin-top:8px;display:flex;gap:6px">
-            <span style="background:#000;border:2px solid var(--p);border-radius:4px;padding:2px 8px;font-size:9px;font-weight:900;font-family:var(--mono);color:var(--p)">HYBRID</span>
-            <span style="background:#000;border:2px solid var(--p);border-radius:4px;padding:2px 8px;font-size:9px;font-weight:900;font-family:var(--mono);color:var(--p)">+XP</span>
+      <div onclick="openDNAMixer()" style="margin:8px 14px;border-radius:20px;overflow:hidden;cursor:pointer;-webkit-tap-highlight-color:transparent;position:relative;background:linear-gradient(135deg,rgba(191,95,255,.08),rgba(0,0,0,.95));border:1px solid rgba(191,95,255,.3);box-shadow:0 0 30px rgba(191,95,255,.1),inset 0 1px 0 rgba(191,95,255,.1);transition:transform .12s" ontouchstart="this.style.transform='scale(.97)'" ontouchend="this.style.transform=''">
+        <div style="display:flex;align-items:center;gap:14px;padding:16px 16px 12px">
+          <div style="width:60px;height:60px;border-radius:16px;background:rgba(191,95,255,.1);border:1px solid rgba(191,95,255,.3);display:flex;align-items:center;justify-content:center;font-size:32px;flex-shrink:0;box-shadow:0 0 20px rgba(191,95,255,.2)">🧪</div>
+          <div style="flex:1;min-width:0">
+            <div style="display:flex;align-items:center;gap:6px;margin-bottom:3px">
+              <div style="font-size:16px;font-weight:900;color:#fff;font-family:var(--mono)">DNA MIXER</div>
+              <span style="background:rgba(191,95,255,.2);border:1px solid rgba(191,95,255,.5);border-radius:20px;padding:2px 7px;font-size:7px;font-weight:900;color:var(--p);font-family:var(--mono)">LAB 🧬</span>
+            </div>
+            <div style="font-size:10px;color:rgba(255,255,255,.5);line-height:1.4">Mixa 2 pets → hybrid. Lås upp hemliga kombinationer!</div>
+            <div style="display:flex;gap:6px;margin-top:8px;align-items:center">
+              <span style="background:rgba(191,95,255,.1);border:1px solid rgba(191,95,255,.25);border-radius:20px;padding:2px 8px;font-size:8px;font-weight:900;color:var(--p)">HYBRID</span>
+              <span style="background:rgba(57,255,20,.1);border:1px solid rgba(57,255,20,.25);border-radius:20px;padding:2px 8px;font-size:8px;font-weight:900;color:var(--g)">+75XP</span>
+            </div>
           </div>
+          <div style="font-size:22px;color:rgba(191,95,255,.7)">›</div>
         </div>
-        <div style="margin-left:auto;font-size:24px;color:var(--p)">→</div>
+        <div style="height:3px;background:linear-gradient(90deg,transparent,rgba(191,95,255,.6),transparent)"></div>
       </div>
       <!-- FISHING card -->
-      <div onclick="openFishingGame()" style="margin:0 14px 10px;background:#0d0d0d;border:3px solid var(--b);border-radius:6px;box-shadow:5px 5px 0px var(--b);padding:16px;display:flex;align-items:center;gap:14px;cursor:pointer;-webkit-tap-highlight-color:transparent;transition:transform .08s,box-shadow .08s" ontouchstart="this.style.transform='translate(3px,3px)';this.style.boxShadow='0px 0px 0px var(--b)'" ontouchend="this.style.transform='';this.style.boxShadow='5px 5px 0px var(--b)'">
-        <div style="font-size:44px">🎣</div>
-        <div style="flex:1;min-width:0">
-          <div style="font-size:15px;font-weight:900;color:#fff;font-family:var(--mono)">FISKESPELET</div>
-          <div style="font-size:11px;color:rgba(255,255,255,.5);margin-top:3px">Kasta, tajma, fånga legendariska fiskar!</div>
-          <div style="margin-top:8px;display:flex;gap:6px">
-            <span style="background:#000;border:2px solid var(--b);border-radius:4px;padding:2px 8px;font-size:9px;font-weight:900;font-family:var(--mono);color:var(--b)">FISKE</span>
-            <span style="background:#000;border:2px solid var(--b);border-radius:4px;padding:2px 8px;font-size:9px;font-weight:900;font-family:var(--mono);color:var(--b)" id="fishBestTag">Best: 0 fiskar</span>
+      <div onclick="openFishingGame()" style="margin:8px 14px;border-radius:20px;overflow:hidden;cursor:pointer;-webkit-tap-highlight-color:transparent;position:relative;background:linear-gradient(135deg,rgba(0,217,255,.08),rgba(0,0,0,.95));border:1px solid rgba(0,217,255,.3);box-shadow:0 0 30px rgba(0,217,255,.1),inset 0 1px 0 rgba(0,217,255,.1);transition:transform .12s" ontouchstart="this.style.transform='scale(.97)'" ontouchend="this.style.transform=''">
+        <div style="display:flex;align-items:center;gap:14px;padding:16px 16px 12px">
+          <div style="width:60px;height:60px;border-radius:16px;background:rgba(0,217,255,.1);border:1px solid rgba(0,217,255,.3);display:flex;align-items:center;justify-content:center;font-size:32px;flex-shrink:0;box-shadow:0 0 20px rgba(0,217,255,.2)">🎣</div>
+          <div style="flex:1;min-width:0">
+            <div style="display:flex;align-items:center;gap:6px;margin-bottom:3px">
+              <div style="font-size:16px;font-weight:900;color:#fff;font-family:var(--mono)">FISKESPELET</div>
+              <span style="background:rgba(0,217,255,.2);border:1px solid rgba(0,217,255,.5);border-radius:20px;padding:2px 7px;font-size:7px;font-weight:900;color:var(--b);font-family:var(--mono)">ZEN 🌊</span>
+            </div>
+            <div style="font-size:10px;color:rgba(255,255,255,.5);line-height:1.4">Kasta · tajma · fånga legendariska fiskar · sätt rekord!</div>
+            <div style="display:flex;gap:6px;margin-top:8px;align-items:center">
+              <span style="background:rgba(0,217,255,.1);border:1px solid rgba(0,217,255,.25);border-radius:20px;padding:2px 8px;font-size:8px;font-weight:900;color:var(--b)">FISKE</span>
+              <span style="background:rgba(0,217,255,.1);border:1px solid rgba(0,217,255,.25);border-radius:20px;padding:2px 8px;font-size:8px;font-weight:900;color:var(--b)" id="fishBestTag">Best: 0 fiskar</span>
+            </div>
           </div>
+          <div style="font-size:22px;color:rgba(0,217,255,.7)">›</div>
         </div>
-        <div style="margin-left:auto;font-size:24px;color:var(--b)">→</div>
+        <div style="height:3px;background:linear-gradient(90deg,transparent,rgba(0,217,255,.6),transparent)"></div>
       </div>
       <!-- ACHIEVEMENTS -->
       <div class="sh" style="margin-top:8px"><div class="sh-t">🏆 ACHIEVEMENTS</div><div class="sh-a" id="playAchCount" style="color:var(--y)">0 / 17</div></div>
@@ -6793,7 +6839,7 @@ function renderFlashFeed(){
             <div class="fv-ava" style="width:36px;height:36px;font-size:20px;border:2px solid ${following?'var(--g)':'#fff'}">${p.pet}</div>
             ${!following?`<div onclick="flashFollow('${p.user}')" style="position:absolute;bottom:-6px;left:50%;transform:translateX(-50%);width:15px;height:15px;background:var(--pk);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:900;cursor:pointer;border:2px solid #000">+</div>`:''}
           </div>
-          <div class="fv-action ${liked?'liked':''}" onclick="likeFlash('${p.id}')" oncontextmenu="event.preventDefault();openReactionPanel('${p.id}',event)" ontouchstart="_startLongPress('${p.id}',event)" ontouchend="_cancelLongPress()" ontouchmove="_cancelLongPress()">
+          <div class="fv-action ${liked?'liked':''}" onclick="likeFlash('${p.id}');if(!G.likedPosts.has('${p.id}')&&typeof _careEffect==='function'){const r=this.getBoundingClientRect();const f=document.createElement('div');f.style.cssText='position:fixed;left:'+r.left+'px;top:'+r.top+'px;font-size:40px;pointer-events:none;z-index:99999;';f.textContent='❤️';document.body.appendChild(f);f.animate([{transform:'scale(0)',opacity:1},{transform:'scale(1.8)',opacity:1,offset:.4},{transform:'scale(1) translateY(-60px)',opacity:0}],{duration:700}).onfinish=()=>f.remove();}" oncontextmenu="event.preventDefault();openReactionPanel('${p.id}',event)" ontouchstart="_startLongPress('${p.id}',event)" ontouchend="_cancelLongPress()" ontouchmove="_cancelLongPress()">
             <div id="fli${p.id}" style="font-size:28px;transition:transform .15s;${liked?'filter:drop-shadow(0 0 8px rgba(255,45,85,.8));':''}animation:${liked?'heartPop .3s cubic-bezier(.34,1.56,.64,1)':'none'}">${liked?'❤️':'🤍'}</div>
             <div class="fv-action-cnt" id="flc${p.id}" style="color:${liked?'var(--pk)':'rgba(255,255,255,.85)'};font-size:12px">${p.likes>=1000?(p.likes/1000).toFixed(1)+'K':p.likes}</div>
           </div>
@@ -15282,6 +15328,120 @@ function _settingsDeleteAccount(){
   const conf=prompt('Skriv "RADERA" för att bekräfta permanent borttagning:');
   if(conf==='RADERA'){localStorage.clear();location.reload();}
   else if(conf!==null){showT('Kontot raderades INTE.','y');}
+}
+
+// ═══════════════════════════════
+// MEGA EFFECTS ENGINE v4
+// ═══════════════════════════════
+const _CARE_FX={
+  feed:{emojis:['🍖','🍗','🥩','🥚'],color:'rgba(255,159,10,.22)',sound:'feed'},
+  train:{emojis:['⚡','💪','🔥','✨'],color:'rgba(255,45,85,.22)',sound:'train'},
+  sleep:{emojis:['😴','💤','🌙','⭐'],color:'rgba(0,217,255,.18)',sound:'sleep'},
+  play:{emojis:['🎮','🌈','✨','🎯'],color:'rgba(57,255,20,.18)',sound:'play'},
+  bath:{emojis:['💧','🫧','✨','💦'],color:'rgba(191,95,255,.18)',sound:'bath'},
+  talk:{emojis:['💬','💛','💫','🗣️'],color:'rgba(255,230,0,.18)',sound:'talk'}
+};
+
+function _careEffect(el,type){
+  const fx=_CARE_FX[type];if(!fx)return;
+  const er=el?el.getBoundingClientRect():{left:window.innerWidth/2-30,top:window.innerHeight/2,width:60,height:60};
+  const petEl=$('petHeroEmoji');
+  const pr=petEl?petEl.getBoundingClientRect():{left:window.innerWidth/2-40,top:120,width:80,height:80};
+  const ox=er.left+er.width/2, oy=er.top+er.height/2;
+  const tx=pr.left+pr.width/2, ty=pr.top+pr.height/2;
+  const cnt=12;
+  // Particles fly to pet
+  for(let i=0;i<cnt;i++){
+    setTimeout(()=>{
+      const p=document.createElement('div');
+      const em=fx.emojis[Math.floor(Math.random()*fx.emojis.length)];
+      const sz=16+Math.random()*16;
+      const jitter=(Math.random()-.5)*90;
+      p.style.cssText=`position:fixed;left:${ox}px;top:${oy}px;font-size:${sz}px;pointer-events:none;z-index:99999;transform:translate(-50%,-50%);will-change:transform,opacity;`;
+      p.textContent=em;
+      document.body.appendChild(p);
+      const arc=-80-Math.random()*60;
+      const dx=tx-ox+jitter*0.2;
+      const dy=ty-oy;
+      p.animate([
+        {transform:'translate(-50%,-50%) scale(0)',opacity:0},
+        {transform:`translate(calc(-50% + ${jitter}px),calc(-50% + ${arc}px)) scale(1.4)`,opacity:1,offset:.35},
+        {transform:`translate(calc(-50% + ${dx}px),calc(-50% + ${dy}px)) scale(0.2)`,opacity:0}
+      ],{duration:700+Math.random()*300,easing:'cubic-bezier(.2,.8,.2,1)',fill:'forwards'}).onfinish=()=>p.remove();
+    },i*55);
+  }
+  // XP float text
+  setTimeout(()=>{
+    const labels={feed:'+HUNGER!',train:'+XP!',sleep:'+ENERGI!',play:'+MOOD!',bath:'+KARMA!',talk:'+BOND!'};
+    const cols={feed:'var(--o)',train:'var(--pk)',sleep:'var(--b)',play:'var(--g)',bath:'var(--p)',talk:'var(--y)'};
+    const n=document.createElement('div');
+    n.style.cssText=`position:fixed;left:${ox}px;top:${oy-20}px;transform:translate(-50%,-50%);font-size:15px;font-weight:900;color:${cols[type]||'#fff'};font-family:monospace;pointer-events:none;z-index:99999;text-shadow:0 0 12px ${cols[type]||'#fff'};white-space:nowrap;`;
+    n.textContent=labels[type]||'+OK!';
+    document.body.appendChild(n);
+    n.animate([
+      {opacity:0,transform:'translate(-50%,-50%) scale(.7)'},
+      {opacity:1,transform:'translate(-50%,-130%) scale(1.2)',offset:.2},
+      {opacity:0,transform:'translate(-50%,-250%) scale(.8)'}
+    ],{duration:1100,easing:'ease-out'}).onfinish=()=>n.remove();
+  },200);
+  // Screen color flash
+  const flash=document.createElement('div');
+  flash.style.cssText=`position:fixed;inset:0;background:${fx.color};pointer-events:none;z-index:99997;`;
+  document.body.appendChild(flash);
+  flash.animate([{opacity:0},{opacity:1},{opacity:0}],{duration:350}).onfinish=()=>flash.remove();
+  // Pet bounce
+  const pet=$('petHeroEmoji');
+  if(pet)pet.animate([
+    {transform:'translateY(0) scale(1)'},
+    {transform:'translateY(-18px) scale(1.4) rotate(-8deg)',offset:.3},
+    {transform:'translateY(-6px) scale(1.15) rotate(4deg)',offset:.6},
+    {transform:'translateY(0) scale(1)'}
+  ],{duration:550,easing:'cubic-bezier(.34,1.56,.64,1)'});
+  // Vibe pattern per action
+  const vibes={feed:[30,20,50],train:[50,30,100,30,50],sleep:[20,40,20],play:[10,10,10,10,40],bath:[20,20,20,20,20],talk:[40,20,60]};
+  if(typeof vibe==='function')vibe(vibes[type]||[30]);
+}
+
+function _levelUpEffect(){
+  const cx=window.innerWidth/2, cy=window.innerHeight/2;
+  const el=document.createElement('div');
+  el.style.cssText=`position:fixed;inset:0;z-index:99990;pointer-events:none;display:flex;align-items:center;justify-content:center;`;
+  el.innerHTML=`<div style="font-size:56px;font-weight:900;background:linear-gradient(135deg,#FFE600,#FF9F0A);-webkit-background-clip:text;-webkit-text-fill-color:transparent;font-family:monospace;text-align:center;animation:lvUpPop .5s cubic-bezier(.34,1.56,.64,1)">⬆️ LEVEL UP!</div>`;
+  document.body.appendChild(el);
+  for(let i=0;i<40;i++){
+    setTimeout(()=>{
+      const cols=['#39FF14','#00D9FF','#FF007F','#FFE600','#BF5FFF','#FF9F0A'];
+      const p=document.createElement('div');
+      const ang=Math.random()*Math.PI*2,dist=100+Math.random()*200;
+      const col=cols[Math.floor(Math.random()*cols.length)];
+      p.style.cssText=`position:fixed;left:${cx}px;top:${cy}px;width:6px;height:10px;background:${col};border-radius:2px;pointer-events:none;z-index:99991;`;
+      document.body.appendChild(p);
+      p.animate([
+        {transform:'translate(-50%,-50%) rotate(0deg)',opacity:1},
+        {transform:`translate(calc(-50% + ${Math.cos(ang)*dist}px),calc(-50% + ${Math.sin(ang)*dist-80}px)) rotate(${360+Math.random()*360}deg)`,opacity:0}
+      ],{duration:1000+Math.random()*500,easing:'cubic-bezier(.2,.8,.2,1)'}).onfinish=()=>p.remove();
+    },i*20);
+  }
+  setTimeout(()=>el.remove(),2000);
+}
+
+function _streakMilestoneEffect(streak){
+  const cx=window.innerWidth/2,cy=window.innerHeight*.4;
+  const n=document.createElement('div');
+  n.style.cssText=`position:fixed;left:${cx}px;top:${cy}px;transform:translate(-50%,-50%);z-index:99990;pointer-events:none;text-align:center;`;
+  n.innerHTML=`<div style="font-size:64px;animation:streakBoom .4s cubic-bezier(.34,1.56,.64,1)">🔥</div><div style="font-size:28px;font-weight:900;color:#FF9F0A;font-family:monospace;text-shadow:0 0 30px rgba(255,100,0,.8)">${streak} DAG STREAK!</div>`;
+  document.body.appendChild(n);
+  n.animate([{opacity:0,transform:'translate(-50%,-50%) scale(.5)'},{opacity:1,transform:'translate(-50%,-50%) scale(1)',offset:.3},{opacity:1,transform:'translate(-50%,-70%) scale(1)',offset:.8},{opacity:0,transform:'translate(-50%,-100%) scale(.9)'}],{duration:2200}).onfinish=()=>n.remove();
+  for(let i=0;i<25;i++){
+    setTimeout(()=>{
+      const p=document.createElement('div');
+      const ang=Math.random()*Math.PI*2,dist=80+Math.random()*150;
+      p.style.cssText=`position:fixed;left:${cx}px;top:${cy}px;font-size:${16+Math.random()*12}px;pointer-events:none;z-index:99991;`;
+      p.textContent=['🔥','⚡','✨','💫','🌟'][Math.floor(Math.random()*5)];
+      document.body.appendChild(p);
+      p.animate([{transform:'translate(-50%,-50%)',opacity:1},{transform:`translate(calc(-50% + ${Math.cos(ang)*dist}px),calc(-50% + ${Math.sin(ang)*dist-80}px))`,opacity:0}],{duration:900+Math.random()*400}).onfinish=()=>p.remove();
+    },i*30);
+  }
 }
 </script>
 
