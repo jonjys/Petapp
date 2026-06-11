@@ -3588,26 +3588,35 @@ div[style*="LIVE"]{border-radius:16px!important;background:rgba(57,255,20,.03)!i
           <!-- Level badge -->
           <div style="position:absolute;bottom:50px;right:14px;background:rgba(0,0,0,.6);border:1.5px solid rgba(57,255,20,.4);border-radius:10px;padding:4px 10px;font-size:10px;font-weight:900;color:var(--g);font-family:var(--mono);z-index:6" id="meRumLvBadge">🏠 LV1</div>
         </div>
-        <!-- Pet stats mini row -->
-        <div style="display:flex;gap:0;background:#0d0d0d;border-bottom:1px solid var(--line)">
-          <div style="flex:1;padding:8px 12px;text-align:center;border-right:1px solid var(--line)"><div style="font-size:16px;font-weight:900;color:var(--o);font-family:var(--mono)" id="meRumHunger">80</div><div style="font-size:8px;color:var(--t3)">HUNGER</div></div>
-          <div style="flex:1;padding:8px 12px;text-align:center;border-right:1px solid var(--line)"><div style="font-size:16px;font-weight:900;color:var(--b);font-family:var(--mono)" id="meRumEnergy">100</div><div style="font-size:8px;color:var(--t3)">ENERGI</div></div>
-          <div style="flex:1;padding:8px 12px;text-align:center;border-right:1px solid var(--line)"><div style="font-size:16px;font-weight:900;color:var(--p);font-family:var(--mono)" id="meRumMood">90</div><div style="font-size:8px;color:var(--t3)">MOOD</div></div>
-          <div style="flex:1;padding:8px 12px;text-align:center"><div style="font-size:16px;font-weight:900;color:var(--g);font-family:var(--mono)" id="meRumKarma">42</div><div style="font-size:8px;color:var(--t3)">KARMA</div></div>
+        <!-- Pet stats mini row — glassmorphism -->
+        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:rgba(255,255,255,.05);margin:8px 12px;border-radius:16px;overflow:hidden">
+          <div style="padding:10px 8px;text-align:center;background:rgba(255,159,10,.05)"><div style="font-size:18px;font-weight:900;color:var(--o);font-family:var(--mono);text-shadow:0 0 12px rgba(255,159,10,.4)" id="meRumHunger">80</div><div style="font-size:7px;color:rgba(255,255,255,.35);text-transform:uppercase;letter-spacing:.5px;margin-top:2px">HUNGER</div></div>
+          <div style="padding:10px 8px;text-align:center;background:rgba(0,217,255,.05)"><div style="font-size:18px;font-weight:900;color:var(--b);font-family:var(--mono);text-shadow:0 0 12px rgba(0,217,255,.4)" id="meRumEnergy">100</div><div style="font-size:7px;color:rgba(255,255,255,.35);text-transform:uppercase;letter-spacing:.5px;margin-top:2px">ENERGI</div></div>
+          <div style="padding:10px 8px;text-align:center;background:rgba(191,95,255,.05)"><div style="font-size:18px;font-weight:900;color:var(--p);font-family:var(--mono);text-shadow:0 0 12px rgba(191,95,255,.4)" id="meRumMood">90</div><div style="font-size:7px;color:rgba(255,255,255,.35);text-transform:uppercase;letter-spacing:.5px;margin-top:2px">MOOD</div></div>
+          <div style="padding:10px 8px;text-align:center;background:rgba(57,255,20,.05)"><div style="font-size:18px;font-weight:900;color:var(--g);font-family:var(--mono);text-shadow:0 0 12px rgba(57,255,20,.4)" id="meRumKarma">42</div><div style="font-size:7px;color:rgba(255,255,255,.35);text-transform:uppercase;letter-spacing:.5px;margin-top:2px">KARMA</div></div>
         </div>
-        <!-- Quick care actions -->
-        <div style="display:flex;gap:8px;padding:10px 14px;background:#000;border-bottom:1px solid var(--line)">
-          <button onclick="pcFeed();renderMeRoom()" style="flex:1;background:rgba(255,159,10,.1);border:1.5px solid rgba(255,159,10,.3);border-radius:12px;padding:8px;font-size:11px;font-weight:900;color:var(--o);cursor:pointer">🍖 MATA</button>
-          <button onclick="pcPlay();renderMeRoom()" style="flex:1;background:rgba(191,95,255,.1);border:1.5px solid rgba(191,95,255,.3);border-radius:12px;padding:8px;font-size:11px;font-weight:900;color:var(--p);cursor:pointer">🎮 LEK</button>
-          <button onclick="pcSleep();renderMeRoom()" style="flex:1;background:rgba(0,217,255,.1);border:1.5px solid rgba(0,217,255,.3);border-radius:12px;padding:8px;font-size:11px;font-weight:900;color:var(--b);cursor:pointer">😴 SOVA</button>
-          <button onclick="pcBath();renderMeRoom()" style="flex:1;background:rgba(57,255,20,.1);border:1.5px solid rgba(57,255,20,.3);border-radius:12px;padding:8px;font-size:11px;font-weight:900;color:var(--g);cursor:pointer">🛁 BADA</button>
+        <!-- Quick care actions — 6 buttons -->
+        <div style="display:grid;grid-template-columns:repeat(6,1fr);gap:5px;padding:10px 12px;background:rgba(0,0,0,.5);border-bottom:1px solid rgba(255,255,255,.06)">
+          <button onclick="pcFeed();renderMeRoom()" style="background:rgba(255,159,10,.08);border:1px solid rgba(255,159,10,.25);border-radius:12px;padding:8px 4px;font-size:18px;display:flex;flex-direction:column;align-items:center;gap:2px;cursor:pointer"><span>🍖</span><span style="font-size:7px;font-weight:900;color:var(--o)">MATA</span></button>
+          <button onclick="pcTrain();renderMeRoom()" style="background:rgba(255,45,85,.08);border:1px solid rgba(255,45,85,.25);border-radius:12px;padding:8px 4px;font-size:18px;display:flex;flex-direction:column;align-items:center;gap:2px;cursor:pointer"><span>🏋️</span><span style="font-size:7px;font-weight:900;color:var(--pk)">TRÄNA</span></button>
+          <button onclick="pcSleep();renderMeRoom()" style="background:rgba(0,217,255,.08);border:1px solid rgba(0,217,255,.25);border-radius:12px;padding:8px 4px;font-size:18px;display:flex;flex-direction:column;align-items:center;gap:2px;cursor:pointer"><span>😴</span><span style="font-size:7px;font-weight:900;color:var(--b)">SOVA</span></button>
+          <button onclick="pcPlay();renderMeRoom()" style="background:rgba(57,255,20,.08);border:1px solid rgba(57,255,20,.25);border-radius:12px;padding:8px 4px;font-size:18px;display:flex;flex-direction:column;align-items:center;gap:2px;cursor:pointer"><span>🎮</span><span style="font-size:7px;font-weight:900;color:var(--g)">LEK</span></button>
+          <button onclick="pcBath();renderMeRoom()" style="background:rgba(191,95,255,.08);border:1px solid rgba(191,95,255,.25);border-radius:12px;padding:8px 4px;font-size:18px;display:flex;flex-direction:column;align-items:center;gap:2px;cursor:pointer"><span>🛁</span><span style="font-size:7px;font-weight:900;color:var(--p)">BADA</span></button>
+          <button onclick="pcTalk();renderMeRoom()" style="background:rgba(255,230,0,.08);border:1px solid rgba(255,230,0,.25);border-radius:12px;padding:8px 4px;font-size:18px;display:flex;flex-direction:column;align-items:center;gap:2px;cursor:pointer"><span>💬</span><span style="font-size:7px;font-weight:900;color:var(--y)">PRATA</span></button>
         </div>
         <!-- Furniture & gear section -->
         <div style="padding:10px 14px 4px;display:flex;align-items:center;justify-content:space-between">
           <div style="font-size:10px;font-weight:900;color:rgba(255,255,255,.35);text-transform:uppercase;letter-spacing:.9px">🛋️ MÖBLER & DEKOR</div>
           <div style="font-size:11px;font-weight:700;color:var(--b);cursor:pointer" onclick="openRoomShop()">SHOP →</div>
         </div>
-        <div id="meRumGearList" style="display:flex;gap:8px;overflow-x:auto;padding:0 14px 14px;scrollbar-width:none"></div>
+        <div id="meRumGearList" style="display:flex;gap:8px;overflow-x:auto;padding:0 14px 8px;scrollbar-width:none;min-height:64px"></div>
+        <!-- Quick nav shortcuts at bottom of room tab -->
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;padding:0 12px 12px">
+          <button onclick="nav('world')" style="background:rgba(57,255,20,.06);border:1px solid rgba(57,255,20,.2);border-radius:16px;padding:12px 8px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:4px"><span style="font-size:24px">🌍</span><span style="font-size:9px;font-weight:900;color:var(--g)">WORLD</span></button>
+          <button onclick="openCastle()" style="background:rgba(255,230,0,.06);border:1px solid rgba(255,230,0,.2);border-radius:16px;padding:12px 8px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:4px"><span style="font-size:24px">🏰</span><span style="font-size:9px;font-weight:900;color:var(--y)">SLOTT</span></button>
+          <button onclick="openBattle()" style="background:rgba(255,45,85,.06);border:1px solid rgba(255,45,85,.2);border-radius:16px;padding:12px 8px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:4px"><span style="font-size:24px">⚔️</span><span style="font-size:9px;font-weight:900;color:var(--pk)">BATTLE</span></button>
+        </div>
+        <div class="vend"></div>
       </div>
       <!-- PROFIL panel -->
       <div class="me-spanel" id="me-panel-profil">
