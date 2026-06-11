@@ -11535,6 +11535,72 @@ function closeCastleWorld(){
 }
 
 let _cwParticles=null;
+function _cwUpdateOverlay(){
+  const cw=$('castleWorld');if(!cw||!cw.classList.contains('open'))return;
+  let ov=$('cwHtmlOv');
+  if(!ov){
+    ov=document.createElement('div');ov.id='cwHtmlOv';
+    ov.style.cssText='position:absolute;inset:0;pointer-events:none;overflow:hidden;z-index:4;';
+    const canvas=$('castleCanvas');
+    if(canvas&&canvas.parentNode){canvas.parentNode.style.position='relative';canvas.parentNode.insertBefore(ov,canvas.nextSibling);}
+    else{cw.style.position='relative';cw.appendChild(ov);}
+  }
+  const rect=ov.getBoundingClientRect();
+  const W=rect.width||window.innerWidth;
+  const H=rect.height||Math.max(300,window.innerHeight-150);
+  const cx=W/2,cy=H*0.46;
+  const npcRing=Math.min(W,H)*0.34;
+  const t=Date.now()/1000;
+  const bob=Math.sin(t*1.5)*3;
+  const bl=(G.castle&&G.castle.buildings)||{};
+  const cLvl=(G.castle&&G.castle.lvl)||1;
+  let html='';
+  // Castle center
+  html+=`<div style="position:absolute;left:${cx}px;top:${cy-6+bob}px;transform:translate(-50%,-50%);font-size:46px;filter:drop-shadow(0 0 20px rgba(255,200,0,.8));cursor:pointer;pointer-events:all;transition:top .05s linear" onclick="_cwShowCastleInfo()">🏰</div>`;
+  html+=`<div style="position:absolute;left:${cx}px;top:${cy+30+bob}px;transform:translateX(-50%);font-size:9px;font-weight:900;color:rgba(255,215,0,.9);font-family:monospace;white-space:nowrap;pointer-events:none">${(G.name||'Spelaren').slice(0,14)} · LV${cLvl}</div>`;
+  // Portals
+  [{x:0.2,y:0.22,nm:'Mörka Grottan',col:'#b400ff',em:'🕳️'},{x:0.8,y:0.25,nm:'Isruinerna',col:'#00b4ff',em:'🕳️'},{x:0.5,y:0.12,nm:'Helvetesgapet',col:'#ff3c00',em:'🕳️'}].forEach(p=>{
+    html+=`<div style="position:absolute;left:${p.x*W}px;top:${p.y*H}px;transform:translate(-50%,-50%);text-align:center;cursor:pointer;pointer-events:all" onclick="showT('🕳️ ${p.nm} — portalen är stängd','p')"><div style="font-size:16px">${p.em}</div><div style="font-size:7px;color:${p.col};font-family:monospace;white-space:nowrap;margin-top:2px">${p.nm}</div></div>`;
+  });
+  // Decorations
+  [[0.1,0.3,'🌲'],[0.87,0.28,'🌲'],[0.15,0.68,'🪨'],[0.82,0.65,'🌲'],[0.05,0.55,'🪨'],[0.93,0.5,'🌲'],[0.22,0.18,'🌲'],[0.75,0.16,'🪨'],[0.35,0.8,'🌲'],[0.62,0.78,'🪨']].forEach(([tx,ty,em])=>{
+    html+=`<div style="position:absolute;left:${tx*W}px;top:${ty*H}px;transform:translate(-50%,-50%);font-size:14px;opacity:.65;pointer-events:none">${em}</div>`;
+  });
+  // NPCs
+  (_cwNpcs||[]).forEach((n,i)=>{
+    const nx=cx+Math.cos(n.ang)*npcRing,ny=cy+Math.sin(n.ang)*npcRing*0.6;
+    const col=n.type==='enemy'?'#FF3C3C':n.type==='ally'?'#39FF14':'#00B4FF';
+    if(nx>0&&nx<W&&ny>0&&ny<H)html+=`<div style="position:absolute;left:${nx}px;top:${ny}px;transform:translate(-50%,-50%);text-align:center;cursor:pointer;pointer-events:all" onclick="_cwTapNpcIdx(${i})"><div style="font-size:20px;filter:drop-shadow(0 0 6px ${col}66)">${n.em}</div><div style="font-size:6px;color:${col};font-family:monospace">${n.nm.slice(0,9)}</div><div style="font-size:6px;color:rgba(255,200,0,.8)">LV${n.lvl}</div></div>`;
+  });
+  // Buildings
+  if(typeof CW_BUILD_POSITIONS!=='undefined')CW_BUILD_POSITIONS.forEach(bp=>{
+    const rad=bp.angle*Math.PI/180,bx=cx+Math.cos(rad)*bp.dist,by=cy+Math.sin(rad)*bp.dist*0.65;
+    const bInfo=typeof CASTLE_BUILDINGS!=='undefined'&&CASTLE_BUILDINGS.find(x=>x.id===bp.id);if(!bInfo)return;
+    const lvl=bl[bp.id]||0;
+    html+=`<div style="position:absolute;left:${bx}px;top:${by}px;transform:translate(-50%,-50%);text-align:center;opacity:${lvl>0?1:0.35};cursor:pointer;pointer-events:all" onclick="_cwTapBldg('${bp.id}')"><div style="font-size:18px${lvl>0?';filter:drop-shadow(0 0 8px rgba(57,255,20,.6))':''}">${bInfo.em}</div>${lvl>0?`<div style="font-size:6px;color:rgba(255,200,0,.9);font-family:monospace">LV${lvl}</div>`:''}</div>`;
+  });
+  ov.innerHTML=html;
+}
+function _cwShowCastleInfo(){
+  const popup=$('cwPopup'),inner=$('cwPopupInner');if(!popup||!inner)return;
+  const cLvl=(G.castle&&G.castle.lvl)||1;
+  inner.innerHTML=`<div style="font-size:40px">🏰</div><div style="font-weight:900;color:var(--y);margin:6px 0 2px">${G.name||'Spelaren'}s Kastel</div><div style="font-size:11px;color:var(--t3)">Nivå ${cLvl} · Byggnader: ${Object.values((G.castle&&G.castle.buildings)||{}).filter(v=>v>0).length}</div><button onclick="$('cwPopup').style.display='none'" style="margin-top:12px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);border-radius:10px;padding:6px 18px;color:rgba(255,255,255,.7);cursor:pointer;font-size:11px">Stäng</button>`;
+  popup.style.display='block';
+}
+function _cwTapNpcIdx(i){
+  const n=(_cwNpcs||[])[i];if(!n)return;
+  const popup=$('cwPopup'),inner=$('cwPopupInner');if(!popup||!inner)return;
+  const col=n.type==='enemy'?'var(--r)':n.type==='ally'?'var(--g)':'var(--b)';
+  inner.innerHTML=`<div style="font-size:32px">${n.em}</div><div style="font-weight:900;color:${col};margin:4px 0">${n.nm}</div><div style="font-size:11px;color:var(--t3)">LV${n.lvl} · ${n.type==='enemy'?'Fiende':'Vän'}</div><div style="font-size:20px;margin:8px 0">${n.type==='enemy'?'⚔️':'🤝'}</div><button onclick="$('cwPopup').style.display='none'" style="background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);border-radius:10px;padding:6px 16px;color:rgba(255,255,255,.7);cursor:pointer">Stäng</button>`;
+  popup.style.display='block';
+}
+function _cwTapBldg(id){
+  const popup=$('cwPopup'),inner=$('cwPopupInner');if(!popup||!inner)return;
+  const bInfo=typeof CASTLE_BUILDINGS!=='undefined'&&CASTLE_BUILDINGS.find(x=>x.id===id);if(!bInfo)return;
+  const bl=(G.castle&&G.castle.buildings)||{};const lvl=bl[id]||0;
+  inner.innerHTML=`<div style="font-size:36px">${bInfo.em}</div><div style="font-weight:900;color:var(--y);margin:4px 0">${bInfo.nm}</div><div style="font-size:11px;color:var(--t3);margin-bottom:4px">${bInfo.desc||''}</div><div style="font-size:10px;color:var(--g);margin-bottom:10px">${bInfo.effect||'Magisk kraft/lvl'}<br>Nivå ${lvl}/${bInfo.maxLvl||5}</div>${lvl<(bInfo.maxLvl||5)?`<button onclick="upgradeCastle('${id}');$('cwPopup').style.display='none'" style="background:var(--g);border:none;border-radius:12px;padding:10px 20px;color:#000;font-size:13px;font-weight:900;cursor:pointer;font-family:var(--ff)">BYGG · ${(bInfo.cost||50)*(lvl+1)}⚡</button>`:`<div style="color:var(--g);font-weight:900;font-size:13px">MAX NIVÅ ✓</div>`}<button onclick="$('cwPopup').style.display='none'" style="display:block;margin:8px auto 0;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);border-radius:10px;padding:6px 16px;color:rgba(255,255,255,.7);cursor:pointer;font-size:11px">Stäng</button>`;
+  popup.style.display='block';
+}
 function renderCastleWorld(){
   const canvas=$('castleCanvas');if(!canvas)return;
   const cw=$('castleWorld');if(!cw||!cw.classList.contains('open'))return;
@@ -11579,8 +11645,6 @@ function renderCastleWorld(){
     pr.addColorStop(0,p.col.replace('.7',',.9'));
     pr.addColorStop(1,'rgba(0,0,0,0)');
     ctx.fillStyle=pr;ctx.beginPath();ctx.ellipse(px,py,18*pulse,12*pulse,0,0,Math.PI*2);ctx.fill();
-    ctx.font='16px "Apple Color Emoji","Segoe UI Emoji",sans-serif';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText('🕳️',px,py);
-    ctx.font='7px monospace';ctx.fillStyle=p.col;ctx.fillText(p.nm,px,py+16);
   });
   // Roads
   const npcRing=Math.min(W,H)*0.34;
@@ -11592,29 +11656,18 @@ function renderCastleWorld(){
     ctx.beginPath();ctx.moveTo(cx,cy);ctx.lineTo(nx,ny);ctx.stroke();
     ctx.setLineDash([]);
   });
-  // Decorations
-  const decor=[[0.1,0.3,'🌲'],[0.87,0.28,'🌲'],[0.15,0.68,'🪨'],[0.82,0.65,'🌲'],[0.05,0.55,'🪨'],[0.93,0.5,'🌲'],[0.22,0.18,'🌲'],[0.75,0.16,'🪨'],[0.35,0.8,'🌲'],[0.62,0.78,'🪨']];
-  ctx.font='16px "Apple Color Emoji","Segoe UI Emoji",sans-serif';ctx.textAlign='center';ctx.textBaseline='middle';
-  decor.forEach(([tx,ty,em])=>ctx.fillText(em,tx*W,ty*H));
-  // NPCs
+  // Decorations rendered in HTML overlay
+  // NPCs halo (canvas bg only, emoji in HTML overlay)
   (_cwNpcs||[]).forEach((n,i)=>{
     const nx=cx+Math.cos(n.ang)*npcRing;
     const ny=cy+Math.sin(n.ang)*npcRing*0.6;
     const pulse=0.65+0.35*Math.sin(t*1.5+i);
     const tc=n.type==='enemy'?`rgba(255,60,60,${pulse*.22})`:n.type==='ally'?`rgba(57,255,20,${pulse*.16})`:`rgba(0,180,255,${pulse*.14})`;
     ctx.fillStyle=tc;ctx.beginPath();ctx.arc(nx,ny,30*pulse,0,Math.PI*2);ctx.fill();
-    ctx.font='22px "Apple Color Emoji","Segoe UI Emoji",sans-serif';ctx.textAlign='center';ctx.textBaseline='middle';
-    ctx.fillText(n.em,nx,ny-5);
-    const barW=36,barH=4;
-    const hp=Math.min(1,n.power/100);
-    const barX=nx-barW/2,barY=ny+12;
-    ctx.fillStyle='rgba(0,0,0,.5)';ctx.fillRect(barX,barY,barW,barH);
+    const barW=36,barH=4,hp=Math.min(1,n.power/100);
+    ctx.fillStyle='rgba(0,0,0,.5)';ctx.fillRect(nx-barW/2,ny+14,barW,barH);
     const hpCol=n.type==='enemy'?'#FF3C3C':n.type==='ally'?'#39FF14':'#00B4FF';
-    ctx.fillStyle=hpCol;ctx.fillRect(barX,barY,barW*hp,barH);
-    ctx.font='bold 8px monospace';ctx.fillStyle='rgba(255,255,255,.7)';ctx.textAlign='center';
-    ctx.fillText(n.nm.slice(0,9),nx,ny+22);
-    ctx.fillStyle='rgba(255,200,0,.9)';
-    ctx.fillText('LV'+n.lvl,nx,ny+32);
+    ctx.fillStyle=hpCol;ctx.fillRect(nx-barW/2,ny+14,barW*hp,barH);
   });
   // Castle aura
   const aura=ctx.createRadialGradient(cx,cy,5,cx,cy,90);
@@ -11623,35 +11676,20 @@ function renderCastleWorld(){
   aura.addColorStop(0.5,`rgba(255,150,0,${auraPulse})`);
   aura.addColorStop(1,'rgba(0,0,0,0)');
   ctx.fillStyle=aura;ctx.beginPath();ctx.arc(cx,cy,90,0,Math.PI*2);ctx.fill();
-  // Buildings
+  // Buildings glow (canvas bg only, emoji in HTML overlay)
   const bl=(G.castle&&G.castle.buildings)||{};
   CW_BUILD_POSITIONS.forEach(bp=>{
     const rad=bp.angle*Math.PI/180;
     const bx=cx+Math.cos(rad)*bp.dist;
     const by=cy+Math.sin(rad)*bp.dist*0.65;
-    const bInfo=CASTLE_BUILDINGS.find(x=>x.id===bp.id);if(!bInfo)return;
     const lvl=bl[bp.id]||0;
     if(lvl>0){
       const gc=ctx.createRadialGradient(bx,by,0,bx,by,20);
       gc.addColorStop(0,'rgba(57,255,20,.28)');gc.addColorStop(1,'rgba(57,255,20,0)');
       ctx.fillStyle=gc;ctx.beginPath();ctx.arc(bx,by,20,0,Math.PI*2);ctx.fill();
-      ctx.globalAlpha=1;
-    }else{ctx.globalAlpha=0.3;}
-    ctx.font='20px "Apple Color Emoji","Segoe UI Emoji",sans-serif';ctx.textAlign='center';ctx.textBaseline='middle';
-    ctx.fillText(bInfo.em,bx,by);
-    if(lvl>0){
-      ctx.font='bold 8px monospace';ctx.fillStyle='rgba(255,200,0,.95)';
-      ctx.fillText('LV'+lvl,bx,by+15);
     }
-    ctx.globalAlpha=1;
   });
-  // Player castle
-  const bob=Math.sin(t*1.5)*3;
-  ctx.font='48px "Apple Color Emoji","Segoe UI Emoji",sans-serif';ctx.textAlign='center';ctx.textBaseline='middle';
-  ctx.fillText('🏰',cx,cy-6+bob);
-  ctx.font='bold 9px monospace';ctx.fillStyle='rgba(255,215,0,.95)';
-  const cLvl=(G.castle&&G.castle.lvl)||1;
-  ctx.fillText((G.name||'Spelaren').slice(0,12)+' · LV'+cLvl,cx,cy+32+bob);
+  // Player castle rendered in HTML overlay
   // Embers
   if(!_cwParticles)_cwParticles=Array.from({length:18},(_,i)=>({
     x:cx+(Math.random()-.5)*60,y:cy+(Math.random()-.5)*40,vy:-0.3-Math.random()*.5,vx:(Math.random()-.5)*.4,life:Math.random(),maxLife:2+Math.random()*3
@@ -11671,6 +11709,7 @@ function renderCastleWorld(){
   vig.addColorStop(0,'rgba(0,0,0,0)');vig.addColorStop(1,'rgba(0,0,5,.6)');
   ctx.fillStyle=vig;ctx.fillRect(0,0,W,H);
   const gold=$('cwGold');if(gold)gold.textContent='💰 '+(G.coins||0);
+  _cwUpdateOverlay();
 }
 
 function _cwTap(x,y){
