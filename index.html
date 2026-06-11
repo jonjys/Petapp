@@ -516,9 +516,9 @@ button:active{opacity:.85;}
 .vr-mini.vr-k{background:#0d0d0d;border-color:var(--g);box-shadow:3px 3px 0px var(--g);}
 .vr-mini.vr-k .vr-big-num{color:var(--g);}
 /* CARE HERO — Tamagotchi big buttons */
-.care-section-lbl{font-size:9px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:1px;padding:3px 14px 4px;display:flex;align-items:center;gap:6px;}
-.care-hero{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin:0 12px 6px;}
-.care-hero-row2{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin:0 12px 8px;}
+.care-section-lbl{font-size:9px;font-weight:700;color:rgba(255,255,255,.4);text-transform:uppercase;letter-spacing:1.5px;padding:3px 14px 4px;display:flex;align-items:center;gap:6px;font-family:var(--mono);}
+.care-hero{display:grid!important;grid-template-columns:repeat(6,1fr)!important;gap:6px!important;margin:0 12px 6px!important;padding:0 0 4px!important;}
+.care-hero-row2{display:none;}
 .chb{border-radius:12px;padding:10px 4px;text-align:center;cursor:pointer;transition:transform .1s,opacity .1s;-webkit-tap-highlight-color:transparent;position:relative;overflow:hidden;border:1.5px solid;min-height:60px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;background:#111;}
 .chb:active{transform:scale(.92);opacity:.8;}
 .chb-ico{font-size:22px;display:block;line-height:1.1;}
@@ -10139,24 +10139,37 @@ function switchWorldTab(tab){
   }
 }
 
+let _kartaRaf=null;
 function renderKartaView(){
-  // Draw a cool-looking Stockholm map on canvas
   const canvas=$('kartaCanvas');if(!canvas)return;
   const wrap=$('meMapWrap');
   const W=wrap?wrap.offsetWidth:320;
   const H=340;
   canvas.width=W;canvas.height=H;
+  if(_kartaRaf)cancelAnimationFrame(_kartaRaf);
+  _drawKartaFrame(canvas,W,H);
+}
+function _drawKartaFrame(canvas,W,H){
+  const panel=$('world-panel-karta');
+  if(!panel||panel.style.display==='none'){_kartaRaf=null;return;}
   const ctx=canvas.getContext('2d');
-  // Background water
-  ctx.fillStyle='#020d1f';ctx.fillRect(0,0,W,H);
-  // Grid lines (map grid feel)
-  ctx.strokeStyle='rgba(0,150,255,.06)';ctx.lineWidth=1;
-  for(let x=0;x<W;x+=30){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,H);ctx.stroke();}
-  for(let y=0;y<H;y+=30){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(W,y);ctx.stroke();}
-  // Mälaren water blobs
-  ctx.fillStyle='rgba(0,80,180,.35)';
-  ctx.beginPath();ctx.ellipse(W*.15,H*.55,W*.12,H*.09,-.2,0,Math.PI*2);ctx.fill();
-  ctx.beginPath();ctx.ellipse(W*.5,H*.48,W*.18,H*.07,.1,0,Math.PI*2);ctx.fill();
+  const t=Date.now()/1000;
+  // Deep space background
+  const bg=ctx.createLinearGradient(0,0,W,H);
+  bg.addColorStop(0,'#010812');bg.addColorStop(0.5,'#020d1f');bg.addColorStop(1,'#01080e');
+  ctx.fillStyle=bg;ctx.fillRect(0,0,W,H);
+  // Fine grid
+  ctx.strokeStyle='rgba(0,180,255,.06)';ctx.lineWidth=.5;
+  for(let x=0;x<W;x+=24){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,H);ctx.stroke();}
+  for(let y=0;y<H;y+=24){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(W,y);ctx.stroke();}
+  // Mälaren water
+  ctx.fillStyle='rgba(0,60,160,.5)';
+  ctx.beginPath();ctx.ellipse(W*.14,H*.55,W*.13,H*.10,-.2,0,Math.PI*2);ctx.fill();
+  ctx.fillStyle='rgba(0,50,140,.45)';
+  ctx.beginPath();ctx.ellipse(W*.48,H*.47,W*.20,H*.08,.1,0,Math.PI*2);ctx.fill();
+  // Water shimmer
+  ctx.strokeStyle=`rgba(0,150,255,${.06+.04*Math.sin(t*2)})`;ctx.lineWidth=1;
+  ctx.beginPath();ctx.ellipse(W*.48,H*.47,W*.20,H*.08,.1,0,Math.PI*2);ctx.stroke();
   // District blocks
   const zones=[
     {x:.08,y:.1,w:.18,h:.15,col:'rgba(0,180,255,.18)',lbl:'Vasastan',em:'🏢'},{x:.28,y:.08,w:.2,h:.14,col:'rgba(255,159,10,.15)',lbl:'Östermalm',em:'🏙️'},
@@ -10169,39 +10182,56 @@ function renderKartaView(){
     {x:.48,y:.65,w:.16,h:.14,col:'rgba(57,255,20,.14)',lbl:'Tyresö',em:'🌳'},{x:.66,y:.65,w:.15,h:.13,col:'rgba(191,95,255,.13)',lbl:'Haninge',em:'🏠'},
   ];
   zones.forEach(z=>{
-    const owned=(G.ownedZones||[]).some(id=>TERRITORY_ZONES.find(t=>t.nm.toLowerCase().startsWith(z.lbl.toLowerCase().slice(0,5))&&t.id===id));
+    const owned=(G.ownedZones||[]).some(id=>TERRITORY_ZONES.find(tz=>tz.nm.toLowerCase().startsWith(z.lbl.toLowerCase().slice(0,5))&&tz.id===id));
     const rx=z.x*W,ry=z.y*H,rw=z.w*W,rh=z.h*H;
-    ctx.fillStyle=owned?'rgba(57,255,20,.22)':z.col;
-    ctx.strokeStyle=owned?'rgba(57,255,20,.6)':'rgba(255,255,255,.08)';
-    ctx.lineWidth=owned?1.5:1;
-    const rad=8;ctx.beginPath();ctx.roundRect(rx,ry,rw,rh,rad);ctx.fill();ctx.stroke();
+    // Owned zones pulse
+    const pulse=owned?0.18+0.08*Math.sin(t*2):0;
+    ctx.fillStyle=owned?`rgba(57,255,20,${0.15+pulse})`:z.col;
+    ctx.strokeStyle=owned?`rgba(57,255,20,${0.5+pulse*2})`:'rgba(255,255,255,.12)';
+    ctx.lineWidth=owned?1.5:0.5;
+    const rad=6;ctx.beginPath();ctx.roundRect(rx,ry,rw,rh,rad);ctx.fill();ctx.stroke();
     // Label
-    ctx.fillStyle='rgba(255,255,255,.55)';ctx.font=`bold ${Math.round(rw/9)}px monospace`;ctx.textAlign='center';ctx.textBaseline='middle';
+    ctx.fillStyle=owned?'rgba(57,255,20,.9)':'rgba(255,255,255,.6)';
+    ctx.font=`bold ${Math.max(7,Math.round(rw/8))}px monospace`;ctx.textAlign='center';ctx.textBaseline='middle';
     ctx.fillText(z.lbl,rx+rw/2,ry+rh/2);
   });
-  // You marker (blinking)
+  // Scan line effect
+  const scanY=((t*60)%H);
+  const scan=ctx.createLinearGradient(0,scanY-10,0,scanY+10);
+  scan.addColorStop(0,'rgba(0,200,255,0)');scan.addColorStop(0.5,'rgba(0,200,255,.04)');scan.addColorStop(1,'rgba(0,200,255,0)');
+  ctx.fillStyle=scan;ctx.fillRect(0,scanY-10,W,20);
+  // You marker — animated pulse rings
   const myX=W*.38,myY=H*.35;
-  ctx.fillStyle='rgba(57,255,20,.25)';ctx.beginPath();ctx.arc(myX,myY,14,0,Math.PI*2);ctx.fill();
-  ctx.fillStyle='rgba(57,255,20,.5)';ctx.beginPath();ctx.arc(myX,myY,9,0,Math.PI*2);ctx.fill();
-  ctx.fillStyle='#39FF14';ctx.beginPath();ctx.arc(myX,myY,5,0,Math.PI*2);ctx.fill();
-  ctx.fillStyle='#fff';ctx.font='11px serif';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText(G.petEmoji||'🐉',myX,myY-22);
+  const ring1=.5+.5*Math.sin(t*3);
+  ctx.strokeStyle=`rgba(57,255,20,${ring1*.5})`;ctx.lineWidth=1.5;ctx.beginPath();ctx.arc(myX,myY,18+ring1*8,0,Math.PI*2);ctx.stroke();
+  ctx.fillStyle=`rgba(57,255,20,${0.1+ring1*.1})`;ctx.beginPath();ctx.arc(myX,myY,14,0,Math.PI*2);ctx.fill();
+  ctx.fillStyle='rgba(57,255,20,.7)';ctx.beginPath();ctx.arc(myX,myY,8,0,Math.PI*2);ctx.fill();
+  ctx.fillStyle='#39FF14';ctx.beginPath();ctx.arc(myX,myY,4,0,Math.PI*2);ctx.fill();
+  ctx.fillStyle='rgba(255,255,255,.9)';ctx.font='14px "Apple Color Emoji","Segoe UI Emoji",sans-serif';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText(G.petEmoji||'🐉',myX,myY-22);
   // Friend dots
   const friends=[{x:.55,y:.42,em:'🐱',col:'#FF2D55'},{x:.25,y:.6,em:'🐺',col:'#00D9FF'},{x:.7,y:.35,em:'🦊',col:'#BF5FFF'}];
-  friends.forEach(f=>{
-    ctx.fillStyle=f.col+'55';ctx.beginPath();ctx.arc(f.x*W,f.y*H,10,0,Math.PI*2);ctx.fill();
-    ctx.fillStyle=f.col;ctx.beginPath();ctx.arc(f.x*W,f.y*H,4,0,Math.PI*2);ctx.fill();
-    ctx.fillStyle='rgba(255,255,255,.7)';ctx.font='10px serif';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText(f.em,f.x*W,f.y*H-16);
+  friends.forEach((f,fi)=>{
+    const fp=.5+.5*Math.sin(t*2.5+fi*2);
+    ctx.fillStyle=f.col+'44';ctx.beginPath();ctx.arc(f.x*W,f.y*H,12+fp*4,0,Math.PI*2);ctx.fill();
+    ctx.fillStyle=f.col+'88';ctx.beginPath();ctx.arc(f.x*W,f.y*H,7,0,Math.PI*2);ctx.fill();
+    ctx.fillStyle=f.col;ctx.beginPath();ctx.arc(f.x*W,f.y*H,3.5,0,Math.PI*2);ctx.fill();
+    ctx.fillStyle='rgba(255,255,255,.85)';ctx.font='13px "Apple Color Emoji","Segoe UI Emoji",sans-serif';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText(f.em,f.x*W,f.y*H-18);
   });
-  // Overlay: karta legend
+  // Vignette edge
+  const vig=ctx.createRadialGradient(W/2,H/2,H*.3,W/2,H/2,H*.9);
+  vig.addColorStop(0,'rgba(0,0,0,0)');vig.addColorStop(1,'rgba(0,0,20,.6)');
+  ctx.fillStyle=vig;ctx.fillRect(0,0,W,H);
+  // Overlay: legend
   const ov=$('kartaOverlay');
   if(ov)ov.innerHTML=`
-    <div style="position:absolute;top:8px;left:8px;background:rgba(0,0,0,.7);border-radius:10px;padding:5px 8px;font-size:9px;font-family:monospace;color:rgba(255,255,255,.7)">
-      <div style="color:#39FF14;margin-bottom:2px">● DU</div>
-      <div style="color:#FF2D55;margin-bottom:2px">● ella_sthlm</div>
-      <div style="color:#00D9FF;margin-bottom:2px">● bjorn99</div>
+    <div style="position:absolute;top:8px;left:8px;background:rgba(0,5,20,.85);backdrop-filter:blur(8px);border:1px solid rgba(0,200,255,.2);border-radius:12px;padding:6px 10px;font-size:9px;font-family:monospace;line-height:1.8">
+      <div style="color:#39FF14">● DU</div>
+      <div style="color:#FF2D55">● ella_sthlm</div>
+      <div style="color:#00D9FF">● bjorn99</div>
       <div style="color:#BF5FFF">● sofiaK</div>
     </div>
-    <div style="position:absolute;top:8px;right:8px;background:rgba(0,0,0,.7);border-radius:10px;padding:5px 8px;font-size:9px;font-family:monospace;color:rgba(57,255,20,.8)">LIVE</div>`;
+    <div style="position:absolute;top:8px;right:8px;background:rgba(255,45,85,.15);border:1px solid rgba(255,45,85,.4);backdrop-filter:blur(8px);border-radius:20px;padding:3px 10px;font-size:9px;font-family:monospace;color:#FF2D55;font-weight:900;display:flex;align-items:center;gap:4px"><span style="width:5px;height:5px;border-radius:50%;background:#FF2D55;display:inline-block;animation:ldotPulse 1s ease-in-out infinite"></span>LIVE</div>`;
+  _kartaRaf=requestAnimationFrame(()=>_drawKartaFrame(canvas,W,H));
   // Nearby list
   const nearby=[
     {em:'🐱',nm:'ella_sthlm',zone:'Södermalm',status:'⚡ Fiskar',col:'#FF2D55',dist:'0.3km'},
@@ -10211,15 +10241,15 @@ function renderKartaView(){
     {em:'🦁',nm:'leo_beats',zone:'Vasastan',status:'🎵 Flash',col:'#FFE600',dist:'2.1km'},
   ];
   const nl=$('meNearbyList');
-  if(nl)nl.innerHTML=nearby.map(n=>`<div style="display:flex;align-items:center;gap:10px;background:var(--c1);border:1px solid rgba(255,255,255,.06);border-radius:14px;padding:10px 12px;cursor:pointer" onclick="showT('🌍 Besöker ${n.nm}s värld...','b')">
-    <div style="font-size:24px;width:38px;height:38px;border-radius:50%;background:${n.col}22;border:1.5px solid ${n.col}55;display:flex;align-items:center;justify-content:center">${n.em}</div>
-    <div style="flex:1">
-      <div style="font-size:12px;font-weight:900;color:var(--t1)">@${n.nm}</div>
-      <div style="font-size:10px;color:var(--t3)">${n.status} · ${n.zone}</div>
+  if(nl&&!nl.dataset.rendered)nl.dataset.rendered='1',nl.innerHTML=nearby.map(n=>`<div style="display:flex;align-items:center;gap:10px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:16px;padding:10px 12px;cursor:pointer;transition:background .15s" onclick="showT('🌍 Besöker ${n.nm}s värld...','b')">
+    <div style="font-size:22px;width:40px;height:40px;border-radius:50%;background:${n.col}18;border:1.5px solid ${n.col}44;display:flex;align-items:center;justify-content:center;flex-shrink:0">${n.em}</div>
+    <div style="flex:1;min-width:0">
+      <div style="font-size:12px;font-weight:900">@${n.nm}</div>
+      <div style="font-size:10px;color:rgba(255,255,255,.4)">${n.status} · ${n.zone}</div>
     </div>
-    <div style="text-align:right">
-      <div style="font-size:10px;font-weight:900;color:${n.col}">${n.dist}</div>
-      <div style="font-size:9px;color:var(--t3)">away</div>
+    <div style="text-align:right;flex-shrink:0">
+      <div style="font-size:11px;font-weight:900;color:${n.col}">${n.dist}</div>
+      <div style="font-size:8px;color:rgba(255,255,255,.3)">bort</div>
     </div>
   </div>`).join('');
 }
@@ -11549,7 +11579,7 @@ function renderCastleWorld(){
     pr.addColorStop(0,p.col.replace('.7',',.9'));
     pr.addColorStop(1,'rgba(0,0,0,0)');
     ctx.fillStyle=pr;ctx.beginPath();ctx.ellipse(px,py,18*pulse,12*pulse,0,0,Math.PI*2);ctx.fill();
-    ctx.font='16px serif';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText('🕳️',px,py);
+    ctx.font='16px "Apple Color Emoji","Segoe UI Emoji",sans-serif';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText('🕳️',px,py);
     ctx.font='7px monospace';ctx.fillStyle=p.col;ctx.fillText(p.nm,px,py+16);
   });
   // Roads
@@ -11564,7 +11594,7 @@ function renderCastleWorld(){
   });
   // Decorations
   const decor=[[0.1,0.3,'🌲'],[0.87,0.28,'🌲'],[0.15,0.68,'🪨'],[0.82,0.65,'🌲'],[0.05,0.55,'🪨'],[0.93,0.5,'🌲'],[0.22,0.18,'🌲'],[0.75,0.16,'🪨'],[0.35,0.8,'🌲'],[0.62,0.78,'🪨']];
-  ctx.font='16px serif';ctx.textAlign='center';ctx.textBaseline='middle';
+  ctx.font='16px "Apple Color Emoji","Segoe UI Emoji",sans-serif';ctx.textAlign='center';ctx.textBaseline='middle';
   decor.forEach(([tx,ty,em])=>ctx.fillText(em,tx*W,ty*H));
   // NPCs
   (_cwNpcs||[]).forEach((n,i)=>{
@@ -11573,7 +11603,7 @@ function renderCastleWorld(){
     const pulse=0.65+0.35*Math.sin(t*1.5+i);
     const tc=n.type==='enemy'?`rgba(255,60,60,${pulse*.22})`:n.type==='ally'?`rgba(57,255,20,${pulse*.16})`:`rgba(0,180,255,${pulse*.14})`;
     ctx.fillStyle=tc;ctx.beginPath();ctx.arc(nx,ny,30*pulse,0,Math.PI*2);ctx.fill();
-    ctx.font='22px serif';ctx.textAlign='center';ctx.textBaseline='middle';
+    ctx.font='22px "Apple Color Emoji","Segoe UI Emoji",sans-serif';ctx.textAlign='center';ctx.textBaseline='middle';
     ctx.fillText(n.em,nx,ny-5);
     const barW=36,barH=4;
     const hp=Math.min(1,n.power/100);
@@ -11607,7 +11637,7 @@ function renderCastleWorld(){
       ctx.fillStyle=gc;ctx.beginPath();ctx.arc(bx,by,20,0,Math.PI*2);ctx.fill();
       ctx.globalAlpha=1;
     }else{ctx.globalAlpha=0.3;}
-    ctx.font='20px serif';ctx.textAlign='center';ctx.textBaseline='middle';
+    ctx.font='20px "Apple Color Emoji","Segoe UI Emoji",sans-serif';ctx.textAlign='center';ctx.textBaseline='middle';
     ctx.fillText(bInfo.em,bx,by);
     if(lvl>0){
       ctx.font='bold 8px monospace';ctx.fillStyle='rgba(255,200,0,.95)';
@@ -11617,7 +11647,7 @@ function renderCastleWorld(){
   });
   // Player castle
   const bob=Math.sin(t*1.5)*3;
-  ctx.font='48px serif';ctx.textAlign='center';ctx.textBaseline='middle';
+  ctx.font='48px "Apple Color Emoji","Segoe UI Emoji",sans-serif';ctx.textAlign='center';ctx.textBaseline='middle';
   ctx.fillText('🏰',cx,cy-6+bob);
   ctx.font='bold 9px monospace';ctx.fillStyle='rgba(255,215,0,.95)';
   const cLvl=(G.castle&&G.castle.lvl)||1;
