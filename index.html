@@ -3578,12 +3578,6 @@ div[style*="LIVE"]{border-radius:16px!important;background:rgba(57,255,20,.03)!i
       <!-- ACHIEVEMENTS -->
       <div class="sh" style="margin-top:8px"><div class="sh-t">🏆 ACHIEVEMENTS</div><div class="sh-a" id="playAchCount" style="color:var(--y)">0 / 17</div></div>
       <div id="playAchGrid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;padding:0 14px 4px"></div>
-      <!-- UPPDRAG summary -->
-      <!-- Quick link to uppdrag tab -->
-      <div style="margin:8px 14px 16px;background:#0d0d0d;border:2px solid rgba(191,95,255,.3);border-radius:10px;padding:12px 16px;display:flex;align-items:center;justify-content:space-between;cursor:pointer" onclick="nav('uppdrag')">
-        <div><div style="font-size:13px;font-weight:900;color:var(--p)">🎯 DAGLIGA UPPDRAG</div><div style="font-size:10px;color:var(--t3);margin-top:2px">Gör uppdrag · tjäna XP & coins</div></div>
-        <div style="font-size:20px;color:var(--p)">→</div>
-      </div>
       <div id="playUppdragList" style="display:none"></div>
       <div class="vend"></div>
     </div>
@@ -8181,6 +8175,7 @@ function openPetRunner(){
       </div>
       <div style="position:relative;flex:1;overflow:hidden">
         <canvas id="prCanvas" style="display:block;width:100%;height:100%;touch-action:none"></canvas>
+        <div id="prEmojiOv" style="position:absolute;inset:0;pointer-events:none;z-index:1"></div>
         <div id="prHud" style="position:absolute;top:10px;left:12px;display:flex;gap:8px;align-items:center">
           <span id="prHpDots" style="font-size:16px">❤️❤️❤️</span>
           <span style="font-size:10px;color:var(--g);font-weight:900;font-family:var(--mono)" id="prLvBadge2">LV1</span>
@@ -8742,6 +8737,19 @@ function _prDraw(canvas,ctx){
   ctx.restore(); // screen shake
   ctx.textAlign='left';ctx.textBaseline='alphabetic';
   ctx.setLineDash([]);
+  // HTML emoji overlay — fixes iOS canvas emoji invisibility
+  const _prOv=$('prEmojiOv');if(_prOv){
+    const pet=G.petEmoji||'🐉';
+    const petX=_pr.x,petY=_pr.y-15;
+    const bob=_pr.grounded?Math.sin(t*.009)*2:0;
+    const tiltDeg=(!_pr.grounded?((-0.18+_pr.vy*.004)*57.3):0).toFixed(1);
+    const glw=_pr.shield?'drop-shadow(0 0 14px rgba(57,255,20,.9))':'';
+    let _oh=`<div style="position:absolute;left:${Math.round(petX)}px;top:${Math.round(petY+bob)}px;transform:translate(-50%,-50%) rotate(${tiltDeg}deg);font-size:36px;filter:${glw};line-height:1">${pet}</div>`;
+    if(_pr.ghost&&_pr.ghost.active&&_pr.best>0){const sd=(_pr.ghost.score-_pr.score)/10;const gx=Math.max(20,Math.min(W-20,_pr.x+sd*0.8));_oh+=`<div style="position:absolute;left:${Math.round(gx)}px;top:${Math.round(petY)}px;transform:translate(-50%,-50%);font-size:32px;opacity:.22;line-height:1">${pet}</div>`;}
+    (_pr.gems||[]).forEach(gm=>{if(!gm.alive)return;_oh+=`<div style="position:absolute;left:${Math.round(gm.x)}px;top:${Math.round(gm.y)}px;transform:translate(-50%,-50%);font-size:16px;line-height:1">${gm.em}</div>`;});
+    (_pr.powerups||[]).forEach(pw=>{if(!pw.alive)return;_oh+=`<div style="position:absolute;left:${Math.round(pw.x)}px;top:${Math.round(pw.y)}px;transform:translate(-50%,-50%);font-size:22px;line-height:1">${pw.em||'⭐'}</div>`;});
+    _prOv.innerHTML=_oh;
+  }
 }
 function _prGameOver(){
   _pr.active=false;
@@ -10186,6 +10194,7 @@ function switchWorldTab(tab){
     wp.style.display='none';kp.style.display='';
     if(wb)wb.classList.remove('on');if(kb)kb.classList.add('on');
     setTimeout(()=>renderKartaView(),100);
+    if(!G.userLat)setTimeout(()=>locateMe(),300);
   }
 }
 
@@ -11587,17 +11596,18 @@ function closeCastleWorld(){
 let _cwParticles=null;
 function _cwUpdateOverlay(){
   const cw=$('castleWorld');if(!cw||!cw.classList.contains('open'))return;
+  const canvas=$('castleCanvas');if(!canvas)return;
   let ov=$('cwHtmlOv');
   if(!ov){
     ov=document.createElement('div');ov.id='cwHtmlOv';
-    ov.style.cssText='position:absolute;inset:0;pointer-events:none;overflow:hidden;z-index:4;';
-    const canvas=$('castleCanvas');
-    if(canvas&&canvas.parentNode){canvas.parentNode.style.position='relative';canvas.parentNode.insertBefore(ov,canvas.nextSibling);}
-    else{cw.style.position='relative';cw.appendChild(ov);}
+    const parent=canvas.parentNode||cw;
+    parent.style.position='relative';
+    parent.insertBefore(ov,canvas.nextSibling);
   }
-  const rect=ov.getBoundingClientRect();
-  const W=rect.width||window.innerWidth;
-  const H=rect.height||Math.max(300,window.innerHeight-150);
+  // Position overlay exactly over the canvas
+  const W=canvas.offsetWidth||canvas.width||window.innerWidth;
+  const H=canvas.offsetHeight||canvas.height||Math.max(300,window.innerHeight-150);
+  ov.style.cssText=`position:absolute;left:${canvas.offsetLeft}px;top:${canvas.offsetTop}px;width:${W}px;height:${H}px;pointer-events:none;overflow:visible;z-index:4;`;
   const cx=W/2,cy=H*0.46;
   const npcRing=Math.min(W,H)*0.34;
   const t=Date.now()/1000;
