@@ -4191,7 +4191,10 @@ div[style*="LIVE"]{border-radius:16px!important;background:rgba(57,255,20,.03)!i
     <div id="fishStreakBadge" style="font-size:10px;font-weight:900;color:var(--o);font-family:var(--mono)"></div>
   </div>
   <!-- Canvas underwater world -->
-  <canvas id="fishCanvas" style="flex:1;width:100%;display:block;touch-action:none;cursor:crosshair"></canvas>
+  <div style="flex:1;position:relative;overflow:hidden;display:block">
+    <canvas id="fishCanvas" style="position:absolute;inset:0;width:100%;height:100%;display:block;touch-action:none;cursor:crosshair"></canvas>
+    <div id="fishHtmlOv" style="position:absolute;inset:0;pointer-events:none;overflow:hidden;z-index:2"></div>
+  </div>
   <!-- Bottom controls -->
   <div class="fish-controls" style="padding:10px 14px 14px">
     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
@@ -9170,6 +9173,7 @@ function closeFishingGame(){
   $('fishGame').classList.remove('open');
   if(_fc.raf){cancelAnimationFrame(_fc.raf);_fc.raf=null;}
   const ov=$('fishReelOverlay');if(ov){ov.style.opacity='0';ov.style.pointerEvents='none';}
+  const fishOv=$('fishHtmlOv');if(fishOv)fishOv.innerHTML='';
   _fc.phase='idle';
   closeModal('rodShopModal');closeModal('fishJournalModal');
   _hidePetCorner();
@@ -9580,32 +9584,31 @@ function _fcDraw(){
     ctx.strokeStyle=`rgba(100,190,255,${b.a})`;ctx.lineWidth=0.8;ctx.stroke();
   });
   // Fish
-  const rarGlow={ultra:'rgba(255,230,0,0.85)',mythic:'rgba(191,95,255,0.8)',legendary:'rgba(255,59,48,0.8)',epic:'rgba(255,107,0,0.7)',rare:'rgba(0,217,255,0.6)'};
   const rarRing={ultra:'rgba(255,230,0,0.6)',mythic:'rgba(191,95,255,0.55)',legendary:'rgba(255,59,48,0.6)',epic:'rgba(255,107,0,0.5)',rare:'rgba(0,217,255,0.4)'};
+  const rarGlowCss={ultra:'drop-shadow(0 0 12px rgba(255,230,0,.95))',mythic:'drop-shadow(0 0 10px rgba(191,95,255,.9))',legendary:'drop-shadow(0 0 10px rgba(255,59,48,.9))',epic:'drop-shadow(0 0 8px rgba(255,107,0,.85))',rare:'drop-shadow(0 0 8px rgba(0,217,255,.8))'};
+  let _fishHtml='';
   _fc.fish.forEach(f=>{
     if(f.caught)return;
     f.x+=f.vx;f.animT+=0.038;
     if(f.x<-0.12)f.x=1.12;if(f.x>1.12)f.x=-0.12;
     const fx=f.x*w,fy=f.y*h+Math.sin(f.animT)*3;
     const sz=Math.round(22*f.scale);
-    ctx.save();
-    if(f.vx<0){ctx.translate(fx,fy);ctx.scale(-1,1);ctx.translate(-fx,-fy);}
-    if(f.targeted){ctx.shadowBlur=24;ctx.shadowColor='#FFE600';}
-    else if(rarGlow[f.ft.rarity]){ctx.shadowBlur=12;ctx.shadowColor=rarGlow[f.ft.rarity];}
-    ctx.font=sz+'px serif';ctx.textAlign='center';ctx.textBaseline='middle';
-    ctx.fillText(f.em,fx,fy);
-    ctx.restore();
-    // Rarity orbit ring
+    // Canvas: rarity orbit ring
     if(rarRing[f.ft.rarity]){
       ctx.beginPath();ctx.arc(fx,fy,sz*0.75+Math.sin(f.animT*2)*2,0,Math.PI*2);
       ctx.strokeStyle=rarRing[f.ft.rarity];ctx.lineWidth=1.5;ctx.setLineDash([4,7]);ctx.stroke();ctx.setLineDash([]);
     }
-    // Targeted crosshair
+    // Canvas: targeted crosshair
     if(f.targeted){
       ctx.strokeStyle='rgba(255,230,0,0.8)';ctx.lineWidth=1.5;
       ctx.beginPath();ctx.arc(fx,fy,sz+6,0,Math.PI*2);ctx.stroke();
     }
+    // HTML overlay: fish emoji (avoids iOS canvas emoji bug)
+    const flip=f.vx<0?'scaleX(-1)':'';
+    const glow=f.targeted?'drop-shadow(0 0 16px #FFE600) drop-shadow(0 0 6px #FFE600)':(rarGlowCss[f.ft.rarity]||'');
+    _fishHtml+=`<div style="position:absolute;left:${Math.round(fx)}px;top:${Math.round(fy)}px;transform:translate(-50%,-50%) ${flip};font-size:${sz}px;filter:${glow};line-height:1;pointer-events:none">${f.em}</div>`;
   });
+  const _fishOv=$('fishHtmlOv');if(_fishOv)_fishOv.innerHTML=_fishHtml;
   // Hook + line
   if(_fc.hook.active){
     _fc.hook.anim=Math.min(1,_fc.hook.anim+0.035);
