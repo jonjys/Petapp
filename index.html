@@ -2405,6 +2405,32 @@ div[style*="LIVE"]{border-radius:16px!important;background:rgba(57,255,20,.03)!i
 
 </head>
 <body>
+<!-- DAILY REWARD OVERLAY -->
+<div id="dailyRewardOv" style="position:fixed;inset:0;z-index:9990;display:none;align-items:flex-end;justify-content:center;background:rgba(0,0,0,.82);backdrop-filter:blur(10px)">
+  <div id="drSheet" style="width:100%;max-width:440px;background:#08080f;border-radius:28px 28px 0 0;padding:0 0 env(safe-area-inset-bottom,20px);border-top:1px solid rgba(255,215,0,.25);box-shadow:0 -20px 60px rgba(255,170,0,.12)">
+    <!-- Handle + header -->
+    <div style="text-align:center;padding:12px 20px 0">
+      <div style="width:40px;height:4px;background:rgba(255,255,255,.15);border-radius:4px;margin:0 auto 16px"></div>
+      <div style="display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:18px">
+        <span style="font-size:22px">🎁</span>
+        <span style="font-size:17px;font-weight:900;color:#FFD700;font-family:var(--mono);letter-spacing:1px">Daglig Belöning</span>
+        <button onclick="$('dailyRewardOv').style.display='none'" style="position:absolute;right:20px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);border-radius:50%;width:28px;height:28px;color:rgba(255,255,255,.5);font-size:14px;cursor:pointer;display:flex;align-items:center;justify-content:center">×</button>
+      </div>
+    </div>
+    <!-- 7-day strip -->
+    <div id="drDayStrip" style="display:flex;gap:6px;justify-content:center;padding:0 16px 20px;overflow-x:auto"></div>
+    <!-- Reward display -->
+    <div style="text-align:center;padding:0 20px 24px">
+      <div id="drRewardEmoji" style="font-size:88px;margin-bottom:14px;filter:drop-shadow(0 0 30px rgba(255,215,0,.6));animation:petBob 1.5s ease-in-out infinite">💰</div>
+      <div id="drRewardTitle" style="font-size:22px;font-weight:900;color:#fff;margin-bottom:6px">Dag 1 Belöning!</div>
+      <div id="drRewardSub" style="font-size:15px;font-weight:700;color:#FFD700">+100 Coins</div>
+    </div>
+    <!-- Claim button -->
+    <div style="padding:0 20px 12px">
+      <button id="drClaimBtn" onclick="claimDailyReward()" style="width:100%;padding:18px;background:linear-gradient(135deg,#39FF14,#00D9FF);border:none;border-radius:16px;font-size:17px;font-weight:900;cursor:pointer;color:#000;letter-spacing:1px;font-family:var(--mono);box-shadow:0 0 30px rgba(57,255,20,.4)">🎁 HÄMTA!</button>
+    </div>
+  </div>
+</div>
 <!-- AUTH SCREEN -->
 <div id="authScreen">
   <!-- Ambient orbs -->
@@ -12890,9 +12916,10 @@ function _loadFromLocalStorage(){
     try{const pm=localStorage.getItem('kv8_pmem');if(pm)G.petMemory=JSON.parse(pm);}catch(e){}
     try{const ex=localStorage.getItem('kv8_expd');if(ex)G.expedition=JSON.parse(ex);}catch(e){}
     const _today=new Date().toDateString();const _last=localStorage.getItem('kv8_lastLogin');
-    if(_last!==_today){localStorage.setItem('kv8_lastLogin',_today);if(_last){const _b=G.premium?300:75;G.coins+=_b;// S4b Hype Builder: +20 XP on daily login
-      if(G._talentS4b)setTimeout(()=>{gainXP(20,'social');showT('🤝 HYPE BUILDER! +20 XP login bonus','pk');},3200);
-      setTimeout(()=>{showT('🎁 DAILY LOGIN BONUS! +'+_b+' COINS','g');vibe([30,20,60,20,80]);},2500);}}
+    if(_last!==_today){localStorage.setItem('kv8_lastLogin',_today);if(_last){
+      if(G._talentS4b)setTimeout(()=>{gainXP(20,'social');showT('🤝 HYPE BUILDER! +20 XP','pk');},4000);
+      const _rewardDay=parseInt(localStorage.getItem('kv8_rewardDay')||'1');
+      setTimeout(()=>showDailyRewardModal(_rewardDay),2200);}}
     $('ob').style.display='none';$('app').style.display='flex';updateHUD();nav('home');
     initDailyChallenges();
     setTimeout(startKarmaPulse,1200);setTimeout(renderJackpot,800);
@@ -15447,6 +15474,79 @@ function _streakMilestoneEffect(streak){
       p.animate([{transform:'translate(-50%,-50%)',opacity:1},{transform:`translate(calc(-50% + ${Math.cos(ang)*dist}px),calc(-50% + ${Math.sin(ang)*dist-80}px))`,opacity:0}],{duration:900+Math.random()*400}).onfinish=()=>p.remove();
     },i*30);
   }
+}
+
+// ═══════════════════════════════════════════════
+// DAILY REWARD SYSTEM
+// ═══════════════════════════════════════════════
+const _DR=[
+  {em:'💰',label:'COINS',sub:'+100 Coins',coins:100,xp:0},
+  {em:'⚡',label:'XP',sub:'+75 XP',coins:0,xp:75},
+  {em:'🎯',label:'BONUS',sub:'+150 Coins',coins:150,xp:0},
+  {em:'🔥',label:'COMBO',sub:'+100 XP + 50 Coins',coins:50,xp:100},
+  {em:'💎',label:'GEMS',sub:'+250 Coins',coins:250,xp:0},
+  {em:'👑',label:'ROYAL',sub:'+200 XP + 100 Coins',coins:100,xp:200},
+  {em:'🏆',label:'JACKPOT',sub:'+600 Coins + 300 XP',coins:600,xp:300},
+];
+function showDailyRewardModal(day){
+  day=Math.min(Math.max(parseInt(day)||1,1),7);
+  const d=_DR[day-1];
+  const strip=$('drDayStrip');
+  if(strip)strip.innerHTML=_DR.map((dd,i)=>{
+    const n=i+1,isTd=n===day,isPast=n<day;
+    return`<div style="display:flex;flex-direction:column;align-items:center;gap:4px;opacity:${isTd?1:isPast?.55:.3};transition:opacity .3s">
+      <div style="width:40px;height:40px;border-radius:12px;background:${isTd?'rgba(255,215,0,.18)':isPast?'rgba(255,255,255,.06)':'rgba(255,255,255,.03)'};border:${isTd?'2px solid #FFD700':isPast?'1px solid rgba(255,255,255,.2)':'1px solid rgba(255,255,255,.06)'};display:flex;align-items:center;justify-content:center;font-size:22px;${isTd?'box-shadow:0 0 20px rgba(255,215,0,.5);animation:petBob 2s ease-in-out infinite':''}">${isPast?'✅':dd.em}</div>
+      <div style="font-size:7px;font-weight:900;color:${isTd?'#FFD700':'rgba(255,255,255,.35)'};font-family:var(--mono)">D${n}</div>
+    </div>`;
+  }).join('');
+  const re=$('drRewardEmoji');if(re){re.textContent=d.em;re.style.filter=`drop-shadow(0 0 30px rgba(255,215,0,.7))`;}
+  const rt=$('drRewardTitle');if(rt)rt.textContent='Dag '+day+' Belöning'+(day===7?' 🏆':'!');
+  const rs=$('drRewardSub');if(rs)rs.textContent=d.sub;
+  const cb=$('drClaimBtn');if(cb){cb.disabled=false;cb.textContent='🎁 HÄMTA!';cb.style.opacity='1';}
+  const ov=$('dailyRewardOv');
+  if(ov){
+    ov.style.display='flex';
+    const sh=$('drSheet');if(sh){sh.style.transform='translateY(100%)';sh.style.transition='transform .35s cubic-bezier(.22,1,.36,1)';requestAnimationFrame(()=>requestAnimationFrame(()=>{sh.style.transform='translateY(0)';}));}
+  }
+}
+function claimDailyReward(){
+  const day=parseInt(localStorage.getItem('kv8_rewardDay')||'1');
+  const d=_DR[Math.min(day-1,6)];
+  const cb=$('drClaimBtn');if(cb){cb.disabled=true;cb.textContent='✅ HÄMTAD!';cb.style.opacity='.7';}
+  if(d.coins>0)gainCoins(d.coins);
+  if(d.xp>0)gainXP(d.xp,'login');
+  localStorage.setItem('kv8_rewardDay',day>=7?1:day+1);
+  // Particle burst from button
+  const btn=$('drClaimBtn');
+  if(btn){
+    const r=btn.getBoundingClientRect();
+    const cx=r.left+r.width/2,cy=r.top+r.height/2;
+    const ems=['💰','⭐','✨','🌟','💫','🎉','🪙','⚡'];
+    for(let i=0;i<28;i++){
+      const el=document.createElement('div');
+      el.textContent=ems[i%ems.length];
+      el.style.cssText=`position:fixed;left:${cx}px;top:${cy}px;font-size:${18+Math.random()*18}px;pointer-events:none;z-index:99999;transform:translate(-50%,-50%)`;
+      document.body.appendChild(el);
+      const ang=Math.random()*Math.PI*2;
+      const dist=100+Math.random()*200;
+      el.animate([
+        {transform:'translate(-50%,-50%) scale(1.2)',opacity:1},
+        {transform:`translate(calc(-50% + ${Math.cos(ang)*dist}px),calc(-50% + ${Math.sin(ang)*dist-60}px)) scale(0.2)`,opacity:0}
+      ],{duration:700+Math.random()*500,easing:'cubic-bezier(0,.9,.57,1)'}).onfinish=()=>el.remove();
+    }
+    // Golden screen flash
+    const fl=document.createElement('div');
+    fl.style.cssText='position:fixed;inset:0;background:rgba(255,215,0,.25);pointer-events:none;z-index:9989;';
+    document.body.appendChild(fl);
+    fl.animate([{opacity:1},{opacity:0}],{duration:500}).onfinish=()=>fl.remove();
+  }
+  vibe&&vibe([40,20,80,20,120,20,80]);
+  setTimeout(()=>{
+    const sh=$('drSheet');if(sh)sh.style.transform='translateY(100%)';
+    setTimeout(()=>{const ov=$('dailyRewardOv');if(ov)ov.style.display='none';},350);
+    updateHUD();save();
+    showT('🎁 '+d.sub+' hämtat! Dag '+(day===7?'7 JACKPOT 🏆':day),'y');
+  },900);
 }
 </script>
 
