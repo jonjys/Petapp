@@ -2056,9 +2056,13 @@ button:active{opacity:.85;}
 @keyframes authOrb2{0%,100%{transform:translate(0,0) scale(1);}50%{transform:translate(-20px,20px) scale(1.15);}}
 .auth-card{position:relative;z-index:1;width:100%;max-width:360px;}
 .auth-logo{text-align:center;margin-bottom:28px;}
-.auth-logo-txt{font-size:44px;font-weight:900;font-family:var(--mono);letter-spacing:-2px;}
+.auth-logo-txt{font-size:54px;font-weight:900;font-family:var(--mono);letter-spacing:-2px;background:linear-gradient(135deg,#39FF14,#00D9FF);-webkit-background-clip:text;-webkit-text-fill-color:transparent;filter:drop-shadow(0 0 20px rgba(57,255,20,0.5));animation:authTitlePulse 3s ease-in-out infinite;}
 .auth-logo-k{color:var(--g);text-shadow:0 0 32px rgba(57,255,20,.65);}
 .auth-logo-sub{font-size:11px;color:var(--t3);letter-spacing:2.5px;text-transform:uppercase;margin-top:3px;}
+.auth-logo-pet{font-size:72px;display:block;margin:0 auto 12px;filter:drop-shadow(0 0 30px rgba(57,255,20,0.8));animation:petBob 2s ease-in-out infinite;}
+.auth-particle{position:absolute;pointer-events:none;font-size:20px;opacity:0;animation:authFloat 6s ease-in-out infinite;}
+@keyframes authFloat{0%,100%{transform:translateY(0) rotate(-5deg);opacity:0;}20%{opacity:.6;}80%{opacity:.4;}50%{transform:translateY(-15px) rotate(5deg);}}
+@keyframes authTitlePulse{0%,100%{filter:drop-shadow(0 0 20px rgba(57,255,20,.5));}50%{filter:drop-shadow(0 0 40px rgba(0,217,255,.8));}}
 .auth-tabs{display:flex;background:var(--c1);border:1px solid var(--line);border-radius:14px;padding:4px;margin-bottom:18px;}
 .auth-tab{flex:1;text-align:center;padding:9px;border-radius:10px;font-size:13px;font-weight:900;cursor:pointer;transition:all .15s;font-family:var(--mono);color:var(--t3);}
 .auth-tab.on{background:var(--g);color:#000;}
@@ -2436,8 +2440,17 @@ div[style*="LIVE"]{border-radius:16px!important;background:rgba(57,255,20,.03)!i
   <!-- Ambient orbs -->
   <div class="auth-orb" style="top:-25%;left:-15%;width:65%;height:65%;background:radial-gradient(circle,rgba(57,255,20,.08),transparent 65%);animation:authOrb1 9s ease-in-out infinite;"></div>
   <div class="auth-orb" style="bottom:-25%;right:-15%;width:65%;height:65%;background:radial-gradient(circle,rgba(191,95,255,.07),transparent 65%);animation:authOrb2 11s ease-in-out infinite;"></div>
+  <!-- Floating particles -->
+  <div class="auth-particle" style="left:8%;top:15%;animation-delay:0s;animation-duration:7s">🐾</div>
+  <div class="auth-particle" style="left:82%;top:20%;animation-delay:1.2s;animation-duration:8s">⚡</div>
+  <div class="auth-particle" style="left:20%;top:70%;animation-delay:2.5s;animation-duration:6.5s">🌟</div>
+  <div class="auth-particle" style="left:75%;top:65%;animation-delay:0.7s;animation-duration:9s">🎮</div>
+  <div class="auth-particle" style="left:50%;top:5%;animation-delay:3.5s;animation-duration:7.5s">✨</div>
+  <div class="auth-particle" style="left:5%;top:50%;animation-delay:1.8s;animation-duration:8.5s">🐉</div>
+  <div class="auth-particle" style="left:90%;top:45%;animation-delay:4s;animation-duration:6s">🏆</div>
   <div class="auth-card">
     <div class="auth-logo">
+      <span class="auth-logo-pet">🐾</span>
       <div class="auth-logo-txt"><span class="auth-logo-k">K</span>ARMA</div>
       <div class="auth-logo-sub">Real Life · Game Engine ⚡</div>
     </div>
@@ -3601,6 +3614,10 @@ div[style*="LIVE"]{border-radius:16px!important;background:rgba(57,255,20,.03)!i
         </div>
         <div style="height:2px;background:linear-gradient(90deg,transparent,rgba(0,200,255,.7),transparent);margin:0 -14px"></div>
       </div>
+      <!-- DAILY REWARD BUTTON -->
+      <div style="margin:4px 14px 8px;display:flex;gap:8px">
+        <button onclick="showDailyRewardModal(parseInt(localStorage.getItem('kv8_rewardDay')||'1'))" style="flex:1;background:linear-gradient(135deg,rgba(255,215,0,.15),rgba(255,159,10,.1));border:1px solid rgba(255,215,0,.4);border-radius:14px;padding:12px;cursor:pointer;color:#FFD700;font-size:13px;font-weight:900;font-family:var(--mono)">🎁 DAGLIG BELÖNING</button>
+      </div>
       <!-- ACHIEVEMENTS -->
       <div class="sh" style="margin-top:8px"><div class="sh-t">🏆 ACHIEVEMENTS</div><div class="sh-a" id="playAchCount" style="color:var(--y)">0 / 17</div></div>
       <div id="playAchGrid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;padding:0 14px 4px"></div>
@@ -4203,9 +4220,9 @@ div[style*="LIVE"]{border-radius:16px!important;background:rgba(57,255,20,.03)!i
     <div id="fishStreakBadge" style="font-size:10px;font-weight:900;color:var(--o);font-family:var(--mono)"></div>
   </div>
   <!-- Canvas underwater world -->
-  <div style="flex:1;position:relative;overflow:hidden;display:block">
-    <canvas id="fishCanvas" style="position:absolute;inset:0;width:100%;height:100%;display:block;touch-action:none;cursor:crosshair"></canvas>
-    <div id="fishHtmlOv" style="position:absolute;inset:0;pointer-events:none;overflow:hidden;z-index:2"></div>
+  <div style="flex:1;position:relative;min-height:0;overflow:hidden">
+    <canvas id="fishCanvas" style="display:block;width:100%;height:100%;touch-action:none;cursor:crosshair"></canvas>
+    <div id="fishHtmlOv" style="position:absolute;inset:0;pointer-events:none;z-index:2"></div>
   </div>
   <!-- Bottom controls -->
   <div class="fish-controls" style="padding:10px 14px 14px">
@@ -5134,8 +5151,9 @@ function openBattle(){
        blocking:false,dodging:false,enemy:null,combo:0,fusionReady:false,
        statusPlayer:null,statusEnemy:null,statusTimer:null,ePhase:0,
        pendingAtk:null,turnsWon:0,totalDmgDealt:0,earnedXp:0,earnedCoins:0};
-  $('baVictory').style.display='none';
-  $('baDefeat').style.display='none';
+  const _baV=$('baVictory');if(_baV)_baV.style.display='none';
+  const _baD=$('baDefeat');if(_baD)_baD.style.display='none';
+  if(!$('battleArena')){showT('Battle Arena laddas...','b');return;}
   startBattleWave();
   $('battleArena').classList.add('open');
   SFX.battle&&SFX.battle();vibe([20,10,20]);
@@ -8199,7 +8217,7 @@ function openPetRunner(){
           <span style="font-size:13px;font-weight:900;color:var(--y);font-family:var(--mono)" id="prScore">0m</span>
         </div>
       </div>
-      <div style="position:relative;flex:1;overflow:hidden">
+      <div style="position:relative;flex:1;overflow:hidden;min-height:0">
         <canvas id="prCanvas" style="display:block;width:100%;height:100%;touch-action:none"></canvas>
         <div id="prEmojiOv" style="position:absolute;inset:0;pointer-events:none;z-index:1"></div>
         <div id="prHud" style="position:absolute;top:10px;left:12px;display:flex;gap:8px;align-items:center">
@@ -9213,10 +9231,14 @@ function updateFishRodLabel(){
 
 function _fcInitCanvas(){
   const canvas=$('fishCanvas');if(!canvas)return;
-  canvas.width=canvas.offsetWidth||window.innerWidth;
-  canvas.height=canvas.offsetHeight||Math.round(window.innerHeight*0.52);
-  canvas.onclick=(e)=>{const r=canvas.getBoundingClientRect();_fcCanvasTap(e.clientX-r.left,e.clientY-r.top);};
-  canvas.ontouchstart=(e)=>{e.preventDefault();const r=canvas.getBoundingClientRect();const t=e.touches[0];_fcCanvasTap(t.clientX-r.left,t.clientY-r.top);};
+  // Use requestAnimationFrame to ensure layout is settled
+  const doInit=()=>{
+    canvas.width=canvas.offsetWidth||window.innerWidth;
+    canvas.height=canvas.offsetHeight||Math.round(window.innerHeight*0.55);
+    canvas.onclick=(e)=>{const r=canvas.getBoundingClientRect();_fcCanvasTap(e.clientX-r.left,e.clientY-r.top);};
+    canvas.ontouchstart=(e)=>{e.preventDefault();const r=canvas.getBoundingClientRect();const t=e.touches[0];_fcCanvasTap(t.clientX-r.left,t.clientY-r.top);};
+  };
+  if(canvas.offsetWidth>0)doInit();else requestAnimationFrame(doInit);
 }
 
 function _fcCanvasTap(x,y){
@@ -11630,10 +11652,10 @@ function _cwUpdateOverlay(){
     parent.style.position='relative';
     parent.insertBefore(ov,canvas.nextSibling);
   }
-  // Position overlay exactly over the canvas
-  const W=canvas.offsetWidth||canvas.width||window.innerWidth;
-  const H=canvas.offsetHeight||canvas.height||Math.max(300,window.innerHeight-150);
-  ov.style.cssText=`position:absolute;left:${canvas.offsetLeft}px;top:${canvas.offsetTop}px;width:${W}px;height:${H}px;pointer-events:none;overflow:visible;z-index:4;`;
+  const W=canvas.width||canvas.offsetWidth||window.innerWidth;
+  const H=canvas.height||canvas.offsetHeight||Math.max(300,window.innerHeight-150);
+  // Position overlay to match the canvas
+  ov.style.cssText=`position:absolute;left:0;top:${canvas.offsetTop}px;width:${W}px;height:${H}px;pointer-events:none;overflow:visible;z-index:4;`;
   const cx=W/2,cy=H*0.46;
   const npcRing=Math.min(W,H)*0.34;
   const t=Date.now()/1000;
