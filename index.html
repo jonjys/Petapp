@@ -996,10 +996,17 @@ button:active{opacity:.85;}
 @keyframes baHit{0%{transform:scale(1.2) translateX(-10px);}50%{transform:scale(.9) translateX(5px);}100%{transform:scale(1) translateX(0);}}
 @keyframes baShk{0%,100%{transform:translateX(0);}20%,60%{transform:translateX(-8px);}40%,80%{transform:translateX(8px);}}
 @keyframes eEntry{from{transform:translateY(-30px) scale(0.5);opacity:0;}to{transform:translateY(0) scale(1);opacity:1;}}
-.battle-arena{position:fixed;inset:0;z-index:900;background:#000;display:flex;flex-direction:column;transform:translateY(100%);transition:transform .32s cubic-bezier(.32,.72,0,1);overflow:hidden;}
+.battle-arena{position:fixed;inset:0;z-index:900;background:radial-gradient(ellipse at 50% 30%,#0d0010 0%,#000 70%);display:flex;flex-direction:column;transform:translateY(100%);transition:transform .32s cubic-bezier(.32,.72,0,1);overflow:hidden;}
 .battle-arena.open{transform:translateY(0);}
+.ba-arena-bg{position:absolute;inset:0;pointer-events:none;overflow:hidden;}
+.ba-arena-bg::before{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:conic-gradient(from 0deg,transparent 0deg,rgba(255,0,127,.03) 60deg,transparent 120deg,rgba(191,95,255,.03) 180deg,transparent 240deg,rgba(255,0,127,.03) 300deg,transparent 360deg);animation:baRotBg 20s linear infinite;}
+@keyframes baRotBg{from{transform:rotate(0deg);}to{transform:rotate(360deg);}}
+@keyframes baHitFlash{0%{background:rgba(255,50,50,.35);}100%{background:transparent;}}
+@keyframes baVictoryGlow{0%,100%{box-shadow:0 0 40px rgba(57,255,20,.4);}50%{box-shadow:0 0 80px rgba(57,255,20,.8),0 0 160px rgba(0,217,255,.4);}}
+.ba-enemy-sprite{font-size:80px;text-align:center;filter:drop-shadow(0 0 30px rgba(255,0,127,.6));animation:petBob 1.8s ease-in-out infinite;transition:filter .1s;}
+.ba-enemy-sprite.hurt{animation:baShk .3s ease-out;filter:drop-shadow(0 0 30px rgba(255,0,127,.6)) brightness(3);}
 .ba-hdr{height:54px;display:flex;align-items:center;padding:0 14px;gap:10px;border-bottom:3px solid var(--pk);flex-shrink:0;background:#000;}
-.ba-field{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:16px;gap:16px;}
+.ba-field{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:16px;gap:16px;position:relative;}
 .ba-hp-wrap{width:220px;}
 .ba-hp-bar{height:12px;border-radius:2px;background:#111;overflow:hidden;border:2px solid rgba(255,255,255,.15);}
 .ba-hp-fill{height:100%;border-radius:1px;transition:width .4s ease;}
@@ -2413,6 +2420,7 @@ div[style*="LIVE"]{border-radius:16px!important;background:rgba(57,255,20,.03)!i
 @keyframes kRippleAnim{0%{transform:scale(0);opacity:.8;background:radial-gradient(circle,rgba(57,255,20,.5),rgba(0,217,255,.3));}50%{opacity:.4;}100%{transform:scale(3);opacity:0;background:radial-gradient(circle,rgba(0,217,255,.2),transparent);}}
 .kCoinPop{position:fixed;pointer-events:none;z-index:9998;font-size:18px;animation:kCoinPopAnim .9s ease-out forwards;}
 @keyframes kCoinPopAnim{0%{transform:translateY(0) scale(0) rotate(0deg);opacity:1;}40%{transform:translateY(-50px) scale(1.2) rotate(180deg);opacity:1;}100%{transform:translateY(-90px) scale(.8) rotate(360deg);opacity:0;}}
+@keyframes kcPop{0%{transform:translateY(0) scale(0.5);opacity:1;}60%{transform:translateY(-35px) scale(1.2);opacity:1;}100%{transform:translateY(-65px) scale(1);opacity:0;}}
 </style>
 
 </head>
@@ -2631,6 +2639,7 @@ div[style*="LIVE"]{border-radius:16px!important;background:rgba(57,255,20,.03)!i
     <div class="tb-logo-wrap"><div class="logo"><span class="logo-k">K</span>ARMA</div></div>
     <div class="tb-pills">
       <div class="pill pill-y">⚡<b id="hCoins">500</b></div>
+      <div class="pill" style="background:linear-gradient(135deg,rgba(191,95,255,.25),rgba(0,217,255,.15));border:1px solid rgba(191,95,255,.5);border-radius:100px;padding:3px 8px;font-size:11px;font-weight:900;font-family:var(--mono);color:#BF5FFF;display:flex;align-items:center;gap:3px">🔮<b id="hKC">0</b></div>
       <div class="pill pill-r">🔥<b id="hStreak">0</b>d</div>
       <div class="pill" id="premiumBadge" style="display:none;background:linear-gradient(135deg,#FFE600,#FF9F0A);color:#000;font-weight:900;cursor:pointer;border:none" onclick="openModal('premiumModal')">👑</div>
       <button onclick="openSettings()" style="background:var(--c2);border:1px solid var(--line);border-radius:9px;width:32px;height:32px;display:flex;align-items:center;justify-content:center;font-size:16px;cursor:pointer;flex-shrink:0;-webkit-tap-highlight-color:transparent;">⚙️</button>
@@ -2785,7 +2794,7 @@ div[style*="LIVE"]{border-radius:16px!important;background:rgba(57,255,20,.03)!i
             <div style="font-size:20px;margin-bottom:3px">⚡</div>
             <div style="font-size:7px;font-weight:900;color:#39FF14;font-family:var(--mono);letter-spacing:1px">TIMME</div>
             <div style="font-size:15px;font-weight:900;color:#fff;font-family:var(--mono);margin:3px 0" id="potHourAmt">3 450</div>
-            <div style="font-size:6px;color:rgba(255,255,255,.35);font-family:var(--mono)">coins</div>
+            <div style="font-size:6px;color:rgba(255,255,255,.35);font-family:var(--mono)">🔮 KC</div>
             <div style="font-size:9px;font-weight:900;color:#39FF14;font-family:var(--mono);margin-top:4px" id="potHourTimer">--:--</div>
           </div>
           <div onclick="openPrizePotModal('day')" style="background:rgba(255,215,0,.07);border:2px solid rgba(255,215,0,.45);border-radius:14px;padding:10px 6px;text-align:center;cursor:pointer;position:relative;overflow:hidden;box-shadow:0 0 18px rgba(255,215,0,.1);-webkit-tap-highlight-color:transparent">
@@ -2794,7 +2803,7 @@ div[style*="LIVE"]{border-radius:16px!important;background:rgba(57,255,20,.03)!i
             <div style="font-size:20px;margin-bottom:3px">🏆</div>
             <div style="font-size:7px;font-weight:900;color:#FFD700;font-family:var(--mono);letter-spacing:1px">DYGN</div>
             <div style="font-size:15px;font-weight:900;color:#fff;font-family:var(--mono);margin:3px 0" id="potDayAmt">24 800</div>
-            <div style="font-size:6px;color:rgba(255,255,255,.35);font-family:var(--mono)">coins</div>
+            <div style="font-size:6px;color:rgba(255,255,255,.35);font-family:var(--mono)">🔮 KC</div>
             <div style="font-size:9px;font-weight:900;color:#FFD700;font-family:var(--mono);margin-top:4px" id="potDayTimer">--:--:--</div>
           </div>
           <div onclick="openPrizePotModal('week')" style="background:rgba(191,95,255,.07);border:1.5px solid rgba(191,95,255,.35);border-radius:14px;padding:10px 6px;text-align:center;cursor:pointer;position:relative;overflow:hidden;-webkit-tap-highlight-color:transparent">
@@ -2802,7 +2811,7 @@ div[style*="LIVE"]{border-radius:16px!important;background:rgba(57,255,20,.03)!i
             <div style="font-size:20px;margin-bottom:3px">👑</div>
             <div style="font-size:7px;font-weight:900;color:#BF5FFF;font-family:var(--mono);letter-spacing:1px">VECKA</div>
             <div style="font-size:15px;font-weight:900;color:#fff;font-family:var(--mono);margin:3px 0" id="potWeekAmt">182 500</div>
-            <div style="font-size:6px;color:rgba(255,255,255,.35);font-family:var(--mono)">coins</div>
+            <div style="font-size:6px;color:rgba(255,255,255,.35);font-family:var(--mono)">🔮 KC</div>
             <div style="font-size:9px;font-weight:900;color:#BF5FFF;font-family:var(--mono);margin-top:4px" id="potWeekTimer">--d --:--</div>
           </div>
         </div>
@@ -2979,6 +2988,45 @@ div[style*="LIVE"]{border-radius:16px!important;background:rgba(57,255,20,.03)!i
     <!-- FLASH -->
     <div class="view" id="view-flash" style="padding:0">
       <!-- Full-screen TikTok-style feed -->
+      <!-- Flash tabs -->
+      <div id="flashTabBar" style="display:flex;border-bottom:1px solid rgba(255,255,255,.08);background:rgba(0,0,0,.9);flex-shrink:0">
+        <div onclick="switchFlashTab('feed',this)" id="ftFeed" style="flex:1;padding:9px 0;text-align:center;font-size:10px;font-weight:900;font-family:var(--mono);color:#FF2D55;border-bottom:2px solid #FF2D55;cursor:pointer;letter-spacing:1px">⚡ FLASH</div>
+        <div onclick="switchFlashTab('explore',this)" id="ftExplore" style="flex:1;padding:9px 0;text-align:center;font-size:10px;font-weight:900;font-family:var(--mono);color:rgba(255,255,255,.35);border-bottom:2px solid transparent;cursor:pointer;letter-spacing:1px">🔍 UTFORSKA</div>
+        <div onclick="switchFlashTab('trending',this)" id="ftTrending" style="flex:1;padding:9px 0;text-align:center;font-size:10px;font-weight:900;font-family:var(--mono);color:rgba(255,255,255,.35);border-bottom:2px solid transparent;cursor:pointer;letter-spacing:1px">🔥 TRENDING</div>
+      </div>
+      <!-- Explore panel -->
+      <div id="flashExplorePanel" style="display:none;flex:1;overflow-y:auto;padding:12px 14px">
+        <div style="font-size:9px;font-weight:900;color:rgba(255,45,85,.6);font-family:var(--mono);letter-spacing:2px;margin-bottom:10px">🔍 UTFORSKA KARMA UNIVERSE</div>
+        <!-- Category chips -->
+        <div style="display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;margin-bottom:14px;padding-bottom:4px">
+          <div onclick="filterExplore('all',this)" class="exp-chip on" style="flex-shrink:0;padding:5px 12px;border-radius:20px;font-size:10px;font-weight:900;font-family:var(--mono);cursor:pointer;background:rgba(255,45,85,.25);border:1.5px solid rgba(255,45,85,.5);color:#FF2D55">ALLA</div>
+          <div onclick="filterExplore('pets',this)" class="exp-chip" style="flex-shrink:0;padding:5px 12px;border-radius:20px;font-size:10px;font-weight:900;font-family:var(--mono);cursor:pointer;background:rgba(57,255,20,.08);border:1.5px solid rgba(57,255,20,.2);color:rgba(255,255,255,.5)">🐾 PETS</div>
+          <div onclick="filterExplore('sport',this)" class="exp-chip" style="flex-shrink:0;padding:5px 12px;border-radius:20px;font-size:10px;font-weight:900;font-family:var(--mono);cursor:pointer;background:rgba(0,217,255,.08);border:1.5px solid rgba(0,217,255,.2);color:rgba(255,255,255,.5)">💪 SPORT</div>
+          <div onclick="filterExplore('gaming',this)" class="exp-chip" style="flex-shrink:0;padding:5px 12px;border-radius:20px;font-size:10px;font-weight:900;font-family:var(--mono);cursor:pointer;background:rgba(191,95,255,.08);border:1.5px solid rgba(191,95,255,.2);color:rgba(255,255,255,.5)">🎮 GAMING</div>
+          <div onclick="filterExplore('mode',this)" class="exp-chip" style="flex-shrink:0;padding:5px 12px;border-radius:20px;font-size:10px;font-weight:900;font-family:var(--mono);cursor:pointer;background:rgba(255,107,53,.08);border:1.5px solid rgba(255,107,53,.2);color:rgba(255,255,255,.5)">👗 MODE</div>
+          <div onclick="filterExplore('mat',this)" class="exp-chip" style="flex-shrink:0;padding:5px 12px;border-radius:20px;font-size:10px;font-weight:900;font-family:var(--mono);cursor:pointer;background:rgba(255,215,0,.08);border:1.5px solid rgba(255,215,0,.2);color:rgba(255,255,255,.5)">🍜 MAT</div>
+        </div>
+        <!-- Trending hashtags -->
+        <div style="background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:12px;margin-bottom:12px">
+          <div style="font-size:9px;font-weight:900;color:rgba(255,255,255,.4);font-family:var(--mono);letter-spacing:2px;margin-bottom:10px">📈 TRENDING NU</div>
+          <div style="display:flex;flex-wrap:wrap;gap:6px" id="trendingHashtags">
+            <div onclick="showT('#KarmaStreak · 2.4K inlägg','pk')" style="padding:4px 10px;border-radius:12px;font-size:10px;font-weight:900;background:rgba(255,45,85,.15);border:1px solid rgba(255,45,85,.3);color:#FF2D55;cursor:pointer;font-family:var(--mono)">#KarmaStreak</div>
+            <div onclick="showT('#PetEvolution · 1.8K inlägg','pk')" style="padding:4px 10px;border-radius:12px;font-size:10px;font-weight:900;background:rgba(57,255,20,.1);border:1px solid rgba(57,255,20,.25);color:#39FF14;cursor:pointer;font-family:var(--mono)">#PetEvolution</div>
+            <div onclick="showT('#BountyBlitz · 1.2K inlägg','pk')" style="padding:4px 10px;border-radius:12px;font-size:10px;font-weight:900;background:rgba(255,159,10,.1);border:1px solid rgba(255,159,10,.25);color:#FF9F0A;cursor:pointer;font-family:var(--mono)">#BountyBlitz</div>
+            <div onclick="showT('#Stockholm · 890 inlägg','pk')" style="padding:4px 10px;border-radius:12px;font-size:10px;font-weight:900;background:rgba(0,217,255,.1);border:1px solid rgba(0,217,255,.25);color:#00D9FF;cursor:pointer;font-family:var(--mono)">#Stockholm</div>
+            <div onclick="showT('#KarmaCash · 750 inlägg','pk')" style="padding:4px 10px;border-radius:12px;font-size:10px;font-weight:900;background:rgba(191,95,255,.1);border:1px solid rgba(191,95,255,.25);color:#BF5FFF;cursor:pointer;font-family:var(--mono)">#KarmaCash</div>
+            <div onclick="showT('#GameNight · 620 inlägg','pk')" style="padding:4px 10px;border-radius:12px;font-size:10px;font-weight:900;background:rgba(255,215,0,.1);border:1px solid rgba(255,215,0,.25);color:#FFD700;cursor:pointer;font-family:var(--mono)">#GameNight</div>
+          </div>
+        </div>
+        <!-- Explore grid -->
+        <div style="font-size:9px;font-weight:900;color:rgba(255,255,255,.4);font-family:var(--mono);letter-spacing:2px;margin-bottom:8px">📸 POPULÄRT</div>
+        <div id="exploreGrid" style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:2px"></div>
+      </div>
+      <!-- Trending panel -->
+      <div id="flashTrendingPanel" style="display:none;flex:1;overflow-y:auto;padding:12px 14px">
+        <div style="font-size:9px;font-weight:900;color:rgba(255,100,0,.6);font-family:var(--mono);letter-spacing:2px;margin-bottom:10px">🔥 TOP 10 TRENDING DENNA VECKA</div>
+        <div id="trendingList"></div>
+      </div>
       <div class="flash-feed" id="flashFeed"></div>
       <!-- Overlay: title + POST button -->
       <div class="flash-top" style="pointer-events:none">
@@ -4275,8 +4323,8 @@ div[style*="LIVE"]{border-radius:16px!important;background:rgba(57,255,20,.03)!i
     <div id="fishStreakBadge" style="font-size:10px;font-weight:900;color:var(--o);font-family:var(--mono)"></div>
   </div>
   <!-- Canvas underwater world -->
-  <div style="flex:1;position:relative;min-height:0;overflow:hidden">
-    <canvas id="fishCanvas" style="display:block;width:100%;height:100%;touch-action:none;cursor:crosshair"></canvas>
+  <div style="flex:1;position:relative;overflow:hidden;display:flex;flex-direction:column">
+    <canvas id="fishCanvas" style="flex:1;display:block;width:100%;touch-action:none;cursor:crosshair;min-height:0"></canvas>
     <div id="fishHtmlOv" style="position:absolute;inset:0;pointer-events:none;z-index:2"></div>
     <!-- Depth meter -->
     <div style="position:absolute;right:8px;top:8px;bottom:8px;width:18px;z-index:3;display:flex;flex-direction:column;align-items:center;pointer-events:none">
@@ -4446,6 +4494,7 @@ div[style*="LIVE"]{border-radius:16px!important;background:rgba(57,255,20,.03)!i
 <div class="combo-meter" id="comboMeter"><div style="font-size:10px;color:var(--t2);font-weight:900">x</div><div class="combo-n" id="comboCnt">5</div><div style="font-size:10px;color:var(--y);font-weight:900">COMBO 🔥</div></div>
 <!-- BATTLE ARENA -->
 <div class="battle-arena" id="battleArena">
+  <div class="ba-arena-bg"></div>
   <!-- Header -->
   <div class="ba-hdr">
     <button class="ba-close" onclick="closeBattle()">←</button>
@@ -4577,7 +4626,7 @@ div[style*="LIVE"]{border-radius:16px!important;background:rgba(57,255,20,.03)!i
 <script>
 const G={
   name:'',petEmoji:'🐉',petName:'Eldraken',
-  level:1,exp:0,coins:500,streak:0,
+  level:1,exp:0,coins:500,kc:0,streak:0,
   hunger:80,energy:100,mood:90,
   actionStat:0,commerceStat:0,socialStat:0,trustScore:42,totalSEK:0,
   gear:[],equippedGear:null,postCount:0,bountiesDone:0,
@@ -5720,7 +5769,7 @@ function _baFinalRewards(){
   if(G._talentK7a){xp=Math.round(xp*3);coins=Math.round(coins*3);}
   // K6b Fortress: heal 20% of max HP per win
   if(G._talentK6b){_bt.pHp=Math.min(_bt.pMax,_bt.pHp+Math.floor(_bt.pMax*.2));showT('🏰 FORTRESS! +'+Math.floor(_bt.pMax*.2)+' HP!','b');}
-  gainXP(xp,'battle');gainCoins(coins);
+  gainXP(xp,'battle');gainCoins(coins);gainKC(Math.floor(Math.random()*10+5),'battle');
   if(G._talentX12){gainCoins(20);showT('🏦 BATTLE TREASURY! +20 coins!','y');} // X12 Battle Treasury
   addWorldPoints(Math.floor(_bt.wave*10),'battle');
   G.battlesWon=(G.battlesWon||0)+1;
@@ -5806,7 +5855,7 @@ function cp(n){const d=document.createElement('div');d.className='cpop';d.textCo
 function sa(sel,el){document.querySelectorAll(sel+' .topt').forEach(x=>x.className='topt');el.classList.add('on');}
 function dist(la1,lo1,la2,lo2){const R=6371e3,f1=la1*Math.PI/180,f2=la2*Math.PI/180,df=(la2-la1)*Math.PI/180,dl=(lo2-lo1)*Math.PI/180;const a=Math.sin(df/2)**2+Math.cos(f1)*Math.cos(f2)*Math.sin(dl/2)**2;return R*2*Math.atan2(Math.sqrt(a),Math.sqrt(1-a));}
 function fmtD(m){return m<1000?Math.round(m)+'m':+(m/1000).toFixed(1)+'km';}
-function save(){try{const d={n:G.name,p:G.petEmoji,pn:G.petName,l:G.level,c:G.coins,st:G.streak,x:G.exp,as:G.actionStat,cs:G.commerceStat,ss:G.socialStat,g:JSON.stringify(G.gear),eg:G.equippedGear||'',sek:G.totalSEK,ts:G.trustScore,posts:G.postCount,b:G.bountiesDone,hu:G.hunger,en:G.energy,mo:G.mood,brands:JSON.stringify(G.brands),circles:JSON.stringify(G.circles),sw:JSON.stringify(G.streakWeek),petCfg:JSON.stringify(G.petConfig),pm:G.premium?1:0,pt:G.premiumTier,wld:G.world,bond:JSON.stringify(G.todayBond),bdate:G.bondDate,wp:G.worldPoints,bz:JSON.stringify(G.builtZones),wpc:G.wildPetsCaught,wflash:G.wldFlash,wbattle:G.wldBattle,wmarket:G.wldMarket,wstreak:G.wldStreak,wsocial:G.wldSocial,po:G.packsOpened,col:JSON.stringify(G.collectibles),tp:G.talentPoints,tl:JSON.stringify(G.talents),tlvl:JSON.stringify(G.talentLvls||{}),diary:JSON.stringify(G.diaryEntries.slice(-20)),ls:G.lastSpin,ltt:G.lastTalkTime||0,lwb:G.lastWpBoost||0,castle:JSON.stringify(G.castle||{}),ownedZones:JSON.stringify(G.ownedZones||[]),terrLastIncome:JSON.stringify(G.terrLastIncome||{}),dnaMixes:JSON.stringify(G.dnaMixes||[]),lastFortune:G.lastFortune||'',lft:G.lastFlashTime||0,lfd:G.lastFlashDate||'',pdna:JSON.stringify(G.petDNA||{body:'base',element:'none',perk:'none'}),dinv:JSON.stringify(G.dnaInventory||[]),pmem:JSON.stringify(G.petMemory||{}),expd:JSON.stringify(G.expedition||{})};for(const k in d)localStorage.setItem('kv8_'+k,d[k]);localStorage.setItem('kv8_lastFortune',G.lastFortune||'');}catch(e){}sbQueueSync();}
+function save(){try{const d={n:G.name,p:G.petEmoji,pn:G.petName,l:G.level,c:G.coins,kc:G.kc||0,st:G.streak,x:G.exp,as:G.actionStat,cs:G.commerceStat,ss:G.socialStat,g:JSON.stringify(G.gear),eg:G.equippedGear||'',sek:G.totalSEK,ts:G.trustScore,posts:G.postCount,b:G.bountiesDone,hu:G.hunger,en:G.energy,mo:G.mood,brands:JSON.stringify(G.brands),circles:JSON.stringify(G.circles),sw:JSON.stringify(G.streakWeek),petCfg:JSON.stringify(G.petConfig),pm:G.premium?1:0,pt:G.premiumTier,wld:G.world,bond:JSON.stringify(G.todayBond),bdate:G.bondDate,wp:G.worldPoints,bz:JSON.stringify(G.builtZones),wpc:G.wildPetsCaught,wflash:G.wldFlash,wbattle:G.wldBattle,wmarket:G.wldMarket,wstreak:G.wldStreak,wsocial:G.wldSocial,po:G.packsOpened,col:JSON.stringify(G.collectibles),tp:G.talentPoints,tl:JSON.stringify(G.talents),tlvl:JSON.stringify(G.talentLvls||{}),diary:JSON.stringify(G.diaryEntries.slice(-20)),ls:G.lastSpin,ltt:G.lastTalkTime||0,lwb:G.lastWpBoost||0,castle:JSON.stringify(G.castle||{}),ownedZones:JSON.stringify(G.ownedZones||[]),terrLastIncome:JSON.stringify(G.terrLastIncome||{}),dnaMixes:JSON.stringify(G.dnaMixes||[]),lastFortune:G.lastFortune||'',lft:G.lastFlashTime||0,lfd:G.lastFlashDate||'',pdna:JSON.stringify(G.petDNA||{body:'base',element:'none',perk:'none'}),dinv:JSON.stringify(G.dnaInventory||[]),pmem:JSON.stringify(G.petMemory||{}),expd:JSON.stringify(G.expedition||{})};for(const k in d)localStorage.setItem('kv8_'+k,d[k]);localStorage.setItem('kv8_lastFortune',G.lastFortune||'');}catch(e){}sbQueueSync();}
 
 // ── DNA + MOOD SYSTEM ──
 function getPetDNA(){
@@ -6209,6 +6258,15 @@ function savePetDesign(){
 }
 
 // ── GAME ──
+function gainKC(n,src){
+  if(!n||n<=0)return;
+  G.kc=(G.kc||0)+n;
+  const el=document.createElement('div');
+  el.style.cssText='position:fixed;right:70px;top:50px;font-size:13px;font-weight:900;color:#BF5FFF;font-family:var(--mono);pointer-events:none;z-index:9999;animation:kcPop .9s ease-out forwards;text-shadow:0 0 8px rgba(191,95,255,.6)';
+  el.textContent='+'+n+'🔮';document.body.appendChild(el);setTimeout(()=>el.remove(),950);
+  const hkc=$('hKC');if(hkc)hkc.textContent=(G.kc||0).toLocaleString('sv');
+  save();
+}
 function gainCoins(n,stat){
   if(G._talentK9)n=Math.round(n*2);                    // GOD OF WAR: coins ×2
   if(G._talentS5a&&stat==='social')n=Math.round(n*2);  // Viral Legend: social coins ×2
@@ -6413,6 +6471,7 @@ function pcReact(m){
 // ── UPDATE ──
 function updateHUD(){
   $('hCoins').textContent=G.coins.toLocaleString('sv');
+  const hkc=$('hKC');if(hkc)hkc.textContent=(G.kc||0).toLocaleString('sv');
   $('hStreak').textContent=G.streak;
   $('hTrust').textContent=G.trustScore;
   $('gcLbl').textContent=G.coins.toLocaleString('sv');
@@ -6825,7 +6884,7 @@ function submitFlash_internal(cap) {
   G.postCount = (G.postCount || 0) + 1;
   gainXP(20, 'social');
   addWorldPoints(5, 'flash');
-  FLASH_POSTS.unshift({id:'fl'+Date.now(),user:G.name,pet:gS().e,lvl:G.level,up:'Pet Card Share',cap:cap,xp:'+20 XP',likes:0,live:false,streak:G.streak});
+  FLASH_POSTS.unshift({id:'fl'+Date.now(),user:G.name,pet:gS().e,lvl:G.level,up:'Pet Card Share',cap:cap||'',sound:'🎵 Original Sound',xp:'+20 XP',likes:0,live:false,streak:G.streak,bg:''});
   save(); updateHUD();
   renderFlashFeed();
   showT('⚡ Flash posted!', 'g');
@@ -7049,7 +7108,7 @@ function renderFlashFeed(){
           <div style="font-size:13px;font-weight:600;color:rgba(255,255,255,.95);line-height:1.35;margin-bottom:6px">${p.cap}</div>
           <div style="display:flex;align-items:center;gap:5px">
             <div style="font-size:11px;animation:musicSpin 4s linear infinite">🎵</div>
-            <div style="font-size:10px;color:rgba(255,255,255,.6);overflow:hidden;white-space:nowrap;max-width:160px;text-overflow:ellipsis">${p.sound}</div>
+            <div style="font-size:10px;color:rgba(255,255,255,.6);overflow:hidden;white-space:nowrap;max-width:160px;text-overflow:ellipsis">${p.sound||'🎵 Original Sound'}</div>
           </div>
         </div>
         <!-- double-tap heart anim container -->
@@ -7282,7 +7341,7 @@ function submitFlash(){
   if(!alreadyPostedToday){G.streak++;G.postCount++;}
   const day=new Date().getDay();G.streakWeek[day===0?6:day-1]=true;
   // Add to local mock feed immediately (optimistic)
-  FLASH_POSTS.unshift({id:'fl'+Date.now(),user:G.name||'Du',pet:gS().e,lvl:G.level,up:'Daglig Flash #'+G.postCount,cap:cap||'⚡ Flash! '+new Date().toLocaleTimeString('sv',{hour:'2-digit',minute:'2-digit'}),xp:'+20 XP',likes:0,live:false,streak:G.streak});
+  FLASH_POSTS.unshift({id:'fl'+Date.now(),user:G.name||'Du',pet:gS().e,lvl:G.level,up:'Daglig Flash #'+G.postCount,cap:cap||'⚡ Flash! '+new Date().toLocaleTimeString('sv',{hour:'2-digit',minute:'2-digit'}),sound:'🎵 Karma Vibes',xp:'+20 XP',likes:0,live:false,streak:G.streak,bg:''});
   // Post to Supabase (real)
   sbPostFlash(cap||'⚡ Flash! 🐾');
   if(!alreadyPostedToday){
@@ -9380,14 +9439,16 @@ function updateFishRodLabel(){
 
 function _fcInitCanvas(){
   const canvas=$('fishCanvas');if(!canvas)return;
-  // Use requestAnimationFrame to ensure layout is settled
   const doInit=()=>{
-    canvas.width=canvas.offsetWidth||window.innerWidth;
-    canvas.height=canvas.offsetHeight||Math.round(window.innerHeight*0.55);
+    const par=canvas.parentElement;
+    const w=canvas.offsetWidth||par?.offsetWidth||window.innerWidth;
+    const h=canvas.offsetHeight||par?.clientHeight||par?.offsetHeight||Math.round(window.innerHeight*0.56);
+    canvas.width=Math.max(w,100);canvas.height=Math.max(h,200);
     canvas.onclick=(e)=>{const r=canvas.getBoundingClientRect();_fcCanvasTap(e.clientX-r.left,e.clientY-r.top);};
     canvas.ontouchstart=(e)=>{e.preventDefault();const r=canvas.getBoundingClientRect();const t=e.touches[0];_fcCanvasTap(t.clientX-r.left,t.clientY-r.top);};
   };
-  if(canvas.offsetWidth>0)doInit();else requestAnimationFrame(doInit);
+  if((canvas.offsetWidth||0)>10&&(canvas.offsetHeight||canvas.parentElement?.clientHeight||0)>10){doInit();}
+  else{requestAnimationFrame(()=>{if((canvas.parentElement?.clientHeight||canvas.offsetHeight||0)>10)doInit();else setTimeout(doInit,150);});}
 }
 
 function _fcCanvasTap(x,y){
@@ -11828,8 +11889,9 @@ function _cwUpdateOverlay(){
   const cLvl=(G.castle&&G.castle.lvl)||1;
   let html='';
   // Castle center
-  html+=`<div style="position:absolute;left:${cx}px;top:${cy-6+bob}px;transform:translate(-50%,-50%);font-size:46px;filter:drop-shadow(0 0 20px rgba(255,200,0,.8));cursor:pointer;pointer-events:all;transition:top .05s linear" onclick="_cwShowCastleInfo()">🏰</div>`;
-  html+=`<div style="position:absolute;left:${cx}px;top:${cy+30+bob}px;transform:translateX(-50%);font-size:9px;font-weight:900;color:rgba(255,215,0,.9);font-family:monospace;white-space:nowrap;pointer-events:none">${(G.name||'Spelaren').slice(0,14)} · LV${cLvl}</div>`;
+  const castlePulse=0.85+0.15*Math.sin(t*1.2);
+  html+=`<div style="position:absolute;left:${cx}px;top:${cy-6+bob}px;transform:translate(-50%,-50%) scale(${castlePulse});font-size:90px;filter:drop-shadow(0 0 40px rgba(255,200,0,.9)) drop-shadow(0 0 80px rgba(255,150,0,.5));cursor:pointer;pointer-events:all;transition:top .05s linear;z-index:5" onclick="_cwShowCastleInfo()">🏰</div>`;
+  html+=`<div style="position:absolute;left:${cx}px;top:${cy+55+bob}px;transform:translateX(-50%);font-size:10px;font-weight:900;color:rgba(255,215,0,.95);font-family:monospace;white-space:nowrap;pointer-events:none;text-shadow:0 0 10px rgba(255,215,0,.6)">${(G.name||'Spelaren').slice(0,14)}s RIKE · LV${cLvl}</div>`;
   // Portals
   [{x:0.2,y:0.22,nm:'Mörka Grottan',col:'#b400ff',em:'🕳️'},{x:0.8,y:0.25,nm:'Isruinerna',col:'#00b4ff',em:'🕳️'},{x:0.5,y:0.12,nm:'Helvetesgapet',col:'#ff3c00',em:'🕳️'}].forEach(p=>{
     html+=`<div style="position:absolute;left:${p.x*W}px;top:${p.y*H}px;transform:translate(-50%,-50%);text-align:center;cursor:pointer;pointer-events:all" onclick="showT('🕳️ ${p.nm} — portalen är stängd','p')"><div style="font-size:16px">${p.em}</div><div style="font-size:7px;color:${p.col};font-family:monospace;white-space:nowrap;margin-top:2px">${p.nm}</div></div>`;
@@ -13054,6 +13116,7 @@ function _loadFromLocalStorage(){
     if(!sn)return;
     G.name=sn;G.petEmoji=localStorage.getItem('kv8_p')||'🐉';G.petName=localStorage.getItem('kv8_pn')||'Eldraken';
     G.level=parseInt(localStorage.getItem('kv8_l')||'1');G.coins=parseInt(localStorage.getItem('kv8_c')||'500');
+    G.kc=parseInt(localStorage.getItem('kv8_kc')||'0');
     G.streak=parseInt(localStorage.getItem('kv8_st')||'0');G.exp=parseInt(localStorage.getItem('kv8_x')||'0');
     G.actionStat=parseInt(localStorage.getItem('kv8_as')||'0');G.commerceStat=parseInt(localStorage.getItem('kv8_cs')||'0');G.socialStat=parseInt(localStorage.getItem('kv8_ss')||'0');
     try{G.gear=JSON.parse(localStorage.getItem('kv8_g')||'[]');}catch(e){G.gear=[];}
@@ -15784,15 +15847,71 @@ setInterval(_prizePotTick,1000);_prizePotTick();
 
 function openPrizePotModal(type){
   const labels={hour:'⚡ TIMME POT',day:'🏆 DYGN POT',week:'👑 VECKA POT'};
-  const descs={
-    hour:'Varje timme delar de 3 aktivaste spelarna potten!\n\nFör att vinna: samla XP, mata ditt husdjur, spela spel och streaka!',
-    day:'24-timmars pott — byggs upp av alla premium-användare.\n\nTop 3 aktivaste vinner. Topp 1 tar 60%, #2 tar 30%, #3 tar 10%.',
-    week:'VECKOJAKPOT — 2% av alla premium-betalningar den här veckan!\n\nDelta dagligen för att maximera din andel. Avgörs varje söndag 23:59.'
-  };
   const amounts={hour:$('potHourAmt')?.textContent||'3 450',day:$('potDayAmt')?.textContent||'24 800',week:$('potWeekAmt')?.textContent||'182 500'};
   const rankPos=Math.floor(Math.random()*15)+3;
-  showT(`${labels[type]} — Du är #${rankPos} just nu! Fortsätt spela för att klättra! 🏆`,'y');
+  const kcBonus={hour:Math.floor(Math.random()*15+5),day:Math.floor(Math.random()*50+20),week:Math.floor(Math.random()*200+100)};
+  showT(`${labels[type]}: ${amounts[type]} 🔮KC · Du #${rankPos} · Aktiv spel = fler KC!`,'y');
+  if(type==='hour'&&Math.random()<0.3){gainKC(kcBonus.hour,'pot');showT('🎉 Timme-pott del: +'+kcBonus.hour+' 🔮KC!','p');}
   vibe([20,10,40,10,80]);
+}
+function switchFlashTab(tab,el){
+  const tabs=['feed','explore','trending'];
+  const panels={feed:$('flashFeed'),explore:$('flashExplorePanel'),trending:$('flashTrendingPanel')};
+  const tabEls={feed:$('ftFeed'),explore:$('ftExplore'),trending:$('ftTrending')};
+  const cols={feed:'#FF2D55',explore:'#00D9FF',trending:'#FF9F0A'};
+  tabs.forEach(t=>{
+    const p=panels[t];const te=tabEls[t];
+    if(p)p.style.display=t===tab?(t==='feed'?'block':'flex'):'none';
+    if(te){te.style.color=t===tab?cols[t]:'rgba(255,255,255,.35)';te.style.borderBottomColor=t===tab?cols[t]:'transparent';}
+  });
+  if(tab==='explore')renderExploreGrid();
+  if(tab==='trending')renderTrendingList();
+  if(tab==='feed'&&typeof renderFlashFeed==='function')renderFlashFeed();
+}
+function renderExploreGrid(){
+  const grid=$('exploreGrid');if(!grid)return;
+  const allPosts=FLASH_POSTS.slice(0,18);
+  const ems=['🐉','🐺','🦋','🦊','🐱','🦁','🐸','🌙','🎮','🐻','🦅','🐯'];
+  grid.innerHTML=Array.from({length:18},(_,i)=>{
+    const p=allPosts[i]||{pet:ems[i%ems.length],likes:Math.floor(Math.random()*5000),id:'ex'+i,user:'user'+i};
+    const size=i===0||i===4||i===8?'grid-column:span 2;grid-row:span 2':'';
+    const sz=i===0||i===4||i===8?88:52;
+    return`<div onclick="showT('⚡ @${p.user||'karma_user'} · ${(p.likes||0).toLocaleString('sv')} likes ❤️','pk')" style="${size};aspect-ratio:1;background:${p.bg||'linear-gradient(135deg,#0d0020,#000d1a)'};display:flex;align-items:center;justify-content:center;border-radius:4px;cursor:pointer;position:relative;overflow:hidden;-webkit-tap-highlight-color:transparent">
+      <div style="font-size:${sz}px;filter:drop-shadow(0 0 16px rgba(255,255,255,.2))">${p.pet}</div>
+      <div style="position:absolute;bottom:3px;left:3px;right:3px;display:flex;justify-content:space-between;align-items:center">
+        <div style="font-size:8px;color:rgba(255,255,255,.7);font-family:var(--mono)">${(p.likes||0)>=1000?((p.likes||0)/1000).toFixed(1)+'K':(p.likes||0)}❤️</div>
+      </div>
+    </div>`;
+  }).join('');
+}
+function renderTrendingList(){
+  const el=$('trendingList');if(!el)return;
+  const trends=[
+    {rank:1,tag:'#KarmaStreak',posts:'2 413',growth:'+34%',col:'#FF2D55'},
+    {rank:2,tag:'#PetEvolution',posts:'1 892',growth:'+28%',col:'#39FF14'},
+    {rank:3,tag:'#BountyBlitz',posts:'1 247',growth:'+19%',col:'#FF9F0A'},
+    {rank:4,tag:'#Stockholm',posts:'892',growth:'+12%',col:'#00D9FF'},
+    {rank:5,tag:'#KarmaCash',posts:'754',growth:'+8%',col:'#BF5FFF'},
+    {rank:6,tag:'#GameNight',posts:'623',growth:'+6%',col:'#FFD700'},
+    {rank:7,tag:'#PetCare101',posts:'445',growth:'+4%',col:'#39FF14'},
+    {rank:8,tag:'#DNAMix',posts:'312',growth:'+3%',col:'#FF007F'},
+    {rank:9,tag:'#FiskeRekordet',posts:'198',growth:'+2%',col:'#00C8FF'},
+    {rank:10,tag:'#CastleRaid',posts:'167',growth:'+1%',col:'#FFD700'},
+  ];
+  el.innerHTML=trends.map(t=>`<div onclick="showT('${t.tag} · ${t.posts} inlägg · ${t.growth} ökning','b')" style="display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid rgba(255,255,255,.06);cursor:pointer;-webkit-tap-highlight-color:transparent">
+    <div style="font-size:14px;font-weight:900;color:rgba(255,255,255,.3);font-family:var(--mono);min-width:20px;text-align:right">#${t.rank}</div>
+    <div style="flex:1">
+      <div style="font-size:13px;font-weight:900;color:${t.col};font-family:var(--mono)">${t.tag}</div>
+      <div style="font-size:10px;color:rgba(255,255,255,.4);margin-top:1px;font-family:var(--mono)">${t.posts} inlägg</div>
+    </div>
+    <div style="font-size:10px;font-weight:900;color:#39FF14;font-family:var(--mono)">${t.growth} 📈</div>
+  </div>`).join('');
+}
+function filterExplore(cat,el){
+  document.querySelectorAll('.exp-chip').forEach(c=>{c.style.opacity='.5';});
+  if(el)el.style.opacity='1';
+  renderExploreGrid();
+  showT('🔍 Filtrerar: '+cat,'b');
 }
 function renderFriendStories(){
   const el=$('friendStoryRow');if(!el)return;
