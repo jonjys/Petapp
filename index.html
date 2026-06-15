@@ -355,6 +355,19 @@ textarea.inp{resize:none;min-height:68px;}
 .event-progress-lbl{display:flex;justify-content:space-between;font-size:9px;color:rgba(255,255,255,.4);margin-bottom:6px;}
 .event-timer{font-size:9px;font-weight:900;color:var(--o);font-family:var(--mono);}
 
+/* Weekly Challenge Card */
+.weekly-challenge-card{margin:0 12px 10px;border-radius:20px;padding:0;cursor:pointer;position:relative;overflow:hidden;background:linear-gradient(135deg,rgba(0,217,255,.08),rgba(191,95,255,.08));border:1.5px solid rgba(0,217,255,.3);box-shadow:0 0 20px rgba(0,217,255,.1);}
+.wc-bg{position:absolute;inset:0;background:radial-gradient(ellipse at 80% 20%,rgba(191,95,255,.12) 0%,transparent 65%);pointer-events:none;}
+.wc-content{position:relative;padding:12px 14px;}
+.wc-badge{font-size:9px;font-weight:900;color:var(--b);font-family:var(--mono);letter-spacing:1.5px;margin-bottom:3px;}
+.wc-title{font-size:15px;font-weight:900;color:#fff;font-family:var(--mono);letter-spacing:1px;margin-bottom:4px;}
+.wc-desc{font-size:11px;color:rgba(255,255,255,.65);margin-bottom:8px;}
+.wc-progress{display:flex;align-items:center;gap:8px;margin-bottom:6px;}
+.wc-prog-bar{flex:1;height:6px;background:rgba(255,255,255,.08);border-radius:100px;overflow:hidden;}
+.wc-prog-bar div{height:100%;background:linear-gradient(90deg,var(--b),var(--p));border-radius:100px;transition:width .8s;}
+.wc-progress span{font-size:10px;font-weight:900;color:var(--b);font-family:var(--mono);flex-shrink:0;}
+.wc-reward{font-size:10px;color:var(--p);font-weight:700;}
+
 /* Streak milestones */
 .streak-milestone{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;padding:0 12px 10px;}
 .streak-milestone::-webkit-scrollbar{display:none;}
@@ -1047,6 +1060,21 @@ button:active{opacity:.85;}
 .ba-ph-dot.active{background:var(--g);box-shadow:0 0 6px var(--g);}
 .ba-ph-dot.berserk{background:var(--y);box-shadow:0 0 6px var(--y);}
 .ba-ph-dot.desperate{background:var(--r);box-shadow:0 0 8px var(--r);animation:notifPulse .6s ease-in-out infinite;}
+/* New tap-combat UI */
+.ba-combat-ui{display:flex;flex-direction:column;gap:8px;}
+.ba-combo-bar{display:flex;align-items:center;gap:8px;margin-bottom:2px;}
+.ba-combo-label{font-size:9px;font-weight:900;color:var(--y);font-family:var(--mono);letter-spacing:1px;flex-shrink:0;}
+.ba-combo-count{font-size:18px;font-weight:900;color:var(--y);font-family:var(--mono);min-width:36px;flex-shrink:0;}
+.ba-combo-meter{flex:1;height:5px;background:rgba(255,255,255,.08);border-radius:100px;overflow:hidden;}
+.ba-combo-meter div{height:100%;background:linear-gradient(90deg,var(--y),var(--o));border-radius:100px;transition:width .2s;}
+.ba-hit-btn{width:100%;padding:16px;background:linear-gradient(135deg,rgba(57,255,20,.15),rgba(57,255,20,.08));border:2.5px solid var(--g);border-radius:18px;color:var(--g);font-size:20px;font-weight:900;font-family:var(--mono);letter-spacing:2px;cursor:pointer;-webkit-tap-highlight-color:transparent;touch-action:manipulation;box-shadow:0 0 24px rgba(57,255,20,.25),inset 0 1px 0 rgba(57,255,20,.15);transition:transform .06s,box-shadow .06s;}
+.ba-hit-btn:active{transform:scale(.96);box-shadow:0 0 10px rgba(57,255,20,.15);}
+.ba-special-row{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;}
+.ba-special-btn{padding:10px 4px;background:#080808;border:2px solid rgba(255,255,255,.15);border-radius:14px;color:var(--t2);font-size:12px;font-weight:900;font-family:var(--mono);cursor:pointer;-webkit-tap-highlight-color:transparent;touch-action:manipulation;transition:transform .06s,border-color .15s;}
+.ba-special-btn:active{transform:scale(.95);}
+#baSpecialMagic{border-color:rgba(0,217,255,.4);color:var(--b);}
+#baSpecialShield{border-color:rgba(191,95,255,.4);color:var(--p);}
+#baSpecialRage{border-color:rgba(255,159,10,.4);color:var(--o);}
 .ba-log-wrap{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:8px 12px;margin-bottom:8px;min-height:40px;display:flex;align-items:center;backdrop-filter:blur(4px);}
 .ba-log{font-size:12px;color:var(--t1);font-family:var(--mono);text-align:center;transition:opacity .15s;line-height:1.4;}
 .ba-player-section{margin-bottom:8px;}
@@ -2955,14 +2983,19 @@ div[style*="LIVE"]{border-radius:16px!important;background:rgba(57,255,20,.03)!i
 
       <!-- daily challenges moved to Flash tab -->
 
-      <!-- SEASONAL EVENT -->
-      <div class="event-banner" id="eventBanner" onclick="openSeasonalEvent()">
-        <div class="event-banner-glow"></div>
-        <div class="event-title">🌸 SOMMAR KARMA EVENT <span style="background:rgba(255,45,85,.25);border:1px solid rgba(255,45,85,.5);font-size:8px;padding:2px 6px;border-radius:8px;margin-left:4px">LIVE</span></div>
-        <div class="event-subtitle">Gemensamt mål: Samla 100 000 World Points som community!</div>
-        <div class="event-progress-wrap"><div class="event-progress-fill" id="eventProgressFill" style="width:34%"></div></div>
-        <div class="event-progress-lbl"><span>34 000 / 100 000 WP</span><span id="eventContrib">Ditt bidrag: <span id="eventMyContrib">0</span></span></div>
-        <div class="event-timer" id="eventTimer">⏱️ 7 dagar kvar</div>
+      <!-- WEEKLY CHALLENGE -->
+      <div class="weekly-challenge-card" onclick="openWeeklyChallenge()">
+        <div class="wc-bg"></div>
+        <div class="wc-content">
+          <div class="wc-badge">📅 VECKANS</div>
+          <div class="wc-title">KARMA UTMANING</div>
+          <div class="wc-desc" id="wcDesc">Logga in 5 dagar i rad</div>
+          <div class="wc-progress">
+            <div class="wc-prog-bar"><div id="wcProgFill" style="width:40%"></div></div>
+            <span id="wcProgText">2/5</span>
+          </div>
+          <div class="wc-reward">🔮 +50 KC belöning</div>
+        </div>
       </div>
 
       <!-- ROOM PREVIEW MINI (live) -->
@@ -4562,42 +4595,18 @@ div[style*="LIVE"]{border-radius:16px!important;background:rgba(57,255,20,.03)!i
 
   <!-- Attack Buttons -->
   <div class="ba-actions">
-    <div class="ba-atk-grid">
-      <button class="ba-atk-btn normal" onclick="battleNormalAtk()">
-        <div class="ba-btn-ico">⚔️</div>
-        <div class="ba-btn-nm">ATTACK</div>
-        <div class="ba-btn-sub">Direkt</div>
-      </button>
-      <button class="ba-atk-btn power" onclick="battleChooseAtk('power')">
-        <div class="ba-btn-ico">💥</div>
-        <div class="ba-btn-nm">POWER</div>
-        <div class="ba-btn-sub">2× · Ring</div>
-      </button>
-      <button class="ba-atk-btn magic" id="baMagicBtn" onclick="battleChooseAtk('magic')">
-        <div class="ba-btn-ico">✨</div>
-        <div class="ba-btn-nm">MAGIC</div>
-        <div class="ba-btn-sub" id="baMagicCost">-20 MP</div>
-      </button>
-      <button class="ba-atk-btn fusion" id="baFusionBtn" onclick="battleChooseAtk('fusion')" style="display:none">
-        <div class="ba-btn-ico">⚡</div>
-        <div class="ba-btn-nm">FUSION</div>
-        <div class="ba-btn-sub">COMBO MAX</div>
-      </button>
-      <button class="ba-atk-btn dodge" onclick="battleChooseDefend('dodge')">
-        <div class="ba-btn-ico">🌀</div>
-        <div class="ba-btn-nm">DODGE</div>
-        <div class="ba-btn-sub">Undvik</div>
-      </button>
-      <button class="ba-atk-btn block" onclick="battleChooseDefend('block')">
-        <div class="ba-btn-ico">🛡️</div>
-        <div class="ba-btn-nm">BLOCK</div>
-        <div class="ba-btn-sub">-75% dmg</div>
-      </button>
-      <button class="ba-atk-btn" id="baHealBtn" onclick="battleHeal()" style="background:rgba(57,255,20,.08);border-color:rgba(57,255,20,.35);grid-column:span 3">
-        <div class="ba-btn-ico">💊</div>
-        <div class="ba-btn-nm">LÄKA</div>
-        <div class="ba-btn-sub" id="baHealSub">+25 HP · -30 MP</div>
-      </button>
+    <div class="ba-combat-ui" id="baCombatUI">
+      <div class="ba-combo-bar">
+        <div class="ba-combo-label">COMBO</div>
+        <div class="ba-combo-count" id="baComboCount2">0x</div>
+        <div class="ba-combo-meter"><div id="baComboFill" style="width:0%"></div></div>
+      </div>
+      <button class="ba-hit-btn" id="baHitBtn" onclick="baTapAttack()">⚔️ ATTACK</button>
+      <div class="ba-special-row">
+        <button class="ba-special-btn" onclick="baSpecialAttack('magic')" id="baSpecialMagic">✨ MAGIC</button>
+        <button class="ba-special-btn" onclick="baSpecialAttack('shield')" id="baSpecialShield">🛡️ BLOCK</button>
+        <button class="ba-special-btn" onclick="baSpecialAttack('rage')" id="baSpecialRage">🔥 RAGE</button>
+      </div>
     </div>
   </div>
 
@@ -5327,14 +5336,7 @@ let _bt={active:false,wave:1,eHp:80,eMax:80,pHp:100,pMax:100,pMp:80,pMaxMp:80,
      statusPlayer:null,statusEnemy:null,statusTimer:null,ePhase:0,
      pendingAtk:null,turnsWon:0,totalDmgDealt:0,earnedXp:0,earnedCoins:0};
 
-// ── SHADOW HEARTS BATTLE SYSTEM ──
-
-const BA_ATK_CONFIGS = {
-  normal: {label:'ATTACK',    ringSpeed:1.6, greenSize:65, mpCost:0,  dmgMult:1.0, col:'#39FF14', zones:1, statusChance:0},
-  power:  {label:'POWER',     ringSpeed:2.4, greenSize:38, mpCost:0,  dmgMult:2.0, col:'#FF9F0A', zones:1, statusChance:.15},
-  magic:  {label:'MAGIC',     ringSpeed:2.0, greenSize:45, mpCost:20, dmgMult:2.5, col:'#00D9FF', zones:3, statusChance:.35},
-  fusion: {label:'FUSION',    ringSpeed:1.8, greenSize:55, mpCost:0,  dmgMult:4.0, col:'#FFE600', zones:3, statusChance:.6},
-};
+// ── TAP BATTLE SYSTEM ──
 
 const BA_STATUS_ICONS = {burn:'🔥',freeze:'❄️',stun:'⚡',curse:'💀',all:'☠️'};
 const BA_STATUS_MSGS = {
@@ -5418,204 +5420,71 @@ function battleHeal(){
   setTimeout(_baEnemyAttack,500);
 }
 
-function battleChooseAtk(type){
+// ── TAP ATTACK FUNCTIONS ──
+function baTapAttack(){
   if(!_bt.active)return;
-  const cfg=BA_ATK_CONFIGS[type];if(!cfg)return;
-  if(type==='magic'&&_bt.pMp<cfg.mpCost){showT('❌ Inte tillräckligt med MP!','r');return;}
-  if(type==='fusion'&&!_bt.fusionReady){showT('❌ Fusion inte redo!','r');return;}
-  _bt.pendingAtk=type;
-  _baSetLog(cfg.label+' valt — RING ÖPPNAS!');
-  _openBattleRing(cfg);
-}
-
-function battleChooseDefend(type){
-  if(!_bt.active)return;
-  if(type==='dodge'){_bt.dodging=true;_bt.blocking=false;showT('🌀 DODGE redo!','b');vibe(15);}
-  else{_bt.blocking=true;_bt.dodging=false;showT('🛡️ BLOCK redo!','p');vibe(15);}
-  _baSetLog(type==='dodge'?'🌀 Du förbereder dig att undvika...':'🛡️ Du höjer ditt skydd...');
-  // Enemy attacks immediately after defending
-  setTimeout(_baEnemyAttack, 600);
-}
-
-let _battleRing={active:false,angle:0,speed:2,raf:null,zones:[],zonesHit:null,attempts:0,cfg:null};
-
-function _openBattleRing(cfg){
-  const old=$('battleRingOverlay');if(old)old.remove();
-  const overlay=document.createElement('div');
-  overlay.id='battleRingOverlay';
-  overlay.style.cssText='position:absolute;inset:0;z-index:30;display:flex;flex-direction:column;align-items:center;justify-content:center;background:rgba(0,0,5,.88);';
-  const zonesHit=new Set();
-  const numZones=cfg.zones||1;
-  const zoneSize=Math.max(cfg.greenSize||70,80);
-  const greenStart=Math.random()*300;
-  const zones=[];
-  for(let i=0;i<numZones;i++){
-    const start=(greenStart+i*(360/numZones))%360;
-    const end=(start+zoneSize)%360;
-    zones.push({start,end});
-  }
-  _battleRing={active:true,angle:0,speed:cfg.ringSpeed,raf:null,zones,zonesHit,attempts:0,cfg};
-  overlay.innerHTML=`
-    <div style="font-size:13px;font-weight:900;color:${cfg.col};margin-bottom:8px;font-family:var(--mono);letter-spacing:2px">${cfg.label}</div>
-    <div id="brHitHint" style="font-size:12px;font-weight:900;color:#39FF14;font-family:var(--mono);margin-bottom:10px;text-shadow:0 0 12px #39FF14">⚡ TRYCK I GRÖN ZON!</div>
-    <div style="position:relative;width:240px;height:240px;margin-bottom:12px">
-      <canvas id="brCanvas" width="240" height="240" style="display:block"></canvas>
-      <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;pointer-events:none">
-        <div style="font-size:42px" id="battleRingPetEm">${G.petEmoji||'🐉'}</div>
-      </div>
-    </div>
-    <div style="font-size:10px;color:rgba(255,255,255,.5);margin-bottom:8px;font-family:var(--mono)"><span style="color:#39FF14">■</span> HIT &nbsp;<span style="color:#FFE600">■</span> PERFECT</div>
-    <button onclick="_battleRingTap()" style="padding:14px 50px;background:${cfg.col};color:#000;font-size:16px;font-weight:900;border:none;border-radius:18px;cursor:pointer;font-family:var(--ff);-webkit-tap-highlight-color:transparent;touch-action:manipulation;box-shadow:0 0 24px ${cfg.col}aa;letter-spacing:1px">⚡ TAP!</button>
-  `;
-  setTimeout(()=>{const h=$('brHitHint');if(h)h.style.opacity='0';},1400);
-  $('battleArena').appendChild(overlay);
-  let last=null;
-  function tick(ts){
-    if(!_battleRing.active)return;
-    if(last===null)last=ts;
-    const dt=Math.min((ts-last)/1000,0.05);last=ts;
-    _battleRing.angle=(_battleRing.angle+cfg.ringSpeed*180*dt)%360;
-    _battleRingDrawCanvas(cfg);
-    _battleRing.raf=requestAnimationFrame(tick);
-  }
-  _battleRing.raf=requestAnimationFrame(tick);
-  _battleRing._failTimer=setTimeout(()=>{if(_battleRing.active)_battleRingFail();},7000);
-}
-
-function _battleRingDrawCanvas(cfg){
-  const canvas=$('brCanvas');if(!canvas)return;
-  const ctx=canvas.getContext('2d');
-  const W=240,H=240,cx=120,cy=120,r=96;
-  ctx.clearRect(0,0,W,H);
-  const toA=a=>(a-90)*Math.PI/180;
-  function arcStroke(s,e,color,lw){
-    let sa=toA(s),ea=toA(e);
-    const span=((e-s)+360)%360;
-    if(span<1)return;
-    ctx.beginPath();
-    if(span>=359){ctx.arc(cx,cy,r,0,Math.PI*2);}
-    else{ctx.arc(cx,cy,r,sa,sa+span*Math.PI/180);}
-    ctx.strokeStyle=color;ctx.lineWidth=lw;ctx.lineCap='round';ctx.stroke();
-  }
-  // Dark track
-  ctx.beginPath();ctx.arc(cx,cy,r,0,Math.PI*2);
-  ctx.strokeStyle='rgba(255,255,255,0.07)';ctx.lineWidth=30;ctx.stroke();
-  // Tick marks
-  ctx.lineWidth=1.5;
-  for(let a=0;a<360;a+=15){
-    const len=a%90===0?10:5;
-    const ir=r-len,or=r+3;
-    const rad=toA(a);
-    ctx.strokeStyle='rgba(255,255,255,0.2)';
-    ctx.beginPath();
-    ctx.moveTo(cx+ir*Math.cos(rad),cy+ir*Math.sin(rad));
-    ctx.lineTo(cx+or*Math.cos(rad),cy+or*Math.sin(rad));
-    ctx.stroke();
-  }
-  // Green zones — multi-layer glow
-  _battleRing.zones.forEach(z=>{
-    arcStroke(z.start,z.end,'rgba(57,255,20,0.18)',52);
-    arcStroke(z.start,z.end,'rgba(57,255,20,0.35)',38);
-    arcStroke(z.start,z.end,'#39FF14',26);
-    arcStroke(z.start,z.end,'rgba(200,255,200,0.85)',10);
-    // PERFECT center
-    const span=((z.end-z.start)+360)%360;
-    const pm=span/3;
-    const ps=(z.start+pm+360)%360,pe=(z.start+pm*2+360)%360;
-    arcStroke(ps,pe,'#FFE600',14);
-    arcStroke(ps,pe,'rgba(255,240,100,0.6)',22);
-  });
-  // Needle
-  const na=toA(_battleRing.angle);
-  const nx=cx+(r+4)*Math.cos(na),ny=cy+(r+4)*Math.sin(na);
-  ctx.shadowColor='#fff';ctx.shadowBlur=10;
-  ctx.beginPath();ctx.moveTo(cx,cy);ctx.lineTo(nx,ny);
-  ctx.strokeStyle='#fff';ctx.lineWidth=4;ctx.lineCap='round';ctx.stroke();
-  ctx.beginPath();ctx.arc(nx,ny,5,0,Math.PI*2);
-  ctx.fillStyle='#fff';ctx.fill();
-  ctx.shadowBlur=0;
-  // Center dot
-  ctx.beginPath();ctx.arc(cx,cy,6,0,Math.PI*2);
-  ctx.fillStyle='rgba(255,255,255,0.8)';ctx.fill();
-}
-
-function _battleRingTap(){
-  if(!_battleRing.active)return;
-  SFX.tap&&SFX.tap();vibe(12);
-  const a=_battleRing.angle%360;
-  function inArc(a,s,e){const ss=s%360,ee=e%360;return ee>ss?a>=ss&&a<=ee:(a>=ss||a<=ee);}
-  const hitZones=_battleRing.zones.filter(z=>inArc(a,z.start,z.end));
-  if(hitZones.length>0){
-    hitZones.forEach(z=>_battleRing.zonesHit.add(JSON.stringify(z)));
-    const needed=_battleRing.zones.length;
-    const got=_battleRing.zonesHit.size;
-    if(got===needed){
-      // All zones hit — perfect
-      _battleRingSuccess(true);
-    } else if(got>=Math.max(1,Math.ceil(needed/2))){
-      // Enough zones hit — partial success
-      _battleRingSuccess(false);
-    } else {
-      showT('✅ '+got+'/'+needed+' ZONER!','g');
-    }
-  } else {
-    _battleRing.attempts++;
-    vibe([20,10,20]);
-    if(_battleRing.attempts>=3)_battleRingFail();
-    else showT(['❌ Miss! ('+_battleRing.attempts+'/3)','⚠️ Utanför zonen!'][_battleRing.attempts%2],'r');
-  }
-}
-
-function _battleRingSuccess(perfect){
-  clearTimeout(_battleRing._failTimer);
-  _battleRing.active=false;
-  cancelAnimationFrame(_battleRing.raf);
-  const overlay=$('battleRingOverlay');if(overlay)overlay.remove();
-  const cfg=BA_ATK_CONFIGS[_bt.pendingAtk||'normal'];
-  // Deduct MP
-  if(cfg.mpCost){_bt.pMp=Math.max(0,_bt.pMp-cfg.mpCost);}
-  // Restore some MP on hit
-  _bt.pMp=Math.min(_bt.pMaxMp,_bt.pMp+8);
-  // Calculate damage
-  const base=10+Math.floor(G.actionStat/5)+(_bt.wave*3);
-  const dmg=Math.round(base*cfg.dmgMult*(perfect?1.3:1));
-  const isCrit=perfect;
+  const base=8+Math.floor(G.actionStat/6)+(_bt.wave*2);
+  const isCrit=Math.random()<0.15;
+  const dmg=Math.round(base*(isCrit?1.6:1));
   _bt.eHp=Math.max(0,_bt.eHp-dmg);
   _bt.totalDmgDealt+=dmg;
-  _bt.combo++;
-  // Fusion check
-  if(_bt.combo>=3){_bt.fusionReady=true;}
-  if(_bt.pendingAtk==='fusion'){_bt.fusionReady=false;_bt.combo=0;}
-  // Status effect on enemy
-  if(cfg.statusChance>0&&Math.random()<cfg.statusChance&&_bt.enemy.status){
-    _bt.statusEnemy=_bt.enemy.status;
-    _baSetLog((perfect?'🌟 PERFECT! ':'')+'⚔️ '+dmg+' dmg'+(isCrit?' CRIT!':'')+'! '+BA_STATUS_MSGS[_bt.statusEnemy]);
-  } else {
-    _baSetLog((perfect?'🌟 PERFECT! ':'')+'⚔️ '+dmg+' dmg'+(isCrit?' CRIT!':'')+'! Combo: '+_bt.combo);
-  }
-  // Enemy hit animation
+  _bt.combo++;_bt.pMp=Math.min(_bt.pMaxMp,_bt.pMp+6);
+  if(G._talentK6c)gainCoins(5);
+  _baSetLog((isCrit?'💥 CRIT! ':'⚔️ ')+dmg+' dmg! Combo: '+_bt.combo+(G._talentK6c?' +5⚡':''));
   const sprite=$('baEnemySprite');
   if(sprite){sprite.classList.remove('hit');void sprite.offsetWidth;sprite.classList.add('hit');}
-  // Screen flash
-  _baFlash(cfg.col+'44');
-  floatNum&&floatNum((perfect?'★PERFECT! ':'')+(isCrit?'💥':'⚔️')+dmg,window.innerWidth/2,window.innerHeight*.3,cfg.col,isCrit?22:18);
-  SFX.hit&&SFX.hit();vibe(perfect?[40,20,80,20,120]:[30,20,60]);
-  updateBattleUI();
-  _baCheckPhase();
-  if(_bt.eHp<=0){setTimeout(battleWin,400);return;}
-  // Enemy counterattack after delay
-  setTimeout(_baEnemyAttack,800);
+  _baFlash('#39FF14'+'33');
+  floatNum&&floatNum((isCrit?'💥':'⚔️')+dmg,window.innerWidth/2,window.innerHeight*.3,'#39FF14',isCrit?20:16);
+  vibe(isCrit?[30,15,60]:20);SFX.hit&&SFX.hit();
+  // Combo fill
+  const cf=$('baComboFill');if(cf)cf.style.width=Math.min(100,_bt.combo*20)+'%';
+  updateBattleUI();_baCheckPhase();
+  if(_bt.eHp<=0){setTimeout(battleWin,300);return;}
+  setTimeout(_baEnemyAttack,500);
 }
 
-function _battleRingFail(){
-  clearTimeout(_battleRing._failTimer);
-  _battleRing.active=false;
-  cancelAnimationFrame(_battleRing.raf);
-  const overlay=$('battleRingOverlay');if(overlay)overlay.remove();
-  _bt.combo=0;_bt.fusionReady=false;
-  _baSetLog('❌ Miss! Ingen skada — fienden kontrattackerar!');
-  vibe([30,20,60]);
-  setTimeout(_baEnemyAttack,500);
+function baSpecialAttack(type){
+  if(!_bt.active)return;
+  const base=10+Math.floor(G.actionStat/5)+(_bt.wave*3);
+  let dmg=0,msg='',mpCost=0,col='#39FF14';
+  if(type==='magic'){
+    mpCost=25;
+    if(_bt.pMp<mpCost){showT('❌ Behöver '+mpCost+' MP!','r');return;}
+    dmg=Math.round(base*2.0);msg='✨ MAGIC! '+dmg+' dmg!';col='#BF5FFF';
+    _bt.statusEnemy=_bt.enemy?.status||null;
+    if(_bt.statusEnemy)msg+=' + '+BA_STATUS_ICONS[_bt.statusEnemy];
+  } else if(type==='shield'){
+    mpCost=15;
+    if(_bt.pMp<mpCost){showT('❌ Behöver '+mpCost+' MP!','r');return;}
+    _bt.blocking=true;
+    const healAmt=Math.min(15,_bt.pMax-_bt.pHp);
+    _bt.pHp=Math.min(_bt.pMax,_bt.pHp+healAmt);
+    msg='🛡️ SHIELD! +'+healAmt+' HP · Block aktivt!';col='#00D9FF';
+    _baSetLog(msg);_bt.pMp=Math.max(0,_bt.pMp-mpCost);
+    floatNum&&floatNum('🛡️+'+healAmt,window.innerWidth/2,window.innerHeight*.4,'#00D9FF',16);
+    vibe([10,5,20]);updateBattleUI();
+    setTimeout(_baEnemyAttack,600);return;
+  } else if(type==='rage'){
+    mpCost=20;
+    if(_bt.pMp<mpCost){showT('❌ Behöver '+mpCost+' MP!','r');return;}
+    dmg=Math.round(base*2.8);msg='🔥 RAGE STRIKE! '+dmg+' dmg!';col='#FF9F0A';
+    vibe([40,20,80,20,120]);
+  }
+  if(dmg>0){
+    _bt.eHp=Math.max(0,_bt.eHp-dmg);
+    _bt.totalDmgDealt+=dmg;
+    _bt.combo+=2;
+    const sprite=$('baEnemySprite');
+    if(sprite){sprite.classList.remove('hit');void sprite.offsetWidth;sprite.classList.add('hit');}
+    _baFlash(col+'44');
+    floatNum&&floatNum(dmg,window.innerWidth/2,window.innerHeight*.3,col,22);
+  }
+  _bt.pMp=Math.max(0,_bt.pMp-mpCost);
+  const cf=$('baComboFill');if(cf)cf.style.width=Math.min(100,_bt.combo*20)+'%';
+  _baSetLog(msg);SFX.hit&&SFX.hit();
+  updateBattleUI();_baCheckPhase();
+  if(_bt.eHp<=0){setTimeout(battleWin,300);return;}
+  setTimeout(_baEnemyAttack,700);
 }
 
 function _baEnemyAttack(){
@@ -5823,20 +5692,18 @@ function updateBattleUI(){
   const mpf=$('baPlayerMpFill');if(mpf)mpf.style.width=mp+'%';
   const mpn=$('baPlayerMpNum');
   // Combo
-  const cc=$('baComboCount');if(cc)cc.textContent=_bt.combo;
-  // Fusion button
-  const fb=$('baFusionBtn');
-  if(fb)fb.style.display=_bt.fusionReady?'flex':'none';
-  const fi=$('baFusionIndicator');if(fi)fi.style.display=_bt.fusionReady?'block':'none';
+  const cc=$('baComboCount');if(cc)cc.textContent=_bt.combo+'x';
+  const cc2=$('baComboCount2');if(cc2)cc2.textContent=_bt.combo+'x';
+  const cf=$('baComboFill');if(cf)cf.style.width=Math.min(100,_bt.combo*20)+'%';
+  // Fusion indicator (kept for lore display)
+  const fi=$('baFusionIndicator');if(fi)fi.style.display=_bt.combo>=5?'block':'none';
   // Status
   const es=$('baEnemyStatus');if(es)es.textContent=_bt.statusEnemy?BA_STATUS_ICONS[_bt.statusEnemy]:'';
   const ps=$('baPlayerStatus');if(ps)ps.textContent=_bt.statusPlayer?BA_STATUS_ICONS[_bt.statusPlayer]:'';
-  // Magic btn
-  const mb=$('baMagicBtn');
-  if(mb)mb.style.opacity=_bt.pMp>=20?'1':'.4';
-  // Heal btn
-  const hb=$('baHealBtn');
-  if(hb){const canHeal=_bt.pMp>=30&&_bt.pHp<_bt.pMax;hb.style.opacity=canHeal?'1':'.35';const hs=$('baHealSub');if(hs)hs.textContent=_bt.pMp<30?`❌ MP ${_bt.pMp}/30`:_bt.pHp>=_bt.pMax?'HP är fullt':''+Math.min(25,_bt.pMax-_bt.pHp)+' HP · -30 MP';}
+  // Special buttons: dim magic/shield/rage if not enough MP
+  const sm=$('baSpecialMagic');if(sm)sm.style.opacity=_bt.pMp>=25?'1':'.4';
+  const ss=$('baSpecialShield');if(ss)ss.style.opacity=_bt.pMp>=15?'1':'.4';
+  const sr=$('baSpecialRage');if(sr)sr.style.opacity=_bt.pMp>=20?'1':'.4';
   // MP auto-regen display
   if(mpn)mpn.textContent=Math.round(_bt.pMp)+'/'+_bt.pMaxMp+' (+5/turn)';
   // Player name
@@ -9882,15 +9749,34 @@ function _fcDraw(){
       else dz.textContent='🌑 AVGRUND';
     }
   }
+  // Rod tip
+  const rodTipX=w*0.5,rodTipY=8;
+  ctx.strokeStyle='rgba(180,140,80,0.7)';ctx.lineWidth=3;ctx.lineCap='round';ctx.setLineDash([]);
+  ctx.beginPath();ctx.moveTo(w*0.18,0);ctx.lineTo(rodTipX,rodTipY);ctx.stroke();
   // Hook + line
   if(_fc.hook.active){
     _fc.hook.anim=Math.min(1,_fc.hook.anim+0.035);
     const tf=_fc.hook.targetFish;
     const tx=tf?tf.x*w:w*0.5,ty=tf?tf.y*h+Math.sin(tf.animT||0)*3:h*0.65;
     const hx=w*0.5+(tx-w*0.5)*_fc.hook.anim,hy=ty*_fc.hook.anim;
-    ctx.strokeStyle='rgba(220,235,255,0.55)';ctx.lineWidth=1.5;ctx.setLineDash([]);
-    ctx.beginPath();ctx.moveTo(w*0.5,0);ctx.lineTo(hx,hy);ctx.stroke();
+    // Fishing line with gentle curve
+    const mx=(rodTipX+hx)/2+Math.sin(_fc.t*0.02)*4;
+    const my=(rodTipY+hy)/2-12;
+    ctx.shadowColor='rgba(100,200,255,0.4)';ctx.shadowBlur=3;
+    ctx.strokeStyle='rgba(220,235,255,0.65)';ctx.lineWidth=1.2;ctx.setLineDash([]);
+    ctx.beginPath();ctx.moveTo(rodTipX,rodTipY);ctx.quadraticCurveTo(mx,my,hx,hy);ctx.stroke();
+    ctx.shadowBlur=0;
+    // Ambient fish shadow near hook
+    if(tf&&_fc.hook.anim>0.6){
+      ctx.beginPath();ctx.ellipse(hx,hy+12,10,4,0,0,Math.PI*2);
+      ctx.fillStyle='rgba(0,0,0,0.2)';ctx.fill();
+    }
     ctx.font='18px serif';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText('🪝',hx,hy);
+  } else {
+    // Idle line hanging down from rod tip
+    ctx.strokeStyle='rgba(220,235,255,0.25)';ctx.lineWidth=1;ctx.setLineDash([3,5]);
+    ctx.beginPath();ctx.moveTo(rodTipX,rodTipY);ctx.lineTo(rodTipX+Math.sin(_fc.t*0.03)*3,rodTipY+28);ctx.stroke();
+    ctx.setLineDash([]);
   }
 }
 
@@ -13164,11 +13050,14 @@ function _loadFromLocalStorage(){
     G.lastFlashDate=localStorage.getItem('kv8_lfd')||'';
     try{const pm=localStorage.getItem('kv8_pmem');if(pm)G.petMemory=JSON.parse(pm);}catch(e){}
     try{const ex=localStorage.getItem('kv8_expd');if(ex)G.expedition=JSON.parse(ex);}catch(e){}
+    let _dailyShownToday=false;
     const _today=new Date().toDateString();const _last=localStorage.getItem('kv8_lastLogin');
     if(_last!==_today){localStorage.setItem('kv8_lastLogin',_today);if(_last){
       if(G._talentS4b)setTimeout(()=>{gainXP(20,'social');showT('🤝 HYPE BUILDER! +20 XP','pk');},4000);
       const _rewardDay=parseInt(localStorage.getItem('kv8_rewardDay')||'1');
-      setTimeout(()=>showDailyRewardModal(_rewardDay),2200);}}
+      setTimeout(()=>{showDailyRewardModal(_rewardDay);_dailyShownToday=true;},2200);}
+    // Auto-popup for first-time or same-day users who haven't seen it yet
+    if(!_dailyShownToday){setTimeout(()=>{if(!_dailyShownToday){const _rd=parseInt(localStorage.getItem('kv8_rewardDay')||'1');showDailyRewardModal(_rd);_dailyShownToday=true;}},3500);}}
     $('ob').style.display='none';$('app').style.display='flex';updateHUD();nav('home');
     initDailyChallenges();
     renderFriendStories();
@@ -15261,6 +15150,10 @@ const EVENT_MILESTONES=[
   {wp:100000,em:'❄️',nm:'Vinter',reward:'LEGENDARY Item + 500 Coins',done:false},
 ];
 let _eventMyContrib=0;
+function openWeeklyChallenge(){
+  showT('📅 Veckans utmaning: Logga in 5 dagar i rad! Fortsätt din streak!','b');
+}
+
 function openSeasonalEvent(){
   const em=$('eventModal');if(!em)return;
   em.classList.add('open');
