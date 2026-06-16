@@ -101,9 +101,9 @@ html,body{height:100%;width:100%;overflow:hidden;background:var(--bg);font-famil
 .inp::placeholder{color:var(--t3);}
 textarea.inp{resize:none;min-height:68px;}
 .lbl{font-size:10px;font-weight:700;color:var(--t3);letter-spacing:.8px;text-transform:uppercase;margin-bottom:5px;display:block;}
-.sh{display:flex;align-items:center;justify-content:space-between;padding:9px 14px 5px;}
-.sh-t{font-size:10px;font-weight:800;color:rgba(255,255,255,.35);text-transform:uppercase;letter-spacing:.9px;}
-.sh-a{font-size:12px;font-weight:700;color:var(--g);cursor:pointer;}
+.sh{display:flex;align-items:center;justify-content:space-between;padding:14px 14px 8px;gap:8px;}
+.sh-t{font-size:11px;font-weight:900;color:rgba(255,255,255,.5);letter-spacing:2px;font-family:var(--mono);text-transform:uppercase;}
+.sh-a{font-size:10px;color:var(--b);font-weight:700;font-family:var(--mono);}
 .r2{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-bottom:10px;}
 .r2 .inp{margin-bottom:0;}
 .tabs{display:flex;overflow-x:auto;scrollbar-width:none;border-bottom:3px solid var(--g);flex-shrink:0;background:#000;}
@@ -195,24 +195,24 @@ textarea.inp{resize:none;min-height:68px;}
 
 /* Care buttons upgrade */
 .care-hero{display:grid;grid-template-columns:repeat(6,1fr);gap:6px;padding:0 12px 10px;}
-.chb{background:rgba(255,255,255,.04)!important;border:1px solid rgba(255,255,255,.1)!important;border-radius:16px!important;padding:10px 4px!important;min-height:68px!important;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;cursor:pointer;transition:all .15s;position:relative;overflow:hidden;}
+.chb{background:rgba(255,255,255,.04)!important;border:1.5px solid rgba(255,255,255,.1)!important;border-radius:18px!important;padding:12px 4px!important;min-height:72px!important;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;cursor:pointer;transition:all .15s;position:relative;overflow:hidden;box-shadow:0 2px 12px rgba(0,0,0,.3)!important;}
 .chb::before{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(255,255,255,.06) 0%,transparent 100%);pointer-events:none;}
 .chb:active{transform:scale(.92);opacity:.9;}
-.chb-feed{border-color:rgba(255,159,10,.25)!important;background:rgba(255,159,10,.06)!important;}
-.chb-feed:active{box-shadow:0 0 20px rgba(255,159,10,.3)!important;}
-.chb-train{border-color:rgba(255,45,85,.25)!important;background:rgba(255,45,85,.06)!important;}
-.chb-train:active{box-shadow:0 0 20px rgba(255,45,85,.3)!important;}
-.chb-sleep{border-color:rgba(0,217,255,.25)!important;background:rgba(0,217,255,.06)!important;}
-.chb-sleep:active{box-shadow:0 0 20px rgba(0,217,255,.3)!important;}
-.chb-play{border-color:rgba(57,255,20,.25)!important;background:rgba(57,255,20,.06)!important;}
-.chb-play:active{box-shadow:0 0 20px rgba(57,255,20,.3)!important;}
-.chb-bath{border-color:rgba(191,95,255,.25)!important;background:rgba(191,95,255,.06)!important;}
-.chb-bath:active{box-shadow:0 0 20px rgba(191,95,255,.3)!important;}
-.chb-talk{border-color:rgba(255,230,0,.25)!important;background:rgba(255,230,0,.06)!important;}
-.chb-talk:active{box-shadow:0 0 20px rgba(255,230,0,.3)!important;}
-.chb-ico{font-size:22px!important;}
-.chb-lbl{font-size:7px!important;font-weight:900!important;letter-spacing:.5px;color:rgba(255,255,255,.7);}
-.chb-val{font-size:6px!important;color:rgba(255,255,255,.35);font-family:var(--mono);}
+.chb-feed{border-color:rgba(255,159,10,.4)!important;background:linear-gradient(180deg,rgba(255,159,10,.12),rgba(255,100,0,.06))!important;box-shadow:0 0 14px rgba(255,159,10,.08)!important;}
+.chb-feed:active{box-shadow:0 0 24px rgba(255,159,10,.4)!important;}
+.chb-train{border-color:rgba(255,45,85,.4)!important;background:linear-gradient(180deg,rgba(255,45,85,.12),rgba(255,0,100,.06))!important;box-shadow:0 0 14px rgba(255,45,85,.08)!important;}
+.chb-train:active{box-shadow:0 0 24px rgba(255,45,85,.4)!important;}
+.chb-sleep{border-color:rgba(0,217,255,.4)!important;background:linear-gradient(180deg,rgba(0,217,255,.12),rgba(0,100,255,.06))!important;box-shadow:0 0 14px rgba(0,217,255,.08)!important;}
+.chb-sleep:active{box-shadow:0 0 24px rgba(0,217,255,.4)!important;}
+.chb-play{border-color:rgba(57,255,20,.4)!important;background:linear-gradient(180deg,rgba(57,255,20,.12),rgba(0,200,50,.06))!important;box-shadow:0 0 14px rgba(57,255,20,.08)!important;}
+.chb-play:active{box-shadow:0 0 24px rgba(57,255,20,.4)!important;}
+.chb-bath{border-color:rgba(191,95,255,.4)!important;background:linear-gradient(180deg,rgba(191,95,255,.12),rgba(100,0,255,.06))!important;box-shadow:0 0 14px rgba(191,95,255,.08)!important;}
+.chb-bath:active{box-shadow:0 0 24px rgba(191,95,255,.4)!important;}
+.chb-talk{border-color:rgba(255,230,0,.4)!important;background:linear-gradient(180deg,rgba(255,230,0,.12),rgba(255,150,0,.06))!important;box-shadow:0 0 14px rgba(255,230,0,.08)!important;}
+.chb-talk:active{box-shadow:0 0 24px rgba(255,230,0,.4)!important;}
+.chb-ico{font-size:24px!important;filter:drop-shadow(0 0 4px rgba(255,255,255,.2));}
+.chb-lbl{font-size:7px!important;font-weight:900!important;letter-spacing:.8px;color:rgba(255,255,255,.8);font-family:var(--mono);}
+.chb-val{font-size:6px!important;color:rgba(255,255,255,.4);font-family:var(--mono);font-weight:700;}
 
 /* Enhanced bond section */
 .bond-section{margin:0 12px 10px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);border-radius:20px;padding:14px;backdrop-filter:blur(10px);}
@@ -220,14 +220,18 @@ textarea.inp{resize:none;min-height:68px;}
 .bond-ttl{font-size:10px;font-weight:900;color:rgba(255,255,255,.6);text-transform:uppercase;letter-spacing:1px;}
 .bond-tag{font-size:8px;font-weight:900;background:rgba(255,0,127,.15);border:1px solid rgba(255,0,127,.3);color:var(--pk);padding:2px 8px;border-radius:20px;letter-spacing:.5px;}
 .bond-row{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;}
-.bond-item{display:flex;flex-direction:column;align-items:center;gap:3px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:10px 4px;cursor:pointer;transition:all .15s;position:relative;}
-.bond-item:active{transform:scale(.92);}
-.bond-item.done{border-color:rgba(57,255,20,.35);background:rgba(57,255,20,.06);}
+.bond-item{display:flex;flex-direction:column;align-items:center;gap:3px;background:rgba(255,255,255,.05);border:1.5px solid rgba(255,255,255,.1);border-radius:16px;padding:12px 4px;cursor:pointer;transition:all .15s;position:relative;overflow:hidden;}
+.bond-item:active{transform:scale(.9);opacity:.85;}
+.bond-item.done{border-color:rgba(57,255,20,.4);background:rgba(57,255,20,.08);}
 .bond-item.done .bond-check{opacity:1;}
-.bond-check{position:absolute;top:4px;right:4px;font-size:8px;color:var(--g);opacity:0;}
-.bond-ico{font-size:20px;}
-.bond-lbl{font-size:8px;font-weight:700;color:rgba(255,255,255,.6);}
-.bond-eff{font-size:7px;color:var(--g);font-family:var(--mono);}
+.bond-check{position:absolute;top:4px;right:4px;font-size:9px;color:var(--g);opacity:0;font-weight:900;}
+.bond-ico{font-size:22px;filter:drop-shadow(0 0 6px rgba(255,255,255,.3));}
+.bond-lbl{font-size:8px;font-weight:900;color:rgba(255,255,255,.7);font-family:var(--mono);letter-spacing:.3px;}
+.bond-eff{font-size:7px;color:var(--g);font-family:var(--mono);font-weight:700;}
+#bond-flash{background:linear-gradient(180deg,rgba(255,45,85,.12),rgba(255,0,127,.06));border-color:rgba(255,45,85,.35);}
+#bond-chat{background:linear-gradient(180deg,rgba(0,120,255,.12),rgba(0,217,255,.06));border-color:rgba(0,150,255,.35);}
+#bond-quest{background:linear-gradient(180deg,rgba(57,255,20,.1),rgba(0,200,100,.05));border-color:rgba(57,255,20,.3);}
+#bond-market{background:linear-gradient(180deg,rgba(255,200,0,.1),rgba(255,159,10,.05));border-color:rgba(255,200,0,.3);}
 
 /* Social Power panel upgrade */
 .sp-panel{margin:0 12px 10px;background:rgba(0,217,255,.04);border:1px solid rgba(0,217,255,.12);border-radius:20px;padding:14px;}
@@ -329,17 +333,20 @@ textarea.inp{resize:none;min-height:68px;}
 
 /* Stats row */
 .stats-row{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:0 12px 10px;}
-.st-box{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:16px;padding:12px 8px;text-align:center;}
-.st-num{font-size:22px;font-weight:900;font-family:var(--mono);}
-.st-num.a{color:var(--pk);}
-.st-num.c{color:var(--y);}
-.st-num.s{color:var(--g);}
-.st-bar{height:3px;background:rgba(255,255,255,.06);border-radius:100px;overflow:hidden;margin:6px 0;}
+.st-box{background:rgba(255,255,255,.04);border:1.5px solid rgba(255,255,255,.1);border-radius:16px;padding:14px 8px;text-align:center;position:relative;overflow:hidden;}
+.st-box.a-box{background:rgba(255,45,85,.06);border-color:rgba(255,45,85,.25);box-shadow:0 0 16px rgba(255,45,85,.1);}
+.st-box.c-box{background:rgba(255,230,0,.06);border-color:rgba(255,230,0,.25);box-shadow:0 0 16px rgba(255,230,0,.1);}
+.st-box.s-box{background:rgba(57,255,20,.06);border-color:rgba(57,255,20,.25);box-shadow:0 0 16px rgba(57,255,20,.1);}
+.st-num{font-size:24px;font-weight:900;font-family:var(--mono);}
+.st-num.a{color:var(--pk);text-shadow:0 0 12px rgba(255,45,85,.4);}
+.st-num.c{color:var(--y);text-shadow:0 0 12px rgba(255,230,0,.4);}
+.st-num.s{color:var(--g);text-shadow:0 0 12px rgba(57,255,20,.4);}
+.st-bar{height:4px;background:rgba(255,255,255,.08);border-radius:100px;overflow:hidden;margin:6px 0;}
 .st-bf{height:100%;border-radius:100px;}
-.st-bf.a{background:var(--pk);}
-.st-bf.c{background:var(--y);}
-.st-bf.s{background:var(--g);}
-.st-lbl{font-size:7px;color:rgba(255,255,255,.35);text-transform:uppercase;letter-spacing:.5px;}
+.st-bf.a{background:linear-gradient(90deg,rgba(255,45,85,.8),rgba(255,100,130,.9));}
+.st-bf.c{background:linear-gradient(90deg,rgba(255,200,0,.8),rgba(255,230,100,.9));}
+.st-bf.s{background:linear-gradient(90deg,rgba(57,255,20,.8),rgba(100,255,80,.9));}
+.st-lbl{font-size:7px;color:rgba(255,255,255,.4);text-transform:uppercase;letter-spacing:.8px;font-weight:700;font-family:var(--mono);}
 
 /* Friend leaderboard */
 .flb-card{margin:0 12px 10px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:20px;padding:14px;}
@@ -457,13 +464,22 @@ textarea.inp{resize:none;min-height:68px;}
 .sh-a{font-size:11px;font-weight:900;color:var(--g);cursor:pointer;font-family:var(--mono);text-transform:uppercase;letter-spacing:.5px;}
 /* Global button active state for inline-styled buttons */
 button:active{opacity:.85;}
+/* ── SECTION CARDS ── */
+.home-section{background:rgba(255,255,255,.025);border:1px solid rgba(255,255,255,.07);border-radius:20px;margin:0 12px 10px;overflow:hidden;}
+/* ── VIBRANT GRADIENT HEADINGS ── */
+.gradient-text{background:linear-gradient(90deg,#39FF14,#00D9FF);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+/* ── CARD HOVER/ACTIVE ── */
+.tap-card{-webkit-tap-highlight-color:transparent;cursor:pointer;transition:transform .1s,opacity .1s;}
+.tap-card:active{transform:scale(.97);opacity:.85;}
+/* ── GLOW SEPARATORS ── */
+.glow-sep{height:1px;background:linear-gradient(90deg,transparent,rgba(0,217,255,.3),rgba(191,95,255,.3),transparent);margin:4px 0;}
 /* Fish UI */
-.fish-cast-btn{width:100%;padding:16px;font-size:16px;font-weight:900;font-family:var(--mono);border:4px solid #000;border-radius:6px;cursor:pointer;transition:transform .08s,box-shadow .08s;text-transform:uppercase;letter-spacing:1px;touch-action:manipulation;}
-.fish-cast-btn.idle{background:#39FF14;color:#000;box-shadow:5px 5px 0px #000;}
-.fish-cast-btn.idle:active{transform:translate(5px,5px);box-shadow:0px 0px 0px #000!important;}
-.fish-cast-btn.biting{background:#FF007F;color:#fff;box-shadow:5px 5px 0px #000;animation:bitePulse .4s ease-in-out infinite alternate;}
-@keyframes bitePulse{from{box-shadow:5px 5px 0px #000;}to{box-shadow:5px 5px 0px #fff;}}
-.fish-cast-btn.reeling{background:#FFE600;color:#000;box-shadow:5px 5px 0px #000;}
+.fish-cast-btn{width:100%;padding:16px;font-size:15px;font-weight:900;font-family:var(--mono);border:none;border-radius:16px;cursor:pointer;transition:all .1s;-webkit-tap-highlight-color:transparent;touch-action:manipulation;letter-spacing:.5px;}
+.fish-cast-btn.idle{background:linear-gradient(135deg,rgba(57,255,20,.15),rgba(0,200,100,.08));border:2px solid rgba(57,255,20,.5);color:#39FF14;box-shadow:0 0 20px rgba(57,255,20,.2);}
+.fish-cast-btn.casting{background:linear-gradient(135deg,rgba(255,200,0,.1),rgba(255,150,0,.06));border:2px solid rgba(255,200,0,.4);color:var(--y);}
+.fish-cast-btn.biting{background:linear-gradient(135deg,#FFE600,#FF9F0A)!important;border:2px solid #FFD700!important;color:#000!important;animation:bitePulse .35s ease-in-out infinite!important;box-shadow:0 0 30px rgba(255,200,0,.5)!important;}
+.fish-cast-btn.reeling{background:linear-gradient(135deg,rgba(0,200,255,.15),rgba(0,100,200,.08));border:2px solid rgba(0,200,255,.4);color:var(--b);}
+.fish-cast-btn:active{transform:scale(.95);}
 /* Wild pet tier headers */
 .wld-tier-hdr{font-size:8px;font-weight:900;letter-spacing:2px;text-transform:uppercase;font-family:var(--mono);padding:6px 4px 4px;}
 /* Onboarding */
@@ -539,23 +555,23 @@ button:active{opacity:.85;}
 .care-section-lbl{font-size:9px;font-weight:700;color:rgba(255,255,255,.4);text-transform:uppercase;letter-spacing:1.5px;padding:3px 14px 4px;display:flex;align-items:center;gap:6px;font-family:var(--mono);}
 .care-hero{display:grid!important;grid-template-columns:repeat(6,1fr)!important;gap:6px!important;margin:0 12px 6px!important;padding:0 0 4px!important;}
 .care-hero-row2{display:none;}
-.chb{border-radius:12px;padding:10px 4px;text-align:center;cursor:pointer;transition:transform .1s,opacity .1s;-webkit-tap-highlight-color:transparent;position:relative;overflow:hidden;border:1.5px solid;min-height:60px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;background:#111;}
-.chb:active{transform:scale(.92);opacity:.8;}
-.chb-ico{font-size:22px;display:block;line-height:1.1;}
-.chb-lbl{font-size:8px;font-weight:900;display:block;letter-spacing:.5px;text-transform:uppercase;}
-.chb-val{font-size:7px;display:block;font-weight:700;opacity:.65;font-family:var(--mono);}
-.chb-feed{border-color:rgba(255,159,10,.45);box-shadow:0 0 12px rgba(255,159,10,.1);}
+.chb{border-radius:18px;padding:12px 4px;text-align:center;cursor:pointer;transition:transform .1s,opacity .1s;-webkit-tap-highlight-color:transparent;position:relative;overflow:hidden;border:1.5px solid;min-height:72px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;background:#111;}
+.chb:active{transform:scale(.9);opacity:.8;}
+.chb-ico{font-size:24px;display:block;line-height:1.1;filter:drop-shadow(0 0 4px rgba(255,255,255,.2));}
+.chb-lbl{font-size:8px;font-weight:900;display:block;letter-spacing:.8px;text-transform:uppercase;font-family:var(--mono);}
+.chb-val{font-size:7px;display:block;font-weight:700;opacity:.7;font-family:var(--mono);}
+.chb-feed{border-color:rgba(255,159,10,.5);background:linear-gradient(180deg,rgba(255,159,10,.14),#0a0500)!important;box-shadow:0 0 14px rgba(255,159,10,.1);}
 .chb-feed .chb-lbl,.chb-feed .chb-val{color:var(--o);}
-.chb-train{border-color:rgba(255,0,127,.45);box-shadow:0 0 12px rgba(255,0,127,.1);}
+.chb-train{border-color:rgba(255,45,85,.5);background:linear-gradient(180deg,rgba(255,45,85,.14),#0a0004)!important;box-shadow:0 0 14px rgba(255,45,85,.1);}
 .chb-train .chb-lbl,.chb-train .chb-val{color:var(--pk);}
-.chb-sleep{border-color:rgba(0,217,255,.45);box-shadow:0 0 12px rgba(0,217,255,.1);}
+.chb-sleep{border-color:rgba(0,217,255,.5);background:linear-gradient(180deg,rgba(0,217,255,.12),#00050a)!important;box-shadow:0 0 14px rgba(0,217,255,.1);}
 .chb-sleep .chb-lbl,.chb-sleep .chb-val{color:var(--b);}
-.chb-play{border-color:rgba(191,95,255,.45);box-shadow:0 0 12px rgba(191,95,255,.1);}
-.chb-play .chb-lbl,.chb-play .chb-val{color:var(--p);}
-.chb-bath{border-color:rgba(57,255,20,.45);box-shadow:0 0 12px rgba(57,255,20,.1);}
-.chb-bath .chb-lbl,.chb-bath .chb-val{color:var(--g);}
-.chb-talk{border-color:rgba(255,0,127,.45);box-shadow:0 0 12px rgba(255,0,127,.1);}
-.chb-talk .chb-lbl,.chb-talk .chb-val{color:var(--pk);}
+.chb-play{border-color:rgba(57,255,20,.5);background:linear-gradient(180deg,rgba(57,255,20,.12),#010a00)!important;box-shadow:0 0 14px rgba(57,255,20,.1);}
+.chb-play .chb-lbl,.chb-play .chb-val{color:var(--g);}
+.chb-bath{border-color:rgba(191,95,255,.5);background:linear-gradient(180deg,rgba(191,95,255,.14),#05000a)!important;box-shadow:0 0 14px rgba(191,95,255,.1);}
+.chb-bath .chb-lbl,.chb-bath .chb-val{color:var(--p);}
+.chb-talk{border-color:rgba(255,230,0,.5);background:linear-gradient(180deg,rgba(255,230,0,.12),#0a0800)!important;box-shadow:0 0 14px rgba(255,230,0,.1);}
+.chb-talk .chb-lbl,.chb-talk .chb-val{color:var(--y);}
 .chb.urgent{animation:urgentPulse .75s ease-in-out infinite;}
 @keyframes urgentPulse{0%,100%{transform:scale(1);}50%{transform:scale(1.03);}}
 .chb.urgent::after{content:'!';position:absolute;top:8px;right:10px;font-size:12px;font-weight:900;color:var(--r);animation:urgentDot .7s ease-in-out infinite;}
@@ -1500,10 +1516,6 @@ button:active{opacity:.85;}
 .fish-catch-tag{background:rgba(0,180,255,.1);border:1px solid rgba(0,180,255,.3);border-radius:12px;padding:5px 11px;display:flex;align-items:center;gap:6px;}
 .fish-catch-tag span{font-size:20px;}
 .fish-catch-lbl{font-size:10px;font-weight:700;color:var(--b);}
-.fish-cast-btn{width:100%;padding:16px;border-radius:18px;font-size:15px;font-weight:900;cursor:pointer;font-family:var(--ff);letter-spacing:.5px;transition:all .1s;-webkit-tap-highlight-color:transparent;touch-action:manipulation;border:2px solid;background:linear-gradient(135deg,rgba(0,180,255,.12),rgba(0,100,200,.08));}
-.fish-cast-btn.idle{border-color:rgba(0,180,255,.5);color:var(--b);box-shadow:0 0 18px rgba(0,180,255,.15);}
-.fish-cast-btn.casting{border-color:rgba(255,200,0,.5);color:var(--y);background:linear-gradient(135deg,rgba(255,200,0,.1),rgba(255,150,0,.06));}
-.fish-cast-btn:active{transform:scale(.95);}
 .fish-score{font-size:11px;font-weight:900;color:var(--y);font-family:var(--mono);text-align:center;margin-top:5px;}
 .fish-rod-bar{display:flex;align-items:center;justify-content:space-between;padding:6px 14px;background:rgba(0,180,255,.06);border-bottom:1px solid rgba(0,180,255,.14);flex-shrink:0;gap:8px;}
 .fish-rod-cur{font-size:11px;font-weight:900;color:var(--b);font-family:var(--mono);}
@@ -1740,15 +1752,18 @@ button:active{opacity:.85;}
 /* ── STREAK MILESTONES ── */
 .streak-milestone{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;padding:0 12px 12px;min-height:90px;}
 .streak-milestone::-webkit-scrollbar{display:none;}
-.sm-item{flex-shrink:0;text-align:center;background:linear-gradient(180deg,var(--c2),var(--c1));border:1.5px solid rgba(255,255,255,.1);border-radius:16px;padding:10px 14px;min-width:72px;box-shadow:0 2px 8px rgba(0,0,0,.3);}
-.sm-item.reached{border-color:rgba(57,255,20,.5);background:linear-gradient(180deg,rgba(57,255,20,.12),rgba(57,255,20,.04));box-shadow:0 0 12px rgba(57,255,20,.2);}
-.sm-item.next{border-color:rgba(255,230,0,.5);background:linear-gradient(180deg,rgba(255,230,0,.1),rgba(255,230,0,.03));animation:nextMilestone 2s ease-in-out infinite;box-shadow:0 0 10px rgba(255,230,0,.2);}
-@keyframes nextMilestone{0%,100%{box-shadow:0 0 0 0 rgba(255,230,0,.3);}50%{box-shadow:0 0 12px 2px rgba(255,230,0,.2);}}
-.sm-days{font-size:20px;font-weight:900;font-family:var(--mono);line-height:1;color:var(--t2);}
-.sm-item.reached .sm-days{color:var(--g);}
-.sm-item.next .sm-days{color:var(--y);}
-.sm-lbl{font-size:8px;color:var(--t3);margin-top:3px;font-weight:700;}
-.sm-ico{font-size:18px;line-height:1;margin-bottom:2px;}
+.sm-item{flex-shrink:0;text-align:center;background:rgba(255,255,255,.06);border:1.5px solid rgba(255,255,255,.12);border-radius:16px;padding:10px 14px;min-width:78px;position:relative;overflow:hidden;}
+.sm-item::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(191,95,255,.08),rgba(0,217,255,.05));pointer-events:none;}
+.sm-item.reached{border-color:rgba(57,255,20,.6);background:rgba(57,255,20,.08);box-shadow:0 0 16px rgba(57,255,20,.2);}
+.sm-item.reached::before{background:linear-gradient(135deg,rgba(57,255,20,.12),rgba(0,217,255,.06));}
+.sm-item.next{border-color:rgba(255,230,0,.7);background:rgba(255,230,0,.08);box-shadow:0 0 16px rgba(255,230,0,.25);animation:nextMilestone 2s ease-in-out infinite;}
+.sm-item.next::before{background:linear-gradient(135deg,rgba(255,230,0,.12),rgba(255,159,10,.06));}
+@keyframes nextMilestone{0%,100%{box-shadow:0 0 8px rgba(255,230,0,.2);}50%{box-shadow:0 0 20px rgba(255,230,0,.4);}}
+.sm-days{font-size:22px;font-weight:900;font-family:var(--mono);color:#fff;line-height:1;}
+.sm-item.reached .sm-days{color:#39FF14;}
+.sm-item.next .sm-days{color:#FFE600;}
+.sm-lbl{font-size:8px;color:rgba(255,255,255,.55);margin-top:3px;font-weight:700;font-family:var(--mono);}
+.sm-ico{font-size:20px;line-height:1;margin-bottom:4px;}
 
 /* ── PET LEVEL RING ── */
 .pet-lv-ring{display:flex;align-items:center;justify-content:center;gap:12px;padding:4px 0 2px;}
@@ -1792,13 +1807,15 @@ button:active{opacity:.85;}
 /* ── FRIEND LEADERBOARD CARD ── */
 .flb-card{background:linear-gradient(135deg,rgba(255,230,0,.05),rgba(57,255,20,.03));border:1px solid rgba(255,230,0,.2);border-radius:18px;padding:14px;margin:0 14px 12px;}
 .flb-ttl{font-size:12px;font-weight:900;color:var(--y);margin-bottom:10px;display:flex;align-items:center;gap:6px;}
-.flb-row{display:flex;align-items:center;gap:10px;padding:7px 0;border-bottom:1px solid rgba(255,255,255,.06);}
-.flb-row:last-child{border-bottom:none;}
-.flb-rank{font-size:15px;width:22px;text-align:center;font-weight:900;font-family:var(--mono);}
-.flb-av{font-size:24px;width:36px;text-align:center;}
-.flb-nm{font-size:12px;font-weight:800;flex:1;}
-.flb-val{font-size:12px;font-weight:900;color:var(--y);font-family:var(--mono);}
-.flb-you{color:var(--g) !important;}
+.flb-row{display:flex;align-items:center;gap:10px;padding:9px 8px;border-radius:12px;margin-bottom:4px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);transition:background .15s;}
+.flb-row:first-child{background:rgba(255,215,0,.06);border-color:rgba(255,215,0,.2);}
+.flb-row:nth-child(2){background:rgba(192,192,192,.04);border-color:rgba(192,192,192,.15);}
+.flb-row:nth-child(3){background:rgba(205,127,50,.04);border-color:rgba(205,127,50,.15);}
+.flb-rank{font-size:16px;width:24px;text-align:center;font-weight:900;font-family:var(--mono);}
+.flb-av{font-size:26px;width:38px;text-align:center;filter:drop-shadow(0 0 6px rgba(255,255,255,.2));}
+.flb-nm{font-size:12px;font-weight:800;flex:1;color:rgba(255,255,255,.85);}
+.flb-val{font-size:13px;font-weight:900;color:var(--y);font-family:var(--mono);text-shadow:0 0 8px rgba(255,230,0,.3);}
+.flb-you{color:var(--g) !important;text-shadow:0 0 8px rgba(57,255,20,.3) !important;}
 
 /* ═══════════════════════════════════
    KARMA WORLD — City Builder
@@ -1904,8 +1921,6 @@ button:active{opacity:.85;}
 /* Float hearts */
 .float-heart{position:fixed;pointer-events:none;font-size:24px;z-index:9999;animation:floatUp 1.1s ease-out forwards;}
 @keyframes floatUp{0%{opacity:1;transform:translateY(0) scale(1) rotate(-10deg);}100%{opacity:0;transform:translateY(-90px) scale(1.5) rotate(10deg);}}
-/* Fish biting state */
-.fish-cast-btn.biting{border-color:rgba(255,220,0,1) !important;color:#000 !important;background:linear-gradient(135deg,#FFE600,#FF9F0A) !important;font-size:16px !important;letter-spacing:1px !important;animation:bitePulse .32s ease-in-out infinite !important;}
 @keyframes bitePulse{0%,100%{transform:scale(1);box-shadow:0 0 0 0 rgba(255,220,0,.5);}50%{transform:scale(1.04);box-shadow:0 0 24px 6px rgba(255,220,0,.3);}}
 /* Fishing spam ring */
 .fish-spam-ring{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:140px;height:140px;z-index:30;pointer-events:none;display:none;}
@@ -2348,13 +2363,6 @@ button:active{opacity:.85;}
 [style*="border:3px solid var(--g)"]{border:1px solid rgba(57,255,20,.3)!important;border-radius:14px!important;}
 [style*="border:2px solid var(--g)"]{border:1px solid rgba(57,255,20,.25)!important;}
 
-/* FISH CAST BUTTON */
-.fish-cast-btn{border:none!important;border-radius:14px!important;}
-.fish-cast-btn.idle{box-shadow:0 0 20px rgba(57,255,20,.35)!important;}
-.fish-cast-btn.biting{box-shadow:0 0 20px rgba(255,0,127,.4)!important;animation:bitePulse .4s ease-in-out infinite!important;}
-.fish-cast-btn.reeling{box-shadow:0 0 20px rgba(255,230,0,.35)!important;}
-@keyframes bitePulse{from{box-shadow:0 0 14px rgba(255,0,127,.3)!important;}to{box-shadow:0 0 28px rgba(255,0,127,.6)!important;}}
-
 /* ═══════════════════════════════════
    VISUAL OVERHAUL v2 — clean & cinematic
 ═══════════════════════════════════ */
@@ -2409,7 +2417,7 @@ div[style*="LIVE"]{border-radius:16px!important;background:rgba(57,255,20,.03)!i
 .care-section-lbl{font-size:9px!important;color:rgba(255,255,255,.4)!important;letter-spacing:1px!important;}
 
 /* ── FLASH FEED ── */
-.flash-title{font-size:22px!important;font-weight:900!important;font-family:var(--mono)!important;letter-spacing:0!important;}
+.flash-title{font-size:22px!important;font-weight:900!important;font-family:var(--mono)!important;letter-spacing:1px!important;background:linear-gradient(90deg,#FF2D55,#FF9F0A)!important;-webkit-background-clip:text!important;-webkit-text-fill-color:transparent!important;background-clip:text!important;filter:drop-shadow(0 0 10px rgba(255,45,85,.35))!important;}
 
 /* ── MODALS ── */
 .ms{border-radius:28px 28px 0 0!important;background:rgba(6,6,16,.98)!important;}
@@ -2817,30 +2825,30 @@ div[style*="LIVE"]{border-radius:16px!important;background:rgba(57,255,20,.03)!i
           <div style="font-size:8px;color:rgba(255,255,255,.3);font-family:var(--mono)">2% av premium → potten</div>
         </div>
         <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px">
-          <div onclick="openPrizePotModal('hour')" style="background:rgba(57,255,20,.07);border:1.5px solid rgba(57,255,20,.35);border-radius:14px;padding:10px 6px;text-align:center;cursor:pointer;position:relative;overflow:hidden;-webkit-tap-highlight-color:transparent">
-            <div style="position:absolute;inset:0;background:radial-gradient(ellipse at 50% 0%,rgba(57,255,20,.12) 0%,transparent 70%);pointer-events:none"></div>
-            <div style="font-size:20px;margin-bottom:3px">⚡</div>
-            <div style="font-size:7px;font-weight:900;color:#39FF14;font-family:var(--mono);letter-spacing:1px">TIMME</div>
-            <div style="font-size:15px;font-weight:900;color:#fff;font-family:var(--mono);margin:3px 0" id="potHourAmt">3 450</div>
-            <div style="font-size:6px;color:rgba(255,255,255,.35);font-family:var(--mono)">🔮 KC</div>
-            <div style="font-size:9px;font-weight:900;color:#39FF14;font-family:var(--mono);margin-top:4px" id="potHourTimer">--:--</div>
+          <div onclick="openPrizePotModal('hour')" style="background:linear-gradient(180deg,rgba(0,180,255,.12),rgba(0,120,200,.06));border:2px solid rgba(0,200,255,.5);border-radius:16px;padding:12px 6px;text-align:center;cursor:pointer;position:relative;overflow:hidden;-webkit-tap-highlight-color:transparent;box-shadow:0 0 24px rgba(0,200,255,.15),inset 0 1px 0 rgba(255,255,255,.08)">
+            <div style="position:absolute;inset:0;background:radial-gradient(ellipse at 50% 0%,rgba(0,200,255,.18) 0%,transparent 65%);pointer-events:none"></div>
+            <div style="font-size:22px;margin-bottom:3px;filter:drop-shadow(0 0 6px rgba(0,200,255,.5))">⚡</div>
+            <div style="font-size:7px;font-weight:900;color:#00D9FF;font-family:var(--mono);letter-spacing:1.5px">TIMME</div>
+            <div style="font-size:16px;font-weight:900;color:#fff;font-family:var(--mono);margin:4px 0;text-shadow:0 0 10px rgba(0,200,255,.4)" id="potHourAmt">3 450</div>
+            <div style="font-size:6px;color:rgba(0,200,255,.5);font-family:var(--mono);font-weight:700">🔮 KC</div>
+            <div style="font-size:9px;font-weight:900;color:#00D9FF;font-family:var(--mono);margin-top:5px" id="potHourTimer">--:--</div>
           </div>
-          <div onclick="openPrizePotModal('day')" style="background:rgba(255,215,0,.07);border:2px solid rgba(255,215,0,.45);border-radius:14px;padding:10px 6px;text-align:center;cursor:pointer;position:relative;overflow:hidden;box-shadow:0 0 18px rgba(255,215,0,.1);-webkit-tap-highlight-color:transparent">
-            <div style="position:absolute;inset:0;background:radial-gradient(ellipse at 50% 0%,rgba(255,215,0,.12) 0%,transparent 70%);pointer-events:none"></div>
-            <div style="position:absolute;top:4px;right:4px;font-size:6px;font-weight:900;background:#FFD700;color:#000;padding:1px 4px;border-radius:4px;font-family:var(--mono)">HOT</div>
-            <div style="font-size:20px;margin-bottom:3px">🏆</div>
-            <div style="font-size:7px;font-weight:900;color:#FFD700;font-family:var(--mono);letter-spacing:1px">DYGN</div>
-            <div style="font-size:15px;font-weight:900;color:#fff;font-family:var(--mono);margin:3px 0" id="potDayAmt">24 800</div>
-            <div style="font-size:6px;color:rgba(255,255,255,.35);font-family:var(--mono)">🔮 KC</div>
-            <div style="font-size:9px;font-weight:900;color:#FFD700;font-family:var(--mono);margin-top:4px" id="potDayTimer">--:--:--</div>
+          <div onclick="openPrizePotModal('day')" style="background:linear-gradient(180deg,rgba(255,200,0,.14),rgba(255,120,0,.06));border:2px solid rgba(255,215,0,.6);border-radius:16px;padding:12px 6px;text-align:center;cursor:pointer;position:relative;overflow:hidden;box-shadow:0 0 28px rgba(255,215,0,.2),inset 0 1px 0 rgba(255,255,255,.08);-webkit-tap-highlight-color:transparent">
+            <div style="position:absolute;inset:0;background:radial-gradient(ellipse at 50% 0%,rgba(255,215,0,.18) 0%,transparent 65%);pointer-events:none"></div>
+            <div style="position:absolute;top:5px;right:5px;font-size:6px;font-weight:900;background:linear-gradient(135deg,#FFD700,#FF9F0A);color:#000;padding:2px 5px;border-radius:5px;font-family:var(--mono)">HOT</div>
+            <div style="font-size:22px;margin-bottom:3px;filter:drop-shadow(0 0 6px rgba(255,215,0,.5))">🏆</div>
+            <div style="font-size:7px;font-weight:900;color:#FFD700;font-family:var(--mono);letter-spacing:1.5px">DYGN</div>
+            <div style="font-size:16px;font-weight:900;color:#fff;font-family:var(--mono);margin:4px 0;text-shadow:0 0 10px rgba(255,215,0,.4)" id="potDayAmt">24 800</div>
+            <div style="font-size:6px;color:rgba(255,215,0,.5);font-family:var(--mono);font-weight:700">🔮 KC</div>
+            <div style="font-size:9px;font-weight:900;color:#FFD700;font-family:var(--mono);margin-top:5px" id="potDayTimer">--:--:--</div>
           </div>
-          <div onclick="openPrizePotModal('week')" style="background:rgba(191,95,255,.07);border:1.5px solid rgba(191,95,255,.35);border-radius:14px;padding:10px 6px;text-align:center;cursor:pointer;position:relative;overflow:hidden;-webkit-tap-highlight-color:transparent">
-            <div style="position:absolute;inset:0;background:radial-gradient(ellipse at 50% 0%,rgba(191,95,255,.12) 0%,transparent 70%);pointer-events:none"></div>
-            <div style="font-size:20px;margin-bottom:3px">👑</div>
-            <div style="font-size:7px;font-weight:900;color:#BF5FFF;font-family:var(--mono);letter-spacing:1px">VECKA</div>
-            <div style="font-size:15px;font-weight:900;color:#fff;font-family:var(--mono);margin:3px 0" id="potWeekAmt">182 500</div>
-            <div style="font-size:6px;color:rgba(255,255,255,.35);font-family:var(--mono)">🔮 KC</div>
-            <div style="font-size:9px;font-weight:900;color:#BF5FFF;font-family:var(--mono);margin-top:4px" id="potWeekTimer">--d --:--</div>
+          <div onclick="openPrizePotModal('week')" style="background:linear-gradient(180deg,rgba(191,95,255,.12),rgba(120,0,255,.06));border:2px solid rgba(191,95,255,.55);border-radius:16px;padding:12px 6px;text-align:center;cursor:pointer;position:relative;overflow:hidden;-webkit-tap-highlight-color:transparent;box-shadow:0 0 24px rgba(191,95,255,.18),inset 0 1px 0 rgba(255,255,255,.08)">
+            <div style="position:absolute;inset:0;background:radial-gradient(ellipse at 50% 0%,rgba(191,95,255,.18) 0%,transparent 65%);pointer-events:none"></div>
+            <div style="font-size:22px;margin-bottom:3px;filter:drop-shadow(0 0 6px rgba(191,95,255,.5))">👑</div>
+            <div style="font-size:7px;font-weight:900;color:#BF5FFF;font-family:var(--mono);letter-spacing:1.5px">VECKA</div>
+            <div style="font-size:16px;font-weight:900;color:#fff;font-family:var(--mono);margin:4px 0;text-shadow:0 0 10px rgba(191,95,255,.4)" id="potWeekAmt">182 500</div>
+            <div style="font-size:6px;color:rgba(191,95,255,.5);font-family:var(--mono);font-weight:700">🔮 KC</div>
+            <div style="font-size:9px;font-weight:900;color:#BF5FFF;font-family:var(--mono);margin-top:5px" id="potWeekTimer">--d --:--</div>
           </div>
         </div>
         <div style="text-align:center;font-size:7px;color:rgba(255,255,255,.25);font-family:var(--mono);margin-top:5px">Top 3 aktivaste vinner varje period · Byggs upp av premium</div>
@@ -2969,9 +2977,9 @@ div[style*="LIVE"]{border-radius:16px!important;background:rgba(57,255,20,.03)!i
       <div class="quest-card" id="questCard"></div>
 
       <div class="stats-row">
-        <div class="st-box"><div class="st-num a" id="stA">0</div><div class="st-bar"><div class="st-bf a" id="stAb" style="width:0%"></div></div><div class="st-lbl">⚔️ ACTION</div></div>
-        <div class="st-box"><div class="st-num c" id="stC">0</div><div class="st-bar"><div class="st-bf c" id="stCb" style="width:0%"></div></div><div class="st-lbl">💰 COMMERCE</div></div>
-        <div class="st-box"><div class="st-num s" id="stS">0</div><div class="st-bar"><div class="st-bf s" id="stSb" style="width:0%"></div></div><div class="st-lbl">⭐ SOCIAL</div></div>
+        <div class="st-box a-box"><div class="st-num a" id="stA">0</div><div class="st-bar"><div class="st-bf a" id="stAb" style="width:0%"></div></div><div class="st-lbl">⚔️ ACTION</div></div>
+        <div class="st-box c-box"><div class="st-num c" id="stC">0</div><div class="st-bar"><div class="st-bf c" id="stCb" style="width:0%"></div></div><div class="st-lbl">💰 COMMERCE</div></div>
+        <div class="st-box s-box"><div class="st-num s" id="stS">0</div><div class="st-bar"><div class="st-bf s" id="stSb" style="width:0%"></div></div><div class="st-lbl">⭐ SOCIAL</div></div>
       </div>
 
       <!-- FRIEND LEADERBOARD teaser -->
@@ -3065,7 +3073,7 @@ div[style*="LIVE"]{border-radius:16px!important;background:rgba(57,255,20,.03)!i
       <div class="flash-top" style="pointer-events:none">
         <div class="flash-title-row" style="pointer-events:auto">
           <div style="display:flex;align-items:center;gap:8px">
-            <div class="flash-title">⚡ Flash</div>
+            <div class="flash-title">⚡ KARMA</div>
             <div class="streak-circles" id="streakCircles" style="display:flex;overflow-x:auto;scrollbar-width:none;max-width:160px;gap:6px;padding:0"></div>
           </div>
           <button class="btn btn-pk" onclick="openModal('flashModal')" style="padding:5px 14px;font-size:12px;border-radius:20px;border-width:2px;box-shadow:0 0 14px rgba(255,0,127,.4)">+ POST</button>
@@ -3378,11 +3386,11 @@ div[style*="LIVE"]{border-radius:16px!important;background:rgba(57,255,20,.03)!i
       </div>
       <div id="world-panel-karta" style="display:none">
         <div style="padding:14px 14px 8px;display:flex;align-items:center;justify-content:space-between">
-          <div style="font-size:14px;font-weight:900;font-family:var(--mono)">🗺️ STOCKHOLM LIVE</div>
-          <div style="font-size:10px;color:var(--t3)" id="kartaPlayerCount">👥 247 aktiva nu</div>
+          <div style="font-size:14px;font-weight:900;font-family:var(--mono);background:linear-gradient(90deg,#00D9FF,#39FF14);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">🗺️ STOCKHOLM LIVE</div>
+          <div style="font-size:10px;color:var(--b);font-family:var(--mono);font-weight:700;display:flex;align-items:center;gap:5px"><span style="width:6px;height:6px;border-radius:50%;background:#39FF14;display:inline-block;box-shadow:0 0 8px #39FF14;animation:ldotPulse .8s ease-in-out infinite"></span><span id="kartaPlayerCount">247 AKTIVA</span></div>
         </div>
         <!-- Fake but beautiful map of Stockholm zones -->
-        <div id="meMapWrap" style="height:340px;position:relative;background:#000;overflow:hidden;margin:0 12px;border-radius:6px;border:2px solid var(--b);box-shadow:4px 4px 0px var(--b)">
+        <div id="meMapWrap" style="height:340px;position:relative;background:#000;overflow:hidden;margin:0 12px;border-radius:16px;border:2px solid rgba(0,180,255,.5);box-shadow:0 0 30px rgba(0,180,255,.2),0 0 60px rgba(0,180,255,.05)">
           <canvas id="kartaCanvas" style="width:100%;height:100%;display:block"></canvas>
           <div id="kartaOverlay" style="position:absolute;inset:0;pointer-events:none"></div>
         </div>
@@ -4379,36 +4387,55 @@ div[style*="LIVE"]{border-radius:16px!important;background:rgba(57,255,20,.03)!i
     </div>
     <button class="fish-cast-btn idle" id="fishCastBtn" onclick="fishCast()" style="touch-action:manipulation">🎣 KASTA METSPÖ</button>
   </div>
-  <!-- Reel Challenge Overlay — Stardew Valley Timing Bar -->
-  <div id="fishReelOverlay" style="position:absolute;inset:0;z-index:20;background:rgba(0,0,0,.97);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0;opacity:0;pointer-events:none;transition:opacity .2s">
-    <div id="fishReelFishEm" style="font-size:72px;margin-bottom:6px;animation:petBob .7s ease-in-out infinite;filter:drop-shadow(0 0 20px rgba(57,255,20,.4))">🐟</div>
-    <div id="fishReelFishName" style="font-size:17px;font-weight:900;font-family:var(--mono);color:#fff;margin-bottom:4px;letter-spacing:1px;text-transform:uppercase">OKÄND FISK</div>
-    <div id="fishReelRarityTag" style="font-size:9px;padding:3px 14px;border-radius:3px;margin-bottom:20px;font-family:var(--mono);font-weight:900;color:#000;background:#fff;border:2px solid #000;box-shadow:2px 2px 0px #000">VANLIG</div>
-    <!-- TIMING BAR -->
-    <div style="position:relative;width:280px;height:28px;background:#111;border:3px solid rgba(255,255,255,.2);border-radius:4px;overflow:hidden;margin-bottom:10px">
-      <div id="fishTimingZone" style="position:absolute;top:0;height:100%;background:#FFE600;border-radius:2px;opacity:1;transition:left .1s"></div>
-      <div id="fishTimingCursor" style="position:absolute;top:0;width:6px;height:100%;background:#fff;border-radius:2px;box-shadow:0 0 8px #fff;transition:left 0s"></div>
-      <div id="fishTimingFlash" style="position:absolute;inset:0;background:#39FF14;opacity:0;border-radius:2px;pointer-events:none;transition:opacity .12s"></div>
+  <!-- CINEMATIC REEL OVERLAY -->
+  <div id="fishReelOverlay" style="position:absolute;inset:0;z-index:20;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;opacity:0;pointer-events:none;transition:opacity .25s;overflow:hidden">
+    <!-- Underwater bg -->
+    <div id="fishReelBg" style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,20,60,.92) 0%,rgba(0,5,30,.97) 100%);"></div>
+    <!-- Water surface shimmer at top -->
+    <div id="fishReelSurf" style="position:absolute;top:0;left:0;right:0;height:80px;background:linear-gradient(180deg,rgba(0,150,255,.35) 0%,rgba(0,80,180,.12) 60%,transparent 100%);"></div>
+    <!-- Floating fish emoji (fights side to side) -->
+    <div id="fishReelFishEm" style="position:absolute;top:22%;font-size:80px;filter:drop-shadow(0 0 30px rgba(0,200,255,.7));transition:left .15s ease-out;left:50%;transform:translate(-50%,-50%)">🐟</div>
+    <!-- Fish name + rarity over it -->
+    <div style="position:absolute;top:43%;left:0;right:0;text-align:center;pointer-events:none">
+      <div id="fishReelFishName" style="font-size:20px;font-weight:900;font-family:var(--mono);color:#fff;letter-spacing:2px;text-shadow:0 0 20px rgba(0,200,255,.8)">?????</div>
+      <div id="fishReelRarityTag" style="display:inline-block;font-size:10px;padding:3px 14px;border-radius:100px;margin-top:6px;font-family:var(--mono);font-weight:900;color:#fff;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3)">VANLIG</div>
     </div>
-    <!-- HIT INDICATORS -->
-    <div id="fishTimingHits" style="display:flex;gap:8px;margin-bottom:10px">
-      <div class="fth-dot" style="width:16px;height:16px;border-radius:3px;border:3px solid rgba(255,255,255,.3);background:transparent"></div>
-      <div class="fth-dot" style="width:16px;height:16px;border-radius:3px;border:3px solid rgba(255,255,255,.3);background:transparent"></div>
-      <div class="fth-dot" style="width:16px;height:16px;border-radius:3px;border:3px solid rgba(255,255,255,.3);background:transparent"></div>
+    <!-- Tension line visual -->
+    <div style="position:absolute;top:55%;left:10%;right:10%;display:flex;flex-direction:column;gap:6px">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:2px">
+        <span style="font-size:9px;font-weight:900;color:rgba(255,255,255,.5);font-family:var(--mono);letter-spacing:1px">DRAG</span>
+        <span id="fishReelPct" style="font-size:12px;font-weight:900;color:#39FF14;font-family:var(--mono)">0%</span>
+        <span style="font-size:9px;font-weight:900;color:rgba(255,255,255,.5);font-family:var(--mono);letter-spacing:1px">LINJE</span>
+      </div>
+      <!-- Pull progress bar (fill to 100% = catch!) -->
+      <div style="height:18px;background:rgba(255,255,255,.06);border-radius:100px;border:2px solid rgba(255,255,255,.12);overflow:hidden;position:relative">
+        <div id="fishReelPullFill" style="height:100%;width:0%;background:linear-gradient(90deg,#39FF14,#00D9FF);border-radius:100px;transition:width .08s"></div>
+        <div id="fishReelTensionFlash" style="position:absolute;inset:0;background:#FF2D55;opacity:0;border-radius:100px;transition:opacity .1s"></div>
+      </div>
+      <!-- Tension meter (too high = SNAP!) -->
+      <div style="display:flex;align-items:center;gap:8px;margin-top:4px">
+        <span style="font-size:9px;color:rgba(255,255,255,.4);font-family:var(--mono);flex-shrink:0">SPÄNN.</span>
+        <div style="flex:1;height:8px;background:rgba(255,255,255,.06);border-radius:100px;overflow:hidden">
+          <div id="fishReelTensionFill" style="height:100%;width:0%;background:linear-gradient(90deg,#39FF14,#FFE600,#FF2D55);border-radius:100px;transition:width .1s"></div>
+        </div>
+        <span id="fishReelTensionLbl" style="font-size:9px;color:#39FF14;font-family:var(--mono);min-width:28px;text-align:right">OK</span>
+      </div>
     </div>
-    <!-- MISFIRE INDICATORS -->
-    <div style="font-size:8px;font-family:var(--mono);color:rgba(255,255,255,.35);margin-bottom:4px;letter-spacing:1px">MISSAR KVAR: <span id="fishTimingMisfires">●●●</span></div>
-    <!-- PERFECT LABEL -->
-    <div id="fishTimingLabel" style="font-size:11px;font-weight:900;font-family:var(--mono);color:rgba(255,255,255,.4);letter-spacing:2px;margin-bottom:18px;min-height:16px;text-transform:uppercase">TRYCK I DET GULA FÄLTET</div>
-    <button id="fishReelBtn" onclick="fishReelTap()" style="font-size:22px;font-weight:900;padding:16px 60px;border-radius:6px;border:4px solid #000;cursor:pointer;font-family:var(--mono);color:#000;background:#39FF14;letter-spacing:1px;-webkit-tap-highlight-color:transparent;touch-action:manipulation;box-shadow:5px 5px 0px #000;transition:transform .08s,box-shadow .08s;text-transform:uppercase" ontouchstart="this.style.transform='translate(5px,5px)';this.style.boxShadow='0px 0px 0px #000'" ontouchend="this.style.transform='';this.style.boxShadow='5px 5px 0px #000'">🎣 TAP!</button>
-    <button onclick="fishReelMiss()" style="background:none;border:2px solid rgba(255,255,255,.15);border-radius:4px;padding:8px 22px;color:rgba(255,255,255,.4);font-size:10px;cursor:pointer;margin-top:14px;font-family:var(--mono);text-transform:uppercase">Fisken rymde 🌊</button>
+    <!-- Big TAP button -->
+    <div style="position:relative;width:100%;padding:0 20px 16px;display:flex;flex-direction:column;align-items:center;gap:10px;z-index:5">
+      <div id="fishReelInstr" style="font-size:11px;font-weight:900;font-family:var(--mono);color:rgba(255,255,255,.5);letter-spacing:2px;text-align:center">TRYCK SNABBT FÖR ATT DRAS IN!</div>
+      <button id="fishReelBtn" onclick="fishReelTap()" style="width:100%;padding:18px;font-size:22px;font-weight:900;font-family:var(--mono);color:#000;background:linear-gradient(135deg,#39FF14,#00D9FF);border:none;border-radius:16px;cursor:pointer;box-shadow:0 0 40px rgba(57,255,20,.5),0 4px 0 rgba(0,0,0,.5);-webkit-tap-highlight-color:transparent;touch-action:manipulation;letter-spacing:2px">🎣 DRAS! TAP!</button>
+      <button onclick="fishReelMiss()" style="background:none;border:1px solid rgba(255,255,255,.1);border-radius:10px;padding:8px 30px;color:rgba(255,255,255,.3);font-size:10px;cursor:pointer;font-family:var(--mono)">Tappa linjen 🌊</button>
+    </div>
   </div>
-  <!-- Catch splash -->
-  <div id="fishCatchSplash" style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;pointer-events:none;opacity:0;z-index:25;transition:opacity .15s;background:rgba(0,0,0,.4)">
-    <div id="fishSplashEm" style="font-size:90px;filter:drop-shadow(0 0 30px rgba(57,255,20,.9))">🐟</div>
-    <div id="fishSplashName" style="font-size:22px;font-weight:900;font-family:var(--mono);color:#fff;margin-top:10px;text-shadow:0 0 20px rgba(57,255,20,.6)">SILL</div>
-    <div id="fishSplashReward" style="font-size:15px;color:var(--y);font-family:var(--mono);margin-top:6px">+8⚡ +3XP</div>
-    <div style="font-size:36px;margin-top:10px">💦✨💦</div>
+  <!-- Catch splash overlay -->
+  <div id="fishCatchSplash" style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;pointer-events:none;opacity:0;z-index:25;transition:opacity .15s">
+    <div id="fishSplashBg" style="position:absolute;inset:0;background:radial-gradient(ellipse at 50% 60%,rgba(0,200,255,.4) 0%,rgba(0,0,40,.9) 100%)"></div>
+    <div id="fishSplashEm" style="position:relative;font-size:100px;filter:drop-shadow(0 0 40px rgba(57,255,20,.9));animation:petBob .6s ease-in-out infinite">🐟</div>
+    <div id="fishSplashName" style="position:relative;font-size:26px;font-weight:900;font-family:var(--mono);color:#fff;margin-top:8px;text-shadow:0 0 30px rgba(57,255,20,.8);letter-spacing:2px">SILL</div>
+    <div id="fishSplashReward" style="position:relative;font-size:18px;color:var(--y);font-family:var(--mono);margin-top:8px;font-weight:900">+8⚡ +3XP</div>
+    <div id="fishSplashMult" style="position:relative;font-size:13px;color:#BF5FFF;font-family:var(--mono);margin-top:4px"></div>
+    <div style="position:relative;font-size:40px;margin-top:14px">💦✨💦</div>
   </div>
 </div>
 <!-- ROD SHOP MODAL -->
@@ -9416,40 +9443,14 @@ function _fcBite(){
   _fcStartReel(fish);
 }
 
-// ── STARDEW TIMING BAR STATE ──
-let _fishTB={cursor:0,dir:1,speed:1.2,zoneLeft:30,zoneWidth:24,hits:0,hitsNeeded:3,misfires:0,raf:null,fish:null};
-
-function _fishTBLoop(){
-  if(_fc.phase!=='reel'){_fishTB.raf=null;return;}
-  _fishTB.cursor+=_fishTB.dir*_fishTB.speed;
-  if(_fishTB.cursor>=100){_fishTB.cursor=100;_fishTB.dir=-1;}
-  if(_fishTB.cursor<=0){_fishTB.cursor=0;_fishTB.dir=1;}
-  const cur=$('fishTimingCursor');if(cur)cur.style.left=_fishTB.cursor+'%';
-  _fishTB.raf=requestAnimationFrame(_fishTBLoop);
-}
+// ── PULL DUEL STATE ──
+let _fishPull={active:false,progress:0,tension:0,fish:null,animFrame:null,fishX:50,fishDir:1};
 
 function _fcStartReel(fishObj){
   _fc.phase='reel';
   const ft=fishObj.ft||FISH_TYPES[0];
-  const rod=_getCurRod();
-  // Zone width based on rarity (larger = easier)
-  const zoneW={ultra:6,mythic:8,legendary:10,epic:14,rare:18,uncommon:22,common:28,junk:34};
-  // Cursor speed (higher = harder)
-  const spds={ultra:2.4,mythic:2.0,legendary:1.8,epic:1.5,rare:1.3,uncommon:1.1,common:0.9,junk:0.7};
-  const hitsNd={ultra:5,mythic:4,legendary:4,epic:3,rare:3,uncommon:2,common:2,junk:1};
-  const rodBonus=rod.id==='titanium'?1.35:rod.id==='carbon'?1.15:rod.id==='pro'?1.08:1;
-  const zw=Math.round((zoneW[ft.rarity]||28)*rodBonus);
-  _fishTB.cursor=0;_fishTB.dir=1;
-  _fishTB.speed=spds[ft.rarity]||0.9;
-  _fishTB.zoneLeft=15+Math.random()*(65-zw);
-  _fishTB.zoneWidth=zw;
-  _fishTB.hits=0;_fishTB.misfires=0;
-  _fishTB.hitsNeeded=hitsNd[ft.rarity]||2;
-  _fishTB.fish=ft;
-  _fc.reel={angle:0,speed:0,zoneStart:0,zoneSize:1,hitsNeeded:_fishTB.hitsNeeded,hits:0,misfires:0,fish:ft,flashT:0,hitFlash:false,missFlash:false};
+  _fc.reel={angle:0,speed:0,zoneStart:0,zoneSize:1,hitsNeeded:2,hits:0,misfires:0,fish:ft,flashT:0,hitFlash:false,missFlash:false};
   _fc.hook.targetFish=fishObj;
-  // Update zone visual
-  const zone=$('fishTimingZone');if(zone){zone.style.left=_fishTB.zoneLeft+'%';zone.style.width=_fishTB.zoneWidth+'%';}
   // Show overlay
   const ov=$('fishReelOverlay');if(ov){ov.style.opacity='1';ov.style.pointerEvents='all';}
   const em=$('fishReelFishEm');if(em)em.textContent=ft.em;
@@ -9458,75 +9459,93 @@ function _fcStartReel(fishObj){
   if(rtag){
     const rC={ultra:'#FFE600',mythic:'#BF5FFF',legendary:'#FF007F',epic:'#FF9F0A',rare:'#00D9FF',uncommon:'#39FF14',common:'rgba(255,255,255,.9)'};
     const rN={ultra:'ULTRA SÄLLSYNT',mythic:'MYTISK',legendary:'LEGENDÄR',epic:'EPISK',rare:'SÄLLSYNT',uncommon:'OVANLIG',common:'VANLIG'};
-    rtag.style.background=rC[ft.rarity]||'#fff';rtag.style.color='#000';rtag.textContent=rN[ft.rarity]||'VANLIG';
+    const rBg={ultra:'rgba(255,230,0,.2)',mythic:'rgba(191,95,255,.2)',legendary:'rgba(255,0,127,.2)',epic:'rgba(255,107,0,.2)',rare:'rgba(0,217,255,.2)',uncommon:'rgba(57,255,20,.2)',common:'rgba(255,255,255,.15)'};
+    rtag.style.background=rBg[ft.rarity]||'rgba(255,255,255,.15)';rtag.style.color='#fff';rtag.style.borderColor=rC[ft.rarity]||'rgba(255,255,255,.3)';rtag.textContent=rN[ft.rarity]||'VANLIG';
   }
-  _fcUpdateReelUI();
-  // Start timing loop
-  cancelAnimationFrame(_fishTB.raf);
-  _fishTBLoop();
-  const btn=$('fishCastBtn');if(btn){btn.className='fish-cast-btn biting';btn.textContent='🎯 TIMING!';}
-  _fishSetStatus('🎯 TAP NÄR MARKÖREN ÄR I DET GULA FÄLTET!');
+  // Start pull duel
+  _fishPull={active:true,progress:0,tension:0,fish:ft,animFrame:null,fishX:50,fishDir:1};
+  cancelAnimationFrame(_fishPull.animFrame);
+  setTimeout(()=>{if(_fc.phase==='reel')_fishPullLoop();},300);
+  const btn=$('fishCastBtn');if(btn){btn.className='fish-cast-btn biting';btn.textContent='🎣 DRAS!';}
+  _fishSetStatus('🎣 TAP SNABBT FÖR ATT DRAS IN!');
   vibe([30,20,50]);
 }
 
 function fishReelTap(){
   if(_fc.phase!=='reel')return;
-  const tb=_fishTB;
-  const inZone=tb.cursor>=tb.zoneLeft&&tb.cursor<=(tb.zoneLeft+tb.zoneWidth);
-  const lbl=$('fishTimingLabel');
-  const flash=$('fishTimingFlash');
-  if(inZone){
-    tb.hits++;
-    // Perfect center check
-    const center=tb.zoneLeft+tb.zoneWidth/2;
-    const diff=Math.abs(tb.cursor-center);
-    const perfect=diff<tb.zoneWidth*0.18;
-    vibe(perfect?[20,10,60,10,80]:40);
-    if(flash){flash.style.background=perfect?'#39FF14':'#00D9FF';flash.style.opacity='.35';setTimeout(()=>{if(flash)flash.style.opacity='0';},140);}
-    if(lbl)lbl.textContent=perfect?'🎯 PERFEKT!':'✅ BRA!';
-    SFX.win&&SFX.win();
-    // Reposition zone for next hit
-    const newZw=Math.max(tb.zoneWidth-2,4);
-    tb.zoneWidth=newZw;
-    tb.zoneLeft=15+Math.random()*(65-newZw);
-    const zone=$('fishTimingZone');if(zone){zone.style.left=tb.zoneLeft+'%';zone.style.width=tb.zoneWidth+'%';}
-    // Slightly increase speed after each hit
-    tb.speed=Math.min(tb.speed*1.12,3.5);
-    _fcUpdateReelUI();
-    if(tb.hits>=tb.hitsNeeded){cancelAnimationFrame(tb.raf);_fcCatch(tb.fish);}
-  } else {
-    tb.misfires++;
-    vibe([10,5,10]);SFX.error&&SFX.error();
-    if(flash){flash.style.background='#FF007F';flash.style.opacity='.3';setTimeout(()=>{if(flash)flash.style.opacity='0';},120);}
-    if(lbl)lbl.textContent='❌ MISS!';
-    setTimeout(()=>{if(lbl&&_fc.phase==='reel')lbl.textContent='TRYCK I DET GULA FÄLTET';},700);
-    _fcUpdateReelUI();
-    if(tb.misfires>=3){cancelAnimationFrame(tb.raf);fishReelMiss();}
+  const p=_fishPull;
+  // Each tap adds pull progress
+  const tapBoost=8+Math.floor(Math.random()*6);
+  p.progress=Math.min(100,p.progress+tapBoost);
+  // Tension increases with rapid taps (fish fights)
+  p.tension=Math.min(100,p.tension+4+Math.random()*4);
+  // Update visuals
+  _fishPullUpdate();
+  // TAP button pulse animation
+  const btn=$('fishReelBtn');
+  if(btn){btn.style.transform='scale(.93)';btn.style.boxShadow='0 0 12px rgba(57,255,20,.2),0 1px 0 rgba(0,0,0,.5)';setTimeout(()=>{btn.style.transform='';btn.style.boxShadow='0 0 40px rgba(57,255,20,.5),0 4px 0 rgba(0,0,0,.5)';},80);}
+  // Check snap (line breaks if tension too high)
+  if(p.tension>=100){_fishPullSnap();return;}
+  // Check catch
+  if(p.progress>=100){_fishPullCatch();return;}
+}
+
+function _fishPullUpdate(){
+  const p=_fishPull;
+  const pf=$('fishReelPullFill');if(pf)pf.style.width=p.progress+'%';
+  const tf=$('fishReelTensionFill');if(tf)tf.style.width=p.tension+'%';
+  const pct=$('fishReelPct');if(pct){pct.style.color=p.progress>70?'#39FF14':p.progress>40?'#FFE600':'rgba(255,255,255,.7)';pct.textContent=Math.round(p.progress)+'%';}
+  const tlbl=$('fishReelTensionLbl');
+  if(tlbl){
+    if(p.tension>80){tlbl.textContent='SNAP!';tlbl.style.color='#FF2D55';}
+    else if(p.tension>55){tlbl.textContent='HÖG';tlbl.style.color='#FF9F0A';}
+    else{tlbl.textContent='OK';tlbl.style.color='#39FF14';}
+  }
+  // Tension flash
+  const tfl=$('fishReelTensionFlash');if(tfl)tfl.style.opacity=p.tension>80?'0.15':'0';
+  // Fish swims side to side (fights)
+  const fishEm=$('fishReelFishEm');
+  if(fishEm){
+    const bx=35+p.fishX*30/100;
+    fishEm.style.left=bx+'%';
+    fishEm.style.filter=p.tension>70?'drop-shadow(0 0 30px rgba(255,45,85,.8))':'drop-shadow(0 0 30px rgba(0,200,255,.7))';
   }
 }
 
-function _fcUpdateReelUI(){
-  const tb=_fishTB;
-  // Update hit dots
-  const dots=$('fishTimingHits');
-  if(dots){
-    const all=dots.querySelectorAll('.fth-dot');
-    // Expand dots count based on hitsNeeded
-    if(all.length!==tb.hitsNeeded){
-      dots.innerHTML=Array.from({length:tb.hitsNeeded},(_,i)=>`<div class="fth-dot" style="width:16px;height:16px;border-radius:3px;border:3px solid rgba(255,255,255,.3);background:transparent"></div>`).join('');
-    }
-    const newDots=dots.querySelectorAll('.fth-dot');
-    newDots.forEach((d,i)=>{d.style.background=i<tb.hits?'#39FF14':'transparent';d.style.borderColor=i<tb.hits?'#39FF14':'rgba(255,255,255,.3)';if(i<tb.hits)d.style.boxShadow='2px 2px 0px #000';});
-  }
-  // Update misfire indicator
-  const mf=$('fishTimingMisfires');
-  if(mf)mf.textContent='●'.repeat(Math.max(0,3-tb.misfires))+'○'.repeat(Math.min(3,tb.misfires));
+function _fishPullLoop(){
+  if(_fc.phase!=='reel'){_fishPull.animFrame=null;return;}
+  const p=_fishPull;
+  // Natural decay: progress slowly decreases as fish pulls back
+  const fishStrength=p.fish?.wt||1;
+  p.progress=Math.max(0,p.progress-(0.4+fishStrength*0.06));
+  // Tension decays slowly
+  p.tension=Math.max(0,p.tension-0.8);
+  // Fish swims
+  p.fishX+=p.fishDir*1.5;
+  if(p.fishX>100){p.fishX=100;p.fishDir=-1;}
+  if(p.fishX<0){p.fishX=0;p.fishDir=1;}
+  _fishPullUpdate();
+  if(p.progress<=0&&_fc.phase==='reel'){fishReelMiss();return;}
+  p.animFrame=requestAnimationFrame(_fishPullLoop);
+}
+
+function _fishPullSnap(){
+  // Tension too high — line snaps
+  const tfl=$('fishReelTensionFlash');if(tfl){tfl.style.opacity='0.6';setTimeout(()=>{tfl.style.opacity='0';},200);}
+  fishReelMiss();
+}
+
+function _fishPullCatch(){
+  cancelAnimationFrame(_fishPull.animFrame);
+  _fishPull.animFrame=null;
+  _fcCatch(_fishPull.fish);
 }
 
 function fishReelMiss(){
   if(_fc.phase!=='reel')return;
   _fc.phase='idle';
-  cancelAnimationFrame(_fishTB.raf);
+  cancelAnimationFrame(_fishPull?.animFrame);
+  if(_fishPull)_fishPull.animFrame=null;
   _setPetCornerMood('miss');
   const ov=$('fishReelOverlay');if(ov){ov.style.opacity='0';ov.style.pointerEvents='none';}
   _fc.hook.active=false;_fc.hook.targetFish=null;
@@ -9733,7 +9752,6 @@ function _fcDraw(){
     const glow=f.targeted?'drop-shadow(0 0 16px #FFE600) drop-shadow(0 0 6px #FFE600)':(rarGlowCss[f.ft.rarity]||'');
     _fishHtml+=`<div style="position:absolute;left:${Math.round(fx)}px;top:${Math.round(fy)}px;transform:translate(-50%,-50%) ${flip};font-size:${sz}px;filter:${glow};line-height:1;pointer-events:none">${f.em}</div>`;
   });
-  const _fishOv=$('fishHtmlOv');if(_fishOv)_fishOv.innerHTML=_fishHtml;
   // Depth meter update
   if(_fc.hook&&_fc.phase!=='idle'){
     const depth=(_fc.hook.y||0);const depthPct=Math.min(100,depth*100);
@@ -9749,35 +9767,47 @@ function _fcDraw(){
       else dz.textContent='🌑 AVGRUND';
     }
   }
-  // Rod tip
-  const rodTipX=w*0.5,rodTipY=8;
-  ctx.strokeStyle='rgba(180,140,80,0.7)';ctx.lineWidth=3;ctx.lineCap='round';ctx.setLineDash([]);
-  ctx.beginPath();ctx.moveTo(w*0.18,0);ctx.lineTo(rodTipX,rodTipY);ctx.stroke();
-  // Hook + line
+  // ── FISHING ROD (bottom-right → diagonal up to tip) ──
+  const rodBaseX=w*0.88,rodBaseY=h*0.75;
+  const rodMidX=w*0.72,rodMidY=h*0.18;
+  const rodTipX=w*0.55,rodTipY=h*0.06;
+  ctx.save();
+  ctx.setLineDash([]);ctx.lineCap='round';ctx.lineJoin='round';
+  // Rod handle/shaft (thick, brown)
+  ctx.strokeStyle='#5C3A1E';ctx.lineWidth=6;
+  ctx.beginPath();ctx.moveTo(rodBaseX,rodBaseY);ctx.quadraticCurveTo(w*0.82,h*0.45,rodMidX,rodMidY);ctx.stroke();
+  // Rod tip (thinner, lighter)
+  ctx.strokeStyle='#8B6914';ctx.lineWidth=3;
+  ctx.beginPath();ctx.moveTo(rodMidX,rodMidY);ctx.lineTo(rodTipX,rodTipY);ctx.stroke();
+  // Rod guide rings
+  for(let i=0;i<3;i++){
+    const t=i/3;
+    const gx=rodMidX+(rodTipX-rodMidX)*t,gy=rodMidY+(rodTipY-rodMidY)*t;
+    ctx.strokeStyle='rgba(200,180,100,0.7)';ctx.lineWidth=1;
+    ctx.beginPath();ctx.arc(gx,gy,2.5,0,Math.PI*2);ctx.stroke();
+  }
+  // Fishing line
   if(_fc.hook.active){
     _fc.hook.anim=Math.min(1,_fc.hook.anim+0.035);
     const tf=_fc.hook.targetFish;
     const tx=tf?tf.x*w:w*0.5,ty=tf?tf.y*h+Math.sin(tf.animT||0)*3:h*0.65;
     const hx=w*0.5+(tx-w*0.5)*_fc.hook.anim,hy=ty*_fc.hook.anim;
-    // Fishing line with gentle curve
-    const mx=(rodTipX+hx)/2+Math.sin(_fc.t*0.02)*4;
-    const my=(rodTipY+hy)/2-12;
-    ctx.shadowColor='rgba(100,200,255,0.4)';ctx.shadowBlur=3;
-    ctx.strokeStyle='rgba(220,235,255,0.65)';ctx.lineWidth=1.2;ctx.setLineDash([]);
-    ctx.beginPath();ctx.moveTo(rodTipX,rodTipY);ctx.quadraticCurveTo(mx,my,hx,hy);ctx.stroke();
+    // Sagging curved line
+    const sagMid=(rodTipX+hx)/2+Math.sin(_fc.t*0.025)*5;
+    const sagY=(rodTipY+hy)/2+(_fc.phase==='reel'?-18+Math.sin(_fc.t*0.1)*6:-5);
+    ctx.shadowColor='rgba(180,220,255,0.5)';ctx.shadowBlur=4;
+    ctx.strokeStyle=`rgba(220,240,255,${_fc.phase==='reel'?0.9:0.55})`;
+    ctx.lineWidth=_fc.phase==='reel'?2:1.2;
+    ctx.beginPath();ctx.moveTo(rodTipX,rodTipY);ctx.quadraticCurveTo(sagMid,sagY,hx,hy);ctx.stroke();
     ctx.shadowBlur=0;
-    // Ambient fish shadow near hook
-    if(tf&&_fc.hook.anim>0.6){
-      ctx.beginPath();ctx.ellipse(hx,hy+12,10,4,0,0,Math.PI*2);
-      ctx.fillStyle='rgba(0,0,0,0.2)';ctx.fill();
-    }
-    ctx.font='18px serif';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText('🪝',hx,hy);
+    _fishHtml+=`<div style="position:absolute;left:${Math.round(hx)}px;top:${Math.round(hy)}px;transform:translate(-50%,-50%);font-size:20px;line-height:1;pointer-events:none;filter:drop-shadow(0 0 8px rgba(255,220,0,.6))">🪝</div>`;
   } else {
-    // Idle line hanging down from rod tip
-    ctx.strokeStyle='rgba(220,235,255,0.25)';ctx.lineWidth=1;ctx.setLineDash([3,5]);
-    ctx.beginPath();ctx.moveTo(rodTipX,rodTipY);ctx.lineTo(rodTipX+Math.sin(_fc.t*0.03)*3,rodTipY+28);ctx.stroke();
-    ctx.setLineDash([]);
+    // Idle: line hangs from tip
+    ctx.strokeStyle='rgba(200,230,255,0.25)';ctx.lineWidth=1;
+    ctx.beginPath();ctx.moveTo(rodTipX,rodTipY);ctx.lineTo(rodTipX+Math.sin(_fc.t*0.03)*4,rodTipY+40);ctx.stroke();
   }
+  ctx.restore();
+  const _fishOvFinal=$('fishHtmlOv');if(_fishOvFinal)_fishOvFinal.innerHTML=_fishHtml;
 }
 
 function _fcDrawReel(){
@@ -10448,7 +10478,7 @@ function _drawKartaFrame(canvas,W,H){
       <div style="color:#00D9FF">● bjorn99</div>
       <div style="color:#BF5FFF">● sofiaK</div>
     </div>
-    <div style="position:absolute;top:8px;right:8px;background:rgba(255,45,85,.15);border:1px solid rgba(255,45,85,.4);backdrop-filter:blur(8px);border-radius:20px;padding:3px 10px;font-size:9px;font-family:monospace;color:#FF2D55;font-weight:900;display:flex;align-items:center;gap:4px"><span style="width:5px;height:5px;border-radius:50%;background:#FF2D55;display:inline-block;animation:ldotPulse 1s ease-in-out infinite"></span>LIVE</div>`;
+    <div style="position:absolute;top:8px;right:8px;background:rgba(255,45,85,.2);border:1.5px solid rgba(255,45,85,.6);backdrop-filter:blur(10px);border-radius:20px;padding:4px 12px;font-size:9px;font-family:monospace;color:#FF2D55;font-weight:900;display:flex;align-items:center;gap:5px;box-shadow:0 0 16px rgba(255,45,85,.3);letter-spacing:1px"><span style="width:6px;height:6px;border-radius:50%;background:#FF2D55;display:inline-block;animation:ldotPulse .8s ease-in-out infinite;box-shadow:0 0 8px #FF2D55"></span>LIVE</div>`;
   _kartaRaf=requestAnimationFrame(()=>_drawKartaFrame(canvas,W,H));
   // Nearby list
   const nearby=[
