@@ -4741,6 +4741,7 @@ const G={
   lastFlashTime:0,lastFlashDate:'',
   castle:{lvl:1,buildings:{home:1,farm:0,arena:0,market:0,stable:0,tower:0},lastIncome:0},
   ownedZones:[],
+  expeditionVisits:[],
   terrLastIncome:{},
   dnaMixes:[],
   petDNA:{body:'base',element:'none',perk:'none'},
@@ -5998,8 +5999,17 @@ function cSplash(id){$(id)&&$(id).classList.remove('show');}
 function cp(n){const d=document.createElement('div');d.className='cpop';d.textContent=`+${n}💰`;d.style.cssText='left:50%;top:35%';document.body.appendChild(d);setTimeout(()=>d.remove(),800);}
 function sa(sel,el){document.querySelectorAll(sel+' .topt').forEach(x=>x.className='topt');el.classList.add('on');}
 function dist(la1,lo1,la2,lo2){const R=6371e3,f1=la1*Math.PI/180,f2=la2*Math.PI/180,df=(la2-la1)*Math.PI/180,dl=(lo2-lo1)*Math.PI/180;const a=Math.sin(df/2)**2+Math.cos(f1)*Math.cos(f2)*Math.sin(dl/2)**2;return R*2*Math.atan2(Math.sqrt(a),Math.sqrt(1-a));}
+// Offset a lat/lon point by a given distance (meters) and bearing (degrees, 0=N/clockwise) — used to pick a random nearby expedition target
+function _offsetLatLon(lat,lon,distM,bearingDeg){
+  try{
+    const R=6371e3;const br=bearingDeg*Math.PI/180;const f1=lat*Math.PI/180,l1=lon*Math.PI/180;
+    const f2=Math.asin(Math.sin(f1)*Math.cos(distM/R)+Math.cos(f1)*Math.sin(distM/R)*Math.cos(br));
+    const l2=l1+Math.atan2(Math.sin(br)*Math.sin(distM/R)*Math.cos(f1),Math.cos(distM/R)-Math.sin(f1)*Math.sin(f2));
+    return{lat:f2*180/Math.PI,lon:l2*180/Math.PI};
+  }catch(e){return{lat:lat,lon:lon};}
+}
 function fmtD(m){return m<1000?Math.round(m)+'m':+(m/1000).toFixed(1)+'km';}
-function save(){try{const d={n:G.name,p:G.petEmoji,pn:G.petName,l:G.level,c:G.coins,kc:G.kc||0,st:G.streak,x:G.exp,as:G.actionStat,cs:G.commerceStat,ss:G.socialStat,g:JSON.stringify(G.gear),eg:G.equippedGear||'',sek:G.totalSEK,ts:G.trustScore,posts:G.postCount,b:G.bountiesDone,hu:G.hunger,en:G.energy,mo:G.mood,brands:JSON.stringify(G.brands),circles:JSON.stringify(G.circles),sw:JSON.stringify(G.streakWeek),petCfg:JSON.stringify(G.petConfig),pm:G.premium?1:0,pt:G.premiumTier,wld:G.world,bond:JSON.stringify(G.todayBond),bdate:G.bondDate,wp:G.worldPoints,bz:JSON.stringify(G.builtZones),wpc:G.wildPetsCaught,wflash:G.wldFlash,wbattle:G.wldBattle,wmarket:G.wldMarket,wstreak:G.wldStreak,wsocial:G.wldSocial,po:G.packsOpened,col:JSON.stringify(G.collectibles),tp:G.talentPoints,tl:JSON.stringify(G.talents),tlvl:JSON.stringify(G.talentLvls||{}),diary:JSON.stringify(G.diaryEntries.slice(-20)),ls:G.lastSpin,ltt:G.lastTalkTime||0,lwb:G.lastWpBoost||0,castle:JSON.stringify(G.castle||{}),ownedZones:JSON.stringify(G.ownedZones||[]),terrLastIncome:JSON.stringify(G.terrLastIncome||{}),dnaMixes:JSON.stringify(G.dnaMixes||[]),lastFortune:G.lastFortune||'',lft:G.lastFlashTime||0,lfd:G.lastFlashDate||'',pdna:JSON.stringify(G.petDNA||{body:'base',element:'none',perk:'none'}),dinv:JSON.stringify(G.dnaInventory||[]),pmem:JSON.stringify(G.petMemory||{}),expd:JSON.stringify(G.expedition||{})};for(const k in d)localStorage.setItem('kv8_'+k,d[k]);localStorage.setItem('kv8_lastFortune',G.lastFortune||'');}catch(e){}sbQueueSync();}
+function save(){try{const d={n:G.name,p:G.petEmoji,pn:G.petName,l:G.level,c:G.coins,kc:G.kc||0,st:G.streak,x:G.exp,as:G.actionStat,cs:G.commerceStat,ss:G.socialStat,g:JSON.stringify(G.gear),eg:G.equippedGear||'',sek:G.totalSEK,ts:G.trustScore,posts:G.postCount,b:G.bountiesDone,hu:G.hunger,en:G.energy,mo:G.mood,brands:JSON.stringify(G.brands),circles:JSON.stringify(G.circles),sw:JSON.stringify(G.streakWeek),petCfg:JSON.stringify(G.petConfig),pm:G.premium?1:0,pt:G.premiumTier,wld:G.world,bond:JSON.stringify(G.todayBond),bdate:G.bondDate,wp:G.worldPoints,bz:JSON.stringify(G.builtZones),wpc:G.wildPetsCaught,wflash:G.wldFlash,wbattle:G.wldBattle,wmarket:G.wldMarket,wstreak:G.wldStreak,wsocial:G.wldSocial,po:G.packsOpened,col:JSON.stringify(G.collectibles),tp:G.talentPoints,tl:JSON.stringify(G.talents),tlvl:JSON.stringify(G.talentLvls||{}),diary:JSON.stringify(G.diaryEntries.slice(-20)),ls:G.lastSpin,ltt:G.lastTalkTime||0,lwb:G.lastWpBoost||0,castle:JSON.stringify(G.castle||{}),ownedZones:JSON.stringify(G.ownedZones||[]),expeditionVisits:JSON.stringify(G.expeditionVisits||[]),terrLastIncome:JSON.stringify(G.terrLastIncome||{}),dnaMixes:JSON.stringify(G.dnaMixes||[]),lastFortune:G.lastFortune||'',lft:G.lastFlashTime||0,lfd:G.lastFlashDate||'',pdna:JSON.stringify(G.petDNA||{body:'base',element:'none',perk:'none'}),dinv:JSON.stringify(G.dnaInventory||[]),pmem:JSON.stringify(G.petMemory||{}),expd:JSON.stringify(G.expedition||{})};for(const k in d)localStorage.setItem('kv8_'+k,d[k]);localStorage.setItem('kv8_lastFortune',G.lastFortune||'');}catch(e){}sbQueueSync();}
 
 // ── DNA + MOOD SYSTEM ──
 function getPetDNA(){
@@ -7874,6 +7884,8 @@ function initMap(lat,lon){
     const bIco=L.divIcon({html:`<div style="position:relative;text-align:center"><div style="width:40px;height:40px;background:#0d0d0d;border:3px solid ${b.col};border-radius:6px;box-shadow:3px 3px 0px ${b.col};display:flex;align-items:center;justify-content:center;font-size:18px">${b.em}</div><div style="position:absolute;top:-14px;right:-8px;background:${b.col};color:#000;font-size:8px;font-weight:900;padding:1px 5px;border-radius:3px;font-family:monospace;white-space:nowrap;box-shadow:1px 1px 0px #000">${b.sek} SEK</div></div>`,className:'',iconAnchor:[20,40]});
     L.marker([lat+b.dlat,lon+b.dlon],{icon:bIco}).addTo(m).bindPopup(`<div style="font-family:monospace"><b>${b.em} ${b.nm}</b><br><span style="font-size:11px">${b.task}</span><br><b style="color:green">💰 ${b.sek} SEK bounty</b></div>`);
   });
+  // Permanent proof-of-visit markers from completed expeditions (current + previous sessions)
+  _renderExpeditionVisitMarkers();
   renderNearby(lat,lon);
 }
 function locateMe(){
@@ -11400,7 +11412,12 @@ const EXPEDITIONS=[
 function openExpedition(){
   // Check if expedition is already active
   const exp=G.expedition||{};
-  if(exp.active&&exp.endTime>Date.now()){
+  if(exp.active&&exp.mode==='gps'){
+    // GPS expeditions complete on arrival (via watchPosition), not purely on a timer.
+    // Still honor endTime as a backstop so a never-reached target doesn't lock the feature forever.
+    if(exp.endTime<=Date.now()){_claimExpedition();return;}
+    _renderExpeditionActive(exp);return;
+  }else if(exp.active&&exp.endTime>Date.now()){
     _renderExpeditionActive(exp);return;
   }else if(exp.active&&exp.endTime<=Date.now()){
     _claimExpedition();return;
@@ -11441,64 +11458,211 @@ function openExpedition(){
   }).join('')}`;
   document.body.appendChild(ov);
 }
+// GPS arrival threshold (meters) — how close the player must get to the target to auto-complete a GPS expedition
+const EXPEDITION_ARRIVE_M=40;
+let _expeditionWatchId=null;
+function _stopExpeditionWatch(){
+  try{
+    if(_expeditionWatchId!=null&&navigator.geolocation&&navigator.geolocation.clearWatch){
+      navigator.geolocation.clearWatch(_expeditionWatchId);
+    }
+  }catch(e){}
+  _expeditionWatchId=null;
+}
 function _startExpedition(id){
   const e=EXPEDITIONS.find(x=>x.id===id);if(!e)return;
-  const now=Date.now();
-  G.expedition={active:true,id,startTime:now,endTime:now+e.dur*60000};
-  save();vibe([20,10,40]);
   document.getElementById('expeditionOverlay')?.remove();
-  showT(e.em+' '+e.nm+' expedition startad! '+( e.dur>=60?Math.floor(e.dur/60)+'h':e.dur+'m')+' kvar','b');
-  _checkExpeditionStatus();
+  _stopExpeditionWatch();
+  const now=Date.now();
+  // Try real GPS first. Fall back cleanly to the idle-timer mechanic on denial/error/unsupported.
+  let attempted=false;
+  const beginVirtual=()=>{
+    if(attempted)return;attempted=true;
+    G.expedition={active:true,id,startTime:now,endTime:now+e.dur*60000,mode:'virtual'};
+    save();vibe([20,10,40]);
+    showT(e.em+' '+e.nm+' expedition startad! '+( e.dur>=60?Math.floor(e.dur/60)+'h':e.dur+'m')+' kvar','b');
+    _checkExpeditionStatus();
+  };
+  const beginGPS=(lat,lon)=>{
+    if(attempted)return;attempted=true;
+    try{
+      const bearing=Math.random()*360;
+      const distM=250+Math.random()*350; // 250-600m
+      const tgt=_offsetLatLon(lat,lon,distM,bearing);
+      G.expedition={active:true,id,startTime:now,endTime:now+e.dur*60000,mode:'gps',
+        originLat:lat,originLon:lon,targetLat:tgt.lat,targetLon:tgt.lon,lastLat:lat,lastLon:lon};
+      save();vibe([20,10,40]);
+      showT(e.em+' '+e.nm+' — gå dit i verkligheten! '+fmtD(distM)+' bort','b');
+      _checkExpeditionStatus();
+      _watchExpeditionPosition();
+      _renderExpeditionActive(G.expedition);
+    }catch(err){
+      // If anything goes wrong building the GPS expedition, don't leave the player stuck — fall back.
+      attempted=false;beginVirtual();
+    }
+  };
+  if(!navigator.geolocation||!navigator.geolocation.getCurrentPosition){
+    beginVirtual();return;
+  }
+  try{
+    navigator.geolocation.getCurrentPosition(
+      pos=>{
+        try{
+          const lat=pos&&pos.coords?pos.coords.latitude:null;
+          const lon=pos&&pos.coords?pos.coords.longitude:null;
+          if(typeof lat==='number'&&typeof lon==='number'&&!isNaN(lat)&&!isNaN(lon)){beginGPS(lat,lon);}
+          else{beginVirtual();}
+        }catch(e2){beginVirtual();}
+      },
+      ()=>{beginVirtual();},
+      {timeout:8000,enableHighAccuracy:true}
+    );
+  }catch(e){beginVirtual();}
+  // Safety net: if geolocation never calls back for any reason, don't leave the picker stuck.
+  setTimeout(()=>{if(!attempted)beginVirtual();},9000);
+}
+function _watchExpeditionPosition(){
+  _stopExpeditionWatch();
+  if(!navigator.geolocation||!navigator.geolocation.watchPosition)return;
+  try{
+    _expeditionWatchId=navigator.geolocation.watchPosition(
+      pos=>{
+        try{
+          const exp=G.expedition;
+          if(!exp||!exp.active||exp.mode!=='gps'){_stopExpeditionWatch();return;}
+          const lat=pos&&pos.coords?pos.coords.latitude:null;
+          const lon=pos&&pos.coords?pos.coords.longitude:null;
+          if(typeof lat!=='number'||typeof lon!=='number'||isNaN(lat)||isNaN(lon))return;
+          exp.lastLat=lat;exp.lastLon=lon;
+          const remain=dist(lat,lon,exp.targetLat,exp.targetLon);
+          _updateExpeditionLiveUI(remain);
+          if(remain<=EXPEDITION_ARRIVE_M){
+            _stopExpeditionWatch();
+            _claimExpedition();
+          }
+        }catch(e){/* never let a watcher callback throw */}
+      },
+      ()=>{/* mid-expedition GPS errors: keep idle-timer fallback running, don't throw */},
+      {enableHighAccuracy:true,maximumAge:5000,timeout:15000}
+    );
+  }catch(e){_expeditionWatchId=null;}
+}
+function _updateExpeditionLiveUI(remainM){
+  try{
+    const el=$('expeditionLiveDist');
+    if(el)el.textContent=fmtD(remainM)+' kvar';
+    const expBtn=$('expedBtn');
+    if(expBtn&&G.expedition&&G.expedition.active&&G.expedition.mode==='gps'){
+      expBtn.textContent='🗺️ '+fmtD(remainM)+' till mål';expBtn.style.color='var(--b)';
+    }
+  }catch(e){}
 }
 function _renderExpeditionActive(exp){
   const e=EXPEDITIONS.find(x=>x.id===exp.id);if(!e)return;
   document.getElementById('expeditionOverlay')?.remove();
   const ov=document.createElement('div');ov.id='expeditionOverlay';
   ov.style.cssText='position:fixed;inset:0;z-index:1080;background:rgba(0,0,0,.95);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px';
-  const timeLeft=Math.max(0,exp.endTime-Date.now());
-  const mins=Math.ceil(timeLeft/60000);
-  ov.innerHTML=`<div style="font-size:72px;animation:petBob 1.5s ease-in-out infinite">${G.petEmoji||'🐉'}</div>
-    <div style="font-size:18px;font-weight:900;color:#fff;margin:12px 0 4px">${G.petName||'Din pet'} är på expedition!</div>
-    <div style="font-size:14px;font-weight:900;color:var(--b);font-family:var(--mono)">${e.em} ${e.nm}</div>
-    <div style="font-size:24px;font-weight:900;color:var(--y);font-family:var(--mono);margin:16px 0">${mins>=60?Math.floor(mins/60)+'h '+mins%60+'m':mins+' min kvar'}</div>
-    <div style="font-size:11px;color:var(--t3);text-align:center;max-width:240px">Stäng appen — din pet fortsätter expeditionen! Kom tillbaka om ${mins>=60?Math.floor(mins/60)+'h':mins+'min'}.</div>
-    <button onclick="document.getElementById('expeditionOverlay').remove()" style="margin-top:20px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.2);border-radius:12px;padding:10px 28px;color:var(--t2);font-size:13px;cursor:pointer">Stäng</button>`;
+  if(exp.mode==='gps'){
+    let remain=null;
+    try{remain=dist(exp.lastLat||exp.originLat,exp.lastLon||exp.originLon,exp.targetLat,exp.targetLon);}catch(e2){}
+    ov.innerHTML=`<div style="font-size:72px;animation:petBob 1.5s ease-in-out infinite">${G.petEmoji||'🐉'}</div>
+      <div style="font-size:18px;font-weight:900;color:#fff;margin:12px 0 4px">${G.petName||'Din pet'} väntar på dig!</div>
+      <div style="font-size:14px;font-weight:900;color:var(--b);font-family:var(--mono)">${e.em} ${e.nm}</div>
+      <div style="font-size:10px;color:var(--t3);margin-top:6px">📍 GÅ DIT I VERKLIGHETEN</div>
+      <div id="expeditionLiveDist" style="font-size:24px;font-weight:900;color:var(--y);font-family:var(--mono);margin:16px 0">${remain!=null?fmtD(remain)+' kvar':'Söker position...'}</div>
+      <div style="font-size:11px;color:var(--t3);text-align:center;max-width:260px">Promenera mot målet — när du är inom ${EXPEDITION_ARRIVE_M}m klaras expeditionen av automatiskt!</div>
+      <button onclick="document.getElementById('expeditionOverlay').remove()" style="margin-top:20px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.2);border-radius:12px;padding:10px 28px;color:var(--t2);font-size:13px;cursor:pointer">Stäng (fortsätter i bakgrunden)</button>`;
+  }else{
+    const timeLeft=Math.max(0,exp.endTime-Date.now());
+    const mins=Math.ceil(timeLeft/60000);
+    ov.innerHTML=`<div style="font-size:72px;animation:petBob 1.5s ease-in-out infinite">${G.petEmoji||'🐉'}</div>
+      <div style="font-size:18px;font-weight:900;color:#fff;margin:12px 0 4px">${G.petName||'Din pet'} är på expedition!</div>
+      <div style="font-size:14px;font-weight:900;color:var(--b);font-family:var(--mono)">${e.em} ${e.nm}</div>
+      <div style="font-size:24px;font-weight:900;color:var(--y);font-family:var(--mono);margin:16px 0">${mins>=60?Math.floor(mins/60)+'h '+mins%60+'m':mins+' min kvar'}</div>
+      <div style="font-size:11px;color:var(--t3);text-align:center;max-width:240px">Stäng appen — din pet fortsätter expeditionen! Kom tillbaka om ${mins>=60?Math.floor(mins/60)+'h':mins+'min'}.</div>
+      <button onclick="document.getElementById('expeditionOverlay').remove()" style="margin-top:20px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.2);border-radius:12px;padding:10px 28px;color:var(--t2);font-size:13px;cursor:pointer">Stäng</button>`;
+  }
   document.body.appendChild(ov);
 }
 function _claimExpedition(){
+  try{_stopExpeditionWatch();}catch(e0){}
   const exp=G.expedition||{};
   const e=EXPEDITIONS.find(x=>x.id===exp.id);
-  if(!e){G.expedition={active:false};save();return;}
+  if(!e){G.expedition={active:false};try{save();}catch(eS){}return;}
+  const method=exp.mode==='gps'?'gps':'virtual';
   G.expedition={active:false};
   // Calculate rewards
   const coins=e.coins[0]+Math.floor(Math.random()*(e.coins[1]-e.coins[0]));
   const xpAmt=e.xp[0]+Math.floor(Math.random()*(e.xp[1]-e.xp[0]));
-  gainCoins(coins);gainXP(xpAmt,'action');
+  // Record a permanent visit entry for the live map FIRST, before any reward/UI call that could throw
+  // (e.g. updateHUD touching a missing DOM node) — the visit log must never be lost because of that.
+  try{
+    let vLat,vLon;
+    if(method==='gps'){
+      vLat=(typeof exp.targetLat==='number')?exp.targetLat:59.3293;
+      vLon=(typeof exp.targetLon==='number')?exp.targetLon:18.0686;
+    }else{
+      vLat=59.3293;vLon=18.0686; // fallback Stockholm coordinate, same constant used elsewhere (locateMe/renderNearby)
+    }
+    if(!G.expeditionVisits)G.expeditionVisits=[];
+    const visit={id:e.id,nm:e.nm,em:e.em,lat:vLat,lon:vLon,completedAt:Date.now(),method:method};
+    G.expeditionVisits.push(visit);
+    try{_addExpeditionVisitMarker(visit);}catch(eM){}
+  }catch(e3){}
+  // Rewards — each guarded individually so a failure in one (e.g. a DOM update inside gainCoins) can't
+  // swallow the others or abort the function before save()/the result overlay render.
+  try{gainCoins(coins);}catch(eC){}
+  try{gainXP(xpAmt,'action');}catch(eX){}
   // DNA drop chance ~35% per item slot
   const drops=[];
-  e.items.forEach(itemId=>{
-    if(Math.random()<0.35){
-      if(!G.dnaInventory)G.dnaInventory=[];
-      G.dnaInventory.push(itemId);
-      const frag=DNA_FRAGMENTS.find(f=>f.id===itemId);
-      if(frag)drops.push(frag.em+' '+frag.nm);
-    }
-  });
-  save();vibe([50,20,80,20,120,20,100]);SFX.win&&SFX.win();
-  spawnParticles(window.innerWidth/2,window.innerHeight*.4,'stars');
-  document.getElementById('expeditionOverlay')?.remove();
-  const ov=document.createElement('div');ov.id='expeditionOverlay';
-  ov.style.cssText='position:fixed;inset:0;z-index:1080;background:rgba(0,0,0,.96);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px';
-  ov.innerHTML=`<div style="font-size:9px;font-weight:900;color:var(--g);letter-spacing:3px;margin-bottom:12px;font-family:var(--mono)">EXPEDITION KLAR! 🎉</div>
-    <div style="font-size:72px;margin-bottom:8px;animation:petBob 1s ease-in-out infinite">${G.petEmoji||'🐉'}</div>
-    <div style="font-size:18px;font-weight:900;color:#fff;margin-bottom:16px">${G.petName||'Din pet'} är tillbaka!</div>
-    <div style="background:rgba(255,255,255,.05);border:1.5px solid rgba(57,255,20,.3);border-radius:18px;padding:16px 24px;text-align:center;min-width:220px;margin-bottom:16px">
-      <div style="font-size:24px;font-weight:900;color:var(--y);font-family:var(--mono)">+${coins}⚡</div>
-      <div style="font-size:18px;font-weight:900;color:var(--g);font-family:var(--mono)">+${xpAmt} XP</div>
-      ${drops.length>0?`<div style="margin-top:8px;font-size:11px;color:var(--p);font-weight:900">🧬 DNA FUNNET:<br>${drops.join(', ')}</div>`:''}
-    </div>
-    <button onclick="document.getElementById('expeditionOverlay').remove();updateHUD();updatePetView();" style="background:linear-gradient(135deg,var(--g),#00D9FF);border:none;border-radius:14px;padding:14px 40px;color:#000;font-size:14px;font-weight:900;cursor:pointer;font-family:var(--mono)">✨ CLAIMA!</button>`;
-  document.body.appendChild(ov);
+  try{
+    e.items.forEach(itemId=>{
+      if(Math.random()<0.35){
+        if(!G.dnaInventory)G.dnaInventory=[];
+        G.dnaInventory.push(itemId);
+        const frag=DNA_FRAGMENTS.find(f=>f.id===itemId);
+        if(frag)drops.push(frag.em+' '+frag.nm);
+      }
+    });
+  }catch(eD){}
+  try{save();}catch(eS2){}
+  try{vibe([50,20,80,20,120,20,100]);}catch(eV){}
+  try{SFX.win&&SFX.win();}catch(eF){}
+  try{spawnParticles(window.innerWidth/2,window.innerHeight*.4,'stars');}catch(eP){}
+  try{document.getElementById('expeditionOverlay')?.remove();}catch(eR){}
+  try{
+    const ov=document.createElement('div');ov.id='expeditionOverlay';
+    ov.style.cssText='position:fixed;inset:0;z-index:1080;background:rgba(0,0,0,.96);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px';
+    ov.innerHTML=`<div style="font-size:9px;font-weight:900;color:var(--g);letter-spacing:3px;margin-bottom:12px;font-family:var(--mono)">EXPEDITION KLAR! 🎉${method==='gps'?' 📍 IRL':''}</div>
+      <div style="font-size:72px;margin-bottom:8px;animation:petBob 1s ease-in-out infinite">${G.petEmoji||'🐉'}</div>
+      <div style="font-size:18px;font-weight:900;color:#fff;margin-bottom:16px">${G.petName||'Din pet'} är tillbaka!</div>
+      <div style="background:rgba(255,255,255,.05);border:1.5px solid rgba(57,255,20,.3);border-radius:18px;padding:16px 24px;text-align:center;min-width:220px;margin-bottom:16px">
+        <div style="font-size:24px;font-weight:900;color:var(--y);font-family:var(--mono)">+${coins}⚡</div>
+        <div style="font-size:18px;font-weight:900;color:var(--g);font-family:var(--mono)">+${xpAmt} XP</div>
+        ${drops.length>0?`<div style="margin-top:8px;font-size:11px;color:var(--p);font-weight:900">🧬 DNA FUNNET:<br>${drops.join(', ')}</div>`:''}
+        ${method==='gps'?`<div style="margin-top:8px;font-size:10px;color:var(--b);font-weight:900">📍 Verifierad besöksplats sparad på kartan!</div>`:''}
+      </div>
+      <button onclick="document.getElementById('expeditionOverlay').remove();updateHUD();updatePetView();" style="background:linear-gradient(135deg,var(--g),#00D9FF);border:none;border-radius:14px;padding:14px 40px;color:#000;font-size:14px;font-weight:900;cursor:pointer;font-family:var(--mono)">✨ CLAIMA!</button>`;
+    document.body.appendChild(ov);
+  }catch(eO){}
+}
+// Add (or refresh) a persistent marker for one expedition visit on the live Leaflet map.
+function _addExpeditionVisitMarker(visit){
+  try{
+    if(!G.lMap||!visit||typeof visit.lat!=='number'||typeof visit.lon!=='number')return;
+    const isGps=visit.method==='gps';
+    const dateStr=new Date(visit.completedAt||Date.now()).toLocaleDateString();
+    const ico=L.divIcon({
+      html:`<div style="position:relative;text-align:center"><div style="width:38px;height:38px;background:${isGps?'rgba(255,204,0,.18)':'rgba(180,180,190,.12)'};border:3px ${isGps?'solid #ffcc00':'dashed #9aa0a6'};border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;box-shadow:${isGps?'0 0 14px rgba(255,204,0,.5)':'none'}">${visit.em||'🗺️'}</div>${isGps?`<div style="position:absolute;top:-10px;right:-6px;font-size:13px">🏆</div>`:''}</div>`,
+      className:'',iconAnchor:[19,19]
+    });
+    L.marker([visit.lat,visit.lon],{icon:ico}).addTo(G.lMap)
+      .bindPopup(`<div style="font-family:monospace"><b>${visit.em||'🗺️'} ${visit.nm||'Expedition'}</b><br><span style="font-size:11px">${isGps?'📍 Besökt IRL':'🕐 Virtuell expedition'}</span><br><span style="font-size:10px;color:#888">${dateStr}</span></div>`);
+  }catch(e){}
+}
+// Render every saved expedition visit as a marker — called from initMap() so past visits remain visible proof across sessions.
+function _renderExpeditionVisitMarkers(){
+  try{(G.expeditionVisits||[]).forEach(v=>_addExpeditionVisitMarker(v));}catch(e){}
 }
 function _checkExpeditionStatus(){
   const exp=G.expedition||{};
@@ -11506,7 +11670,12 @@ function _checkExpeditionStatus(){
   const expBtn=$('expedBtn');
   const now=Date.now();
   if(expBtn){
-    if(exp.endTime<=now){
+    if(exp.mode==='gps'){
+      // Live distance is updated by _updateExpeditionLiveUI via watchPosition; just ensure the button reflects GPS mode when idle.
+      if(!expBtn.textContent||expBtn.textContent.indexOf('till mål')===-1){
+        expBtn.textContent='🗺️ GÅ DIT (GPS)';expBtn.style.color='var(--b)';
+      }
+    }else if(exp.endTime<=now){
       expBtn.textContent='🗺️ EXPEDITION KLAR! ✅';expBtn.style.background='linear-gradient(135deg,rgba(57,255,20,.3),rgba(57,255,20,.1))';expBtn.style.borderColor='rgba(57,255,20,.6)';expBtn.style.color='var(--g)';
     }else{
       const mins=Math.ceil((exp.endTime-now)/60000);
@@ -11516,8 +11685,15 @@ function _checkExpeditionStatus(){
 }
 // Check expedition on app open
 setTimeout(()=>{
-  const exp=G.expedition||{};
-  if(exp.active&&exp.endTime<=Date.now()){showT('🗺️ '+( (EXPEDITIONS.find(x=>x.id===exp.id)||{}).nm||'Expedition')+' klar! Gå till Hem för att claima!','g');}
+  try{
+    const exp=G.expedition||{};
+    if(exp.active&&exp.mode==='gps'){
+      // Resume live tracking across reloads/app reopen.
+      _watchExpeditionPosition();
+    }else if(exp.active&&exp.endTime<=Date.now()){
+      showT('🗺️ '+( (EXPEDITIONS.find(x=>x.id===exp.id)||{}).nm||'Expedition')+' klar! Gå till Hem för att claima!','g');
+    }
+  }catch(e){}
 },2000);
 
 const KW_WILD_PETS=[
@@ -13326,6 +13502,7 @@ function _loadFromLocalStorage(){
     G.lastWpBoost=parseInt(localStorage.getItem('kv8_lwb')||'0');
     try{const cs=localStorage.getItem('kv8_castle');if(cs)G.castle=JSON.parse(cs);}catch(e){G.castle={lvl:1,buildings:{home:1},lastIncome:0};}
     try{const oz=localStorage.getItem('kv8_ownedZones');if(oz)G.ownedZones=JSON.parse(oz);}catch(e){}
+    try{const ev=localStorage.getItem('kv8_expeditionVisits');if(ev)G.expeditionVisits=JSON.parse(ev);}catch(e){}
     try{const ti=localStorage.getItem('kv8_terrLastIncome');if(ti)G.terrLastIncome=JSON.parse(ti);}catch(e){}
     try{const dm=localStorage.getItem('kv8_dnaMixes');if(dm)G.dnaMixes=JSON.parse(dm);}catch(e){}
     G.petDNA=JSON.parse(localStorage.getItem('kv8_pdna')||'{"body":"base","element":"none","perk":"none"}');
