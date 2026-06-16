@@ -6367,7 +6367,7 @@ function updateHUD(){
   $('hCoins').textContent=G.coins.toLocaleString('sv');
   const hkc=$('hKC');if(hkc)hkc.textContent=(G.kc||0).toLocaleString('sv');
   $('hStreak').textContent=G.streak;
-  $('hTrust').textContent=G.trustScore;
+  const ht=$('hTrust');if(ht)ht.textContent=G.trustScore;
   $('gcLbl').textContent=G.coins.toLocaleString('sv');
   const s=gS();
   $('pcEm').textContent=s.e+(G.equippedGear||s.g||'');
@@ -8737,8 +8737,9 @@ function _prDraw(canvas,ctx){
   window._prParticles=window._prParticles.filter(p=>p.life>0);
   window._prParticles.forEach(p=>{
     p.x+=p.vx;p.y+=p.vy;p.vy+=0.12;p.life-=0.04;
-    ctx.save();ctx.globalAlpha=p.life*.7;ctx.shadowBlur=8;ctx.shadowColor=p.col;
-    const sz=3*p.life;
+    const sz=Math.max(0,3*p.life);
+    if(sz<=0)return;
+    ctx.save();ctx.globalAlpha=Math.max(0,p.life*.7);ctx.shadowBlur=8;ctx.shadowColor=p.col;
     ctx.fillStyle=p.col;ctx.beginPath();ctx.arc(p.x,p.y,sz,0,Math.PI*2);ctx.fill();
     ctx.restore();
   });
@@ -9056,7 +9057,7 @@ function selectFishLoc(id){
   if(G.level<loc.req){showT('🔒 LV'+loc.req+' krävs!','r');return;}
   G.fishLocation=id;save();
   renderFishLocBar();_applyLocScene(id);
-  _fishState.phase='idle';_fishResetVisuals();
+  _fc.phase='idle';_fishResetVisuals();
   spawnStreetFishInScene();
   _fishSetStatus(loc.em+' '+loc.nm+' — '+loc.desc);
   showT(loc.em+' Moved to '+loc.nm,'b');
@@ -9071,7 +9072,7 @@ function _applyLocScene(locId){
   // Weather badge
   const hour=new Date().getHours();const isNight=hour>=22||hour<6;
   const wb=$('fishWeatherBadge');
-  const wth=FISH_WEATHERS[_fishState._weather]||FISH_WEATHERS[0];
+  const wth=FISH_WEATHERS[_fc.weather]||FISH_WEATHERS[0];
   if(wb)wb.textContent=wth.em+' '+(isNight&&loc.nightBonus?'NATTTID 2x ':'')+(wth.nm);
   // Location scene decorations
   const sceneEl=$('fishLocScene');if(sceneEl){
@@ -9107,7 +9108,7 @@ function spawnStreetFishInScene(){
     fish.onclick=(e)=>{e.stopPropagation();_calmFishTap(fish,ft);};
     scene.appendChild(fish);
   }
-  _fishState.phase='idle';
+  _fc.phase='idle';
   const bobber=scene.querySelector('.fish-bobber');
   if(bobber)bobber.style.display='none';
   const bar=$('fishCatchBar');if(bar)bar.style.display='none';
@@ -9140,8 +9141,8 @@ function _reelUpHook(){
 // ── Calm fish tap ──
 let _calmFishTimer=null;
 function _calmFishTap(fishEl,ft){
-  if(_fishState.phase==='catching')return;
-  _fishState.phase='catching';_fishState._curFish=ft;
+  if(_fc.phase==='catching')return;
+  _fc.phase='catching';_fc._curFish=ft;
   if(_calmFishTimer)clearTimeout(_calmFishTimer);
   // Animate fish wiggle
   fishEl.style.transform='scale(1.4)';
@@ -9158,7 +9159,7 @@ function _calmFishTap(fishEl,ft){
   }
   showT('🐟 BETT! Dra in den!','b');
   _calmFishTimer=setTimeout(()=>{
-    if(_fishState.phase==='catching')_calmCatchFish(ft,fishEl);
+    if(_fc.phase==='catching')_calmCatchFish(ft,fishEl);
   },2600);
 }
 function onStreetFishTap(fishEl,ft){
@@ -9167,7 +9168,7 @@ function onStreetFishTap(fishEl,ft){
 let _sfCurFishEl=null;
 
 function _sfHitFish(ft,fishEl){
-  _fishStopSpam();_fishState.phase='idle';
+  _fishStopSpam();_fc.phase='idle';
   _fishResetVisuals();_reelUpHook();
   if(fishEl){fishEl.style.transition='';fishEl.style.animation='fishCatchSplash 1.1s cubic-bezier(.17,.89,.32,1.28) forwards';setTimeout(()=>fishEl.remove(),1100);}
   _sfCurFishEl=null;
@@ -9179,7 +9180,7 @@ function _sfHitFish(ft,fishEl){
   }
   // Rewards
   const rod=_getCurRod();
-  _fishState._combo=(_fishState._combo||0)+1;const combo=_fishState._combo;
+  _fc.combo=(_fc.combo||0)+1;const combo=_fc.combo;
   const comboMult=combo>=8?4:combo>=5?3:combo>=3?2:1;
   // Streak + hot spot
   const streakMult=_sfStreak>=3?2:1;
@@ -9187,7 +9188,7 @@ function _sfHitFish(ft,fishEl){
   const locData=FISH_LOCATIONS.find(l=>l.id===(G.fishLocation||'malaren'))||FISH_LOCATIONS[0];
   const nightMult=isNight&&locData.nightBonus?2:1;
   // Weather
-  const wth=FISH_WEATHERS[_fishState._weather]||FISH_WEATHERS[0];
+  const wth=FISH_WEATHERS[_fc.weather]||FISH_WEATHERS[0];
   const stormRisk=wth.id==='storm'&&Math.random()<0.15;
   if(stormRisk){
     showT('⛈️ Storm! Fisken rymde!','r');_fishFail();return;
@@ -9216,16 +9217,16 @@ function _sfHitFish(ft,fishEl){
   if(ft.bonus==='xp5pct'&&!(G.fishBonuses||{}).xp5pct){G.fishBonuses=G.fishBonuses||{};G.fishBonuses.xp5pct=true;showT('🦈 Gäddkung! +5% XP permanent!','y');vibe([80,40,120]);}
   if(ft.bonus==='coins10pct'&&!(G.fishBonuses||{}).coins10pct){G.fishBonuses=G.fishBonuses||{};G.fishBonuses.coins10pct=true;showT('🐲 Sjödrake! +10% Coins permanent!','pk');vibe([80,40,120]);}
   // Score
-  _fishState.score++;
-  if(_fishState.score>_fishState.best){_fishState.best=_fishState.score;localStorage.setItem('kv8_fishBest',_fishState.score);}
-  if(_sfStreak>(_fishState._streakRecord||0)){_fishState._streakRecord=_sfStreak;localStorage.setItem('kv8_fishStreak',_sfStreak);}
+  _fc.score++;
+  if(_fc.score>_fc.best){_fc.best=_fc.score;localStorage.setItem('kv8_fishBest',_fc.score);}
+  if(_sfStreak>(_fc.streakRecord||0)){_fc.streakRecord=_sfStreak;localStorage.setItem('kv8_fishStreak',_sfStreak);}
   // Toast
   const rarityCol=ft.rarity==='mythic'?'p':ft.rarity==='legendary'?'pk':ft.rarity==='epic'?'o':'g';
   const streakMsg=_sfStreak>=3?` 🔥×${_sfStreak}`:'';const nightMsg=nightMult===2?' 🌙×2':'';
   showT(`${ft.em} ${ft.nm}! +${baseCoins}⚡ +${baseXP}XP${streakMsg}${nightMsg}`,rarityCol);
   SFX.win();vibe([30,20,80,20,100]);
   // Inventory display (last 8)
-  _fishState.inventory.push(ft);
+  _fc.inventory.push(ft);
   _updateFishStreakBadge();
   updateFishUI();save();advanceQuest&&advanceQuest('fish');
   setTimeout(()=>{spawnStreetFishInScene();_fishSetStatus(combo>=3?'🔥 COMBO ×'+combo+'! Kasta igen!':'💪 Bra catch! Klicka på en fisk!');},900);
@@ -9253,7 +9254,7 @@ function _updateFishStreakBadge(){
     else{badge.style.display='none';}
   }
   if(hotspot){hotspot.style.display=_sfStreak>=3?'block':'none';}
-  const sb=$('fishStreakBadge');if(sb)sb.textContent=_fishState._combo>=3?'🔥 ×'+_fishState._combo+' COMBO':'';
+  const sb=$('fishStreakBadge');if(sb)sb.textContent=_fc.combo>=3?'🔥 ×'+_fc.combo+' COMBO':'';
 }
 
 // ── Fångstlåda (Catch Box) ──
@@ -11892,7 +11893,7 @@ function renderCastleWorld(){
     const px=p.x*W,py=p.y*H;
     const pulse=0.6+0.4*Math.sin(t*2+p.x*10);
     const pr=ctx.createRadialGradient(px,py,0,px,py,20*pulse);
-    pr.addColorStop(0,p.col.replace('.7',',.9'));
+    pr.addColorStop(0,p.col.replace('.7)','.9)'));
     pr.addColorStop(1,'rgba(0,0,0,0)');
     ctx.fillStyle=pr;ctx.beginPath();ctx.ellipse(px,py,18*pulse,12*pulse,0,0,Math.PI*2);ctx.fill();
   });
