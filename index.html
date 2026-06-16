@@ -1111,6 +1111,44 @@ button:active{opacity:.85;}
 .ba-victory,.ba-defeat{position:absolute;inset:0;background:rgba(0,0,0,.92);display:flex;align-items:center;justify-content:center;z-index:20;}
 .ba-victory-content{text-align:center;padding:24px;}
 .ba-rewards{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;}
+/* ── REACTIVE DEFENSE TELEGRAPH ── */
+@keyframes baWindup{0%{transform:translateX(0) scale(1);filter:brightness(1);}100%{transform:translateX(-16px) scale(1.04);filter:brightness(1.6) saturate(1.4);}}
+.ba-enemy-sprite.windup{animation:baWindup .6s ease-in-out forwards;}
+@keyframes baLunge{0%{transform:translateX(-16px) scale(1.04);}35%{transform:translateX(24px) scale(1.18);}70%{transform:translateX(-6px) scale(.94);}100%{transform:translateX(0) scale(1);}}
+.ba-enemy-sprite.lunge{animation:baLunge .42s cubic-bezier(.2,.9,.3,1) forwards;}
+@keyframes baDefeatSpin{0%{transform:scale(1) rotate(0);opacity:1;filter:brightness(1) grayscale(0);}60%{transform:scale(1.3) rotate(25deg);opacity:.7;filter:brightness(2) grayscale(.4);}100%{transform:scale(.2) rotate(120deg);opacity:0;filter:brightness(3) grayscale(1);}}
+.ba-enemy-sprite.defeated{animation:baDefeatSpin .55s ease-in forwards;}
+.ba-telegraph-icon{position:absolute;top:6px;left:50%;transform:translateX(-50%) scale(0);font-size:30px;z-index:6;pointer-events:none;filter:drop-shadow(0 0 10px #fff);transition:transform .18s cubic-bezier(.34,1.56,.64,1);}
+.ba-telegraph-icon.show{transform:translateX(-50%) scale(1);}
+.ba-telegraph-icon.pulse{animation:notifPulse .35s ease-in-out infinite;}
+@keyframes reactWindowIn{0%{transform:scale(.7);opacity:0;}60%{transform:scale(1.12);opacity:1;}100%{transform:scale(1);opacity:1;}}
+.ba-react-banner{position:absolute;left:8px;right:8px;top:50%;transform:translateY(-50%);z-index:15;display:none;flex-direction:column;align-items:center;gap:6px;pointer-events:none;}
+.ba-react-banner.show{display:flex;animation:reactWindowIn .15s ease-out;}
+.ba-react-word{font-size:26px;font-weight:900;font-family:var(--mono);letter-spacing:3px;color:var(--y);text-shadow:0 0 18px var(--y),0 0 40px var(--y);}
+.ba-react-banner.late .ba-react-word{color:var(--r);text-shadow:0 0 18px var(--r);}
+.ba-react-sub{font-size:11px;font-family:var(--mono);color:#fff;background:rgba(0,0,0,.55);padding:3px 12px;border-radius:20px;}
+.ba-react-ring{width:64px;height:64px;border-radius:50%;border:5px solid var(--y);box-shadow:0 0 24px var(--y),inset 0 0 16px rgba(255,230,0,.3);}
+@keyframes reactRingShrink{0%{transform:scale(1);opacity:1;}100%{transform:scale(.15);opacity:0;}}
+.ba-react-ring.shrink{animation:reactRingShrink linear forwards;}
+#baSpecialShield.react-armed{border-color:var(--y)!important;color:var(--y)!important;background:rgba(255,230,0,.18)!important;box-shadow:0 0 24px rgba(255,230,0,.6);animation:bitePulse .3s ease-in-out infinite;transform:scale(1.04);}
+#baSpecialShield.react-perfect{animation:none;border-color:var(--g)!important;color:var(--g)!important;background:rgba(57,255,20,.25)!important;box-shadow:0 0 30px rgba(57,255,20,.7);}
+/* Weakness tag on enemy */
+.ba-weak-tag{display:inline-flex;align-items:center;gap:3px;font-size:9px;font-weight:900;font-family:var(--mono);color:var(--t3);background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.15);border-radius:8px;padding:1px 7px;margin-left:6px;letter-spacing:.5px;vertical-align:middle;}
+.ba-weak-tag b{color:var(--y);}
+/* Combo tier escalation */
+.ba-combo-count{transition:color .25s,text-shadow .25s,transform .15s;}
+.ba-combo-count.t1{color:var(--y);text-shadow:0 0 8px var(--y);}
+.ba-combo-count.t2{color:var(--o);text-shadow:0 0 14px var(--o);transform:scale(1.12);}
+.ba-combo-count.t3{color:var(--pk);text-shadow:0 0 20px var(--pk),0 0 40px var(--pk);transform:scale(1.22);}
+.ba-combo-meter.t2 div{background:linear-gradient(90deg,var(--o),var(--pk));}
+.ba-combo-meter.t3 div{background:linear-gradient(90deg,var(--pk),var(--p),var(--y));box-shadow:0 0 10px var(--pk);}
+/* Tap-rhythm pulse on attack button */
+@keyframes baPulseBeat{0%,100%{box-shadow:0 0 24px rgba(57,255,20,.25),inset 0 1px 0 rgba(57,255,20,.15);}50%{box-shadow:0 0 40px rgba(57,255,20,.65),inset 0 1px 0 rgba(57,255,20,.3);}}
+.ba-hit-btn.rhythm{animation:baPulseBeat 1s ease-in-out infinite;}
+.ba-hit-btn.synced{animation:none;border-color:var(--y);box-shadow:0 0 36px rgba(255,230,0,.7);}
+/* Weakness-exploit big flash */
+@keyframes baWeakBurst{0%{transform:scale(.3);opacity:1;}100%{transform:scale(2.6);opacity:0;}}
+.ba-weak-burst{position:absolute;left:50%;top:38%;width:90px;height:90px;margin:-45px;border-radius:50%;border:4px solid var(--y);pointer-events:none;z-index:16;animation:baWeakBurst .5s ease-out forwards;}
 .ba-reward-chip{background:var(--c2);border:1px solid var(--line2);border-radius:10px;padding:8px 14px;font-size:13px;font-weight:900;animation:spop .4s cubic-bezier(.34,1.56,.64,1) both;}
 .ba-status-icon{font-size:14px;animation:notifPulse 1s ease-in-out infinite;}
 /* COMBO METER */
@@ -4585,12 +4623,23 @@ div[style*="LIVE"]{border-radius:16px!important;background:rgba(57,255,20,.03)!i
       </div>
       <!-- Enemy sprite -->
       <div class="ba-enemy-sprite" id="baEnemySprite">👾</div>
+      <!-- Attack telegraph icon -->
+      <div class="ba-telegraph-icon" id="baTelegraph">⚡</div>
       <!-- Phase indicator -->
       <div class="ba-phase-dots" id="baPhaseDots">
         <div class="ba-ph-dot active" id="baPh0"></div>
         <div class="ba-ph-dot" id="baPh1"></div>
         <div class="ba-ph-dot" id="baPh2"></div>
       </div>
+      <!-- Weakness tag -->
+      <div style="text-align:center" id="baWeakWrap"><span class="ba-weak-tag" id="baWeakTag">WEAK: <b>✨</b></span></div>
+    </div>
+
+    <!-- Reaction window banner -->
+    <div class="ba-react-banner" id="baReactBanner">
+      <div class="ba-react-ring" id="baReactRing"></div>
+      <div class="ba-react-word" id="baReactWord">DODGE!</div>
+      <div class="ba-react-sub" id="baReactSub">tryck BLOCK nu!</div>
     </div>
 
     <!-- Battle Log -->
@@ -5301,6 +5350,7 @@ const BATTLE_ENEMIES=[
     maxHp:80, dmg:[6,14], atkSpeed:600,
     phases:[{pct:1,em:'👾',col:'#00D9FF'},{pct:.5,em:'😤',col:'#FF9F0A',msg:'BERSERK! Pixelbesten rasar!'},{pct:.2,em:'💢',col:'#FF2D55',msg:'DESPERATE! Sista kraften!'}],
     status:null, specialAtk:{name:'PIXEL STORM',dmg:[18,28],msg:'💥 PIXEL STORM! Kod-explosion!'},
+    weakness:'magic',
     reward:{xp:50,coins:30,item:null}
   },
   {
@@ -5310,6 +5360,7 @@ const BATTLE_ENEMIES=[
     maxHp:120, dmg:[9,20], atkSpeed:750,
     phases:[{pct:1,em:'🤖',col:'#00D9FF'},{pct:.5,em:'⚠️',col:'#FF9F0A',msg:'BERSERK! Systemen överhettade!'},{pct:.2,em:'🔴',col:'#FF2D55',msg:'DESPERATE! Kärnreaktor kritisk!'}],
     status:'stun', specialAtk:{name:'LASER BEAM',dmg:[25,38],msg:'🔴 LASER BEAM! Ögon av stål!'},
+    weakness:'rage',
     reward:{xp:75,coins:50,item:'⚙️'}
   },
   {
@@ -5319,6 +5370,7 @@ const BATTLE_ENEMIES=[
     maxHp:180, dmg:[13,28], atkSpeed:900,
     phases:[{pct:1,em:'🐲',col:'#BF5FFF'},{pct:.5,em:'🔥',col:'#FF9F0A',msg:'BERSERK! Draken brinner!'},{pct:.2,em:'💀',col:'#FF2D55',msg:'DESPERATE! Dödsandedräkt!'}],
     status:'burn', specialAtk:{name:'SHADOW BREATH',dmg:[35,50],msg:'🌑 SHADOW BREATH! Allt mörker!'},
+    weakness:'magic',
     reward:{xp:110,coins:80,item:'🔮'}
   },
   {
@@ -5328,6 +5380,7 @@ const BATTLE_ENEMIES=[
     maxHp:240, dmg:[18,35], atkSpeed:1100,
     phases:[{pct:1,em:'💀',col:'#888'},{pct:.5,em:'👹',col:'#FF2D55',msg:'BERSERK! Döden vaknar!'},{pct:.2,em:'☠️',col:'#BF5FFF',msg:'DESPERATE! CURSED AURA!',statusToPlayer:'curse'}],
     status:'curse', specialAtk:{name:'DEATH CURSE',dmg:[45,65],msg:'☠️ DEATH CURSE! Livet tappas!'},
+    weakness:'rage',
     reward:{xp:160,coins:120,item:'💎'}
   },
   {
@@ -5337,6 +5390,7 @@ const BATTLE_ENEMIES=[
     maxHp:320, dmg:[24,45], atkSpeed:500,
     phases:[{pct:1,em:'⚡',col:'#FFE600'},{pct:.5,em:'🌩️',col:'#FF9F0A',msg:'BERSERK! Stormen rasar!',combo:true},{pct:.2,em:'🔱',col:'#FF2D55',msg:'DESPERATE! THUNDERSTORM!'}],
     status:'stun', specialAtk:{name:'DIVINE THUNDER',dmg:[60,85],msg:'🌩️ DIVINE THUNDER! Himlen splittras!'},
+    weakness:'magic',
     reward:{xp:220,coins:180,item:'👑'}
   },
   {
@@ -5346,6 +5400,7 @@ const BATTLE_ENEMIES=[
     maxHp:450, dmg:[32,60], atkSpeed:400,
     phases:[{pct:1,em:'🌑',col:'#BF5FFF'},{pct:.5,em:'🕳️',col:'#888',msg:'BERSERK! Verkligheten kollapsar!'},{pct:.2,em:'💫',col:'#FFE600',msg:'DESPERATE! VOID COLLAPSE!',statusToPlayer:'all'}],
     status:'all', specialAtk:{name:'VOID COLLAPSE',dmg:[80,120],msg:'💫 VOID COLLAPSE! Allt försvinner!'},
+    weakness:'rage',
     reward:{xp:350,coins:280,item:'🌟'}
   },
   {
@@ -5355,13 +5410,17 @@ const BATTLE_ENEMIES=[
     maxHp:600, dmg:[40,75], atkSpeed:350,
     phases:[{pct:1,em:'👿',col:'#FF2D55'},{pct:.5,em:'😈',col:'#BF5FFF',msg:'BERSERK! Demonen tar form!'},{pct:.2,em:'🔥',col:'#FF9F0A',msg:'DESPERATE! FINAL JUDGMENT!'}],
     status:'burn', specialAtk:{name:'KARMA BLAST',dmg:[100,150],msg:'🔥 KARMA BLAST! Allt karma frisläpps!'},
+    weakness:'magic',
     reward:{xp:500,coins:400,item:'⚡'}
   },
 ];
 let _bt={active:false,wave:1,eHp:80,eMax:80,pHp:100,pMax:100,pMp:80,pMaxMp:80,
      blocking:false,dodging:false,enemy:null,combo:0,fusionReady:false,
      statusPlayer:null,statusEnemy:null,statusTimer:null,ePhase:0,
-     pendingAtk:null,turnsWon:0,totalDmgDealt:0,earnedXp:0,earnedCoins:0};
+     pendingAtk:null,turnsWon:0,totalDmgDealt:0,earnedXp:0,earnedCoins:0,
+     // Reactive defense telegraph state
+     incoming:null,reactWindowOpen:false,reactResolved:false,reactTimers:[],
+     beatSynced:false};
 
 // ── TAP BATTLE SYSTEM ──
 
@@ -5377,26 +5436,56 @@ function openBattle(){
   _bt={active:false,wave:1,eHp:80,eMax:80,pHp:100,pMax:100,pMp:80,pMaxMp:80,
        blocking:false,dodging:false,enemy:null,combo:0,fusionReady:false,
        statusPlayer:null,statusEnemy:null,statusTimer:null,ePhase:0,
-       pendingAtk:null,turnsWon:0,totalDmgDealt:0,earnedXp:0,earnedCoins:0};
+       pendingAtk:null,turnsWon:0,totalDmgDealt:0,earnedXp:0,earnedCoins:0,
+       incoming:null,reactWindowOpen:false,reactResolved:false,reactTimers:[],
+       beatSynced:false};
   const _baV=$('baVictory');if(_baV)_baV.style.display='none';
   const _baD=$('baDefeat');if(_baD)_baD.style.display='none';
   if(!$('battleArena')){showT('Battle Arena laddas...','b');return;}
   startBattleWave();
   $('battleArena').classList.add('open');
   SFX.battle&&SFX.battle();vibe([20,10,20]);
+  _baStartRhythm();
 }
 
 function closeBattle(){
   $('battleArena').classList.remove('open');
   _bt.active=false;
+  _baClearReactTimers();
+  _baStopRhythm();
   closeJudgmentRing&&closeJudgmentRing();
 }
 
+// ── Tap-rhythm pulse on the ATTACK button (purely additive bonus, never punishing) ──
+let _baRhythmTimer=null,_baRhythmBeatAt=0;
+function _baStartRhythm(){
+  _baStopRhythm();
+  const btn=$('baHitBtn');if(btn)btn.classList.add('rhythm');
+  _baRhythmBeatAt=Date.now();
+  _baRhythmTimer=setInterval(()=>{_baRhythmBeatAt=Date.now();},1000);
+}
+function _baStopRhythm(){
+  if(_baRhythmTimer){clearInterval(_baRhythmTimer);_baRhythmTimer=null;}
+  const btn=$('baHitBtn');if(btn)btn.classList.remove('rhythm','synced');
+}
+// Returns true if the tap landed close to a beat pulse (±160ms) — small forgiving bonus window
+function _baIsSyncedTap(){
+  if(!_baRhythmTimer)return false;
+  const sinceBeat=(Date.now()-_baRhythmBeatAt)%1000;
+  return sinceBeat<160||sinceBeat>840;
+}
+
+const BA_WEAK_ICONS={magic:'✨',rage:'🔥'};
+const BA_WEAK_NAMES={magic:'MAGIC',rage:'RAGE'};
+
 function startBattleWave(){
+  _baClearReactTimers();
   const e=BATTLE_ENEMIES[Math.min(_bt.wave-1,BATTLE_ENEMIES.length-1)];
   _bt.enemy=e;_bt.eHp=e.maxHp;_bt.eMax=e.maxHp;_bt.active=true;
   _bt.blocking=false;_bt.dodging=false;_bt.ePhase=0;
   _bt.statusEnemy=null;_bt.fusionReady=false;_bt.combo=0;
+  _bt.incoming=null;_bt.reactWindowOpen=false;_bt.reactResolved=false;
+  const sprite=$('baEnemySprite');if(sprite)sprite.className='ba-enemy-sprite';
   $('baVictory').style.display='none';
   $('baDefeat').style.display='none';
   $('baWave').textContent='WAVE '+_bt.wave;
@@ -5405,9 +5494,13 @@ function startBattleWave(){
   _baUpdateEnemySprite();
   _baUpdatePhaseDots();
   _baUpdateBg();
+  // Weakness tag
+  const wt=$('baWeakTag');
+  if(wt&&e.weakness){wt.innerHTML='WEAK: <b>'+BA_WEAK_ICONS[e.weakness]+' '+BA_WEAK_NAMES[e.weakness]+'</b>';}
+  const ww=$('baWeakWrap');if(ww)ww.style.display=e.weakness?'block':'none';
   updateBattleUI();
   // Brief lore flash
-  setTimeout(()=>{_baSetLog('⚔️ Välj din attack!');},2000);
+  setTimeout(()=>{if(_bt.active)_baSetLog('⚔️ Välj din attack!');},2000);
 }
 
 function battleNormalAtk(){
@@ -5451,35 +5544,47 @@ function battleHeal(){
 function baTapAttack(){
   if(!_bt.active)return;
   const base=8+Math.floor(G.actionStat/6)+(_bt.wave*2);
-  const isCrit=Math.random()<0.15;
-  const dmg=Math.round(base*(isCrit?1.6:1));
+  const synced=_baIsSyncedTap();
+  const isCrit=Math.random()<(synced?0.30:0.15); // synced tap = forgiving crit bonus, never required
+  const dmg=Math.round(base*(isCrit?1.6:1)*(synced?1.1:1));
   _bt.eHp=Math.max(0,_bt.eHp-dmg);
   _bt.totalDmgDealt+=dmg;
   _bt.combo++;_bt.pMp=Math.min(_bt.pMaxMp,_bt.pMp+6);
   if(G._talentK6c)gainCoins(5);
-  _baSetLog((isCrit?'💥 CRIT! ':'⚔️ ')+dmg+' dmg! Combo: '+_bt.combo+(G._talentK6c?' +5⚡':''));
+  _baSetLog((isCrit?'💥 CRIT! ':synced?'⚡ SYNC! ':'⚔️ ')+dmg+' dmg! Combo: '+_bt.combo+(G._talentK6c?' +5⚡':''));
   const sprite=$('baEnemySprite');
   if(sprite){sprite.classList.remove('hit');void sprite.offsetWidth;sprite.classList.add('hit');}
   _baFlash('#39FF14'+'33');
-  floatNum&&floatNum((isCrit?'💥':'⚔️')+dmg,window.innerWidth/2,window.innerHeight*.3,'#39FF14',isCrit?20:16);
+  _baFloatDmg(dmg,isCrit,'#39FF14',isCrit?'💥':synced?'⚡':'⚔️');
   vibe(isCrit?[30,15,60]:20);SFX.hit&&SFX.hit();
-  // Combo fill
-  const cf=$('baComboFill');if(cf)cf.style.width=Math.min(100,_bt.combo*20)+'%';
+  // Beat-synced visual feedback on the button itself
+  if(synced){
+    const btn=$('baHitBtn');
+    if(btn){btn.classList.add('synced');setTimeout(()=>btn&&btn.classList.remove('synced'),180);}
+  }
+  _baUpdateComboVisuals();
   updateBattleUI();_baCheckPhase();
-  if(_bt.eHp<=0){setTimeout(battleWin,300);return;}
-  setTimeout(_baEnemyAttack,500);
+  if(_bt.eHp<=0){setTimeout(()=>battleWin(),300);return;}
+  setTimeout(_baTelegraphEnemyAttack,500);
 }
 
 function baSpecialAttack(type){
   if(!_bt.active)return;
+  // While a reaction window is open/telegraphing, the SHIELD button is repurposed as the
+  // DODGE/BLOCK reaction input instead of its normal MP-shield action.
+  if(type==='shield'&&_bt.incoming){_baReact();return;}
   const base=10+Math.floor(G.actionStat/5)+(_bt.wave*3);
   let dmg=0,msg='',mpCost=0,col='#39FF14';
+  const weak=_bt.enemy?.weakness||null;
   if(type==='magic'){
     mpCost=25;
     if(_bt.pMp<mpCost){showT('❌ Behöver '+mpCost+' MP!','r');return;}
-    dmg=Math.round(base*2.0);msg='✨ MAGIC! '+dmg+' dmg!';col='#BF5FFF';
+    const isWeak=weak==='magic',isResist=weak&&weak!=='magic';
+    dmg=Math.round(base*(isWeak?3.0:isResist?1.1:2.0));
+    msg=(isWeak?'💥 WEAKNESS HIT! ✨ MAGIC! ':'✨ MAGIC! ')+dmg+' dmg!';col='#BF5FFF';
     _bt.statusEnemy=_bt.enemy?.status||null;
     if(_bt.statusEnemy)msg+=' + '+BA_STATUS_ICONS[_bt.statusEnemy];
+    if(isWeak)_baWeaknessPayoff();
   } else if(type==='shield'){
     mpCost=15;
     if(_bt.pMp<mpCost){showT('❌ Behöver '+mpCost+' MP!','r');return;}
@@ -5490,12 +5595,15 @@ function baSpecialAttack(type){
     _baSetLog(msg);_bt.pMp=Math.max(0,_bt.pMp-mpCost);
     floatNum&&floatNum('🛡️+'+healAmt,window.innerWidth/2,window.innerHeight*.4,'#00D9FF',16);
     vibe([10,5,20]);updateBattleUI();
-    setTimeout(_baEnemyAttack,600);return;
+    setTimeout(_baTelegraphEnemyAttack,600);return;
   } else if(type==='rage'){
     mpCost=20;
     if(_bt.pMp<mpCost){showT('❌ Behöver '+mpCost+' MP!','r');return;}
-    dmg=Math.round(base*2.8);msg='🔥 RAGE STRIKE! '+dmg+' dmg!';col='#FF9F0A';
+    const isWeak=weak==='rage',isResist=weak&&weak!=='rage';
+    dmg=Math.round(base*(isWeak?3.2:isResist?1.3:2.8));
+    msg=(isWeak?'💥 WEAKNESS HIT! 🔥 RAGE STRIKE! ':'🔥 RAGE STRIKE! ')+dmg+' dmg!';col='#FF9F0A';
     vibe([40,20,80,20,120]);
+    if(isWeak)_baWeaknessPayoff();
   }
   if(dmg>0){
     _bt.eHp=Math.max(0,_bt.eHp-dmg);
@@ -5504,20 +5612,55 @@ function baSpecialAttack(type){
     const sprite=$('baEnemySprite');
     if(sprite){sprite.classList.remove('hit');void sprite.offsetWidth;sprite.classList.add('hit');}
     _baFlash(col+'44');
-    floatNum&&floatNum(dmg,window.innerWidth/2,window.innerHeight*.3,col,22);
+    _baFloatDmg(dmg,weak===type,col,weak===type?'💥':type==='magic'?'✨':'🔥');
   }
   _bt.pMp=Math.max(0,_bt.pMp-mpCost);
-  const cf=$('baComboFill');if(cf)cf.style.width=Math.min(100,_bt.combo*20)+'%';
+  _baUpdateComboVisuals();
   _baSetLog(msg);SFX.hit&&SFX.hit();
   updateBattleUI();_baCheckPhase();
-  if(_bt.eHp<=0){setTimeout(battleWin,300);return;}
-  setTimeout(_baEnemyAttack,700);
+  if(_bt.eHp<=0){setTimeout(()=>battleWin(),300);return;}
+  setTimeout(_baTelegraphEnemyAttack,700);
 }
 
-function _baEnemyAttack(){
+// Big visual payoff when hitting an enemy's elemental weakness
+function _baWeaknessPayoff(){
+  const scene=$('baScene');
+  if(scene){
+    const burst=document.createElement('div');
+    burst.className='ba-weak-burst';
+    scene.appendChild(burst);
+    setTimeout(()=>burst.remove(),550);
+  }
+  shakeScreen&&shakeScreen();
+  spawnParticles&&spawnParticles(window.innerWidth/2,window.innerHeight*.32,'stars');
+  vibe([20,10,30,10,80]);
+}
+
+// Floating damage number with size/color scaling by damage magnitude
+function _baFloatDmg(dmg,big,col,prefix){
+  if(!floatNum)return;
+  const size=big?24:dmg>=40?22:dmg>=20?18:14;
+  floatNum(prefix+dmg,window.innerWidth/2,window.innerHeight*.3,col,size);
+}
+
+// ── REACTIVE DEFENSE: telegraph → windup → reaction window → resolve ──
+// Replaces the old "instant/passive" enemy counter-attack. No rotating cursor —
+// just a clear icon telegraph + a timed tap on the (repurposed) BLOCK button.
+function _baClearReactTimers(){
+  (_bt.reactTimers||[]).forEach(t=>clearTimeout(t));
+  _bt.reactTimers=[];
+  const tg=$('baTelegraph');if(tg){tg.classList.remove('show','pulse');}
+  const rb=$('baReactBanner');if(rb){rb.classList.remove('show','late');}
+  const ring=$('baReactRing');if(ring){ring.classList.remove('shrink');ring.style.animationDuration='';}
+  const sb=$('baSpecialShield');if(sb)sb.classList.remove('react-armed','react-perfect');
+  const sprite=$('baEnemySprite');if(sprite)sprite.classList.remove('windup','lunge');
+}
+
+function _baTelegraphEnemyAttack(){
   if(!_bt.active||_bt.eHp<=0)return;
-  const e=_bt.enemy;
-  // Status: freeze/stun → enemy skips
+  if(_bt.incoming)return; // an attack is already telegraphing/resolving — never stack two
+  const e=_bt.enemy;if(!e)return;
+  // Status: freeze/stun → enemy skips entirely, no telegraph needed
   if(_bt.statusEnemy==='freeze'||_bt.statusEnemy==='stun'){
     _baSetLog(BA_STATUS_ICONS[_bt.statusEnemy]+' '+e.name+' kan inte agera!');
     _bt.statusEnemy=null;
@@ -5526,42 +5669,129 @@ function _baEnemyAttack(){
   // Burn tick on enemy
   if(_bt.statusEnemy==='burn'){
     _bt.eHp=Math.max(0,_bt.eHp-8);
-    if(_bt.eHp<=0){battleWin();return;}
+    updateBattleUI();
+    if(_bt.eHp<=0){setTimeout(()=>battleWin(),300);return;}
   }
-  // Desperate = special attack
   const isDesp=_bt.ePhase>=2;
+  const isHeavy=isDesp&&Math.random()<0.4;
+  _bt.incoming={heavy:isHeavy};
+  // Windup duration scales with phase/difficulty: faster & meaner the further the fight goes
+  const windup=Math.max(380,720-_bt.ePhase*120-_bt.wave*8);
+  const winLen=Math.max(230,360-_bt.ePhase*25);
+  // Telegraph visuals: icon + sprite backstep-glow
+  const tg=$('baTelegraph');
+  if(tg){tg.textContent=isHeavy?'💥':'⚡';tg.classList.add('show');}
+  const sprite=$('baEnemySprite');
+  if(sprite){sprite.classList.remove('hit','atk');void sprite.offsetWidth;sprite.classList.add('windup');}
+  _baSetLog(isHeavy?'⚠️ '+e.name+' laddar upp en KRAFTFULL attack!':'⚠️ '+e.name+' förbereder en attack!');
+  const t1=setTimeout(()=>{
+    if(!_bt.active)return;
+    if(tg)tg.classList.add('pulse');
+    _baOpenReactWindow(winLen,isHeavy);
+  },windup);
+  _bt.reactTimers.push(t1);
+}
+
+function _baOpenReactWindow(winLen,isHeavy){
+  if(!_bt.active||!_bt.incoming)return;
+  _bt.reactWindowOpen=true;_bt.reactResolved=false;
+  const sprite=$('baEnemySprite');
+  if(sprite){sprite.classList.remove('windup');void sprite.offsetWidth;sprite.classList.add('lunge');}
+  const rb=$('baReactBanner');const rw=$('baReactWord');const rs=$('baReactSub');const ring=$('baReactRing');
+  if(rw)rw.textContent=isHeavy?'BLOCK!':'DODGE!';
+  if(rs)rs.textContent='tryck 🛡️ BLOCK nu!';
+  if(rb){rb.classList.remove('late');rb.classList.add('show');}
+  if(ring){ring.classList.remove('shrink');void ring.offsetWidth;ring.style.animationDuration=winLen+'ms';ring.classList.add('shrink');}
+  const sb=$('baSpecialShield');if(sb)sb.classList.add('react-armed');
+  vibe([15,10,15]);
+  const t2=setTimeout(()=>{
+    if(!_bt.active)return;
+    if(_bt.reactWindowOpen&&!_bt.reactResolved){
+      // Window closed with no tap (or too late) → resolve as a miss
+      _baResolveEnemyAttack('miss');
+    }
+  },winLen+70); // small grace buffer so a tap right at the edge still registers
+  _bt.reactTimers.push(t2);
+}
+
+// Player taps BLOCK (repurposed) during/near the reaction window
+function _baReact(){
+  if(!_bt.active||!_bt.incoming)return;
+  if(!_bt.reactWindowOpen){
+    // Tapped too early (still telegraphing) — treat as a whiffed reaction, slight mitigation only
+    _baResolveEnemyAttack('early');
+    return;
+  }
+  if(_bt.reactResolved)return;
+  _baResolveEnemyAttack('perfect');
+}
+
+function _baResolveEnemyAttack(quality){
+  if(!_bt.incoming)return;
+  _bt.reactResolved=true;_bt.reactWindowOpen=false;
+  const e=_bt.enemy;const isHeavy=_bt.incoming.heavy;
+  _bt.incoming=null;
+  const tg=$('baTelegraph');if(tg){tg.classList.remove('show','pulse');}
+  const rb=$('baReactBanner');const ring=$('baReactRing');
+  const sb=$('baSpecialShield');if(sb)sb.classList.remove('react-armed');
   let dmg;
-  if(isDesp&&Math.random()<0.4){
+  if(isHeavy){
     dmg=e.specialAtk.dmg[0]+Math.floor(Math.random()*(e.specialAtk.dmg[1]-e.specialAtk.dmg[0]));
-    _baSetLog(e.specialAtk.msg);
-    shakeScreen&&shakeScreen();
-    vibe([60,30,120,30,180]);
-    // Maybe apply status to player
     if(e.phases[2]?.statusToPlayer)_bt.statusPlayer=e.phases[2].statusToPlayer;
   } else {
     dmg=e.dmg[0]+Math.floor(Math.random()*(e.dmg[1]-e.dmg[0]));
-    // Berserker does +30% dmg
-    if(_bt.ePhase===1)dmg=Math.round(dmg*1.3);
-    if(_bt.blocking){dmg=Math.floor(dmg*.25);_baSetLog('🛡️ BLOCK! Reducerat till '+dmg+' dmg!');if(G._talentK7b){gainXP(30,'battle');showT('🗡️ COUNTER STRIKE! +30 XP','y');}}
-    else if(_bt.dodging){dmg=0;_baSetLog('🌀 DODGE! Miss!');}
-    else _baSetLog('👾 '+e.name+' dealar '+dmg+' dmg!');
+    if(_bt.ePhase===1)dmg=Math.round(dmg*1.3); // berserker +30%
+  }
+  let msg='';
+  if(quality==='perfect'){
+    // Perfect-timed react: avoid (almost) all damage + bonus
+    dmg=0;
+    if(rb){rb.classList.remove('late');}
+    if(ring)ring.style.borderColor='var(--g)';
+    if(sb){sb.classList.add('react-perfect');setTimeout(()=>sb&&sb.classList.remove('react-perfect'),350);}
+    const bonusMp=8,bonusCombo=1;
+    _bt.pMp=Math.min(_bt.pMaxMp,_bt.pMp+bonusMp);
+    _bt.combo+=bonusCombo;
+    msg=(isHeavy?'🛡️ PERFECT BLOCK! ':'🌀 PERFECT DODGE! ')+'Ingen skada! +'+bonusMp+' MP';
+    floatNum&&floatNum('PERFECT!',window.innerWidth/2,window.innerHeight*.45,'var(--g)',20);
+    SFX.win&&SFX.win();vibe([15,10,40]);
+    if(G._talentK7b){gainXP(30,'battle');msg+=' +30 XP';}
+    _baUpdateComboVisuals();
+  } else if(quality==='early'){
+    dmg=Math.floor(dmg*.7);
+    msg='⏱️ FÖR TIDIGT! Delvis skydd — '+dmg+' dmg';
+    if(rb)rb.classList.add('late');
+  } else {
+    // 'miss' = no react attempted in time = full damage
+    msg=(isHeavy?'💥 '+e.specialAtk.msg:'👾 '+e.name+' dealar '+dmg+' dmg!');
+    if(rb)rb.classList.add('late');
+    if(isHeavy){shakeScreen&&shakeScreen();vibe([60,30,120,30,180]);}
   }
   // Curse: +50% to player
-  if(_bt.statusPlayer==='curse')dmg=Math.round(dmg*1.5);
+  if(_bt.statusPlayer==='curse'&&dmg>0)dmg=Math.round(dmg*1.5);
   // K4b Iron Wall: -40% damage received
   if(G._talentK4b&&dmg>0)dmg=Math.round(dmg*.6);
-  _bt.blocking=false;_bt.dodging=false;
   if(dmg>0){
     _bt.pHp=Math.max(0,_bt.pHp-dmg);
     SFX.hit&&SFX.hit();
     const ph=$('baPlayerHpFill');if(ph){ph.style.background='var(--r)';setTimeout(()=>{if(ph)ph.style.background='var(--g)';},300);}
-    vibe(20);floatNum&&floatNum('💀-'+dmg,window.innerWidth*.4,window.innerHeight*.6,'var(--r)',16);
+    vibe(20);floatNum&&floatNum('💀-'+dmg,window.innerWidth*.4,window.innerHeight*.6,'var(--r)',dmg>=30?20:16);
   }
+  _baSetLog(msg);
+  // Fade out the reaction banner shortly after resolving
+  const t3=setTimeout(()=>{
+    const rb2=$('baReactBanner');if(rb2)rb2.classList.remove('show','late');
+    const sprite=$('baEnemySprite');if(sprite)sprite.classList.remove('lunge');
+  },isHeavy?420:300);
+  _bt.reactTimers.push(t3);
   // MP auto-regen each turn
   _bt.pMp=Math.min(_bt.pMaxMp,_bt.pMp+5);
   updateBattleUI();
   if(_bt.pHp<=0){setTimeout(battleLose,300);}
 }
+
+// Backwards-compatible alias: some older call sites referenced _baEnemyAttack directly.
+function _baEnemyAttack(){_baTelegraphEnemyAttack();}
 
 function _baCheckPhase(){
   const pct=_bt.eHp/_bt.eMax;
@@ -5587,6 +5817,20 @@ function _baUpdateEnemySprite(){
   const el=$('baEnemySprite');if(!el)return;
   const e=_bt.enemy;if(!e)return;
   el.textContent=e.em[Math.min(_bt.ePhase,e.em.length-1)];
+}
+
+// Combo meter tiered visual escalation: color/glow intensify, not just the number ticking up
+function _baUpdateComboVisuals(){
+  const combo=_bt.combo;
+  const tier=combo>=10?'t3':combo>=5?'t2':combo>=3?'t1':'';
+  const cf=$('baComboFill');if(cf)cf.style.width=Math.min(100,combo*20)+'%';
+  ['baComboCount','baComboCount2'].forEach(id=>{
+    const el=$(id);if(!el)return;
+    el.classList.remove('t1','t2','t3');
+    if(tier)el.classList.add(tier);
+  });
+  const meter=document.querySelector('.ba-combo-meter');
+  if(meter){meter.classList.remove('t2','t3');if(tier==='t2'||tier==='t3')meter.classList.add(tier);}
 }
 
 function _baUpdatePhaseDots(){
@@ -5635,9 +5879,13 @@ function _baSetLog(msg){
 
 function battleWin(){
   const e=_bt.enemy;_bt.active=false;
+  _baClearReactTimers();
   _bt.earnedXp+=e.reward.xp;_bt.earnedCoins+=e.reward.coins;
   _bt.turnsWon++;
   const isLast=_bt.wave>=BATTLE_ENEMIES.length;
+  // Defeat animation on enemy sprite before the overlay slides in
+  const sprite=$('baEnemySprite');
+  if(sprite){sprite.classList.remove('hit','atk','windup','lunge','phase-up');void sprite.offsetWidth;sprite.classList.add('defeated');}
   // Show victory overlay
   $('baVictory').style.display='flex';
   $('baVicEnemy').textContent=e.name+' besegrad!';
@@ -5699,6 +5947,7 @@ function battleLose(){
   // K8b Eternal Knight: never lose battles
   if(G._talentK8b){_bt.pHp=Math.max(1,Math.floor(_bt.pMax*.3));showT('⚜️ ETERNAL KNIGHT! Nekad förlust!','y');vibe([20,10,30]);updateBattleUI();return;}
   _bt.active=false;
+  _baClearReactTimers();
   SFX.error&&SFX.error();vibe([50,30,100]);
   $('baDefeat').style.display='flex';
 }
@@ -5721,7 +5970,7 @@ function updateBattleUI(){
   // Combo
   const cc=$('baComboCount');if(cc)cc.textContent=_bt.combo+'x';
   const cc2=$('baComboCount2');if(cc2)cc2.textContent=_bt.combo+'x';
-  const cf=$('baComboFill');if(cf)cf.style.width=Math.min(100,_bt.combo*20)+'%';
+  _baUpdateComboVisuals();
   // Fusion indicator (kept for lore display)
   const fi=$('baFusionIndicator');if(fi)fi.style.display=_bt.combo>=5?'block':'none';
   // Status
@@ -5729,7 +5978,8 @@ function updateBattleUI(){
   const ps=$('baPlayerStatus');if(ps)ps.textContent=_bt.statusPlayer?BA_STATUS_ICONS[_bt.statusPlayer]:'';
   // Special buttons: dim magic/shield/rage if not enough MP
   const sm=$('baSpecialMagic');if(sm)sm.style.opacity=_bt.pMp>=25?'1':'.4';
-  const ss=$('baSpecialShield');if(ss)ss.style.opacity=_bt.pMp>=15?'1':'.4';
+  // Shield/BLOCK doubles as the reaction input — don't dim it for MP while a reaction is live
+  const ss=$('baSpecialShield');if(ss&&!_bt.incoming)ss.style.opacity=_bt.pMp>=15?'1':'.4';
   const sr=$('baSpecialRage');if(sr)sr.style.opacity=_bt.pMp>=20?'1':'.4';
   // MP auto-regen display
   if(mpn)mpn.textContent=Math.round(_bt.pMp)+'/'+_bt.pMaxMp+' (+5/turn)';
