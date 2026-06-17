@@ -1044,24 +1044,29 @@ button:active{opacity:.85;}
 .td-wave-banner.show{transform:translateX(-50%) scale(1);opacity:1;}
 .td-wave-banner .tw-big{font-size:22px;font-weight:900;font-family:var(--mono);letter-spacing:2px;color:var(--y);text-shadow:0 0 16px rgba(255,230,0,.6);}
 .td-wave-banner .tw-sub{font-size:11px;color:var(--t2);font-family:var(--mono);margin-top:2px;}
-.td-form-row{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;}
-.td-form-btn{background:#080808;border:2px solid rgba(255,255,255,.18);border-radius:14px;padding:9px 4px;cursor:pointer;transition:transform .08s,box-shadow .08s,opacity .15s;-webkit-tap-highlight-color:transparent;touch-action:manipulation;display:flex;flex-direction:column;align-items:center;gap:2px;min-height:58px;position:relative;}
-.td-form-btn:active{transform:scale(.94);}
-.td-form-btn .tf-ico{font-size:24px;line-height:1;}
-.td-form-btn .tf-nm{font-size:9px;font-weight:900;color:var(--t1);font-family:var(--mono);letter-spacing:.5px;}
-.td-form-btn.magic{border-color:var(--p);box-shadow:0 0 14px rgba(191,95,255,.3),inset 0 0 8px rgba(191,95,255,.05);background:rgba(191,95,255,.05);}
-.td-form-btn.rage{border-color:var(--o);box-shadow:0 0 14px rgba(255,159,10,.3),inset 0 0 8px rgba(255,159,10,.05);background:rgba(255,159,10,.05);}
-.td-form-btn.shield{border-color:var(--b);box-shadow:0 0 14px rgba(0,217,255,.3),inset 0 0 8px rgba(0,217,255,.05);background:rgba(0,217,255,.05);}
-.td-form-btn.speed{border-color:var(--g);box-shadow:0 0 14px rgba(57,255,20,.3),inset 0 0 8px rgba(57,255,20,.05);background:rgba(57,255,20,.05);}
-.td-form-btn.active{outline:2px solid #fff;box-shadow:0 0 24px currentColor,0 0 0 3px rgba(255,255,255,.25) inset;}
-.td-form-btn.stunned{opacity:.35;pointer-events:none;}
-.td-form-btn .tf-cd{position:absolute;inset:0;border-radius:14px;background:rgba(0,0,0,.55);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:900;font-family:var(--mono);color:#fff;}
-.td-actions{padding:10px 14px;padding-bottom:calc(10px + env(safe-area-inset-bottom,0px));background:#000;border-top:3px solid rgba(255,0,127,.25);flex-shrink:0;}
-.td-combo-bar{display:flex;align-items:center;gap:8px;margin-bottom:8px;}
-.td-combo-label{font-size:9px;font-weight:900;color:var(--y);font-family:var(--mono);letter-spacing:1px;flex-shrink:0;}
-.td-combo-count{font-size:16px;font-weight:900;color:var(--y);font-family:var(--mono);min-width:32px;flex-shrink:0;}
-.td-combo-meter{flex:1;height:5px;background:rgba(255,255,255,.08);border-radius:100px;overflow:hidden;}
-.td-combo-meter div{height:100%;background:linear-gradient(90deg,var(--y),var(--o));border-radius:100px;transition:width .2s;}
+.td-actions{padding:8px 12px;padding-bottom:calc(8px + env(safe-area-inset-bottom,0px));background:#000;border-top:2px solid rgba(255,0,127,.25);flex-shrink:0;}
+.td-gold-bar{display:flex;align-items:center;gap:8px;margin-bottom:7px;}
+.td-gold-lbl{font-size:9px;font-weight:900;color:#FFD700;font-family:var(--mono);letter-spacing:1px;}
+.td-gold-amt{font-size:18px;font-weight:900;color:#FFD700;font-family:var(--mono);min-width:40px;text-shadow:0 0 10px rgba(255,215,0,.4);}
+.td-wave-info{margin-left:auto;font-size:9px;font-weight:900;color:var(--t3);font-family:var(--mono);letter-spacing:1px;}
+.td-tower-row{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;}
+.td-tower-btn{display:flex;flex-direction:column;align-items:center;gap:1px;padding:6px 4px;background:rgba(255,255,255,.05);border:1.5px solid rgba(255,255,255,.12);border-radius:10px;cursor:pointer;transition:all .1s;font-family:var(--mono);color:var(--t1);-webkit-tap-highlight-color:transparent;touch-action:manipulation;}
+.td-tower-btn:active{transform:scale(.93);}
+.td-tower-btn .tt-ico{font-size:22px;line-height:1;}
+.td-tower-btn .tt-nm{font-size:8px;font-weight:900;letter-spacing:.5px;color:var(--t2);}
+.td-tower-btn .tt-cost{font-size:9px;color:#FFD700;font-weight:700;}
+.td-tower-btn.selected{border-color:#FFD700;background:rgba(255,215,0,.12);box-shadow:0 0 10px rgba(255,215,0,.3);}
+.td-tower-btn.disabled{opacity:.38;pointer-events:none;}
+.td-sell-panel{margin-top:7px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:10px;padding:7px 10px;}
+.td-sell-info{display:flex;align-items:center;gap:6px;margin-bottom:5px;font-size:11px;font-family:var(--mono);}
+#tdSellName{font-weight:900;font-size:13px;color:#FFD700;}
+#tdSellLevel{background:rgba(255,255,255,.1);padding:1px 5px;border-radius:4px;font-size:10px;}
+#tdSellDps{margin-left:auto;font-size:10px;color:var(--t3);}
+.td-sell-actions{display:flex;gap:6px;align-items:center;}
+.td-upg-btn{flex:1;background:rgba(57,255,20,.1);border:1px solid rgba(57,255,20,.4);border-radius:8px;padding:6px;font-size:10px;font-weight:900;font-family:var(--mono);color:#39FF14;cursor:pointer;-webkit-tap-highlight-color:transparent;}
+.td-upg-btn.disabled{opacity:.4;pointer-events:none;}
+.td-sell-btn{background:rgba(255,215,0,.1);border:1px solid rgba(255,215,0,.3);border-radius:8px;padding:6px 10px;font-size:10px;font-weight:900;font-family:var(--mono);color:#FFD700;cursor:pointer;-webkit-tap-highlight-color:transparent;}
+.td-sell-close{background:none;border:1px solid rgba(255,255,255,.15);border-radius:8px;padding:5px 8px;font-size:12px;color:var(--t3);cursor:pointer;}
 .ba-victory,.ba-defeat{position:absolute;inset:0;background:rgba(0,0,0,.92);display:flex;align-items:center;justify-content:center;z-index:20;}
 .ba-victory-content{text-align:center;padding:24px;}
 .ba-rewards{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;}
@@ -3623,96 +3628,47 @@ div[style*="LIVE"]{border-radius:16px!important;background:rgba(57,255,20,.03)!i
         </div>
         <div class="gp-arrow" style="color:rgba(255,159,10,.8)">▶</div>
       </div>
-      <!-- DNA BREAKER card -->
-      <div onclick="openPetBlocks()" ontouchstart="this.style.opacity='.7'" ontouchend="this.style.opacity='1'" style="margin:6px 14px;border-radius:16px;cursor:pointer;-webkit-tap-highlight-color:transparent;background:#0e1a0e;border:2px solid rgba(57,255,20,.6);padding:14px 14px 0;display:flex;flex-direction:column;box-shadow:0 0 18px rgba(57,255,20,.15)">
-        <div style="display:flex;align-items:center;gap:12px;padding-bottom:12px">
-          <div style="width:52px;height:52px;border-radius:14px;background:rgba(57,255,20,.18);border:1px solid rgba(57,255,20,.5);display:flex;align-items:center;justify-content:center;font-size:28px;flex-shrink:0">🧬</div>
-          <div style="flex:1;min-width:0">
-            <div style="font-size:15px;font-weight:900;color:#39FF14;font-family:var(--mono);letter-spacing:.5px;margin-bottom:2px">DNA BREAKER <span style="font-size:8px;background:rgba(57,255,20,.2);padding:1px 5px;border-radius:6px;color:#39FF14">HOT 🔥</span></div>
-            <div style="font-size:9px;color:rgba(255,255,255,.6);line-height:1.4">Krossa DNA-block med bollen · Combo multiplier!</div>
-            <div style="display:flex;gap:5px;margin-top:6px;flex-wrap:wrap">
-              <span style="font-size:8px;font-weight:900;color:#39FF14;font-family:var(--mono)">ARCADE</span>
-              <span style="font-size:8px;color:rgba(255,255,255,.4)">·</span>
-              <span style="font-size:8px;font-weight:900;color:#FFE600" id="pbBestTag">Best: 0pts</span>
-              <span style="font-size:8px;color:rgba(255,255,255,.4)">·</span>
-              <span style="font-size:8px;font-weight:900;color:#00D9FF">+50 XP</span>
-            </div>
-          </div>
-          <div style="font-size:20px;color:rgba(57,255,20,.8)">›</div>
+      <!-- 2-COL GAME GRID — compact, all games visible without scrolling -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:4px 14px 12px">
+        <!-- DNA BREAKER -->
+        <div onclick="openPetBlocks()" ontouchstart="this.style.transform='scale(.96)'" ontouchend="this.style.transform=''" style="border-radius:16px;cursor:pointer;-webkit-tap-highlight-color:transparent;background:#0e1a0e;border:2px solid rgba(57,255,20,.6);padding:14px 12px;display:flex;flex-direction:column;align-items:center;gap:6px;box-shadow:0 0 14px rgba(57,255,20,.12);transition:transform .08s;text-align:center">
+          <div style="font-size:34px;line-height:1">🧬</div>
+          <div style="font-size:11px;font-weight:900;color:#39FF14;font-family:var(--mono);letter-spacing:.5px">DNA BREAKER</div>
+          <div style="font-size:8px;background:rgba(57,255,20,.18);border:1px solid rgba(57,255,20,.4);border-radius:20px;padding:1px 7px;color:#39FF14;font-family:var(--mono)">HOT 🔥</div>
+          <div style="font-size:8px;color:rgba(255,255,255,.45)" id="pbBestTag">Best: 0pts</div>
         </div>
-        <div style="height:2px;background:linear-gradient(90deg,transparent,rgba(57,255,20,.7),transparent);margin:0 -14px"></div>
-      </div>
-      <!-- PET RUNNER card -->
-      <div onclick="openPetRunner()" ontouchstart="this.style.opacity='.7'" ontouchend="this.style.opacity='1'" style="margin:6px 14px;border-radius:16px;cursor:pointer;-webkit-tap-highlight-color:transparent;background:#080e14;border:2px solid rgba(0,217,255,.6);padding:14px 14px 0;display:flex;flex-direction:column;box-shadow:0 0 18px rgba(0,217,255,.15)">
-        <div style="display:flex;align-items:center;gap:12px;padding-bottom:12px">
-          <div style="width:52px;height:52px;border-radius:14px;background:rgba(0,217,255,.18);border:1px solid rgba(0,217,255,.5);display:flex;align-items:center;justify-content:center;font-size:28px;flex-shrink:0;animation:petBob 2s ease-in-out infinite" id="gpRunnerPet">🐉</div>
-          <div style="flex:1;min-width:0">
-            <div style="font-size:15px;font-weight:900;color:#00D9FF;font-family:var(--mono);letter-spacing:.5px;margin-bottom:2px">PET RUNNER <span style="font-size:8px;background:rgba(0,217,255,.2);padding:1px 5px;border-radius:6px;color:#00D9FF">ENDLESS</span></div>
-            <div style="font-size:9px;color:rgba(255,255,255,.6);line-height:1.4">Hoppa · dodge hinder · samla gems · level upp!</div>
-            <div style="display:flex;gap:5px;margin-top:6px;flex-wrap:wrap">
-              <span style="font-size:8px;font-weight:900;color:#00D9FF;font-family:var(--mono)">RUNNER</span>
-              <span style="font-size:8px;color:rgba(255,255,255,.4)">·</span>
-              <span style="font-size:8px;font-weight:900;color:#FFE600" id="prBestTag">Best: 0m</span>
-              <span style="font-size:8px;color:rgba(255,255,255,.4)">·</span>
-              <span style="font-size:8px;font-weight:900;color:#00D9FF" id="prLvBadge">LV 1</span>
-            </div>
-          </div>
-          <div style="font-size:20px;color:rgba(0,217,255,.8)">›</div>
+        <!-- PET RUNNER -->
+        <div onclick="openPetRunner()" ontouchstart="this.style.transform='scale(.96)'" ontouchend="this.style.transform=''" style="border-radius:16px;cursor:pointer;-webkit-tap-highlight-color:transparent;background:#080e14;border:2px solid rgba(0,217,255,.6);padding:14px 12px;display:flex;flex-direction:column;align-items:center;gap:6px;box-shadow:0 0 14px rgba(0,217,255,.12);transition:transform .08s;text-align:center">
+          <div style="font-size:34px;line-height:1;animation:petBob 2s ease-in-out infinite" id="gpRunnerPet">🐉</div>
+          <div style="font-size:11px;font-weight:900;color:#00D9FF;font-family:var(--mono);letter-spacing:.5px">PET RUNNER</div>
+          <div style="font-size:8px;background:rgba(0,217,255,.18);border:1px solid rgba(0,217,255,.4);border-radius:20px;padding:1px 7px;color:#00D9FF;font-family:var(--mono)">ENDLESS</div>
+          <div style="font-size:8px;color:rgba(255,255,255,.45)" id="prBestTag">Best: 0m · <span id="prLvBadge">LV 1</span></div>
         </div>
-        <div style="height:2px;background:linear-gradient(90deg,transparent,rgba(0,217,255,.7),transparent);margin:0 -14px"></div>
-      </div>
-      <!-- BATTLE ARENA card -->
-      <div onclick="openBattle()" ontouchstart="this.style.opacity='.7'" ontouchend="this.style.opacity='1'" style="margin:6px 14px;border-radius:16px;cursor:pointer;-webkit-tap-highlight-color:transparent;background:#14080e;border:2px solid rgba(255,0,127,.6);padding:14px 14px 0;display:flex;flex-direction:column;box-shadow:0 0 18px rgba(255,0,127,.15)">
-        <div style="display:flex;align-items:center;gap:12px;padding-bottom:12px">
-          <div style="width:52px;height:52px;border-radius:14px;background:rgba(255,0,127,.18);border:1px solid rgba(255,0,127,.5);display:flex;align-items:center;justify-content:center;font-size:28px;flex-shrink:0">⚔️</div>
-          <div style="flex:1;min-width:0">
-            <div style="font-size:15px;font-weight:900;color:#FF007F;font-family:var(--mono);letter-spacing:.5px;margin-bottom:2px">BATTLE ARENA <span style="font-size:8px;background:rgba(255,0,127,.2);padding:1px 5px;border-radius:6px;color:#FF007F">PvE ⚔️</span></div>
-            <div style="font-size:9px;color:rgba(255,255,255,.6);line-height:1.4">Slåss mot bossar · rytmbaserade attacker · vinn coins!</div>
-            <div style="display:flex;gap:5px;margin-top:6px;flex-wrap:wrap">
-              <span style="font-size:8px;font-weight:900;color:#FF007F;font-family:var(--mono)">BOSS FIGHT</span>
-              <span style="font-size:8px;color:rgba(255,255,255,.4)">·</span>
-              <span style="font-size:8px;font-weight:900;color:#FFE600">+100 XP</span>
-            </div>
-          </div>
-          <div style="font-size:20px;color:rgba(255,0,127,.8)">›</div>
+        <!-- TOWER DEFENSE -->
+        <div onclick="openBattle()" ontouchstart="this.style.transform='scale(.96)'" ontouchend="this.style.transform=''" style="border-radius:16px;cursor:pointer;-webkit-tap-highlight-color:transparent;background:#14080e;border:2px solid rgba(255,0,127,.6);padding:14px 12px;display:flex;flex-direction:column;align-items:center;gap:6px;box-shadow:0 0 14px rgba(255,0,127,.12);transition:transform .08s;text-align:center">
+          <div style="font-size:34px;line-height:1">🏰</div>
+          <div style="font-size:11px;font-weight:900;color:#FF007F;font-family:var(--mono);letter-spacing:.5px">TOWER DEF</div>
+          <div style="font-size:8px;background:rgba(255,0,127,.18);border:1px solid rgba(255,0,127,.4);border-radius:20px;padding:1px 7px;color:#FF007F;font-family:var(--mono)">WAVES ⚔️</div>
+          <div style="font-size:8px;color:rgba(255,255,255,.45)">+100 XP per wave</div>
         </div>
-        <div style="height:2px;background:linear-gradient(90deg,transparent,rgba(255,0,127,.7),transparent);margin:0 -14px"></div>
-      </div>
-      <!-- DNA MIXER card -->
-      <div onclick="openDNAMixer()" ontouchstart="this.style.opacity='.7'" ontouchend="this.style.opacity='1'" style="margin:6px 14px;border-radius:16px;cursor:pointer;-webkit-tap-highlight-color:transparent;background:#0e0814;border:2px solid rgba(191,95,255,.6);padding:14px 14px 0;display:flex;flex-direction:column;box-shadow:0 0 18px rgba(191,95,255,.15)">
-        <div style="display:flex;align-items:center;gap:12px;padding-bottom:12px">
-          <div style="width:52px;height:52px;border-radius:14px;background:rgba(191,95,255,.18);border:1px solid rgba(191,95,255,.5);display:flex;align-items:center;justify-content:center;font-size:28px;flex-shrink:0">🧪</div>
-          <div style="flex:1;min-width:0">
-            <div style="font-size:15px;font-weight:900;color:#BF5FFF;font-family:var(--mono);letter-spacing:.5px;margin-bottom:2px">DNA MIXER <span style="font-size:8px;background:rgba(191,95,255,.2);padding:1px 5px;border-radius:6px;color:#BF5FFF">LAB 🧬</span></div>
-            <div style="font-size:9px;color:rgba(255,255,255,.6);line-height:1.4">Mixa 2 pets → hybrid · Lås upp hemliga kombinationer!</div>
-            <div style="display:flex;gap:5px;margin-top:6px;flex-wrap:wrap">
-              <span style="font-size:8px;font-weight:900;color:#BF5FFF;font-family:var(--mono)">HYBRID</span>
-              <span style="font-size:8px;color:rgba(255,255,255,.4)">·</span>
-              <span style="font-size:8px;font-weight:900;color:#39FF14">+75 XP</span>
-            </div>
-          </div>
-          <div style="font-size:20px;color:rgba(191,95,255,.8)">›</div>
+        <!-- DNA MIXER -->
+        <div onclick="openDNAMixer()" ontouchstart="this.style.transform='scale(.96)'" ontouchend="this.style.transform=''" style="border-radius:16px;cursor:pointer;-webkit-tap-highlight-color:transparent;background:#0e0814;border:2px solid rgba(191,95,255,.6);padding:14px 12px;display:flex;flex-direction:column;align-items:center;gap:6px;box-shadow:0 0 14px rgba(191,95,255,.12);transition:transform .08s;text-align:center">
+          <div style="font-size:34px;line-height:1">🧪</div>
+          <div style="font-size:11px;font-weight:900;color:#BF5FFF;font-family:var(--mono);letter-spacing:.5px">DNA MIXER</div>
+          <div style="font-size:8px;background:rgba(191,95,255,.18);border:1px solid rgba(191,95,255,.4);border-radius:20px;padding:1px 7px;color:#BF5FFF;font-family:var(--mono)">LAB 🧬</div>
+          <div style="font-size:8px;color:rgba(255,255,255,.45)">+75 XP</div>
         </div>
-        <div style="height:2px;background:linear-gradient(90deg,transparent,rgba(191,95,255,.7),transparent);margin:0 -14px"></div>
-      </div>
-      <!-- FISHING card -->
-      <div onclick="openFishingGame()" ontouchstart="this.style.opacity='.7'" ontouchend="this.style.opacity='1'" style="margin:6px 14px 10px;border-radius:16px;cursor:pointer;-webkit-tap-highlight-color:transparent;background:#080e14;border:2px solid rgba(0,200,255,.6);padding:14px 14px 0;display:flex;flex-direction:column;box-shadow:0 0 18px rgba(0,200,255,.15)">
-        <div style="display:flex;align-items:center;gap:12px;padding-bottom:12px">
-          <div style="width:52px;height:52px;border-radius:14px;background:rgba(0,200,255,.18);border:1px solid rgba(0,200,255,.5);display:flex;align-items:center;justify-content:center;font-size:28px;flex-shrink:0">🎣</div>
+        <!-- FISKESPELET — spans full width -->
+        <div onclick="openFishingGame()" ontouchstart="this.style.transform='scale(.98)'" ontouchend="this.style.transform=''" style="grid-column:1/-1;border-radius:16px;cursor:pointer;-webkit-tap-highlight-color:transparent;background:#080e14;border:2px solid rgba(0,200,255,.6);padding:12px 16px;display:flex;align-items:center;gap:14px;box-shadow:0 0 14px rgba(0,200,255,.12);transition:transform .08s">
+          <div style="font-size:38px;line-height:1;animation:petBob 2.4s ease-in-out infinite">🎣</div>
           <div style="flex:1;min-width:0">
-            <div style="font-size:15px;font-weight:900;color:#00C8FF;font-family:var(--mono);letter-spacing:.5px;margin-bottom:2px">FISKESPELET <span style="font-size:8px;background:rgba(0,200,255,.2);padding:1px 5px;border-radius:6px;color:#00C8FF">ZEN 🌊</span></div>
-            <div style="font-size:9px;color:rgba(255,255,255,.6);line-height:1.4">Kasta · tajma · fånga legendariska fiskar · sätt rekord!</div>
-            <div style="display:flex;gap:5px;margin-top:6px;flex-wrap:wrap">
-              <span style="font-size:8px;font-weight:900;color:#00C8FF;font-family:var(--mono)">FISKE</span>
-              <span style="font-size:8px;color:rgba(255,255,255,.4)">·</span>
-              <span style="font-size:8px;font-weight:900;color:#FFE600" id="fishBestTag">Best: 0 fiskar</span>
-            </div>
+            <div style="font-size:13px;font-weight:900;color:#00C8FF;font-family:var(--mono);letter-spacing:.5px">FISKESPELET <span style="font-size:8px;background:rgba(0,200,255,.18);border:1px solid rgba(0,200,255,.4);border-radius:20px;padding:1px 6px;color:#00C8FF">ZEN 🌊</span></div>
+            <div style="font-size:9px;color:rgba(255,255,255,.5);margin-top:2px">Kasta · tajma · fånga legendariska fiskar!</div>
+            <div style="font-size:8px;color:rgba(255,255,255,.4);margin-top:3px" id="fishBestTag">Best: 0 fiskar</div>
           </div>
-          <div style="font-size:20px;color:rgba(0,200,255,.8)">›</div>
         </div>
-        <div style="height:2px;background:linear-gradient(90deg,transparent,rgba(0,200,255,.7),transparent);margin:0 -14px"></div>
       </div>
-      <!-- DAILY REWARD BUTTON -->
+            <!-- DAILY REWARD BUTTON -->
       <div style="margin:4px 14px 8px;display:flex;gap:8px">
         <button onclick="showDailyRewardModal(parseInt(localStorage.getItem('kv8_rewardDay')||'1'))" style="flex:1;background:linear-gradient(135deg,rgba(255,215,0,.15),rgba(255,159,10,.1));border:1px solid rgba(255,215,0,.4);border-radius:14px;padding:12px;cursor:pointer;color:#FFD700;font-size:13px;font-weight:900;font-family:var(--mono)">🎁 DAGLIG BELÖNING</button>
       </div>
@@ -4542,26 +4498,38 @@ div[style*="LIVE"]{border-radius:16px!important;background:rgba(57,255,20,.03)!i
     </div>
   </div>
 
-  <!-- Form Switch + Combo -->
-  <div class="td-actions">
-    <div class="td-combo-bar">
-      <div class="td-combo-label">COMBO</div>
-      <div class="td-combo-count" id="tdComboCount">0x</div>
-      <div class="td-combo-meter"><div id="tdComboFill" style="width:0%"></div></div>
+  <!-- WC3 Tower Defense Controls -->
+  <div class="td-actions" id="tdActions">
+    <div class="td-gold-bar">
+      <span class="td-gold-lbl">💰 GOLD</span>
+      <span class="td-gold-amt" id="tdGoldAmt">150</span>
+      <span class="td-wave-info" id="tdWaveInfo">WAVE 1/10</span>
     </div>
-    <div class="td-form-row" id="tdFormRow">
-      <button class="td-form-btn magic" id="tdFormMagic" onclick="tdSwitchForm('magic')">
-        <span class="tf-ico">✨</span><span class="tf-nm">MAGIC</span>
+    <div class="td-tower-row">
+      <button class="td-tower-btn" id="tdTBArcher" onclick="tdSelectTower('archer')">
+        <span class="tt-ico">🏹</span><span class="tt-nm">ARCHER</span><span class="tt-cost">50g</span>
       </button>
-      <button class="td-form-btn rage" id="tdFormRage" onclick="tdSwitchForm('rage')">
-        <span class="tf-ico">🔥</span><span class="tf-nm">RAGE</span>
+      <button class="td-tower-btn" id="tdTBMage" onclick="tdSelectTower('mage')">
+        <span class="tt-ico">🔮</span><span class="tt-nm">MAGE</span><span class="tt-cost">80g</span>
       </button>
-      <button class="td-form-btn shield" id="tdFormShield" onclick="tdSwitchForm('shield')">
-        <span class="tf-ico">🛡️</span><span class="tf-nm">SHIELD</span>
+      <button class="td-tower-btn" id="tdTBTesla" onclick="tdSelectTower('tesla')">
+        <span class="tt-ico">⚡</span><span class="tt-nm">TESLA</span><span class="tt-cost">100g</span>
       </button>
-      <button class="td-form-btn speed" id="tdFormSpeed" onclick="tdSwitchForm('speed')">
-        <span class="tf-ico">⚡</span><span class="tf-nm">SPEED</span>
+      <button class="td-tower-btn" id="tdTBCannon" onclick="tdSelectTower('cannon')">
+        <span class="tt-ico">💣</span><span class="tt-nm">CANNON</span><span class="tt-cost">120g</span>
       </button>
+    </div>
+    <div class="td-sell-panel" id="tdSellPanel" style="display:none">
+      <div class="td-sell-info">
+        <span id="tdSellName">🏹 ARCHER</span>
+        <span id="tdSellLevel">Lv1</span>
+        <span id="tdSellDps">DPS: 27</span>
+      </div>
+      <div class="td-sell-actions">
+        <button class="td-upg-btn" id="tdUpgBtn" onclick="tdUpgradeSelected()">⬆️ UPGRADE <span id="tdUpgCost">75g</span></button>
+        <button class="td-sell-btn" onclick="tdSellSelected()">💰 SELL <span id="tdSellAmt">25g</span></button>
+        <button class="td-sell-close" onclick="tdDeselectTower()">✕</button>
+      </div>
     </div>
   </div>
 
@@ -5221,74 +5189,214 @@ function updateComboMeter(n){
   else m.classList.remove('show');
 }
 
-// ── PET TOWER DEFENSE ──
-// "Your pet IS the tower." Player's pet sits at a fixed defense point along
-// a path; enemy waves walk toward the base. Player taps to shift the pet's
-// elemental combat FORM in real time (magic/rage/shield/speed) to exploit
-// each enemy's visible weakness tag. Switching forms has a short cooldown
-// + stun window so spam-switching doesn't trivialize the skill check.
+// ── PET TOWER DEFENSE — WC3/Bloons style ──
+// Place towers on a grid, earn gold from kills, upgrade them, survive 10 waves.
+
+const TD_COLS=6,TD_ROWS=8;
+const TD_PATH=[[0,1],[5,1],[5,3],[0,3],[0,5],[5,5],[5,7]]; // snake waypoints [col,row]
+let _tdCell=60; // px per cell — set dynamically in tdInitCanvas
 
 const TD_ENEMIES=[
-  {id:'pixel',em:'👾',name:'PIXEL BEAST',weakness:'magic',hp:26,speed:0.55,dmgToBase:8,reward:{xp:4,coins:3}},
-  {id:'cyborg',em:'🤖',name:'CYBER BOT',weakness:'rage',hp:34,speed:0.5,dmgToBase:10,reward:{xp:5,coins:4}},
-  {id:'imp',em:'👹',name:'SHADOW IMP',weakness:'magic',hp:30,speed:0.7,dmgToBase:8,reward:{xp:4,coins:3}},
-  {id:'golem',em:'🪨',name:'STONE GOLEM',weakness:'rage',hp:55,speed:0.35,dmgToBase:14,reward:{xp:7,coins:5}},
-  {id:'wisp',em:'👻',name:'VOID WISP',weakness:'magic',hp:22,speed:0.95,dmgToBase:6,reward:{xp:4,coins:3}},
-  {id:'brute',em:'😈',name:'KARMA BRUTE',weakness:'rage',hp:48,speed:0.45,dmgToBase:12,reward:{xp:6,coins:5}},
+  {id:'grunt',  em:'👾',name:'GRUNT',      weakness:'archer', hp:28, speed:1.0, gold:8,  reward:{xp:4,coins:3}},
+  {id:'mech',   em:'🤖',name:'MECH',       weakness:'tesla',  hp:40, speed:0.85,gold:10, reward:{xp:5,coins:4}},
+  {id:'imp',    em:'👹',name:'IMP',        weakness:'mage',   hp:32, speed:1.25,gold:8,  reward:{xp:4,coins:3}},
+  {id:'golem',  em:'🪨',name:'GOLEM',      weakness:'cannon', hp:70, speed:0.55,gold:14, reward:{xp:7,coins:5}},
+  {id:'wisp',   em:'👻',name:'WISP',       weakness:'mage',   hp:24, speed:1.6, gold:8,  reward:{xp:4,coins:3}},
+  {id:'brute',  em:'😈',name:'BRUTE',      weakness:'cannon', hp:58, speed:0.7, gold:12, reward:{xp:6,coins:5}},
+  {id:'shield', em:'🛡️',name:'SHIELDBOT', weakness:'cannon', hp:80, speed:0.65,gold:16, reward:{xp:8,coins:6},armor:'tesla'},
+  {id:'speeder',em:'💨',name:'SPEEDER',    weakness:'archer', hp:18, speed:2.2, gold:8,  reward:{xp:4,coins:3}},
 ];
 const TD_BOSSES=[
-  {id:'dragon',em:'🐲',name:'SHADOW DRAGON',weakness:'magic',hp:260,speed:0.32,dmgToBase:28,reward:{xp:40,coins:30}},
-  {id:'skull',em:'💀',name:'SKULL LORD',weakness:'rage',hp:340,speed:0.3,dmgToBase:32,reward:{xp:55,coins:42}},
-  {id:'thunder',em:'⚡',name:'THUNDER GOD',weakness:'magic',hp:420,speed:0.34,dmgToBase:38,reward:{xp:75,coins:58}},
+  {id:'dragon',em:'🐲',name:'SHADOW DRAGON',weakness:'mage',  hp:320,speed:0.5, gold:80, reward:{xp:50,coins:40},isBoss:true},
+  {id:'skull', em:'💀',name:'SKULL LORD',   weakness:'archer',hp:420,speed:0.45,gold:100,reward:{xp:65,coins:50},isBoss:true},
+  {id:'titan', em:'🗿',name:'STONE TITAN',  weakness:'cannon',hp:560,speed:0.4, gold:130,reward:{xp:90,coins:70},isBoss:true},
 ];
-
-// Pet combat forms — vocabulary reused from the old battle weakness tags.
-const TD_FORMS={
-  magic:{ico:'✨',nm:'MAGIC',dmg:14,range:130,fireRate:46,col:'#BF5FFF',weak:'magic',bonusMult:2.2},
-  rage:{ico:'🔥',nm:'RAGE',dmg:22,range:78,fireRate:34,col:'#FF9F0A',weak:'rage',bonusMult:2.2},
-  shield:{ico:'🛡️',nm:'SHIELD',dmg:8,range:95,fireRate:60,col:'#00D9FF',weak:null,bonusMult:1.4,baseArmor:.5},
-  speed:{ico:'⚡',nm:'SPEED',dmg:6,range:105,fireRate:14,col:'#39FF14',weak:null,bonusMult:1.3},
+const TD_TOWER_DEFS={
+  archer:{em:'🏹',nm:'ARCHER', col:'#39FF14',cost:50, range:2.5,dmg:10,rate:22,type:'single',
+    upgrades:[
+      {cost:75, em:'🏹',nm:'ARCHER+', dmg:16,rate:16,desc:'Snabb skytt · +6 dmg'},
+      {cost:110,em:'🏹',nm:'ARCHER++',dmg:16,rate:16,multishot:3,desc:'Multi-shot · träffar 3'},
+    ]},
+  mage:{em:'🔮',nm:'MAGE',  col:'#BF5FFF',cost:80, range:2.0,dmg:22,rate:55,type:'aoe',aoeR:0.9,
+    upgrades:[
+      {cost:100,em:'🔮',nm:'MAGE+',  dmg:30,aoeR:1.5,desc:'Stor explosion · bigger AOE'},
+      {cost:140,em:'🔮',nm:'MAGE++', dmg:30,aoeR:1.5,slow:0.45,slowDur:80,desc:'Frost · saktar 55%'},
+    ]},
+  tesla:{em:'⚡',nm:'TESLA', col:'#00D9FF',cost:100,range:2.5,dmg:14,rate:38,type:'chain',chains:2,
+    upgrades:[
+      {cost:120,em:'⚡',nm:'TESLA+', dmg:20,chains:3,desc:'3 kedjor · +6 dmg'},
+      {cost:160,em:'⚡',nm:'TESLA++',dmg:20,chains:3,stunDur:45,desc:'Stun · 0.75s paralys'},
+    ]},
+  cannon:{em:'💣',nm:'CANNON',col:'#FF9F0A',cost:120,range:2.0,dmg:50,rate:75,type:'impact',impactR:0.8,
+    upgrades:[
+      {cost:150,em:'💣',nm:'CANNON+', dmg:75,impactR:1.4,desc:'Bigger boom · +25 dmg'},
+      {cost:200,em:'💣',nm:'CANNON++',dmg:75,impactR:1.4,knockback:1.2,desc:'Knockback · skjuter tillbaka'},
+    ]},
 };
-const TD_SWITCH_COOLDOWN=26;   // frames the button is locked after a switch
-const TD_SWITCH_STUN=18;       // frames the pet can't fire after switching (skill gate)
-const TD_WAVE_COUNT=8;         // waves per "run" before final victory screen
+const TD_WAVE_COUNT=10;
 
-// ── Global inspectable state (parallel to old _bt) ──
 let _td={
-  active:false,
-  wave:1,
-  baseHp:100,baseMax:100,
-  form:'magic',
-  switchCooldown:0,switchStun:0,
-  enemies:[],          // live enemy instances on the path
-  queue:[],            // upcoming enemy defs not yet spawned this wave
-  spawnTimer:0,
-  combo:0,comboTimer:0,
-  particles:[],         // {x,y,vx,vy,em,life}
-  projectiles:[],        // {x,y,tx,ty,col,life}
-  shakeT:0,
-  petX:0,petY:0,         // pet (tower) fixed position, set on init
-  pathY:0,
-  earnedXp:0,earnedCoins:0,
-  killsThisWave:0,enemiesThisWave:0,
-  raf:null,
-  lastT:0,
-  paused:false,
+  active:false,wave:1,gold:150,baseHp:100,baseMax:100,
+  towers:[],enemies:[],projectiles:[],particles:[],
+  queue:[],spawnTimer:0,killsThisWave:0,enemiesThisWave:0,
+  selectedTowerId:null,placingType:null,
+  shakeT:0,raf:null,lastT:0,paused:false,
+  earnedXp:0,earnedCoins:0,_pathCells:null,
 };
+
+function tdPathCells(){
+  if(_td._pathCells)return _td._pathCells;
+  const s=new Set();
+  for(let i=0;i<TD_PATH.length-1;i++){
+    const[c0,r0]=TD_PATH[i],[c1,r1]=TD_PATH[i+1];
+    if(c0===c1){const mn=Math.min(r0,r1),mx=Math.max(r0,r1);for(let r=mn;r<=mx;r++)s.add(c0+','+r);}
+    else{const mn=Math.min(c0,c1),mx=Math.max(c0,c1);for(let c=mn;c<=mx;c++)s.add(c+','+r0);}
+  }
+  _td._pathCells=s;return s;
+}
+
+function _tdCX(col){return col*_tdCell+_tdCell/2;}
+function _tdCY(row){return row*_tdCell+_tdCell/2;}
+
+function tdSegLen(i){
+  const[c0,r0]=TD_PATH[i],[c1,r1]=TD_PATH[i+1];
+  return(Math.abs(c1-c0)+Math.abs(r1-r0))*_tdCell;
+}
+
+function tdTotalLen(){
+  let t=0;for(let i=0;i<TD_PATH.length-1;i++)t+=tdSegLen(i);return t;
+}
+
+function tdEnemyPos(e){
+  let rem=e.progress;
+  for(let i=0;i<TD_PATH.length-1;i++){
+    const seg=tdSegLen(i);
+    if(rem<seg){
+      const t=rem/seg,[c0,r0]=TD_PATH[i],[c1,r1]=TD_PATH[i+1];
+      return{x:_tdCX(c0)+(_tdCX(c1)-_tdCX(c0))*t,y:_tdCY(r0)+(_tdCY(r1)-_tdCY(r0))*t};
+    }
+    rem-=seg;
+  }
+  const[lc,lr]=TD_PATH[TD_PATH.length-1];return{x:_tdCX(lc),y:_tdCY(lr)};
+}
+
+function tdGetDef(tower){
+  const base=TD_TOWER_DEFS[tower.type];if(!base)return{};
+  let def={...base};
+  for(let i=0;i<tower.level;i++){if(base.upgrades&&base.upgrades[i])Object.assign(def,base.upgrades[i]);}
+  return def;
+}
+
+function tdSafeR(r){return(Number.isFinite(r)&&r>0)?r:0.01;}
+function tdSafeCol(c,fb){return(typeof c==='string'&&c.length>1)?c:(fb||'#fff');}
+
+function tdUpdateGoldUI(){
+  const el=$('tdGoldAmt');if(el)el.textContent=_td.gold;
+  ['archer','mage','tesla','cannon'].forEach(t=>{
+    const btn=$('tdTB'+t.charAt(0).toUpperCase()+t.slice(1));if(!btn)return;
+    const cost=TD_TOWER_DEFS[t]?.cost||999;
+    btn.classList.toggle('disabled',_td.gold<cost);
+    if(t===_td.placingType)btn.classList.add('selected');else btn.classList.remove('selected');
+  });
+}
+
+function tdShowTowerPanel(tower){
+  const panel=$('tdSellPanel');if(!panel)return;
+  if(!tower){panel.style.display='none';return;}
+  const def=tdGetDef(tower);
+  const nm=$('tdSellName');if(nm)nm.textContent=(def.em||'🏰')+' '+(def.nm||'TOWER')+' LV'+(tower.level+1);
+  const lv=$('tdSellLevel');if(lv){const nu=TD_TOWER_DEFS[tower.type]?.upgrades?.[tower.level];lv.textContent=nu?('→ LV'+(tower.level+2)):'MAX';}
+  const dp=$('tdSellDps');if(dp){const dps=((def.dmg||0)/(def.rate||60)*60).toFixed(0);dp.textContent='DPS: '+dps;}
+  const nu=TD_TOWER_DEFS[tower.type]?.upgrades?.[tower.level];
+  const ub=$('tdUpgBtn');const uc=$('tdUpgCost');
+  if(ub){if(nu){ub.style.display='';if(uc)uc.textContent=nu.cost+'g';ub.classList.toggle('disabled',_td.gold<nu.cost);}else ub.style.display='none';}
+  const sa=$('tdSellAmt');if(sa){
+    const base=TD_TOWER_DEFS[tower.type]?.cost||0;
+    let uc2=0;for(let i=0;i<tower.level;i++)uc2+=(TD_TOWER_DEFS[tower.type]?.upgrades?.[i]?.cost||0);
+    sa.textContent=Math.floor((base+uc2)*0.5)+'g';
+  }
+  panel.style.display='';
+}
+
+function tdDeselectTower(){_td.selectedTowerId=null;tdShowTowerPanel(null);tdDraw();}
+
+function tdUpgradeSelected(){
+  if(!_td.selectedTowerId)return;
+  const t=_td.towers.find(t=>t.id===_td.selectedTowerId);if(!t)return;
+  const nu=TD_TOWER_DEFS[t.type]?.upgrades?.[t.level];
+  if(!nu){showT('Tower är redan MAX!','y');return;}
+  if(_td.gold<nu.cost){showT('Inte tillräckligt med gold!','r');return;}
+  _td.gold-=nu.cost;t.level++;t.fireTimer=0;
+  tdUpdateGoldUI();tdShowTowerPanel(t);tdDraw();
+  vibe([10,5,10]);SFX.click&&SFX.click();
+  showT((TD_TOWER_DEFS[t.type]?.upgrades?.[t.level-1]?.nm||'Tower')+' uppgraderat! ⬆️','g');
+}
+
+function tdSellSelected(){
+  if(!_td.selectedTowerId)return;
+  const idx=_td.towers.findIndex(t=>t.id===_td.selectedTowerId);if(idx<0)return;
+  const t=_td.towers[idx];
+  const base=TD_TOWER_DEFS[t.type]?.cost||0;
+  let uc=0;for(let i=0;i<t.level;i++)uc+=(TD_TOWER_DEFS[t.type]?.upgrades?.[i]?.cost||0);
+  const sell=Math.floor((base+uc)*0.5);
+  _td.gold+=sell;_td.towers.splice(idx,1);
+  _td.selectedTowerId=null;tdShowTowerPanel(null);tdUpdateGoldUI();tdDraw();
+  showT('💰 +'+sell+' gold (sold)','y');vibe(15);
+}
+
+function tdSelectTower(type){
+  if(!TD_TOWER_DEFS[type])return;
+  _td.placingType=(_td.placingType===type)?null:type;
+  if(_td.placingType){_td.selectedTowerId=null;tdShowTowerPanel(null);}
+  tdUpdateGoldUI();tdDraw();
+}
+
+function tdPlaceTower(col,row){
+  const type=_td.placingType;if(!type)return;
+  const cost=TD_TOWER_DEFS[type]?.cost||999;
+  if(_td.gold<cost){showT('Behöver '+cost+'g!','r');return;}
+  if(tdPathCells().has(col+','+row)){showT('Kan ej placera på stigen!','r');return;}
+  if(_td.towers.find(t=>t.col===col&&t.row===row)){showT('Redan ett torn här!','r');return;}
+  _td.gold-=cost;
+  _td.towers.push({id:Math.random().toString(36).slice(2),col,row,type,level:0,fireTimer:0,firingT:0});
+  _td.placingType=null;tdUpdateGoldUI();tdDraw();
+  vibe([10,5,15]);SFX.click&&SFX.click();
+}
+
+function tdCanvasTap(evt){
+  evt.preventDefault();
+  const canvas=$('tdCanvas');if(!canvas)return;
+  const r=canvas.getBoundingClientRect();
+  const touch=evt.touches?evt.touches[0]:evt;
+  const x=touch.clientX-r.left,y=touch.clientY-r.top;
+  // Scale from CSS pixels to canvas pixels
+  const scaleX=canvas.width/r.width,scaleY=canvas.height/r.height;
+  const col=Math.floor(x*scaleX/_tdCell),row=Math.floor(y*scaleY/_tdCell);
+  if(col<0||col>=TD_COLS||row<0||row>=TD_ROWS)return;
+  if(_td.placingType){tdPlaceTower(col,row);return;}
+  const hit=_td.towers.find(t=>t.col===col&&t.row===row);
+  if(hit){
+    _td.selectedTowerId=(hit.id===_td.selectedTowerId?null:hit.id);
+    tdShowTowerPanel(_td.selectedTowerId?hit:null);
+  } else {
+    _td.selectedTowerId=null;tdShowTowerPanel(null);
+  }
+  tdDraw();
+}
 
 function openBattle(){
-  _td={
-    active:false,wave:1,baseHp:100,baseMax:100,form:'magic',
-    switchCooldown:0,switchStun:0,enemies:[],queue:[],spawnTimer:0,
-    combo:0,comboTimer:0,particles:[],projectiles:[],shakeT:0,
-    petX:0,petY:0,pathY:0,earnedXp:0,earnedCoins:0,
-    killsThisWave:0,enemiesThisWave:0,raf:null,lastT:0,paused:false,
+  _td={active:false,wave:1,gold:150,baseHp:100,baseMax:100,
+    towers:[],enemies:[],projectiles:[],particles:[],
+    queue:[],spawnTimer:0,killsThisWave:0,enemiesThisWave:0,
+    selectedTowerId:null,placingType:null,
+    shakeT:0,raf:null,lastT:0,paused:false,
+    earnedXp:0,earnedCoins:0,_pathCells:null,
   };
   const _baV=$('baVictory');if(_baV)_baV.style.display='none';
   const _baD=$('baDefeat');if(_baD)_baD.style.display='none';
   if(!$('battleArena')){showT('Tower Defense laddas...','b');return;}
   $('battleArena').classList.add('open');
-  tdInitField();
+  tdInitCanvas();tdUpdateGoldUI();tdUpdateBaseUI();
   tdStartWave();
   SFX.battle&&SFX.battle();vibe([20,10,20]);
 }
@@ -5299,194 +5407,138 @@ function closeBattle(){
   if(_td.raf){cancelAnimationFrame(_td.raf);_td.raf=null;}
 }
 
-function tdInitField(){
+function tdInitCanvas(){
   const canvas=$('tdCanvas');if(!canvas)return;
   const parent=canvas.parentElement;
-  const W=Math.max(parent?parent.offsetWidth:window.innerWidth,200);
-  const H=Math.max(parent?parent.offsetHeight:(window.innerHeight*.5),240);
-  canvas.width=W;canvas.height=H;
-  _td.pathY=H*.55;
-  _td.petX=W*.18;_td.petY=_td.pathY;
-  tdUpdateFormUI();
+  const availW=Math.min(parent?parent.clientWidth:360,480);
+  _tdCell=Math.max(40,Math.floor(availW/TD_COLS));
+  canvas.width=_tdCell*TD_COLS;canvas.height=_tdCell*TD_ROWS;
+  canvas.ontouchstart=tdCanvasTap;canvas.onclick=tdCanvasTap;
+  _td._pathCells=null; // reset cache when cell size changes
 }
 
 function tdEnemyDefForWave(wave){
   const isBoss=wave%5===0;
   if(isBoss){
     const b=TD_BOSSES[Math.min(Math.floor(wave/5)-1,TD_BOSSES.length-1)];
-    return {...b,hp:Math.round(b.hp*(1+(wave-5)*.12)),isBoss:true};
+    return{...b,hp:Math.round(b.hp*(1+(wave-5)*0.12)),isBoss:true};
   }
-  const pool=TD_ENEMIES;
-  const base=pool[Math.floor(Math.random()*pool.length)];
-  const scale=1+(wave-1)*.18;
-  return {...base,hp:Math.max(6,Math.round(base.hp*scale)),speed:Math.min(2.2,base.speed*(1+(wave-1)*.05)),isBoss:false};
+  const base=TD_ENEMIES[Math.floor(Math.random()*TD_ENEMIES.length)];
+  const scale=1+(wave-1)*0.18;
+  return{...base,hp:Math.max(6,Math.round(base.hp*scale)),speed:Math.min(2.5,base.speed*(1+(wave-1)*0.05)),isBoss:false};
 }
 
 function tdStartWave(){
-  const w=_td.wave;
-  const isBoss=w%5===0;
+  const w=_td.wave,isBoss=w%5===0;
   const count=isBoss?1:Math.min(4+Math.floor(w*1.3),18);
-  _td.queue=[];
-  for(let i=0;i<count;i++)_td.queue.push(tdEnemyDefForWave(w));
-  _td.enemies=[];
-  _td.spawnTimer=0;
-  _td.killsThisWave=0;
-  _td.enemiesThisWave=count;
+  _td.queue=[];for(let i=0;i<count;i++)_td.queue.push(tdEnemyDefForWave(w));
+  _td.enemies=[];_td.spawnTimer=0;_td.killsThisWave=0;_td.enemiesThisWave=count;
   _td.active=true;_td.paused=false;
-  $('baVictory').style.display='none';
-  $('baDefeat').style.display='none';
-  const hdrWave=$('baWave');if(hdrWave)hdrWave.textContent=(isBoss?'⚠️ BOSS WAVE ':'WAVE ')+w;
+  const hw=$('baWave');if(hw)hw.textContent=(isBoss?'⚠️ BOSS WAVE ':'WAVE ')+w+'/'+TD_WAVE_COUNT;
+  const wi=$('tdWaveInfo');if(wi)wi.textContent='WAVE '+w+'/'+TD_WAVE_COUNT;
   const wb=$('tdWaveBanner');
-  const big=$('tdWaveBig');if(big)big.textContent=isBoss?'⚠️ BOSS WAVE '+w:'WAVE '+w;
-  const sub=$('tdWaveSub');if(sub)sub.textContent=isBoss?'A powerful foe approaches!':count+' enemies incoming!';
+  const big=$('tdWaveBig');if(big)big.textContent=isBoss?('⚠️ BOSS WAVE '+w):('WAVE '+w);
+  const sub=$('tdWaveSub');if(sub)sub.textContent=isBoss?'A powerful foe approaches!':(count+' enemies incoming!');
   if(wb){wb.classList.remove('show');void wb.offsetWidth;wb.classList.add('show');setTimeout(()=>wb.classList.remove('show'),1800);}
   tdUpdateBaseUI();
   if(!_td.raf){_td.lastT=performance.now();_td.raf=requestAnimationFrame(tdLoop);}
 }
 
-// ── Form switching: the skill-based core loop ──
-function tdSwitchForm(form){
-  if(!TD_FORMS[form])return;
-  if(_td.form===form)return;
-  if(_td.switchCooldown>0){showT('⏳ Formen byter snart redo igen!','y');return;}
-  _td.form=form;
-  _td.switchCooldown=TD_SWITCH_COOLDOWN;
-  _td.switchStun=TD_SWITCH_STUN;
-  tdUpdateFormUI();
-  vibe([15,8,15]);SFX.click&&SFX.click();
-  const lbl=$('tdFormLbl');if(lbl)lbl.textContent=TD_FORMS[form].ico;
-}
-
-function tdUpdateFormUI(){
-  ['magic','rage','shield','speed'].forEach(f=>{
-    const btn=$('tdForm'+f.charAt(0).toUpperCase()+f.slice(1));
-    if(!btn)return;
-    btn.classList.toggle('active',_td.form===f);
-  });
-  const lbl=$('tdFormLbl');if(lbl)lbl.textContent=TD_FORMS[_td.form]?.ico||'✨';
-}
-
-// ── Main loop — defensively guarded so a bad value can never freeze the RAF chain ──
 function tdLoop(t){
   if(!_td.active||_td.paused){_td.raf=null;return;}
   try{
     const dt=Math.min(2.5,Math.max(0,(t-(_td.lastT||t))/16.67));
     _td.lastT=t;
-    tdUpdate(dt);
-    tdDraw();
-  }catch(err){
-    console.error('TD loop error (suppressed to keep RAF alive):',err);
-  }
+    tdUpdate(dt);tdDraw();
+  }catch(err){console.error('TD loop error:',err);}
   _td.raf=requestAnimationFrame(tdLoop);
 }
 
 function tdUpdate(dt){
-  const canvas=$('tdCanvas');if(!canvas)return;
-  const W=canvas.width,H=canvas.height;
-  // Cooldown / stun countdown
-  if(_td.switchCooldown>0)_td.switchCooldown=Math.max(0,_td.switchCooldown-dt);
-  if(_td.switchStun>0)_td.switchStun=Math.max(0,_td.switchStun-dt);
-  if(_td.comboTimer>0){_td.comboTimer=Math.max(0,_td.comboTimer-dt);if(_td.comboTimer<=0)_td.combo=0;}
-  tdUpdateFormCdUI();
-
-  // Spawn enemies from queue
-  _td.spawnTimer-=dt;
-  if(_td.spawnTimer<=0&&_td.queue.length>0){
-    const def=_td.queue.shift();
-    const startX=W+40;
-    _td.enemies.push({
-      ...def,maxHp:def.hp,x:startX,y:_td.pathY+(Math.random()*16-8),
-      hitFlash:0,id:Math.random().toString(36).slice(2),
-    });
-    _td.spawnTimer=def.isBoss?0:Math.max(18,46-_td.wave);
-  }
-
-  // Move enemies toward base (left side); deal dmg + despawn on reaching it
-  const baseX=Math.max(10,_td.petX-60);
+  const totalLen=tdTotalLen();
+  // Move enemies
   for(let i=_td.enemies.length-1;i>=0;i--){
     const e=_td.enemies[i];
-    e.x-=Math.max(.05,e.speed)*dt*1.6;
+    if(e.stunTimer>0){e.stunTimer=Math.max(0,e.stunTimer-dt);continue;}
+    const spd=e.slowTimer>0?e.speed*(e.slowFactor||1):e.speed;
+    e.progress+=Math.max(0.05,spd)*dt*(_tdCell*0.018);
     if(e.hitFlash>0)e.hitFlash=Math.max(0,e.hitFlash-dt);
-    if(e.x<=baseX){
-      _td.baseHp=Math.max(0,_td.baseHp-(e.dmgToBase||5));
-      tdUpdateBaseUI();
-      shakeScreen&&shakeScreen();
-      _td.shakeT=10;
-      vibe(30);
+    if(e.slowTimer>0)e.slowTimer=Math.max(0,e.slowTimer-dt);
+    if(e.progress>=totalLen){
+      _td.baseHp=Math.max(0,_td.baseHp-5);tdUpdateBaseUI();
+      _td.shakeT=10;vibe(30);_td.killsThisWave++;
       _td.enemies.splice(i,1);
-      // Escaped enemies still count toward "resolved" so the wave can clear
-      // even if the player lets some through (they just pay in base HP).
-      _td.killsThisWave++;
       if(_td.baseHp<=0){tdDefeat();return;}
     }
   }
-
-  // Pet tower auto-fires at nearest enemy in range based on current form
-  const form=TD_FORMS[_td.form]||TD_FORMS.magic;
-  _td._fireT=(_td._fireT||0)-dt;
-  const canFire=_td.switchStun<=0;
-  if(canFire&&_td._fireT<=0&&_td.enemies.length>0){
-    // Target the enemy furthest along the path (closest to base) within range
-    let target=null,bestX=-Infinity;
-    for(const e of _td.enemies){
-      const dist=Math.abs(e.x-_td.petX);
-      if(dist<=form.range&&e.x>bestX){bestX=e.x;target=e;}
-    }
-    if(target){
-      const isWeak=form.weak&&target.weakness===form.weak;
-      const dmg=Math.round(form.dmg*(isWeak?form.bonusMult:1)*(1+_td.wave*0.02));
-      target.hp=Math.max(0,target.hp-dmg);
-      target.hitFlash=8;
-      _td.projectiles.push({x:_td.petX,y:_td.petY,tx:target.x,ty:target.y,col:form.col,life:8});
-      tdFloatDmg(dmg,target.x,target.y,isWeak,form.col);
-      if(isWeak){
-        _td.combo++; _td.comboTimer=90;
-        tdWeaknessPayoff();
-        if(_td.combo>0&&_td.combo%5===0){_td.shakeT=8;shakeScreen&&shakeScreen();}
-      } else {
-        _td.combo=Math.max(0,_td.combo);
+  // Spawn
+  _td.spawnTimer-=dt;
+  if(_td.spawnTimer<=0&&_td.queue.length>0){
+    const def=_td.queue.shift();
+    _td.enemies.push({...def,maxHp:def.hp,progress:0,hitFlash:0,stunTimer:0,slowTimer:0,slowFactor:1,id:Math.random().toString(36).slice(2)});
+    _td.spawnTimer=def.isBoss?0:Math.max(18,50-_td.wave*3);
+  }
+  // Towers fire
+  for(const tower of _td.towers){
+    tower.fireTimer=Math.max(0,(tower.fireTimer||0)-dt);
+    if(tower.fireTimer>0)continue;
+    const def=tdGetDef(tower);if(!def||!def.range)continue;
+    const rangePx=def.range*_tdCell;
+    const tx=_tdCX(tower.col),ty=_tdCY(tower.row);
+    const inRange=_td.enemies.filter(e=>{const{x,y}=tdEnemyPos(e);return Math.hypot(x-tx,y-ty)<=rangePx;}).sort((a,b)=>b.progress-a.progress);
+    if(!inRange.length)continue;
+    const tType=def.type||'single';
+    const primary=inRange[0];
+    if(tType==='aoe'){
+      const{x:px,y:py}=tdEnemyPos(primary);const aR=(def.aoeR||0.9)*_tdCell;
+      _td.projectiles.push({x:tx,y:ty,tx:px,ty:py,col:def.col||'#BF5FFF',life:8,aoe:aR});
+      for(const e of _td.enemies){const{x,y}=tdEnemyPos(e);if(Math.hypot(x-px,y-py)<=aR){const iw=e.weakness===tower.type;const dmg=Math.round((def.dmg||22)*(iw?1.9:1)*(1+_td.wave*0.02));tdHitEnemy(e,dmg,tower.type);if(def.slow&&def.slowDur){e.slowTimer=def.slowDur;e.slowFactor=1-def.slow;}}}
+    } else if(tType==='impact'){
+      const{x:px,y:py}=tdEnemyPos(primary);const iR=(def.impactR||0.8)*_tdCell;
+      _td.projectiles.push({x:tx,y:ty,tx:px,ty:py,col:def.col||'#FF9F0A',life:8});
+      for(const e of _td.enemies){const{x,y}=tdEnemyPos(e);if(Math.hypot(x-px,y-py)<=iR){const iw=e.weakness===tower.type;const dmg=Math.round((def.dmg||50)*(iw?1.9:1)*(1+_td.wave*0.02));tdHitEnemy(e,dmg,tower.type);if(def.knockback&&e.progress>0)e.progress=Math.max(0,e.progress-def.knockback*_tdCell*0.3);}}
+    } else {
+      const shots=def.multishot||1;
+      inRange.slice(0,shots).forEach(target=>{
+        const iw=target.weakness===tower.type;
+        const dmg=Math.round((def.dmg||10)*(iw?1.9:1)*(1+_td.wave*0.02));
+        if(target.armor===tower.type)tdHitEnemy(target,Math.floor(dmg*0.3),tower.type);else tdHitEnemy(target,dmg,tower.type);
+        const{x:ex,y:ey}=tdEnemyPos(target);
+        _td.projectiles.push({x:tx,y:ty,tx:ex,ty:ey,col:def.col||'#fff',life:6});
+        if(iw)tdWeaknessPayoff();
+      });
+      if(tType==='chain'&&(def.chains||1)>1){
+        const chained=inRange.slice(shots,shots+(def.chains||1)-1);
+        const{x:ex,y:ey}=tdEnemyPos(primary);
+        chained.forEach(ch=>{const iw=ch.weakness===tower.type;const dmg=Math.round((def.dmg||10)*0.6*(iw?1.9:1));tdHitEnemy(ch,dmg,tower.type);const{x:cx,y:cy}=tdEnemyPos(ch);_td.projectiles.push({x:ex,y:ey,tx:cx,ty:cy,col:def.col||'#00D9FF',life:5});if(def.stunDur&&Math.random()<0.3)ch.stunTimer=(ch.stunTimer||0)+def.stunDur;});
       }
-      tdUpdateComboUI();
-      if(target.hp<=0){
-        tdKillEnemy(target);
-      }
-      _td._fireT=Math.max(4,form.fireRate*(1-Math.min(.4,_td.wave*0.01)));
     }
+    tower.fireTimer=def.rate||30;tower.firingT=8;
   }
-
-  // Particles
-  for(let i=_td.particles.length-1;i>=0;i--){
-    const p=_td.particles[i];
-    p.x+=p.vx*dt;p.y+=p.vy*dt;p.vy+=0.12*dt;p.life-=dt;
-    if(p.life<=0)_td.particles.splice(i,1);
-  }
-  // Projectiles
-  for(let i=_td.projectiles.length-1;i>=0;i--){
-    const pr=_td.projectiles[i];pr.life-=dt;if(pr.life<=0)_td.projectiles.splice(i,1);
-  }
+  for(const t of _td.towers)if(t.firingT>0)t.firingT=Math.max(0,t.firingT-dt);
+  // Decay
+  for(let i=_td.projectiles.length-1;i>=0;i--){_td.projectiles[i].life-=dt;if(_td.projectiles[i].life<=0)_td.projectiles.splice(i,1);}
+  for(let i=_td.particles.length-1;i>=0;i--){const p=_td.particles[i];p.x+=p.vx*dt;p.y+=p.vy*dt;p.vy+=0.12*dt;p.life-=dt;if(p.life<=0)_td.particles.splice(i,1);}
   if(_td.shakeT>0)_td.shakeT=Math.max(0,_td.shakeT-dt);
+  // Wave clear
+  if(_td.active&&_td.queue.length===0&&_td.enemies.length===0&&_td.killsThisWave>=_td.enemiesThisWave)tdWaveClear();
+}
 
-  // Wave clear check
-  if(_td.active&&_td.queue.length===0&&_td.enemies.length===0&&_td.killsThisWave>=_td.enemiesThisWave){
-    tdWaveClear();
-  }
+function tdHitEnemy(e,dmg,tType){
+  e.hp=Math.max(0,e.hp-dmg);e.hitFlash=8;
+  if(e.hp<=0)tdKillEnemy(e);
 }
 
 function tdKillEnemy(e){
-  _td.killsThisWave++;
-  _td.earnedXp+=(e.reward?.xp||3);
-  _td.earnedCoins+=(e.reward?.coins||2);
-  tdSpawnParticles(e.x,e.y,e.isBoss?'stars':'hearts');
+  _td.killsThisWave++;_td.gold+=(e.gold||8);
+  _td.earnedXp+=(e.reward?.xp||3);_td.earnedCoins+=(e.reward?.coins||2);
+  const{x,y}=tdEnemyPos(e);
+  const canvas=$('tdCanvas');
+  if(canvas){const r=canvas.getBoundingClientRect();floatNum&&floatNum('⚡+'+(e.gold||8)+'g',r.left+x*r.width/canvas.width,r.top+y*r.height/canvas.height,'#FFD700',16);}
+  for(let i=0;i<(e.isBoss?12:5);i++)_td.particles.push({x,y,vx:(Math.random()-.5)*3,vy:(Math.random()-1)*3,col:e.isBoss?'#FFD700':'#FF007F',r:e.isBoss?4:2,life:e.isBoss?20:12});
   const idx=_td.enemies.indexOf(e);if(idx>=0)_td.enemies.splice(idx,1);
   if(e.isBoss){_td.shakeT=14;shakeScreen&&shakeScreen();vibe([40,20,80,20,120]);}
-}
-
-function tdFloatDmg(dmg,gx,gy,isWeak,col){
-  const canvas=$('tdCanvas');if(!canvas)return;
-  const r=canvas.getBoundingClientRect();
-  const safeX=Number.isFinite(gx)?gx:0,safeY=Number.isFinite(gy)?gy:0;
-  const screenX=r.left+safeX,screenY=r.top+safeY;
-  floatNum&&floatNum((isWeak?'⚡':'')+dmg,screenX,screenY,isWeak?(col||'#FFE600'):'var(--t1)',isWeak?20:14);
+  tdUpdateGoldUI();
 }
 
 function tdWeaknessPayoff(){
@@ -5495,49 +5547,10 @@ function tdWeaknessPayoff(){
   clearTimeout(el._t);el._t=setTimeout(()=>el.classList.remove('show'),550);
 }
 
-function tdSpawnParticles(gx,gy,type){
-  const canvas=$('tdCanvas');if(!canvas)return;
-  const r=canvas.getBoundingClientRect();
-  const safeX=Number.isFinite(gx)?gx:0,safeY=Number.isFinite(gy)?gy:0;
-  spawnParticles&&spawnParticles(r.left+safeX,r.top+safeY,type||'hearts');
-}
-
-function tdUpdateFormCdUI(){
-  ['magic','rage','shield','speed'].forEach(f=>{
-    const btn=$('tdForm'+f.charAt(0).toUpperCase()+f.slice(1));
-    if(!btn)return;
-    let cdEl=btn.querySelector('.tf-cd');
-    const showCd=_td.form!==f&&_td.switchCooldown>0;
-    if(showCd){
-      if(!cdEl){cdEl=document.createElement('span');cdEl.className='tf-cd';btn.appendChild(cdEl);}
-      cdEl.textContent=Math.ceil(_td.switchCooldown/12);
-    } else if(cdEl){
-      cdEl.remove();
-    }
-    btn.classList.toggle('stunned',_td.form===f&&_td.switchStun>0);
-  });
-}
-
-function tdUpdateComboUI(){
-  const cc=$('tdComboCount');if(cc)cc.textContent=_td.combo+'x';
-  const cf=$('tdComboFill');if(cf)cf.style.width=Math.min(100,_td.combo*8)+'%';
-}
-
 function tdUpdateBaseUI(){
   const pct=Math.max(0,Math.min(100,(_td.baseHp/_td.baseMax)*100));
-  const f=$('tdBaseHpFill');
-  if(f){f.style.width=pct+'%';f.style.background=pct>50?'var(--g)':pct>20?'var(--y)':'var(--r)';}
+  const f=$('tdBaseHpFill');if(f){f.style.width=pct+'%';f.style.background=pct>50?'var(--g)':pct>20?'var(--y)':'var(--r)';}
   const n=$('tdBaseHpNum');if(n)n.textContent=Math.round(_td.baseHp)+'/'+_td.baseMax;
-}
-
-// ── Drawing (canvas for shapes/path, HTML overlay for ALL emoji — iOS safe) ──
-function tdSafeRadius(r){
-  if(!Number.isFinite(r)||r<=0)return 0.01;
-  return r;
-}
-function tdSafeColor(c,fallback){
-  if(typeof c==='string'&&c.length>0&&/^(#|rgb|rgba|hsl|hsla)/.test(c))return c;
-  return fallback||'#ffffff';
 }
 
 function tdDraw(){
@@ -5545,140 +5558,108 @@ function tdDraw(){
   const ctx=canvas.getContext('2d');if(!ctx)return;
   const W=canvas.width,H=canvas.height;
   if(!Number.isFinite(W)||!Number.isFinite(H)||W<=0||H<=0)return;
-  ctx.clearRect(0,0,W,H);
-  ctx.save();
-  // Screen shake
-  if(_td.shakeT>0){
-    const sx=(Math.random()-.5)*Math.min(8,_td.shakeT);
-    const sy=(Math.random()-.5)*Math.min(8,_td.shakeT);
-    ctx.translate(sx,sy);
-  }
-  // Path
-  ctx.fillStyle='rgba(255,255,255,.04)';
-  ctx.fillRect(0,Math.max(0,_td.pathY-28),W,56);
-  ctx.strokeStyle='rgba(255,255,255,.08)';
-  ctx.lineWidth=1;
-  ctx.beginPath();ctx.moveTo(0,_td.pathY);ctx.lineTo(W,_td.pathY);ctx.stroke();
-
-  // Pet tower range ring
-  const form=TD_FORMS[_td.form]||TD_FORMS.magic;
-  const rangeR=tdSafeRadius(form.range);
-  try{
-    const grad=ctx.createRadialGradient(_td.petX,_td.petY,0,_td.petX,_td.petY,rangeR);
-    const col=tdSafeColor(form.col,'#BF5FFF');
-    grad.addColorStop(0,col+'22');
-    grad.addColorStop(1,col+'00');
-    ctx.fillStyle=grad;
-    ctx.beginPath();ctx.arc(_td.petX,_td.petY,rangeR,0,Math.PI*2);ctx.fill();
-  }catch(e){/* never let a bad gradient kill the loop */}
-
-  // Enemy HP bars (canvas — simple rects, no emoji)
-  _td.enemies.forEach(e=>{
-    const w=30,h=4;
-    const hpPct=Math.max(0,Math.min(1,e.hp/Math.max(1,e.maxHp)));
-    ctx.fillStyle='rgba(0,0,0,.6)';
-    ctx.fillRect(e.x-w/2,e.y-30,w,h);
-    ctx.fillStyle=hpPct>.5?'#39FF14':hpPct>.2?'#FFE600':'#FF2D55';
-    ctx.fillRect(e.x-w/2,e.y-30,Math.max(0,w*hpPct),h);
-    if(e.hitFlash>0){
-      ctx.fillStyle='rgba(255,255,255,'+Math.min(.5,e.hitFlash/8*.5).toFixed(2)+')';
-      ctx.beginPath();ctx.arc(e.x,e.y,tdSafeRadius(20),0,Math.PI*2);ctx.fill();
+  ctx.clearRect(0,0,W,H);ctx.save();
+  if(_td.shakeT>0)ctx.translate((Math.random()-.5)*Math.min(8,_td.shakeT),(Math.random()-.5)*Math.min(8,_td.shakeT));
+  // Grid
+  ctx.strokeStyle='rgba(255,255,255,.06)';ctx.lineWidth=1;
+  for(let c=0;c<=TD_COLS;c++){ctx.beginPath();ctx.moveTo(c*_tdCell,0);ctx.lineTo(c*_tdCell,H);ctx.stroke();}
+  for(let r=0;r<=TD_ROWS;r++){ctx.beginPath();ctx.moveTo(0,r*_tdCell);ctx.lineTo(W,r*_tdCell);ctx.stroke();}
+  // Path cells highlight
+  tdPathCells().forEach(key=>{const[c,r]=key.split(',').map(Number);ctx.fillStyle='rgba(255,200,0,.07)';ctx.fillRect(c*_tdCell,r*_tdCell,_tdCell,_tdCell);});
+  // Path line
+  ctx.strokeStyle='rgba(255,200,0,.3)';ctx.lineWidth=3;ctx.setLineDash([8,6]);
+  ctx.beginPath();TD_PATH.forEach(([c,r],i)=>{const x=_tdCX(c),y=_tdCY(r);i===0?ctx.moveTo(x,y):ctx.lineTo(x,y);});ctx.stroke();ctx.setLineDash([]);
+  // Placing overlay
+  if(_td.placingType){{ctx.fillStyle='rgba(255,215,0,.05)';ctx.fillRect(0,0,W,H);}}
+  // Selected tower range
+  if(_td.selectedTowerId){
+    const sel=_td.towers.find(t=>t.id===_td.selectedTowerId);
+    if(sel){
+      const def=tdGetDef(sel);const rx=_tdCX(sel.col),ry=_tdCY(sel.row);const rp=tdSafeR((def.range||2)*_tdCell);
+      try{const g=ctx.createRadialGradient(rx,ry,0,rx,ry,rp);const col=tdSafeCol(def.col,'#fff');g.addColorStop(0,col+'22');g.addColorStop(1,col+'00');ctx.fillStyle=g;ctx.beginPath();ctx.arc(rx,ry,rp,0,Math.PI*2);ctx.fill();}catch(e){}
+      ctx.strokeStyle=tdSafeCol(def.col,'#fff')+'88';ctx.lineWidth=1.5;ctx.setLineDash([4,4]);ctx.beginPath();ctx.arc(rx,ry,rp,0,Math.PI*2);ctx.stroke();ctx.setLineDash([]);
     }
+  }
+  // Enemy HP bars + effects
+  _td.enemies.forEach(e=>{
+    const{x,y}=tdEnemyPos(e);const w=28,h=4,hp=Math.max(0,Math.min(1,e.hp/Math.max(1,e.maxHp)));
+    ctx.fillStyle='rgba(0,0,0,.6)';ctx.fillRect(x-w/2,y-26,w,h);
+    ctx.fillStyle=hp>.5?'#39FF14':hp>.2?'#FFE600':'#FF2D55';ctx.fillRect(x-w/2,y-26,Math.max(0,w*hp),h);
+    if(e.hitFlash>0){ctx.fillStyle='rgba(255,255,255,'+Math.min(.5,e.hitFlash/8*.5).toFixed(2)+')';ctx.beginPath();ctx.arc(x,y,tdSafeR(e.isBoss?26:14),0,Math.PI*2);ctx.fill();}
+    if(e.slowTimer>0){ctx.strokeStyle='rgba(0,150,255,.6)';ctx.lineWidth=2;ctx.beginPath();ctx.arc(x,y,tdSafeR(e.isBoss?26:15),0,Math.PI*2);ctx.stroke();}
+    if(e.stunTimer>0){ctx.strokeStyle='rgba(255,255,0,.7)';ctx.lineWidth=2;ctx.setLineDash([3,3]);ctx.beginPath();ctx.arc(x,y,tdSafeR(e.isBoss?28:17),0,Math.PI*2);ctx.stroke();ctx.setLineDash([]);}
   });
-
   // Projectiles
   _td.projectiles.forEach(pr=>{
-    ctx.strokeStyle=tdSafeColor(pr.col,'#fff');
-    ctx.lineWidth=2;
-    ctx.beginPath();ctx.moveTo(pr.x,pr.y);ctx.lineTo(pr.tx,pr.ty);ctx.stroke();
+    if(pr.aoe){ctx.strokeStyle=tdSafeCol(pr.col,'#BF5FFF')+'66';ctx.lineWidth=1.5;ctx.beginPath();ctx.arc(pr.tx,pr.ty,tdSafeR(pr.aoe),0,Math.PI*2);ctx.stroke();}
+    ctx.strokeStyle=tdSafeCol(pr.col,'#fff');ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(pr.x,pr.y);ctx.lineTo(pr.tx,pr.ty);ctx.stroke();
   });
-
-  // Particles (small dots; emoji particles handled by spawnParticles' own DOM nodes)
-  _td.particles.forEach(p=>{
-    ctx.fillStyle=tdSafeColor(p.col,'#fff');
-    ctx.beginPath();ctx.arc(p.x,p.y,tdSafeRadius(p.r||2),0,Math.PI*2);ctx.fill();
-  });
-
+  // Particles
+  _td.particles.forEach(p=>{ctx.fillStyle=tdSafeCol(p.col,'#FF007F');ctx.beginPath();ctx.arc(p.x,p.y,tdSafeR(p.r||2),0,Math.PI*2);ctx.fill();});
   ctx.restore();
-
-  // ── HTML emoji overlay — iOS Safari cannot render emoji via ctx.fillText ──
-  const ov=$('tdEmojiOv');
-  if(ov){
-    const petGlow=form.col;
-    let html=`<div style="position:absolute;left:${Math.round(_td.petX)}px;top:${Math.round(_td.petY)}px;transform:translate(-50%,-50%);font-size:42px;line-height:1;filter:drop-shadow(0 0 14px ${petGlow})">${G.petEmoji||'🐉'}</div>`;
-    _td.enemies.forEach(e=>{
-      const bump=e.hitFlash>0?'scale(1.2)':'scale(1)';
-      html+=`<div style="position:absolute;left:${Math.round(e.x)}px;top:${Math.round(e.y)}px;transform:translate(-50%,-50%) ${bump};font-size:${e.isBoss?40:28}px;line-height:1;transition:transform .08s">${e.em||'👾'}</div>`;
-      const wcol=TD_FORMS[e.weakness]?.col||'#FFE600';
-      const wname=(e.weakness||'').toUpperCase();
-      if(wname){
-        html+=`<div class="td-weak-tag" style="left:${Math.round(e.x)}px;top:${Math.round(e.y-34)}px;color:${wcol}">WEAK: ${TD_FORMS[e.weakness]?.ico||'⚡'} ${wname}</div>`;
-      }
-    });
-    ov.innerHTML=html;
-  }
+  // ── HTML emoji overlay (iOS: never ctx.fillText for emoji) ──
+  const ov=$('tdEmojiOv');if(!ov)return;
+  // Keep overlay height in sync with canvas logical height
+  ov.style.height=H+'px';
+  const scX=canvas.offsetWidth/W||1,scY=canvas.offsetHeight/H||1;
+  let html='';
+  _td.towers.forEach(tower=>{
+    const def=tdGetDef(tower);const x=_tdCX(tower.col)*scX,y=_tdCY(tower.row)*scY;
+    const firing=tower.firingT>0,sel=tower.id===_td.selectedTowerId;
+    const sz=sel?Math.round(_tdCell*.55):Math.round(_tdCell*.42);
+    html+='<div style="position:absolute;left:'+Math.round(x)+'px;top:'+Math.round(y)+'px;transform:translate(-50%,-50%) scale('+( firing?1.25:1)+');font-size:'+sz+'px;line-height:1;filter:'+( sel?'drop-shadow(0 0 8px '+tdSafeCol(def.col,'#fff')+')':' none')+';transition:transform .08s">'+( def.em||'🏰')+'</div>';
+    if(sel)html+='<div style="position:absolute;left:'+Math.round(x)+'px;top:'+Math.round(y-_tdCell*.4*scY)+'px;transform:translateX(-50%);font-size:7px;font-weight:900;font-family:var(--mono);color:'+tdSafeCol(def.col,'#fff')+';white-space:nowrap;letter-spacing:.5px">'+( def.nm||'')+'</div>';
+  });
+  _td.enemies.forEach(e=>{
+    const{x,y}=tdEnemyPos(e);const ex=x*scX,ey=y*scY;
+    const bump=e.hitFlash>0?'scale(1.25)':' scale(1)';
+    const sz=e.isBoss?Math.round(_tdCell*.58):Math.round(_tdCell*.4);
+    html+='<div style="position:absolute;left:'+Math.round(ex)+'px;top:'+Math.round(ey)+'px;transform:translate(-50%,-50%) '+bump+';font-size:'+sz+'px;line-height:1;transition:transform .08s">'+( e.em||'👾')+'</div>';
+    const wCol=TD_TOWER_DEFS[e.weakness]?.col||'#FFE600';
+    html+='<div style="position:absolute;left:'+Math.round(ex)+'px;top:'+Math.round(ey-28*scY)+'px;transform:translateX(-50%);font-size:8px;font-weight:900;font-family:var(--mono);color:'+wCol+';white-space:nowrap;text-shadow:0 0 5px '+wCol+'">▼'+( e.weakness||'')+'</div>';
+  });
+  ov.innerHTML=html;
 }
 
-// ── Wave clear / victory / defeat ──
 function tdWaveClear(){
-  _td.active=false;
-  const isFinal=_td.wave>=TD_WAVE_COUNT;
-  $('baVictory').style.display='flex';
-  $('baVicEnemy').textContent=(isFinal?'Alla waves klarade!':'Wave '+_td.wave+' klarad!');
-  const rewards=$('baRewards');
-  if(rewards){
-    rewards.innerHTML=`
-      <div class="ba-reward-chip">+${_td.earnedXp} XP</div>
-      <div class="ba-reward-chip" style="animation-delay:.2s;color:var(--y)">+${_td.earnedCoins} ⚡</div>
-      ${_td.combo>=5?`<div class="ba-reward-chip" style="animation-delay:.3s;color:var(--pk)">🔥 COMBO BONUS!</div>`:''}
-      ${isFinal?`<div class="ba-reward-chip" style="animation-delay:.5s;color:var(--y);border-color:gold">👑 ALLA WAVES!</div>`:''}
-    `;
-  }
-  const btn=$('baContBtn');
-  if(btn){
-    if(isFinal){btn.textContent='🏆 AVSLUTA';btn.onclick=()=>{tdFinalRewards();closeBattle();};}
-    else{btn.textContent='NÄSTA WAVE →';btn.onclick=battleContinue;}
-  }
+  _td.active=false;const isFinal=_td.wave>=TD_WAVE_COUNT;
+  const v=$('baVictory');if(v)v.style.display='flex';
+  const ve=$('baVicEnemy');if(ve)ve.textContent=isFinal?('Alla '+TD_WAVE_COUNT+' waves klarade!'):('Wave '+_td.wave+' klarad!');
+  const rw=$('baRewards');
+  if(rw)rw.innerHTML='<div class="ba-reward-chip">+'+_td.earnedXp+' XP</div><div class="ba-reward-chip" style="animation-delay:.2s;color:var(--y)">+'+_td.earnedCoins+' ⚡</div>'+(isFinal?'<div class="ba-reward-chip" style="animation-delay:.4s;color:#FFD700;border-color:gold">👑 ALLA WAVES!</div>':'')+'';
+  const btn=$('baContBtn');if(btn){if(isFinal){btn.textContent='🏆 AVSLUTA';btn.onclick=()=>{tdFinalRewards();closeBattle();};}else{btn.textContent='NÄSTA WAVE →';btn.onclick=battleContinue;}}
   SFX.win&&SFX.win();vibe([30,20,100,20,80]);
-  tdSpawnParticles(($('tdCanvas')?.width||300)/2,($('tdCanvas')?.height||200)*.4,'stars');
 }
 
 function tdFinalRewards(){
   let xp=_td.earnedXp,coins=_td.earnedCoins;
-  if(G._talentK7a){xp=Math.round(xp*3);coins=Math.round(coins*3);} // Warlord
+  if(G._talentK7a){xp=Math.round(xp*3);coins=Math.round(coins*3);}
   gainXP(xp,'battle');gainCoins(coins);gainKC(Math.floor(Math.random()*10+5),'battle');
   if(G._talentX12){gainCoins(20);showT('🏦 BATTLE TREASURY! +20 coins!','y');}
-  addWorldPoints(Math.floor(_td.wave*10),'battle');
+  addWorldPoints&&addWorldPoints(Math.floor(_td.wave*10),'battle');
   G.battlesWon=(G.battlesWon||0)+1;
-  markBond&&markBond('quest');
-  advanceQuest&&advanceQuest('battle');
+  markBond&&markBond('quest');advanceQuest&&advanceQuest('battle');
   checkAchievements&&checkAchievements();
   save&&save();updateHUD&&updateHUD();
   addDiaryEntry&&addDiaryEntry('Klarade '+_td.wave+' waves i Pet Tower Defense! ⚔️');
-  showT('⚔️ TOWER DEFENSE! +'+xp+' XP · +'+coins+' coins'+(G._talentK7a?' (WARLORD ×3!)':''),'y');
+  showT('⚔️ TOWER DEFENSE! +'+xp+' XP · +'+coins+' coins'+(G._talentK7a?' (WARLORD ×3!)':'')+'','y');
 }
 
 function battleContinue(){
-  $('baVictory').style.display='none';
-  tdFinalRewards();
-  _td.wave++;
-  _td.baseHp=Math.min(_td.baseMax,_td.baseHp+15);
-  _td.earnedXp=0;_td.earnedCoins=0;
-  tdUpdateBaseUI();
-  showT('❤️ Base +15 HP repaired!','g');
-  tdStartWave();
+  const v=$('baVictory');if(v)v.style.display='none';
+  tdFinalRewards();_td.wave++;_td.baseHp=Math.min(_td.baseMax,_td.baseHp+15);
+  _td.earnedXp=0;_td.earnedCoins=0;tdUpdateBaseUI();
+  showT('❤️ Base +15 HP reparerat!','g');tdStartWave();
 }
 
 function battleRetry(){
-  $('baDefeat').style.display='none';
-  _td.baseHp=_td.baseMax;
-  _td.wave=Math.max(1,_td.wave-1);
-  tdUpdateBaseUI();
-  tdStartWave();
+  const d=$('baDefeat');if(d)d.style.display='none';
+  _td.baseHp=_td.baseMax;_td.wave=Math.max(1,_td.wave-1);
+  tdUpdateBaseUI();tdStartWave();
 }
 
 function tdDefeat(){
-  if(G._talentK8b){ // Eternal Knight: never lose battles
+  if(G._talentK8b){
     _td.baseHp=Math.max(1,Math.floor(_td.baseMax*.3));
     showT('⚜️ ETERNAL KNIGHT! Nekad förlust!','y');vibe([20,10,30]);
     tdUpdateBaseUI();return;
@@ -5686,9 +5667,8 @@ function tdDefeat(){
   _td.active=false;
   SFX.error&&SFX.error();vibe([50,30,100]);
   const sub=$('tdDefeatSub');if(sub)sub.textContent='Du klarade dig till wave '+_td.wave+'. Försök igen!';
-  $('baDefeat').style.display='flex';
+  const d=$('baDefeat');if(d)d.style.display='flex';
 }
-
 function addH(t,c='var(--g)'){G.hist.unshift({c,t,time:'just nu'});if(G.hist.length>30)G.hist.pop();}
 function closeModal(id){$(id)&&$(id).classList.remove('open');}
 function openModal(id){$(id)&&$(id).classList.add('open');}
@@ -8994,6 +8974,7 @@ let _fc={
   reel:{angle:0,speed:0,zoneStart:0,zoneSize:1,hitsNeeded:2,hits:0,misfires:0,fish:null,flashT:0,hitFlash:false,missFlash:false},
   raf:null,t:0,
 };
+const _fishState=_fc;
 function _getCurRod(){return FISH_RODS.find(r=>r.id===(G.fishRod||'bamboo'))||FISH_RODS[0];}
 
 // ── Render location chips ──
@@ -9032,7 +9013,7 @@ function _applyLocScene(locId){
   // Weather badge
   const hour=new Date().getHours();const isNight=hour>=22||hour<6;
   const wb=$('fishWeatherBadge');
-  const wth=FISH_WEATHERS[_fishState._weather]||FISH_WEATHERS[0];
+  const wth=FISH_WEATHERS[_fishState.weather]||FISH_WEATHERS[0];
   if(wb)wb.textContent=wth.em+' '+(isNight&&loc.nightBonus?'NATTTID 2x ':'')+(wth.nm);
   // Location scene decorations
   const sceneEl=$('fishLocScene');if(sceneEl){
@@ -9102,7 +9083,7 @@ function _reelUpHook(){
 let _calmFishTimer=null;
 function _calmFishTap(fishEl,ft){
   if(_fishState.phase==='catching')return;
-  _fishState.phase='catching';_fishState._curFish=ft;
+  _fishState.phase='catching';_fishState.curFish=ft;
   if(_calmFishTimer)clearTimeout(_calmFishTimer);
   // Animate fish wiggle
   fishEl.style.transform='scale(1.4)';
@@ -9140,7 +9121,7 @@ function _sfHitFish(ft,fishEl){
   }
   // Rewards
   const rod=_getCurRod();
-  _fishState._combo=(_fishState._combo||0)+1;const combo=_fishState._combo;
+  _fishState.combo=(_fishState.combo||0)+1;const combo=_fishState.combo;
   const comboMult=combo>=8?4:combo>=5?3:combo>=3?2:1;
   // Streak + hot spot
   const streakMult=_sfStreak>=3?2:1;
@@ -9148,7 +9129,7 @@ function _sfHitFish(ft,fishEl){
   const locData=FISH_LOCATIONS.find(l=>l.id===(G.fishLocation||'malaren'))||FISH_LOCATIONS[0];
   const nightMult=isNight&&locData.nightBonus?2:1;
   // Weather
-  const wth=FISH_WEATHERS[_fishState._weather]||FISH_WEATHERS[0];
+  const wth=FISH_WEATHERS[_fishState.weather]||FISH_WEATHERS[0];
   const stormRisk=wth.id==='storm'&&Math.random()<0.15;
   if(stormRisk){
     showT('⛈️ Storm! Fisken rymde!','r');_fishFail();return;
@@ -9179,7 +9160,7 @@ function _sfHitFish(ft,fishEl){
   // Score
   _fishState.score++;
   if(_fishState.score>_fishState.best){_fishState.best=_fishState.score;localStorage.setItem('kv8_fishBest',_fishState.score);}
-  if(_sfStreak>(_fishState._streakRecord||0)){_fishState._streakRecord=_sfStreak;localStorage.setItem('kv8_fishStreak',_sfStreak);}
+  if(_sfStreak>(_fishState.streakRecord||0)){_fishState.streakRecord=_sfStreak;localStorage.setItem('kv8_fishStreak',_sfStreak);}
   // Toast
   const rarityCol=ft.rarity==='mythic'?'p':ft.rarity==='legendary'?'pk':ft.rarity==='epic'?'o':'g';
   const streakMsg=_sfStreak>=3?` 🔥×${_sfStreak}`:'';const nightMsg=nightMult===2?' 🌙×2':'';
@@ -9214,7 +9195,7 @@ function _updateFishStreakBadge(){
     else{badge.style.display='none';}
   }
   if(hotspot){hotspot.style.display=_sfStreak>=3?'block':'none';}
-  const sb=$('fishStreakBadge');if(sb)sb.textContent=_fishState._combo>=3?'🔥 ×'+_fishState._combo+' COMBO':'';
+  const sb=$('fishStreakBadge');if(sb)sb.textContent=_fishState.combo>=3?'🔥 ×'+_fishState.combo+' COMBO':'';
 }
 
 // ── Fångstlåda (Catch Box) ──
