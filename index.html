@@ -6326,7 +6326,7 @@ function updateHUD(){
   $('hCoins').textContent=G.coins.toLocaleString('sv');
   const hkc=$('hKC');if(hkc)hkc.textContent=(G.kc||0).toLocaleString('sv');
   $('hStreak').textContent=G.streak;
-  $('hTrust').textContent=G.trustScore;
+  const hTrust=$('hTrust');if(hTrust)hTrust.textContent=G.trustScore;
   $('gcLbl').textContent=G.coins.toLocaleString('sv');
   const s=gS();
   $('pcEm').textContent=s.e+(G.equippedGear||s.g||'');
@@ -9423,12 +9423,15 @@ function _fcStartReel(fishObj){
     const rBg={ultra:'rgba(255,230,0,.2)',mythic:'rgba(191,95,255,.2)',legendary:'rgba(255,0,127,.2)',epic:'rgba(255,107,0,.2)',rare:'rgba(0,217,255,.2)',uncommon:'rgba(57,255,20,.2)',common:'rgba(255,255,255,.15)'};
     rtag.style.background=rBg[ft.rarity]||'rgba(255,255,255,.15)';rtag.style.color='#fff';rtag.style.borderColor=rC[ft.rarity]||'rgba(255,255,255,.3)';rtag.textContent=rN[ft.rarity]||'VANLIG';
   }
-  // Start pull duel
-  _fishPull={active:true,progress:0,tension:0,fish:ft,animFrame:null,fishX:50,fishDir:1};
+  // Start pull duel — give a head-start buffer so the player isn't insta-failed
+  // before they can physically react to the bite (decay loop's first tick used
+  // to fire on a progress of exactly 0, killing the catch instantly).
+  _fishPull={active:true,progress:30,tension:0,fish:ft,animFrame:null,fishX:50,fishDir:1};
   cancelAnimationFrame(_fishPull.animFrame);
-  setTimeout(()=>{if(_fc.phase==='reel')_fishPullLoop();},300);
+  _fishPullUpdate();
+  setTimeout(()=>{if(_fc.phase==='reel')_fishPullLoop();},650);
   const btn=$('fishCastBtn');if(btn){btn.className='fish-cast-btn biting';btn.textContent='🎣 DRAS!';}
-  _fishSetStatus('🎣 TAP SNABBT FÖR ATT DRAS IN!');
+  _fishSetStatus('🎣 NAPP! TAP SNABBT FÖR ATT DRAS IN!');
   vibe([30,20,50]);
 }
 
@@ -11915,7 +11918,7 @@ function _cwUpdateOverlay(){
   if(!ov){
     ov=document.createElement('div');ov.id='cwHtmlOv';
     const parent=canvas.parentNode||cw;
-    parent.style.position='relative';
+    if(getComputedStyle(parent).position==='static')parent.style.position='relative';
     parent.insertBefore(ov,canvas.nextSibling);
   }
   const W=canvas.width||canvas.offsetWidth||window.innerWidth;
@@ -15818,7 +15821,12 @@ function showDailyRewardModal(day){
   const re=$('drRewardEmoji');if(re){re.textContent=d.em;re.style.filter=`drop-shadow(0 0 30px rgba(255,215,0,.7))`;}
   const rt=$('drRewardTitle');if(rt)rt.textContent='Dag '+day+' Belöning'+(day===7?' 🏆':'!');
   const rs=$('drRewardSub');if(rs)rs.textContent=d.sub;
-  const cb=$('drClaimBtn');if(cb){cb.disabled=false;cb.textContent='🎁 HÄMTA!';cb.style.opacity='1';}
+  const alreadyClaimed=localStorage.getItem('kv8_lastRewardClaim')===new Date().toDateString();
+  const cb=$('drClaimBtn');
+  if(cb){
+    if(alreadyClaimed){cb.disabled=true;cb.textContent='✅ HÄMTAD!';cb.style.opacity='.7';}
+    else{cb.disabled=false;cb.textContent='🎁 HÄMTA!';cb.style.opacity='1';}
+  }
   const ov=$('dailyRewardOv');
   if(ov){
     ov.style.display='flex';
@@ -15826,9 +15834,16 @@ function showDailyRewardModal(day){
   }
 }
 function claimDailyReward(){
+  const today=new Date().toDateString();
+  if(localStorage.getItem('kv8_lastRewardClaim')===today){
+    showT('✅ Redan hämtad idag! Kom tillbaka imorgon.','y');
+    const cb=$('drClaimBtn');if(cb){cb.disabled=true;cb.textContent='✅ HÄMTAD!';cb.style.opacity='.7';}
+    return;
+  }
   const day=parseInt(localStorage.getItem('kv8_rewardDay')||'1');
   const d=_DR[Math.min(day-1,6)];
   const cb=$('drClaimBtn');if(cb){cb.disabled=true;cb.textContent='✅ HÄMTAD!';cb.style.opacity='.7';}
+  localStorage.setItem('kv8_lastRewardClaim',today);
   if(d.coins>0)gainCoins(d.coins);
   if(d.xp>0)gainXP(d.xp,'login');
   localStorage.setItem('kv8_rewardDay',day>=7?1:day+1);
