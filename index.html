@@ -1021,136 +1021,54 @@ button:active{opacity:.85;}
 .quest-ico{font-size:26px;width:34px;text-align:center;flex-shrink:0;}
 .quest-bar{height:4px;background:var(--c3);border-radius:2px;overflow:hidden;margin-top:5px;}
 .quest-bf{height:100%;background:linear-gradient(90deg,var(--g),var(--tl));border-radius:2px;transition:width .6s cubic-bezier(.34,1.56,.64,1);}
-/* BATTLE ARENA */
+/* PET TOWER DEFENSE */
 @keyframes baHit{0%{transform:scale(1.2) translateX(-10px);}50%{transform:scale(.9) translateX(5px);}100%{transform:scale(1) translateX(0);}}
 @keyframes baShk{0%,100%{transform:translateX(0);}20%,60%{transform:translateX(-8px);}40%,80%{transform:translateX(8px);}}
-@keyframes eEntry{from{transform:translateY(-30px) scale(0.5);opacity:0;}to{transform:translateY(0) scale(1);opacity:1;}}
 .battle-arena{position:fixed;inset:0;z-index:900;background:radial-gradient(ellipse at 50% 30%,#0d0010 0%,#000 70%);display:flex;flex-direction:column;transform:translateY(100%);transition:transform .32s cubic-bezier(.32,.72,0,1);overflow:hidden;}
 .battle-arena.open{transform:translateY(0);}
-.ba-arena-bg{position:absolute;inset:0;pointer-events:none;overflow:hidden;}
-.ba-arena-bg::before{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:conic-gradient(from 0deg,transparent 0deg,rgba(255,0,127,.03) 60deg,transparent 120deg,rgba(191,95,255,.03) 180deg,transparent 240deg,rgba(255,0,127,.03) 300deg,transparent 360deg);animation:baRotBg 20s linear infinite;}
-@keyframes baRotBg{from{transform:rotate(0deg);}to{transform:rotate(360deg);}}
-@keyframes baHitFlash{0%{background:rgba(255,50,50,.35);}100%{background:transparent;}}
-@keyframes baVictoryGlow{0%,100%{box-shadow:0 0 40px rgba(57,255,20,.4);}50%{box-shadow:0 0 80px rgba(57,255,20,.8),0 0 160px rgba(0,217,255,.4);}}
-.ba-enemy-sprite{font-size:80px;text-align:center;filter:drop-shadow(0 0 30px rgba(255,0,127,.6));animation:petBob 1.8s ease-in-out infinite;transition:filter .1s;}
-.ba-enemy-sprite.hurt{animation:baShk .3s ease-out;filter:drop-shadow(0 0 30px rgba(255,0,127,.6)) brightness(3);}
-.ba-hdr{height:54px;display:flex;align-items:center;padding:0 14px;gap:10px;border-bottom:3px solid var(--pk);flex-shrink:0;background:#000;}
-.ba-field{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:16px;gap:16px;position:relative;}
-.ba-hp-wrap{width:220px;}
-.ba-hp-bar{height:12px;border-radius:2px;background:#111;overflow:hidden;border:2px solid rgba(255,255,255,.15);}
-.ba-hp-fill{height:100%;border-radius:1px;transition:width .4s ease;}
-.ba-enemy-em{font-size:72px;line-height:1;filter:drop-shadow(0 0 20px rgba(255,45,85,.4));}
-.ba-enemy-em.hit{animation:baHit .3s ease-out;}
-.ba-player-lbl.shk{animation:baShk .3s ease-out;}
-.ba-atk-row{display:flex;gap:10px;}
-.ba-btn{padding:11px 22px;border-radius:22px;border:2px solid;font-size:13px;font-weight:900;cursor:pointer;font-family:var(--ff);transition:all .08s;letter-spacing:.5px;}
-.ba-btn:active{transform:scale(.88);}
-.ba-btn-atk{border-color:var(--pk);background:rgba(255,45,85,.12);color:var(--pk);box-shadow:0 0 20px rgba(255,45,85,.2);}
-.ba-btn-atk:active{box-shadow:0 0 40px rgba(255,45,85,.6);}
-.ba-btn-dg{border-color:var(--b);background:rgba(0,217,255,.08);color:var(--b);}
-.ba-btn-bl{border-color:var(--p);background:rgba(191,95,255,.08);color:var(--p);}
-.ba-log{font-size:12px;color:var(--t2);font-family:var(--mono);text-align:center;min-height:22px;padding:0 20px;}
-/* BATTLE ARENA V2 */
 .ba-close{background:none;border:none;color:var(--t2);font-size:22px;cursor:pointer;padding:4px 8px;}
 .ba-wave-lbl{font-size:10px;font-weight:900;color:var(--pk);font-family:var(--mono);letter-spacing:2px;}
 .ba-enemy-title{font-size:11px;color:var(--t3);font-family:var(--mono);}
-.ba-scene{flex:1;display:flex;flex-direction:column;padding:10px 14px;position:relative;overflow:hidden;}
-.ba-bg-glow{position:absolute;inset:0;pointer-events:none;transition:background 1s;}
-.ba-hp-row{display:flex;align-items:center;margin-bottom:8px;}
+.ba-hdr{height:54px;display:flex;align-items:center;padding:0 14px;gap:10px;border-bottom:3px solid var(--pk);flex-shrink:0;background:#000;}
 .ba-hp-track{height:10px;background:#111;border:1px solid rgba(255,255,255,.1);border-radius:6px;overflow:hidden;flex:1;}
 .ba-hp-bar-fill{height:100%;border-radius:6px;transition:width .4s ease-out;position:relative;}
-.ba-hp-bar-fill.enemy{background:linear-gradient(90deg,#ff0055,#ff2d55,#ff6b8a);box-shadow:0 0 12px rgba(255,45,85,.5);}
 .ba-hp-bar-fill.player{background:linear-gradient(90deg,#00aa44,#39FF14,#80ff55);box-shadow:0 0 12px rgba(57,255,20,.4);}
-.ba-hp-bar-fill.mp{background:linear-gradient(90deg,#0066cc,#00D9FF,#66eeff);box-shadow:0 0 8px rgba(0,217,255,.4);}
-.ba-enemy-section{margin-bottom:4px;position:relative;}
-.ba-enemy-section::after{content:'';position:absolute;bottom:-8px;left:20%;right:20%;height:40px;background:linear-gradient(0deg,rgba(255,45,85,.07) 0%,transparent 100%);border-radius:50%;filter:blur(6px);pointer-events:none;}
-.ba-enemy-sprite{font-size:96px;text-align:center;line-height:1;margin:4px 0;transition:all .15s;filter:drop-shadow(0 0 30px rgba(255,45,85,.6)) drop-shadow(0 0 60px rgba(255,45,85,.2));animation:baBreathe 2.2s ease-in-out infinite;}
-@keyframes baBreathe{0%,100%{transform:scale(1);}50%{transform:scale(1.06);}}
-.ba-enemy-sprite.hit{animation:baHit .25s ease-out;}
-.ba-enemy-sprite.atk{animation:baAtk .35s ease-out;}
-.ba-enemy-sprite.phase-up{animation:baPhase .6s ease-out;}
-@keyframes baAtk{0%,100%{transform:none;}40%{transform:translateX(20px) scale(1.15);}70%{transform:translateX(-5px) scale(.95);}}
-@keyframes baPhase{0%{transform:scale(1);}30%{transform:scale(1.4) rotate(-10deg);}60%{transform:scale(.7) rotate(15deg);}100%{transform:scale(1) rotate(0);}}
-.ba-phase-dots{display:flex;gap:6px;justify-content:center;margin-bottom:8px;}
-.ba-ph-dot{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,.15);transition:all .3s;}
-.ba-ph-dot.active{background:var(--g);box-shadow:0 0 6px var(--g);}
-.ba-ph-dot.berserk{background:var(--y);box-shadow:0 0 6px var(--y);}
-.ba-ph-dot.desperate{background:var(--r);box-shadow:0 0 8px var(--r);animation:notifPulse .6s ease-in-out infinite;}
-/* New tap-combat UI */
-.ba-combat-ui{display:flex;flex-direction:column;gap:8px;}
-.ba-combo-bar{display:flex;align-items:center;gap:8px;margin-bottom:2px;}
-.ba-combo-label{font-size:9px;font-weight:900;color:var(--y);font-family:var(--mono);letter-spacing:1px;flex-shrink:0;}
-.ba-combo-count{font-size:18px;font-weight:900;color:var(--y);font-family:var(--mono);min-width:36px;flex-shrink:0;}
-.ba-combo-meter{flex:1;height:5px;background:rgba(255,255,255,.08);border-radius:100px;overflow:hidden;}
-.ba-combo-meter div{height:100%;background:linear-gradient(90deg,var(--y),var(--o));border-radius:100px;transition:width .2s;}
-.ba-hit-btn{width:100%;padding:16px;background:linear-gradient(135deg,rgba(57,255,20,.15),rgba(57,255,20,.08));border:2.5px solid var(--g);border-radius:18px;color:var(--g);font-size:20px;font-weight:900;font-family:var(--mono);letter-spacing:2px;cursor:pointer;-webkit-tap-highlight-color:transparent;touch-action:manipulation;box-shadow:0 0 24px rgba(57,255,20,.25),inset 0 1px 0 rgba(57,255,20,.15);transition:transform .06s,box-shadow .06s;}
-.ba-hit-btn:active{transform:scale(.96);box-shadow:0 0 10px rgba(57,255,20,.15);}
-.ba-special-row{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;}
-.ba-special-btn{padding:10px 4px;background:#080808;border:2px solid rgba(255,255,255,.15);border-radius:14px;color:var(--t2);font-size:12px;font-weight:900;font-family:var(--mono);cursor:pointer;-webkit-tap-highlight-color:transparent;touch-action:manipulation;transition:transform .06s,border-color .15s;}
-.ba-special-btn:active{transform:scale(.95);}
-#baSpecialMagic{border-color:rgba(0,217,255,.4);color:var(--b);}
-#baSpecialShield{border-color:rgba(191,95,255,.4);color:var(--p);}
-#baSpecialRage{border-color:rgba(255,159,10,.4);color:var(--o);}
-.ba-log-wrap{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:8px 12px;margin-bottom:8px;min-height:40px;display:flex;align-items:center;backdrop-filter:blur(4px);}
-.ba-log{font-size:12px;color:var(--t1);font-family:var(--mono);text-align:center;transition:opacity .15s;line-height:1.4;}
-.ba-player-section{margin-bottom:8px;}
-.ba-actions{padding:12px 14px;padding-bottom:calc(12px + env(safe-area-inset-bottom,0px));background:#000;border-top:3px solid rgba(255,0,127,.25);flex-shrink:0;}
-.ba-atk-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;}
-.ba-atk-btn{background:#080808;border:2px solid rgba(255,255,255,.18);border-radius:14px;padding:10px 4px;cursor:pointer;transition:transform .08s,box-shadow .08s,background .15s;-webkit-tap-highlight-color:transparent;display:flex;flex-direction:column;align-items:center;gap:3px;min-height:62px;}
-.ba-atk-btn:active{transform:translate(4px,4px);box-shadow:0px 0px 0px rgba(255,255,255,.1)!important;}
-.ba-btn-ico{font-size:26px;line-height:1;}
-.ba-btn-nm{font-size:11px;font-weight:900;color:var(--t1);font-family:var(--mono);}
-.ba-btn-sub{font-size:9px;color:var(--t3);}
-.ba-atk-btn.normal{border-color:var(--g);box-shadow:0 0 16px rgba(57,255,20,.3),inset 0 0 8px rgba(57,255,20,.05);background:rgba(57,255,20,.04);}
-.ba-atk-btn.power{border-color:var(--pk);box-shadow:0 0 16px rgba(255,45,85,.35),inset 0 0 8px rgba(255,45,85,.05);background:rgba(255,45,85,.04);}
-.ba-atk-btn.magic{border-color:var(--b);box-shadow:0 0 16px rgba(0,217,255,.3),inset 0 0 8px rgba(0,217,255,.05);background:rgba(0,217,255,.04);}
-.ba-atk-btn.fusion{border-color:var(--y);box-shadow:0 0 24px rgba(255,230,0,.5),inset 0 0 12px rgba(255,230,0,.1);background:rgba(255,230,0,.08);animation:bitePulse .8s ease-in-out infinite;}
-.ba-atk-btn.dodge{border-color:var(--p);box-shadow:0 0 16px rgba(191,95,255,.3),inset 0 0 8px rgba(191,95,255,.05);background:rgba(191,95,255,.04);}
-.ba-atk-btn.block{border-color:var(--b);box-shadow:0 0 14px rgba(0,217,255,.25),inset 0 0 6px rgba(0,217,255,.04);background:rgba(0,217,255,.03);}
-.ba-atk-btn:disabled{opacity:.3;pointer-events:none;}
+/* Game field: canvas + html emoji overlay */
+.td-field{flex:1;position:relative;overflow:hidden;background:linear-gradient(180deg,#0a0612 0%,#06030a 100%);}
+#tdCanvas{display:block;width:100%;height:100%;touch-action:none;}
+#tdEmojiOv{position:absolute;inset:0;pointer-events:none;z-index:2;overflow:hidden;}
+.td-weak-tag{position:absolute;transform:translate(-50%,-100%);font-size:10px;font-weight:900;font-family:var(--mono);letter-spacing:.5px;padding:2px 7px;border-radius:8px;white-space:nowrap;background:rgba(0,0,0,.75);border:1px solid currentColor;box-shadow:0 0 10px currentColor;}
+.td-base-hp-wrap{position:absolute;left:10px;right:10px;bottom:10px;z-index:3;display:flex;align-items:center;gap:8px;background:rgba(0,0,0,.55);border-radius:10px;padding:6px 10px;backdrop-filter:blur(4px);}
+.td-base-lbl{font-size:9px;font-weight:900;color:var(--t3);font-family:var(--mono);flex-shrink:0;}
+.td-wave-banner{position:absolute;top:14px;left:50%;transform:translateX(-50%) scale(.4);opacity:0;z-index:6;text-align:center;pointer-events:none;transition:transform .35s cubic-bezier(.34,1.56,.64,1),opacity .35s;}
+.td-wave-banner.show{transform:translateX(-50%) scale(1);opacity:1;}
+.td-wave-banner .tw-big{font-size:22px;font-weight:900;font-family:var(--mono);letter-spacing:2px;color:var(--y);text-shadow:0 0 16px rgba(255,230,0,.6);}
+.td-wave-banner .tw-sub{font-size:11px;color:var(--t2);font-family:var(--mono);margin-top:2px;}
+.td-form-row{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;}
+.td-form-btn{background:#080808;border:2px solid rgba(255,255,255,.18);border-radius:14px;padding:9px 4px;cursor:pointer;transition:transform .08s,box-shadow .08s,opacity .15s;-webkit-tap-highlight-color:transparent;touch-action:manipulation;display:flex;flex-direction:column;align-items:center;gap:2px;min-height:58px;position:relative;}
+.td-form-btn:active{transform:scale(.94);}
+.td-form-btn .tf-ico{font-size:24px;line-height:1;}
+.td-form-btn .tf-nm{font-size:9px;font-weight:900;color:var(--t1);font-family:var(--mono);letter-spacing:.5px;}
+.td-form-btn.magic{border-color:var(--p);box-shadow:0 0 14px rgba(191,95,255,.3),inset 0 0 8px rgba(191,95,255,.05);background:rgba(191,95,255,.05);}
+.td-form-btn.rage{border-color:var(--o);box-shadow:0 0 14px rgba(255,159,10,.3),inset 0 0 8px rgba(255,159,10,.05);background:rgba(255,159,10,.05);}
+.td-form-btn.shield{border-color:var(--b);box-shadow:0 0 14px rgba(0,217,255,.3),inset 0 0 8px rgba(0,217,255,.05);background:rgba(0,217,255,.05);}
+.td-form-btn.speed{border-color:var(--g);box-shadow:0 0 14px rgba(57,255,20,.3),inset 0 0 8px rgba(57,255,20,.05);background:rgba(57,255,20,.05);}
+.td-form-btn.active{outline:2px solid #fff;box-shadow:0 0 24px currentColor,0 0 0 3px rgba(255,255,255,.25) inset;}
+.td-form-btn.stunned{opacity:.35;pointer-events:none;}
+.td-form-btn .tf-cd{position:absolute;inset:0;border-radius:14px;background:rgba(0,0,0,.55);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:900;font-family:var(--mono);color:#fff;}
+.td-actions{padding:10px 14px;padding-bottom:calc(10px + env(safe-area-inset-bottom,0px));background:#000;border-top:3px solid rgba(255,0,127,.25);flex-shrink:0;}
+.td-combo-bar{display:flex;align-items:center;gap:8px;margin-bottom:8px;}
+.td-combo-label{font-size:9px;font-weight:900;color:var(--y);font-family:var(--mono);letter-spacing:1px;flex-shrink:0;}
+.td-combo-count{font-size:16px;font-weight:900;color:var(--y);font-family:var(--mono);min-width:32px;flex-shrink:0;}
+.td-combo-meter{flex:1;height:5px;background:rgba(255,255,255,.08);border-radius:100px;overflow:hidden;}
+.td-combo-meter div{height:100%;background:linear-gradient(90deg,var(--y),var(--o));border-radius:100px;transition:width .2s;}
 .ba-victory,.ba-defeat{position:absolute;inset:0;background:rgba(0,0,0,.92);display:flex;align-items:center;justify-content:center;z-index:20;}
 .ba-victory-content{text-align:center;padding:24px;}
 .ba-rewards{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;}
-/* ── REACTIVE DEFENSE TELEGRAPH ── */
-@keyframes baWindup{0%{transform:translateX(0) scale(1);filter:brightness(1);}100%{transform:translateX(-16px) scale(1.04);filter:brightness(1.6) saturate(1.4);}}
-.ba-enemy-sprite.windup{animation:baWindup .6s ease-in-out forwards;}
-@keyframes baLunge{0%{transform:translateX(-16px) scale(1.04);}35%{transform:translateX(24px) scale(1.18);}70%{transform:translateX(-6px) scale(.94);}100%{transform:translateX(0) scale(1);}}
-.ba-enemy-sprite.lunge{animation:baLunge .42s cubic-bezier(.2,.9,.3,1) forwards;}
-@keyframes baDefeatSpin{0%{transform:scale(1) rotate(0);opacity:1;filter:brightness(1) grayscale(0);}60%{transform:scale(1.3) rotate(25deg);opacity:.7;filter:brightness(2) grayscale(.4);}100%{transform:scale(.2) rotate(120deg);opacity:0;filter:brightness(3) grayscale(1);}}
-.ba-enemy-sprite.defeated{animation:baDefeatSpin .55s ease-in forwards;}
-.ba-telegraph-icon{position:absolute;top:6px;left:50%;transform:translateX(-50%) scale(0);font-size:30px;z-index:6;pointer-events:none;filter:drop-shadow(0 0 10px #fff);transition:transform .18s cubic-bezier(.34,1.56,.64,1);}
-.ba-telegraph-icon.show{transform:translateX(-50%) scale(1);}
-.ba-telegraph-icon.pulse{animation:notifPulse .35s ease-in-out infinite;}
-@keyframes reactWindowIn{0%{transform:scale(.7);opacity:0;}60%{transform:scale(1.12);opacity:1;}100%{transform:scale(1);opacity:1;}}
-.ba-react-banner{position:absolute;left:8px;right:8px;top:50%;transform:translateY(-50%);z-index:15;display:none;flex-direction:column;align-items:center;gap:6px;pointer-events:none;}
-.ba-react-banner.show{display:flex;animation:reactWindowIn .15s ease-out;}
-.ba-react-word{font-size:26px;font-weight:900;font-family:var(--mono);letter-spacing:3px;color:var(--y);text-shadow:0 0 18px var(--y),0 0 40px var(--y);}
-.ba-react-banner.late .ba-react-word{color:var(--r);text-shadow:0 0 18px var(--r);}
-.ba-react-sub{font-size:11px;font-family:var(--mono);color:#fff;background:rgba(0,0,0,.55);padding:3px 12px;border-radius:20px;}
-.ba-react-ring{width:64px;height:64px;border-radius:50%;border:5px solid var(--y);box-shadow:0 0 24px var(--y),inset 0 0 16px rgba(255,230,0,.3);}
-@keyframes reactRingShrink{0%{transform:scale(1);opacity:1;}100%{transform:scale(.15);opacity:0;}}
-.ba-react-ring.shrink{animation:reactRingShrink linear forwards;}
-#baSpecialShield.react-armed{border-color:var(--y)!important;color:var(--y)!important;background:rgba(255,230,0,.18)!important;box-shadow:0 0 24px rgba(255,230,0,.6);animation:bitePulse .3s ease-in-out infinite;transform:scale(1.04);}
-#baSpecialShield.react-perfect{animation:none;border-color:var(--g)!important;color:var(--g)!important;background:rgba(57,255,20,.25)!important;box-shadow:0 0 30px rgba(57,255,20,.7);}
-/* Weakness tag on enemy */
-.ba-weak-tag{display:inline-flex;align-items:center;gap:3px;font-size:9px;font-weight:900;font-family:var(--mono);color:var(--t3);background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.15);border-radius:8px;padding:1px 7px;margin-left:6px;letter-spacing:.5px;vertical-align:middle;}
-.ba-weak-tag b{color:var(--y);}
-/* Combo tier escalation */
-.ba-combo-count{transition:color .25s,text-shadow .25s,transform .15s;}
-.ba-combo-count.t1{color:var(--y);text-shadow:0 0 8px var(--y);}
-.ba-combo-count.t2{color:var(--o);text-shadow:0 0 14px var(--o);transform:scale(1.12);}
-.ba-combo-count.t3{color:var(--pk);text-shadow:0 0 20px var(--pk),0 0 40px var(--pk);transform:scale(1.22);}
-.ba-combo-meter.t2 div{background:linear-gradient(90deg,var(--o),var(--pk));}
-.ba-combo-meter.t3 div{background:linear-gradient(90deg,var(--pk),var(--p),var(--y));box-shadow:0 0 10px var(--pk);}
-/* Tap-rhythm pulse on attack button */
-@keyframes baPulseBeat{0%,100%{box-shadow:0 0 24px rgba(57,255,20,.25),inset 0 1px 0 rgba(57,255,20,.15);}50%{box-shadow:0 0 40px rgba(57,255,20,.65),inset 0 1px 0 rgba(57,255,20,.3);}}
-.ba-hit-btn.rhythm{animation:baPulseBeat 1s ease-in-out infinite;}
-.ba-hit-btn.synced{animation:none;border-color:var(--y);box-shadow:0 0 36px rgba(255,230,0,.7);}
-/* Weakness-exploit big flash */
-@keyframes baWeakBurst{0%{transform:scale(.3);opacity:1;}100%{transform:scale(2.6);opacity:0;}}
-.ba-weak-burst{position:absolute;left:50%;top:38%;width:90px;height:90px;margin:-45px;border-radius:50%;border:4px solid var(--y);pointer-events:none;z-index:16;animation:baWeakBurst .5s ease-out forwards;}
 .ba-reward-chip{background:var(--c2);border:1px solid var(--line2);border-radius:10px;padding:8px 14px;font-size:13px;font-weight:900;animation:spop .4s cubic-bezier(.34,1.56,.64,1) both;}
-.ba-status-icon{font-size:14px;animation:notifPulse 1s ease-in-out infinite;}
+.td-weakness-payoff{position:absolute;top:38%;left:50%;transform:translate(-50%,-50%) scale(.3);opacity:0;z-index:7;pointer-events:none;text-align:center;transition:transform .25s cubic-bezier(.34,1.56,.64,1),opacity .25s;}
+.td-weakness-payoff.show{transform:translate(-50%,-50%) scale(1);opacity:1;}
+.td-weakness-payoff .twp-t{font-size:20px;font-weight:900;font-family:var(--mono);letter-spacing:1px;color:var(--y);text-shadow:0 0 20px rgba(255,230,0,.7);}
 /* COMBO METER */
 @keyframes comboPop{0%{transform:scale(1.5);}100%{transform:scale(1);}}
 .combo-meter{position:fixed;top:62px;left:12px;z-index:801;background:rgba(0,0,0,.9);border:1.5px solid var(--y);border-radius:22px;padding:5px 13px;display:none;align-items:center;gap:5px;box-shadow:0 0 20px rgba(255,230,0,.2);}
@@ -3111,7 +3029,7 @@ div[style*="LIVE"]{border-radius:16px!important;background:rgba(57,255,20,.03)!i
       <div class="flash-top" style="pointer-events:none">
         <div class="flash-title-row" style="pointer-events:auto">
           <div style="display:flex;align-items:center;gap:8px">
-            <div class="flash-title" style="background:linear-gradient(90deg,#FF2D55,#FF9F0A);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;filter:drop-shadow(0 0 8px rgba(255,45,85,.4))">⚡ KARMA</div>
+            <div class="flash-title">⚡ KARMA</div>
             <div class="streak-circles" id="streakCircles" style="display:flex;overflow-x:auto;scrollbar-width:none;max-width:160px;gap:6px;padding:0"></div>
           </div>
           <button class="btn btn-pk" onclick="openModal('flashModal')" style="padding:5px 14px;font-size:12px;border-radius:20px;border-width:2px;box-shadow:0 0 14px rgba(255,0,127,.4)">+ POST</button>
@@ -4592,97 +4510,58 @@ div[style*="LIVE"]{border-radius:16px!important;background:rgba(57,255,20,.03)!i
 <div class="combo-meter" id="comboMeter"><div style="font-size:10px;color:var(--t2);font-weight:900">x</div><div class="combo-n" id="comboCnt">5</div><div style="font-size:10px;color:var(--y);font-weight:900">COMBO 🔥</div></div>
 <!-- BATTLE ARENA -->
 <div class="battle-arena" id="battleArena">
-  <div class="ba-arena-bg"></div>
   <!-- Header -->
   <div class="ba-hdr">
     <button class="ba-close" onclick="closeBattle()">←</button>
     <div style="flex:1;text-align:center">
       <div class="ba-wave-lbl" id="baWave">WAVE 1</div>
-      <div class="ba-enemy-title" id="baEnemyTitle">–</div>
+      <div class="ba-enemy-title" id="baEnemyTitle">Pet Tower Defense</div>
     </div>
     <div style="text-align:right;font-size:10px;color:var(--t3);font-family:var(--mono)">
-      <div>COMBO</div>
-      <div id="baComboCount" style="font-size:16px;font-weight:900;color:var(--y)">0</div>
+      <div>FORM</div>
+      <div id="tdFormLbl" style="font-size:14px;font-weight:900;color:var(--y)">✨</div>
     </div>
   </div>
 
-  <!-- Battle Scene -->
-  <div class="ba-scene" id="baScene">
-    <!-- Background glow -->
-    <div class="ba-bg-glow" id="baBgGlow"></div>
-    <!-- Enemy section -->
-    <div class="ba-enemy-section">
-      <!-- Enemy HP bar -->
-      <div class="ba-hp-row">
-        <div style="font-size:9px;font-weight:900;color:var(--t3);font-family:var(--mono)" id="baEnemyName">ENEMY</div>
-        <div style="display:flex;align-items:center;gap:6px;flex:1;margin:0 8px">
-          <div class="ba-hp-track"><div class="ba-hp-bar-fill enemy" id="baEnemyHpFill" style="width:100%"></div></div>
-          <div style="font-size:10px;font-weight:900;font-family:var(--mono);min-width:40px;text-align:right" id="baEnemyHpNum">80/80</div>
-        </div>
-        <div id="baEnemyStatus" style="font-size:12px"></div>
-      </div>
-      <!-- Enemy sprite -->
-      <div class="ba-enemy-sprite" id="baEnemySprite">👾</div>
-      <!-- Attack telegraph icon -->
-      <div class="ba-telegraph-icon" id="baTelegraph">⚡</div>
-      <!-- Phase indicator -->
-      <div class="ba-phase-dots" id="baPhaseDots">
-        <div class="ba-ph-dot active" id="baPh0"></div>
-        <div class="ba-ph-dot" id="baPh1"></div>
-        <div class="ba-ph-dot" id="baPh2"></div>
-      </div>
-      <!-- Weakness tag -->
-      <div style="text-align:center" id="baWeakWrap"><span class="ba-weak-tag" id="baWeakTag">WEAK: <b>✨</b></span></div>
+  <!-- Game Field -->
+  <div class="td-field" id="tdField">
+    <canvas id="tdCanvas"></canvas>
+    <div id="tdEmojiOv"></div>
+    <div class="td-wave-banner" id="tdWaveBanner">
+      <div class="tw-big" id="tdWaveBig">WAVE 1</div>
+      <div class="tw-sub" id="tdWaveSub">Enemies incoming!</div>
     </div>
-
-    <!-- Reaction window banner -->
-    <div class="ba-react-banner" id="baReactBanner">
-      <div class="ba-react-ring" id="baReactRing"></div>
-      <div class="ba-react-word" id="baReactWord">DODGE!</div>
-      <div class="ba-react-sub" id="baReactSub">tryck BLOCK nu!</div>
+    <div class="td-weakness-payoff" id="tdWeaknessPayoff">
+      <div class="twp-t">⚡ WEAKNESS HIT!</div>
     </div>
-
-    <!-- Battle Log -->
-    <div class="ba-log-wrap">
-      <div class="ba-log" id="baLog">⚔️ Välj din attack!</div>
-    </div>
-
-    <!-- Player section -->
-    <div class="ba-player-section">
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
-        <div style="font-size:12px;font-weight:900" id="baPlayerName">DIN PET</div>
-        <div id="baPlayerStatus" style="font-size:12px"></div>
-        <div id="baFusionIndicator" style="font-size:10px;font-weight:900;color:var(--y);display:none">⚡ FUSION REDO!</div>
-      </div>
-      <!-- HP bar -->
-      <div style="display:flex;align-items:center;gap:6px;margin-bottom:4px">
-        <div style="font-size:9px;color:var(--t3);font-family:var(--mono);width:20px">HP</div>
-        <div class="ba-hp-track" style="flex:1"><div class="ba-hp-bar-fill player" id="baPlayerHpFill" style="width:100%"></div></div>
-        <div style="font-size:10px;font-weight:900;font-family:var(--mono);min-width:50px;text-align:right" id="baPlayerHpNum">100/100</div>
-      </div>
-      <!-- MP bar -->
-      <div style="display:flex;align-items:center;gap:6px">
-        <div style="font-size:9px;color:var(--b);font-family:var(--mono);width:20px">MP</div>
-        <div class="ba-hp-track" style="flex:1;height:5px"><div class="ba-hp-bar-fill mp" id="baPlayerMpFill" style="width:100%;background:var(--b)"></div></div>
-        <div style="font-size:10px;font-weight:900;font-family:var(--mono);color:var(--b);min-width:50px;text-align:right" id="baPlayerMpNum">80/80</div>
-      </div>
+    <!-- Base HP -->
+    <div class="td-base-hp-wrap">
+      <div class="td-base-lbl">🏠 BASE</div>
+      <div class="ba-hp-track"><div class="ba-hp-bar-fill player" id="tdBaseHpFill" style="width:100%"></div></div>
+      <div style="font-size:10px;font-weight:900;font-family:var(--mono);min-width:46px;text-align:right" id="tdBaseHpNum">100/100</div>
     </div>
   </div>
 
-  <!-- Attack Buttons -->
-  <div class="ba-actions">
-    <div class="ba-combat-ui" id="baCombatUI">
-      <div class="ba-combo-bar">
-        <div class="ba-combo-label">COMBO</div>
-        <div class="ba-combo-count" id="baComboCount2">0x</div>
-        <div class="ba-combo-meter"><div id="baComboFill" style="width:0%"></div></div>
-      </div>
-      <button class="ba-hit-btn" id="baHitBtn" onclick="baTapAttack()">⚔️ ATTACK</button>
-      <div class="ba-special-row">
-        <button class="ba-special-btn" onclick="baSpecialAttack('magic')" id="baSpecialMagic">✨ MAGIC</button>
-        <button class="ba-special-btn" onclick="baSpecialAttack('shield')" id="baSpecialShield">🛡️ BLOCK</button>
-        <button class="ba-special-btn" onclick="baSpecialAttack('rage')" id="baSpecialRage">🔥 RAGE</button>
-      </div>
+  <!-- Form Switch + Combo -->
+  <div class="td-actions">
+    <div class="td-combo-bar">
+      <div class="td-combo-label">COMBO</div>
+      <div class="td-combo-count" id="tdComboCount">0x</div>
+      <div class="td-combo-meter"><div id="tdComboFill" style="width:0%"></div></div>
+    </div>
+    <div class="td-form-row" id="tdFormRow">
+      <button class="td-form-btn magic" id="tdFormMagic" onclick="tdSwitchForm('magic')">
+        <span class="tf-ico">✨</span><span class="tf-nm">MAGIC</span>
+      </button>
+      <button class="td-form-btn rage" id="tdFormRage" onclick="tdSwitchForm('rage')">
+        <span class="tf-ico">🔥</span><span class="tf-nm">RAGE</span>
+      </button>
+      <button class="td-form-btn shield" id="tdFormShield" onclick="tdSwitchForm('shield')">
+        <span class="tf-ico">🛡️</span><span class="tf-nm">SHIELD</span>
+      </button>
+      <button class="td-form-btn speed" id="tdFormSpeed" onclick="tdSwitchForm('speed')">
+        <span class="tf-ico">⚡</span><span class="tf-nm">SPEED</span>
+      </button>
     </div>
   </div>
 
@@ -4691,7 +4570,7 @@ div[style*="LIVE"]{border-radius:16px!important;background:rgba(57,255,20,.03)!i
     <div class="ba-victory-content">
       <div style="font-size:52px;margin-bottom:8px;animation:petBob 1s ease-in-out infinite">🏆</div>
       <div style="font-size:28px;font-weight:900;color:var(--y);font-family:var(--mono);letter-spacing:2px;margin-bottom:4px">VICTORY!</div>
-      <div style="font-size:14px;color:var(--t2);margin-bottom:16px" id="baVicEnemy">PIXEL BEAST besegrad!</div>
+      <div style="font-size:14px;color:var(--t2);margin-bottom:16px" id="baVicEnemy">Wave klarad!</div>
       <div class="ba-rewards" id="baRewards"></div>
       <button class="btn btn-g btn-lg" style="margin-top:16px" onclick="battleContinue()" id="baContBtn">NÄSTA WAVE →</button>
     </div>
@@ -4701,8 +4580,8 @@ div[style*="LIVE"]{border-radius:16px!important;background:rgba(57,255,20,.03)!i
   <div class="ba-defeat" id="baDefeat" style="display:none">
     <div style="text-align:center;padding:24px">
       <div style="font-size:52px;margin-bottom:8px">💀</div>
-      <div style="font-size:24px;font-weight:900;color:var(--r);margin-bottom:8px">KO!</div>
-      <div style="font-size:13px;color:var(--t3);margin-bottom:20px">Du föll i strid. Men kämpa på!</div>
+      <div style="font-size:24px;font-weight:900;color:var(--r);margin-bottom:8px">BASE FÖRSTÖRD!</div>
+      <div style="font-size:13px;color:var(--t3);margin-bottom:20px" id="tdDefeatSub">Du klarade dig till wave 1. Försök igen!</div>
       <button class="btn btn-pk btn-lg" onclick="battleRetry()">⚔️ FÖRSÖK IGEN</button>
       <button class="btn btn-ghost" style="margin-top:8px;display:block;width:100%" onclick="closeBattle()">← Avsluta</button>
     </div>
@@ -5342,652 +5221,472 @@ function updateComboMeter(n){
   else m.classList.remove('show');
 }
 
-// ── BATTLE ARENA ──
-const BATTLE_ENEMIES=[
-  {
-    id:'pixel', em:['👾','😤','💢'], name:'PIXEL BEAST',
-    title:'Det Digitala Monstret',
-    lore:'Född ur trasig kod. Hatar allt levande.',
-    maxHp:80, dmg:[6,14], atkSpeed:600,
-    phases:[{pct:1,em:'👾',col:'#00D9FF'},{pct:.5,em:'😤',col:'#FF9F0A',msg:'BERSERK! Pixelbesten rasar!'},{pct:.2,em:'💢',col:'#FF2D55',msg:'DESPERATE! Sista kraften!'}],
-    status:null, specialAtk:{name:'PIXEL STORM',dmg:[18,28],msg:'💥 PIXEL STORM! Kod-explosion!'},
-    weakness:'magic',
-    reward:{xp:50,coins:30,item:null}
-  },
-  {
-    id:'cyborg', em:['🤖','⚠️','🔴'], name:'CYBER BOT',
-    title:'Den Rostiga Maskinen',
-    lore:'En gammal krigsmaskine vaknar till liv igen.',
-    maxHp:120, dmg:[9,20], atkSpeed:750,
-    phases:[{pct:1,em:'🤖',col:'#00D9FF'},{pct:.5,em:'⚠️',col:'#FF9F0A',msg:'BERSERK! Systemen överhettade!'},{pct:.2,em:'🔴',col:'#FF2D55',msg:'DESPERATE! Kärnreaktor kritisk!'}],
-    status:'stun', specialAtk:{name:'LASER BEAM',dmg:[25,38],msg:'🔴 LASER BEAM! Ögon av stål!'},
-    weakness:'rage',
-    reward:{xp:75,coins:50,item:'⚙️'}
-  },
-  {
-    id:'dragon', em:['🐲','🔥','💀'], name:'SHADOW DRAGON',
-    title:'Skuggdraken',
-    lore:'Inte eld — mörker. Dess andedräkt är fruktan.',
-    maxHp:180, dmg:[13,28], atkSpeed:900,
-    phases:[{pct:1,em:'🐲',col:'#BF5FFF'},{pct:.5,em:'🔥',col:'#FF9F0A',msg:'BERSERK! Draken brinner!'},{pct:.2,em:'💀',col:'#FF2D55',msg:'DESPERATE! Dödsandedräkt!'}],
-    status:'burn', specialAtk:{name:'SHADOW BREATH',dmg:[35,50],msg:'🌑 SHADOW BREATH! Allt mörker!'},
-    weakness:'magic',
-    reward:{xp:110,coins:80,item:'🔮'}
-  },
-  {
-    id:'skull', em:['💀','👹','☠️'], name:'SKULL LORD',
-    title:'Dödens Herre',
-    lore:'Regerar de dödas rike sedan evigheternas begynnelse.',
-    maxHp:240, dmg:[18,35], atkSpeed:1100,
-    phases:[{pct:1,em:'💀',col:'#888'},{pct:.5,em:'👹',col:'#FF2D55',msg:'BERSERK! Döden vaknar!'},{pct:.2,em:'☠️',col:'#BF5FFF',msg:'DESPERATE! CURSED AURA!',statusToPlayer:'curse'}],
-    status:'curse', specialAtk:{name:'DEATH CURSE',dmg:[45,65],msg:'☠️ DEATH CURSE! Livet tappas!'},
-    weakness:'rage',
-    reward:{xp:160,coins:120,item:'💎'}
-  },
-  {
-    id:'thunder', em:['⚡','🌩️','🔱'], name:'THUNDER GOD',
-    title:'Blixtarnas Regent',
-    lore:'Åskvädrets skapare. Hans vrede är blixten.',
-    maxHp:320, dmg:[24,45], atkSpeed:500,
-    phases:[{pct:1,em:'⚡',col:'#FFE600'},{pct:.5,em:'🌩️',col:'#FF9F0A',msg:'BERSERK! Stormen rasar!',combo:true},{pct:.2,em:'🔱',col:'#FF2D55',msg:'DESPERATE! THUNDERSTORM!'}],
-    status:'stun', specialAtk:{name:'DIVINE THUNDER',dmg:[60,85],msg:'🌩️ DIVINE THUNDER! Himlen splittras!'},
-    weakness:'magic',
-    reward:{xp:220,coins:180,item:'👑'}
-  },
-  {
-    id:'void', em:['🌑','🕳️','💫'], name:'VOID KING',
-    title:'Tomhetens Monark',
-    lore:'Bortom tid och rum. Han existerar inte — ändå dödar han.',
-    maxHp:450, dmg:[32,60], atkSpeed:400,
-    phases:[{pct:1,em:'🌑',col:'#BF5FFF'},{pct:.5,em:'🕳️',col:'#888',msg:'BERSERK! Verkligheten kollapsar!'},{pct:.2,em:'💫',col:'#FFE600',msg:'DESPERATE! VOID COLLAPSE!',statusToPlayer:'all'}],
-    status:'all', specialAtk:{name:'VOID COLLAPSE',dmg:[80,120],msg:'💫 VOID COLLAPSE! Allt försvinner!'},
-    weakness:'rage',
-    reward:{xp:350,coins:280,item:'🌟'}
-  },
-  {
-    id:'demon', em:['👿','😈','🔥'], name:'KARMA DEMON',
-    title:'Karma-Demonen',
-    lore:'Skapad av dåliga handlingar. Ditt eget mörker.',
-    maxHp:600, dmg:[40,75], atkSpeed:350,
-    phases:[{pct:1,em:'👿',col:'#FF2D55'},{pct:.5,em:'😈',col:'#BF5FFF',msg:'BERSERK! Demonen tar form!'},{pct:.2,em:'🔥',col:'#FF9F0A',msg:'DESPERATE! FINAL JUDGMENT!'}],
-    status:'burn', specialAtk:{name:'KARMA BLAST',dmg:[100,150],msg:'🔥 KARMA BLAST! Allt karma frisläpps!'},
-    weakness:'magic',
-    reward:{xp:500,coins:400,item:'⚡'}
-  },
+// ── PET TOWER DEFENSE ──
+// "Your pet IS the tower." Player's pet sits at a fixed defense point along
+// a path; enemy waves walk toward the base. Player taps to shift the pet's
+// elemental combat FORM in real time (magic/rage/shield/speed) to exploit
+// each enemy's visible weakness tag. Switching forms has a short cooldown
+// + stun window so spam-switching doesn't trivialize the skill check.
+
+const TD_ENEMIES=[
+  {id:'pixel',em:'👾',name:'PIXEL BEAST',weakness:'magic',hp:26,speed:0.55,dmgToBase:8,reward:{xp:4,coins:3}},
+  {id:'cyborg',em:'🤖',name:'CYBER BOT',weakness:'rage',hp:34,speed:0.5,dmgToBase:10,reward:{xp:5,coins:4}},
+  {id:'imp',em:'👹',name:'SHADOW IMP',weakness:'magic',hp:30,speed:0.7,dmgToBase:8,reward:{xp:4,coins:3}},
+  {id:'golem',em:'🪨',name:'STONE GOLEM',weakness:'rage',hp:55,speed:0.35,dmgToBase:14,reward:{xp:7,coins:5}},
+  {id:'wisp',em:'👻',name:'VOID WISP',weakness:'magic',hp:22,speed:0.95,dmgToBase:6,reward:{xp:4,coins:3}},
+  {id:'brute',em:'😈',name:'KARMA BRUTE',weakness:'rage',hp:48,speed:0.45,dmgToBase:12,reward:{xp:6,coins:5}},
 ];
-let _bt={active:false,wave:1,eHp:80,eMax:80,pHp:100,pMax:100,pMp:80,pMaxMp:80,
-     blocking:false,dodging:false,enemy:null,combo:0,fusionReady:false,
-     statusPlayer:null,statusEnemy:null,statusTimer:null,ePhase:0,
-     pendingAtk:null,turnsWon:0,totalDmgDealt:0,earnedXp:0,earnedCoins:0,
-     // Reactive defense telegraph state
-     incoming:null,reactWindowOpen:false,reactResolved:false,reactTimers:[],
-     beatSynced:false};
+const TD_BOSSES=[
+  {id:'dragon',em:'🐲',name:'SHADOW DRAGON',weakness:'magic',hp:260,speed:0.32,dmgToBase:28,reward:{xp:40,coins:30}},
+  {id:'skull',em:'💀',name:'SKULL LORD',weakness:'rage',hp:340,speed:0.3,dmgToBase:32,reward:{xp:55,coins:42}},
+  {id:'thunder',em:'⚡',name:'THUNDER GOD',weakness:'magic',hp:420,speed:0.34,dmgToBase:38,reward:{xp:75,coins:58}},
+];
 
-// ── TAP BATTLE SYSTEM ──
+// Pet combat forms — vocabulary reused from the old battle weakness tags.
+const TD_FORMS={
+  magic:{ico:'✨',nm:'MAGIC',dmg:14,range:130,fireRate:46,col:'#BF5FFF',weak:'magic',bonusMult:2.2},
+  rage:{ico:'🔥',nm:'RAGE',dmg:22,range:78,fireRate:34,col:'#FF9F0A',weak:'rage',bonusMult:2.2},
+  shield:{ico:'🛡️',nm:'SHIELD',dmg:8,range:95,fireRate:60,col:'#00D9FF',weak:null,bonusMult:1.4,baseArmor:.5},
+  speed:{ico:'⚡',nm:'SPEED',dmg:6,range:105,fireRate:14,col:'#39FF14',weak:null,bonusMult:1.3},
+};
+const TD_SWITCH_COOLDOWN=26;   // frames the button is locked after a switch
+const TD_SWITCH_STUN=18;       // frames the pet can't fire after switching (skill gate)
+const TD_WAVE_COUNT=8;         // waves per "run" before final victory screen
 
-const BA_STATUS_ICONS = {burn:'🔥',freeze:'❄️',stun:'⚡',curse:'💀',all:'☠️'};
-const BA_STATUS_MSGS = {
-  burn:'🔥 BURN! Fienden tar 8 skada/runda',
-  freeze:'❄️ FREEZE! Fienden hoppar över en runda',
-  stun:'⚡ STUN! Fienden kan inte agera',
-  curse:'💀 CURSE! Du tar extra skada',
+// ── Global inspectable state (parallel to old _bt) ──
+let _td={
+  active:false,
+  wave:1,
+  baseHp:100,baseMax:100,
+  form:'magic',
+  switchCooldown:0,switchStun:0,
+  enemies:[],          // live enemy instances on the path
+  queue:[],            // upcoming enemy defs not yet spawned this wave
+  spawnTimer:0,
+  combo:0,comboTimer:0,
+  particles:[],         // {x,y,vx,vy,em,life}
+  projectiles:[],        // {x,y,tx,ty,col,life}
+  shakeT:0,
+  petX:0,petY:0,         // pet (tower) fixed position, set on init
+  pathY:0,
+  earnedXp:0,earnedCoins:0,
+  killsThisWave:0,enemiesThisWave:0,
+  raf:null,
+  lastT:0,
+  paused:false,
 };
 
 function openBattle(){
-  _bt={active:false,wave:1,eHp:80,eMax:80,pHp:100,pMax:100,pMp:80,pMaxMp:80,
-       blocking:false,dodging:false,enemy:null,combo:0,fusionReady:false,
-       statusPlayer:null,statusEnemy:null,statusTimer:null,ePhase:0,
-       pendingAtk:null,turnsWon:0,totalDmgDealt:0,earnedXp:0,earnedCoins:0,
-       incoming:null,reactWindowOpen:false,reactResolved:false,reactTimers:[],
-       beatSynced:false};
+  _td={
+    active:false,wave:1,baseHp:100,baseMax:100,form:'magic',
+    switchCooldown:0,switchStun:0,enemies:[],queue:[],spawnTimer:0,
+    combo:0,comboTimer:0,particles:[],projectiles:[],shakeT:0,
+    petX:0,petY:0,pathY:0,earnedXp:0,earnedCoins:0,
+    killsThisWave:0,enemiesThisWave:0,raf:null,lastT:0,paused:false,
+  };
   const _baV=$('baVictory');if(_baV)_baV.style.display='none';
   const _baD=$('baDefeat');if(_baD)_baD.style.display='none';
-  if(!$('battleArena')){showT('Battle Arena laddas...','b');return;}
-  startBattleWave();
+  if(!$('battleArena')){showT('Tower Defense laddas...','b');return;}
   $('battleArena').classList.add('open');
+  tdInitField();
+  tdStartWave();
   SFX.battle&&SFX.battle();vibe([20,10,20]);
-  _baStartRhythm();
 }
 
 function closeBattle(){
-  $('battleArena').classList.remove('open');
-  _bt.active=false;
-  _baClearReactTimers();
-  _baStopRhythm();
-  closeJudgmentRing&&closeJudgmentRing();
+  const f=$('battleArena');if(f)f.classList.remove('open');
+  _td.active=false;_td.paused=true;
+  if(_td.raf){cancelAnimationFrame(_td.raf);_td.raf=null;}
 }
 
-// ── Tap-rhythm pulse on the ATTACK button (purely additive bonus, never punishing) ──
-let _baRhythmTimer=null,_baRhythmBeatAt=0;
-function _baStartRhythm(){
-  _baStopRhythm();
-  const btn=$('baHitBtn');if(btn)btn.classList.add('rhythm');
-  _baRhythmBeatAt=Date.now();
-  _baRhythmTimer=setInterval(()=>{_baRhythmBeatAt=Date.now();},1000);
-}
-function _baStopRhythm(){
-  if(_baRhythmTimer){clearInterval(_baRhythmTimer);_baRhythmTimer=null;}
-  const btn=$('baHitBtn');if(btn)btn.classList.remove('rhythm','synced');
-}
-// Returns true if the tap landed close to a beat pulse (±160ms) — small forgiving bonus window
-function _baIsSyncedTap(){
-  if(!_baRhythmTimer)return false;
-  const sinceBeat=(Date.now()-_baRhythmBeatAt)%1000;
-  return sinceBeat<160||sinceBeat>840;
+function tdInitField(){
+  const canvas=$('tdCanvas');if(!canvas)return;
+  const parent=canvas.parentElement;
+  const W=Math.max(parent?parent.offsetWidth:window.innerWidth,200);
+  const H=Math.max(parent?parent.offsetHeight:(window.innerHeight*.5),240);
+  canvas.width=W;canvas.height=H;
+  _td.pathY=H*.55;
+  _td.petX=W*.18;_td.petY=_td.pathY;
+  tdUpdateFormUI();
 }
 
-const BA_WEAK_ICONS={magic:'✨',rage:'🔥'};
-const BA_WEAK_NAMES={magic:'MAGIC',rage:'RAGE'};
+function tdEnemyDefForWave(wave){
+  const isBoss=wave%5===0;
+  if(isBoss){
+    const b=TD_BOSSES[Math.min(Math.floor(wave/5)-1,TD_BOSSES.length-1)];
+    return {...b,hp:Math.round(b.hp*(1+(wave-5)*.12)),isBoss:true};
+  }
+  const pool=TD_ENEMIES;
+  const base=pool[Math.floor(Math.random()*pool.length)];
+  const scale=1+(wave-1)*.18;
+  return {...base,hp:Math.max(6,Math.round(base.hp*scale)),speed:Math.min(2.2,base.speed*(1+(wave-1)*.05)),isBoss:false};
+}
 
-function startBattleWave(){
-  _baClearReactTimers();
-  const e=BATTLE_ENEMIES[Math.min(_bt.wave-1,BATTLE_ENEMIES.length-1)];
-  _bt.enemy=e;_bt.eHp=e.maxHp;_bt.eMax=e.maxHp;_bt.active=true;
-  _bt.blocking=false;_bt.dodging=false;_bt.ePhase=0;
-  _bt.statusEnemy=null;_bt.fusionReady=false;_bt.combo=0;
-  _bt.incoming=null;_bt.reactWindowOpen=false;_bt.reactResolved=false;
-  const sprite=$('baEnemySprite');if(sprite)sprite.className='ba-enemy-sprite';
+function tdStartWave(){
+  const w=_td.wave;
+  const isBoss=w%5===0;
+  const count=isBoss?1:Math.min(4+Math.floor(w*1.3),18);
+  _td.queue=[];
+  for(let i=0;i<count;i++)_td.queue.push(tdEnemyDefForWave(w));
+  _td.enemies=[];
+  _td.spawnTimer=0;
+  _td.killsThisWave=0;
+  _td.enemiesThisWave=count;
+  _td.active=true;_td.paused=false;
   $('baVictory').style.display='none';
   $('baDefeat').style.display='none';
-  $('baWave').textContent='WAVE '+_bt.wave;
-  $('baEnemyTitle').textContent=e.title||e.name;
-  _baSetLog('⚔️ '+e.name+' dyker upp! '+e.lore);
-  _baUpdateEnemySprite();
-  _baUpdatePhaseDots();
-  _baUpdateBg();
-  // Weakness tag
-  const wt=$('baWeakTag');
-  if(wt&&e.weakness){wt.innerHTML='WEAK: <b>'+BA_WEAK_ICONS[e.weakness]+' '+BA_WEAK_NAMES[e.weakness]+'</b>';}
-  const ww=$('baWeakWrap');if(ww)ww.style.display=e.weakness?'block':'none';
-  updateBattleUI();
-  // Brief lore flash
-  setTimeout(()=>{if(_bt.active)_baSetLog('⚔️ Välj din attack!');},2000);
+  const hdrWave=$('baWave');if(hdrWave)hdrWave.textContent=(isBoss?'⚠️ BOSS WAVE ':'WAVE ')+w;
+  const wb=$('tdWaveBanner');
+  const big=$('tdWaveBig');if(big)big.textContent=isBoss?'⚠️ BOSS WAVE '+w:'WAVE '+w;
+  const sub=$('tdWaveSub');if(sub)sub.textContent=isBoss?'A powerful foe approaches!':count+' enemies incoming!';
+  if(wb){wb.classList.remove('show');void wb.offsetWidth;wb.classList.add('show');setTimeout(()=>wb.classList.remove('show'),1800);}
+  tdUpdateBaseUI();
+  if(!_td.raf){_td.lastT=performance.now();_td.raf=requestAnimationFrame(tdLoop);}
 }
 
-function battleNormalAtk(){
-  if(!_bt.active)return;
-  // Normal attack: instant damage, no ring needed
-  const base=8+Math.floor(G.actionStat/6)+(_bt.wave*2);
-  const isCrit=Math.random()<0.12;
-  const dmg=Math.round(base*(isCrit?1.5:1));
-  _bt.eHp=Math.max(0,_bt.eHp-dmg);
-  _bt.totalDmgDealt+=dmg;
-  _bt.combo++;_bt.pMp=Math.min(_bt.pMaxMp,_bt.pMp+5);
-  if(_bt.combo>=3){_bt.fusionReady=true;}
-  // K6c Whirlwind: each attack gives +5 coins
-  if(G._talentK6c)gainCoins(5);
-  _baSetLog((isCrit?'💥 CRIT! ':'⚔️ ')+dmg+' dmg! Combo: '+_bt.combo+(G._talentK6c?' +5⚡':''));
-  const sprite=$('baEnemySprite');
-  if(sprite){sprite.classList.remove('hit');void sprite.offsetWidth;sprite.classList.add('hit');}
-  _baFlash('#39FF14'+'33');
-  floatNum&&floatNum((isCrit?'💥':'⚔️')+dmg,window.innerWidth/2,window.innerHeight*.3,'#39FF14',isCrit?20:16);
-  vibe(isCrit?[30,15,60]:25);SFX.hit&&SFX.hit();
-  updateBattleUI();_baCheckPhase();
-  if(_bt.eHp<=0){setTimeout(battleWin,300);return;}
-  setTimeout(_baEnemyAttack,550);
+// ── Form switching: the skill-based core loop ──
+function tdSwitchForm(form){
+  if(!TD_FORMS[form])return;
+  if(_td.form===form)return;
+  if(_td.switchCooldown>0){showT('⏳ Formen byter snart redo igen!','y');return;}
+  _td.form=form;
+  _td.switchCooldown=TD_SWITCH_COOLDOWN;
+  _td.switchStun=TD_SWITCH_STUN;
+  tdUpdateFormUI();
+  vibe([15,8,15]);SFX.click&&SFX.click();
+  const lbl=$('tdFormLbl');if(lbl)lbl.textContent=TD_FORMS[form].ico;
 }
 
-function battleHeal(){
-  if(!_bt.active)return;
-  if(_bt.pMp<30){showT('❌ Behöver 30 MP för att läka!','r');return;}
-  if(_bt.pHp>=_bt.pMax){showT('❌ HP är redan fullt!','y');return;}
-  _bt.pMp=Math.max(0,_bt.pMp-30);
-  const healAmt=Math.min(25,_bt.pMax-_bt.pHp);
-  _bt.pHp+=healAmt;
-  _baSetLog('💊 LÄKNING! +'+healAmt+' HP. Fienden kontrattackerar...');
-  showT('💊 +'+healAmt+' HP!','g');vibe([20,10,40]);
-  floatNum&&floatNum('💊+'+healAmt,window.innerWidth/2,window.innerHeight*.5,'#39FF14',18);
-  updateBattleUI();
-  setTimeout(_baEnemyAttack,500);
+function tdUpdateFormUI(){
+  ['magic','rage','shield','speed'].forEach(f=>{
+    const btn=$('tdForm'+f.charAt(0).toUpperCase()+f.slice(1));
+    if(!btn)return;
+    btn.classList.toggle('active',_td.form===f);
+  });
+  const lbl=$('tdFormLbl');if(lbl)lbl.textContent=TD_FORMS[_td.form]?.ico||'✨';
 }
 
-// ── TAP ATTACK FUNCTIONS ──
-function baTapAttack(){
-  if(!_bt.active)return;
-  const base=8+Math.floor(G.actionStat/6)+(_bt.wave*2);
-  const synced=_baIsSyncedTap();
-  const isCrit=Math.random()<(synced?0.30:0.15); // synced tap = forgiving crit bonus, never required
-  const dmg=Math.round(base*(isCrit?1.6:1)*(synced?1.1:1));
-  _bt.eHp=Math.max(0,_bt.eHp-dmg);
-  _bt.totalDmgDealt+=dmg;
-  _bt.combo++;_bt.pMp=Math.min(_bt.pMaxMp,_bt.pMp+6);
-  if(G._talentK6c)gainCoins(5);
-  _baSetLog((isCrit?'💥 CRIT! ':synced?'⚡ SYNC! ':'⚔️ ')+dmg+' dmg! Combo: '+_bt.combo+(G._talentK6c?' +5⚡':''));
-  const sprite=$('baEnemySprite');
-  if(sprite){sprite.classList.remove('hit');void sprite.offsetWidth;sprite.classList.add('hit');}
-  _baFlash('#39FF14'+'33');
-  _baFloatDmg(dmg,isCrit,'#39FF14',isCrit?'💥':synced?'⚡':'⚔️');
-  vibe(isCrit?[30,15,60]:20);SFX.hit&&SFX.hit();
-  // Beat-synced visual feedback on the button itself
-  if(synced){
-    const btn=$('baHitBtn');
-    if(btn){btn.classList.add('synced');setTimeout(()=>btn&&btn.classList.remove('synced'),180);}
+// ── Main loop — defensively guarded so a bad value can never freeze the RAF chain ──
+function tdLoop(t){
+  if(!_td.active||_td.paused){_td.raf=null;return;}
+  try{
+    const dt=Math.min(2.5,Math.max(0,(t-(_td.lastT||t))/16.67));
+    _td.lastT=t;
+    tdUpdate(dt);
+    tdDraw();
+  }catch(err){
+    console.error('TD loop error (suppressed to keep RAF alive):',err);
   }
-  _baUpdateComboVisuals();
-  updateBattleUI();_baCheckPhase();
-  if(_bt.eHp<=0){setTimeout(()=>battleWin(),300);return;}
-  setTimeout(_baTelegraphEnemyAttack,500);
+  _td.raf=requestAnimationFrame(tdLoop);
 }
 
-function baSpecialAttack(type){
-  if(!_bt.active)return;
-  // While a reaction window is open/telegraphing, the SHIELD button is repurposed as the
-  // DODGE/BLOCK reaction input instead of its normal MP-shield action.
-  if(type==='shield'&&_bt.incoming){_baReact();return;}
-  const base=10+Math.floor(G.actionStat/5)+(_bt.wave*3);
-  let dmg=0,msg='',mpCost=0,col='#39FF14';
-  const weak=_bt.enemy?.weakness||null;
-  if(type==='magic'){
-    mpCost=25;
-    if(_bt.pMp<mpCost){showT('❌ Behöver '+mpCost+' MP!','r');return;}
-    const isWeak=weak==='magic',isResist=weak&&weak!=='magic';
-    dmg=Math.round(base*(isWeak?3.0:isResist?1.1:2.0));
-    msg=(isWeak?'💥 WEAKNESS HIT! ✨ MAGIC! ':'✨ MAGIC! ')+dmg+' dmg!';col='#BF5FFF';
-    _bt.statusEnemy=_bt.enemy?.status||null;
-    if(_bt.statusEnemy)msg+=' + '+BA_STATUS_ICONS[_bt.statusEnemy];
-    if(isWeak)_baWeaknessPayoff();
-  } else if(type==='shield'){
-    mpCost=15;
-    if(_bt.pMp<mpCost){showT('❌ Behöver '+mpCost+' MP!','r');return;}
-    _bt.blocking=true;
-    const healAmt=Math.min(15,_bt.pMax-_bt.pHp);
-    _bt.pHp=Math.min(_bt.pMax,_bt.pHp+healAmt);
-    msg='🛡️ SHIELD! +'+healAmt+' HP · Block aktivt!';col='#00D9FF';
-    _baSetLog(msg);_bt.pMp=Math.max(0,_bt.pMp-mpCost);
-    floatNum&&floatNum('🛡️+'+healAmt,window.innerWidth/2,window.innerHeight*.4,'#00D9FF',16);
-    vibe([10,5,20]);updateBattleUI();
-    setTimeout(_baTelegraphEnemyAttack,600);return;
-  } else if(type==='rage'){
-    mpCost=20;
-    if(_bt.pMp<mpCost){showT('❌ Behöver '+mpCost+' MP!','r');return;}
-    const isWeak=weak==='rage',isResist=weak&&weak!=='rage';
-    dmg=Math.round(base*(isWeak?3.2:isResist?1.3:2.8));
-    msg=(isWeak?'💥 WEAKNESS HIT! 🔥 RAGE STRIKE! ':'🔥 RAGE STRIKE! ')+dmg+' dmg!';col='#FF9F0A';
-    vibe([40,20,80,20,120]);
-    if(isWeak)_baWeaknessPayoff();
+function tdUpdate(dt){
+  const canvas=$('tdCanvas');if(!canvas)return;
+  const W=canvas.width,H=canvas.height;
+  // Cooldown / stun countdown
+  if(_td.switchCooldown>0)_td.switchCooldown=Math.max(0,_td.switchCooldown-dt);
+  if(_td.switchStun>0)_td.switchStun=Math.max(0,_td.switchStun-dt);
+  if(_td.comboTimer>0){_td.comboTimer=Math.max(0,_td.comboTimer-dt);if(_td.comboTimer<=0)_td.combo=0;}
+  tdUpdateFormCdUI();
+
+  // Spawn enemies from queue
+  _td.spawnTimer-=dt;
+  if(_td.spawnTimer<=0&&_td.queue.length>0){
+    const def=_td.queue.shift();
+    const startX=W+40;
+    _td.enemies.push({
+      ...def,maxHp:def.hp,x:startX,y:_td.pathY+(Math.random()*16-8),
+      hitFlash:0,id:Math.random().toString(36).slice(2),
+    });
+    _td.spawnTimer=def.isBoss?0:Math.max(18,46-_td.wave);
   }
-  if(dmg>0){
-    _bt.eHp=Math.max(0,_bt.eHp-dmg);
-    _bt.totalDmgDealt+=dmg;
-    _bt.combo+=2;
-    const sprite=$('baEnemySprite');
-    if(sprite){sprite.classList.remove('hit');void sprite.offsetWidth;sprite.classList.add('hit');}
-    _baFlash(col+'44');
-    _baFloatDmg(dmg,weak===type,col,weak===type?'💥':type==='magic'?'✨':'🔥');
-  }
-  _bt.pMp=Math.max(0,_bt.pMp-mpCost);
-  _baUpdateComboVisuals();
-  _baSetLog(msg);SFX.hit&&SFX.hit();
-  updateBattleUI();_baCheckPhase();
-  if(_bt.eHp<=0){setTimeout(()=>battleWin(),300);return;}
-  setTimeout(_baTelegraphEnemyAttack,700);
-}
 
-// Big visual payoff when hitting an enemy's elemental weakness
-function _baWeaknessPayoff(){
-  const scene=$('baScene');
-  if(scene){
-    const burst=document.createElement('div');
-    burst.className='ba-weak-burst';
-    scene.appendChild(burst);
-    setTimeout(()=>burst.remove(),550);
-  }
-  shakeScreen&&shakeScreen();
-  spawnParticles&&spawnParticles(window.innerWidth/2,window.innerHeight*.32,'stars');
-  vibe([20,10,30,10,80]);
-}
-
-// Floating damage number with size/color scaling by damage magnitude
-function _baFloatDmg(dmg,big,col,prefix){
-  if(!floatNum)return;
-  const size=big?24:dmg>=40?22:dmg>=20?18:14;
-  floatNum(prefix+dmg,window.innerWidth/2,window.innerHeight*.3,col,size);
-}
-
-// ── REACTIVE DEFENSE: telegraph → windup → reaction window → resolve ──
-// Replaces the old "instant/passive" enemy counter-attack. No rotating cursor —
-// just a clear icon telegraph + a timed tap on the (repurposed) BLOCK button.
-function _baClearReactTimers(){
-  (_bt.reactTimers||[]).forEach(t=>clearTimeout(t));
-  _bt.reactTimers=[];
-  const tg=$('baTelegraph');if(tg){tg.classList.remove('show','pulse');}
-  const rb=$('baReactBanner');if(rb){rb.classList.remove('show','late');}
-  const ring=$('baReactRing');if(ring){ring.classList.remove('shrink');ring.style.animationDuration='';}
-  const sb=$('baSpecialShield');if(sb)sb.classList.remove('react-armed','react-perfect');
-  const sprite=$('baEnemySprite');if(sprite)sprite.classList.remove('windup','lunge');
-}
-
-function _baTelegraphEnemyAttack(){
-  if(!_bt.active||_bt.eHp<=0)return;
-  if(_bt.incoming)return; // an attack is already telegraphing/resolving — never stack two
-  const e=_bt.enemy;if(!e)return;
-  // Status: freeze/stun → enemy skips entirely, no telegraph needed
-  if(_bt.statusEnemy==='freeze'||_bt.statusEnemy==='stun'){
-    _baSetLog(BA_STATUS_ICONS[_bt.statusEnemy]+' '+e.name+' kan inte agera!');
-    _bt.statusEnemy=null;
-    updateBattleUI();return;
-  }
-  // Burn tick on enemy
-  if(_bt.statusEnemy==='burn'){
-    _bt.eHp=Math.max(0,_bt.eHp-8);
-    updateBattleUI();
-    if(_bt.eHp<=0){setTimeout(()=>battleWin(),300);return;}
-  }
-  const isDesp=_bt.ePhase>=2;
-  const isHeavy=isDesp&&Math.random()<0.4;
-  _bt.incoming={heavy:isHeavy};
-  // Windup duration scales with phase/difficulty: faster & meaner the further the fight goes
-  const windup=Math.max(380,720-_bt.ePhase*120-_bt.wave*8);
-  const winLen=Math.max(230,360-_bt.ePhase*25);
-  // Telegraph visuals: icon + sprite backstep-glow
-  const tg=$('baTelegraph');
-  if(tg){tg.textContent=isHeavy?'💥':'⚡';tg.classList.add('show');}
-  const sprite=$('baEnemySprite');
-  if(sprite){sprite.classList.remove('hit','atk');void sprite.offsetWidth;sprite.classList.add('windup');}
-  _baSetLog(isHeavy?'⚠️ '+e.name+' laddar upp en KRAFTFULL attack!':'⚠️ '+e.name+' förbereder en attack!');
-  const t1=setTimeout(()=>{
-    if(!_bt.active)return;
-    if(tg)tg.classList.add('pulse');
-    _baOpenReactWindow(winLen,isHeavy);
-  },windup);
-  _bt.reactTimers.push(t1);
-}
-
-function _baOpenReactWindow(winLen,isHeavy){
-  if(!_bt.active||!_bt.incoming)return;
-  _bt.reactWindowOpen=true;_bt.reactResolved=false;
-  const sprite=$('baEnemySprite');
-  if(sprite){sprite.classList.remove('windup');void sprite.offsetWidth;sprite.classList.add('lunge');}
-  const rb=$('baReactBanner');const rw=$('baReactWord');const rs=$('baReactSub');const ring=$('baReactRing');
-  if(rw)rw.textContent=isHeavy?'BLOCK!':'DODGE!';
-  if(rs)rs.textContent='tryck 🛡️ BLOCK nu!';
-  if(rb){rb.classList.remove('late');rb.classList.add('show');}
-  if(ring){ring.classList.remove('shrink');void ring.offsetWidth;ring.style.animationDuration=winLen+'ms';ring.classList.add('shrink');}
-  const sb=$('baSpecialShield');if(sb)sb.classList.add('react-armed');
-  vibe([15,10,15]);
-  const t2=setTimeout(()=>{
-    if(!_bt.active)return;
-    if(_bt.reactWindowOpen&&!_bt.reactResolved){
-      // Window closed with no tap (or too late) → resolve as a miss
-      _baResolveEnemyAttack('miss');
+  // Move enemies toward base (left side); deal dmg + despawn on reaching it
+  const baseX=Math.max(10,_td.petX-60);
+  for(let i=_td.enemies.length-1;i>=0;i--){
+    const e=_td.enemies[i];
+    e.x-=Math.max(.05,e.speed)*dt*1.6;
+    if(e.hitFlash>0)e.hitFlash=Math.max(0,e.hitFlash-dt);
+    if(e.x<=baseX){
+      _td.baseHp=Math.max(0,_td.baseHp-(e.dmgToBase||5));
+      tdUpdateBaseUI();
+      shakeScreen&&shakeScreen();
+      _td.shakeT=10;
+      vibe(30);
+      _td.enemies.splice(i,1);
+      // Escaped enemies still count toward "resolved" so the wave can clear
+      // even if the player lets some through (they just pay in base HP).
+      _td.killsThisWave++;
+      if(_td.baseHp<=0){tdDefeat();return;}
     }
-  },winLen+70); // small grace buffer so a tap right at the edge still registers
-  _bt.reactTimers.push(t2);
-}
-
-// Player taps BLOCK (repurposed) during/near the reaction window
-function _baReact(){
-  if(!_bt.active||!_bt.incoming)return;
-  if(!_bt.reactWindowOpen){
-    // Tapped too early (still telegraphing) — treat as a whiffed reaction, slight mitigation only
-    _baResolveEnemyAttack('early');
-    return;
   }
-  if(_bt.reactResolved)return;
-  _baResolveEnemyAttack('perfect');
-}
 
-function _baResolveEnemyAttack(quality){
-  if(!_bt.incoming)return;
-  _bt.reactResolved=true;_bt.reactWindowOpen=false;
-  const e=_bt.enemy;const isHeavy=_bt.incoming.heavy;
-  _bt.incoming=null;
-  const tg=$('baTelegraph');if(tg){tg.classList.remove('show','pulse');}
-  const rb=$('baReactBanner');const ring=$('baReactRing');
-  const sb=$('baSpecialShield');if(sb)sb.classList.remove('react-armed');
-  let dmg;
-  if(isHeavy){
-    dmg=e.specialAtk.dmg[0]+Math.floor(Math.random()*(e.specialAtk.dmg[1]-e.specialAtk.dmg[0]));
-    if(e.phases[2]?.statusToPlayer)_bt.statusPlayer=e.phases[2].statusToPlayer;
-  } else {
-    dmg=e.dmg[0]+Math.floor(Math.random()*(e.dmg[1]-e.dmg[0]));
-    if(_bt.ePhase===1)dmg=Math.round(dmg*1.3); // berserker +30%
+  // Pet tower auto-fires at nearest enemy in range based on current form
+  const form=TD_FORMS[_td.form]||TD_FORMS.magic;
+  _td._fireT=(_td._fireT||0)-dt;
+  const canFire=_td.switchStun<=0;
+  if(canFire&&_td._fireT<=0&&_td.enemies.length>0){
+    // Target the enemy furthest along the path (closest to base) within range
+    let target=null,bestX=-Infinity;
+    for(const e of _td.enemies){
+      const dist=Math.abs(e.x-_td.petX);
+      if(dist<=form.range&&e.x>bestX){bestX=e.x;target=e;}
+    }
+    if(target){
+      const isWeak=form.weak&&target.weakness===form.weak;
+      const dmg=Math.round(form.dmg*(isWeak?form.bonusMult:1)*(1+_td.wave*0.02));
+      target.hp=Math.max(0,target.hp-dmg);
+      target.hitFlash=8;
+      _td.projectiles.push({x:_td.petX,y:_td.petY,tx:target.x,ty:target.y,col:form.col,life:8});
+      tdFloatDmg(dmg,target.x,target.y,isWeak,form.col);
+      if(isWeak){
+        _td.combo++; _td.comboTimer=90;
+        tdWeaknessPayoff();
+        if(_td.combo>0&&_td.combo%5===0){_td.shakeT=8;shakeScreen&&shakeScreen();}
+      } else {
+        _td.combo=Math.max(0,_td.combo);
+      }
+      tdUpdateComboUI();
+      if(target.hp<=0){
+        tdKillEnemy(target);
+      }
+      _td._fireT=Math.max(4,form.fireRate*(1-Math.min(.4,_td.wave*0.01)));
+    }
   }
-  let msg='';
-  if(quality==='perfect'){
-    // Perfect-timed react: avoid (almost) all damage + bonus
-    dmg=0;
-    if(rb){rb.classList.remove('late');}
-    if(ring)ring.style.borderColor='var(--g)';
-    if(sb){sb.classList.add('react-perfect');setTimeout(()=>sb&&sb.classList.remove('react-perfect'),350);}
-    const bonusMp=8,bonusCombo=1;
-    _bt.pMp=Math.min(_bt.pMaxMp,_bt.pMp+bonusMp);
-    _bt.combo+=bonusCombo;
-    msg=(isHeavy?'🛡️ PERFECT BLOCK! ':'🌀 PERFECT DODGE! ')+'Ingen skada! +'+bonusMp+' MP';
-    floatNum&&floatNum('PERFECT!',window.innerWidth/2,window.innerHeight*.45,'var(--g)',20);
-    SFX.win&&SFX.win();vibe([15,10,40]);
-    if(G._talentK7b){gainXP(30,'battle');msg+=' +30 XP';}
-    _baUpdateComboVisuals();
-  } else if(quality==='early'){
-    dmg=Math.floor(dmg*.7);
-    msg='⏱️ FÖR TIDIGT! Delvis skydd — '+dmg+' dmg';
-    if(rb)rb.classList.add('late');
-  } else {
-    // 'miss' = no react attempted in time = full damage
-    msg=(isHeavy?'💥 '+e.specialAtk.msg:'👾 '+e.name+' dealar '+dmg+' dmg!');
-    if(rb)rb.classList.add('late');
-    if(isHeavy){shakeScreen&&shakeScreen();vibe([60,30,120,30,180]);}
-  }
-  // Curse: +50% to player
-  if(_bt.statusPlayer==='curse'&&dmg>0)dmg=Math.round(dmg*1.5);
-  // K4b Iron Wall: -40% damage received
-  if(G._talentK4b&&dmg>0)dmg=Math.round(dmg*.6);
-  if(dmg>0){
-    _bt.pHp=Math.max(0,_bt.pHp-dmg);
-    SFX.hit&&SFX.hit();
-    const ph=$('baPlayerHpFill');if(ph){ph.style.background='var(--r)';setTimeout(()=>{if(ph)ph.style.background='var(--g)';},300);}
-    vibe(20);floatNum&&floatNum('💀-'+dmg,window.innerWidth*.4,window.innerHeight*.6,'var(--r)',dmg>=30?20:16);
-  }
-  _baSetLog(msg);
-  // Fade out the reaction banner shortly after resolving
-  const t3=setTimeout(()=>{
-    const rb2=$('baReactBanner');if(rb2)rb2.classList.remove('show','late');
-    const sprite=$('baEnemySprite');if(sprite)sprite.classList.remove('lunge');
-  },isHeavy?420:300);
-  _bt.reactTimers.push(t3);
-  // MP auto-regen each turn
-  _bt.pMp=Math.min(_bt.pMaxMp,_bt.pMp+5);
-  updateBattleUI();
-  if(_bt.pHp<=0){setTimeout(battleLose,300);}
-}
 
-// Backwards-compatible alias: some older call sites referenced _baEnemyAttack directly.
-function _baEnemyAttack(){_baTelegraphEnemyAttack();}
+  // Particles
+  for(let i=_td.particles.length-1;i>=0;i--){
+    const p=_td.particles[i];
+    p.x+=p.vx*dt;p.y+=p.vy*dt;p.vy+=0.12*dt;p.life-=dt;
+    if(p.life<=0)_td.particles.splice(i,1);
+  }
+  // Projectiles
+  for(let i=_td.projectiles.length-1;i>=0;i--){
+    const pr=_td.projectiles[i];pr.life-=dt;if(pr.life<=0)_td.projectiles.splice(i,1);
+  }
+  if(_td.shakeT>0)_td.shakeT=Math.max(0,_td.shakeT-dt);
 
-function _baCheckPhase(){
-  const pct=_bt.eHp/_bt.eMax;
-  const e=_bt.enemy;
-  let newPhase=0;
-  if(pct<=.2)newPhase=2;
-  else if(pct<=.5)newPhase=1;
-  if(newPhase>_bt.ePhase){
-    _bt.ePhase=newPhase;
-    const ph=e.phases[newPhase];
-    _baSetLog(ph.msg||'PHASE CHANGE!');
-    const sprite=$('baEnemySprite');
-    if(sprite){sprite.classList.remove('hit','atk');void sprite.offsetWidth;sprite.classList.add('phase-up');}
-    _baUpdatePhaseDots();
-    _baUpdateBg();
-    shakeScreen&&shakeScreen();
-    vibe([50,30,100,30,150]);
-    setTimeout(()=>_baUpdateEnemySprite(),200);
+  // Wave clear check
+  if(_td.active&&_td.queue.length===0&&_td.enemies.length===0&&_td.killsThisWave>=_td.enemiesThisWave){
+    tdWaveClear();
   }
 }
 
-function _baUpdateEnemySprite(){
-  const el=$('baEnemySprite');if(!el)return;
-  const e=_bt.enemy;if(!e)return;
-  el.textContent=e.em[Math.min(_bt.ePhase,e.em.length-1)];
+function tdKillEnemy(e){
+  _td.killsThisWave++;
+  _td.earnedXp+=(e.reward?.xp||3);
+  _td.earnedCoins+=(e.reward?.coins||2);
+  tdSpawnParticles(e.x,e.y,e.isBoss?'stars':'hearts');
+  const idx=_td.enemies.indexOf(e);if(idx>=0)_td.enemies.splice(idx,1);
+  if(e.isBoss){_td.shakeT=14;shakeScreen&&shakeScreen();vibe([40,20,80,20,120]);}
 }
 
-// Combo meter tiered visual escalation: color/glow intensify, not just the number ticking up
-function _baUpdateComboVisuals(){
-  const combo=_bt.combo;
-  const tier=combo>=10?'t3':combo>=5?'t2':combo>=3?'t1':'';
-  const cf=$('baComboFill');if(cf)cf.style.width=Math.min(100,combo*20)+'%';
-  ['baComboCount','baComboCount2'].forEach(id=>{
-    const el=$(id);if(!el)return;
-    el.classList.remove('t1','t2','t3');
-    if(tier)el.classList.add(tier);
-  });
-  const meter=document.querySelector('.ba-combo-meter');
-  if(meter){meter.classList.remove('t2','t3');if(tier==='t2'||tier==='t3')meter.classList.add(tier);}
+function tdFloatDmg(dmg,gx,gy,isWeak,col){
+  const canvas=$('tdCanvas');if(!canvas)return;
+  const r=canvas.getBoundingClientRect();
+  const safeX=Number.isFinite(gx)?gx:0,safeY=Number.isFinite(gy)?gy:0;
+  const screenX=r.left+safeX,screenY=r.top+safeY;
+  floatNum&&floatNum((isWeak?'⚡':'')+dmg,screenX,screenY,isWeak?(col||'#FFE600'):'var(--t1)',isWeak?20:14);
 }
 
-function _baUpdatePhaseDots(){
-  ['baPh0','baPh1','baPh2'].forEach((id,i)=>{
-    const d=$(id);if(!d)return;
-    d.className='ba-ph-dot';
-    if(i<_bt.ePhase)d.classList.add(i===1?'berserk':'desperate');
-    else if(i===_bt.ePhase)d.classList.add(i===0?'active':i===1?'berserk':'desperate');
+function tdWeaknessPayoff(){
+  const el=$('tdWeaknessPayoff');if(!el)return;
+  el.classList.remove('show');void el.offsetWidth;el.classList.add('show');
+  clearTimeout(el._t);el._t=setTimeout(()=>el.classList.remove('show'),550);
+}
+
+function tdSpawnParticles(gx,gy,type){
+  const canvas=$('tdCanvas');if(!canvas)return;
+  const r=canvas.getBoundingClientRect();
+  const safeX=Number.isFinite(gx)?gx:0,safeY=Number.isFinite(gy)?gy:0;
+  spawnParticles&&spawnParticles(r.left+safeX,r.top+safeY,type||'hearts');
+}
+
+function tdUpdateFormCdUI(){
+  ['magic','rage','shield','speed'].forEach(f=>{
+    const btn=$('tdForm'+f.charAt(0).toUpperCase()+f.slice(1));
+    if(!btn)return;
+    let cdEl=btn.querySelector('.tf-cd');
+    const showCd=_td.form!==f&&_td.switchCooldown>0;
+    if(showCd){
+      if(!cdEl){cdEl=document.createElement('span');cdEl.className='tf-cd';btn.appendChild(cdEl);}
+      cdEl.textContent=Math.ceil(_td.switchCooldown/12);
+    } else if(cdEl){
+      cdEl.remove();
+    }
+    btn.classList.toggle('stunned',_td.form===f&&_td.switchStun>0);
   });
 }
 
-function _baUpdateBg(){
-  const bg=$('baBgGlow');if(!bg)return;
-  const e=_bt.enemy;if(!e)return;
-  const ph=e.phases[Math.min(_bt.ePhase,e.phases.length-1)];
-  const col=ph.col;
-  // Multi-layer cinematic background
-  bg.style.background=`
-    radial-gradient(ellipse 100% 60% at 50% 0%,${col}22 0%,transparent 70%),
-    radial-gradient(ellipse 60% 40% at 50% 40%,${col}0e 0%,transparent 80%),
-    repeating-linear-gradient(0deg,transparent,transparent 40px,${col}05 40px,${col}05 41px)
-  `;
-  // Update enemy glow filter to match phase color
-  const sp=$('baEnemySprite');
-  if(sp)sp.style.filter=`drop-shadow(0 0 30px ${col}99) drop-shadow(0 0 60px ${col}44)`;
-  // Update border top of arena action area based on phase
-  const actions=document.querySelector('.ba-actions');
-  if(actions)actions.style.borderTopColor=col+'44';
-  const hdr=document.querySelector('.ba-hdr');
-  if(hdr)hdr.style.borderBottomColor=col+'88';
+function tdUpdateComboUI(){
+  const cc=$('tdComboCount');if(cc)cc.textContent=_td.combo+'x';
+  const cf=$('tdComboFill');if(cf)cf.style.width=Math.min(100,_td.combo*8)+'%';
 }
 
-function _baFlash(col){
-  const f=$('battleArena');if(!f)return;
-  const flash=document.createElement('div');
-  flash.style.cssText=`position:absolute;inset:0;background:${col};pointer-events:none;z-index:25;animation:none;opacity:.7;`;
-  f.appendChild(flash);
-  setTimeout(()=>{flash.style.opacity='0';flash.style.transition='opacity .15s';setTimeout(()=>flash.remove(),200);},80);
+function tdUpdateBaseUI(){
+  const pct=Math.max(0,Math.min(100,(_td.baseHp/_td.baseMax)*100));
+  const f=$('tdBaseHpFill');
+  if(f){f.style.width=pct+'%';f.style.background=pct>50?'var(--g)':pct>20?'var(--y)':'var(--r)';}
+  const n=$('tdBaseHpNum');if(n)n.textContent=Math.round(_td.baseHp)+'/'+_td.baseMax;
 }
 
-function _baSetLog(msg){
-  const el=$('baLog');if(!el)return;
-  el.style.opacity='0';
-  setTimeout(()=>{el.textContent=msg;el.style.opacity='1';},150);
+// ── Drawing (canvas for shapes/path, HTML overlay for ALL emoji — iOS safe) ──
+function tdSafeRadius(r){
+  if(!Number.isFinite(r)||r<=0)return 0.01;
+  return r;
+}
+function tdSafeColor(c,fallback){
+  if(typeof c==='string'&&c.length>0&&/^(#|rgb|rgba|hsl|hsla)/.test(c))return c;
+  return fallback||'#ffffff';
 }
 
-function battleWin(){
-  const e=_bt.enemy;_bt.active=false;
-  _baClearReactTimers();
-  _bt.earnedXp+=e.reward.xp;_bt.earnedCoins+=e.reward.coins;
-  _bt.turnsWon++;
-  const isLast=_bt.wave>=BATTLE_ENEMIES.length;
-  // Defeat animation on enemy sprite before the overlay slides in
-  const sprite=$('baEnemySprite');
-  if(sprite){sprite.classList.remove('hit','atk','windup','lunge','phase-up');void sprite.offsetWidth;sprite.classList.add('defeated');}
-  // Show victory overlay
+function tdDraw(){
+  const canvas=$('tdCanvas');if(!canvas)return;
+  const ctx=canvas.getContext('2d');if(!ctx)return;
+  const W=canvas.width,H=canvas.height;
+  if(!Number.isFinite(W)||!Number.isFinite(H)||W<=0||H<=0)return;
+  ctx.clearRect(0,0,W,H);
+  ctx.save();
+  // Screen shake
+  if(_td.shakeT>0){
+    const sx=(Math.random()-.5)*Math.min(8,_td.shakeT);
+    const sy=(Math.random()-.5)*Math.min(8,_td.shakeT);
+    ctx.translate(sx,sy);
+  }
+  // Path
+  ctx.fillStyle='rgba(255,255,255,.04)';
+  ctx.fillRect(0,Math.max(0,_td.pathY-28),W,56);
+  ctx.strokeStyle='rgba(255,255,255,.08)';
+  ctx.lineWidth=1;
+  ctx.beginPath();ctx.moveTo(0,_td.pathY);ctx.lineTo(W,_td.pathY);ctx.stroke();
+
+  // Pet tower range ring
+  const form=TD_FORMS[_td.form]||TD_FORMS.magic;
+  const rangeR=tdSafeRadius(form.range);
+  try{
+    const grad=ctx.createRadialGradient(_td.petX,_td.petY,0,_td.petX,_td.petY,rangeR);
+    const col=tdSafeColor(form.col,'#BF5FFF');
+    grad.addColorStop(0,col+'22');
+    grad.addColorStop(1,col+'00');
+    ctx.fillStyle=grad;
+    ctx.beginPath();ctx.arc(_td.petX,_td.petY,rangeR,0,Math.PI*2);ctx.fill();
+  }catch(e){/* never let a bad gradient kill the loop */}
+
+  // Enemy HP bars (canvas — simple rects, no emoji)
+  _td.enemies.forEach(e=>{
+    const w=30,h=4;
+    const hpPct=Math.max(0,Math.min(1,e.hp/Math.max(1,e.maxHp)));
+    ctx.fillStyle='rgba(0,0,0,.6)';
+    ctx.fillRect(e.x-w/2,e.y-30,w,h);
+    ctx.fillStyle=hpPct>.5?'#39FF14':hpPct>.2?'#FFE600':'#FF2D55';
+    ctx.fillRect(e.x-w/2,e.y-30,Math.max(0,w*hpPct),h);
+    if(e.hitFlash>0){
+      ctx.fillStyle='rgba(255,255,255,'+Math.min(.5,e.hitFlash/8*.5).toFixed(2)+')';
+      ctx.beginPath();ctx.arc(e.x,e.y,tdSafeRadius(20),0,Math.PI*2);ctx.fill();
+    }
+  });
+
+  // Projectiles
+  _td.projectiles.forEach(pr=>{
+    ctx.strokeStyle=tdSafeColor(pr.col,'#fff');
+    ctx.lineWidth=2;
+    ctx.beginPath();ctx.moveTo(pr.x,pr.y);ctx.lineTo(pr.tx,pr.ty);ctx.stroke();
+  });
+
+  // Particles (small dots; emoji particles handled by spawnParticles' own DOM nodes)
+  _td.particles.forEach(p=>{
+    ctx.fillStyle=tdSafeColor(p.col,'#fff');
+    ctx.beginPath();ctx.arc(p.x,p.y,tdSafeRadius(p.r||2),0,Math.PI*2);ctx.fill();
+  });
+
+  ctx.restore();
+
+  // ── HTML emoji overlay — iOS Safari cannot render emoji via ctx.fillText ──
+  const ov=$('tdEmojiOv');
+  if(ov){
+    const petGlow=form.col;
+    let html=`<div style="position:absolute;left:${Math.round(_td.petX)}px;top:${Math.round(_td.petY)}px;transform:translate(-50%,-50%);font-size:42px;line-height:1;filter:drop-shadow(0 0 14px ${petGlow})">${G.petEmoji||'🐉'}</div>`;
+    _td.enemies.forEach(e=>{
+      const bump=e.hitFlash>0?'scale(1.2)':'scale(1)';
+      html+=`<div style="position:absolute;left:${Math.round(e.x)}px;top:${Math.round(e.y)}px;transform:translate(-50%,-50%) ${bump};font-size:${e.isBoss?40:28}px;line-height:1;transition:transform .08s">${e.em||'👾'}</div>`;
+      const wcol=TD_FORMS[e.weakness]?.col||'#FFE600';
+      const wname=(e.weakness||'').toUpperCase();
+      if(wname){
+        html+=`<div class="td-weak-tag" style="left:${Math.round(e.x)}px;top:${Math.round(e.y-34)}px;color:${wcol}">WEAK: ${TD_FORMS[e.weakness]?.ico||'⚡'} ${wname}</div>`;
+      }
+    });
+    ov.innerHTML=html;
+  }
+}
+
+// ── Wave clear / victory / defeat ──
+function tdWaveClear(){
+  _td.active=false;
+  const isFinal=_td.wave>=TD_WAVE_COUNT;
   $('baVictory').style.display='flex';
-  $('baVicEnemy').textContent=e.name+' besegrad!';
+  $('baVicEnemy').textContent=(isFinal?'Alla waves klarade!':'Wave '+_td.wave+' klarad!');
   const rewards=$('baRewards');
-  const itemHtml=e.reward.item?`<div class="ba-reward-chip" style="animation-delay:.4s">${e.reward.item} ITEM!</div>`:'';
-  rewards.innerHTML=`
-    <div class="ba-reward-chip">+${e.reward.xp} XP</div>
-    <div class="ba-reward-chip" style="animation-delay:.2s;color:var(--y)">+${e.reward.coins} ⚡</div>
-    ${_bt.combo>2?`<div class="ba-reward-chip" style="animation-delay:.3s;color:var(--pk)">🔥 COMBO BONUS!</div>`:''}
-    ${itemHtml}
-    ${isLast?`<div class="ba-reward-chip" style="animation-delay:.5s;color:var(--y);border-color:gold">👑 ALLA WAVES!</div>`:''}
-  `;
+  if(rewards){
+    rewards.innerHTML=`
+      <div class="ba-reward-chip">+${_td.earnedXp} XP</div>
+      <div class="ba-reward-chip" style="animation-delay:.2s;color:var(--y)">+${_td.earnedCoins} ⚡</div>
+      ${_td.combo>=5?`<div class="ba-reward-chip" style="animation-delay:.3s;color:var(--pk)">🔥 COMBO BONUS!</div>`:''}
+      ${isFinal?`<div class="ba-reward-chip" style="animation-delay:.5s;color:var(--y);border-color:gold">👑 ALLA WAVES!</div>`:''}
+    `;
+  }
   const btn=$('baContBtn');
   if(btn){
-    if(isLast){btn.textContent='🏆 AVSLUTA';btn.onclick=()=>{_baFinalRewards();closeBattle();};}
+    if(isFinal){btn.textContent='🏆 AVSLUTA';btn.onclick=()=>{tdFinalRewards();closeBattle();};}
     else{btn.textContent='NÄSTA WAVE →';btn.onclick=battleContinue;}
   }
   SFX.win&&SFX.win();vibe([30,20,100,20,80]);
-  spawnParticles&&spawnParticles(window.innerWidth/2,window.innerHeight*.4,'stars');
+  tdSpawnParticles(($('tdCanvas')?.width||300)/2,($('tdCanvas')?.height||200)*.4,'stars');
 }
 
-function _baFinalRewards(){
-  let xp=_bt.earnedXp,coins=_bt.earnedCoins;
-  // K7a Warlord: battle rewards ×3
-  if(G._talentK7a){xp=Math.round(xp*3);coins=Math.round(coins*3);}
-  // K6b Fortress: heal 20% of max HP per win
-  if(G._talentK6b){_bt.pHp=Math.min(_bt.pMax,_bt.pHp+Math.floor(_bt.pMax*.2));showT('🏰 FORTRESS! +'+Math.floor(_bt.pMax*.2)+' HP!','b');}
+function tdFinalRewards(){
+  let xp=_td.earnedXp,coins=_td.earnedCoins;
+  if(G._talentK7a){xp=Math.round(xp*3);coins=Math.round(coins*3);} // Warlord
   gainXP(xp,'battle');gainCoins(coins);gainKC(Math.floor(Math.random()*10+5),'battle');
-  if(G._talentX12){gainCoins(20);showT('🏦 BATTLE TREASURY! +20 coins!','y');} // X12 Battle Treasury
-  addWorldPoints(Math.floor(_bt.wave*10),'battle');
+  if(G._talentX12){gainCoins(20);showT('🏦 BATTLE TREASURY! +20 coins!','y');}
+  addWorldPoints(Math.floor(_td.wave*10),'battle');
   G.battlesWon=(G.battlesWon||0)+1;
   markBond&&markBond('quest');
   advanceQuest&&advanceQuest('battle');
   checkAchievements&&checkAchievements();
   save&&save();updateHUD&&updateHUD();
-  addDiaryEntry&&addDiaryEntry('Vann '+_bt.turnsWon+' waves i Battle Arena! Delade '+_bt.totalDmgDealt+' total dmg ⚔️');
-  showT('⚔️ BATTLE COMPLETE! +'+xp+' XP · +'+coins+' coins'+(G._talentK7a?' (WARLORD ×3!)':''),'y');
+  addDiaryEntry&&addDiaryEntry('Klarade '+_td.wave+' waves i Pet Tower Defense! ⚔️');
+  showT('⚔️ TOWER DEFENSE! +'+xp+' XP · +'+coins+' coins'+(G._talentK7a?' (WARLORD ×3!)':''),'y');
 }
 
 function battleContinue(){
   $('baVictory').style.display='none';
-  _baFinalRewards();
-  _bt.wave++;
-  _bt.pHp=Math.min(_bt.pMax,_bt.pHp+30); // heal between waves
-  _bt.pMp=Math.min(_bt.pMaxMp,_bt.pMp+20);
-  _bt.earnedXp=0;_bt.earnedCoins=0;
-  showT('❤️ +30 HP healed!','g');
-  startBattleWave();
+  tdFinalRewards();
+  _td.wave++;
+  _td.baseHp=Math.min(_td.baseMax,_td.baseHp+15);
+  _td.earnedXp=0;_td.earnedCoins=0;
+  tdUpdateBaseUI();
+  showT('❤️ Base +15 HP repaired!','g');
+  tdStartWave();
 }
 
 function battleRetry(){
   $('baDefeat').style.display='none';
-  _bt.pHp=_bt.pMax;_bt.pMp=_bt.pMaxMp;
-  _bt.wave=Math.max(1,_bt.wave-1);
-  startBattleWave();
+  _td.baseHp=_td.baseMax;
+  _td.wave=Math.max(1,_td.wave-1);
+  tdUpdateBaseUI();
+  tdStartWave();
 }
 
-function battleLose(){
-  // K8b Eternal Knight: never lose battles
-  if(G._talentK8b){_bt.pHp=Math.max(1,Math.floor(_bt.pMax*.3));showT('⚜️ ETERNAL KNIGHT! Nekad förlust!','y');vibe([20,10,30]);updateBattleUI();return;}
-  _bt.active=false;
-  _baClearReactTimers();
+function tdDefeat(){
+  if(G._talentK8b){ // Eternal Knight: never lose battles
+    _td.baseHp=Math.max(1,Math.floor(_td.baseMax*.3));
+    showT('⚜️ ETERNAL KNIGHT! Nekad förlust!','y');vibe([20,10,30]);
+    tdUpdateBaseUI();return;
+  }
+  _td.active=false;
   SFX.error&&SFX.error();vibe([50,30,100]);
+  const sub=$('tdDefeatSub');if(sub)sub.textContent='Du klarade dig till wave '+_td.wave+'. Försök igen!';
   $('baDefeat').style.display='flex';
-}
-
-function updateBattleUI(){
-  // Enemy HP
-  const ep=Math.max(0,(_bt.eHp/_bt.eMax)*100);
-  const ehf=$('baEnemyHpFill');
-  if(ehf){ehf.style.width=ep+'%';ehf.style.background=ep>50?'var(--pk)':ep>20?'var(--o)':'var(--r)';}
-  const ehn=$('baEnemyHpNum');if(ehn)ehn.textContent=_bt.eHp+'/'+_bt.eMax;
-  // Player HP
-  const pp=Math.max(0,(_bt.pHp/_bt.pMax)*100);
-  const phf=$('baPlayerHpFill');
-  if(phf){phf.style.width=pp+'%';phf.style.background=pp>50?'var(--g)':pp>20?'var(--y)':'var(--r)';}
-  const phn=$('baPlayerHpNum');if(phn)phn.textContent=_bt.pHp+'/'+_bt.pMax;
-  // MP
-  const mp=Math.max(0,(_bt.pMp/_bt.pMaxMp)*100);
-  const mpf=$('baPlayerMpFill');if(mpf)mpf.style.width=mp+'%';
-  const mpn=$('baPlayerMpNum');
-  // Combo
-  const cc=$('baComboCount');if(cc)cc.textContent=_bt.combo+'x';
-  const cc2=$('baComboCount2');if(cc2)cc2.textContent=_bt.combo+'x';
-  _baUpdateComboVisuals();
-  // Fusion indicator (kept for lore display)
-  const fi=$('baFusionIndicator');if(fi)fi.style.display=_bt.combo>=5?'block':'none';
-  // Status
-  const es=$('baEnemyStatus');if(es)es.textContent=_bt.statusEnemy?BA_STATUS_ICONS[_bt.statusEnemy]:'';
-  const ps=$('baPlayerStatus');if(ps)ps.textContent=_bt.statusPlayer?BA_STATUS_ICONS[_bt.statusPlayer]:'';
-  // Special buttons: dim magic/shield/rage if not enough MP
-  const sm=$('baSpecialMagic');if(sm)sm.style.opacity=_bt.pMp>=25?'1':'.4';
-  // Shield/BLOCK doubles as the reaction input — don't dim it for MP while a reaction is live
-  const ss=$('baSpecialShield');if(ss&&!_bt.incoming)ss.style.opacity=_bt.pMp>=15?'1':'.4';
-  const sr=$('baSpecialRage');if(sr)sr.style.opacity=_bt.pMp>=20?'1':'.4';
-  // MP auto-regen display
-  if(mpn)mpn.textContent=Math.round(_bt.pMp)+'/'+_bt.pMaxMp+' (+5/turn)';
-  // Player name
-  const pn=$('baPlayerName');if(pn)pn.textContent=(G.petEmoji||'🐉')+' '+(G.petName||'DIN PET')+' LV'+(G.level||1);
-  // Enemy name
-  const en=$('baEnemyName');if(en)en.textContent=(_bt.enemy?.name||'ENEMY')+' — '+_bt.eHp+'/'+_bt.eMax+' HP';
 }
 
 function addH(t,c='var(--g)'){G.hist.unshift({c,t,time:'just nu'});if(G.hist.length>30)G.hist.pop();}
@@ -6627,7 +6326,7 @@ function updateHUD(){
   $('hCoins').textContent=G.coins.toLocaleString('sv');
   const hkc=$('hKC');if(hkc)hkc.textContent=(G.kc||0).toLocaleString('sv');
   $('hStreak').textContent=G.streak;
-  const ht=$('hTrust');if(ht)ht.textContent=G.trustScore;
+  const hTrust=$('hTrust');if(hTrust)hTrust.textContent=G.trustScore;
   $('gcLbl').textContent=G.coins.toLocaleString('sv');
   const s=gS();
   $('pcEm').textContent=s.e+(G.equippedGear||s.g||'');
@@ -8999,9 +8698,8 @@ function _prDraw(canvas,ctx){
   window._prParticles=window._prParticles.filter(p=>p.life>0);
   window._prParticles.forEach(p=>{
     p.x+=p.vx;p.y+=p.vy;p.vy+=0.12;p.life-=0.04;
-    const sz=Math.max(0,3*p.life);
-    if(sz<=0)return;
-    ctx.save();ctx.globalAlpha=Math.max(0,p.life*.7);ctx.shadowBlur=8;ctx.shadowColor=p.col;
+    ctx.save();ctx.globalAlpha=p.life*.7;ctx.shadowBlur=8;ctx.shadowColor=p.col;
+    const sz=3*p.life;
     ctx.fillStyle=p.col;ctx.beginPath();ctx.arc(p.x,p.y,sz,0,Math.PI*2);ctx.fill();
     ctx.restore();
   });
@@ -9319,7 +9017,7 @@ function selectFishLoc(id){
   if(G.level<loc.req){showT('🔒 LV'+loc.req+' krävs!','r');return;}
   G.fishLocation=id;save();
   renderFishLocBar();_applyLocScene(id);
-  _fc.phase='idle';_fishResetVisuals();
+  _fishState.phase='idle';_fishResetVisuals();
   spawnStreetFishInScene();
   _fishSetStatus(loc.em+' '+loc.nm+' — '+loc.desc);
   showT(loc.em+' Moved to '+loc.nm,'b');
@@ -9334,7 +9032,7 @@ function _applyLocScene(locId){
   // Weather badge
   const hour=new Date().getHours();const isNight=hour>=22||hour<6;
   const wb=$('fishWeatherBadge');
-  const wth=FISH_WEATHERS[_fc.weather]||FISH_WEATHERS[0];
+  const wth=FISH_WEATHERS[_fishState._weather]||FISH_WEATHERS[0];
   if(wb)wb.textContent=wth.em+' '+(isNight&&loc.nightBonus?'NATTTID 2x ':'')+(wth.nm);
   // Location scene decorations
   const sceneEl=$('fishLocScene');if(sceneEl){
@@ -9370,7 +9068,7 @@ function spawnStreetFishInScene(){
     fish.onclick=(e)=>{e.stopPropagation();_calmFishTap(fish,ft);};
     scene.appendChild(fish);
   }
-  _fc.phase='idle';
+  _fishState.phase='idle';
   const bobber=scene.querySelector('.fish-bobber');
   if(bobber)bobber.style.display='none';
   const bar=$('fishCatchBar');if(bar)bar.style.display='none';
@@ -9403,8 +9101,8 @@ function _reelUpHook(){
 // ── Calm fish tap ──
 let _calmFishTimer=null;
 function _calmFishTap(fishEl,ft){
-  if(_fc.phase==='catching')return;
-  _fc.phase='catching';_fc._curFish=ft;
+  if(_fishState.phase==='catching')return;
+  _fishState.phase='catching';_fishState._curFish=ft;
   if(_calmFishTimer)clearTimeout(_calmFishTimer);
   // Animate fish wiggle
   fishEl.style.transform='scale(1.4)';
@@ -9421,7 +9119,7 @@ function _calmFishTap(fishEl,ft){
   }
   showT('🐟 BETT! Dra in den!','b');
   _calmFishTimer=setTimeout(()=>{
-    if(_fc.phase==='catching')_calmCatchFish(ft,fishEl);
+    if(_fishState.phase==='catching')_calmCatchFish(ft,fishEl);
   },2600);
 }
 function onStreetFishTap(fishEl,ft){
@@ -9430,7 +9128,7 @@ function onStreetFishTap(fishEl,ft){
 let _sfCurFishEl=null;
 
 function _sfHitFish(ft,fishEl){
-  _fishStopSpam();_fc.phase='idle';
+  _fishStopSpam();_fishState.phase='idle';
   _fishResetVisuals();_reelUpHook();
   if(fishEl){fishEl.style.transition='';fishEl.style.animation='fishCatchSplash 1.1s cubic-bezier(.17,.89,.32,1.28) forwards';setTimeout(()=>fishEl.remove(),1100);}
   _sfCurFishEl=null;
@@ -9442,7 +9140,7 @@ function _sfHitFish(ft,fishEl){
   }
   // Rewards
   const rod=_getCurRod();
-  _fc.combo=(_fc.combo||0)+1;const combo=_fc.combo;
+  _fishState._combo=(_fishState._combo||0)+1;const combo=_fishState._combo;
   const comboMult=combo>=8?4:combo>=5?3:combo>=3?2:1;
   // Streak + hot spot
   const streakMult=_sfStreak>=3?2:1;
@@ -9450,7 +9148,7 @@ function _sfHitFish(ft,fishEl){
   const locData=FISH_LOCATIONS.find(l=>l.id===(G.fishLocation||'malaren'))||FISH_LOCATIONS[0];
   const nightMult=isNight&&locData.nightBonus?2:1;
   // Weather
-  const wth=FISH_WEATHERS[_fc.weather]||FISH_WEATHERS[0];
+  const wth=FISH_WEATHERS[_fishState._weather]||FISH_WEATHERS[0];
   const stormRisk=wth.id==='storm'&&Math.random()<0.15;
   if(stormRisk){
     showT('⛈️ Storm! Fisken rymde!','r');_fishFail();return;
@@ -9479,16 +9177,16 @@ function _sfHitFish(ft,fishEl){
   if(ft.bonus==='xp5pct'&&!(G.fishBonuses||{}).xp5pct){G.fishBonuses=G.fishBonuses||{};G.fishBonuses.xp5pct=true;showT('🦈 Gäddkung! +5% XP permanent!','y');vibe([80,40,120]);}
   if(ft.bonus==='coins10pct'&&!(G.fishBonuses||{}).coins10pct){G.fishBonuses=G.fishBonuses||{};G.fishBonuses.coins10pct=true;showT('🐲 Sjödrake! +10% Coins permanent!','pk');vibe([80,40,120]);}
   // Score
-  _fc.score++;
-  if(_fc.score>_fc.best){_fc.best=_fc.score;localStorage.setItem('kv8_fishBest',_fc.score);}
-  if(_sfStreak>(_fc.streakRecord||0)){_fc.streakRecord=_sfStreak;localStorage.setItem('kv8_fishStreak',_sfStreak);}
+  _fishState.score++;
+  if(_fishState.score>_fishState.best){_fishState.best=_fishState.score;localStorage.setItem('kv8_fishBest',_fishState.score);}
+  if(_sfStreak>(_fishState._streakRecord||0)){_fishState._streakRecord=_sfStreak;localStorage.setItem('kv8_fishStreak',_sfStreak);}
   // Toast
   const rarityCol=ft.rarity==='mythic'?'p':ft.rarity==='legendary'?'pk':ft.rarity==='epic'?'o':'g';
   const streakMsg=_sfStreak>=3?` 🔥×${_sfStreak}`:'';const nightMsg=nightMult===2?' 🌙×2':'';
   showT(`${ft.em} ${ft.nm}! +${baseCoins}⚡ +${baseXP}XP${streakMsg}${nightMsg}`,rarityCol);
   SFX.win();vibe([30,20,80,20,100]);
   // Inventory display (last 8)
-  _fc.inventory.push(ft);
+  _fishState.inventory.push(ft);
   _updateFishStreakBadge();
   updateFishUI();save();advanceQuest&&advanceQuest('fish');
   setTimeout(()=>{spawnStreetFishInScene();_fishSetStatus(combo>=3?'🔥 COMBO ×'+combo+'! Kasta igen!':'💪 Bra catch! Klicka på en fisk!');},900);
@@ -9516,7 +9214,7 @@ function _updateFishStreakBadge(){
     else{badge.style.display='none';}
   }
   if(hotspot){hotspot.style.display=_sfStreak>=3?'block':'none';}
-  const sb=$('fishStreakBadge');if(sb)sb.textContent=_fc.combo>=3?'🔥 ×'+_fc.combo+' COMBO':'';
+  const sb=$('fishStreakBadge');if(sb)sb.textContent=_fishState._combo>=3?'🔥 ×'+_fishState._combo+' COMBO':'';
 }
 
 // ── Fångstlåda (Catch Box) ──
@@ -12322,7 +12020,7 @@ function renderCastleWorld(){
     const px=p.x*W,py=p.y*H;
     const pulse=0.6+0.4*Math.sin(t*2+p.x*10);
     const pr=ctx.createRadialGradient(px,py,0,px,py,20*pulse);
-    pr.addColorStop(0,p.col.replace('.7)','.9)'));
+    pr.addColorStop(0,p.col.replace('.7',',.9'));
     pr.addColorStop(1,'rgba(0,0,0,0)');
     ctx.fillStyle=pr;ctx.beginPath();ctx.ellipse(px,py,18*pulse,12*pulse,0,0,Math.PI*2);ctx.fill();
   });
