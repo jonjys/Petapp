@@ -1131,11 +1131,12 @@ button:active{opacity:.85;}
 /* ═══════════════════════════════════
    BOTTOM NAV — Color-Coded Per Tab
 ═══════════════════════════════════ */
-.bnav{display:flex;align-items:center;background:rgba(6,6,14,.99);backdrop-filter:blur(28px);-webkit-backdrop-filter:blur(28px);border-top:1px solid rgba(255,255,255,.07);padding:8px 4px;padding-bottom:calc(8px + var(--sab));flex-shrink:0;z-index:100;min-height:60px;}
-.nb{flex:1;background:none;border:none;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:3px;padding:4px 2px;-webkit-tap-highlight-color:transparent;border-radius:12px;transition:background .15s;}
-.nb-inner{position:relative;display:inline-flex;width:36px;height:36px;align-items:center;justify-content:center;border-radius:12px;transition:background .15s;}
-.nb .ni{font-size:22px;transition:transform .15s;}
-.nb .nl{font-size:10px;font-weight:800;color:var(--t3);text-transform:uppercase;letter-spacing:.4px;transition:color .15s;}
+.bnav{display:flex;align-items:center;background:rgba(6,6,14,.99);backdrop-filter:blur(28px);-webkit-backdrop-filter:blur(28px);border-top:1px solid rgba(255,255,255,.07);padding:6px 2px;padding-bottom:calc(6px + var(--sab));flex-shrink:0;z-index:100;min-height:58px;}
+.nb{flex:1;background:none;border:none;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:2px;padding:3px 1px;-webkit-tap-highlight-color:transparent;border-radius:10px;transition:background .15s;}
+.nb-inner{position:relative;display:inline-flex;width:32px;height:32px;align-items:center;justify-content:center;border-radius:10px;transition:background .15s;}
+.nb .ni{font-size:19px;transition:transform .15s;}
+.nb .nl{font-size:9px;font-weight:800;color:var(--t3);text-transform:uppercase;letter-spacing:.3px;transition:color .15s;}
+@keyframes fabPulse{0%,100%{box-shadow:0 6px 24px rgba(255,45,85,.5),0 0 0 1.5px rgba(255,255,255,.12);}50%{box-shadow:0 8px 32px rgba(255,45,85,.7),0 0 0 1.5px rgba(255,255,255,.2);}}
 /* SpawnEngine-style: colored bg square on active tab */
 .nb[data-v="home"].on .nb-inner{background:rgba(57,255,20,.22);}
 .nb[data-v="home"].on .nl{color:#39FF14;}
@@ -2010,7 +2011,10 @@ button:active{opacity:.85;}
 .room-modal.open{opacity:1;pointer-events:all;}
 .room-preview{width:100%;height:220px;position:relative;overflow:hidden;flex-shrink:0;background:linear-gradient(180deg,#04080f 0%,#071220 55%,#0c1a0d 100%);}
 .room-preview-pet{position:absolute;bottom:44px;font-size:40px;animation:roomPetWalk 3.8s ease-in-out infinite;filter:drop-shadow(0 0 12px rgba(57,255,20,.4));z-index:4;}
-@keyframes roomPetWalk{0%,100%{left:15%;transform:scaleX(1);}45%{left:68%;transform:scaleX(1);}50%{left:68%;transform:scaleX(-1);}95%{left:15%;transform:scaleX(-1);}}
+@keyframes roomPetWalk{0%,100%{left:25%;transform:translateX(-50%) scaleX(1);}45%{left:75%;transform:translateX(-50%) scaleX(1);}50%{left:75%;transform:translateX(-50%) scaleX(-1);}95%{left:25%;transform:translateX(-50%) scaleX(-1);}}
+@keyframes auraBreath{0%,100%{transform:translateX(-50%) scale(1);opacity:.7;}50%{transform:translateX(-50%) scale(1.35);opacity:.35;}}
+.me-care-btn{background:rgba(var(--cc),.08);border:1.5px solid rgba(var(--cc),.28);border-radius:14px;padding:9px 4px;font-size:22px;display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer;transition:all .12s;-webkit-tap-highlight-color:transparent;}
+.me-care-btn:active{transform:scale(.88);background:rgba(var(--cc),.18);}
 .room-preview-floor{position:absolute;bottom:0;left:0;right:0;height:44px;background:linear-gradient(180deg,rgba(0,0,0,.3),rgba(0,0,0,.65));border-top:1px solid rgba(57,255,20,.12);z-index:3;}
 .room-placed-item{position:absolute;font-size:26px;cursor:pointer;-webkit-tap-highlight-color:transparent;transform-origin:center bottom;z-index:2;display:flex;align-items:center;justify-content:center;}
 .room-placed-item:active{transform:translateX(-50%) scale(.85)!important;}
@@ -3692,58 +3696,98 @@ div[style*="LIVE"]{border-radius:16px!important;background:rgba(57,255,20,.03)!i
       </div>
       <!-- RUM panel -->
       <div class="me-spanel on" id="me-panel-rum">
-        <!-- Room preview — full-width immersive -->
-        <div id="meRumPreview" style="margin:0;height:280px;position:relative;background:linear-gradient(180deg,#080020 0%,#0d0830 40%,#050818 100%);overflow:hidden">
-          <!-- Animated stars bg -->
-          <canvas id="meRumStarsCanvas" style="position:absolute;inset:0;width:100%;height:100%;opacity:.6"></canvas>
-          <!-- Floor glow -->
-          <div style="position:absolute;bottom:0;left:0;right:0;height:70px;background:linear-gradient(0deg,rgba(57,255,20,.12),transparent)"></div>
-          <!-- Floor -->
-          <div style="position:absolute;bottom:0;left:0;right:0;height:40px;background:linear-gradient(180deg,rgba(57,255,20,.06),rgba(57,255,20,.02));border-top:2px solid rgba(57,255,20,.3)"></div>
+        <!-- ══ HERO ROOM ══ -->
+        <div id="meRumPreview" style="margin:0;height:300px;position:relative;background:linear-gradient(180deg,#040010 0%,#0a0428 50%,#04020e 100%);overflow:hidden">
+          <!-- Starfield canvas -->
+          <canvas id="meRumStarsCanvas" style="position:absolute;inset:0;width:100%;height:100%;opacity:.7"></canvas>
+          <!-- Nebula orbs -->
+          <div style="position:absolute;top:-40px;left:-60px;width:220px;height:220px;border-radius:50%;background:radial-gradient(circle,rgba(57,255,20,.07) 0%,transparent 70%);pointer-events:none"></div>
+          <div style="position:absolute;top:20px;right:-50px;width:180px;height:180px;border-radius:50%;background:radial-gradient(circle,rgba(0,217,255,.06) 0%,transparent 70%);pointer-events:none"></div>
+          <!-- Floating particles (placed by JS) -->
+          <div id="meRumParticles" style="position:absolute;inset:0;pointer-events:none;z-index:2"></div>
           <!-- Room decorations placed by JS -->
           <div id="meRumItems" style="position:absolute;inset:0;z-index:3"></div>
-          <!-- Pet walking in room -->
-          <div id="meRumPet" style="position:absolute;bottom:40px;left:30%;font-size:52px;animation:roomPetWalk 3.8s ease-in-out infinite;filter:drop-shadow(0 0 20px rgba(57,255,20,.6));z-index:4;transition:font-size .3s">🐉</div>
+          <!-- Floor glow strip -->
+          <div style="position:absolute;bottom:0;left:0;right:0;height:90px;background:linear-gradient(0deg,rgba(57,255,20,.14),transparent);pointer-events:none"></div>
+          <!-- Floor -->
+          <div style="position:absolute;bottom:0;left:0;right:0;height:44px;background:linear-gradient(180deg,rgba(57,255,20,.08) 0%,rgba(0,0,0,.4) 100%);border-top:2px solid rgba(57,255,20,.35)"></div>
+          <!-- XP bar on floor -->
+          <div style="position:absolute;bottom:44px;left:0;right:0;height:3px;background:rgba(0,0,0,.5)"><div id="meRumXpBar" style="height:100%;background:linear-gradient(90deg,#39FF14,#00D9FF);width:60%;transition:width .6s;box-shadow:0 0 8px rgba(57,255,20,.8)"></div></div>
+          <!-- Pet -->
+          <div id="meRumPet" style="position:absolute;bottom:44px;left:50%;transform:translateX(-50%);font-size:68px;animation:roomPetWalk 4s ease-in-out infinite;filter:drop-shadow(0 0 28px rgba(57,255,20,.8)) drop-shadow(0 4px 12px rgba(0,0,0,.9));z-index:4;transition:font-size .3s;cursor:pointer" onclick="pcTalk();renderMeRoom()">🐉</div>
+          <!-- Pet aura ring -->
+          <div id="meRumAura" style="position:absolute;bottom:54px;left:50%;transform:translateX(-50%);width:100px;height:100px;border-radius:50%;background:radial-gradient(circle,rgba(57,255,20,.18) 0%,transparent 70%);animation:auraBreath 2.5s ease-in-out infinite;pointer-events:none;z-index:3"></div>
           <!-- Speech bubble -->
-          <div id="meRumSpeech" style="position:absolute;bottom:100px;left:30%;transform:translateX(10px);background:rgba(0,0,0,.7);border:1px solid rgba(57,255,20,.4);border-radius:12px 12px 12px 0;padding:5px 10px;font-size:11px;color:rgba(255,255,255,.8);white-space:nowrap;z-index:5;pointer-events:none;opacity:0;transition:opacity .4s">Hemma! 🏠</div>
-          <!-- Top bar overlay -->
-          <div style="position:absolute;top:0;left:0;right:0;padding:12px 14px;display:flex;align-items:center;justify-content:space-between;background:linear-gradient(180deg,rgba(0,0,0,.6),transparent);z-index:6">
-            <div style="font-size:13px;font-weight:900;color:#fff;font-family:var(--mono);text-shadow:0 0 10px rgba(57,255,20,.5)">🏠 MITT RUM</div>
-            <div style="display:flex;gap:8px">
-              <button onclick="openRoomShop()" style="background:rgba(0,0,0,.5);border:1.5px solid rgba(0,217,255,.5);border-radius:20px;color:var(--b);font-size:10px;font-weight:900;padding:4px 12px;cursor:pointer;font-family:var(--ff)">🎨 DEKORERA</button>
-              <button onclick="openModal('roomCustomModal')" style="background:rgba(0,0,0,.5);border:1.5px solid rgba(57,255,20,.5);border-radius:20px;color:var(--g);font-size:10px;font-weight:900;padding:4px 12px;cursor:pointer;font-family:var(--ff)">+ ITEM</button>
+          <div id="meRumSpeech" style="position:absolute;bottom:130px;left:50%;transform:translateX(-50%);background:rgba(0,0,0,.85);border:1.5px solid rgba(57,255,20,.5);border-radius:14px 14px 14px 4px;padding:6px 14px;font-size:12px;color:#fff;white-space:nowrap;z-index:6;pointer-events:none;opacity:0;transition:opacity .4s;backdrop-filter:blur(8px);box-shadow:0 4px 20px rgba(57,255,20,.2)">Hemma! 🏠</div>
+          <!-- Header bar -->
+          <div style="position:absolute;top:0;left:0;right:0;padding:12px 14px 0;display:flex;align-items:flex-start;justify-content:space-between;background:linear-gradient(180deg,rgba(0,0,0,.75) 0%,transparent 100%);z-index:7">
+            <div>
+              <div style="font-size:11px;font-weight:900;color:rgba(57,255,20,.8);font-family:var(--mono);letter-spacing:1px;text-transform:uppercase">🏠 MITT RUM</div>
+              <div id="meRumLvBadge" style="font-size:18px;font-weight:900;color:#fff;font-family:var(--mono);text-shadow:0 0 16px rgba(57,255,20,.6);margin-top:1px">LV 1</div>
+            </div>
+            <div style="display:flex;gap:7px;margin-top:2px">
+              <button onclick="openRoomShop()" style="background:rgba(0,217,255,.12);border:1.5px solid rgba(0,217,255,.5);border-radius:20px;color:var(--b);font-size:10px;font-weight:900;padding:5px 12px;cursor:pointer;font-family:var(--ff);backdrop-filter:blur(8px)">🎨 DEKORERA</button>
             </div>
           </div>
-          <!-- Level badge -->
-          <div style="position:absolute;bottom:50px;right:14px;background:rgba(0,0,0,.6);border:1.5px solid rgba(57,255,20,.4);border-radius:10px;padding:4px 10px;font-size:10px;font-weight:900;color:var(--g);font-family:var(--mono);z-index:6" id="meRumLvBadge">🏠 LV1</div>
+          <!-- Karma + streak badges -->
+          <div style="position:absolute;bottom:54px;right:12px;display:flex;flex-direction:column;gap:6px;z-index:6">
+            <div style="background:rgba(0,0,0,.65);border:1.5px solid rgba(255,215,0,.4);border-radius:10px;padding:4px 9px;font-size:10px;font-weight:900;color:#FFD700;font-family:var(--mono);backdrop-filter:blur(6px)" id="meRumKarmaBadge">⚡ 42K</div>
+            <div style="background:rgba(0,0,0,.65);border:1.5px solid rgba(255,45,85,.4);border-radius:10px;padding:4px 9px;font-size:10px;font-weight:900;color:var(--pk);font-family:var(--mono);backdrop-filter:blur(6px)" id="meRumStreakBadge">🔥 0d</div>
+          </div>
         </div>
-        <!-- Pet stats mini row — glassmorphism -->
-        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:rgba(255,255,255,.05);margin:8px 12px;border-radius:16px;overflow:hidden">
-          <div style="padding:10px 8px;text-align:center;background:rgba(255,159,10,.05)"><div style="font-size:18px;font-weight:900;color:var(--o);font-family:var(--mono);text-shadow:0 0 12px rgba(255,159,10,.4)" id="meRumHunger">80</div><div style="font-size:7px;color:rgba(255,255,255,.35);text-transform:uppercase;letter-spacing:.5px;margin-top:2px">HUNGER</div></div>
-          <div style="padding:10px 8px;text-align:center;background:rgba(0,217,255,.05)"><div style="font-size:18px;font-weight:900;color:var(--b);font-family:var(--mono);text-shadow:0 0 12px rgba(0,217,255,.4)" id="meRumEnergy">100</div><div style="font-size:7px;color:rgba(255,255,255,.35);text-transform:uppercase;letter-spacing:.5px;margin-top:2px">ENERGI</div></div>
-          <div style="padding:10px 8px;text-align:center;background:rgba(191,95,255,.05)"><div style="font-size:18px;font-weight:900;color:var(--p);font-family:var(--mono);text-shadow:0 0 12px rgba(191,95,255,.4)" id="meRumMood">90</div><div style="font-size:7px;color:rgba(255,255,255,.35);text-transform:uppercase;letter-spacing:.5px;margin-top:2px">MOOD</div></div>
-          <div style="padding:10px 8px;text-align:center;background:rgba(57,255,20,.05)"><div style="font-size:18px;font-weight:900;color:var(--g);font-family:var(--mono);text-shadow:0 0 12px rgba(57,255,20,.4)" id="meRumKarma">42</div><div style="font-size:7px;color:rgba(255,255,255,.35);text-transform:uppercase;letter-spacing:.5px;margin-top:2px">KARMA</div></div>
+
+        <!-- ══ VITALS BARS ══ -->
+        <div style="padding:12px 14px 0;display:flex;flex-direction:column;gap:7px">
+          <!-- Hunger bar -->
+          <div style="display:flex;align-items:center;gap:10px">
+            <span style="font-size:15px;width:22px;flex-shrink:0">🍖</span>
+            <div style="flex:1;background:rgba(255,255,255,.06);border-radius:8px;height:9px;overflow:hidden;border:1px solid rgba(255,159,10,.15)"><div id="meBarHunger" style="height:100%;background:linear-gradient(90deg,#FF9F0A,#FFD700);border-radius:8px;width:80%;transition:width .5s;box-shadow:0 0 6px rgba(255,159,10,.5)"></div></div>
+            <span id="meRumHunger" style="font-size:11px;font-weight:900;color:var(--o);font-family:var(--mono);width:28px;text-align:right">80</span>
+          </div>
+          <!-- Energy bar -->
+          <div style="display:flex;align-items:center;gap:10px">
+            <span style="font-size:15px;width:22px;flex-shrink:0">⚡</span>
+            <div style="flex:1;background:rgba(255,255,255,.06);border-radius:8px;height:9px;overflow:hidden;border:1px solid rgba(0,217,255,.15)"><div id="meBarEnergy" style="height:100%;background:linear-gradient(90deg,#00D9FF,#00FFFF);border-radius:8px;width:100%;transition:width .5s;box-shadow:0 0 6px rgba(0,217,255,.5)"></div></div>
+            <span id="meRumEnergy" style="font-size:11px;font-weight:900;color:var(--b);font-family:var(--mono);width:28px;text-align:right">100</span>
+          </div>
+          <!-- Mood bar -->
+          <div style="display:flex;align-items:center;gap:10px">
+            <span style="font-size:15px;width:22px;flex-shrink:0">😊</span>
+            <div style="flex:1;background:rgba(255,255,255,.06);border-radius:8px;height:9px;overflow:hidden;border:1px solid rgba(191,95,255,.15)"><div id="meBarMood" style="height:100%;background:linear-gradient(90deg,#BF5FFF,#FF2D55);border-radius:8px;width:90%;transition:width .5s;box-shadow:0 0 6px rgba(191,95,255,.5)"></div></div>
+            <span id="meRumMood" style="font-size:11px;font-weight:900;color:var(--p);font-family:var(--mono);width:28px;text-align:right">90</span>
+          </div>
         </div>
-        <!-- Quick care actions — 6 buttons -->
-        <div style="display:grid;grid-template-columns:repeat(6,1fr);gap:5px;padding:10px 12px;background:rgba(0,0,0,.5);border-bottom:1px solid rgba(255,255,255,.06)">
-          <button onclick="pcFeed();renderMeRoom()" style="background:rgba(255,159,10,.08);border:1px solid rgba(255,159,10,.25);border-radius:12px;padding:8px 4px;font-size:18px;display:flex;flex-direction:column;align-items:center;gap:2px;cursor:pointer"><span>🍖</span><span style="font-size:7px;font-weight:900;color:var(--o)">MATA</span></button>
-          <button onclick="pcTrain();renderMeRoom()" style="background:rgba(255,45,85,.08);border:1px solid rgba(255,45,85,.25);border-radius:12px;padding:8px 4px;font-size:18px;display:flex;flex-direction:column;align-items:center;gap:2px;cursor:pointer"><span>🏋️</span><span style="font-size:7px;font-weight:900;color:var(--pk)">TRÄNA</span></button>
-          <button onclick="pcSleep();renderMeRoom()" style="background:rgba(0,217,255,.08);border:1px solid rgba(0,217,255,.25);border-radius:12px;padding:8px 4px;font-size:18px;display:flex;flex-direction:column;align-items:center;gap:2px;cursor:pointer"><span>😴</span><span style="font-size:7px;font-weight:900;color:var(--b)">SOVA</span></button>
-          <button onclick="pcPlay();renderMeRoom()" style="background:rgba(57,255,20,.08);border:1px solid rgba(57,255,20,.25);border-radius:12px;padding:8px 4px;font-size:18px;display:flex;flex-direction:column;align-items:center;gap:2px;cursor:pointer"><span>🎮</span><span style="font-size:7px;font-weight:900;color:var(--g)">LEK</span></button>
-          <button onclick="pcBath();renderMeRoom()" style="background:rgba(191,95,255,.08);border:1px solid rgba(191,95,255,.25);border-radius:12px;padding:8px 4px;font-size:18px;display:flex;flex-direction:column;align-items:center;gap:2px;cursor:pointer"><span>🛁</span><span style="font-size:7px;font-weight:900;color:var(--p)">BADA</span></button>
-          <button onclick="pcTalk();renderMeRoom()" style="background:rgba(255,230,0,.08);border:1px solid rgba(255,230,0,.25);border-radius:12px;padding:8px 4px;font-size:18px;display:flex;flex-direction:column;align-items:center;gap:2px;cursor:pointer"><span>💬</span><span style="font-size:7px;font-weight:900;color:var(--y)">PRATA</span></button>
+
+        <!-- ══ CARE ACTIONS ══ -->
+        <div style="display:grid;grid-template-columns:repeat(6,1fr);gap:6px;padding:12px 14px;margin-top:4px">
+          <button onclick="pcFeed();renderMeRoom()" class="me-care-btn" style="--cc:255,159,10"><span style="font-size:22px">🍖</span><span style="font-size:7px;font-weight:900;color:rgba(255,159,10,.9)">MATA</span></button>
+          <button onclick="pcTrain();renderMeRoom()" class="me-care-btn" style="--cc:255,45,85"><span style="font-size:22px">🏋️</span><span style="font-size:7px;font-weight:900;color:rgba(255,45,85,.9)">TRÄNA</span></button>
+          <button onclick="pcSleep();renderMeRoom()" class="me-care-btn" style="--cc:0,217,255"><span style="font-size:22px">😴</span><span style="font-size:7px;font-weight:900;color:rgba(0,217,255,.9)">SOVA</span></button>
+          <button onclick="pcPlay();renderMeRoom()" class="me-care-btn" style="--cc:57,255,20"><span style="font-size:22px">🎮</span><span style="font-size:7px;font-weight:900;color:rgba(57,255,20,.9)">LEK</span></button>
+          <button onclick="pcBath();renderMeRoom()" class="me-care-btn" style="--cc:191,95,255"><span style="font-size:22px">🛁</span><span style="font-size:7px;font-weight:900;color:rgba(191,95,255,.9)">BADA</span></button>
+          <button onclick="pcTalk();renderMeRoom()" class="me-care-btn" style="--cc:255,230,0"><span style="font-size:22px">💬</span><span style="font-size:7px;font-weight:900;color:rgba(255,230,0,.9)">PRATA</span></button>
         </div>
-        <!-- Furniture & gear section -->
-        <div style="padding:10px 14px 4px;display:flex;align-items:center;justify-content:space-between">
-          <div style="font-size:10px;font-weight:900;color:rgba(255,255,255,.35);text-transform:uppercase;letter-spacing:.9px">🛋️ MÖBLER & DEKOR</div>
-          <div style="font-size:11px;font-weight:700;color:var(--b);cursor:pointer" onclick="openRoomShop()">SHOP →</div>
+
+        <!-- ══ SECTION DIVIDER ══ -->
+        <div style="padding:0 14px;margin-bottom:8px;display:flex;align-items:center;gap:10px">
+          <div style="height:1px;flex:1;background:linear-gradient(90deg,rgba(57,255,20,.3),transparent)"></div>
+          <div style="font-size:9px;font-weight:900;color:rgba(255,255,255,.3);letter-spacing:1.5px">MÖBLER & DEKOR</div>
+          <div style="height:1px;flex:1;background:linear-gradient(270deg,rgba(57,255,20,.3),transparent)"></div>
+          <div style="font-size:11px;font-weight:700;color:var(--b);cursor:pointer" onclick="openRoomShop()">SHOP→</div>
         </div>
-        <div id="meRumGearList" style="display:flex;gap:8px;overflow-x:auto;padding:0 14px 8px;scrollbar-width:none;min-height:64px"></div>
-        <!-- Quick nav shortcuts at bottom of room tab -->
-        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;padding:0 12px 12px">
-          <button onclick="nav('world')" style="background:rgba(57,255,20,.06);border:1px solid rgba(57,255,20,.2);border-radius:16px;padding:12px 8px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:4px"><span style="font-size:24px">🌍</span><span style="font-size:9px;font-weight:900;color:var(--g)">WORLD</span></button>
-          <button onclick="openCastle()" style="background:rgba(255,230,0,.06);border:1px solid rgba(255,230,0,.2);border-radius:16px;padding:12px 8px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:4px"><span style="font-size:24px">🏰</span><span style="font-size:9px;font-weight:900;color:var(--y)">SLOTT</span></button>
-          <button onclick="openBattle()" style="background:rgba(255,45,85,.06);border:1px solid rgba(255,45,85,.2);border-radius:16px;padding:12px 8px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:4px"><span style="font-size:24px">⚔️</span><span style="font-size:9px;font-weight:900;color:var(--pk)">BATTLE</span></button>
+        <div id="meRumGearList" style="display:flex;gap:8px;overflow-x:auto;padding:0 14px 10px;scrollbar-width:none;min-height:68px"></div>
+
+        <!-- ══ QUICK LAUNCH ══ -->
+        <div style="padding:0 14px 4px;margin-bottom:8px;display:flex;align-items:center;gap:10px">
+          <div style="height:1px;flex:1;background:linear-gradient(90deg,rgba(0,217,255,.3),transparent)"></div>
+          <div style="font-size:9px;font-weight:900;color:rgba(255,255,255,.3);letter-spacing:1.5px">SNABBSTART</div>
+          <div style="height:1px;flex:1;background:linear-gradient(270deg,rgba(0,217,255,.3),transparent)"></div>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;padding:0 14px 16px">
+          <button onclick="nav('social')" style="background:rgba(0,217,255,.06);border:1.5px solid rgba(0,217,255,.18);border-radius:16px;padding:14px 6px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:5px;transition:all .15s;-webkit-tap-highlight-color:transparent"><span style="font-size:26px">💬</span><span style="font-size:8px;font-weight:900;color:var(--b);letter-spacing:.5px">SOCIAL</span></button>
+          <button onclick="nav('explore')" style="background:rgba(191,95,255,.06);border:1.5px solid rgba(191,95,255,.18);border-radius:16px;padding:14px 6px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:5px;transition:all .15s;-webkit-tap-highlight-color:transparent"><span style="font-size:26px">🔍</span><span style="font-size:8px;font-weight:900;color:var(--p);letter-spacing:.5px">UTFORSKA</span></button>
+          <button onclick="openCastle()" style="background:rgba(255,215,0,.06);border:1.5px solid rgba(255,215,0,.18);border-radius:16px;padding:14px 6px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:5px;transition:all .15s;-webkit-tap-highlight-color:transparent"><span style="font-size:26px">🏰</span><span style="font-size:8px;font-weight:900;color:#FFD700;letter-spacing:.5px">SLOTT</span></button>
+          <button onclick="openBattle()" style="background:rgba(255,45,85,.06);border:1.5px solid rgba(255,45,85,.18);border-radius:16px;padding:14px 6px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:5px;transition:all .15s;-webkit-tap-highlight-color:transparent"><span style="font-size:26px">⚔️</span><span style="font-size:8px;font-weight:900;color:var(--pk);letter-spacing:.5px">BATTLE</span></button>
         </div>
         <div class="vend"></div>
       </div>
@@ -3795,10 +3839,13 @@ div[style*="LIVE"]{border-radius:16px!important;background:rgba(57,255,20,.03)!i
   <div class="bnav">
     <button class="nb on" data-v="home"><div class="nb-inner"><div class="ni">🐾</div></div><div class="nl">HEM</div></button>
     <button class="nb" data-v="play"><div class="nb-inner"><div class="ni">🎮</div><div class="nb-notif" id="playNotif"></div></div><div class="nl">SPELA</div></button>
-    <button class="nb-create" id="flashBtn"><div class="create-btn">＋</div><div class="create-lbl">SKAPA</div></button>
+    <button class="nb" data-v="social"><div class="nb-inner"><div class="ni">💬</div><div class="nb-notif" id="socialNotif"></div></div><div class="nl">SOCIAL</div></button>
+    <button class="nb" data-v="explore"><div class="nb-inner"><div class="ni">🔍</div></div><div class="nl">UTFORSKA</div></button>
     <button class="nb" data-v="world"><div class="nb-inner"><div class="ni">🌍</div></div><div class="nl">VÄRLD</div></button>
     <button class="nb" data-v="me"><div class="nb-inner"><div class="ni">👤</div></div><div class="nl">JAG</div></button>
   </div>
+  <!-- Floating create button -->
+  <button id="flashBtn" onclick="openModal('flashModal')" style="position:fixed;bottom:calc(var(--sab,0px) + 68px);right:14px;z-index:200;width:50px;height:50px;border-radius:16px;background:linear-gradient(135deg,#FF2D55 0%,#BF5FFF 100%);border:none;font-size:24px;cursor:pointer;box-shadow:0 6px 24px rgba(255,45,85,.5),0 0 0 1.5px rgba(255,255,255,.12);display:flex;align-items:center;justify-content:center;-webkit-tap-highlight-color:transparent;animation:fabPulse 3s ease-in-out infinite">＋</button>
 
   <!-- LEFT DRAWER OVERLAY + DRAWER -->
   <div class="ld-ov" id="ldOv" onclick="closeLDrawer()"></div>
@@ -10082,22 +10129,41 @@ function switchMeTab(tab, el){
 function renderMeRum(){
   // Update pet emoji
   const pet=$('meRumPet');if(pet)pet.textContent=G.petEmoji||'🐉';
-  // Update stats
-  const h=$('meRumHunger');if(h)h.textContent=G.hunger||80;
-  const e=$('meRumEnergy');if(e)e.textContent=G.energy||100;
-  const m=$('meRumMood');if(m)m.textContent=G.mood||90;
-  const k=$('meRumKarma');if(k)k.textContent=G.karma||42;
+  // Update stat numbers
+  const hv=G.hunger||80,ev=G.energy||100,mv=G.mood||90;
+  const h=$('meRumHunger');if(h)h.textContent=hv;
+  const e=$('meRumEnergy');if(e)e.textContent=ev;
+  const m=$('meRumMood');if(m)m.textContent=mv;
+  // Update progress bars
+  const bh=$('meBarHunger');if(bh)bh.style.width=Math.max(0,Math.min(100,hv))+'%';
+  const be=$('meBarEnergy');if(be)be.style.width=Math.max(0,Math.min(100,ev))+'%';
+  const bm=$('meBarMood');if(bm)bm.style.width=Math.max(0,Math.min(100,mv))+'%';
+  // XP bar
+  const xpNeed=(G.level||1)*100;const xpHave=G.xp||0;
+  const xpPct=Math.round((xpHave%xpNeed)/xpNeed*100);
+  const xb=$('meRumXpBar');if(xb)xb.style.width=xpPct+'%';
   // Level badge
-  const lb=$('meRumLvBadge');if(lb)lb.textContent='🏠 LV'+(G.level||1);
+  const lb=$('meRumLvBadge');if(lb)lb.textContent='LV '+(G.level||1);
+  // Karma + streak badges
+  const kb=$('meRumKarmaBadge');if(kb)kb.textContent='⚡ '+(G.karma||0)+'K';
+  const sb=$('meRumStreakBadge');if(sb)sb.textContent='🔥 '+(G.streak||0)+'d';
   // Animated star canvas
   const sc=$('meRumStarsCanvas');
   if(sc&&!sc._init){
     sc._init=true;
     const ctx=sc.getContext('2d');
-    sc.width=sc.offsetWidth||380;sc.height=sc.offsetHeight||280;
-    const stars=Array.from({length:60},()=>({x:Math.random()*sc.width,y:Math.random()*sc.height,r:Math.random()*1.5+.3,a:Math.random(),da:0.002+Math.random()*.004}));
-    const animS=()=>{ctx.clearRect(0,0,sc.width,sc.height);stars.forEach(s=>{s.a+=s.da;if(s.a>1||s.a<0.1)s.da*=-1;ctx.beginPath();ctx.arc(s.x,s.y,s.r,0,Math.PI*2);ctx.fillStyle='rgba(255,255,255,'+s.a.toFixed(2)+')';ctx.fill();});requestAnimationFrame(animS);};
+    sc.width=sc.offsetWidth||380;sc.height=sc.offsetHeight||300;
+    const stars=Array.from({length:80},()=>({x:Math.random()*sc.width,y:Math.random()*sc.height,r:Math.random()*1.8+.2,a:Math.random(),da:0.002+Math.random()*.005,col:Math.random()<.15?'57,255,20':Math.random()<.15?'0,217,255':'255,255,255'}));
+    const animS=()=>{ctx.clearRect(0,0,sc.width,sc.height);stars.forEach(s=>{s.a+=s.da;if(s.a>1||s.a<.05)s.da*=-1;ctx.beginPath();ctx.arc(s.x,s.y,s.r,0,Math.PI*2);ctx.fillStyle='rgba('+s.col+','+s.a.toFixed(2)+')';ctx.fill();});requestAnimationFrame(animS);};
     animS();
+  }
+  // Floating dust particles
+  const pp=$('meRumParticles');
+  if(pp&&!pp._init){
+    pp._init=true;
+    const mkP=()=>{const d=document.createElement('div');const x=Math.random()*100;const dur=4+Math.random()*6;const sz=Math.random()*4+2;const cols=['rgba(57,255,20,.6)','rgba(0,217,255,.5)','rgba(191,95,255,.5)','rgba(255,215,0,.4)'];d.style.cssText=`position:absolute;left:${x}%;bottom:-10px;width:${sz}px;height:${sz}px;border-radius:50%;background:${cols[Math.floor(Math.random()*cols.length)]};animation:rumFloat ${dur.toFixed(1)}s linear infinite;animation-delay:-${(Math.random()*dur).toFixed(1)}s;pointer-events:none`;pp.appendChild(d);if(pp.children.length>18)pp.removeChild(pp.children[0]);};
+    for(let i=0;i<14;i++)mkP();setInterval(mkP,2200);
+    if(!document.querySelector('#rumFloatKf')){const s=document.createElement('style');s.id='rumFloatKf';s.textContent='@keyframes rumFloat{0%{transform:translateY(0) scale(1);opacity:0}10%{opacity:1}90%{opacity:.5}100%{transform:translateY(-310px) scale(.3);opacity:0}}';document.head.appendChild(s);}
   }
   // Room items
   const items=$('meRumItems');
@@ -10620,6 +10686,8 @@ function _applyLang(){
     if(!nlEl)return;
     if(v==='home')nlEl.textContent=L.home||nlEl.textContent;
     else if(v==='play')nlEl.textContent=_curLang==='en'?'PLAY':'SPELA';
+    else if(v==='social')nlEl.textContent=_curLang==='en'?'SOCIAL':'SOCIAL';
+    else if(v==='explore')nlEl.textContent=_curLang==='en'?'EXPLORE':'UTFORSKA';
     else if(v==='world')nlEl.textContent=_curLang==='en'?'WORLD':'VÄRLD';
     else if(v==='me')nlEl.textContent=_curLang==='en'?'ME':'JAG';
   });
@@ -13786,7 +13854,7 @@ const TT_PATHS=[
     {id:'s4',em:'🏆',nm:'KARMA LEGEND',desc:'Profil: Legendary badge',cost:3,req:'s3'},
   ]},
 ];
-let _ttActiveBranch=null;
+var _ttActiveBranch=null;
 function renderTalentSimple(){
   const scroll=$('ttSimpleScroll');if(!scroll)return;
   const pts=G.talentPts||G.talentPoints||0;
