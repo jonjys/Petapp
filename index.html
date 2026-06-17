@@ -3615,6 +3615,42 @@ div[style*="LIVE"]{border-radius:16px!important;background:rgba(57,255,20,.03)!i
           </div>
         </div>
       </div>
+      <!-- ══ ARENA DAILY ══ -->
+      <div id="arenaDailyWrap" style="margin:12px 14px 4px">
+        <!-- Header row -->
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
+          <div style="display:flex;align-items:center;gap:7px">
+            <div style="font-size:9px;font-weight:900;color:rgba(255,215,0,.8);font-family:var(--mono);letter-spacing:2px">🏟️ ARENA DAILY</div>
+            <div style="background:#FFD700;color:#000;font-size:7px;font-weight:900;padding:2px 6px;border-radius:6px;font-family:var(--mono)">LIVE</div>
+          </div>
+          <div id="arenaCountdown" style="font-size:9px;font-weight:900;color:rgba(255,255,255,.4);font-family:var(--mono)">–:–:–</div>
+        </div>
+        <!-- Featured game of the day -->
+        <div id="arenaFeatured" style="border-radius:16px;padding:12px 14px;cursor:pointer;margin-bottom:10px;position:relative;overflow:hidden;-webkit-tap-highlight-color:transparent;transition:transform .1s" ontouchstart="this.style.transform='scale(.98)'" ontouchend="this.style.transform=''">
+          <div id="arenaFeatBg" style="position:absolute;inset:0;opacity:.35"></div>
+          <div style="position:absolute;inset:0;background:linear-gradient(135deg,rgba(0,0,0,.3) 0%,rgba(0,0,0,.6) 100%)"></div>
+          <div style="position:relative;z-index:1;display:flex;align-items:center;gap:12px">
+            <div id="arenaFeatIco" style="font-size:48px;line-height:1;filter:drop-shadow(0 0 20px currentColor)">🏹</div>
+            <div style="flex:1;min-width:0">
+              <div style="font-size:8px;font-weight:900;color:rgba(255,215,0,.9);font-family:var(--mono);letter-spacing:1.5px;margin-bottom:2px">DAGENS UTMANING</div>
+              <div id="arenaFeatName" style="font-size:16px;font-weight:900;color:#fff;font-family:var(--mono);letter-spacing:.5px">TOWER DEFENSE</div>
+              <div id="arenaFeatDesc" style="font-size:9px;color:rgba(255,255,255,.6);margin-top:2px">Klara wave 5 för 3× XP-bonus</div>
+            </div>
+            <div style="text-align:center;flex-shrink:0">
+              <div style="font-size:8px;color:rgba(255,215,0,.7);font-family:var(--mono);font-weight:900">BONUS</div>
+              <div id="arenaFeatBonus" style="font-size:20px;font-weight:900;color:#FFD700;font-family:var(--mono);text-shadow:0 0 16px rgba(255,215,0,.6)">3×</div>
+            </div>
+          </div>
+        </div>
+        <!-- Daily missions -->
+        <div style="font-size:8px;font-weight:900;color:rgba(255,255,255,.3);font-family:var(--mono);letter-spacing:2px;margin-bottom:6px">DAGLIGA UPPDRAG</div>
+        <div id="arenaMissions" style="display:flex;flex-direction:column;gap:6px;margin-bottom:10px"></div>
+        <!-- Live leaderboard -->
+        <div style="background:rgba(255,215,0,.04);border:1px solid rgba(255,215,0,.15);border-radius:14px;padding:10px 12px">
+          <div style="font-size:8px;font-weight:900;color:rgba(255,215,0,.7);font-family:var(--mono);letter-spacing:2px;margin-bottom:8px">🏆 LIVE TOPP-LISTA IDAG</div>
+          <div id="arenaLB" style="display:flex;flex-direction:column;gap:5px"></div>
+        </div>
+      </div>
       <!-- GAME PORTAL GRID -->
       <div style="padding:12px 14px 6px;font-size:9px;font-weight:900;font-family:var(--mono);color:rgba(191,95,255,.5);letter-spacing:2px">VÄLJ SPEL</div>
       <!-- SPIN portal -->
@@ -10085,6 +10121,7 @@ $('flashBtn').addEventListener('click',()=>openModal('flashModal'));
 
 // ── PLAY VIEW ──
 function renderPlayView(){
+  renderArenaDaily();
   if(!_quests.length)initQuests();
   const sl=$('spinPlayLabel');if(sl)sl.textContent=G.lastSpin===new Date().toDateString()?'✅ Spinnat idag — kom tillbaka imorgon!':'🎰 Gratis spin tillgängligt nu!';
   const pbt=$('pbBestTag');if(pbt)pbt.textContent='Best: '+(localStorage.getItem('kv8_pbBest')||0)+'pts';
@@ -10109,6 +10146,95 @@ function renderPlayView(){
     }).join('');
   }
   const ul=$('playUppdragList');if(ul){const qHtml=_quests.slice(0,3).map((q)=>{const pct=Math.min(100,(q.progress/q.goal)*100);return`<div style="background:${q.done?'rgba(57,255,20,.06)':'rgba(100,0,200,.08)'};border:1.5px solid ${q.done?'rgba(57,255,20,.3)':'rgba(191,95,255,.2)'};border-radius:14px;padding:10px 12px;margin-bottom:8px;display:flex;align-items:center;gap:10px"><div style="font-size:24px">${q.ico}</div><div style="flex:1;min-width:0"><div style="font-size:12px;font-weight:900;color:${q.done?'var(--g)':'var(--t1)'}">${q.done?'✅ ':''} ${q.txt}</div><div style="width:100%;height:5px;background:rgba(255,255,255,.06);border-radius:100px;overflow:hidden;margin-top:5px"><div style="height:100%;width:${pct}%;background:${q.done?'var(--g)':'linear-gradient(90deg,#BF5FFF,#7B2FBE)'};border-radius:100px"></div></div></div><div style="font-size:10px;font-weight:900;color:var(--y);font-family:var(--mono);text-align:right">+${q.reward.xp}XP</div></div>`;}).join('');ul.innerHTML=qHtml||'<div style="color:var(--t3);text-align:center;padding:14px;font-size:12px">Inga aktiva uppdrag</div>';}
+}
+
+// ── ARENA DAILY ──
+const _ARENA_GAMES=[
+  {id:'td',nm:'TOWER DEFENSE',ico:'🏰',col:'255,0,127',fn:openBattle,desc:'Klara wave 5 → 3× XP'},
+  {id:'fish',nm:'FISKESPELET',ico:'🎣',col:'0,200,255',fn:openFishingGame,desc:'Fånga 3 fiskar → +200 KARMA'},
+  {id:'run',nm:'PET RUNNER',ico:'🐉',col:'191,95,255',fn:openPetRunner,desc:'Springa 500m → +150 KARMA'},
+  {id:'dna',nm:'DNA BREAKER',ico:'🧬',col:'57,255,20',fn:openPetBlocks,desc:'Rensa 5 rader → 2× Coins'},
+  {id:'mix',nm:'DNA MIXER',ico:'🧪',col:'255,159,10',fn:openDNAMixer,desc:'Mixa 2 DNA → +100 XP'},
+  {id:'spin',nm:'DAGLIGT SPIN',ico:'🎰',col:'255,215,0',fn:openGacha,desc:'Snurra hjulet → jackpot chans'},
+  {id:'fort',nm:'SPÅDOM',ico:'🔮',col:'191,95,255',fn:openFortuneOracle,desc:'Läs din fortune → +50 KARMA'},
+];
+const _ARENA_MISSIONS=[
+  {id:'care3',txt:'Skicka kärleksgodis 3×',ico:'💖',goal:3,gKey:'careCount',reward:'+100 KARMA'},
+  {id:'fish1',txt:'Fånga minst 1 fisk',ico:'🎣',goal:1,gKey:'fishCaught',reward:'+80 KARMA'},
+  {id:'lvl',txt:'Träna din pet 2×',ico:'🏋️',goal:2,gKey:'trainCount',reward:'+120 KARMA'},
+  {id:'social1',txt:'Posta i Social feed',ico:'💬',goal:1,gKey:'socialPosts',reward:'+60 XP'},
+  {id:'td5',txt:'Klara en wave i Tower Defense',ico:'⚔️',goal:1,gKey:'tdWaves',reward:'+200 KARMA'},
+];
+const _ARENA_PLAYERS=[
+  {nm:'sofiaK',em:'🦊',score:0},{nm:'ella_sthlm',em:'🐱',score:0},{nm:'bjorn99',em:'🐺',score:0},
+  {nm:'LunaPet',em:'🌙',score:0},{nm:'MaxDragon',em:'🐉',score:0},{nm:'IceWolf_7',em:'🐻',score:0},
+];
+let _arenaInterval=null;
+function renderArenaDaily(){
+  const todayIdx=new Date().getDate()%_ARENA_GAMES.length;
+  const feat=_ARENA_GAMES[todayIdx];
+  const f=$('arenaFeatured');
+  if(f){
+    f.onclick=feat.fn;
+    const bg=$('arenaFeatBg');if(bg)bg.style.background=`radial-gradient(ellipse at 30% 50%,rgba(${feat.col},.5) 0%,rgba(${feat.col},.1) 60%,transparent 100%)`;
+    const ico=$('arenaFeatIco');if(ico){ico.textContent=feat.ico;ico.style.filter=`drop-shadow(0 0 20px rgba(${feat.col},.9))`;}
+    const nm=$('arenaFeatName');if(nm)nm.textContent=feat.nm;
+    const desc=$('arenaFeatDesc');if(desc)desc.textContent=feat.desc;
+    f.style.background=`linear-gradient(135deg,rgba(${feat.col},.12) 0%,rgba(0,0,0,.8) 100%)`;
+    f.style.border=`2px solid rgba(${feat.col},.6)`;
+    f.style.boxShadow=`0 0 24px rgba(${feat.col},.25)`;
+  }
+  // Missions — pick 3 for today
+  const seed=new Date().getDate();
+  const todayMissions=[_ARENA_MISSIONS[seed%5],_ARENA_MISSIONS[(seed+1)%5],_ARENA_MISSIONS[(seed+2)%5]];
+  const mc=$('arenaMissions');
+  if(mc){
+    mc.innerHTML=todayMissions.map(m=>{
+      const prog=Math.min(m.goal,G[m.gKey]||0);
+      const done=prog>=m.goal;
+      const pct=Math.round(prog/m.goal*100);
+      return`<div style="background:rgba(${done?'57,255,20':'255,255,255'},.05);border:1.5px solid rgba(${done?'57,255,20':'255,255,255'},.${done?'3':'08'});border-radius:12px;padding:9px 12px;display:flex;align-items:center;gap:10px">
+        <span style="font-size:18px">${done?'✅':m.ico}</span>
+        <div style="flex:1;min-width:0">
+          <div style="font-size:10px;font-weight:900;color:${done?'var(--g)':'var(--t2)'};line-height:1">${m.txt}</div>
+          <div style="width:100%;height:4px;background:rgba(255,255,255,.06);border-radius:4px;overflow:hidden;margin-top:5px"><div style="height:100%;width:${pct}%;background:${done?'linear-gradient(90deg,#39FF14,#00D9FF)':'linear-gradient(90deg,rgba(191,95,255,.8),rgba(0,217,255,.8))'};border-radius:4px;transition:width .6s"></div></div>
+        </div>
+        <div style="font-size:8px;font-weight:900;color:var(--y);font-family:var(--mono);flex-shrink:0">${m.reward}</div>
+      </div>`;
+    }).join('');
+  }
+  // Leaderboard — seed-stable fake scores + real user score
+  const dayScore=(G.tdWaves||0)*120+(G.fishCaught||0)*80+(G.trainCount||0)*40+(G.careCount||0)*20;
+  const fakeSeed=new Date().getDate()*317;
+  const fakeScores=_ARENA_PLAYERS.map((p,i)=>({...p,score:Math.abs((fakeSeed*(i+1)*7)%4500)+dayScore*1.1+i*200}));
+  fakeScores.push({nm:G.petName||'Din pet',em:G.petEmoji||'🐾',score:dayScore,isMe:true});
+  fakeScores.sort((a,b)=>b.score-a.score);
+  const lb=$('arenaLB');
+  if(lb){
+    const medals=['🥇','🥈','🥉'];
+    lb.innerHTML=fakeScores.slice(0,5).map((p,i)=>{
+      const isMe=p.isMe;
+      return`<div style="display:flex;align-items:center;gap:8px;padding:5px 0;border-bottom:1px solid rgba(255,255,255,.04)${i===4?';border-bottom:none':''}">
+        <span style="font-size:13px;width:20px;text-align:center;flex-shrink:0">${medals[i]||'#'+(i+1)}</span>
+        <span style="font-size:16px">${p.em}</span>
+        <span style="flex:1;font-size:11px;font-weight:${isMe?900:700};color:${isMe?'#FFD700':'var(--t2)'}">${p.nm}${isMe?' (DU)':''}</span>
+        <span style="font-size:10px;font-weight:900;color:${isMe?'#FFD700':'var(--t3)'};font-family:var(--mono)">${Math.round(p.score).toLocaleString()}</span>
+      </div>`;
+    }).join('');
+  }
+  // Countdown to midnight
+  _arenaCountdown();
+  if(_arenaInterval)clearInterval(_arenaInterval);
+  _arenaInterval=setInterval(_arenaCountdown,1000);
+}
+function _arenaCountdown(){
+  const now=new Date();
+  const midnight=new Date(now);midnight.setHours(24,0,0,0);
+  const diff=midnight-now;
+  const h=String(Math.floor(diff/3600000)).padStart(2,'0');
+  const m=String(Math.floor(diff%3600000/60000)).padStart(2,'0');
+  const s=String(Math.floor(diff%60000/1000)).padStart(2,'0');
+  const el=$('arenaCountdown');if(el)el.textContent='⏱ '+h+':'+m+':'+s;
 }
 
 // ── ME VIEW ──
