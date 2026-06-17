@@ -3623,94 +3623,48 @@ div[style*="LIVE"]{border-radius:16px!important;background:rgba(57,255,20,.03)!i
         </div>
         <div class="gp-arrow" style="color:rgba(255,159,10,.8)">▶</div>
       </div>
-      <!-- DNA BREAKER card -->
-      <div onclick="openPetBlocks()" ontouchstart="this.style.opacity='.7'" ontouchend="this.style.opacity='1'" style="margin:6px 14px;border-radius:16px;cursor:pointer;-webkit-tap-highlight-color:transparent;background:#0e1a0e;border:2px solid rgba(57,255,20,.6);padding:14px 14px 0;display:flex;flex-direction:column;box-shadow:0 0 18px rgba(57,255,20,.15)">
-        <div style="display:flex;align-items:center;gap:12px;padding-bottom:12px">
-          <div style="width:52px;height:52px;border-radius:14px;background:rgba(57,255,20,.18);border:1px solid rgba(57,255,20,.5);display:flex;align-items:center;justify-content:center;font-size:28px;flex-shrink:0">🧬</div>
-          <div style="flex:1;min-width:0">
-            <div style="font-size:15px;font-weight:900;color:#39FF14;font-family:var(--mono);letter-spacing:.5px;margin-bottom:2px">DNA BREAKER <span style="font-size:8px;background:rgba(57,255,20,.2);padding:1px 5px;border-radius:6px;color:#39FF14">HOT 🔥</span></div>
-            <div style="font-size:9px;color:rgba(255,255,255,.6);line-height:1.4">Krossa DNA-block med bollen · Combo multiplier!</div>
-            <div style="display:flex;gap:5px;margin-top:6px;flex-wrap:wrap">
-              <span style="font-size:8px;font-weight:900;color:#39FF14;font-family:var(--mono)">ARCADE</span>
-              <span style="font-size:8px;color:rgba(255,255,255,.4)">·</span>
-              <span style="font-size:8px;font-weight:900;color:#FFE600" id="pbBestTag">Best: 0pts</span>
-              <span style="font-size:8px;color:rgba(255,255,255,.4)">·</span>
-              <span style="font-size:8px;font-weight:900;color:#00D9FF">+50 XP</span>
-            </div>
-          </div>
-          <div style="font-size:20px;color:rgba(57,255,20,.8)">›</div>
+      <!-- 2-COL GAME GRID — all 5 games visible without scrolling -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:4px 14px 12px">
+        <!-- DNA BREAKER -->
+        <div onclick="openPetBlocks()" ontouchstart="this.style.transform='scale(.96)'" ontouchend="this.style.transform=''" style="border-radius:16px;cursor:pointer;-webkit-tap-highlight-color:transparent;background:#0e1a0e;border:2px solid rgba(57,255,20,.6);padding:14px 12px;display:flex;flex-direction:column;align-items:center;gap:6px;box-shadow:0 0 14px rgba(57,255,20,.12);transition:transform .08s;text-align:center">
+          <div style="font-size:34px;line-height:1">🧬</div>
+          <div style="font-size:11px;font-weight:900;color:#39FF14;font-family:var(--mono);letter-spacing:.5px">DNA BREAKER</div>
+          <div style="font-size:8px;background:rgba(57,255,20,.18);border:1px solid rgba(57,255,20,.4);border-radius:20px;padding:1px 7px;color:#39FF14;font-family:var(--mono)">HOT 🔥</div>
+          <div style="font-size:8px;color:rgba(255,255,255,.45)" id="pbBestTag">Best: 0pts</div>
         </div>
-        <div style="height:2px;background:linear-gradient(90deg,transparent,rgba(57,255,20,.7),transparent);margin:0 -14px"></div>
-      </div>
-      <!-- PET RUNNER card -->
-      <div onclick="openPetRunner()" ontouchstart="this.style.opacity='.7'" ontouchend="this.style.opacity='1'" style="margin:6px 14px;border-radius:16px;cursor:pointer;-webkit-tap-highlight-color:transparent;background:#080e14;border:2px solid rgba(0,217,255,.6);padding:14px 14px 0;display:flex;flex-direction:column;box-shadow:0 0 18px rgba(0,217,255,.15)">
-        <div style="display:flex;align-items:center;gap:12px;padding-bottom:12px">
-          <div style="width:52px;height:52px;border-radius:14px;background:rgba(0,217,255,.18);border:1px solid rgba(0,217,255,.5);display:flex;align-items:center;justify-content:center;font-size:28px;flex-shrink:0;animation:petBob 2s ease-in-out infinite" id="gpRunnerPet">🐉</div>
-          <div style="flex:1;min-width:0">
-            <div style="font-size:15px;font-weight:900;color:#00D9FF;font-family:var(--mono);letter-spacing:.5px;margin-bottom:2px">PET RUNNER <span style="font-size:8px;background:rgba(0,217,255,.2);padding:1px 5px;border-radius:6px;color:#00D9FF">ENDLESS</span></div>
-            <div style="font-size:9px;color:rgba(255,255,255,.6);line-height:1.4">Hoppa · dodge hinder · samla gems · level upp!</div>
-            <div style="display:flex;gap:5px;margin-top:6px;flex-wrap:wrap">
-              <span style="font-size:8px;font-weight:900;color:#00D9FF;font-family:var(--mono)">RUNNER</span>
-              <span style="font-size:8px;color:rgba(255,255,255,.4)">·</span>
-              <span style="font-size:8px;font-weight:900;color:#FFE600" id="prBestTag">Best: 0m</span>
-              <span style="font-size:8px;color:rgba(255,255,255,.4)">·</span>
-              <span style="font-size:8px;font-weight:900;color:#00D9FF" id="prLvBadge">LV 1</span>
-            </div>
-          </div>
-          <div style="font-size:20px;color:rgba(0,217,255,.8)">›</div>
+        <!-- PET RUNNER -->
+        <div onclick="openPetRunner()" ontouchstart="this.style.transform='scale(.96)'" ontouchend="this.style.transform=''" style="border-radius:16px;cursor:pointer;-webkit-tap-highlight-color:transparent;background:#080e14;border:2px solid rgba(0,217,255,.6);padding:14px 12px;display:flex;flex-direction:column;align-items:center;gap:6px;box-shadow:0 0 14px rgba(0,217,255,.12);transition:transform .08s;text-align:center">
+          <div style="font-size:34px;line-height:1;animation:petBob 2s ease-in-out infinite" id="gpRunnerPet">🐉</div>
+          <div style="font-size:11px;font-weight:900;color:#00D9FF;font-family:var(--mono);letter-spacing:.5px">PET RUNNER</div>
+          <div style="font-size:8px;background:rgba(0,217,255,.18);border:1px solid rgba(0,217,255,.4);border-radius:20px;padding:1px 7px;color:#00D9FF;font-family:var(--mono)">ENDLESS</div>
+          <div style="font-size:8px;color:rgba(255,255,255,.45)" id="prBestTag">Best: 0m · <span id="prLvBadge">LV 1</span></div>
         </div>
-        <div style="height:2px;background:linear-gradient(90deg,transparent,rgba(0,217,255,.7),transparent);margin:0 -14px"></div>
-      </div>
-      <!-- BATTLE ARENA card -->
-      <div onclick="openBattle()" ontouchstart="this.style.opacity='.7'" ontouchend="this.style.opacity='1'" style="margin:6px 14px;border-radius:16px;cursor:pointer;-webkit-tap-highlight-color:transparent;background:#14080e;border:2px solid rgba(255,0,127,.6);padding:14px 14px 0;display:flex;flex-direction:column;box-shadow:0 0 18px rgba(255,0,127,.15)">
-        <div style="display:flex;align-items:center;gap:12px;padding-bottom:12px">
-          <div style="width:52px;height:52px;border-radius:14px;background:rgba(255,0,127,.18);border:1px solid rgba(255,0,127,.5);display:flex;align-items:center;justify-content:center;font-size:28px;flex-shrink:0">⚔️</div>
-          <div style="flex:1;min-width:0">
-            <div style="font-size:15px;font-weight:900;color:#FF007F;font-family:var(--mono);letter-spacing:.5px;margin-bottom:2px">BATTLE ARENA <span style="font-size:8px;background:rgba(255,0,127,.2);padding:1px 5px;border-radius:6px;color:#FF007F">PvE ⚔️</span></div>
-            <div style="font-size:9px;color:rgba(255,255,255,.6);line-height:1.4">Slåss mot bossar · rytmbaserade attacker · vinn coins!</div>
-            <div style="display:flex;gap:5px;margin-top:6px;flex-wrap:wrap">
-              <span style="font-size:8px;font-weight:900;color:#FF007F;font-family:var(--mono)">BOSS FIGHT</span>
-              <span style="font-size:8px;color:rgba(255,255,255,.4)">·</span>
-              <span style="font-size:8px;font-weight:900;color:#FFE600">+100 XP</span>
-            </div>
-          </div>
-          <div style="font-size:20px;color:rgba(255,0,127,.8)">›</div>
+        <!-- TOWER DEFENSE -->
+        <div onclick="openBattle()" ontouchstart="this.style.transform='scale(.96)'" ontouchend="this.style.transform=''" style="border-radius:16px;cursor:pointer;-webkit-tap-highlight-color:transparent;background:#14080e;border:2px solid rgba(255,0,127,.6);padding:14px 12px;display:flex;flex-direction:column;align-items:center;gap:6px;box-shadow:0 0 14px rgba(255,0,127,.12);transition:transform .08s;text-align:center">
+          <div style="font-size:34px;line-height:1">🏰</div>
+          <div style="font-size:11px;font-weight:900;color:#FF007F;font-family:var(--mono);letter-spacing:.5px">TOWER DEF</div>
+          <div style="font-size:8px;background:rgba(255,0,127,.18);border:1px solid rgba(255,0,127,.4);border-radius:20px;padding:1px 7px;color:#FF007F;font-family:var(--mono)">WAVES ⚔️</div>
+          <div style="font-size:8px;color:rgba(255,255,255,.45)">+100 XP per wave</div>
         </div>
-        <div style="height:2px;background:linear-gradient(90deg,transparent,rgba(255,0,127,.7),transparent);margin:0 -14px"></div>
-      </div>
-      <!-- DNA MIXER card -->
-      <div onclick="openDNAMixer()" ontouchstart="this.style.opacity='.7'" ontouchend="this.style.opacity='1'" style="margin:6px 14px;border-radius:16px;cursor:pointer;-webkit-tap-highlight-color:transparent;background:#0e0814;border:2px solid rgba(191,95,255,.6);padding:14px 14px 0;display:flex;flex-direction:column;box-shadow:0 0 18px rgba(191,95,255,.15)">
-        <div style="display:flex;align-items:center;gap:12px;padding-bottom:12px">
-          <div style="width:52px;height:52px;border-radius:14px;background:rgba(191,95,255,.18);border:1px solid rgba(191,95,255,.5);display:flex;align-items:center;justify-content:center;font-size:28px;flex-shrink:0">🧪</div>
-          <div style="flex:1;min-width:0">
-            <div style="font-size:15px;font-weight:900;color:#BF5FFF;font-family:var(--mono);letter-spacing:.5px;margin-bottom:2px">DNA MIXER <span style="font-size:8px;background:rgba(191,95,255,.2);padding:1px 5px;border-radius:6px;color:#BF5FFF">LAB 🧬</span></div>
-            <div style="font-size:9px;color:rgba(255,255,255,.6);line-height:1.4">Mixa 2 pets → hybrid · Lås upp hemliga kombinationer!</div>
-            <div style="display:flex;gap:5px;margin-top:6px;flex-wrap:wrap">
-              <span style="font-size:8px;font-weight:900;color:#BF5FFF;font-family:var(--mono)">HYBRID</span>
-              <span style="font-size:8px;color:rgba(255,255,255,.4)">·</span>
-              <span style="font-size:8px;font-weight:900;color:#39FF14">+75 XP</span>
-            </div>
-          </div>
-          <div style="font-size:20px;color:rgba(191,95,255,.8)">›</div>
+        <!-- DNA MIXER -->
+        <div onclick="openDNAMixer()" ontouchstart="this.style.transform='scale(.96)'" ontouchend="this.style.transform=''" style="border-radius:16px;cursor:pointer;-webkit-tap-highlight-color:transparent;background:#0e0814;border:2px solid rgba(191,95,255,.6);padding:14px 12px;display:flex;flex-direction:column;align-items:center;gap:6px;box-shadow:0 0 14px rgba(191,95,255,.12);transition:transform .08s;text-align:center">
+          <div style="font-size:34px;line-height:1">🧪</div>
+          <div style="font-size:11px;font-weight:900;color:#BF5FFF;font-family:var(--mono);letter-spacing:.5px">DNA MIXER</div>
+          <div style="font-size:8px;background:rgba(191,95,255,.18);border:1px solid rgba(191,95,255,.4);border-radius:20px;padding:1px 7px;color:#BF5FFF;font-family:var(--mono)">LAB 🧬</div>
+          <div style="font-size:8px;color:rgba(255,255,255,.45)">+75 XP</div>
         </div>
-        <div style="height:2px;background:linear-gradient(90deg,transparent,rgba(191,95,255,.7),transparent);margin:0 -14px"></div>
-      </div>
-      <!-- FISHING card -->
-      <div onclick="openFishingGame()" ontouchstart="this.style.opacity='.7'" ontouchend="this.style.opacity='1'" style="margin:6px 14px 10px;border-radius:16px;cursor:pointer;-webkit-tap-highlight-color:transparent;background:#080e14;border:2px solid rgba(0,200,255,.6);padding:14px 14px 0;display:flex;flex-direction:column;box-shadow:0 0 18px rgba(0,200,255,.15)">
-        <div style="display:flex;align-items:center;gap:12px;padding-bottom:12px">
-          <div style="width:52px;height:52px;border-radius:14px;background:rgba(0,200,255,.18);border:1px solid rgba(0,200,255,.5);display:flex;align-items:center;justify-content:center;font-size:28px;flex-shrink:0">🎣</div>
+        <!-- FISKESPELET — spans full width at bottom -->
+        <div onclick="openFishingGame()" ontouchstart="this.style.transform='scale(.98)'" ontouchend="this.style.transform=''" style="grid-column:1/-1;border-radius:16px;cursor:pointer;-webkit-tap-highlight-color:transparent;background:#080e14;border:2px solid rgba(0,200,255,.6);padding:12px 16px;display:flex;align-items:center;gap:14px;box-shadow:0 0 14px rgba(0,200,255,.12);transition:transform .08s">
+          <div style="font-size:38px;line-height:1;animation:petBob 2.4s ease-in-out infinite">🎣</div>
           <div style="flex:1;min-width:0">
-            <div style="font-size:15px;font-weight:900;color:#00C8FF;font-family:var(--mono);letter-spacing:.5px;margin-bottom:2px">FISKESPELET <span style="font-size:8px;background:rgba(0,200,255,.2);padding:1px 5px;border-radius:6px;color:#00C8FF">ZEN 🌊</span></div>
-            <div style="font-size:9px;color:rgba(255,255,255,.6);line-height:1.4">Kasta · tajma · fånga legendariska fiskar · sätt rekord!</div>
-            <div style="display:flex;gap:5px;margin-top:6px;flex-wrap:wrap">
-              <span style="font-size:8px;font-weight:900;color:#00C8FF;font-family:var(--mono)">FISKE</span>
-              <span style="font-size:8px;color:rgba(255,255,255,.4)">·</span>
-              <span style="font-size:8px;font-weight:900;color:#FFE600" id="fishBestTag">Best: 0 fiskar</span>
-            </div>
+            <div style="font-size:13px;font-weight:900;color:#00C8FF;font-family:var(--mono);letter-spacing:.5px">FISKESPELET <span style="font-size:8px;background:rgba(0,200,255,.18);border:1px solid rgba(0,200,255,.4);border-radius:20px;padding:1px 6px;color:#00C8FF">ZEN 🌊</span></div>
+            <div style="font-size:9px;color:rgba(255,255,255,.5);margin-top:2px">Kasta · tajma · fånga legendariska fiskar!</div>
           </div>
-          <div style="font-size:20px;color:rgba(0,200,255,.8)">›</div>
+          <div style="text-align:right;flex-shrink:0">
+            <div style="font-size:9px;color:#FFE600;font-weight:900" id="fishBestTag">Best: 0</div>
+            <div style="font-size:18px;color:rgba(0,200,255,.7)">›</div>
+          </div>
         </div>
-        <div style="height:2px;background:linear-gradient(90deg,transparent,rgba(0,200,255,.7),transparent);margin:0 -14px"></div>
       </div>
       <!-- DAILY REWARD BUTTON -->
       <div style="margin:4px 14px 8px;display:flex;gap:8px">
@@ -8994,6 +8948,7 @@ let _fc={
   reel:{angle:0,speed:0,zoneStart:0,zoneSize:1,hitsNeeded:2,hits:0,misfires:0,fish:null,flashT:0,hitFlash:false,missFlash:false},
   raf:null,t:0,
 };
+const _fishState=_fc; // alias — fishing code uses both names
 function _getCurRod(){return FISH_RODS.find(r=>r.id===(G.fishRod||'bamboo'))||FISH_RODS[0];}
 
 // ── Render location chips ──
@@ -9032,7 +8987,7 @@ function _applyLocScene(locId){
   // Weather badge
   const hour=new Date().getHours();const isNight=hour>=22||hour<6;
   const wb=$('fishWeatherBadge');
-  const wth=FISH_WEATHERS[_fishState._weather]||FISH_WEATHERS[0];
+  const wth=FISH_WEATHERS[_fishState.weather]||FISH_WEATHERS[0];
   if(wb)wb.textContent=wth.em+' '+(isNight&&loc.nightBonus?'NATTTID 2x ':'')+(wth.nm);
   // Location scene decorations
   const sceneEl=$('fishLocScene');if(sceneEl){
@@ -9140,7 +9095,7 @@ function _sfHitFish(ft,fishEl){
   }
   // Rewards
   const rod=_getCurRod();
-  _fishState._combo=(_fishState._combo||0)+1;const combo=_fishState._combo;
+  _fishState.combo=(_fishState.combo||0)+1;const combo=_fishState.combo;
   const comboMult=combo>=8?4:combo>=5?3:combo>=3?2:1;
   // Streak + hot spot
   const streakMult=_sfStreak>=3?2:1;
@@ -9148,7 +9103,7 @@ function _sfHitFish(ft,fishEl){
   const locData=FISH_LOCATIONS.find(l=>l.id===(G.fishLocation||'malaren'))||FISH_LOCATIONS[0];
   const nightMult=isNight&&locData.nightBonus?2:1;
   // Weather
-  const wth=FISH_WEATHERS[_fishState._weather]||FISH_WEATHERS[0];
+  const wth=FISH_WEATHERS[_fishState.weather]||FISH_WEATHERS[0];
   const stormRisk=wth.id==='storm'&&Math.random()<0.15;
   if(stormRisk){
     showT('⛈️ Storm! Fisken rymde!','r');_fishFail();return;
@@ -9179,7 +9134,7 @@ function _sfHitFish(ft,fishEl){
   // Score
   _fishState.score++;
   if(_fishState.score>_fishState.best){_fishState.best=_fishState.score;localStorage.setItem('kv8_fishBest',_fishState.score);}
-  if(_sfStreak>(_fishState._streakRecord||0)){_fishState._streakRecord=_sfStreak;localStorage.setItem('kv8_fishStreak',_sfStreak);}
+  if(_sfStreak>(_fishState.streakRecord||0)){_fishState.streakRecord=_sfStreak;localStorage.setItem('kv8_fishStreak',_sfStreak);}
   // Toast
   const rarityCol=ft.rarity==='mythic'?'p':ft.rarity==='legendary'?'pk':ft.rarity==='epic'?'o':'g';
   const streakMsg=_sfStreak>=3?` 🔥×${_sfStreak}`:'';const nightMsg=nightMult===2?' 🌙×2':'';
@@ -9214,7 +9169,7 @@ function _updateFishStreakBadge(){
     else{badge.style.display='none';}
   }
   if(hotspot){hotspot.style.display=_sfStreak>=3?'block':'none';}
-  const sb=$('fishStreakBadge');if(sb)sb.textContent=_fishState._combo>=3?'🔥 ×'+_fishState._combo+' COMBO':'';
+  const sb=$('fishStreakBadge');if(sb)sb.textContent=_fishState.combo>=3?'🔥 ×'+_fishState.combo+' COMBO':'';
 }
 
 // ── Fångstlåda (Catch Box) ──
