@@ -1034,7 +1034,7 @@ button:active{opacity:.85;}
 .ba-hp-bar-fill{height:100%;border-radius:6px;transition:width .4s ease-out;position:relative;}
 .ba-hp-bar-fill.player{background:linear-gradient(90deg,#00aa44,#39FF14,#80ff55);box-shadow:0 0 12px rgba(57,255,20,.4);}
 /* Game field: canvas + html emoji overlay */
-.td-field{flex:1;position:relative;overflow:hidden;background:linear-gradient(180deg,#0a0612 0%,#06030a 100%);}
+.td-field{flex:1;position:relative;overflow:hidden;background:#040a04;}
 #tdCanvas{display:block;width:100%;height:100%;touch-action:none;}
 #tdEmojiOv{position:absolute;inset:0;pointer-events:none;z-index:2;overflow:hidden;}
 .td-weak-tag{position:absolute;transform:translate(-50%,-100%);font-size:10px;font-weight:900;font-family:var(--mono);letter-spacing:.5px;padding:2px 7px;border-radius:8px;white-space:nowrap;background:rgba(0,0,0,.75);border:1px solid currentColor;box-shadow:0 0 10px currentColor;}
@@ -1044,24 +1044,29 @@ button:active{opacity:.85;}
 .td-wave-banner.show{transform:translateX(-50%) scale(1);opacity:1;}
 .td-wave-banner .tw-big{font-size:22px;font-weight:900;font-family:var(--mono);letter-spacing:2px;color:var(--y);text-shadow:0 0 16px rgba(255,230,0,.6);}
 .td-wave-banner .tw-sub{font-size:11px;color:var(--t2);font-family:var(--mono);margin-top:2px;}
-.td-form-row{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;}
-.td-form-btn{background:#080808;border:2px solid rgba(255,255,255,.18);border-radius:14px;padding:9px 4px;cursor:pointer;transition:transform .08s,box-shadow .08s,opacity .15s;-webkit-tap-highlight-color:transparent;touch-action:manipulation;display:flex;flex-direction:column;align-items:center;gap:2px;min-height:58px;position:relative;}
-.td-form-btn:active{transform:scale(.94);}
-.td-form-btn .tf-ico{font-size:24px;line-height:1;}
-.td-form-btn .tf-nm{font-size:9px;font-weight:900;color:var(--t1);font-family:var(--mono);letter-spacing:.5px;}
-.td-form-btn.magic{border-color:var(--p);box-shadow:0 0 14px rgba(191,95,255,.3),inset 0 0 8px rgba(191,95,255,.05);background:rgba(191,95,255,.05);}
-.td-form-btn.rage{border-color:var(--o);box-shadow:0 0 14px rgba(255,159,10,.3),inset 0 0 8px rgba(255,159,10,.05);background:rgba(255,159,10,.05);}
-.td-form-btn.shield{border-color:var(--b);box-shadow:0 0 14px rgba(0,217,255,.3),inset 0 0 8px rgba(0,217,255,.05);background:rgba(0,217,255,.05);}
-.td-form-btn.speed{border-color:var(--g);box-shadow:0 0 14px rgba(57,255,20,.3),inset 0 0 8px rgba(57,255,20,.05);background:rgba(57,255,20,.05);}
-.td-form-btn.active{outline:2px solid #fff;box-shadow:0 0 24px currentColor,0 0 0 3px rgba(255,255,255,.25) inset;}
-.td-form-btn.stunned{opacity:.35;pointer-events:none;}
-.td-form-btn .tf-cd{position:absolute;inset:0;border-radius:14px;background:rgba(0,0,0,.55);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:900;font-family:var(--mono);color:#fff;}
-.td-actions{padding:10px 14px;padding-bottom:calc(10px + env(safe-area-inset-bottom,0px));background:#000;border-top:3px solid rgba(255,0,127,.25);flex-shrink:0;}
-.td-combo-bar{display:flex;align-items:center;gap:8px;margin-bottom:8px;}
-.td-combo-label{font-size:9px;font-weight:900;color:var(--y);font-family:var(--mono);letter-spacing:1px;flex-shrink:0;}
-.td-combo-count{font-size:16px;font-weight:900;color:var(--y);font-family:var(--mono);min-width:32px;flex-shrink:0;}
-.td-combo-meter{flex:1;height:5px;background:rgba(255,255,255,.08);border-radius:100px;overflow:hidden;}
-.td-combo-meter div{height:100%;background:linear-gradient(90deg,var(--y),var(--o));border-radius:100px;transition:width .2s;}
+.td-actions{padding:6px 10px;padding-bottom:calc(6px + env(safe-area-inset-bottom,0px));background:linear-gradient(180deg,#0a0010 0%,#000 100%);border-top:2px solid rgba(255,0,127,.35);flex-shrink:0;}
+.td-gold-bar{display:flex;align-items:center;gap:8px;margin-bottom:6px;}
+.td-gold-lbl{font-size:8px;font-weight:900;color:#FFD700;font-family:var(--mono);letter-spacing:1px;}
+.td-gold-amt{font-size:20px;font-weight:900;color:#FFD700;font-family:var(--mono);min-width:42px;text-shadow:0 0 14px rgba(255,215,0,.6);}
+.td-wave-info{margin-left:auto;font-size:9px;font-weight:900;color:var(--t3);font-family:var(--mono);letter-spacing:1px;}
+.td-tower-row{display:grid;grid-template-columns:repeat(4,1fr);gap:5px;}
+.td-tower-btn{display:flex;flex-direction:column;align-items:center;gap:2px;padding:7px 3px 5px;background:rgba(255,255,255,.04);border:1.5px solid rgba(255,255,255,.1);border-radius:12px;cursor:pointer;transition:all .12s;font-family:var(--mono);color:var(--t1);-webkit-tap-highlight-color:transparent;touch-action:manipulation;position:relative;}
+.td-tower-btn:active{transform:scale(.91);}
+.td-tower-btn .tt-ico{font-size:24px;line-height:1;}
+.td-tower-btn .tt-nm{font-size:7px;font-weight:900;letter-spacing:.5px;color:rgba(255,255,255,.7);}
+.td-tower-btn .tt-cost{font-size:10px;color:#FFD700;font-weight:900;}
+.td-tower-btn.selected{border-color:#FFD700;background:rgba(255,215,0,.1);box-shadow:0 0 14px rgba(255,215,0,.4),inset 0 0 8px rgba(255,215,0,.08);}
+.td-tower-btn.disabled{opacity:.3;pointer-events:none;}
+.td-sell-panel{margin-top:7px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:10px;padding:7px 10px;}
+.td-sell-info{display:flex;align-items:center;gap:6px;margin-bottom:5px;font-size:11px;font-family:var(--mono);}
+#tdSellName{font-weight:900;font-size:13px;color:#FFD700;}
+#tdSellLevel{background:rgba(255,255,255,.1);padding:1px 5px;border-radius:4px;font-size:10px;}
+#tdSellDps{margin-left:auto;font-size:10px;color:var(--t3);}
+.td-sell-actions{display:flex;gap:6px;align-items:center;}
+.td-upg-btn{flex:1;background:rgba(57,255,20,.1);border:1px solid rgba(57,255,20,.4);border-radius:8px;padding:6px;font-size:10px;font-weight:900;font-family:var(--mono);color:#39FF14;cursor:pointer;-webkit-tap-highlight-color:transparent;}
+.td-upg-btn.disabled{opacity:.4;pointer-events:none;}
+.td-sell-btn{background:rgba(255,215,0,.1);border:1px solid rgba(255,215,0,.3);border-radius:8px;padding:6px 10px;font-size:10px;font-weight:900;font-family:var(--mono);color:#FFD700;cursor:pointer;-webkit-tap-highlight-color:transparent;}
+.td-sell-close{background:none;border:1px solid rgba(255,255,255,.15);border-radius:8px;padding:5px 8px;font-size:12px;color:var(--t3);cursor:pointer;}
 .ba-victory,.ba-defeat{position:absolute;inset:0;background:rgba(0,0,0,.92);display:flex;align-items:center;justify-content:center;z-index:20;}
 .ba-victory-content{text-align:center;padding:24px;}
 .ba-rewards{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;}
@@ -1126,11 +1131,12 @@ button:active{opacity:.85;}
 /* ═══════════════════════════════════
    BOTTOM NAV — Color-Coded Per Tab
 ═══════════════════════════════════ */
-.bnav{display:flex;align-items:center;background:rgba(6,6,14,.99);backdrop-filter:blur(28px);-webkit-backdrop-filter:blur(28px);border-top:1px solid rgba(255,255,255,.07);padding:8px 4px;padding-bottom:calc(8px + var(--sab));flex-shrink:0;z-index:100;min-height:60px;}
-.nb{flex:1;background:none;border:none;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:3px;padding:4px 2px;-webkit-tap-highlight-color:transparent;border-radius:12px;transition:background .15s;}
-.nb-inner{position:relative;display:inline-flex;width:36px;height:36px;align-items:center;justify-content:center;border-radius:12px;transition:background .15s;}
-.nb .ni{font-size:22px;transition:transform .15s;}
-.nb .nl{font-size:10px;font-weight:800;color:var(--t3);text-transform:uppercase;letter-spacing:.4px;transition:color .15s;}
+.bnav{display:flex;align-items:center;background:rgba(6,6,14,.99);backdrop-filter:blur(28px);-webkit-backdrop-filter:blur(28px);border-top:1px solid rgba(255,255,255,.07);padding:6px 2px;padding-bottom:calc(6px + var(--sab));flex-shrink:0;z-index:100;min-height:58px;}
+.nb{flex:1;background:none;border:none;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:2px;padding:3px 1px;-webkit-tap-highlight-color:transparent;border-radius:10px;transition:background .15s;}
+.nb-inner{position:relative;display:inline-flex;width:32px;height:32px;align-items:center;justify-content:center;border-radius:10px;transition:background .15s;}
+.nb .ni{font-size:19px;transition:transform .15s;}
+.nb .nl{font-size:9px;font-weight:800;color:var(--t3);text-transform:uppercase;letter-spacing:.3px;transition:color .15s;}
+@keyframes fabPulse{0%,100%{box-shadow:0 6px 24px rgba(255,45,85,.5),0 0 0 1.5px rgba(255,255,255,.12);}50%{box-shadow:0 8px 32px rgba(255,45,85,.7),0 0 0 1.5px rgba(255,255,255,.2);}}
 /* SpawnEngine-style: colored bg square on active tab */
 .nb[data-v="home"].on .nb-inner{background:rgba(57,255,20,.22);}
 .nb[data-v="home"].on .nl{color:#39FF14;}
@@ -2005,7 +2011,10 @@ button:active{opacity:.85;}
 .room-modal.open{opacity:1;pointer-events:all;}
 .room-preview{width:100%;height:220px;position:relative;overflow:hidden;flex-shrink:0;background:linear-gradient(180deg,#04080f 0%,#071220 55%,#0c1a0d 100%);}
 .room-preview-pet{position:absolute;bottom:44px;font-size:40px;animation:roomPetWalk 3.8s ease-in-out infinite;filter:drop-shadow(0 0 12px rgba(57,255,20,.4));z-index:4;}
-@keyframes roomPetWalk{0%,100%{left:15%;transform:scaleX(1);}45%{left:68%;transform:scaleX(1);}50%{left:68%;transform:scaleX(-1);}95%{left:15%;transform:scaleX(-1);}}
+@keyframes roomPetWalk{0%,100%{left:25%;transform:translateX(-50%) scaleX(1);}45%{left:75%;transform:translateX(-50%) scaleX(1);}50%{left:75%;transform:translateX(-50%) scaleX(-1);}95%{left:25%;transform:translateX(-50%) scaleX(-1);}}
+@keyframes auraBreath{0%,100%{transform:translateX(-50%) scale(1);opacity:.7;}50%{transform:translateX(-50%) scale(1.35);opacity:.35;}}
+.me-care-btn{background:rgba(var(--cc),.08);border:1.5px solid rgba(var(--cc),.28);border-radius:14px;padding:9px 4px;font-size:22px;display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer;transition:all .12s;-webkit-tap-highlight-color:transparent;}
+.me-care-btn:active{transform:scale(.88);background:rgba(var(--cc),.18);}
 .room-preview-floor{position:absolute;bottom:0;left:0;right:0;height:44px;background:linear-gradient(180deg,rgba(0,0,0,.3),rgba(0,0,0,.65));border-top:1px solid rgba(57,255,20,.12);z-index:3;}
 .room-placed-item{position:absolute;font-size:26px;cursor:pointer;-webkit-tap-highlight-color:transparent;transform-origin:center bottom;z-index:2;display:flex;align-items:center;justify-content:center;}
 .room-placed-item:active{transform:translateX(-50%) scale(.85)!important;}
@@ -3606,8 +3615,47 @@ div[style*="LIVE"]{border-radius:16px!important;background:rgba(57,255,20,.03)!i
           </div>
         </div>
       </div>
-      <!-- GAME PORTAL GRID -->
-      <div style="padding:12px 14px 6px;font-size:9px;font-weight:900;font-family:var(--mono);color:rgba(191,95,255,.5);letter-spacing:2px">VÄLJ SPEL</div>
+      <!-- ══ ARENA DAILY ══ -->
+      <div id="arenaDailyWrap" style="margin:12px 14px 4px">
+        <!-- Header row -->
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
+          <div style="display:flex;align-items:center;gap:7px">
+            <div style="font-size:9px;font-weight:900;color:rgba(255,215,0,.8);font-family:var(--mono);letter-spacing:2px">🏟️ ARENA DAILY</div>
+            <div style="background:#FFD700;color:#000;font-size:7px;font-weight:900;padding:2px 6px;border-radius:6px;font-family:var(--mono)">LIVE</div>
+          </div>
+          <div id="arenaCountdown" style="font-size:9px;font-weight:900;color:rgba(255,255,255,.4);font-family:var(--mono)">–:–:–</div>
+        </div>
+        <!-- Featured game of the day -->
+        <div id="arenaFeatured" style="border-radius:16px;padding:12px 14px;cursor:pointer;margin-bottom:10px;position:relative;overflow:hidden;-webkit-tap-highlight-color:transparent;transition:transform .1s" ontouchstart="this.style.transform='scale(.98)'" ontouchend="this.style.transform=''">
+          <div id="arenaFeatBg" style="position:absolute;inset:0;opacity:.35"></div>
+          <div style="position:absolute;inset:0;background:linear-gradient(135deg,rgba(0,0,0,.3) 0%,rgba(0,0,0,.6) 100%)"></div>
+          <div style="position:relative;z-index:1;display:flex;align-items:center;gap:12px">
+            <div id="arenaFeatIco" style="font-size:48px;line-height:1;filter:drop-shadow(0 0 20px currentColor)">🏹</div>
+            <div style="flex:1;min-width:0">
+              <div style="font-size:8px;font-weight:900;color:rgba(255,215,0,.9);font-family:var(--mono);letter-spacing:1.5px;margin-bottom:2px">DAGENS UTMANING</div>
+              <div id="arenaFeatName" style="font-size:16px;font-weight:900;color:#fff;font-family:var(--mono);letter-spacing:.5px">TOWER DEFENSE</div>
+              <div id="arenaFeatDesc" style="font-size:9px;color:rgba(255,255,255,.6);margin-top:2px">Klara wave 5 för 3× XP-bonus</div>
+            </div>
+            <div style="text-align:center;flex-shrink:0">
+              <div style="font-size:8px;color:rgba(255,215,0,.7);font-family:var(--mono);font-weight:900">BONUS</div>
+              <div id="arenaFeatBonus" style="font-size:20px;font-weight:900;color:#FFD700;font-family:var(--mono);text-shadow:0 0 16px rgba(255,215,0,.6)">3×</div>
+            </div>
+          </div>
+        </div>
+        <!-- Daily missions -->
+        <div style="font-size:8px;font-weight:900;color:rgba(255,255,255,.3);font-family:var(--mono);letter-spacing:2px;margin-bottom:6px">DAGLIGA UPPDRAG</div>
+        <div id="arenaMissions" style="display:flex;flex-direction:column;gap:6px;margin-bottom:10px"></div>
+        <!-- Live leaderboard -->
+        <div style="background:rgba(255,215,0,.04);border:1px solid rgba(255,215,0,.15);border-radius:14px;padding:10px 12px">
+          <div style="font-size:8px;font-weight:900;color:rgba(255,215,0,.7);font-family:var(--mono);letter-spacing:2px;margin-bottom:8px">🏆 LIVE TOPP-LISTA IDAG</div>
+          <div id="arenaLB" style="display:flex;flex-direction:column;gap:5px"></div>
+        </div>
+      </div>
+      <!-- GAME HUB SECTION HEADER -->
+      <div style="padding:10px 14px 4px;display:flex;align-items:center;justify-content:space-between">
+        <div style="font-size:9px;font-weight:900;font-family:var(--mono);color:rgba(191,95,255,.6);letter-spacing:2px">🎮 GAME HUB</div>
+        <div style="font-size:8px;color:rgba(255,255,255,.3);font-family:var(--mono)">5 spel · daily rewards</div>
+      </div>
       <!-- SPIN portal -->
       <div class="game-portal" onclick="openGacha()" style="--pc:255,159,10">
         <div class="gp-preview" style="background:linear-gradient(135deg,#1a0800,#0d0400)">
@@ -3623,50 +3671,80 @@ div[style*="LIVE"]{border-radius:16px!important;background:rgba(57,255,20,.03)!i
         </div>
         <div class="gp-arrow" style="color:rgba(255,159,10,.8)">▶</div>
       </div>
-      <!-- 2-COL GAME GRID — all 5 games visible without scrolling -->
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:4px 14px 12px">
-        <!-- DNA BREAKER -->
-        <div onclick="openPetBlocks()" ontouchstart="this.style.transform='scale(.96)'" ontouchend="this.style.transform=''" style="border-radius:16px;cursor:pointer;-webkit-tap-highlight-color:transparent;background:#0e1a0e;border:2px solid rgba(57,255,20,.6);padding:14px 12px;display:flex;flex-direction:column;align-items:center;gap:6px;box-shadow:0 0 14px rgba(57,255,20,.12);transition:transform .08s;text-align:center">
-          <div style="font-size:34px;line-height:1">🧬</div>
-          <div style="font-size:11px;font-weight:900;color:#39FF14;font-family:var(--mono);letter-spacing:.5px">DNA BREAKER</div>
-          <div style="font-size:8px;background:rgba(57,255,20,.18);border:1px solid rgba(57,255,20,.4);border-radius:20px;padding:1px 7px;color:#39FF14;font-family:var(--mono)">HOT 🔥</div>
-          <div style="font-size:8px;color:rgba(255,255,255,.45)" id="pbBestTag">Best: 0pts</div>
-        </div>
-        <!-- PET RUNNER -->
-        <div onclick="openPetRunner()" ontouchstart="this.style.transform='scale(.96)'" ontouchend="this.style.transform=''" style="border-radius:16px;cursor:pointer;-webkit-tap-highlight-color:transparent;background:#080e14;border:2px solid rgba(0,217,255,.6);padding:14px 12px;display:flex;flex-direction:column;align-items:center;gap:6px;box-shadow:0 0 14px rgba(0,217,255,.12);transition:transform .08s;text-align:center">
-          <div style="font-size:34px;line-height:1;animation:petBob 2s ease-in-out infinite" id="gpRunnerPet">🐉</div>
-          <div style="font-size:11px;font-weight:900;color:#00D9FF;font-family:var(--mono);letter-spacing:.5px">PET RUNNER</div>
-          <div style="font-size:8px;background:rgba(0,217,255,.18);border:1px solid rgba(0,217,255,.4);border-radius:20px;padding:1px 7px;color:#00D9FF;font-family:var(--mono)">ENDLESS</div>
-          <div style="font-size:8px;color:rgba(255,255,255,.45)" id="prBestTag">Best: 0m · <span id="prLvBadge">LV 1</span></div>
-        </div>
-        <!-- TOWER DEFENSE -->
-        <div onclick="openBattle()" ontouchstart="this.style.transform='scale(.96)'" ontouchend="this.style.transform=''" style="border-radius:16px;cursor:pointer;-webkit-tap-highlight-color:transparent;background:#14080e;border:2px solid rgba(255,0,127,.6);padding:14px 12px;display:flex;flex-direction:column;align-items:center;gap:6px;box-shadow:0 0 14px rgba(255,0,127,.12);transition:transform .08s;text-align:center">
-          <div style="font-size:34px;line-height:1">🏰</div>
-          <div style="font-size:11px;font-weight:900;color:#FF007F;font-family:var(--mono);letter-spacing:.5px">TOWER DEF</div>
-          <div style="font-size:8px;background:rgba(255,0,127,.18);border:1px solid rgba(255,0,127,.4);border-radius:20px;padding:1px 7px;color:#FF007F;font-family:var(--mono)">WAVES ⚔️</div>
-          <div style="font-size:8px;color:rgba(255,255,255,.45)">+100 XP per wave</div>
-        </div>
-        <!-- DNA MIXER -->
-        <div onclick="openDNAMixer()" ontouchstart="this.style.transform='scale(.96)'" ontouchend="this.style.transform=''" style="border-radius:16px;cursor:pointer;-webkit-tap-highlight-color:transparent;background:#0e0814;border:2px solid rgba(191,95,255,.6);padding:14px 12px;display:flex;flex-direction:column;align-items:center;gap:6px;box-shadow:0 0 14px rgba(191,95,255,.12);transition:transform .08s;text-align:center">
-          <div style="font-size:34px;line-height:1">🧪</div>
-          <div style="font-size:11px;font-weight:900;color:#BF5FFF;font-family:var(--mono);letter-spacing:.5px">DNA MIXER</div>
-          <div style="font-size:8px;background:rgba(191,95,255,.18);border:1px solid rgba(191,95,255,.4);border-radius:20px;padding:1px 7px;color:#BF5FFF;font-family:var(--mono)">LAB 🧬</div>
-          <div style="font-size:8px;color:rgba(255,255,255,.45)">+75 XP</div>
-        </div>
-        <!-- FISKESPELET — spans full width at bottom -->
-        <div onclick="openFishingGame()" ontouchstart="this.style.transform='scale(.98)'" ontouchend="this.style.transform=''" style="grid-column:1/-1;border-radius:16px;cursor:pointer;-webkit-tap-highlight-color:transparent;background:#080e14;border:2px solid rgba(0,200,255,.6);padding:12px 16px;display:flex;align-items:center;gap:14px;box-shadow:0 0 14px rgba(0,200,255,.12);transition:transform .08s">
-          <div style="font-size:38px;line-height:1;animation:petBob 2.4s ease-in-out infinite">🎣</div>
-          <div style="flex:1;min-width:0">
-            <div style="font-size:13px;font-weight:900;color:#00C8FF;font-family:var(--mono);letter-spacing:.5px">FISKESPELET <span style="font-size:8px;background:rgba(0,200,255,.18);border:1px solid rgba(0,200,255,.4);border-radius:20px;padding:1px 6px;color:#00C8FF">ZEN 🌊</span></div>
-            <div style="font-size:9px;color:rgba(255,255,255,.5);margin-top:2px">Kasta · tajma · fånga legendariska fiskar!</div>
-          </div>
-          <div style="text-align:right;flex-shrink:0">
-            <div style="font-size:9px;color:#FFE600;font-weight:900" id="fishBestTag">Best: 0</div>
-            <div style="font-size:18px;color:rgba(0,200,255,.7)">›</div>
+      <!-- TOWER DEFENSE — HERO CARD (full width, elevated) -->
+      <div style="padding:0 14px 10px">
+        <div onclick="openBattle()" ontouchstart="this.style.transform='scale(.98)'" ontouchend="this.style.transform=''" style="border-radius:20px;cursor:pointer;-webkit-tap-highlight-color:transparent;background:linear-gradient(135deg,#180310 0%,#0c0208 100%);border:2px solid rgba(255,0,127,.6);overflow:hidden;box-shadow:0 0 32px rgba(255,0,127,.2),inset 0 1px 0 rgba(255,255,255,.06);transition:transform .08s;position:relative">
+          <div style="position:absolute;inset:0;background:radial-gradient(ellipse at 20% 50%,rgba(255,0,127,.2) 0%,transparent 60%);pointer-events:none"></div>
+          <div style="position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,#FF007F,#BF5FFF,transparent)"></div>
+          <div style="padding:14px 16px;display:flex;align-items:center;gap:14px;position:relative">
+            <div style="width:70px;height:70px;border-radius:18px;background:rgba(255,0,127,.1);border:1.5px solid rgba(255,0,127,.35);display:flex;align-items:center;justify-content:center;flex-shrink:0;box-shadow:0 0 20px rgba(255,0,127,.25)">
+              <div style="font-size:40px;filter:drop-shadow(0 0 16px rgba(255,0,127,.9))">🏰</div>
+            </div>
+            <div style="flex:1;min-width:0">
+              <div style="display:flex;align-items:center;gap:6px;margin-bottom:4px">
+                <div style="font-size:16px;font-weight:900;color:#FF007F;font-family:var(--mono);letter-spacing:.5px">TOWER DEFENSE</div>
+                <div style="background:linear-gradient(135deg,#FF007F,#BF5FFF);color:#fff;font-size:7px;font-weight:900;padding:2px 7px;border-radius:6px;font-family:var(--mono)">⭐ TOP</div>
+              </div>
+              <div style="font-size:9px;color:rgba(255,255,255,.45);margin-bottom:8px;line-height:1.4">Bygg torn · döda fiender · överlev 10 waves</div>
+              <div style="display:flex;gap:5px">
+                <div style="background:rgba(255,0,127,.1);border:1px solid rgba(255,0,127,.25);border-radius:8px;padding:3px 8px;font-size:7px;font-weight:900;color:#FF007F;font-family:var(--mono)">⚔️ 10 WAVES</div>
+                <div style="background:rgba(255,215,0,.1);border:1px solid rgba(255,215,0,.25);border-radius:8px;padding:3px 8px;font-size:7px;font-weight:900;color:#FFD700;font-family:var(--mono)">+XP +GOLD</div>
+                <div style="background:rgba(57,255,20,.08);border:1px solid rgba(57,255,20,.2);border-radius:8px;padding:3px 8px;font-size:7px;font-weight:900;color:#39FF14;font-family:var(--mono)">BOSS 🐲</div>
+              </div>
+            </div>
+            <div style="font-size:24px;color:#FF007F;flex-shrink:0;text-shadow:0 0 16px rgba(255,0,127,.6)">▶</div>
           </div>
         </div>
       </div>
-      <!-- DAILY REWARD BUTTON -->
+      <!-- 2x2 MINI CARDS -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:0 14px 10px">
+        <!-- DNA BREAKER -->
+        <div onclick="openPetBlocks()" ontouchstart="this.style.transform='scale(.94)'" ontouchend="this.style.transform=''" style="border-radius:16px;cursor:pointer;-webkit-tap-highlight-color:transparent;background:linear-gradient(160deg,#0b180b 0%,#060e06 100%);border:1.5px solid rgba(57,255,20,.45);overflow:hidden;box-shadow:0 0 16px rgba(57,255,20,.1);transition:transform .08s;position:relative">
+          <div style="height:2px;background:linear-gradient(90deg,transparent,#39FF14,transparent)"></div>
+          <div style="padding:14px 10px;display:flex;flex-direction:column;align-items:center;gap:6px;text-align:center">
+            <div style="font-size:40px;line-height:1;filter:drop-shadow(0 0 14px rgba(57,255,20,.8))">🧬</div>
+            <div style="font-size:11px;font-weight:900;color:#39FF14;font-family:var(--mono);letter-spacing:.5px">DNA BREAKER</div>
+            <div style="font-size:7px;background:rgba(57,255,20,.12);border:1px solid rgba(57,255,20,.3);border-radius:20px;padding:2px 8px;color:#39FF14;font-family:var(--mono)">PUZZLE 🔥</div>
+            <div style="font-size:8px;color:rgba(255,255,255,.35)" id="pbBestTag">Best: 0 pts</div>
+          </div>
+        </div>
+        <!-- PET RUNNER -->
+        <div onclick="openPetRunner()" ontouchstart="this.style.transform='scale(.94)'" ontouchend="this.style.transform=''" style="border-radius:16px;cursor:pointer;-webkit-tap-highlight-color:transparent;background:linear-gradient(160deg,#060e16 0%,#040910 100%);border:1.5px solid rgba(0,217,255,.45);overflow:hidden;box-shadow:0 0 16px rgba(0,217,255,.1);transition:transform .08s;position:relative">
+          <div style="height:2px;background:linear-gradient(90deg,transparent,#00D9FF,transparent)"></div>
+          <div style="padding:14px 10px;display:flex;flex-direction:column;align-items:center;gap:6px;text-align:center">
+            <div style="font-size:40px;line-height:1;animation:petBob 2s ease-in-out infinite;filter:drop-shadow(0 0 14px rgba(0,217,255,.7))" id="gpRunnerPet">🐉</div>
+            <div style="font-size:11px;font-weight:900;color:#00D9FF;font-family:var(--mono);letter-spacing:.5px">PET RUNNER</div>
+            <div style="font-size:7px;background:rgba(0,217,255,.12);border:1px solid rgba(0,217,255,.3);border-radius:20px;padding:2px 8px;color:#00D9FF;font-family:var(--mono)">ENDLESS ∞</div>
+            <div style="font-size:8px;color:rgba(255,255,255,.35)" id="prBestTag">Best: 0m</div>
+          </div>
+        </div>
+        <!-- DNA MIXER -->
+        <div onclick="openDNAMixer()" ontouchstart="this.style.transform='scale(.94)'" ontouchend="this.style.transform=''" style="border-radius:16px;cursor:pointer;-webkit-tap-highlight-color:transparent;background:linear-gradient(160deg,#0c0716 0%,#07050f 100%);border:1.5px solid rgba(191,95,255,.45);overflow:hidden;box-shadow:0 0 16px rgba(191,95,255,.1);transition:transform .08s;position:relative">
+          <div style="height:2px;background:linear-gradient(90deg,transparent,#BF5FFF,transparent)"></div>
+          <div style="padding:14px 10px;display:flex;flex-direction:column;align-items:center;gap:6px;text-align:center">
+            <div style="font-size:40px;line-height:1;filter:drop-shadow(0 0 14px rgba(191,95,255,.7))">🧪</div>
+            <div style="font-size:11px;font-weight:900;color:#BF5FFF;font-family:var(--mono);letter-spacing:.5px">DNA MIXER</div>
+            <div style="font-size:7px;background:rgba(191,95,255,.12);border:1px solid rgba(191,95,255,.3);border-radius:20px;padding:2px 8px;color:#BF5FFF;font-family:var(--mono)">LAB 🧬</div>
+            <div style="font-size:8px;color:rgba(255,255,255,.35)">+75 XP craft</div>
+          </div>
+        </div>
+        <!-- DEEP CATCH (Fiskespelet) — spans full width -->
+        <div onclick="openFishingGame()" ontouchstart="this.style.transform='scale(.97)'" ontouchend="this.style.transform=''" style="border-radius:16px;cursor:pointer;-webkit-tap-highlight-color:transparent;background:linear-gradient(135deg,#030f1a 0%,#020810 100%);border:1.5px solid rgba(0,200,255,.5);padding:12px 16px;display:flex;align-items:center;gap:12px;box-shadow:0 0 20px rgba(0,200,255,.12);transition:transform .08s;position:relative;overflow:hidden">
+          <div style="position:absolute;inset:0;background:radial-gradient(ellipse at 90% 50%,rgba(0,200,255,.1) 0%,transparent 55%);pointer-events:none"></div>
+          <div style="height:2px;position:absolute;top:0;left:0;right:0;background:linear-gradient(90deg,transparent,#00C8FF,transparent)"></div>
+          <div style="font-size:44px;line-height:1;animation:petBob 2.4s ease-in-out infinite;filter:drop-shadow(0 0 18px rgba(0,200,255,.8));flex-shrink:0">🎣</div>
+          <div style="flex:1;min-width:0;position:relative">
+            <div style="display:flex;align-items:center;gap:6px;margin-bottom:3px">
+              <div style="font-size:14px;font-weight:900;color:#00C8FF;font-family:var(--mono);letter-spacing:.5px">DEEP CATCH</div>
+              <div style="background:rgba(0,200,255,.15);border:1px solid rgba(0,200,255,.35);border-radius:8px;padding:1px 6px;font-size:7px;color:#00C8FF;font-family:var(--mono)">ZEN 🌊</div>
+            </div>
+            <div style="font-size:9px;color:rgba(255,255,255,.4);margin-bottom:5px">4 djupzoner · 40+ fisktyper · legendariska</div>
+            <div style="font-size:8px;color:rgba(255,255,255,.28)" id="fishBestTag">Best: 0 fiskar</div>
+          </div>
+          <div style="font-size:18px;color:rgba(0,200,255,.6);flex-shrink:0">▶</div>
+        </div>
+      </div>
+            <!-- DAILY REWARD BUTTON -->
       <div style="margin:4px 14px 8px;display:flex;gap:8px">
         <button onclick="showDailyRewardModal(parseInt(localStorage.getItem('kv8_rewardDay')||'1'))" style="flex:1;background:linear-gradient(135deg,rgba(255,215,0,.15),rgba(255,159,10,.1));border:1px solid rgba(255,215,0,.4);border-radius:14px;padding:12px;cursor:pointer;color:#FFD700;font-size:13px;font-weight:900;font-family:var(--mono)">🎁 DAGLIG BELÖNING</button>
       </div>
@@ -3690,58 +3768,98 @@ div[style*="LIVE"]{border-radius:16px!important;background:rgba(57,255,20,.03)!i
       </div>
       <!-- RUM panel -->
       <div class="me-spanel on" id="me-panel-rum">
-        <!-- Room preview — full-width immersive -->
-        <div id="meRumPreview" style="margin:0;height:280px;position:relative;background:linear-gradient(180deg,#080020 0%,#0d0830 40%,#050818 100%);overflow:hidden">
-          <!-- Animated stars bg -->
-          <canvas id="meRumStarsCanvas" style="position:absolute;inset:0;width:100%;height:100%;opacity:.6"></canvas>
-          <!-- Floor glow -->
-          <div style="position:absolute;bottom:0;left:0;right:0;height:70px;background:linear-gradient(0deg,rgba(57,255,20,.12),transparent)"></div>
-          <!-- Floor -->
-          <div style="position:absolute;bottom:0;left:0;right:0;height:40px;background:linear-gradient(180deg,rgba(57,255,20,.06),rgba(57,255,20,.02));border-top:2px solid rgba(57,255,20,.3)"></div>
+        <!-- ══ HERO ROOM ══ -->
+        <div id="meRumPreview" style="margin:0;height:300px;position:relative;background:linear-gradient(180deg,#040010 0%,#0a0428 50%,#04020e 100%);overflow:hidden">
+          <!-- Starfield canvas -->
+          <canvas id="meRumStarsCanvas" style="position:absolute;inset:0;width:100%;height:100%;opacity:.7"></canvas>
+          <!-- Nebula orbs -->
+          <div style="position:absolute;top:-40px;left:-60px;width:220px;height:220px;border-radius:50%;background:radial-gradient(circle,rgba(57,255,20,.07) 0%,transparent 70%);pointer-events:none"></div>
+          <div style="position:absolute;top:20px;right:-50px;width:180px;height:180px;border-radius:50%;background:radial-gradient(circle,rgba(0,217,255,.06) 0%,transparent 70%);pointer-events:none"></div>
+          <!-- Floating particles (placed by JS) -->
+          <div id="meRumParticles" style="position:absolute;inset:0;pointer-events:none;z-index:2"></div>
           <!-- Room decorations placed by JS -->
           <div id="meRumItems" style="position:absolute;inset:0;z-index:3"></div>
-          <!-- Pet walking in room -->
-          <div id="meRumPet" style="position:absolute;bottom:40px;left:30%;font-size:52px;animation:roomPetWalk 3.8s ease-in-out infinite;filter:drop-shadow(0 0 20px rgba(57,255,20,.6));z-index:4;transition:font-size .3s">🐉</div>
+          <!-- Floor glow strip -->
+          <div style="position:absolute;bottom:0;left:0;right:0;height:90px;background:linear-gradient(0deg,rgba(57,255,20,.14),transparent);pointer-events:none"></div>
+          <!-- Floor -->
+          <div style="position:absolute;bottom:0;left:0;right:0;height:44px;background:linear-gradient(180deg,rgba(57,255,20,.08) 0%,rgba(0,0,0,.4) 100%);border-top:2px solid rgba(57,255,20,.35)"></div>
+          <!-- XP bar on floor -->
+          <div style="position:absolute;bottom:44px;left:0;right:0;height:3px;background:rgba(0,0,0,.5)"><div id="meRumXpBar" style="height:100%;background:linear-gradient(90deg,#39FF14,#00D9FF);width:60%;transition:width .6s;box-shadow:0 0 8px rgba(57,255,20,.8)"></div></div>
+          <!-- Pet -->
+          <div id="meRumPet" style="position:absolute;bottom:44px;left:50%;transform:translateX(-50%);font-size:68px;animation:roomPetWalk 4s ease-in-out infinite;filter:drop-shadow(0 0 28px rgba(57,255,20,.8)) drop-shadow(0 4px 12px rgba(0,0,0,.9));z-index:4;transition:font-size .3s;cursor:pointer" onclick="pcTalk();renderMeRoom()">🐉</div>
+          <!-- Pet aura ring -->
+          <div id="meRumAura" style="position:absolute;bottom:54px;left:50%;transform:translateX(-50%);width:100px;height:100px;border-radius:50%;background:radial-gradient(circle,rgba(57,255,20,.18) 0%,transparent 70%);animation:auraBreath 2.5s ease-in-out infinite;pointer-events:none;z-index:3"></div>
           <!-- Speech bubble -->
-          <div id="meRumSpeech" style="position:absolute;bottom:100px;left:30%;transform:translateX(10px);background:rgba(0,0,0,.7);border:1px solid rgba(57,255,20,.4);border-radius:12px 12px 12px 0;padding:5px 10px;font-size:11px;color:rgba(255,255,255,.8);white-space:nowrap;z-index:5;pointer-events:none;opacity:0;transition:opacity .4s">Hemma! 🏠</div>
-          <!-- Top bar overlay -->
-          <div style="position:absolute;top:0;left:0;right:0;padding:12px 14px;display:flex;align-items:center;justify-content:space-between;background:linear-gradient(180deg,rgba(0,0,0,.6),transparent);z-index:6">
-            <div style="font-size:13px;font-weight:900;color:#fff;font-family:var(--mono);text-shadow:0 0 10px rgba(57,255,20,.5)">🏠 MITT RUM</div>
-            <div style="display:flex;gap:8px">
-              <button onclick="openRoomShop()" style="background:rgba(0,0,0,.5);border:1.5px solid rgba(0,217,255,.5);border-radius:20px;color:var(--b);font-size:10px;font-weight:900;padding:4px 12px;cursor:pointer;font-family:var(--ff)">🎨 DEKORERA</button>
-              <button onclick="openModal('roomCustomModal')" style="background:rgba(0,0,0,.5);border:1.5px solid rgba(57,255,20,.5);border-radius:20px;color:var(--g);font-size:10px;font-weight:900;padding:4px 12px;cursor:pointer;font-family:var(--ff)">+ ITEM</button>
+          <div id="meRumSpeech" style="position:absolute;bottom:130px;left:50%;transform:translateX(-50%);background:rgba(0,0,0,.85);border:1.5px solid rgba(57,255,20,.5);border-radius:14px 14px 14px 4px;padding:6px 14px;font-size:12px;color:#fff;white-space:nowrap;z-index:6;pointer-events:none;opacity:0;transition:opacity .4s;backdrop-filter:blur(8px);box-shadow:0 4px 20px rgba(57,255,20,.2)">Hemma! 🏠</div>
+          <!-- Header bar -->
+          <div style="position:absolute;top:0;left:0;right:0;padding:12px 14px 0;display:flex;align-items:flex-start;justify-content:space-between;background:linear-gradient(180deg,rgba(0,0,0,.75) 0%,transparent 100%);z-index:7">
+            <div>
+              <div style="font-size:11px;font-weight:900;color:rgba(57,255,20,.8);font-family:var(--mono);letter-spacing:1px;text-transform:uppercase">🏠 MITT RUM</div>
+              <div id="meRumLvBadge" style="font-size:18px;font-weight:900;color:#fff;font-family:var(--mono);text-shadow:0 0 16px rgba(57,255,20,.6);margin-top:1px">LV 1</div>
+            </div>
+            <div style="display:flex;gap:7px;margin-top:2px">
+              <button onclick="openRoomShop()" style="background:rgba(0,217,255,.12);border:1.5px solid rgba(0,217,255,.5);border-radius:20px;color:var(--b);font-size:10px;font-weight:900;padding:5px 12px;cursor:pointer;font-family:var(--ff);backdrop-filter:blur(8px)">🎨 DEKORERA</button>
             </div>
           </div>
-          <!-- Level badge -->
-          <div style="position:absolute;bottom:50px;right:14px;background:rgba(0,0,0,.6);border:1.5px solid rgba(57,255,20,.4);border-radius:10px;padding:4px 10px;font-size:10px;font-weight:900;color:var(--g);font-family:var(--mono);z-index:6" id="meRumLvBadge">🏠 LV1</div>
+          <!-- Karma + streak badges -->
+          <div style="position:absolute;bottom:54px;right:12px;display:flex;flex-direction:column;gap:6px;z-index:6">
+            <div style="background:rgba(0,0,0,.65);border:1.5px solid rgba(255,215,0,.4);border-radius:10px;padding:4px 9px;font-size:10px;font-weight:900;color:#FFD700;font-family:var(--mono);backdrop-filter:blur(6px)" id="meRumKarmaBadge">⚡ 42K</div>
+            <div style="background:rgba(0,0,0,.65);border:1.5px solid rgba(255,45,85,.4);border-radius:10px;padding:4px 9px;font-size:10px;font-weight:900;color:var(--pk);font-family:var(--mono);backdrop-filter:blur(6px)" id="meRumStreakBadge">🔥 0d</div>
+          </div>
         </div>
-        <!-- Pet stats mini row — glassmorphism -->
-        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:rgba(255,255,255,.05);margin:8px 12px;border-radius:16px;overflow:hidden">
-          <div style="padding:10px 8px;text-align:center;background:rgba(255,159,10,.05)"><div style="font-size:18px;font-weight:900;color:var(--o);font-family:var(--mono);text-shadow:0 0 12px rgba(255,159,10,.4)" id="meRumHunger">80</div><div style="font-size:7px;color:rgba(255,255,255,.35);text-transform:uppercase;letter-spacing:.5px;margin-top:2px">HUNGER</div></div>
-          <div style="padding:10px 8px;text-align:center;background:rgba(0,217,255,.05)"><div style="font-size:18px;font-weight:900;color:var(--b);font-family:var(--mono);text-shadow:0 0 12px rgba(0,217,255,.4)" id="meRumEnergy">100</div><div style="font-size:7px;color:rgba(255,255,255,.35);text-transform:uppercase;letter-spacing:.5px;margin-top:2px">ENERGI</div></div>
-          <div style="padding:10px 8px;text-align:center;background:rgba(191,95,255,.05)"><div style="font-size:18px;font-weight:900;color:var(--p);font-family:var(--mono);text-shadow:0 0 12px rgba(191,95,255,.4)" id="meRumMood">90</div><div style="font-size:7px;color:rgba(255,255,255,.35);text-transform:uppercase;letter-spacing:.5px;margin-top:2px">MOOD</div></div>
-          <div style="padding:10px 8px;text-align:center;background:rgba(57,255,20,.05)"><div style="font-size:18px;font-weight:900;color:var(--g);font-family:var(--mono);text-shadow:0 0 12px rgba(57,255,20,.4)" id="meRumKarma">42</div><div style="font-size:7px;color:rgba(255,255,255,.35);text-transform:uppercase;letter-spacing:.5px;margin-top:2px">KARMA</div></div>
+
+        <!-- ══ VITALS BARS ══ -->
+        <div style="padding:12px 14px 0;display:flex;flex-direction:column;gap:7px">
+          <!-- Hunger bar -->
+          <div style="display:flex;align-items:center;gap:10px">
+            <span style="font-size:15px;width:22px;flex-shrink:0">🍖</span>
+            <div style="flex:1;background:rgba(255,255,255,.06);border-radius:8px;height:9px;overflow:hidden;border:1px solid rgba(255,159,10,.15)"><div id="meBarHunger" style="height:100%;background:linear-gradient(90deg,#FF9F0A,#FFD700);border-radius:8px;width:80%;transition:width .5s;box-shadow:0 0 6px rgba(255,159,10,.5)"></div></div>
+            <span id="meRumHunger" style="font-size:11px;font-weight:900;color:var(--o);font-family:var(--mono);width:28px;text-align:right">80</span>
+          </div>
+          <!-- Energy bar -->
+          <div style="display:flex;align-items:center;gap:10px">
+            <span style="font-size:15px;width:22px;flex-shrink:0">⚡</span>
+            <div style="flex:1;background:rgba(255,255,255,.06);border-radius:8px;height:9px;overflow:hidden;border:1px solid rgba(0,217,255,.15)"><div id="meBarEnergy" style="height:100%;background:linear-gradient(90deg,#00D9FF,#00FFFF);border-radius:8px;width:100%;transition:width .5s;box-shadow:0 0 6px rgba(0,217,255,.5)"></div></div>
+            <span id="meRumEnergy" style="font-size:11px;font-weight:900;color:var(--b);font-family:var(--mono);width:28px;text-align:right">100</span>
+          </div>
+          <!-- Mood bar -->
+          <div style="display:flex;align-items:center;gap:10px">
+            <span style="font-size:15px;width:22px;flex-shrink:0">😊</span>
+            <div style="flex:1;background:rgba(255,255,255,.06);border-radius:8px;height:9px;overflow:hidden;border:1px solid rgba(191,95,255,.15)"><div id="meBarMood" style="height:100%;background:linear-gradient(90deg,#BF5FFF,#FF2D55);border-radius:8px;width:90%;transition:width .5s;box-shadow:0 0 6px rgba(191,95,255,.5)"></div></div>
+            <span id="meRumMood" style="font-size:11px;font-weight:900;color:var(--p);font-family:var(--mono);width:28px;text-align:right">90</span>
+          </div>
         </div>
-        <!-- Quick care actions — 6 buttons -->
-        <div style="display:grid;grid-template-columns:repeat(6,1fr);gap:5px;padding:10px 12px;background:rgba(0,0,0,.5);border-bottom:1px solid rgba(255,255,255,.06)">
-          <button onclick="pcFeed();renderMeRoom()" style="background:rgba(255,159,10,.08);border:1px solid rgba(255,159,10,.25);border-radius:12px;padding:8px 4px;font-size:18px;display:flex;flex-direction:column;align-items:center;gap:2px;cursor:pointer"><span>🍖</span><span style="font-size:7px;font-weight:900;color:var(--o)">MATA</span></button>
-          <button onclick="pcTrain();renderMeRoom()" style="background:rgba(255,45,85,.08);border:1px solid rgba(255,45,85,.25);border-radius:12px;padding:8px 4px;font-size:18px;display:flex;flex-direction:column;align-items:center;gap:2px;cursor:pointer"><span>🏋️</span><span style="font-size:7px;font-weight:900;color:var(--pk)">TRÄNA</span></button>
-          <button onclick="pcSleep();renderMeRoom()" style="background:rgba(0,217,255,.08);border:1px solid rgba(0,217,255,.25);border-radius:12px;padding:8px 4px;font-size:18px;display:flex;flex-direction:column;align-items:center;gap:2px;cursor:pointer"><span>😴</span><span style="font-size:7px;font-weight:900;color:var(--b)">SOVA</span></button>
-          <button onclick="pcPlay();renderMeRoom()" style="background:rgba(57,255,20,.08);border:1px solid rgba(57,255,20,.25);border-radius:12px;padding:8px 4px;font-size:18px;display:flex;flex-direction:column;align-items:center;gap:2px;cursor:pointer"><span>🎮</span><span style="font-size:7px;font-weight:900;color:var(--g)">LEK</span></button>
-          <button onclick="pcBath();renderMeRoom()" style="background:rgba(191,95,255,.08);border:1px solid rgba(191,95,255,.25);border-radius:12px;padding:8px 4px;font-size:18px;display:flex;flex-direction:column;align-items:center;gap:2px;cursor:pointer"><span>🛁</span><span style="font-size:7px;font-weight:900;color:var(--p)">BADA</span></button>
-          <button onclick="pcTalk();renderMeRoom()" style="background:rgba(255,230,0,.08);border:1px solid rgba(255,230,0,.25);border-radius:12px;padding:8px 4px;font-size:18px;display:flex;flex-direction:column;align-items:center;gap:2px;cursor:pointer"><span>💬</span><span style="font-size:7px;font-weight:900;color:var(--y)">PRATA</span></button>
+
+        <!-- ══ CARE ACTIONS ══ -->
+        <div style="display:grid;grid-template-columns:repeat(6,1fr);gap:6px;padding:12px 14px;margin-top:4px">
+          <button onclick="pcFeed();renderMeRoom()" class="me-care-btn" style="--cc:255,159,10"><span style="font-size:22px">🍖</span><span style="font-size:7px;font-weight:900;color:rgba(255,159,10,.9)">MATA</span></button>
+          <button onclick="pcTrain();renderMeRoom()" class="me-care-btn" style="--cc:255,45,85"><span style="font-size:22px">🏋️</span><span style="font-size:7px;font-weight:900;color:rgba(255,45,85,.9)">TRÄNA</span></button>
+          <button onclick="pcSleep();renderMeRoom()" class="me-care-btn" style="--cc:0,217,255"><span style="font-size:22px">😴</span><span style="font-size:7px;font-weight:900;color:rgba(0,217,255,.9)">SOVA</span></button>
+          <button onclick="pcPlay();renderMeRoom()" class="me-care-btn" style="--cc:57,255,20"><span style="font-size:22px">🎮</span><span style="font-size:7px;font-weight:900;color:rgba(57,255,20,.9)">LEK</span></button>
+          <button onclick="pcBath();renderMeRoom()" class="me-care-btn" style="--cc:191,95,255"><span style="font-size:22px">🛁</span><span style="font-size:7px;font-weight:900;color:rgba(191,95,255,.9)">BADA</span></button>
+          <button onclick="pcTalk();renderMeRoom()" class="me-care-btn" style="--cc:255,230,0"><span style="font-size:22px">💬</span><span style="font-size:7px;font-weight:900;color:rgba(255,230,0,.9)">PRATA</span></button>
         </div>
-        <!-- Furniture & gear section -->
-        <div style="padding:10px 14px 4px;display:flex;align-items:center;justify-content:space-between">
-          <div style="font-size:10px;font-weight:900;color:rgba(255,255,255,.35);text-transform:uppercase;letter-spacing:.9px">🛋️ MÖBLER & DEKOR</div>
-          <div style="font-size:11px;font-weight:700;color:var(--b);cursor:pointer" onclick="openRoomShop()">SHOP →</div>
+
+        <!-- ══ SECTION DIVIDER ══ -->
+        <div style="padding:0 14px;margin-bottom:8px;display:flex;align-items:center;gap:10px">
+          <div style="height:1px;flex:1;background:linear-gradient(90deg,rgba(57,255,20,.3),transparent)"></div>
+          <div style="font-size:9px;font-weight:900;color:rgba(255,255,255,.3);letter-spacing:1.5px">MÖBLER & DEKOR</div>
+          <div style="height:1px;flex:1;background:linear-gradient(270deg,rgba(57,255,20,.3),transparent)"></div>
+          <div style="font-size:11px;font-weight:700;color:var(--b);cursor:pointer" onclick="openRoomShop()">SHOP→</div>
         </div>
-        <div id="meRumGearList" style="display:flex;gap:8px;overflow-x:auto;padding:0 14px 8px;scrollbar-width:none;min-height:64px"></div>
-        <!-- Quick nav shortcuts at bottom of room tab -->
-        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;padding:0 12px 12px">
-          <button onclick="nav('world')" style="background:rgba(57,255,20,.06);border:1px solid rgba(57,255,20,.2);border-radius:16px;padding:12px 8px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:4px"><span style="font-size:24px">🌍</span><span style="font-size:9px;font-weight:900;color:var(--g)">WORLD</span></button>
-          <button onclick="openCastle()" style="background:rgba(255,230,0,.06);border:1px solid rgba(255,230,0,.2);border-radius:16px;padding:12px 8px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:4px"><span style="font-size:24px">🏰</span><span style="font-size:9px;font-weight:900;color:var(--y)">SLOTT</span></button>
-          <button onclick="openBattle()" style="background:rgba(255,45,85,.06);border:1px solid rgba(255,45,85,.2);border-radius:16px;padding:12px 8px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:4px"><span style="font-size:24px">⚔️</span><span style="font-size:9px;font-weight:900;color:var(--pk)">BATTLE</span></button>
+        <div id="meRumGearList" style="display:flex;gap:8px;overflow-x:auto;padding:0 14px 10px;scrollbar-width:none;min-height:68px"></div>
+
+        <!-- ══ QUICK LAUNCH ══ -->
+        <div style="padding:0 14px 4px;margin-bottom:8px;display:flex;align-items:center;gap:10px">
+          <div style="height:1px;flex:1;background:linear-gradient(90deg,rgba(0,217,255,.3),transparent)"></div>
+          <div style="font-size:9px;font-weight:900;color:rgba(255,255,255,.3);letter-spacing:1.5px">SNABBSTART</div>
+          <div style="height:1px;flex:1;background:linear-gradient(270deg,rgba(0,217,255,.3),transparent)"></div>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;padding:0 14px 16px">
+          <button onclick="nav('social')" style="background:rgba(0,217,255,.06);border:1.5px solid rgba(0,217,255,.18);border-radius:16px;padding:14px 6px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:5px;transition:all .15s;-webkit-tap-highlight-color:transparent"><span style="font-size:26px">💬</span><span style="font-size:8px;font-weight:900;color:var(--b);letter-spacing:.5px">SOCIAL</span></button>
+          <button onclick="nav('explore')" style="background:rgba(191,95,255,.06);border:1.5px solid rgba(191,95,255,.18);border-radius:16px;padding:14px 6px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:5px;transition:all .15s;-webkit-tap-highlight-color:transparent"><span style="font-size:26px">🔍</span><span style="font-size:8px;font-weight:900;color:var(--p);letter-spacing:.5px">UTFORSKA</span></button>
+          <button onclick="openCastle()" style="background:rgba(255,215,0,.06);border:1.5px solid rgba(255,215,0,.18);border-radius:16px;padding:14px 6px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:5px;transition:all .15s;-webkit-tap-highlight-color:transparent"><span style="font-size:26px">🏰</span><span style="font-size:8px;font-weight:900;color:#FFD700;letter-spacing:.5px">SLOTT</span></button>
+          <button onclick="openBattle()" style="background:rgba(255,45,85,.06);border:1.5px solid rgba(255,45,85,.18);border-radius:16px;padding:14px 6px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:5px;transition:all .15s;-webkit-tap-highlight-color:transparent"><span style="font-size:26px">⚔️</span><span style="font-size:8px;font-weight:900;color:var(--pk);letter-spacing:.5px">BATTLE</span></button>
         </div>
         <div class="vend"></div>
       </div>
@@ -3793,10 +3911,13 @@ div[style*="LIVE"]{border-radius:16px!important;background:rgba(57,255,20,.03)!i
   <div class="bnav">
     <button class="nb on" data-v="home"><div class="nb-inner"><div class="ni">🐾</div></div><div class="nl">HEM</div></button>
     <button class="nb" data-v="play"><div class="nb-inner"><div class="ni">🎮</div><div class="nb-notif" id="playNotif"></div></div><div class="nl">SPELA</div></button>
-    <button class="nb-create" id="flashBtn"><div class="create-btn">＋</div><div class="create-lbl">SKAPA</div></button>
+    <button class="nb" data-v="social"><div class="nb-inner"><div class="ni">💬</div><div class="nb-notif" id="socialNotif"></div></div><div class="nl">SOCIAL</div></button>
+    <button class="nb" data-v="explore"><div class="nb-inner"><div class="ni">🔍</div></div><div class="nl">UTFORSKA</div></button>
     <button class="nb" data-v="world"><div class="nb-inner"><div class="ni">🌍</div></div><div class="nl">VÄRLD</div></button>
     <button class="nb" data-v="me"><div class="nb-inner"><div class="ni">👤</div></div><div class="nl">JAG</div></button>
   </div>
+  <!-- Floating create button -->
+  <button id="flashBtn" onclick="openModal('flashModal')" style="position:fixed;bottom:calc(var(--sab,0px) + 68px);right:14px;z-index:200;width:50px;height:50px;border-radius:16px;background:linear-gradient(135deg,#FF2D55 0%,#BF5FFF 100%);border:none;font-size:24px;cursor:pointer;box-shadow:0 6px 24px rgba(255,45,85,.5),0 0 0 1.5px rgba(255,255,255,.12);display:flex;align-items:center;justify-content:center;-webkit-tap-highlight-color:transparent;animation:fabPulse 3s ease-in-out infinite">＋</button>
 
   <!-- LEFT DRAWER OVERLAY + DRAWER -->
   <div class="ld-ov" id="ldOv" onclick="closeLDrawer()"></div>
@@ -4469,11 +4590,14 @@ div[style*="LIVE"]{border-radius:16px!important;background:rgba(57,255,20,.03)!i
     <button class="ba-close" onclick="closeBattle()">←</button>
     <div style="flex:1;text-align:center">
       <div class="ba-wave-lbl" id="baWave">WAVE 1</div>
-      <div class="ba-enemy-title" id="baEnemyTitle">Pet Tower Defense</div>
+      <div class="ba-enemy-title" id="baEnemyTitle">KARMA TOWER DEFENSE</div>
     </div>
-    <div style="text-align:right;font-size:10px;color:var(--t3);font-family:var(--mono)">
-      <div>FORM</div>
-      <div id="tdFormLbl" style="font-size:14px;font-weight:900;color:var(--y)">✨</div>
+    <div style="display:flex;align-items:center;gap:6px">
+      <button id="tdSpeedBtn" onclick="tdToggleSpeed()" style="background:rgba(255,215,0,.12);border:1.5px solid rgba(255,215,0,.4);border-radius:8px;color:#FFD700;font-size:10px;font-weight:900;padding:4px 8px;cursor:pointer;font-family:var(--mono)">1×</button>
+      <div style="text-align:right;font-size:10px;color:var(--t3);font-family:var(--mono)">
+        <div style="font-size:8px">FORM</div>
+        <div id="tdFormLbl" style="font-size:14px;font-weight:900;color:var(--y)">✨</div>
+      </div>
     </div>
   </div>
 
@@ -4496,26 +4620,38 @@ div[style*="LIVE"]{border-radius:16px!important;background:rgba(57,255,20,.03)!i
     </div>
   </div>
 
-  <!-- Form Switch + Combo -->
-  <div class="td-actions">
-    <div class="td-combo-bar">
-      <div class="td-combo-label">COMBO</div>
-      <div class="td-combo-count" id="tdComboCount">0x</div>
-      <div class="td-combo-meter"><div id="tdComboFill" style="width:0%"></div></div>
+  <!-- WC3 Tower Defense Controls -->
+  <div class="td-actions" id="tdActions">
+    <div class="td-gold-bar">
+      <span class="td-gold-lbl">💰 GOLD</span>
+      <span class="td-gold-amt" id="tdGoldAmt">150</span>
+      <span class="td-wave-info" id="tdWaveInfo">WAVE 1/10</span>
     </div>
-    <div class="td-form-row" id="tdFormRow">
-      <button class="td-form-btn magic" id="tdFormMagic" onclick="tdSwitchForm('magic')">
-        <span class="tf-ico">✨</span><span class="tf-nm">MAGIC</span>
+    <div class="td-tower-row">
+      <button class="td-tower-btn" id="tdTBArcher" onclick="tdSelectTower('archer')">
+        <span class="tt-ico">🏹</span><span class="tt-nm">ARCHER</span><span class="tt-cost">50g</span>
       </button>
-      <button class="td-form-btn rage" id="tdFormRage" onclick="tdSwitchForm('rage')">
-        <span class="tf-ico">🔥</span><span class="tf-nm">RAGE</span>
+      <button class="td-tower-btn" id="tdTBMage" onclick="tdSelectTower('mage')">
+        <span class="tt-ico">🔮</span><span class="tt-nm">MAGE</span><span class="tt-cost">80g</span>
       </button>
-      <button class="td-form-btn shield" id="tdFormShield" onclick="tdSwitchForm('shield')">
-        <span class="tf-ico">🛡️</span><span class="tf-nm">SHIELD</span>
+      <button class="td-tower-btn" id="tdTBTesla" onclick="tdSelectTower('tesla')">
+        <span class="tt-ico">⚡</span><span class="tt-nm">TESLA</span><span class="tt-cost">100g</span>
       </button>
-      <button class="td-form-btn speed" id="tdFormSpeed" onclick="tdSwitchForm('speed')">
-        <span class="tf-ico">⚡</span><span class="tf-nm">SPEED</span>
+      <button class="td-tower-btn" id="tdTBCannon" onclick="tdSelectTower('cannon')">
+        <span class="tt-ico">💣</span><span class="tt-nm">CANNON</span><span class="tt-cost">120g</span>
       </button>
+    </div>
+    <div class="td-sell-panel" id="tdSellPanel" style="display:none">
+      <div class="td-sell-info">
+        <span id="tdSellName">🏹 ARCHER</span>
+        <span id="tdSellLevel">Lv1</span>
+        <span id="tdSellDps">DPS: 27</span>
+      </div>
+      <div class="td-sell-actions">
+        <button class="td-upg-btn" id="tdUpgBtn" onclick="tdUpgradeSelected()">⬆️ UPGRADE <span id="tdUpgCost">75g</span></button>
+        <button class="td-sell-btn" onclick="tdSellSelected()">💰 SELL <span id="tdSellAmt">25g</span></button>
+        <button class="td-sell-close" onclick="tdDeselectTower()">✕</button>
+      </div>
     </div>
   </div>
 
@@ -5175,74 +5311,214 @@ function updateComboMeter(n){
   else m.classList.remove('show');
 }
 
-// ── PET TOWER DEFENSE ──
-// "Your pet IS the tower." Player's pet sits at a fixed defense point along
-// a path; enemy waves walk toward the base. Player taps to shift the pet's
-// elemental combat FORM in real time (magic/rage/shield/speed) to exploit
-// each enemy's visible weakness tag. Switching forms has a short cooldown
-// + stun window so spam-switching doesn't trivialize the skill check.
+// ── PET TOWER DEFENSE — WC3/Bloons style ──
+// Place towers on a grid, earn gold from kills, upgrade them, survive 10 waves.
+
+const TD_COLS=6,TD_ROWS=8;
+const TD_PATH=[[0,1],[5,1],[5,3],[0,3],[0,5],[5,5],[5,7]]; // snake waypoints [col,row]
+let _tdCell=60; // px per cell — set dynamically in tdInitCanvas
 
 const TD_ENEMIES=[
-  {id:'pixel',em:'👾',name:'PIXEL BEAST',weakness:'magic',hp:26,speed:0.55,dmgToBase:8,reward:{xp:4,coins:3}},
-  {id:'cyborg',em:'🤖',name:'CYBER BOT',weakness:'rage',hp:34,speed:0.5,dmgToBase:10,reward:{xp:5,coins:4}},
-  {id:'imp',em:'👹',name:'SHADOW IMP',weakness:'magic',hp:30,speed:0.7,dmgToBase:8,reward:{xp:4,coins:3}},
-  {id:'golem',em:'🪨',name:'STONE GOLEM',weakness:'rage',hp:55,speed:0.35,dmgToBase:14,reward:{xp:7,coins:5}},
-  {id:'wisp',em:'👻',name:'VOID WISP',weakness:'magic',hp:22,speed:0.95,dmgToBase:6,reward:{xp:4,coins:3}},
-  {id:'brute',em:'😈',name:'KARMA BRUTE',weakness:'rage',hp:48,speed:0.45,dmgToBase:12,reward:{xp:6,coins:5}},
+  {id:'grunt',  em:'👾',name:'GRUNT',      weakness:'archer', hp:28, speed:1.0, gold:8,  reward:{xp:4,coins:3}},
+  {id:'mech',   em:'🤖',name:'MECH',       weakness:'tesla',  hp:40, speed:0.85,gold:10, reward:{xp:5,coins:4}},
+  {id:'imp',    em:'👹',name:'IMP',        weakness:'mage',   hp:32, speed:1.25,gold:8,  reward:{xp:4,coins:3}},
+  {id:'golem',  em:'🪨',name:'GOLEM',      weakness:'cannon', hp:70, speed:0.55,gold:14, reward:{xp:7,coins:5}},
+  {id:'wisp',   em:'👻',name:'WISP',       weakness:'mage',   hp:24, speed:1.6, gold:8,  reward:{xp:4,coins:3}},
+  {id:'brute',  em:'😈',name:'BRUTE',      weakness:'cannon', hp:58, speed:0.7, gold:12, reward:{xp:6,coins:5}},
+  {id:'shield', em:'🛡️',name:'SHIELDBOT', weakness:'cannon', hp:80, speed:0.65,gold:16, reward:{xp:8,coins:6},armor:'tesla'},
+  {id:'speeder',em:'💨',name:'SPEEDER',    weakness:'archer', hp:18, speed:2.2, gold:8,  reward:{xp:4,coins:3}},
 ];
 const TD_BOSSES=[
-  {id:'dragon',em:'🐲',name:'SHADOW DRAGON',weakness:'magic',hp:260,speed:0.32,dmgToBase:28,reward:{xp:40,coins:30}},
-  {id:'skull',em:'💀',name:'SKULL LORD',weakness:'rage',hp:340,speed:0.3,dmgToBase:32,reward:{xp:55,coins:42}},
-  {id:'thunder',em:'⚡',name:'THUNDER GOD',weakness:'magic',hp:420,speed:0.34,dmgToBase:38,reward:{xp:75,coins:58}},
+  {id:'dragon',em:'🐲',name:'SHADOW DRAGON',weakness:'mage',  hp:320,speed:0.5, gold:80, reward:{xp:50,coins:40},isBoss:true},
+  {id:'skull', em:'💀',name:'SKULL LORD',   weakness:'archer',hp:420,speed:0.45,gold:100,reward:{xp:65,coins:50},isBoss:true},
+  {id:'titan', em:'🗿',name:'STONE TITAN',  weakness:'cannon',hp:560,speed:0.4, gold:130,reward:{xp:90,coins:70},isBoss:true},
 ];
-
-// Pet combat forms — vocabulary reused from the old battle weakness tags.
-const TD_FORMS={
-  magic:{ico:'✨',nm:'MAGIC',dmg:14,range:130,fireRate:46,col:'#BF5FFF',weak:'magic',bonusMult:2.2},
-  rage:{ico:'🔥',nm:'RAGE',dmg:22,range:78,fireRate:34,col:'#FF9F0A',weak:'rage',bonusMult:2.2},
-  shield:{ico:'🛡️',nm:'SHIELD',dmg:8,range:95,fireRate:60,col:'#00D9FF',weak:null,bonusMult:1.4,baseArmor:.5},
-  speed:{ico:'⚡',nm:'SPEED',dmg:6,range:105,fireRate:14,col:'#39FF14',weak:null,bonusMult:1.3},
+const TD_TOWER_DEFS={
+  archer:{em:'🏹',nm:'ARCHER', col:'#39FF14',cost:50, range:2.5,dmg:10,rate:22,type:'single',
+    upgrades:[
+      {cost:75, em:'🏹',nm:'ARCHER+', dmg:16,rate:16,desc:'Snabb skytt · +6 dmg'},
+      {cost:110,em:'🏹',nm:'ARCHER++',dmg:16,rate:16,multishot:3,desc:'Multi-shot · träffar 3'},
+    ]},
+  mage:{em:'🔮',nm:'MAGE',  col:'#BF5FFF',cost:80, range:2.0,dmg:22,rate:55,type:'aoe',aoeR:0.9,
+    upgrades:[
+      {cost:100,em:'🔮',nm:'MAGE+',  dmg:30,aoeR:1.5,desc:'Stor explosion · bigger AOE'},
+      {cost:140,em:'🔮',nm:'MAGE++', dmg:30,aoeR:1.5,slow:0.45,slowDur:80,desc:'Frost · saktar 55%'},
+    ]},
+  tesla:{em:'⚡',nm:'TESLA', col:'#00D9FF',cost:100,range:2.5,dmg:14,rate:38,type:'chain',chains:2,
+    upgrades:[
+      {cost:120,em:'⚡',nm:'TESLA+', dmg:20,chains:3,desc:'3 kedjor · +6 dmg'},
+      {cost:160,em:'⚡',nm:'TESLA++',dmg:20,chains:3,stunDur:45,desc:'Stun · 0.75s paralys'},
+    ]},
+  cannon:{em:'💣',nm:'CANNON',col:'#FF9F0A',cost:120,range:2.0,dmg:50,rate:75,type:'impact',impactR:0.8,
+    upgrades:[
+      {cost:150,em:'💣',nm:'CANNON+', dmg:75,impactR:1.4,desc:'Bigger boom · +25 dmg'},
+      {cost:200,em:'💣',nm:'CANNON++',dmg:75,impactR:1.4,knockback:1.2,desc:'Knockback · skjuter tillbaka'},
+    ]},
 };
-const TD_SWITCH_COOLDOWN=26;   // frames the button is locked after a switch
-const TD_SWITCH_STUN=18;       // frames the pet can't fire after switching (skill gate)
-const TD_WAVE_COUNT=8;         // waves per "run" before final victory screen
+const TD_WAVE_COUNT=10;
 
-// ── Global inspectable state (parallel to old _bt) ──
 let _td={
-  active:false,
-  wave:1,
-  baseHp:100,baseMax:100,
-  form:'magic',
-  switchCooldown:0,switchStun:0,
-  enemies:[],          // live enemy instances on the path
-  queue:[],            // upcoming enemy defs not yet spawned this wave
-  spawnTimer:0,
-  combo:0,comboTimer:0,
-  particles:[],         // {x,y,vx,vy,em,life}
-  projectiles:[],        // {x,y,tx,ty,col,life}
-  shakeT:0,
-  petX:0,petY:0,         // pet (tower) fixed position, set on init
-  pathY:0,
-  earnedXp:0,earnedCoins:0,
-  killsThisWave:0,enemiesThisWave:0,
-  raf:null,
-  lastT:0,
-  paused:false,
+  active:false,wave:1,gold:150,baseHp:100,baseMax:100,
+  towers:[],enemies:[],projectiles:[],particles:[],ambient:[],
+  queue:[],spawnTimer:0,killsThisWave:0,enemiesThisWave:0,
+  selectedTowerId:null,placingType:null,
+  shakeT:0,raf:null,lastT:0,paused:false,t:0,speed:1,
+  earnedXp:0,earnedCoins:0,_pathCells:null,
 };
+
+function tdPathCells(){
+  if(_td._pathCells)return _td._pathCells;
+  const s=new Set();
+  for(let i=0;i<TD_PATH.length-1;i++){
+    const[c0,r0]=TD_PATH[i],[c1,r1]=TD_PATH[i+1];
+    if(c0===c1){const mn=Math.min(r0,r1),mx=Math.max(r0,r1);for(let r=mn;r<=mx;r++)s.add(c0+','+r);}
+    else{const mn=Math.min(c0,c1),mx=Math.max(c0,c1);for(let c=mn;c<=mx;c++)s.add(c+','+r0);}
+  }
+  _td._pathCells=s;return s;
+}
+
+function _tdCX(col){return col*_tdCell+_tdCell/2;}
+function _tdCY(row){return row*_tdCell+_tdCell/2;}
+
+function tdSegLen(i){
+  const[c0,r0]=TD_PATH[i],[c1,r1]=TD_PATH[i+1];
+  return(Math.abs(c1-c0)+Math.abs(r1-r0))*_tdCell;
+}
+
+function tdTotalLen(){
+  let t=0;for(let i=0;i<TD_PATH.length-1;i++)t+=tdSegLen(i);return t;
+}
+
+function tdEnemyPos(e){
+  let rem=e.progress;
+  for(let i=0;i<TD_PATH.length-1;i++){
+    const seg=tdSegLen(i);
+    if(rem<seg){
+      const t=rem/seg,[c0,r0]=TD_PATH[i],[c1,r1]=TD_PATH[i+1];
+      return{x:_tdCX(c0)+(_tdCX(c1)-_tdCX(c0))*t,y:_tdCY(r0)+(_tdCY(r1)-_tdCY(r0))*t};
+    }
+    rem-=seg;
+  }
+  const[lc,lr]=TD_PATH[TD_PATH.length-1];return{x:_tdCX(lc),y:_tdCY(lr)};
+}
+
+function tdGetDef(tower){
+  const base=TD_TOWER_DEFS[tower.type];if(!base)return{};
+  let def={...base};
+  for(let i=0;i<tower.level;i++){if(base.upgrades&&base.upgrades[i])Object.assign(def,base.upgrades[i]);}
+  return def;
+}
+
+function tdSafeR(r){return(Number.isFinite(r)&&r>0)?r:0.01;}
+function tdSafeCol(c,fb){return(typeof c==='string'&&c.length>1)?c:(fb||'#fff');}
+
+function tdUpdateGoldUI(){
+  const el=$('tdGoldAmt');if(el)el.textContent=_td.gold;
+  ['archer','mage','tesla','cannon'].forEach(t=>{
+    const btn=$('tdTB'+t.charAt(0).toUpperCase()+t.slice(1));if(!btn)return;
+    const cost=TD_TOWER_DEFS[t]?.cost||999;
+    btn.classList.toggle('disabled',_td.gold<cost);
+    if(t===_td.placingType)btn.classList.add('selected');else btn.classList.remove('selected');
+  });
+}
+
+function tdShowTowerPanel(tower){
+  const panel=$('tdSellPanel');if(!panel)return;
+  if(!tower){panel.style.display='none';return;}
+  const def=tdGetDef(tower);
+  const nm=$('tdSellName');if(nm)nm.textContent=(def.em||'🏰')+' '+(def.nm||'TOWER')+' LV'+(tower.level+1);
+  const lv=$('tdSellLevel');if(lv){const nu=TD_TOWER_DEFS[tower.type]?.upgrades?.[tower.level];lv.textContent=nu?('→ LV'+(tower.level+2)):'MAX';}
+  const dp=$('tdSellDps');if(dp){const dps=((def.dmg||0)/(def.rate||60)*60).toFixed(0);dp.textContent='DPS: '+dps;}
+  const nu=TD_TOWER_DEFS[tower.type]?.upgrades?.[tower.level];
+  const ub=$('tdUpgBtn');const uc=$('tdUpgCost');
+  if(ub){if(nu){ub.style.display='';if(uc)uc.textContent=nu.cost+'g';ub.classList.toggle('disabled',_td.gold<nu.cost);}else ub.style.display='none';}
+  const sa=$('tdSellAmt');if(sa){
+    const base=TD_TOWER_DEFS[tower.type]?.cost||0;
+    let uc2=0;for(let i=0;i<tower.level;i++)uc2+=(TD_TOWER_DEFS[tower.type]?.upgrades?.[i]?.cost||0);
+    sa.textContent=Math.floor((base+uc2)*0.5)+'g';
+  }
+  panel.style.display='';
+}
+
+function tdDeselectTower(){_td.selectedTowerId=null;tdShowTowerPanel(null);tdDraw();}
+
+function tdUpgradeSelected(){
+  if(!_td.selectedTowerId)return;
+  const t=_td.towers.find(t=>t.id===_td.selectedTowerId);if(!t)return;
+  const nu=TD_TOWER_DEFS[t.type]?.upgrades?.[t.level];
+  if(!nu){showT('Tower är redan MAX!','y');return;}
+  if(_td.gold<nu.cost){showT('Inte tillräckligt med gold!','r');return;}
+  _td.gold-=nu.cost;t.level++;t.fireTimer=0;
+  tdUpdateGoldUI();tdShowTowerPanel(t);tdDraw();
+  vibe([10,5,10]);SFX.click&&SFX.click();
+  showT((TD_TOWER_DEFS[t.type]?.upgrades?.[t.level-1]?.nm||'Tower')+' uppgraderat! ⬆️','g');
+}
+
+function tdSellSelected(){
+  if(!_td.selectedTowerId)return;
+  const idx=_td.towers.findIndex(t=>t.id===_td.selectedTowerId);if(idx<0)return;
+  const t=_td.towers[idx];
+  const base=TD_TOWER_DEFS[t.type]?.cost||0;
+  let uc=0;for(let i=0;i<t.level;i++)uc+=(TD_TOWER_DEFS[t.type]?.upgrades?.[i]?.cost||0);
+  const sell=Math.floor((base+uc)*0.5);
+  _td.gold+=sell;_td.towers.splice(idx,1);
+  _td.selectedTowerId=null;tdShowTowerPanel(null);tdUpdateGoldUI();tdDraw();
+  showT('💰 +'+sell+' gold (sold)','y');vibe(15);
+}
+
+function tdSelectTower(type){
+  if(!TD_TOWER_DEFS[type])return;
+  _td.placingType=(_td.placingType===type)?null:type;
+  if(_td.placingType){_td.selectedTowerId=null;tdShowTowerPanel(null);}
+  tdUpdateGoldUI();tdDraw();
+}
+
+function tdPlaceTower(col,row){
+  const type=_td.placingType;if(!type)return;
+  const cost=TD_TOWER_DEFS[type]?.cost||999;
+  if(_td.gold<cost){showT('Behöver '+cost+'g!','r');return;}
+  if(tdPathCells().has(col+','+row)){showT('Kan ej placera på stigen!','r');return;}
+  if(_td.towers.find(t=>t.col===col&&t.row===row)){showT('Redan ett torn här!','r');return;}
+  _td.gold-=cost;
+  _td.towers.push({id:Math.random().toString(36).slice(2),col,row,type,level:0,fireTimer:0,firingT:0});
+  _td.placingType=null;tdUpdateGoldUI();tdDraw();
+  vibe([10,5,15]);SFX.click&&SFX.click();
+}
+
+function tdCanvasTap(evt){
+  evt.preventDefault();
+  const canvas=$('tdCanvas');if(!canvas)return;
+  const r=canvas.getBoundingClientRect();
+  const touch=evt.touches?evt.touches[0]:evt;
+  const x=touch.clientX-r.left,y=touch.clientY-r.top;
+  // Scale from CSS pixels to canvas pixels
+  const scaleX=canvas.width/r.width,scaleY=canvas.height/r.height;
+  const col=Math.floor(x*scaleX/_tdCell),row=Math.floor(y*scaleY/_tdCell);
+  if(col<0||col>=TD_COLS||row<0||row>=TD_ROWS)return;
+  if(_td.placingType){tdPlaceTower(col,row);return;}
+  const hit=_td.towers.find(t=>t.col===col&&t.row===row);
+  if(hit){
+    _td.selectedTowerId=(hit.id===_td.selectedTowerId?null:hit.id);
+    tdShowTowerPanel(_td.selectedTowerId?hit:null);
+  } else {
+    _td.selectedTowerId=null;tdShowTowerPanel(null);
+  }
+  tdDraw();
+}
 
 function openBattle(){
-  _td={
-    active:false,wave:1,baseHp:100,baseMax:100,form:'magic',
-    switchCooldown:0,switchStun:0,enemies:[],queue:[],spawnTimer:0,
-    combo:0,comboTimer:0,particles:[],projectiles:[],shakeT:0,
-    petX:0,petY:0,pathY:0,earnedXp:0,earnedCoins:0,
-    killsThisWave:0,enemiesThisWave:0,raf:null,lastT:0,paused:false,
+  _td={active:false,wave:1,gold:150,baseHp:100,baseMax:100,
+    towers:[],enemies:[],projectiles:[],particles:[],ambient:[],
+    queue:[],spawnTimer:0,killsThisWave:0,enemiesThisWave:0,
+    selectedTowerId:null,placingType:null,
+    shakeT:0,raf:null,lastT:0,paused:false,t:0,speed:1,
+    earnedXp:0,earnedCoins:0,_pathCells:null,
   };
   const _baV=$('baVictory');if(_baV)_baV.style.display='none';
   const _baD=$('baDefeat');if(_baD)_baD.style.display='none';
   if(!$('battleArena')){showT('Tower Defense laddas...','b');return;}
   $('battleArena').classList.add('open');
-  tdInitField();
+  tdInitCanvas();tdUpdateGoldUI();tdUpdateBaseUI();
   tdStartWave();
   SFX.battle&&SFX.battle();vibe([20,10,20]);
 }
@@ -5253,194 +5529,158 @@ function closeBattle(){
   if(_td.raf){cancelAnimationFrame(_td.raf);_td.raf=null;}
 }
 
-function tdInitField(){
+function tdInitCanvas(){
   const canvas=$('tdCanvas');if(!canvas)return;
   const parent=canvas.parentElement;
-  const W=Math.max(parent?parent.offsetWidth:window.innerWidth,200);
-  const H=Math.max(parent?parent.offsetHeight:(window.innerHeight*.5),240);
-  canvas.width=W;canvas.height=H;
-  _td.pathY=H*.55;
-  _td.petX=W*.18;_td.petY=_td.pathY;
-  tdUpdateFormUI();
+  const availW=Math.min(parent?parent.clientWidth:360,480);
+  _tdCell=Math.max(40,Math.floor(availW/TD_COLS));
+  canvas.width=_tdCell*TD_COLS;canvas.height=_tdCell*TD_ROWS;
+  canvas.ontouchstart=tdCanvasTap;canvas.onclick=tdCanvasTap;
+  _td._pathCells=null; // reset cache when cell size changes
 }
 
 function tdEnemyDefForWave(wave){
   const isBoss=wave%5===0;
   if(isBoss){
     const b=TD_BOSSES[Math.min(Math.floor(wave/5)-1,TD_BOSSES.length-1)];
-    return {...b,hp:Math.round(b.hp*(1+(wave-5)*.12)),isBoss:true};
+    return{...b,hp:Math.round(b.hp*(1+(wave-5)*0.12)),isBoss:true};
   }
-  const pool=TD_ENEMIES;
-  const base=pool[Math.floor(Math.random()*pool.length)];
-  const scale=1+(wave-1)*.18;
-  return {...base,hp:Math.max(6,Math.round(base.hp*scale)),speed:Math.min(2.2,base.speed*(1+(wave-1)*.05)),isBoss:false};
+  const base=TD_ENEMIES[Math.floor(Math.random()*TD_ENEMIES.length)];
+  const scale=1+(wave-1)*0.18;
+  return{...base,hp:Math.max(6,Math.round(base.hp*scale)),speed:Math.min(2.5,base.speed*(1+(wave-1)*0.05)),isBoss:false};
 }
 
 function tdStartWave(){
-  const w=_td.wave;
-  const isBoss=w%5===0;
+  const w=_td.wave,isBoss=w%5===0;
   const count=isBoss?1:Math.min(4+Math.floor(w*1.3),18);
-  _td.queue=[];
-  for(let i=0;i<count;i++)_td.queue.push(tdEnemyDefForWave(w));
-  _td.enemies=[];
-  _td.spawnTimer=0;
-  _td.killsThisWave=0;
-  _td.enemiesThisWave=count;
+  _td.queue=[];for(let i=0;i<count;i++)_td.queue.push(tdEnemyDefForWave(w));
+  _td.enemies=[];_td.spawnTimer=0;_td.killsThisWave=0;_td.enemiesThisWave=count;
   _td.active=true;_td.paused=false;
-  $('baVictory').style.display='none';
-  $('baDefeat').style.display='none';
-  const hdrWave=$('baWave');if(hdrWave)hdrWave.textContent=(isBoss?'⚠️ BOSS WAVE ':'WAVE ')+w;
+  const hw=$('baWave');if(hw)hw.textContent=(isBoss?'⚠️ BOSS WAVE ':'WAVE ')+w+'/'+TD_WAVE_COUNT;
+  const wi=$('tdWaveInfo');if(wi)wi.textContent='WAVE '+w+'/'+TD_WAVE_COUNT;
   const wb=$('tdWaveBanner');
-  const big=$('tdWaveBig');if(big)big.textContent=isBoss?'⚠️ BOSS WAVE '+w:'WAVE '+w;
-  const sub=$('tdWaveSub');if(sub)sub.textContent=isBoss?'A powerful foe approaches!':count+' enemies incoming!';
+  const big=$('tdWaveBig');if(big)big.textContent=isBoss?('⚠️ BOSS WAVE '+w):('WAVE '+w);
+  const sub=$('tdWaveSub');if(sub)sub.textContent=isBoss?'A powerful foe approaches!':(count+' enemies incoming!');
   if(wb){wb.classList.remove('show');void wb.offsetWidth;wb.classList.add('show');setTimeout(()=>wb.classList.remove('show'),1800);}
   tdUpdateBaseUI();
   if(!_td.raf){_td.lastT=performance.now();_td.raf=requestAnimationFrame(tdLoop);}
 }
 
-// ── Form switching: the skill-based core loop ──
-function tdSwitchForm(form){
-  if(!TD_FORMS[form])return;
-  if(_td.form===form)return;
-  if(_td.switchCooldown>0){showT('⏳ Formen byter snart redo igen!','y');return;}
-  _td.form=form;
-  _td.switchCooldown=TD_SWITCH_COOLDOWN;
-  _td.switchStun=TD_SWITCH_STUN;
-  tdUpdateFormUI();
-  vibe([15,8,15]);SFX.click&&SFX.click();
-  const lbl=$('tdFormLbl');if(lbl)lbl.textContent=TD_FORMS[form].ico;
-}
-
-function tdUpdateFormUI(){
-  ['magic','rage','shield','speed'].forEach(f=>{
-    const btn=$('tdForm'+f.charAt(0).toUpperCase()+f.slice(1));
-    if(!btn)return;
-    btn.classList.toggle('active',_td.form===f);
-  });
-  const lbl=$('tdFormLbl');if(lbl)lbl.textContent=TD_FORMS[_td.form]?.ico||'✨';
-}
-
-// ── Main loop — defensively guarded so a bad value can never freeze the RAF chain ──
 function tdLoop(t){
   if(!_td.active||_td.paused){_td.raf=null;return;}
   try{
-    const dt=Math.min(2.5,Math.max(0,(t-(_td.lastT||t))/16.67));
+    const rawDt=Math.min(2.5,Math.max(0,(t-(_td.lastT||t))/16.67));
     _td.lastT=t;
-    tdUpdate(dt);
+    const spd=_td.speed||1;
+    tdUpdate(rawDt*spd);
     tdDraw();
-  }catch(err){
-    console.error('TD loop error (suppressed to keep RAF alive):',err);
-  }
+  }catch(err){console.warn('TD loop err',err);_td.raf=null;return;}
   _td.raf=requestAnimationFrame(tdLoop);
 }
 
 function tdUpdate(dt){
-  const canvas=$('tdCanvas');if(!canvas)return;
-  const W=canvas.width,H=canvas.height;
-  // Cooldown / stun countdown
-  if(_td.switchCooldown>0)_td.switchCooldown=Math.max(0,_td.switchCooldown-dt);
-  if(_td.switchStun>0)_td.switchStun=Math.max(0,_td.switchStun-dt);
-  if(_td.comboTimer>0){_td.comboTimer=Math.max(0,_td.comboTimer-dt);if(_td.comboTimer<=0)_td.combo=0;}
-  tdUpdateFormCdUI();
-
-  // Spawn enemies from queue
-  _td.spawnTimer-=dt;
-  if(_td.spawnTimer<=0&&_td.queue.length>0){
-    const def=_td.queue.shift();
-    const startX=W+40;
-    _td.enemies.push({
-      ...def,maxHp:def.hp,x:startX,y:_td.pathY+(Math.random()*16-8),
-      hitFlash:0,id:Math.random().toString(36).slice(2),
-    });
-    _td.spawnTimer=def.isBoss?0:Math.max(18,46-_td.wave);
-  }
-
-  // Move enemies toward base (left side); deal dmg + despawn on reaching it
-  const baseX=Math.max(10,_td.petX-60);
+  _td.t+=dt;
+  const totalLen=tdTotalLen();
+  // Move enemies
   for(let i=_td.enemies.length-1;i>=0;i--){
     const e=_td.enemies[i];
-    e.x-=Math.max(.05,e.speed)*dt*1.6;
+    if(e.stunTimer>0){e.stunTimer=Math.max(0,e.stunTimer-dt);continue;}
+    const spd=e.slowTimer>0?e.speed*(e.slowFactor||1):e.speed;
+    e.progress+=Math.max(0.05,spd)*dt*(_tdCell*0.018);
     if(e.hitFlash>0)e.hitFlash=Math.max(0,e.hitFlash-dt);
-    if(e.x<=baseX){
-      _td.baseHp=Math.max(0,_td.baseHp-(e.dmgToBase||5));
-      tdUpdateBaseUI();
-      shakeScreen&&shakeScreen();
-      _td.shakeT=10;
-      vibe(30);
+    if(e.slowTimer>0)e.slowTimer=Math.max(0,e.slowTimer-dt);
+    if(e.progress>=totalLen){
+      _td.baseHp=Math.max(0,_td.baseHp-5);tdUpdateBaseUI();
+      _td.shakeT=10;vibe(30);_td.killsThisWave++;
       _td.enemies.splice(i,1);
-      // Escaped enemies still count toward "resolved" so the wave can clear
-      // even if the player lets some through (they just pay in base HP).
-      _td.killsThisWave++;
       if(_td.baseHp<=0){tdDefeat();return;}
     }
   }
-
-  // Pet tower auto-fires at nearest enemy in range based on current form
-  const form=TD_FORMS[_td.form]||TD_FORMS.magic;
-  _td._fireT=(_td._fireT||0)-dt;
-  const canFire=_td.switchStun<=0;
-  if(canFire&&_td._fireT<=0&&_td.enemies.length>0){
-    // Target the enemy furthest along the path (closest to base) within range
-    let target=null,bestX=-Infinity;
-    for(const e of _td.enemies){
-      const dist=Math.abs(e.x-_td.petX);
-      if(dist<=form.range&&e.x>bestX){bestX=e.x;target=e;}
-    }
-    if(target){
-      const isWeak=form.weak&&target.weakness===form.weak;
-      const dmg=Math.round(form.dmg*(isWeak?form.bonusMult:1)*(1+_td.wave*0.02));
-      target.hp=Math.max(0,target.hp-dmg);
-      target.hitFlash=8;
-      _td.projectiles.push({x:_td.petX,y:_td.petY,tx:target.x,ty:target.y,col:form.col,life:8});
-      tdFloatDmg(dmg,target.x,target.y,isWeak,form.col);
-      if(isWeak){
-        _td.combo++; _td.comboTimer=90;
-        tdWeaknessPayoff();
-        if(_td.combo>0&&_td.combo%5===0){_td.shakeT=8;shakeScreen&&shakeScreen();}
-      } else {
-        _td.combo=Math.max(0,_td.combo);
+  // Spawn
+  _td.spawnTimer-=dt;
+  if(_td.spawnTimer<=0&&_td.queue.length>0){
+    const def=_td.queue.shift();
+    _td.enemies.push({...def,maxHp:def.hp,progress:0,hitFlash:0,stunTimer:0,slowTimer:0,slowFactor:1,id:Math.random().toString(36).slice(2)});
+    _td.spawnTimer=def.isBoss?0:Math.max(18,50-_td.wave*3);
+  }
+  // Towers fire
+  for(const tower of _td.towers){
+    tower.fireTimer=Math.max(0,(tower.fireTimer||0)-dt);
+    if(tower.fireTimer>0)continue;
+    const def=tdGetDef(tower);if(!def||!def.range)continue;
+    const rangePx=def.range*_tdCell;
+    const tx=_tdCX(tower.col),ty=_tdCY(tower.row);
+    const inRange=_td.enemies.filter(e=>{const{x,y}=tdEnemyPos(e);return Math.hypot(x-tx,y-ty)<=rangePx;}).sort((a,b)=>b.progress-a.progress);
+    if(!inRange.length)continue;
+    const tType=def.type||'single';
+    const primary=inRange[0];
+    if(tType==='aoe'){
+      const{x:px,y:py}=tdEnemyPos(primary);const aR=(def.aoeR||0.9)*_tdCell;
+      _td.projectiles.push({x:tx,y:ty,tx:px,ty:py,col:def.col||'#BF5FFF',life:8,aoe:aR});
+      for(const e of _td.enemies){const{x,y}=tdEnemyPos(e);if(Math.hypot(x-px,y-py)<=aR){const iw=e.weakness===tower.type;const dmg=Math.round((def.dmg||22)*(iw?1.9:1)*(1+_td.wave*0.02));tdHitEnemy(e,dmg,tower.type);if(def.slow&&def.slowDur){e.slowTimer=def.slowDur;e.slowFactor=1-def.slow;}}}
+    } else if(tType==='impact'){
+      const{x:px,y:py}=tdEnemyPos(primary);const iR=(def.impactR||0.8)*_tdCell;
+      _td.projectiles.push({x:tx,y:ty,tx:px,ty:py,col:def.col||'#FF9F0A',life:8});
+      for(const e of _td.enemies){const{x,y}=tdEnemyPos(e);if(Math.hypot(x-px,y-py)<=iR){const iw=e.weakness===tower.type;const dmg=Math.round((def.dmg||50)*(iw?1.9:1)*(1+_td.wave*0.02));tdHitEnemy(e,dmg,tower.type);if(def.knockback&&e.progress>0)e.progress=Math.max(0,e.progress-def.knockback*_tdCell*0.3);}}
+    } else {
+      const shots=def.multishot||1;
+      inRange.slice(0,shots).forEach(target=>{
+        const iw=target.weakness===tower.type;
+        const dmg=Math.round((def.dmg||10)*(iw?1.9:1)*(1+_td.wave*0.02));
+        if(target.armor===tower.type)tdHitEnemy(target,Math.floor(dmg*0.3),tower.type);else tdHitEnemy(target,dmg,tower.type);
+        const{x:ex,y:ey}=tdEnemyPos(target);
+        _td.projectiles.push({x:tx,y:ty,tx:ex,ty:ey,col:def.col||'#fff',life:6});
+        if(iw)tdWeaknessPayoff();
+      });
+      if(tType==='chain'&&(def.chains||1)>1){
+        const chained=inRange.slice(shots,shots+(def.chains||1)-1);
+        const{x:ex,y:ey}=tdEnemyPos(primary);
+        chained.forEach(ch=>{const iw=ch.weakness===tower.type;const dmg=Math.round((def.dmg||10)*0.6*(iw?1.9:1));tdHitEnemy(ch,dmg,tower.type);const{x:cx,y:cy}=tdEnemyPos(ch);_td.projectiles.push({x:ex,y:ey,tx:cx,ty:cy,col:def.col||'#00D9FF',life:5});if(def.stunDur&&Math.random()<0.3)ch.stunTimer=(ch.stunTimer||0)+def.stunDur;});
       }
-      tdUpdateComboUI();
-      if(target.hp<=0){
-        tdKillEnemy(target);
-      }
-      _td._fireT=Math.max(4,form.fireRate*(1-Math.min(.4,_td.wave*0.01)));
     }
+    tower.fireTimer=def.rate||30;tower.firingT=8;
   }
-
-  // Particles
-  for(let i=_td.particles.length-1;i>=0;i--){
-    const p=_td.particles[i];
-    p.x+=p.vx*dt;p.y+=p.vy*dt;p.vy+=0.12*dt;p.life-=dt;
-    if(p.life<=0)_td.particles.splice(i,1);
-  }
-  // Projectiles
-  for(let i=_td.projectiles.length-1;i>=0;i--){
-    const pr=_td.projectiles[i];pr.life-=dt;if(pr.life<=0)_td.projectiles.splice(i,1);
-  }
+  for(const t of _td.towers)if(t.firingT>0)t.firingT=Math.max(0,t.firingT-dt);
+  // Decay
+  for(let i=_td.projectiles.length-1;i>=0;i--){_td.projectiles[i].life-=dt;if(_td.projectiles[i].life<=0)_td.projectiles.splice(i,1);}
+  for(let i=_td.particles.length-1;i>=0;i--){const p=_td.particles[i];p.x+=p.vx*dt;p.y+=p.vy*dt;p.vy+=0.12*dt;p.life-=dt;if(p.life<=0)_td.particles.splice(i,1);}
   if(_td.shakeT>0)_td.shakeT=Math.max(0,_td.shakeT-dt);
+  // Wave clear
+  if(_td.active&&_td.queue.length===0&&_td.enemies.length===0&&_td.killsThisWave>=_td.enemiesThisWave)tdWaveClear();
+}
 
-  // Wave clear check
-  if(_td.active&&_td.queue.length===0&&_td.enemies.length===0&&_td.killsThisWave>=_td.enemiesThisWave){
-    tdWaveClear();
-  }
+function tdHitEnemy(e,dmg,tType){
+  e.hp=Math.max(0,e.hp-dmg);e.hitFlash=8;
+  if(e.hp<=0)tdKillEnemy(e);
 }
 
 function tdKillEnemy(e){
-  _td.killsThisWave++;
-  _td.earnedXp+=(e.reward?.xp||3);
-  _td.earnedCoins+=(e.reward?.coins||2);
-  tdSpawnParticles(e.x,e.y,e.isBoss?'stars':'hearts');
+  _td.killsThisWave++;_td.gold+=(e.gold||8);
+  _td.earnedXp+=(e.reward?.xp||3);_td.earnedCoins+=(e.reward?.coins||2);
+  const{x,y}=tdEnemyPos(e);
+  const canvas=$('tdCanvas');
+  if(canvas){const r=canvas.getBoundingClientRect();floatNum&&floatNum('+'+(e.gold||8)+'g',r.left+x*r.width/canvas.width,r.top+y*r.height/canvas.height,'#FFD700',16);}
+  // Death explosion particles — many more, varied
+  const pCount=e.isBoss?32:e.id&&e.id.includes('brute')?18:10;
+  const pCol=e.isBoss?['#FFD700','#FF9F0A','#FF2D55','#fff']:['#FF007F','#BF5FFF','#FF2D55','#FFD700'];
+  for(let i=0;i<pCount;i++){
+    const angle=Math.random()*Math.PI*2;const spd=Math.random()*(e.isBoss?5:3)+1;
+    _td.particles.push({x,y,vx:Math.cos(angle)*spd,vy:Math.sin(angle)*spd-1,col:pCol[Math.floor(Math.random()*pCol.length)],r:e.isBoss?(Math.random()*5+2):(Math.random()*3+1),life:e.isBoss?28:16});
+  }
+  // Shockwave ring — store in projectiles as special type
+  if(e.isBoss){
+    _td.particles.push({x,y,vx:0,vy:0,col:'#FFD700',r:60,life:18,ring:true,ringGrow:true});
+    _td.shakeT=18;shakeScreen&&shakeScreen();vibe([50,25,100,25,150]);
+  } else if((e.hp<=0)&&!e.isBoss){
+    _td.particles.push({x,y,vx:0,vy:0,col:'rgba(255,0,127,.6)',r:24,life:8,ring:true});
+  }
   const idx=_td.enemies.indexOf(e);if(idx>=0)_td.enemies.splice(idx,1);
-  if(e.isBoss){_td.shakeT=14;shakeScreen&&shakeScreen();vibe([40,20,80,20,120]);}
+  tdUpdateGoldUI();
 }
 
-function tdFloatDmg(dmg,gx,gy,isWeak,col){
-  const canvas=$('tdCanvas');if(!canvas)return;
-  const r=canvas.getBoundingClientRect();
-  const safeX=Number.isFinite(gx)?gx:0,safeY=Number.isFinite(gy)?gy:0;
-  const screenX=r.left+safeX,screenY=r.top+safeY;
-  floatNum&&floatNum((isWeak?'⚡':'')+dmg,screenX,screenY,isWeak?(col||'#FFE600'):'var(--t1)',isWeak?20:14);
+function tdToggleSpeed(){
+  _td.speed=(_td.speed||1)===1?2:1;
+  const btn=$('tdSpeedBtn');if(btn)btn.textContent=_td.speed+'×';
 }
 
 function tdWeaknessPayoff(){
@@ -5449,49 +5689,10 @@ function tdWeaknessPayoff(){
   clearTimeout(el._t);el._t=setTimeout(()=>el.classList.remove('show'),550);
 }
 
-function tdSpawnParticles(gx,gy,type){
-  const canvas=$('tdCanvas');if(!canvas)return;
-  const r=canvas.getBoundingClientRect();
-  const safeX=Number.isFinite(gx)?gx:0,safeY=Number.isFinite(gy)?gy:0;
-  spawnParticles&&spawnParticles(r.left+safeX,r.top+safeY,type||'hearts');
-}
-
-function tdUpdateFormCdUI(){
-  ['magic','rage','shield','speed'].forEach(f=>{
-    const btn=$('tdForm'+f.charAt(0).toUpperCase()+f.slice(1));
-    if(!btn)return;
-    let cdEl=btn.querySelector('.tf-cd');
-    const showCd=_td.form!==f&&_td.switchCooldown>0;
-    if(showCd){
-      if(!cdEl){cdEl=document.createElement('span');cdEl.className='tf-cd';btn.appendChild(cdEl);}
-      cdEl.textContent=Math.ceil(_td.switchCooldown/12);
-    } else if(cdEl){
-      cdEl.remove();
-    }
-    btn.classList.toggle('stunned',_td.form===f&&_td.switchStun>0);
-  });
-}
-
-function tdUpdateComboUI(){
-  const cc=$('tdComboCount');if(cc)cc.textContent=_td.combo+'x';
-  const cf=$('tdComboFill');if(cf)cf.style.width=Math.min(100,_td.combo*8)+'%';
-}
-
 function tdUpdateBaseUI(){
   const pct=Math.max(0,Math.min(100,(_td.baseHp/_td.baseMax)*100));
-  const f=$('tdBaseHpFill');
-  if(f){f.style.width=pct+'%';f.style.background=pct>50?'var(--g)':pct>20?'var(--y)':'var(--r)';}
+  const f=$('tdBaseHpFill');if(f){f.style.width=pct+'%';f.style.background=pct>50?'var(--g)':pct>20?'var(--y)':'var(--r)';}
   const n=$('tdBaseHpNum');if(n)n.textContent=Math.round(_td.baseHp)+'/'+_td.baseMax;
-}
-
-// ── Drawing (canvas for shapes/path, HTML overlay for ALL emoji — iOS safe) ──
-function tdSafeRadius(r){
-  if(!Number.isFinite(r)||r<=0)return 0.01;
-  return r;
-}
-function tdSafeColor(c,fallback){
-  if(typeof c==='string'&&c.length>0&&/^(#|rgb|rgba|hsl|hsla)/.test(c))return c;
-  return fallback||'#ffffff';
 }
 
 function tdDraw(){
@@ -5499,140 +5700,243 @@ function tdDraw(){
   const ctx=canvas.getContext('2d');if(!ctx)return;
   const W=canvas.width,H=canvas.height;
   if(!Number.isFinite(W)||!Number.isFinite(H)||W<=0||H<=0)return;
-  ctx.clearRect(0,0,W,H);
   ctx.save();
-  // Screen shake
-  if(_td.shakeT>0){
-    const sx=(Math.random()-.5)*Math.min(8,_td.shakeT);
-    const sy=(Math.random()-.5)*Math.min(8,_td.shakeT);
-    ctx.translate(sx,sy);
-  }
-  // Path
-  ctx.fillStyle='rgba(255,255,255,.04)';
-  ctx.fillRect(0,Math.max(0,_td.pathY-28),W,56);
-  ctx.strokeStyle='rgba(255,255,255,.08)';
-  ctx.lineWidth=1;
-  ctx.beginPath();ctx.moveTo(0,_td.pathY);ctx.lineTo(W,_td.pathY);ctx.stroke();
+  if(_td.shakeT>0)ctx.translate((Math.random()-.5)*Math.min(6,_td.shakeT),(Math.random()-.5)*Math.min(6,_td.shakeT));
 
-  // Pet tower range ring
-  const form=TD_FORMS[_td.form]||TD_FORMS.magic;
-  const rangeR=tdSafeRadius(form.range);
-  try{
-    const grad=ctx.createRadialGradient(_td.petX,_td.petY,0,_td.petX,_td.petY,rangeR);
-    const col=tdSafeColor(form.col,'#BF5FFF');
-    grad.addColorStop(0,col+'22');
-    grad.addColorStop(1,col+'00');
-    ctx.fillStyle=grad;
-    ctx.beginPath();ctx.arc(_td.petX,_td.petY,rangeR,0,Math.PI*2);ctx.fill();
-  }catch(e){/* never let a bad gradient kill the loop */}
-
-  // Enemy HP bars (canvas — simple rects, no emoji)
-  _td.enemies.forEach(e=>{
-    const w=30,h=4;
-    const hpPct=Math.max(0,Math.min(1,e.hp/Math.max(1,e.maxHp)));
-    ctx.fillStyle='rgba(0,0,0,.6)';
-    ctx.fillRect(e.x-w/2,e.y-30,w,h);
-    ctx.fillStyle=hpPct>.5?'#39FF14':hpPct>.2?'#FFE600':'#FF2D55';
-    ctx.fillRect(e.x-w/2,e.y-30,Math.max(0,w*hpPct),h);
-    if(e.hitFlash>0){
-      ctx.fillStyle='rgba(255,255,255,'+Math.min(.5,e.hitFlash/8*.5).toFixed(2)+')';
-      ctx.beginPath();ctx.arc(e.x,e.y,tdSafeRadius(20),0,Math.PI*2);ctx.fill();
+  // ── TERRAIN ──
+  const pathSet=tdPathCells();
+  const t=_td.t||0;
+  for(let r=0;r<TD_ROWS;r++){
+    for(let c=0;c<TD_COLS;c++){
+      const px=c*_tdCell,py=r*_tdCell;
+      if(pathSet.has(c+','+r)){
+        // Stone path tiles — warm tones
+        ctx.fillStyle=(c+r)%2===0?'#1c1308':'#211507';
+        ctx.fillRect(px,py,_tdCell,_tdCell);
+        // Stone cracks/texture
+        ctx.strokeStyle='rgba(180,130,60,.08)';ctx.lineWidth=.5;
+        ctx.beginPath();ctx.moveTo(px+_tdCell*.2,py+_tdCell*.5);ctx.lineTo(px+_tdCell*.7,py+_tdCell*.3);ctx.stroke();
+        ctx.beginPath();ctx.moveTo(px+_tdCell*.5,py+_tdCell*.7);ctx.lineTo(px+_tdCell*.8,py+_tdCell*.8);ctx.stroke();
+        // Path glow pulse
+        const pulse=Math.sin(t*0.04+c*.5+r*.3)*.04+.04;
+        ctx.fillStyle='rgba(255,200,60,'+pulse.toFixed(3)+')';
+        ctx.fillRect(px,py,_tdCell,_tdCell);
+      } else {
+        // Grass tiles
+        ctx.fillStyle=(c+r)%2===0?'#060e06':'#07110a';
+        ctx.fillRect(px,py,_tdCell,_tdCell);
+        // Subtle diagonal hatching
+        ctx.strokeStyle='rgba(0,60,0,.1)';ctx.lineWidth=.4;
+        ctx.beginPath();ctx.moveTo(px,py);ctx.lineTo(px+_tdCell*.5,py+_tdCell*.5);ctx.stroke();
+      }
     }
+  }
+
+  // Edge vignette (darkness at borders for depth)
+  const vg=ctx.createLinearGradient(0,0,0,H);
+  vg.addColorStop(0,'rgba(0,0,0,.5)');vg.addColorStop(.12,'rgba(0,0,0,0)');vg.addColorStop(.88,'rgba(0,0,0,0)');vg.addColorStop(1,'rgba(0,0,0,.5)');
+  ctx.fillStyle=vg;ctx.fillRect(0,0,W,H);
+
+  // Path directional glow
+  ctx.save();
+  ctx.strokeStyle='rgba(255,180,0,.18)';ctx.lineWidth=_tdCell*.45;ctx.lineCap='round';ctx.lineJoin='round';
+  ctx.shadowColor='rgba(255,160,0,.5)';ctx.shadowBlur=20;
+  ctx.beginPath();TD_PATH.forEach(([c,r],i)=>{const x=_tdCX(c),y=_tdCY(r);i===0?ctx.moveTo(x,y):ctx.lineTo(x,y);});
+  ctx.stroke();ctx.restore();
+
+  // Grid lines — very faint
+  ctx.strokeStyle='rgba(255,255,255,.04)';ctx.lineWidth=.5;
+  for(let c=0;c<=TD_COLS;c++){ctx.beginPath();ctx.moveTo(c*_tdCell,0);ctx.lineTo(c*_tdCell,H);ctx.stroke();}
+  for(let r=0;r<=TD_ROWS;r++){ctx.beginPath();ctx.moveTo(0,r*_tdCell);ctx.lineTo(W,r*_tdCell);ctx.stroke();}
+
+  // Placing overlay
+  if(_td.placingType){ctx.fillStyle='rgba(255,215,0,.04)';ctx.fillRect(0,0,W,H);}
+
+  // ── TOWERS (canvas base + glow; emoji on HTML overlay) ──
+  _td.towers.forEach(tower=>{
+    const def=tdGetDef(tower);
+    const tx=_tdCX(tower.col),ty=_tdCY(tower.row);
+    const col=def.col||'#fff';
+    const sz=_tdCell*.38;
+    const isSelected=tower.id===_td.selectedTowerId;
+    const isFiring=tower.firingT>0;
+    ctx.save();
+    // Dark stone base
+    const bg=ctx.createRadialGradient(tx,ty,0,tx,ty,sz+5);
+    bg.addColorStop(0,'rgba(30,30,30,.9)');bg.addColorStop(1,'rgba(10,10,10,.7)');
+    ctx.fillStyle=bg;ctx.beginPath();ctx.arc(tx,ty,sz+5,0,Math.PI*2);ctx.fill();
+    // Glow ring
+    ctx.shadowColor=col;ctx.shadowBlur=isFiring?28:isSelected?20:12;
+    ctx.strokeStyle=col+(isFiring?'ff':isSelected?'cc':'77');
+    ctx.lineWidth=isSelected?3:2;
+    ctx.beginPath();ctx.arc(tx,ty,sz+3,0,Math.PI*2);ctx.stroke();
+    // Level pips
+    const lvl=tower.level||0;
+    for(let l=0;l<lvl&&l<3;l++){
+      const a=-Math.PI/2+l*(Math.PI*2/3);
+      ctx.fillStyle=col;ctx.shadowBlur=8;
+      ctx.beginPath();ctx.arc(tx+Math.cos(a)*(sz+9),ty+Math.sin(a)*(sz+9),2.5,0,Math.PI*2);ctx.fill();
+    }
+    // Selected range
+    if(isSelected){
+      const rp=tdSafeR((def.range||2)*_tdCell);
+      const rg=ctx.createRadialGradient(tx,ty,rp*.5,tx,ty,rp);
+      rg.addColorStop(0,col+'00');rg.addColorStop(1,col+'15');
+      ctx.fillStyle=rg;ctx.beginPath();ctx.arc(tx,ty,rp,0,Math.PI*2);ctx.fill();
+      ctx.shadowBlur=0;ctx.strokeStyle=col+'55';ctx.lineWidth=1.5;ctx.setLineDash([5,5]);
+      ctx.beginPath();ctx.arc(tx,ty,rp,0,Math.PI*2);ctx.stroke();ctx.setLineDash([]);
+    }
+    ctx.restore();
   });
 
-  // Projectiles
+  // ── AMBIENT SMOKE PARTICLES ──
+  if(!_td.ambient||_td.ambient.length===0){
+    _td.ambient=Array.from({length:16},(_,i)=>({x:Math.random()*W,y:Math.random()*H,vx:(Math.random()-.5)*.15,vy:-Math.random()*.12-.02,r:Math.random()*2.5+.5,a:0,life:50+Math.random()*180,maxLife:230,col:Math.random()<.4?'255,180,60':'100,200,80'}));
+  }
+  _td.ambient.forEach((p,i)=>{
+    p.x+=p.vx;p.y+=p.vy;p.life--;p.a=Math.min(.22,(p.life/p.maxLife)*.22);
+    if(p.life<=0){_td.ambient[i]={x:Math.random()*W,y:H*.7+Math.random()*H*.3,vx:(Math.random()-.5)*.15,vy:-Math.random()*.12-.02,r:Math.random()*2.5+.5,a:0,life:60+Math.random()*180,maxLife:240,col:Math.random()<.4?'255,180,60':'100,200,80'};}
+    ctx.fillStyle='rgba('+p.col+','+p.a.toFixed(3)+')';
+    ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fill();
+  });
+
+  // ── PROJECTILES ──
   _td.projectiles.forEach(pr=>{
-    ctx.strokeStyle=tdSafeColor(pr.col,'#fff');
-    ctx.lineWidth=2;
+    const alpha=Math.min(1,pr.life/6);
+    ctx.save();ctx.globalAlpha=alpha;
+    ctx.shadowColor=pr.col;ctx.shadowBlur=12;
+    if(pr.aoe){
+      // AoE expanding ring
+      const aR=tdSafeR(pr.aoe);
+      ctx.strokeStyle=pr.col+'aa';ctx.lineWidth=3;
+      ctx.beginPath();ctx.arc(pr.tx,pr.ty,aR,0,Math.PI*2);ctx.stroke();
+      ctx.fillStyle=pr.col+'18';ctx.beginPath();ctx.arc(pr.tx,pr.ty,aR,0,Math.PI*2);ctx.fill();
+    }
+    // Trail line
+    ctx.strokeStyle=pr.col;ctx.lineWidth=3;ctx.lineCap='round';
     ctx.beginPath();ctx.moveTo(pr.x,pr.y);ctx.lineTo(pr.tx,pr.ty);ctx.stroke();
+    // Impact flash
+    ctx.fillStyle='#fff';ctx.shadowBlur=16;ctx.beginPath();ctx.arc(pr.tx,pr.ty,4,0,Math.PI*2);ctx.fill();
+    ctx.restore();
   });
 
-  // Particles (small dots; emoji particles handled by spawnParticles' own DOM nodes)
-  _td.particles.forEach(p=>{
-    ctx.fillStyle=tdSafeColor(p.col,'#fff');
-    ctx.beginPath();ctx.arc(p.x,p.y,tdSafeRadius(p.r||2),0,Math.PI*2);ctx.fill();
+  // ── PARTICLES ──
+  for(let i=_td.particles.length-1;i>=0;i--){
+    const p=_td.particles[i];
+    if(p.ring){
+      // Ring shockwave — expand and fade
+      const age=1-p.life/18;
+      ctx.save();ctx.globalAlpha=Math.max(0,1-age)*0.7;
+      ctx.strokeStyle=p.col;ctx.lineWidth=3;ctx.shadowColor=p.col;ctx.shadowBlur=16;
+      ctx.beginPath();ctx.arc(p.x,p.y,tdSafeR(p.r*(0.2+age*1.8)),0,Math.PI*2);ctx.stroke();
+      ctx.restore();
+      continue;
+    }
+    const a=Math.min(1,p.life/12);
+    ctx.save();ctx.globalAlpha=a;ctx.shadowColor=p.col;ctx.shadowBlur=8;
+    ctx.fillStyle=p.col;ctx.beginPath();ctx.arc(p.x,p.y,tdSafeR(p.r||2),0,Math.PI*2);ctx.fill();
+    ctx.restore();
+  }
+
+  // ── ENEMY HEALTH BARS + STATUS ──
+  _td.enemies.forEach(e=>{
+    const{x,y}=tdEnemyPos(e);
+    const bw=e.isBoss?48:32;const bh=e.isBoss?7:5;
+    const hp=Math.max(0,Math.min(1,e.hp/Math.max(1,e.maxHp)));
+    const hpCol=hp>.6?'#39FF14':hp>.3?'#FFE600':'#FF2D55';
+    // HP shadow
+    ctx.fillStyle='rgba(0,0,0,.75)';ctx.fillRect(x-bw/2-1,y-32-1,bw+2,bh+2);
+    ctx.fillStyle='rgba(40,0,0,.8)';ctx.fillRect(x-bw/2,y-32,bw,bh);
+    // HP fill with glow
+    ctx.save();ctx.shadowColor=hpCol;ctx.shadowBlur=6;
+    ctx.fillStyle=hpCol;ctx.fillRect(x-bw/2,y-32,Math.max(0,bw*hp),bh);
+    ctx.restore();
+    // Hit flash
+    if(e.hitFlash>0){const fa=Math.min(.55,e.hitFlash/8*.55);ctx.save();ctx.globalAlpha=fa;ctx.fillStyle='#fff';ctx.beginPath();ctx.arc(x,y,e.isBoss?30:16,0,Math.PI*2);ctx.fill();ctx.restore();}
+    // Slow ring (cyan)
+    if(e.slowTimer>0){ctx.save();ctx.shadowColor='#00D9FF';ctx.shadowBlur=10;ctx.strokeStyle='rgba(0,180,255,.75)';ctx.lineWidth=2;ctx.beginPath();ctx.arc(x,y,e.isBoss?32:18,0,Math.PI*2);ctx.stroke();ctx.restore();}
+    // Stun ring (yellow dashed)
+    if(e.stunTimer>0){ctx.save();ctx.shadowColor='#FFE600';ctx.shadowBlur=10;ctx.strokeStyle='rgba(255,230,0,.85)';ctx.lineWidth=2;ctx.setLineDash([3,3]);ctx.beginPath();ctx.arc(x,y,e.isBoss?34:20,0,Math.PI*2);ctx.stroke();ctx.setLineDash([]);ctx.restore();}
+    // Boss aura — pulsing double ring
+    if(e.isBoss){
+      const r1=32+Math.sin(t*0.05)*5;
+      const r2=44+Math.sin(t*0.04+1)*4;
+      ctx.save();ctx.shadowColor='#FFD700';ctx.shadowBlur=20;
+      ctx.strokeStyle='rgba(255,215,0,.55)';ctx.lineWidth=2.5;ctx.beginPath();ctx.arc(x,y,tdSafeR(r1),0,Math.PI*2);ctx.stroke();
+      ctx.strokeStyle='rgba(255,100,0,.25)';ctx.lineWidth=1.5;ctx.beginPath();ctx.arc(x,y,tdSafeR(r2),0,Math.PI*2);ctx.stroke();
+      ctx.restore();
+    }
+    // Shadow under enemy
+    ctx.save();ctx.globalAlpha=.3;ctx.fillStyle='#000';ctx.beginPath();ctx.ellipse(x,y+Math.round(_tdCell*.28),Math.round(_tdCell*.22),Math.round(_tdCell*.07),0,0,Math.PI*2);ctx.fill();ctx.restore();
   });
 
   ctx.restore();
 
-  // ── HTML emoji overlay — iOS Safari cannot render emoji via ctx.fillText ──
-  const ov=$('tdEmojiOv');
-  if(ov){
-    const petGlow=form.col;
-    let html=`<div style="position:absolute;left:${Math.round(_td.petX)}px;top:${Math.round(_td.petY)}px;transform:translate(-50%,-50%);font-size:42px;line-height:1;filter:drop-shadow(0 0 14px ${petGlow})">${G.petEmoji||'🐉'}</div>`;
-    _td.enemies.forEach(e=>{
-      const bump=e.hitFlash>0?'scale(1.2)':'scale(1)';
-      html+=`<div style="position:absolute;left:${Math.round(e.x)}px;top:${Math.round(e.y)}px;transform:translate(-50%,-50%) ${bump};font-size:${e.isBoss?40:28}px;line-height:1;transition:transform .08s">${e.em||'👾'}</div>`;
-      const wcol=TD_FORMS[e.weakness]?.col||'#FFE600';
-      const wname=(e.weakness||'').toUpperCase();
-      if(wname){
-        html+=`<div class="td-weak-tag" style="left:${Math.round(e.x)}px;top:${Math.round(e.y-34)}px;color:${wcol}">WEAK: ${TD_FORMS[e.weakness]?.ico||'⚡'} ${wname}</div>`;
-      }
-    });
-    ov.innerHTML=html;
-  }
+  // ── HTML EMOJI OVERLAY (iOS: never ctx.fillText for emoji) ──
+  const ov=$('tdEmojiOv');if(!ov)return;
+  ov.style.height=H+'px';
+  const scX=canvas.offsetWidth/W||1,scY=canvas.offsetHeight/H||1;
+  let html='';
+  _td.towers.forEach(tower=>{
+    const def=tdGetDef(tower);const tx=_tdCX(tower.col)*scX,ty=_tdCY(tower.row)*scY;
+    const firing=tower.firingT>0,sel=tower.id===_td.selectedTowerId;
+    const sz=sel?Math.round(_tdCell*.52):Math.round(_tdCell*.4);
+    const sc=firing?'scale(1.3)':'scale(1)';
+    const glow=sel?'drop-shadow(0 0 10px '+tdSafeCol(def.col,'#fff')+') drop-shadow(0 0 4px '+tdSafeCol(def.col,'#fff')+')':'drop-shadow(0 0 4px '+tdSafeCol(def.col,'#fff')+'66)';
+    html+='<div style="position:absolute;left:'+Math.round(tx)+'px;top:'+Math.round(ty)+'px;transform:translate(-50%,-50%) '+sc+';font-size:'+sz+'px;line-height:1;filter:'+glow+';transition:transform .08s;z-index:3">'+( def.em||'🏰')+'</div>';
+    if(sel){const lv=tower.level||0;html+='<div style="position:absolute;left:'+Math.round(tx)+'px;top:'+Math.round(ty-_tdCell*.46*scY)+'px;transform:translateX(-50%);font-size:8px;font-weight:900;font-family:var(--mono);color:'+tdSafeCol(def.col,'#fff')+';white-space:nowrap;letter-spacing:.5px;text-shadow:0 0 8px '+tdSafeCol(def.col,'#fff')+'">LV'+(lv+1)+' '+( def.nm||'')+'</div>';}
+  });
+  _td.enemies.forEach(e=>{
+    const{x,y}=tdEnemyPos(e);const ex=x*scX,ey=y*scY;
+    const bump=e.hitFlash>0?'scale(1.3)':'scale(1)';
+    const sz=e.isBoss?Math.round(_tdCell*.62):Math.round(_tdCell*.42);
+    const bossglow=e.isBoss?'drop-shadow(0 0 14px rgba(255,215,0,.9)) drop-shadow(0 0 6px rgba(255,100,0,.6))':'';
+    html+='<div style="position:absolute;left:'+Math.round(ex)+'px;top:'+Math.round(ey)+'px;transform:translate(-50%,-50%) '+bump+';font-size:'+sz+'px;line-height:1;filter:'+bossglow+';transition:transform .08s;z-index:4">'+( e.em||'👾')+'</div>';
+    const wCol=TD_TOWER_DEFS[e.weakness]?.col||'#FFE600';
+    if(!e.isBoss)html+='<div style="position:absolute;left:'+Math.round(ex)+'px;top:'+Math.round(ey-34*scY)+'px;transform:translateX(-50%);font-size:7px;font-weight:900;font-family:var(--mono);color:'+wCol+';white-space:nowrap;opacity:.85">⚠'+( e.weakness?.slice(0,3).toUpperCase()||'?')+'</div>';
+  });
+  ov.innerHTML=html;
 }
 
-// ── Wave clear / victory / defeat ──
 function tdWaveClear(){
-  _td.active=false;
-  const isFinal=_td.wave>=TD_WAVE_COUNT;
-  $('baVictory').style.display='flex';
-  $('baVicEnemy').textContent=(isFinal?'Alla waves klarade!':'Wave '+_td.wave+' klarad!');
-  const rewards=$('baRewards');
-  if(rewards){
-    rewards.innerHTML=`
-      <div class="ba-reward-chip">+${_td.earnedXp} XP</div>
-      <div class="ba-reward-chip" style="animation-delay:.2s;color:var(--y)">+${_td.earnedCoins} ⚡</div>
-      ${_td.combo>=5?`<div class="ba-reward-chip" style="animation-delay:.3s;color:var(--pk)">🔥 COMBO BONUS!</div>`:''}
-      ${isFinal?`<div class="ba-reward-chip" style="animation-delay:.5s;color:var(--y);border-color:gold">👑 ALLA WAVES!</div>`:''}
-    `;
-  }
-  const btn=$('baContBtn');
-  if(btn){
-    if(isFinal){btn.textContent='🏆 AVSLUTA';btn.onclick=()=>{tdFinalRewards();closeBattle();};}
-    else{btn.textContent='NÄSTA WAVE →';btn.onclick=battleContinue;}
-  }
+  _td.active=false;const isFinal=_td.wave>=TD_WAVE_COUNT;
+  const v=$('baVictory');if(v)v.style.display='flex';
+  const ve=$('baVicEnemy');if(ve)ve.textContent=isFinal?('Alla '+TD_WAVE_COUNT+' waves klarade!'):('Wave '+_td.wave+' klarad!');
+  const rw=$('baRewards');
+  if(rw)rw.innerHTML='<div class="ba-reward-chip">+'+_td.earnedXp+' XP</div><div class="ba-reward-chip" style="animation-delay:.2s;color:var(--y)">+'+_td.earnedCoins+' ⚡</div>'+(isFinal?'<div class="ba-reward-chip" style="animation-delay:.4s;color:#FFD700;border-color:gold">👑 ALLA WAVES!</div>':'')+'';
+  const btn=$('baContBtn');if(btn){if(isFinal){btn.textContent='🏆 AVSLUTA';btn.onclick=()=>{tdFinalRewards();closeBattle();};}else{btn.textContent='NÄSTA WAVE →';btn.onclick=battleContinue;}}
   SFX.win&&SFX.win();vibe([30,20,100,20,80]);
-  tdSpawnParticles(($('tdCanvas')?.width||300)/2,($('tdCanvas')?.height||200)*.4,'stars');
 }
 
 function tdFinalRewards(){
   let xp=_td.earnedXp,coins=_td.earnedCoins;
-  if(G._talentK7a){xp=Math.round(xp*3);coins=Math.round(coins*3);} // Warlord
+  if(G._talentK7a){xp=Math.round(xp*3);coins=Math.round(coins*3);}
   gainXP(xp,'battle');gainCoins(coins);gainKC(Math.floor(Math.random()*10+5),'battle');
   if(G._talentX12){gainCoins(20);showT('🏦 BATTLE TREASURY! +20 coins!','y');}
-  addWorldPoints(Math.floor(_td.wave*10),'battle');
+  addWorldPoints&&addWorldPoints(Math.floor(_td.wave*10),'battle');
   G.battlesWon=(G.battlesWon||0)+1;
-  markBond&&markBond('quest');
-  advanceQuest&&advanceQuest('battle');
+  markBond&&markBond('quest');advanceQuest&&advanceQuest('battle');
   checkAchievements&&checkAchievements();
   save&&save();updateHUD&&updateHUD();
   addDiaryEntry&&addDiaryEntry('Klarade '+_td.wave+' waves i Pet Tower Defense! ⚔️');
-  showT('⚔️ TOWER DEFENSE! +'+xp+' XP · +'+coins+' coins'+(G._talentK7a?' (WARLORD ×3!)':''),'y');
+  showT('⚔️ TOWER DEFENSE! +'+xp+' XP · +'+coins+' coins'+(G._talentK7a?' (WARLORD ×3!)':'')+'','y');
 }
 
 function battleContinue(){
-  $('baVictory').style.display='none';
-  tdFinalRewards();
-  _td.wave++;
-  _td.baseHp=Math.min(_td.baseMax,_td.baseHp+15);
-  _td.earnedXp=0;_td.earnedCoins=0;
-  tdUpdateBaseUI();
-  showT('❤️ Base +15 HP repaired!','g');
-  tdStartWave();
+  const v=$('baVictory');if(v)v.style.display='none';
+  tdFinalRewards();_td.wave++;_td.baseHp=Math.min(_td.baseMax,_td.baseHp+15);
+  _td.earnedXp=0;_td.earnedCoins=0;tdUpdateBaseUI();
+  showT('❤️ Base +15 HP reparerat!','g');tdStartWave();
 }
 
 function battleRetry(){
-  $('baDefeat').style.display='none';
-  _td.baseHp=_td.baseMax;
-  _td.wave=Math.max(1,_td.wave-1);
-  tdUpdateBaseUI();
-  tdStartWave();
+  const d=$('baDefeat');if(d)d.style.display='none';
+  _td.baseHp=_td.baseMax;_td.wave=Math.max(1,_td.wave-1);
+  tdUpdateBaseUI();tdStartWave();
 }
 
 function tdDefeat(){
-  if(G._talentK8b){ // Eternal Knight: never lose battles
+  if(G._talentK8b){
     _td.baseHp=Math.max(1,Math.floor(_td.baseMax*.3));
     showT('⚜️ ETERNAL KNIGHT! Nekad förlust!','y');vibe([20,10,30]);
     tdUpdateBaseUI();return;
@@ -5640,9 +5944,8 @@ function tdDefeat(){
   _td.active=false;
   SFX.error&&SFX.error();vibe([50,30,100]);
   const sub=$('tdDefeatSub');if(sub)sub.textContent='Du klarade dig till wave '+_td.wave+'. Försök igen!';
-  $('baDefeat').style.display='flex';
+  const d=$('baDefeat');if(d)d.style.display='flex';
 }
-
 function addH(t,c='var(--g)'){G.hist.unshift({c,t,time:'just nu'});if(G.hist.length>30)G.hist.pop();}
 function closeModal(id){$(id)&&$(id).classList.remove('open');}
 function openModal(id){$(id)&&$(id).classList.add('open');}
@@ -8948,7 +9251,7 @@ let _fc={
   reel:{angle:0,speed:0,zoneStart:0,zoneSize:1,hitsNeeded:2,hits:0,misfires:0,fish:null,flashT:0,hitFlash:false,missFlash:false},
   raf:null,t:0,
 };
-const _fishState=_fc; // alias — fishing code uses both names
+const _fishState=_fc;
 function _getCurRod(){return FISH_RODS.find(r=>r.id===(G.fishRod||'bamboo'))||FISH_RODS[0];}
 
 // ── Render location chips ──
@@ -9057,7 +9360,7 @@ function _reelUpHook(){
 let _calmFishTimer=null;
 function _calmFishTap(fishEl,ft){
   if(_fishState.phase==='catching')return;
-  _fishState.phase='catching';_fishState._curFish=ft;
+  _fishState.phase='catching';_fishState.curFish=ft;
   if(_calmFishTimer)clearTimeout(_calmFishTimer);
   // Animate fish wiggle
   fishEl.style.transform='scale(1.4)';
@@ -10012,6 +10315,7 @@ $('flashBtn').addEventListener('click',()=>openModal('flashModal'));
 
 // ── PLAY VIEW ──
 function renderPlayView(){
+  renderArenaDaily();
   if(!_quests.length)initQuests();
   const sl=$('spinPlayLabel');if(sl)sl.textContent=G.lastSpin===new Date().toDateString()?'✅ Spinnat idag — kom tillbaka imorgon!':'🎰 Gratis spin tillgängligt nu!';
   const pbt=$('pbBestTag');if(pbt)pbt.textContent='Best: '+(localStorage.getItem('kv8_pbBest')||0)+'pts';
@@ -10038,6 +10342,95 @@ function renderPlayView(){
   const ul=$('playUppdragList');if(ul){const qHtml=_quests.slice(0,3).map((q)=>{const pct=Math.min(100,(q.progress/q.goal)*100);return`<div style="background:${q.done?'rgba(57,255,20,.06)':'rgba(100,0,200,.08)'};border:1.5px solid ${q.done?'rgba(57,255,20,.3)':'rgba(191,95,255,.2)'};border-radius:14px;padding:10px 12px;margin-bottom:8px;display:flex;align-items:center;gap:10px"><div style="font-size:24px">${q.ico}</div><div style="flex:1;min-width:0"><div style="font-size:12px;font-weight:900;color:${q.done?'var(--g)':'var(--t1)'}">${q.done?'✅ ':''} ${q.txt}</div><div style="width:100%;height:5px;background:rgba(255,255,255,.06);border-radius:100px;overflow:hidden;margin-top:5px"><div style="height:100%;width:${pct}%;background:${q.done?'var(--g)':'linear-gradient(90deg,#BF5FFF,#7B2FBE)'};border-radius:100px"></div></div></div><div style="font-size:10px;font-weight:900;color:var(--y);font-family:var(--mono);text-align:right">+${q.reward.xp}XP</div></div>`;}).join('');ul.innerHTML=qHtml||'<div style="color:var(--t3);text-align:center;padding:14px;font-size:12px">Inga aktiva uppdrag</div>';}
 }
 
+// ── ARENA DAILY ──
+const _ARENA_GAMES=[
+  {id:'td',nm:'TOWER DEFENSE',ico:'🏰',col:'255,0,127',fn:openBattle,desc:'Klara wave 5 → 3× XP'},
+  {id:'fish',nm:'FISKESPELET',ico:'🎣',col:'0,200,255',fn:openFishingGame,desc:'Fånga 3 fiskar → +200 KARMA'},
+  {id:'run',nm:'PET RUNNER',ico:'🐉',col:'191,95,255',fn:openPetRunner,desc:'Springa 500m → +150 KARMA'},
+  {id:'dna',nm:'DNA BREAKER',ico:'🧬',col:'57,255,20',fn:openPetBlocks,desc:'Rensa 5 rader → 2× Coins'},
+  {id:'mix',nm:'DNA MIXER',ico:'🧪',col:'255,159,10',fn:openDNAMixer,desc:'Mixa 2 DNA → +100 XP'},
+  {id:'spin',nm:'DAGLIGT SPIN',ico:'🎰',col:'255,215,0',fn:openGacha,desc:'Snurra hjulet → jackpot chans'},
+  {id:'fort',nm:'SPÅDOM',ico:'🔮',col:'191,95,255',fn:openFortuneOracle,desc:'Läs din fortune → +50 KARMA'},
+];
+const _ARENA_MISSIONS=[
+  {id:'care3',txt:'Skicka kärleksgodis 3×',ico:'💖',goal:3,gKey:'careCount',reward:'+100 KARMA'},
+  {id:'fish1',txt:'Fånga minst 1 fisk',ico:'🎣',goal:1,gKey:'fishCaught',reward:'+80 KARMA'},
+  {id:'lvl',txt:'Träna din pet 2×',ico:'🏋️',goal:2,gKey:'trainCount',reward:'+120 KARMA'},
+  {id:'social1',txt:'Posta i Social feed',ico:'💬',goal:1,gKey:'socialPosts',reward:'+60 XP'},
+  {id:'td5',txt:'Klara en wave i Tower Defense',ico:'⚔️',goal:1,gKey:'tdWaves',reward:'+200 KARMA'},
+];
+const _ARENA_PLAYERS=[
+  {nm:'sofiaK',em:'🦊',score:0},{nm:'ella_sthlm',em:'🐱',score:0},{nm:'bjorn99',em:'🐺',score:0},
+  {nm:'LunaPet',em:'🌙',score:0},{nm:'MaxDragon',em:'🐉',score:0},{nm:'IceWolf_7',em:'🐻',score:0},
+];
+let _arenaInterval=null;
+function renderArenaDaily(){
+  const todayIdx=new Date().getDate()%_ARENA_GAMES.length;
+  const feat=_ARENA_GAMES[todayIdx];
+  const f=$('arenaFeatured');
+  if(f){
+    f.onclick=feat.fn;
+    const bg=$('arenaFeatBg');if(bg)bg.style.background=`radial-gradient(ellipse at 30% 50%,rgba(${feat.col},.5) 0%,rgba(${feat.col},.1) 60%,transparent 100%)`;
+    const ico=$('arenaFeatIco');if(ico){ico.textContent=feat.ico;ico.style.filter=`drop-shadow(0 0 20px rgba(${feat.col},.9))`;}
+    const nm=$('arenaFeatName');if(nm)nm.textContent=feat.nm;
+    const desc=$('arenaFeatDesc');if(desc)desc.textContent=feat.desc;
+    f.style.background=`linear-gradient(135deg,rgba(${feat.col},.12) 0%,rgba(0,0,0,.8) 100%)`;
+    f.style.border=`2px solid rgba(${feat.col},.6)`;
+    f.style.boxShadow=`0 0 24px rgba(${feat.col},.25)`;
+  }
+  // Missions — pick 3 for today
+  const seed=new Date().getDate();
+  const todayMissions=[_ARENA_MISSIONS[seed%5],_ARENA_MISSIONS[(seed+1)%5],_ARENA_MISSIONS[(seed+2)%5]];
+  const mc=$('arenaMissions');
+  if(mc){
+    mc.innerHTML=todayMissions.map(m=>{
+      const prog=Math.min(m.goal,G[m.gKey]||0);
+      const done=prog>=m.goal;
+      const pct=Math.round(prog/m.goal*100);
+      return`<div style="background:rgba(${done?'57,255,20':'255,255,255'},.05);border:1.5px solid rgba(${done?'57,255,20':'255,255,255'},.${done?'3':'08'});border-radius:12px;padding:9px 12px;display:flex;align-items:center;gap:10px">
+        <span style="font-size:18px">${done?'✅':m.ico}</span>
+        <div style="flex:1;min-width:0">
+          <div style="font-size:10px;font-weight:900;color:${done?'var(--g)':'var(--t2)'};line-height:1">${m.txt}</div>
+          <div style="width:100%;height:4px;background:rgba(255,255,255,.06);border-radius:4px;overflow:hidden;margin-top:5px"><div style="height:100%;width:${pct}%;background:${done?'linear-gradient(90deg,#39FF14,#00D9FF)':'linear-gradient(90deg,rgba(191,95,255,.8),rgba(0,217,255,.8))'};border-radius:4px;transition:width .6s"></div></div>
+        </div>
+        <div style="font-size:8px;font-weight:900;color:var(--y);font-family:var(--mono);flex-shrink:0">${m.reward}</div>
+      </div>`;
+    }).join('');
+  }
+  // Leaderboard — seed-stable fake scores + real user score
+  const dayScore=(G.tdWaves||0)*120+(G.fishCaught||0)*80+(G.trainCount||0)*40+(G.careCount||0)*20;
+  const fakeSeed=new Date().getDate()*317;
+  const fakeScores=_ARENA_PLAYERS.map((p,i)=>({...p,score:Math.abs((fakeSeed*(i+1)*7)%4500)+dayScore*1.1+i*200}));
+  fakeScores.push({nm:G.petName||'Din pet',em:G.petEmoji||'🐾',score:dayScore,isMe:true});
+  fakeScores.sort((a,b)=>b.score-a.score);
+  const lb=$('arenaLB');
+  if(lb){
+    const medals=['🥇','🥈','🥉'];
+    lb.innerHTML=fakeScores.slice(0,5).map((p,i)=>{
+      const isMe=p.isMe;
+      return`<div style="display:flex;align-items:center;gap:8px;padding:5px 0;border-bottom:1px solid rgba(255,255,255,.04)${i===4?';border-bottom:none':''}">
+        <span style="font-size:13px;width:20px;text-align:center;flex-shrink:0">${medals[i]||'#'+(i+1)}</span>
+        <span style="font-size:16px">${p.em}</span>
+        <span style="flex:1;font-size:11px;font-weight:${isMe?900:700};color:${isMe?'#FFD700':'var(--t2)'}">${p.nm}${isMe?' (DU)':''}</span>
+        <span style="font-size:10px;font-weight:900;color:${isMe?'#FFD700':'var(--t3)'};font-family:var(--mono)">${Math.round(p.score).toLocaleString()}</span>
+      </div>`;
+    }).join('');
+  }
+  // Countdown to midnight
+  _arenaCountdown();
+  if(_arenaInterval)clearInterval(_arenaInterval);
+  _arenaInterval=setInterval(_arenaCountdown,1000);
+}
+function _arenaCountdown(){
+  const now=new Date();
+  const midnight=new Date(now);midnight.setHours(24,0,0,0);
+  const diff=midnight-now;
+  const h=String(Math.floor(diff/3600000)).padStart(2,'0');
+  const m=String(Math.floor(diff%3600000/60000)).padStart(2,'0');
+  const s=String(Math.floor(diff%60000/1000)).padStart(2,'0');
+  const el=$('arenaCountdown');if(el)el.textContent='⏱ '+h+':'+m+':'+s;
+}
+
 // ── ME VIEW ──
 function switchMeTab(tab, el){
   document.querySelectorAll('.me-stab').forEach(t=>t.classList.remove('on'));
@@ -10056,22 +10449,41 @@ function switchMeTab(tab, el){
 function renderMeRum(){
   // Update pet emoji
   const pet=$('meRumPet');if(pet)pet.textContent=G.petEmoji||'🐉';
-  // Update stats
-  const h=$('meRumHunger');if(h)h.textContent=G.hunger||80;
-  const e=$('meRumEnergy');if(e)e.textContent=G.energy||100;
-  const m=$('meRumMood');if(m)m.textContent=G.mood||90;
-  const k=$('meRumKarma');if(k)k.textContent=G.karma||42;
+  // Update stat numbers
+  const hv=G.hunger||80,ev=G.energy||100,mv=G.mood||90;
+  const h=$('meRumHunger');if(h)h.textContent=hv;
+  const e=$('meRumEnergy');if(e)e.textContent=ev;
+  const m=$('meRumMood');if(m)m.textContent=mv;
+  // Update progress bars
+  const bh=$('meBarHunger');if(bh)bh.style.width=Math.max(0,Math.min(100,hv))+'%';
+  const be=$('meBarEnergy');if(be)be.style.width=Math.max(0,Math.min(100,ev))+'%';
+  const bm=$('meBarMood');if(bm)bm.style.width=Math.max(0,Math.min(100,mv))+'%';
+  // XP bar
+  const xpNeed=(G.level||1)*100;const xpHave=G.xp||0;
+  const xpPct=Math.round((xpHave%xpNeed)/xpNeed*100);
+  const xb=$('meRumXpBar');if(xb)xb.style.width=xpPct+'%';
   // Level badge
-  const lb=$('meRumLvBadge');if(lb)lb.textContent='🏠 LV'+(G.level||1);
+  const lb=$('meRumLvBadge');if(lb)lb.textContent='LV '+(G.level||1);
+  // Karma + streak badges
+  const kb=$('meRumKarmaBadge');if(kb)kb.textContent='⚡ '+(G.karma||0)+'K';
+  const sb=$('meRumStreakBadge');if(sb)sb.textContent='🔥 '+(G.streak||0)+'d';
   // Animated star canvas
   const sc=$('meRumStarsCanvas');
   if(sc&&!sc._init){
     sc._init=true;
     const ctx=sc.getContext('2d');
-    sc.width=sc.offsetWidth||380;sc.height=sc.offsetHeight||280;
-    const stars=Array.from({length:60},()=>({x:Math.random()*sc.width,y:Math.random()*sc.height,r:Math.random()*1.5+.3,a:Math.random(),da:0.002+Math.random()*.004}));
-    const animS=()=>{ctx.clearRect(0,0,sc.width,sc.height);stars.forEach(s=>{s.a+=s.da;if(s.a>1||s.a<0.1)s.da*=-1;ctx.beginPath();ctx.arc(s.x,s.y,s.r,0,Math.PI*2);ctx.fillStyle='rgba(255,255,255,'+s.a.toFixed(2)+')';ctx.fill();});requestAnimationFrame(animS);};
+    sc.width=sc.offsetWidth||380;sc.height=sc.offsetHeight||300;
+    const stars=Array.from({length:80},()=>({x:Math.random()*sc.width,y:Math.random()*sc.height,r:Math.random()*1.8+.2,a:Math.random(),da:0.002+Math.random()*.005,col:Math.random()<.15?'57,255,20':Math.random()<.15?'0,217,255':'255,255,255'}));
+    const animS=()=>{ctx.clearRect(0,0,sc.width,sc.height);stars.forEach(s=>{s.a+=s.da;if(s.a>1||s.a<.05)s.da*=-1;ctx.beginPath();ctx.arc(s.x,s.y,s.r,0,Math.PI*2);ctx.fillStyle='rgba('+s.col+','+s.a.toFixed(2)+')';ctx.fill();});requestAnimationFrame(animS);};
     animS();
+  }
+  // Floating dust particles
+  const pp=$('meRumParticles');
+  if(pp&&!pp._init){
+    pp._init=true;
+    const mkP=()=>{const d=document.createElement('div');const x=Math.random()*100;const dur=4+Math.random()*6;const sz=Math.random()*4+2;const cols=['rgba(57,255,20,.6)','rgba(0,217,255,.5)','rgba(191,95,255,.5)','rgba(255,215,0,.4)'];d.style.cssText=`position:absolute;left:${x}%;bottom:-10px;width:${sz}px;height:${sz}px;border-radius:50%;background:${cols[Math.floor(Math.random()*cols.length)]};animation:rumFloat ${dur.toFixed(1)}s linear infinite;animation-delay:-${(Math.random()*dur).toFixed(1)}s;pointer-events:none`;pp.appendChild(d);if(pp.children.length>18)pp.removeChild(pp.children[0]);};
+    for(let i=0;i<14;i++)mkP();setInterval(mkP,2200);
+    if(!document.querySelector('#rumFloatKf')){const s=document.createElement('style');s.id='rumFloatKf';s.textContent='@keyframes rumFloat{0%{transform:translateY(0) scale(1);opacity:0}10%{opacity:1}90%{opacity:.5}100%{transform:translateY(-310px) scale(.3);opacity:0}}';document.head.appendChild(s);}
   }
   // Room items
   const items=$('meRumItems');
@@ -10594,6 +11006,8 @@ function _applyLang(){
     if(!nlEl)return;
     if(v==='home')nlEl.textContent=L.home||nlEl.textContent;
     else if(v==='play')nlEl.textContent=_curLang==='en'?'PLAY':'SPELA';
+    else if(v==='social')nlEl.textContent=_curLang==='en'?'SOCIAL':'SOCIAL';
+    else if(v==='explore')nlEl.textContent=_curLang==='en'?'EXPLORE':'UTFORSKA';
     else if(v==='world')nlEl.textContent=_curLang==='en'?'WORLD':'VÄRLD';
     else if(v==='me')nlEl.textContent=_curLang==='en'?'ME':'JAG';
   });
@@ -13760,7 +14174,7 @@ const TT_PATHS=[
     {id:'s4',em:'🏆',nm:'KARMA LEGEND',desc:'Profil: Legendary badge',cost:3,req:'s3'},
   ]},
 ];
-let _ttActiveBranch=null;
+var _ttActiveBranch=null;
 function renderTalentSimple(){
   const scroll=$('ttSimpleScroll');if(!scroll)return;
   const pts=G.talentPts||G.talentPoints||0;
