@@ -1137,6 +1137,8 @@ button:active{opacity:.85;}
 .nb .ni{font-size:19px;transition:transform .15s;}
 .nb .nl{font-size:9px;font-weight:800;color:var(--t3);text-transform:uppercase;letter-spacing:.3px;transition:color .15s;}
 @keyframes fabPulse{0%,100%{box-shadow:0 6px 24px rgba(255,45,85,.5),0 0 0 1.5px rgba(255,255,255,.12);}50%{box-shadow:0 8px 32px rgba(255,45,85,.7),0 0 0 1.5px rgba(255,255,255,.2);}}
+@keyframes pulse{0%,100%{opacity:1;}50%{opacity:.5;}}
+@keyframes incomeFloat{0%{opacity:1;transform:translateY(0) scale(1);}80%{opacity:.8;transform:translateY(-60px) scale(1.2);}100%{opacity:0;transform:translateY(-90px) scale(.8);}}
 /* SpawnEngine-style: colored bg square on active tab */
 .nb[data-v="home"].on .nb-inner{background:rgba(57,255,20,.22);}
 .nb[data-v="home"].on .nl{color:#39FF14;}
@@ -2761,6 +2763,11 @@ div[style*="LIVE"]{border-radius:16px!important;background:rgba(57,255,20,.03)!i
             <span id="petSpeechText">✨ Din pet väntar på dig...</span>
           </div>
         </div>
+        <!-- Pet age + sick badges -->
+        <div style="display:flex;align-items:center;gap:7px;padding:0 14px 8px;flex-wrap:wrap">
+          <div id="petAgeDisplay" style="font-size:9px;font-weight:900;color:var(--t3);font-family:var(--mono);background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:20px;padding:3px 9px">Dag 0</div>
+          <div id="petSickBadge" onclick="cureSickPet()" style="display:none;align-items:center;gap:4px;font-size:9px;font-weight:900;color:#FF2D55;font-family:var(--mono);background:rgba(255,45,85,.1);border:1px solid rgba(255,45,85,.4);border-radius:20px;padding:3px 9px;cursor:pointer;animation:pulse 1.5s ease-in-out infinite">🤒 SJUK — 50💰 BOTA</div>
+        </div>
         <!-- hidden JS refs -->
         <div style="display:none">
           <span id="xpNums">0/150</span><div id="xpSegBar"></div><div id="xpBarSub"></div>
@@ -3233,6 +3240,12 @@ div[style*="LIVE"]{border-radius:16px!important;background:rgba(57,255,20,.03)!i
           <div class="tab" onclick="switchSocial('friends',this)">👥 Vänner</div>
           <div class="tab" onclick="switchSocial('dm',this)">💬 DMs</div>
           <div class="tab" onclick="switchSocial('circles',this)">⭕ Circles</div>
+        </div>
+      </div>
+      <!-- STORIES BAR -->
+      <div style="padding:12px 14px 0;overflow:hidden">
+        <div style="display:flex;gap:12px;overflow-x:auto;scrollbar-width:none;padding-bottom:2px" id="storiesBar">
+          <!-- Populated by renderStoriesBarSocial() -->
         </div>
       </div>
       <div id="socialContent" style="flex:1;overflow-y:auto;scrollbar-width:none"></div>
@@ -3748,6 +3761,11 @@ div[style*="LIVE"]{border-radius:16px!important;background:rgba(57,255,20,.03)!i
       <div style="margin:4px 14px 8px;display:flex;gap:8px">
         <button onclick="showDailyRewardModal(parseInt(localStorage.getItem('kv8_rewardDay')||'1'))" style="flex:1;background:linear-gradient(135deg,rgba(255,215,0,.15),rgba(255,159,10,.1));border:1px solid rgba(255,215,0,.4);border-radius:14px;padding:12px;cursor:pointer;color:#FFD700;font-size:13px;font-weight:900;font-family:var(--mono)">🎁 DAGLIG BELÖNING</button>
       </div>
+      <!-- PET PROFILE CARD + SHARE -->
+      <div style="margin:0 14px 10px;display:flex;gap:8px">
+        <button onclick="openPetProfileCard()" style="flex:1;background:linear-gradient(135deg,rgba(191,95,255,.15),rgba(0,217,255,.1));border:1.5px solid rgba(191,95,255,.4);border-radius:14px;padding:11px;cursor:pointer;color:var(--p);font-size:12px;font-weight:900;font-family:var(--mono);display:flex;align-items:center;justify-content:center;gap:7px">✨ MITT PET-KORT</button>
+        <button onclick="sharePet()" style="background:rgba(57,255,20,.1);border:1.5px solid rgba(57,255,20,.35);border-radius:14px;padding:11px 14px;cursor:pointer;color:var(--g);font-size:12px;font-weight:900;font-family:var(--mono)">📤 DELA</button>
+      </div>
       <!-- ACHIEVEMENTS -->
       <div class="sh" style="margin-top:8px"><div class="sh-t">🏆 ACHIEVEMENTS</div><div class="sh-a" id="playAchCount" style="color:var(--y)">0 / 17</div></div>
       <div id="playAchGrid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;padding:0 14px 4px"></div>
@@ -3801,10 +3819,12 @@ div[style*="LIVE"]{border-radius:16px!important;background:rgba(57,255,20,.03)!i
               <button onclick="openRoomShop()" style="background:rgba(0,217,255,.12);border:1.5px solid rgba(0,217,255,.5);border-radius:20px;color:var(--b);font-size:10px;font-weight:900;padding:5px 12px;cursor:pointer;font-family:var(--ff);backdrop-filter:blur(8px)">🎨 DEKORERA</button>
             </div>
           </div>
-          <!-- Karma + streak badges -->
+          <!-- Karma + streak + age + sick badges -->
           <div style="position:absolute;bottom:54px;right:12px;display:flex;flex-direction:column;gap:6px;z-index:6">
             <div style="background:rgba(0,0,0,.65);border:1.5px solid rgba(255,215,0,.4);border-radius:10px;padding:4px 9px;font-size:10px;font-weight:900;color:#FFD700;font-family:var(--mono);backdrop-filter:blur(6px)" id="meRumKarmaBadge">⚡ 42K</div>
             <div style="background:rgba(0,0,0,.65);border:1.5px solid rgba(255,45,85,.4);border-radius:10px;padding:4px 9px;font-size:10px;font-weight:900;color:var(--pk);font-family:var(--mono);backdrop-filter:blur(6px)" id="meRumStreakBadge">🔥 0d</div>
+            <div style="background:rgba(0,0,0,.65);border:1.5px solid rgba(100,150,255,.4);border-radius:10px;padding:4px 9px;font-size:10px;font-weight:900;color:#aad4ff;font-family:var(--mono);backdrop-filter:blur(6px)" id="meRumAgeDisplay">📅 Dag 0</div>
+            <div onclick="cureSickPet();renderMeRoom()" id="meRumSickBadge" style="display:none;background:rgba(255,45,85,.2);border:1.5px solid rgba(255,45,85,.6);border-radius:10px;padding:4px 9px;font-size:10px;font-weight:900;color:#FF2D55;font-family:var(--mono);backdrop-filter:blur(6px);cursor:pointer;animation:pulse 1.5s ease-in-out infinite">🤒 SJUK</div>
           </div>
         </div>
 
@@ -3897,6 +3917,11 @@ div[style*="LIVE"]{border-radius:16px!important;background:rgba(57,255,20,.03)!i
         <div style="padding:14px 14px 8px;display:flex;align-items:center;justify-content:space-between">
           <div style="font-size:14px;font-weight:900">📖 Pet Dagbok</div>
           <div style="font-size:10px;color:var(--t3)">De senaste minnena</div>
+        </div>
+        <!-- Pet memories (real-time events) -->
+        <div style="margin:0 14px 10px;background:rgba(191,95,255,.06);border:1.5px solid rgba(191,95,255,.25);border-radius:16px;padding:12px 14px">
+          <div style="font-size:10px;font-weight:900;color:var(--p);font-family:var(--mono);letter-spacing:1px;margin-bottom:8px">🧠 PET MINNEN</div>
+          <div id="petMemoriesBox"></div>
         </div>
         <div id="meDagbokList" style="padding:0 14px"></div>
         <div class="vend"></div>
@@ -4013,6 +4038,42 @@ div[style*="LIVE"]{border-radius:16px!important;background:rgba(57,255,20,.03)!i
   <div class="fbd" style="padding:15px" id="detailBody"></div>
 </div>
 <!-- MODALS -->
+  <!-- PET PROFILE CARD MODAL -->
+  <div id="petCardModal" style="display:none;position:fixed;inset:0;z-index:1200;background:rgba(0,0,0,.92);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);align-items:center;justify-content:center">
+    <div style="width:min(340px,90vw);position:relative">
+      <button onclick="closePetCard2()" style="position:absolute;top:-44px;right:0;background:none;border:none;color:rgba(255,255,255,.6);font-size:24px;cursor:pointer">✕</button>
+      <!-- The card itself -->
+      <div id="petCardInner" style="border-radius:24px;overflow:hidden;box-shadow:0 24px 80px rgba(0,0,0,.8),0 0 0 1px rgba(255,255,255,.06)">
+        <!-- Card header gradient -->
+        <div id="petCardHeader" style="height:140px;background:linear-gradient(135deg,#0d0020 0%,#14003a 50%,#050018 100%);position:relative;display:flex;align-items:center;justify-content:center;overflow:hidden">
+          <div style="position:absolute;inset:0;background:radial-gradient(ellipse at 50% 0%,rgba(191,95,255,.3) 0%,transparent 70%);pointer-events:none"></div>
+          <div id="petCardEmoji" style="font-size:72px;filter:drop-shadow(0 0 32px rgba(191,95,255,.9));animation:petBob 2s ease-in-out infinite;position:relative;z-index:1">🐉</div>
+          <div style="position:absolute;top:12px;right:12px;background:rgba(0,0,0,.5);border:1px solid rgba(191,95,255,.4);border-radius:10px;padding:4px 10px;font-size:9px;font-weight:900;color:var(--p);font-family:var(--mono)" id="petCardRarity">MYTHIC</div>
+        </div>
+        <!-- Card body -->
+        <div style="background:linear-gradient(180deg,#0a0015 0%,#060010 100%);padding:20px 20px 24px">
+          <div id="petCardName" style="font-size:22px;font-weight:900;color:#fff;font-family:var(--mono);letter-spacing:.5px;margin-bottom:2px">DRAGONEN</div>
+          <div id="petCardSpecies" style="font-size:10px;color:rgba(191,95,255,.7);font-family:var(--mono);letter-spacing:2px;margin-bottom:16px">DRAGON · LV 1</div>
+          <!-- Stat bars -->
+          <div style="display:flex;flex-direction:column;gap:6px;margin-bottom:16px">
+            <div style="display:flex;align-items:center;gap:10px"><span style="font-size:12px;width:18px">🍖</span><div style="flex:1;height:6px;background:rgba(255,255,255,.08);border-radius:6px;overflow:hidden"><div id="pcHBar" style="height:100%;background:linear-gradient(90deg,#FF9F0A,#FFD700);border-radius:6px;width:80%;transition:width .5s"></div></div><span id="pcHNum" style="font-size:9px;color:var(--o);font-family:var(--mono);width:24px;text-align:right">80</span></div>
+            <div style="display:flex;align-items:center;gap:10px"><span style="font-size:12px;width:18px">⚡</span><div style="flex:1;height:6px;background:rgba(255,255,255,.08);border-radius:6px;overflow:hidden"><div id="pcEBar" style="height:100%;background:linear-gradient(90deg,#00D9FF,#00FFFF);border-radius:6px;width:100%;transition:width .5s"></div></div><span id="pcENum" style="font-size:9px;color:var(--b);font-family:var(--mono);width:24px;text-align:right">100</span></div>
+            <div style="display:flex;align-items:center;gap:10px"><span style="font-size:12px;width:18px">💖</span><div style="flex:1;height:6px;background:rgba(255,255,255,.08);border-radius:6px;overflow:hidden"><div id="pcMBar" style="height:100%;background:linear-gradient(90deg,#BF5FFF,#FF2D55);border-radius:6px;width:90%;transition:width .5s"></div></div><span id="pcMNum" style="font-size:9px;color:var(--p);font-family:var(--mono);width:24px;text-align:right">90</span></div>
+          </div>
+          <!-- KARMA -->
+          <div style="background:rgba(57,255,20,.06);border:1px solid rgba(57,255,20,.2);border-radius:12px;padding:10px 14px;display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
+            <span style="font-size:10px;font-weight:900;color:var(--g);font-family:var(--mono)">⚡ KARMA POÄNG</span>
+            <span id="petCardKarma" style="font-size:18px;font-weight:900;color:var(--g);font-family:var(--mono);text-shadow:0 0 14px rgba(57,255,20,.6)">0</span>
+          </div>
+          <!-- Actions -->
+          <div style="display:flex;gap:8px">
+            <button onclick="sharePet()" style="flex:1;background:linear-gradient(135deg,rgba(57,255,20,.15),rgba(0,217,255,.1));border:1.5px solid rgba(57,255,20,.4);border-radius:12px;padding:10px;color:var(--g);font-size:11px;font-weight:900;cursor:pointer;font-family:var(--mono)">📤 DELA KORTET</button>
+            <button onclick="closePetCard2()" style="background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:12px;padding:10px 16px;color:var(--t3);font-size:11px;cursor:pointer">✕</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 <div class="modal" id="flashModal">
   <div class="ms">
     <div class="mh"></div>
@@ -5965,7 +6026,7 @@ function _offsetLatLon(lat,lon,distM,bearingDeg){
   }catch(e){return{lat:lat,lon:lon};}
 }
 function fmtD(m){return m<1000?Math.round(m)+'m':+(m/1000).toFixed(1)+'km';}
-function save(){try{const d={n:G.name,p:G.petEmoji,pn:G.petName,l:G.level,c:G.coins,kc:G.kc||0,st:G.streak,x:G.exp,as:G.actionStat,cs:G.commerceStat,ss:G.socialStat,g:JSON.stringify(G.gear),eg:G.equippedGear||'',sek:G.totalSEK,ts:G.trustScore,posts:G.postCount,b:G.bountiesDone,hu:G.hunger,en:G.energy,mo:G.mood,brands:JSON.stringify(G.brands),circles:JSON.stringify(G.circles),sw:JSON.stringify(G.streakWeek),petCfg:JSON.stringify(G.petConfig),pm:G.premium?1:0,pt:G.premiumTier,wld:G.world,bond:JSON.stringify(G.todayBond),bdate:G.bondDate,wp:G.worldPoints,bz:JSON.stringify(G.builtZones),wpc:G.wildPetsCaught,wflash:G.wldFlash,wbattle:G.wldBattle,wmarket:G.wldMarket,wstreak:G.wldStreak,wsocial:G.wldSocial,po:G.packsOpened,col:JSON.stringify(G.collectibles),tp:G.talentPoints,tl:JSON.stringify(G.talents),tlvl:JSON.stringify(G.talentLvls||{}),diary:JSON.stringify(G.diaryEntries.slice(-20)),ls:G.lastSpin,ltt:G.lastTalkTime||0,lwb:G.lastWpBoost||0,castle:JSON.stringify(G.castle||{}),ownedZones:JSON.stringify(G.ownedZones||[]),expeditionVisits:JSON.stringify(G.expeditionVisits||[]),terrLastIncome:JSON.stringify(G.terrLastIncome||{}),dnaMixes:JSON.stringify(G.dnaMixes||[]),lastFortune:G.lastFortune||'',lft:G.lastFlashTime||0,lfd:G.lastFlashDate||'',pdna:JSON.stringify(G.petDNA||{body:'base',element:'none',perk:'none'}),dinv:JSON.stringify(G.dnaInventory||[]),pmem:JSON.stringify(G.petMemory||{}),expd:JSON.stringify(G.expedition||{})};for(const k in d)localStorage.setItem('kv8_'+k,d[k]);localStorage.setItem('kv8_lastFortune',G.lastFortune||'');}catch(e){}sbQueueSync();}
+function save(){try{const d={n:G.name,p:G.petEmoji,pn:G.petName,l:G.level,c:G.coins,kc:G.kc||0,st:G.streak,x:G.exp,as:G.actionStat,cs:G.commerceStat,ss:G.socialStat,g:JSON.stringify(G.gear),eg:G.equippedGear||'',sek:G.totalSEK,ts:G.trustScore,posts:G.postCount,b:G.bountiesDone,hu:G.hunger,en:G.energy,mo:G.mood,brands:JSON.stringify(G.brands),circles:JSON.stringify(G.circles),sw:JSON.stringify(G.streakWeek),petCfg:JSON.stringify(G.petConfig),pm:G.premium?1:0,pt:G.premiumTier,wld:G.world,bond:JSON.stringify(G.todayBond),bdate:G.bondDate,wp:G.worldPoints,bz:JSON.stringify(G.builtZones),wpc:G.wildPetsCaught,wflash:G.wldFlash,wbattle:G.wldBattle,wmarket:G.wldMarket,wstreak:G.wldStreak,wsocial:G.wldSocial,po:G.packsOpened,col:JSON.stringify(G.collectibles),tp:G.talentPoints,tl:JSON.stringify(G.talents),tlvl:JSON.stringify(G.talentLvls||{}),diary:JSON.stringify(G.diaryEntries.slice(-20)),ls:G.lastSpin,ltt:G.lastTalkTime||0,lwb:G.lastWpBoost||0,castle:JSON.stringify(G.castle||{}),ownedZones:JSON.stringify(G.ownedZones||[]),expeditionVisits:JSON.stringify(G.expeditionVisits||[]),terrLastIncome:JSON.stringify(G.terrLastIncome||{}),dnaMixes:JSON.stringify(G.dnaMixes||[]),lastFortune:G.lastFortune||'',lft:G.lastFlashTime||0,lfd:G.lastFlashDate||'',pdna:JSON.stringify(G.petDNA||{body:'base',element:'none',perk:'none'}),dinv:JSON.stringify(G.dnaInventory||[]),pmem:JSON.stringify(G.petMemory||{}),expd:JSON.stringify(G.expedition||{}),pbd:G.birthDate||0,psk:G.petSick?1:0,pmems:JSON.stringify(G.petMemories||[]),lpc:G.lastPassiveCheck||0};for(const k in d)localStorage.setItem('kv8_'+k,d[k]);localStorage.setItem('kv8_lastFortune',G.lastFortune||'');}catch(e){}sbQueueSync();}
 
 // ── DNA + MOOD SYSTEM ──
 function getPetDNA(){
@@ -6480,6 +6541,9 @@ function pcFeed(){
   G.coins-=10;
   G.hunger=Math.min(100,G.hunger+(G._talentD1?42:35));  // D1 Pet Lover: +20% hunger from food
   G.mood=Math.min(100,G.mood+(G._talentD5b?10:5));       // D5b Herbal Remedy: +5 MOOD per feeding
+  G.hunger=Math.min(100,Math.max(0,G.hunger));
+  G.energy=Math.min(100,Math.max(0,G.energy));
+  G.mood=Math.min(100,Math.max(0,G.mood));
   G._lastFeed=now;
   pcReact('happy');showPetEmote('😋');
   const mult=_triggerCombo('+35 HUNGER +3XP');
@@ -6496,6 +6560,9 @@ function pcTrain(){
   const _bloodFury=G._talentK8a&&((G.petMemory.totalTrains||0)%3===2);
   if(!_bloodFury&&G.energy<20){showT('❌ Låg energi! Sova först.','r');SFX.error();return;}
   if(!_bloodFury)G.energy-=20;
+  G.hunger=Math.min(100,Math.max(0,G.hunger));
+  G.energy=Math.min(100,Math.max(0,G.energy));
+  G.mood=Math.min(100,Math.max(0,G.mood));
   G.petMemory.totalTrains=(G.petMemory.totalTrains||0)+1;
   const mult=_triggerCombo('+'+Math.floor(15*mult2())+' XP');
   const base=15;
@@ -6518,6 +6585,9 @@ function pcSleep(){
   const CD_MIN=60;const now=Date.now();const last=G._lastSleep||0;const elapsed=(now-last)/60000;
   if(elapsed<CD_MIN){const rem=Math.ceil(CD_MIN-elapsed);showT('😴 Vila kvar! '+rem+' min','y');SFX.error();return;}
   G.energy=Math.min(100,G.energy+50);G.mood=Math.min(100,G.mood+10);G._lastSleep=now;
+  G.hunger=Math.min(100,Math.max(0,G.hunger));
+  G.energy=Math.min(100,Math.max(0,G.energy));
+  G.mood=Math.min(100,Math.max(0,G.mood));
   gainXP(5,'action');
   floatStat('😴 +50 ENERGY  +5XP','#00D9FF');
   petAnimState.mood='sleeping';showPetEmote('💤');showT('😴 +50 ENERGY · +5XP · CD: 60 min','g');
@@ -6529,6 +6599,9 @@ function pcPlay(){
   if((now-last)/60000<CD_MIN){showT('🎮 Ledsen! Vänta '+Math.ceil(CD_MIN-(now-last)/60000)+' min','y');SFX.error();return;}
   if(G.energy<10){showT('❌ Behöver energi!','r');SFX.error();return;}
   G.energy-=10;G.mood=Math.min(100,G.mood+25);G._lastPlay=now;
+  G.hunger=Math.min(100,Math.max(0,G.hunger));
+  G.energy=Math.min(100,Math.max(0,G.energy));
+  G.mood=Math.min(100,Math.max(0,G.mood));
   floatStat('🎮 +25 MOOD  +5⚡','#BF5FFF');
   const mult=_triggerCombo('+5⚡ +5XP');
   gainCoins(Math.floor(5*mult2()));gainXP(Math.floor(5*mult2()),'social');
@@ -6542,6 +6615,9 @@ function pcBath(){
   if(G.coins<3){showT('❌ Behöver 3 coins','r');return;}
   G.coins-=3;G._lastBath=now;
   G.trustScore=Math.min(100,G.trustScore+3);G.mood=Math.min(100,G.mood+18);
+  G.hunger=Math.min(100,Math.max(0,G.hunger));
+  G.energy=Math.min(100,Math.max(0,G.energy));
+  G.mood=Math.min(100,Math.max(0,G.mood));
   floatStat('🛁 +18 MOOD  +3KRM','#39FF14');
   gainXP(10,'social');pcReact('happy');showPetEmote('✨');
   const mult=_triggerCombo('+18 MOOD');
@@ -6555,6 +6631,9 @@ function pcTalk(){
   if(elapsed<cd){const left=Math.ceil((cd-elapsed)/1000);showT('⏳ '+left+'s till nästa bond — pet behöver pausa!','y');vibe(5);return;}
   G.lastTalkTime=now;
   G.mood=Math.min(100,G.mood+10);G.energy=Math.min(100,G.energy+5);
+  G.hunger=Math.min(100,Math.max(0,G.hunger));
+  G.energy=Math.min(100,Math.max(0,G.energy));
+  G.mood=Math.min(100,Math.max(0,G.mood));
   floatStat('💬 +10 MOOD  +5XP','#FF007F');
   gainXP(5,'social');petAnimState.mood='happy';
   const mult=_triggerCombo('💖 PET HAPPY');
@@ -6712,6 +6791,7 @@ function updatePetView(){
     else _st.textContent='✨ '+_pet+' hänger med dig. Vad gör vi nu?';
   }
   renderEvolTree();
+  if(typeof _updatePetAgeSick==='function')_updatePetAgeSick();
 }
 
 // ── GEAR ──
@@ -10265,6 +10345,119 @@ function sharePetCard(){
   else{navigator.clipboard?.writeText(txt);showT('📋 Kopierat till clipboard!','g');}
 }
 
+// ── PET CARD HELPERS ──
+function sharePet(){sharePetCard();}
+function closePetCard2(){const m=$('petCardModal');if(m)m.style.display='none';}
+function openPetProfileCard(){
+  const m=$('petCardModal');if(!m)return;
+  const s=getEvolStage&&getEvolStage()||{name:'OKÄND',ico:'🐾'};
+  const rlvl=G.level<5?'COMMON':G.level<15?'RARE':G.level<30?'EPIC':'LEGENDARY';
+  const em=$('petCardEmoji');if(em)em.textContent=G.petEmoji||'🐉';
+  const nm=$('petCardName');if(nm)nm.textContent=G.petName||'Min Pet';
+  const sp=$('petCardSpecies');if(sp)sp.textContent=(s.ico||'🐾')+' '+s.name+' · LV '+(G.level||1);
+  const rr=$('petCardRarity');if(rr)rr.textContent=rlvl;
+  const hb=$('pcHBar');if(hb)hb.style.width=Math.round(G.hunger||80)+'%';
+  const eb=$('pcEBar');if(eb)eb.style.width=Math.round(G.energy||100)+'%';
+  const mb=$('pcMBar');if(mb)mb.style.width=Math.round(G.mood||90)+'%';
+  const hn=$('pcHNum');if(hn)hn.textContent=Math.round(G.hunger||80);
+  const en=$('pcENum');if(en)en.textContent=Math.round(G.energy||100);
+  const mn=$('pcMNum');if(mn)mn.textContent=Math.round(G.mood||90);
+  const kk=$('petCardKarma');if(kk)kk.textContent=G.trustScore||0;
+  m.style.display='flex';
+}
+
+// ── TAMAGOTCHI CORE SYSTEM ──
+function _getPetAge(){
+  if(!G.birthDate){G.birthDate=Date.now();save();}
+  return Math.floor((Date.now()-G.birthDate)/(86400000));
+}
+
+function _checkPassiveDecay(){
+  const now=Date.now();
+  const last=G.lastPassiveCheck||now;
+  G.lastPassiveCheck=now;
+  const elapsedMin=(now-last)/60000;
+  if(elapsedMin<1)return;
+  G.hunger=Math.max(0,Math.min(100,(G.hunger||80)-Math.floor(elapsedMin*0.4)));
+  G.energy=Math.max(0,Math.min(100,(G.energy||100)-Math.floor(elapsedMin*0.2)));
+  G.mood=Math.max(0,Math.min(100,(G.mood||90)-Math.floor(elapsedMin*0.15)));
+  if(G.hunger<20&&elapsedMin>=30&&!G.petSick){
+    G.petSick=true;
+    if(!G.petMemories)G.petMemories=[];
+    G.petMemories.unshift({ico:'🤒',txt:(G.petName||'Din pet')+' blev sjuk pga hunger!',ts:now});
+    if(G.petMemories.length>20)G.petMemories.length=20;
+  }
+  save();
+  updatePetView();
+  _updatePetAgeSick();
+}
+
+function _updatePetAgeSick(){
+  const age=_getPetAge();
+  const ad=$('petAgeDisplay');if(ad)ad.textContent='Dag '+age;
+  const sb=$('petSickBadge');
+  if(sb){sb.style.display=G.petSick?'flex':'none';}
+  const meAge=$('meRumAgeDisplay');if(meAge)meAge.textContent='📅 Dag '+age;
+  const meSick=$('meRumSickBadge');if(meSick)meSick.style.display=G.petSick?'flex':'none';
+}
+
+function cureSickPet(){
+  if(!G.petSick){showT('Din pet är frisk!','g');return;}
+  if((G.coins||0)<50){showT('❌ Behöver 50 coins för medicin!','r');return;}
+  G.coins-=50;G.petSick=false;
+  if(!G.petMemories)G.petMemories=[];
+  G.petMemories.unshift({ico:'💊',txt:(G.petName||'Din pet')+' är frisk igen! Kostnads: 50 coins.',ts:Date.now()});
+  save();updateHUD();updatePetView();_updatePetAgeSick();
+  showT('💊 Din pet är botad!','g');
+}
+
+const _MOOD_EVENTS=[
+  {ico:'⭐',msg:'drömde om stjärnor',stat:'mood',delta:8,col:'g'},
+  {ico:'🍕',msg:'hittade pizza under soffan',stat:'hunger',delta:15,col:'o'},
+  {ico:'🔥',msg:'känner power-surge!',stat:'energy',delta:20,col:'b'},
+  {ico:'😴',msg:'tog en snabb powernap',stat:'energy',delta:10,col:'b'},
+  {ico:'💃',msg:'dansade i ett hörn',stat:'mood',delta:12,col:'g'},
+  {ico:'🌈',msg:'såg en regnbåge utanför',stat:'mood',delta:6,col:'p'},
+  {ico:'😟',msg:'saknar uppmärksamhet...',stat:'mood',delta:-8,col:'r'},
+  {ico:'🎵',msg:'lyssnade på favoritlåten',stat:'mood',delta:10,col:'g'},
+];
+let _moodEventTimer=null;
+function _scheduleMoodEvent(){
+  clearTimeout(_moodEventTimer);
+  const delay=(180+Math.random()*240)*1000;
+  _moodEventTimer=setTimeout(()=>{
+    const ev=_MOOD_EVENTS[Math.floor(Math.random()*_MOOD_EVENTS.length)];
+    const pName=G.petName||'Din pet';
+    if(ev.stat==='mood')G.mood=Math.max(0,Math.min(100,(G.mood||70)+ev.delta));
+    else if(ev.stat==='hunger')G.hunger=Math.max(0,Math.min(100,(G.hunger||70)+ev.delta));
+    else if(ev.stat==='energy')G.energy=Math.max(0,Math.min(100,(G.energy||70)+ev.delta));
+    if(!G.petMemories)G.petMemories=[];
+    const mem={ico:ev.ico,txt:pName+' '+ev.msg+'.',ts:Date.now()};
+    G.petMemories.unshift(mem);
+    if(G.petMemories.length>20)G.petMemories.length=20;
+    save();updatePetView();
+    showT(ev.ico+' '+pName+' '+ev.msg+'!',ev.col||'g');
+    _scheduleMoodEvent();
+  },delay);
+}
+
+function renderPetMemories(){
+  const box=$('petMemoriesBox');if(!box)return;
+  const mems=G.petMemories||[];
+  if(!mems.length){
+    box.innerHTML='<div style="text-align:center;padding:20px;color:var(--t3);font-size:11px">Inga minnen ännu — fortsätt spela!</div>';
+    return;
+  }
+  box.innerHTML=mems.slice(0,8).map(m=>{
+    const d=new Date(m.ts||Date.now());
+    const ts=d.toLocaleString('sv-SE',{month:'short',day:'numeric',hour:'2-digit',minute:'2-digit'});
+    return`<div style="display:flex;align-items:flex-start;gap:9px;padding:9px 0;border-bottom:1px solid rgba(255,255,255,.05)">
+      <span style="font-size:20px;flex-shrink:0">${m.ico||'🐾'}</span>
+      <div><div style="font-size:11px;color:var(--t1);line-height:1.4">${m.txt}</div><div style="font-size:9px;color:var(--t3);margin-top:2px;font-family:var(--mono)">${ts}</div></div>
+    </div>`;
+  }).join('');
+}
+
 // ── ENHANCED UPDATEPETVIEW (new systems) ──
 const _origUpdatePetView=typeof updatePetView==='function'?updatePetView:null;
 
@@ -10451,9 +10644,9 @@ function renderMeRum(){
   const pet=$('meRumPet');if(pet)pet.textContent=G.petEmoji||'🐉';
   // Update stat numbers
   const hv=G.hunger||80,ev=G.energy||100,mv=G.mood||90;
-  const h=$('meRumHunger');if(h)h.textContent=hv;
-  const e=$('meRumEnergy');if(e)e.textContent=ev;
-  const m=$('meRumMood');if(m)m.textContent=mv;
+  const h=$('meRumHunger');if(h)h.textContent=Math.round(hv);
+  const e=$('meRumEnergy');if(e)e.textContent=Math.round(ev);
+  const m=$('meRumMood');if(m)m.textContent=Math.round(mv);
   // Update progress bars
   const bh=$('meBarHunger');if(bh)bh.style.width=Math.max(0,Math.min(100,hv))+'%';
   const be=$('meBarEnergy');if(be)be.style.width=Math.max(0,Math.min(100,ev))+'%';
@@ -10467,6 +10660,32 @@ function renderMeRum(){
   // Karma + streak badges
   const kb=$('meRumKarmaBadge');if(kb)kb.textContent='⚡ '+(G.karma||0)+'K';
   const sb=$('meRumStreakBadge');if(sb)sb.textContent='🔥 '+(G.streak||0)+'d';
+  // Age + sick badges
+  _updatePetAgeSick();
+  // Mood-based sky gradient
+  const preview=$('meRumPreview');
+  if(preview){
+    const mood=G.mood||70;
+    let skyGrad='linear-gradient(180deg,#040010 0%,#0a0428 50%,#04020e 100%)';
+    if(mood>=80)skyGrad='linear-gradient(180deg,#001a0e 0%,#002814 50%,#001008 100%)';
+    else if(mood>=60)skyGrad='linear-gradient(180deg,#04001a 0%,#0a0428 50%,#04020e 100%)';
+    else if(mood>=40)skyGrad='linear-gradient(180deg,#100a00 0%,#1a1000 50%,#0a0800 100%)';
+    else skyGrad='linear-gradient(180deg,#1a0010 0%,#280018 50%,#0e0008 100%)';
+    preview.style.background=skyGrad;
+  }
+  // Pet mood animation style
+  const petEl=$('meRumPet');
+  if(petEl){
+    const mood=G.mood||70;
+    if(mood>=80)petEl.style.animation='roomPetWalk 4s ease-in-out infinite';
+    else if(mood<25)petEl.style.animation='petBob 3s ease-in-out infinite';
+    else petEl.style.animation='roomPetWalk 7s ease-in-out infinite';
+    const auraEl=$('meRumAura');
+    if(auraEl){
+      const auraCol=mood>=80?'57,255,20':mood>=50?'0,217,255':mood>=30?'255,159,10':'255,45,85';
+      auraEl.style.background=`radial-gradient(circle,rgba(${auraCol},.18) 0%,transparent 70%)`;
+    }
+  }
   // Animated star canvas
   const sc=$('meRumStarsCanvas');
   if(sc&&!sc._init){
@@ -10662,6 +10881,7 @@ function sendMeGift(){
 }
 
 function renderMeDagbok(){
+  renderPetMemories();
   const list=$('meDagbokList');if(!list)return;
   const entries=(G.diaryEntries||[]).slice().reverse();
   if(!entries.length){list.innerHTML=`<div style="text-align:center;padding:40px 20px;color:var(--t3)"><div style="font-size:42px;margin-bottom:10px">📖</div><div style="font-size:13px;font-weight:700">Dagboken är tom</div><div style="font-size:11px;margin-top:5px">Börja spela för att skriva minnen!</div></div>`;return;}
@@ -12113,8 +12333,14 @@ function _checkTerritoryIncome(){
   });
   if(totalEarned>0){
     G.coins+=totalEarned;save();updateHUD();
-    showT('💰 Passiv inkomst: +'+totalEarned+' coins från '+myZones.length+' zoner!','g');
+    showT('💰 +'+totalEarned+' coins! ('+myZones.length+' zoner × passiv inkomst)','g');
     vibe([20,10,20]);
+    // Floating income animation
+    const fl=document.createElement('div');
+    fl.textContent='+'+totalEarned+'💰';
+    fl.style.cssText='position:fixed;bottom:120px;right:20px;z-index:9000;font-size:18px;font-weight:900;color:#FFD700;font-family:monospace;text-shadow:0 0 12px rgba(255,215,0,.8);pointer-events:none;animation:incomeFloat 1.8s ease-out forwards';
+    document.body.appendChild(fl);
+    setTimeout(()=>fl.remove(),1800);
   }
 }
 
@@ -12749,25 +12975,31 @@ function executeDNAMix(){
   gainCoins(coins);gainXP(xpAmt,'action');
   if(!G.dnaMixes)G.dnaMixes=[];
   G.dnaMixes.push({em:result.em,nm:result.nm,bonus:result.bonus,date:new Date().toLocaleDateString()});
-  save();vibe([30,20,80,20,100]);SFX.win();
-  spawnParticles(window.innerWidth/2,window.innerHeight*.4,'stars');
+  if(!G.petMemories)G.petMemories=[];
+  G.petMemories.unshift({ico:'🧬',txt:'DNA FUSION: '+_dnaSlot1+' + '+_dnaSlot2+' → '+result.em+' '+result.nm+'!',ts:Date.now()});
+  save();vibe([30,20,80,20,100,20,200]);SFX.win();
+  // Fusion flash overlay
+  const flash=document.createElement('div');
+  flash.style.cssText='position:fixed;inset:0;z-index:9999;background:radial-gradient(circle,rgba(191,95,255,.9) 0%,rgba(255,45,85,.5) 50%,transparent 100%);pointer-events:none;animation:none;opacity:1;transition:opacity .6s';
+  document.body.appendChild(flash);setTimeout(()=>{flash.style.opacity='0';setTimeout(()=>flash.remove(),600);},100);
+  for(let i=0;i<4;i++)setTimeout(()=>spawnParticles(window.innerWidth*.5,window.innerHeight*.4,'stars'),i*80);
   addDiaryEntry('DNA-mixade '+_dnaSlot1+' + '+_dnaSlot2+' → '+result.em+' '+result.nm+'!');
   // Dramatic reveal with adopt option
   const res=$('dnaResult');
   if(res){
-    res.style.transition='transform .2s';
-    res.style.transform='scale(0)';
+    res.style.transition='all .15s';
+    res.style.transform='scale(0)';res.style.boxShadow='0 0 60px rgba(191,95,255,.9)';
     setTimeout(()=>{
-      res.innerHTML=`<div style="font-size:44px;filter:drop-shadow(0 0 20px rgba(191,95,255,.9));animation:petBob .5s ease-in-out infinite">${result.em}</div>`;
-      res.style.transform='scale(1.3)';
-      setTimeout(()=>{res.style.transform='scale(1)';},180);
-    },100);
+      res.innerHTML=`<div style="font-size:42px;filter:drop-shadow(0 0 22px rgba(191,95,255,1)) drop-shadow(0 0 40px rgba(255,45,85,.8));animation:petBob .5s ease-in-out infinite">${result.em}</div><div style="font-size:7px;color:#FFD700;font-weight:900;font-family:var(--mono);margin-top:2px">${result.nm}</div>`;
+      res.style.transform='scale(1.35)';res.style.boxShadow='0 0 40px rgba(255,215,0,.8)';
+      setTimeout(()=>{res.style.transform='scale(1)';res.style.boxShadow='0 0 20px rgba(191,95,255,.4)';},200);
+    },120);
   }
   const mixBtn=$('dnaMixBtn');
   if(mixBtn){
-    mixBtn.textContent='🐾 ADOPTERA '+result.em;
+    mixBtn.textContent='🐾 ADOPTERA '+result.em+' HYBRID!';
     mixBtn.style.background='linear-gradient(135deg,#39FF14,#00D9FF)';
-    mixBtn.style.color='#000';
+    mixBtn.style.color='#000';mixBtn.style.boxShadow='0 0 28px rgba(57,255,20,.6)';
     mixBtn.onclick=()=>{G.petEmoji=result.em;save();updatePetView();closeDNAMixer();showT('🧬 '+result.em+' adopterad! Snyggt!','p');const pe=$('gpRunnerPet');if(pe)pe.textContent=result.em;};
   }
   showT('🧬 '+result.em+' '+result.nm+' splicad! +'+coins+'⚡ +'+xpAmt+'XP','p');
@@ -13221,6 +13453,7 @@ async function _sbAfterLogin(){
     setTimeout(()=>{checkBondDate();initPetRoom();renderBondBar();},400);
     setTimeout(startKarmaPulse,1200);setTimeout(renderJackpot,800);
     setTimeout(initQuests,300);setTimeout(scheduleEvents,8000);setTimeout(_schedulePetEvent,15000);
+    _checkPassiveDecay();setTimeout(_scheduleMoodEvent,5000);setTimeout(_updatePetAgeSick,500);
     sbSubscribeRealtime();
     setTimeout(sbFetchFeed,1000);
     setTimeout(()=>{$('circleDot').style.display='inline-block';},1500);
@@ -13258,6 +13491,10 @@ async function sbLoadProfile(){
     G.bondDate=data.bond_date||'';
     G.roomTheme=data.room_theme||'cosmic';
     try{G.roomDeco=data.room_deco||[];}catch(e){}
+    G.birthDate=data.birth_date||parseInt(localStorage.getItem('kv8_pbd')||'0')||Date.now();
+    G.petSick=data.pet_sick||false;
+    G.lastPassiveCheck=parseInt(localStorage.getItem('kv8_lpc')||'0')||Date.now();
+    try{const pmems=localStorage.getItem('kv8_pmems');if(pmems)G.petMemories=JSON.parse(pmems);else G.petMemories=[];}catch(e){G.petMemories=[];}
     save(); // mirror to localStorage cache
     return true;
   }catch(e){console.warn('[SB] loadProfile',e);return false;}
@@ -13497,6 +13734,7 @@ async function sbCheckOnStart(){
         setTimeout(()=>$('circleDot').style.display='inline-block',1500);
         setTimeout(()=>{schedulePetSpeech();schedulePetEvents();},2500);
         setTimeout(()=>{updateEvolBadge();renderSocialPower();renderFriendCarePackages();renderCareNotifs();},700);
+        _checkPassiveDecay();setTimeout(_scheduleMoodEvent,5000);setTimeout(_updatePetAgeSick,500);
         sbSubscribeRealtime();setTimeout(sbFetchFeed,1200);
       }
       // else: onboarding will run naturally
@@ -13578,6 +13816,10 @@ function _loadFromLocalStorage(){
     G.lastFlashDate=localStorage.getItem('kv8_lfd')||'';
     try{const pm=localStorage.getItem('kv8_pmem');if(pm)G.petMemory=JSON.parse(pm);}catch(e){}
     try{const ex=localStorage.getItem('kv8_expd');if(ex)G.expedition=JSON.parse(ex);}catch(e){}
+    G.birthDate=parseInt(localStorage.getItem('kv8_pbd')||'0')||Date.now();
+    G.petSick=localStorage.getItem('kv8_psk')==='1';
+    G.lastPassiveCheck=parseInt(localStorage.getItem('kv8_lpc')||'0')||Date.now();
+    try{const pmems=localStorage.getItem('kv8_pmems');if(pmems)G.petMemories=JSON.parse(pmems);}catch(e){G.petMemories=[];}
     let _dailyShownToday=false;
     const _today=new Date().toDateString();const _last=localStorage.getItem('kv8_lastLogin');
     if(_last!==_today){localStorage.setItem('kv8_lastLogin',_today);if(_last){
@@ -13599,6 +13841,9 @@ function _loadFromLocalStorage(){
     setTimeout(()=>{checkBondDate();initPetRoom();renderBondBar();},400);
     setTimeout(()=>{schedulePetSpeech();schedulePetEvents();},2000);
     setTimeout(()=>{updateEvolBadge();renderSocialPower();renderFriendCarePackages();renderCareNotifs();renderStreakMilestones();renderFriendLB();updatePetStatusRings();},600);
+    _checkPassiveDecay();
+    setTimeout(_scheduleMoodEvent,5000);
+    setTimeout(_updatePetAgeSick,500);
   }catch(e){}
 }
 
@@ -15905,7 +16150,7 @@ triggerLvlUp=function(){
 };
 
 // ── TIMERS ──
-setInterval(()=>{if(!G.name)return;G.hunger=Math.max(0,G.hunger-2);G.energy=Math.max(0,G.energy-1);if(G.hunger<20&&G.hunger>0){showT('⚠️ '+G.petName+' är hungrig!','r');SFX.error();}updateHUD();if(document.querySelector('#view-home.active')){updatePetView();updatePetWeather();}},120000);
+setInterval(()=>{if(!G.name)return;G.hunger=Math.max(0,G.hunger-2);G.energy=Math.max(0,G.energy-1);if(G.hunger<20&&!G.petSick&&G.energy<10){G.petSick=true;showT('🤒 '+G.petName+' är sjuk! Ge medicin (50💰)','r');if(!G.petMemories)G.petMemories=[];G.petMemories.unshift({ico:'🤒',txt:(G.petName||'Din pet')+' fick feber!',ts:Date.now()});if(G.petMemories.length>20)G.petMemories.length=20;}else if(G.hunger<20&&G.hunger>0){showT('⚠️ '+G.petName+' är hungrig!','r');SFX.error();}G.lastPassiveCheck=Date.now();updateHUD();_updatePetAgeSick();if(document.querySelector('#view-home.active')){updatePetView();updatePetWeather();}},120000);
 setInterval(save,8000);
 // Periodic social power refresh
 setInterval(()=>{if(G.name&&document.querySelector('#view-home.active'))renderSocialPower();},30000);
@@ -16385,39 +16630,54 @@ function renderFriendStories(){
 
 <!-- DNA MIXER MODAL -->
 <div class="modal" id="dnaModal" style="z-index:600">
-  <div class="modal-box" style="max-width:360px;max-height:88vh;overflow-y:auto">
-    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px">
+  <div class="modal-box" style="max-width:360px;max-height:88vh;overflow-y:auto;background:linear-gradient(180deg,#07000f 0%,#0a0018 100%)">
+    <!-- Header -->
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
       <div>
-        <div style="font-size:16px;font-weight:900;font-family:var(--mono)">🧬 DNA MIXER</div>
-        <div style="font-size:10px;color:var(--t3)">Kombinera 2 pets → skapa en hybrid!</div>
+        <div style="font-size:17px;font-weight:900;font-family:var(--mono);background:linear-gradient(90deg,#BF5FFF,#FF2D55);-webkit-background-clip:text;-webkit-text-fill-color:transparent">🧬 DNA FUSION LAB</div>
+        <div style="font-size:10px;color:rgba(191,95,255,.6)">Kombinera 2 DNA → skapa en hybrid!</div>
       </div>
       <button class="btn btn-ghost btn-sm" onclick="closeDNAMixer()">✕</button>
     </div>
-    <!-- Slots row -->
-    <div style="display:flex;align-items:center;justify-content:center;gap:10px;margin:12px 0">
-      <div style="text-align:center">
-        <div style="font-size:36px;background:#0d0d0d;border:2px solid var(--p);border-radius:6px;width:62px;height:62px;display:flex;align-items:center;justify-content:center;box-shadow:3px 3px 0px var(--p)" id="dnaSlot1">?</div>
-        <div style="font-size:8px;color:var(--p);margin-top:3px;font-weight:900;font-family:var(--mono)">DIN PET</div>
-      </div>
-      <div style="font-size:24px;color:var(--p);animation:petBob 1s ease-in-out infinite">+</div>
-      <div style="text-align:center">
-        <div style="font-size:36px;background:rgba(255,255,255,.04);border:2px dashed rgba(191,95,255,.4);border-radius:14px;width:62px;height:62px;display:flex;align-items:center;justify-content:center" id="dnaSlot2">?</div>
-        <div style="font-size:8px;color:var(--t3);margin-top:3px;font-weight:900;font-family:var(--mono)">VÄLJ NEDAN</div>
-      </div>
-      <div style="font-size:24px;color:var(--p)">=</div>
-      <div style="text-align:center;min-width:62px">
-        <div style="background:#0d0d0d;border:2px solid var(--p);border-radius:6px;width:62px;min-height:62px;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:4px;transition:all .3s" id="dnaResult">
-          <span style="font-size:28px;opacity:.3">❓</span>
+    <!-- Fusion display -->
+    <div style="background:rgba(191,95,255,.06);border:1.5px solid rgba(191,95,255,.3);border-radius:20px;padding:16px 12px;margin-bottom:12px;position:relative;overflow:hidden">
+      <div style="position:absolute;inset:0;background:radial-gradient(ellipse at 50% 0%,rgba(191,95,255,.12) 0%,transparent 70%);pointer-events:none"></div>
+      <div style="display:flex;align-items:center;justify-content:center;gap:12px">
+        <!-- Slot 1 — your pet -->
+        <div style="text-align:center">
+          <div style="width:68px;height:68px;border-radius:18px;background:rgba(191,95,255,.12);border:2px solid rgba(191,95,255,.6);display:flex;align-items:center;justify-content:center;font-size:36px;box-shadow:0 0 24px rgba(191,95,255,.4);position:relative" id="dnaSlot1">?
+            <div style="position:absolute;inset:0;border-radius:17px;background:radial-gradient(circle,rgba(191,95,255,.1) 0%,transparent 70%);pointer-events:none"></div>
+          </div>
+          <div style="font-size:8px;font-weight:900;color:rgba(191,95,255,.8);font-family:var(--mono);margin-top:5px;letter-spacing:1px">DIN PET</div>
         </div>
-        <div style="font-size:8px;color:var(--t3);margin-top:3px;font-weight:900;font-family:var(--mono)">HYBRID</div>
+        <!-- Fusion plus -->
+        <div style="display:flex;flex-direction:column;align-items:center;gap:4px">
+          <div style="font-size:22px;color:var(--p);text-shadow:0 0 14px rgba(191,95,255,.8);animation:petBob 1s ease-in-out infinite">+</div>
+          <div style="width:2px;height:16px;background:linear-gradient(180deg,rgba(191,95,255,.8),transparent)"></div>
+        </div>
+        <!-- Slot 2 — partner -->
+        <div style="text-align:center">
+          <div style="width:68px;height:68px;border-radius:18px;background:rgba(255,45,85,.06);border:2px dashed rgba(255,45,85,.4);display:flex;align-items:center;justify-content:center;font-size:36px;position:relative" id="dnaSlot2">?</div>
+          <div style="font-size:8px;font-weight:900;color:rgba(255,255,255,.4);font-family:var(--mono);margin-top:5px;letter-spacing:1px">VÄLJ NEDAN</div>
+        </div>
+        <!-- Arrow -->
+        <div style="font-size:20px;color:var(--pk);text-shadow:0 0 12px rgba(255,45,85,.8)">→</div>
+        <!-- Result -->
+        <div style="text-align:center">
+          <div style="width:68px;height:68px;border-radius:18px;background:linear-gradient(135deg,rgba(191,95,255,.15),rgba(255,45,85,.1));border:2px solid rgba(255,215,0,.4);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:4px;transition:all .4s;box-shadow:0 0 24px rgba(255,215,0,.15)" id="dnaResult">
+            <span style="font-size:28px;opacity:.25">❓</span>
+          </div>
+          <div style="font-size:8px;font-weight:900;color:rgba(255,215,0,.7);font-family:var(--mono);margin-top:5px;letter-spacing:1px">HYBRID</div>
+        </div>
       </div>
     </div>
-    <!-- Known combos with my pet -->
+    <!-- Known combos -->
     <div id="dnaComboHints" style="margin-bottom:10px"></div>
-    <!-- Pet picker label -->
-    <div style="font-size:10px;font-weight:700;color:var(--t3);margin-bottom:6px;letter-spacing:.8px">VÄLJ MIX-PARTNER <span style="color:var(--p)">● = känd kombo</span></div>
-    <div id="dnaPetPicker" style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px"></div>
-    <button class="btn btn-full btn-lg" id="dnaMixBtn" style="background:linear-gradient(135deg,var(--p),#7B2FBE);color:#fff;box-shadow:0 0 18px rgba(191,95,255,.4)" onclick="executeDNAMix()">🧬 MIX DNA!</button>
+    <!-- Partner picker -->
+    <div style="font-size:9px;font-weight:900;color:rgba(191,95,255,.7);font-family:var(--mono);letter-spacing:1.5px;margin-bottom:8px">VÄLJ MIX-PARTNER <span style="color:rgba(255,215,0,.7)">★ = känd kombo</span></div>
+    <div id="dnaPetPicker" style="display:flex;flex-wrap:wrap;gap:7px;margin-bottom:14px"></div>
+    <!-- Mix button -->
+    <button class="btn btn-full btn-lg" id="dnaMixBtn" style="background:linear-gradient(135deg,#BF5FFF 0%,#FF2D55 100%);color:#fff;box-shadow:0 0 28px rgba(191,95,255,.5),0 4px 20px rgba(255,45,85,.3);border:none;font-size:14px;font-weight:900;letter-spacing:1px;padding:14px" onclick="executeDNAMix()">⚡ FUSION AKTIVERA!</button>
   </div>
 </div>
 
