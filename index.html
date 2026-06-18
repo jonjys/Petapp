@@ -3651,8 +3651,11 @@ div[style*="LIVE"]{border-radius:16px!important;background:rgba(57,255,20,.03)!i
           <div id="arenaLB" style="display:flex;flex-direction:column;gap:5px"></div>
         </div>
       </div>
-      <!-- GAME PORTAL GRID -->
-      <div style="padding:12px 14px 6px;font-size:9px;font-weight:900;font-family:var(--mono);color:rgba(191,95,255,.5);letter-spacing:2px">VÄLJ SPEL</div>
+      <!-- GAME HUB SECTION HEADER -->
+      <div style="padding:10px 14px 4px;display:flex;align-items:center;justify-content:space-between">
+        <div style="font-size:9px;font-weight:900;font-family:var(--mono);color:rgba(191,95,255,.6);letter-spacing:2px">🎮 GAME HUB</div>
+        <div style="font-size:8px;color:rgba(255,255,255,.3);font-family:var(--mono)">5 spel · daily rewards</div>
+      </div>
       <!-- SPIN portal -->
       <div class="game-portal" onclick="openGacha()" style="--pc:255,159,10">
         <div class="gp-preview" style="background:linear-gradient(135deg,#1a0800,#0d0400)">
@@ -3668,44 +3671,77 @@ div[style*="LIVE"]{border-radius:16px!important;background:rgba(57,255,20,.03)!i
         </div>
         <div class="gp-arrow" style="color:rgba(255,159,10,.8)">▶</div>
       </div>
-      <!-- 2-COL GAME GRID — compact, all games visible without scrolling -->
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:4px 14px 12px">
+      <!-- TOWER DEFENSE — HERO CARD (full width, elevated) -->
+      <div style="padding:0 14px 10px">
+        <div onclick="openBattle()" ontouchstart="this.style.transform='scale(.98)'" ontouchend="this.style.transform=''" style="border-radius:20px;cursor:pointer;-webkit-tap-highlight-color:transparent;background:linear-gradient(135deg,#180310 0%,#0c0208 100%);border:2px solid rgba(255,0,127,.6);overflow:hidden;box-shadow:0 0 32px rgba(255,0,127,.2),inset 0 1px 0 rgba(255,255,255,.06);transition:transform .08s;position:relative">
+          <div style="position:absolute;inset:0;background:radial-gradient(ellipse at 20% 50%,rgba(255,0,127,.2) 0%,transparent 60%);pointer-events:none"></div>
+          <div style="position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,#FF007F,#BF5FFF,transparent)"></div>
+          <div style="padding:14px 16px;display:flex;align-items:center;gap:14px;position:relative">
+            <div style="width:70px;height:70px;border-radius:18px;background:rgba(255,0,127,.1);border:1.5px solid rgba(255,0,127,.35);display:flex;align-items:center;justify-content:center;flex-shrink:0;box-shadow:0 0 20px rgba(255,0,127,.25)">
+              <div style="font-size:40px;filter:drop-shadow(0 0 16px rgba(255,0,127,.9))">🏰</div>
+            </div>
+            <div style="flex:1;min-width:0">
+              <div style="display:flex;align-items:center;gap:6px;margin-bottom:4px">
+                <div style="font-size:16px;font-weight:900;color:#FF007F;font-family:var(--mono);letter-spacing:.5px">TOWER DEFENSE</div>
+                <div style="background:linear-gradient(135deg,#FF007F,#BF5FFF);color:#fff;font-size:7px;font-weight:900;padding:2px 7px;border-radius:6px;font-family:var(--mono)">⭐ TOP</div>
+              </div>
+              <div style="font-size:9px;color:rgba(255,255,255,.45);margin-bottom:8px;line-height:1.4">Bygg torn · döda fiender · överlev 10 waves</div>
+              <div style="display:flex;gap:5px">
+                <div style="background:rgba(255,0,127,.1);border:1px solid rgba(255,0,127,.25);border-radius:8px;padding:3px 8px;font-size:7px;font-weight:900;color:#FF007F;font-family:var(--mono)">⚔️ 10 WAVES</div>
+                <div style="background:rgba(255,215,0,.1);border:1px solid rgba(255,215,0,.25);border-radius:8px;padding:3px 8px;font-size:7px;font-weight:900;color:#FFD700;font-family:var(--mono)">+XP +GOLD</div>
+                <div style="background:rgba(57,255,20,.08);border:1px solid rgba(57,255,20,.2);border-radius:8px;padding:3px 8px;font-size:7px;font-weight:900;color:#39FF14;font-family:var(--mono)">BOSS 🐲</div>
+              </div>
+            </div>
+            <div style="font-size:24px;color:#FF007F;flex-shrink:0;text-shadow:0 0 16px rgba(255,0,127,.6)">▶</div>
+          </div>
+        </div>
+      </div>
+      <!-- 2x2 MINI CARDS -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:0 14px 10px">
         <!-- DNA BREAKER -->
-        <div onclick="openPetBlocks()" ontouchstart="this.style.transform='scale(.96)'" ontouchend="this.style.transform=''" style="border-radius:16px;cursor:pointer;-webkit-tap-highlight-color:transparent;background:#0e1a0e;border:2px solid rgba(57,255,20,.6);padding:14px 12px;display:flex;flex-direction:column;align-items:center;gap:6px;box-shadow:0 0 14px rgba(57,255,20,.12);transition:transform .08s;text-align:center">
-          <div style="font-size:34px;line-height:1">🧬</div>
-          <div style="font-size:11px;font-weight:900;color:#39FF14;font-family:var(--mono);letter-spacing:.5px">DNA BREAKER</div>
-          <div style="font-size:8px;background:rgba(57,255,20,.18);border:1px solid rgba(57,255,20,.4);border-radius:20px;padding:1px 7px;color:#39FF14;font-family:var(--mono)">HOT 🔥</div>
-          <div style="font-size:8px;color:rgba(255,255,255,.45)" id="pbBestTag">Best: 0pts</div>
+        <div onclick="openPetBlocks()" ontouchstart="this.style.transform='scale(.94)'" ontouchend="this.style.transform=''" style="border-radius:16px;cursor:pointer;-webkit-tap-highlight-color:transparent;background:linear-gradient(160deg,#0b180b 0%,#060e06 100%);border:1.5px solid rgba(57,255,20,.45);overflow:hidden;box-shadow:0 0 16px rgba(57,255,20,.1);transition:transform .08s;position:relative">
+          <div style="height:2px;background:linear-gradient(90deg,transparent,#39FF14,transparent)"></div>
+          <div style="padding:14px 10px;display:flex;flex-direction:column;align-items:center;gap:6px;text-align:center">
+            <div style="font-size:40px;line-height:1;filter:drop-shadow(0 0 14px rgba(57,255,20,.8))">🧬</div>
+            <div style="font-size:11px;font-weight:900;color:#39FF14;font-family:var(--mono);letter-spacing:.5px">DNA BREAKER</div>
+            <div style="font-size:7px;background:rgba(57,255,20,.12);border:1px solid rgba(57,255,20,.3);border-radius:20px;padding:2px 8px;color:#39FF14;font-family:var(--mono)">PUZZLE 🔥</div>
+            <div style="font-size:8px;color:rgba(255,255,255,.35)" id="pbBestTag">Best: 0 pts</div>
+          </div>
         </div>
         <!-- PET RUNNER -->
-        <div onclick="openPetRunner()" ontouchstart="this.style.transform='scale(.96)'" ontouchend="this.style.transform=''" style="border-radius:16px;cursor:pointer;-webkit-tap-highlight-color:transparent;background:#080e14;border:2px solid rgba(0,217,255,.6);padding:14px 12px;display:flex;flex-direction:column;align-items:center;gap:6px;box-shadow:0 0 14px rgba(0,217,255,.12);transition:transform .08s;text-align:center">
-          <div style="font-size:34px;line-height:1;animation:petBob 2s ease-in-out infinite" id="gpRunnerPet">🐉</div>
-          <div style="font-size:11px;font-weight:900;color:#00D9FF;font-family:var(--mono);letter-spacing:.5px">PET RUNNER</div>
-          <div style="font-size:8px;background:rgba(0,217,255,.18);border:1px solid rgba(0,217,255,.4);border-radius:20px;padding:1px 7px;color:#00D9FF;font-family:var(--mono)">ENDLESS</div>
-          <div style="font-size:8px;color:rgba(255,255,255,.45)" id="prBestTag">Best: 0m · <span id="prLvBadge">LV 1</span></div>
-        </div>
-        <!-- TOWER DEFENSE -->
-        <div onclick="openBattle()" ontouchstart="this.style.transform='scale(.96)'" ontouchend="this.style.transform=''" style="border-radius:16px;cursor:pointer;-webkit-tap-highlight-color:transparent;background:#14080e;border:2px solid rgba(255,0,127,.6);padding:14px 12px;display:flex;flex-direction:column;align-items:center;gap:6px;box-shadow:0 0 14px rgba(255,0,127,.12);transition:transform .08s;text-align:center">
-          <div style="font-size:34px;line-height:1">🏰</div>
-          <div style="font-size:11px;font-weight:900;color:#FF007F;font-family:var(--mono);letter-spacing:.5px">TOWER DEF</div>
-          <div style="font-size:8px;background:rgba(255,0,127,.18);border:1px solid rgba(255,0,127,.4);border-radius:20px;padding:1px 7px;color:#FF007F;font-family:var(--mono)">WAVES ⚔️</div>
-          <div style="font-size:8px;color:rgba(255,255,255,.45)">+100 XP per wave</div>
+        <div onclick="openPetRunner()" ontouchstart="this.style.transform='scale(.94)'" ontouchend="this.style.transform=''" style="border-radius:16px;cursor:pointer;-webkit-tap-highlight-color:transparent;background:linear-gradient(160deg,#060e16 0%,#040910 100%);border:1.5px solid rgba(0,217,255,.45);overflow:hidden;box-shadow:0 0 16px rgba(0,217,255,.1);transition:transform .08s;position:relative">
+          <div style="height:2px;background:linear-gradient(90deg,transparent,#00D9FF,transparent)"></div>
+          <div style="padding:14px 10px;display:flex;flex-direction:column;align-items:center;gap:6px;text-align:center">
+            <div style="font-size:40px;line-height:1;animation:petBob 2s ease-in-out infinite;filter:drop-shadow(0 0 14px rgba(0,217,255,.7))" id="gpRunnerPet">🐉</div>
+            <div style="font-size:11px;font-weight:900;color:#00D9FF;font-family:var(--mono);letter-spacing:.5px">PET RUNNER</div>
+            <div style="font-size:7px;background:rgba(0,217,255,.12);border:1px solid rgba(0,217,255,.3);border-radius:20px;padding:2px 8px;color:#00D9FF;font-family:var(--mono)">ENDLESS ∞</div>
+            <div style="font-size:8px;color:rgba(255,255,255,.35)" id="prBestTag">Best: 0m</div>
+          </div>
         </div>
         <!-- DNA MIXER -->
-        <div onclick="openDNAMixer()" ontouchstart="this.style.transform='scale(.96)'" ontouchend="this.style.transform=''" style="border-radius:16px;cursor:pointer;-webkit-tap-highlight-color:transparent;background:#0e0814;border:2px solid rgba(191,95,255,.6);padding:14px 12px;display:flex;flex-direction:column;align-items:center;gap:6px;box-shadow:0 0 14px rgba(191,95,255,.12);transition:transform .08s;text-align:center">
-          <div style="font-size:34px;line-height:1">🧪</div>
-          <div style="font-size:11px;font-weight:900;color:#BF5FFF;font-family:var(--mono);letter-spacing:.5px">DNA MIXER</div>
-          <div style="font-size:8px;background:rgba(191,95,255,.18);border:1px solid rgba(191,95,255,.4);border-radius:20px;padding:1px 7px;color:#BF5FFF;font-family:var(--mono)">LAB 🧬</div>
-          <div style="font-size:8px;color:rgba(255,255,255,.45)">+75 XP</div>
-        </div>
-        <!-- FISKESPELET — spans full width -->
-        <div onclick="openFishingGame()" ontouchstart="this.style.transform='scale(.98)'" ontouchend="this.style.transform=''" style="grid-column:1/-1;border-radius:16px;cursor:pointer;-webkit-tap-highlight-color:transparent;background:#080e14;border:2px solid rgba(0,200,255,.6);padding:12px 16px;display:flex;align-items:center;gap:14px;box-shadow:0 0 14px rgba(0,200,255,.12);transition:transform .08s">
-          <div style="font-size:38px;line-height:1;animation:petBob 2.4s ease-in-out infinite">🎣</div>
-          <div style="flex:1;min-width:0">
-            <div style="font-size:13px;font-weight:900;color:#00C8FF;font-family:var(--mono);letter-spacing:.5px">FISKESPELET <span style="font-size:8px;background:rgba(0,200,255,.18);border:1px solid rgba(0,200,255,.4);border-radius:20px;padding:1px 6px;color:#00C8FF">ZEN 🌊</span></div>
-            <div style="font-size:9px;color:rgba(255,255,255,.5);margin-top:2px">Kasta · tajma · fånga legendariska fiskar!</div>
-            <div style="font-size:8px;color:rgba(255,255,255,.4);margin-top:3px" id="fishBestTag">Best: 0 fiskar</div>
+        <div onclick="openDNAMixer()" ontouchstart="this.style.transform='scale(.94)'" ontouchend="this.style.transform=''" style="border-radius:16px;cursor:pointer;-webkit-tap-highlight-color:transparent;background:linear-gradient(160deg,#0c0716 0%,#07050f 100%);border:1.5px solid rgba(191,95,255,.45);overflow:hidden;box-shadow:0 0 16px rgba(191,95,255,.1);transition:transform .08s;position:relative">
+          <div style="height:2px;background:linear-gradient(90deg,transparent,#BF5FFF,transparent)"></div>
+          <div style="padding:14px 10px;display:flex;flex-direction:column;align-items:center;gap:6px;text-align:center">
+            <div style="font-size:40px;line-height:1;filter:drop-shadow(0 0 14px rgba(191,95,255,.7))">🧪</div>
+            <div style="font-size:11px;font-weight:900;color:#BF5FFF;font-family:var(--mono);letter-spacing:.5px">DNA MIXER</div>
+            <div style="font-size:7px;background:rgba(191,95,255,.12);border:1px solid rgba(191,95,255,.3);border-radius:20px;padding:2px 8px;color:#BF5FFF;font-family:var(--mono)">LAB 🧬</div>
+            <div style="font-size:8px;color:rgba(255,255,255,.35)">+75 XP craft</div>
           </div>
+        </div>
+        <!-- DEEP CATCH (Fiskespelet) — spans full width -->
+        <div onclick="openFishingGame()" ontouchstart="this.style.transform='scale(.97)'" ontouchend="this.style.transform=''" style="border-radius:16px;cursor:pointer;-webkit-tap-highlight-color:transparent;background:linear-gradient(135deg,#030f1a 0%,#020810 100%);border:1.5px solid rgba(0,200,255,.5);padding:12px 16px;display:flex;align-items:center;gap:12px;box-shadow:0 0 20px rgba(0,200,255,.12);transition:transform .08s;position:relative;overflow:hidden">
+          <div style="position:absolute;inset:0;background:radial-gradient(ellipse at 90% 50%,rgba(0,200,255,.1) 0%,transparent 55%);pointer-events:none"></div>
+          <div style="height:2px;position:absolute;top:0;left:0;right:0;background:linear-gradient(90deg,transparent,#00C8FF,transparent)"></div>
+          <div style="font-size:44px;line-height:1;animation:petBob 2.4s ease-in-out infinite;filter:drop-shadow(0 0 18px rgba(0,200,255,.8));flex-shrink:0">🎣</div>
+          <div style="flex:1;min-width:0;position:relative">
+            <div style="display:flex;align-items:center;gap:6px;margin-bottom:3px">
+              <div style="font-size:14px;font-weight:900;color:#00C8FF;font-family:var(--mono);letter-spacing:.5px">DEEP CATCH</div>
+              <div style="background:rgba(0,200,255,.15);border:1px solid rgba(0,200,255,.35);border-radius:8px;padding:1px 6px;font-size:7px;color:#00C8FF;font-family:var(--mono)">ZEN 🌊</div>
+            </div>
+            <div style="font-size:9px;color:rgba(255,255,255,.4);margin-bottom:5px">4 djupzoner · 40+ fisktyper · legendariska</div>
+            <div style="font-size:8px;color:rgba(255,255,255,.28)" id="fishBestTag">Best: 0 fiskar</div>
+          </div>
+          <div style="font-size:18px;color:rgba(0,200,255,.6);flex-shrink:0">▶</div>
         </div>
       </div>
             <!-- DAILY REWARD BUTTON -->
