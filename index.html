@@ -4647,18 +4647,22 @@ div[style*="LIVE"]{border-radius:16px!important;background:rgba(57,255,20,.03)!i
 <!-- BATTLE ARENA -->
 <div class="battle-arena" id="battleArena">
   <!-- Header -->
-  <div class="ba-hdr">
+  <div class="ba-hdr" style="height:48px;padding:0 10px;gap:8px">
     <button class="ba-close" onclick="closeBattle()">←</button>
-    <div style="flex:1;text-align:center">
-      <div class="ba-wave-lbl" id="baWave">WAVE 1</div>
-      <div class="ba-enemy-title" id="baEnemyTitle">KARMA TOWER DEFENSE</div>
-    </div>
-    <div style="display:flex;align-items:center;gap:6px">
-      <button id="tdSpeedBtn" onclick="tdToggleSpeed()" style="background:rgba(255,215,0,.12);border:1.5px solid rgba(255,215,0,.4);border-radius:8px;color:#FFD700;font-size:10px;font-weight:900;padding:4px 8px;cursor:pointer;font-family:var(--mono)">1×</button>
-      <div style="text-align:right;font-size:10px;color:var(--t3);font-family:var(--mono)">
-        <div style="font-size:8px">FORM</div>
-        <div id="tdFormLbl" style="font-size:14px;font-weight:900;color:var(--y)">✨</div>
+    <div style="flex:1">
+      <div style="display:flex;align-items:center;gap:6px">
+        <div class="ba-wave-lbl" id="baWave" style="font-size:11px">WAVE 1</div>
+        <div id="tdModifierBanner" style="display:none;font-size:9px;font-weight:900;font-family:var(--mono);padding:2px 6px;background:rgba(255,69,0,.2);border-radius:6px;border:1px solid rgba(255,69,0,.5)">⚡ MODIFIER</div>
       </div>
+      <div style="display:flex;align-items:center;gap:8px;margin-top:1px">
+        <span style="font-size:9px;color:var(--t3);font-family:var(--mono)">SCORE</span>
+        <span id="tdScoreDisp" style="font-size:11px;font-weight:900;color:var(--y);font-family:var(--mono)">0</span>
+        <span id="tdHighscore" style="font-size:9px;color:var(--t3);font-family:var(--mono)">BEST:0</span>
+      </div>
+    </div>
+    <div style="display:flex;align-items:center;gap:5px">
+      <button id="tdSpeedBtn" onclick="tdToggleSpeed()" style="background:rgba(255,215,0,.12);border:1.5px solid rgba(255,215,0,.4);border-radius:8px;color:#FFD700;font-size:10px;font-weight:900;padding:4px 8px;cursor:pointer;font-family:var(--mono)">1×</button>
+      <div id="tdFormLbl" style="font-size:16px">✨</div>
     </div>
   </div>
 
@@ -4681,37 +4685,53 @@ div[style*="LIVE"]{border-radius:16px!important;background:rgba(57,255,20,.03)!i
     </div>
   </div>
 
-  <!-- WC3 Tower Defense Controls -->
+  <!-- Controls -->
   <div class="td-actions" id="tdActions">
-    <div class="td-gold-bar">
-      <span class="td-gold-lbl">💰 GOLD</span>
-      <span class="td-gold-amt" id="tdGoldAmt">150</span>
-      <span class="td-wave-info" id="tdWaveInfo">WAVE 1/10</span>
+    <!-- Gold + Wave info row -->
+    <div class="td-gold-bar" style="margin-bottom:4px">
+      <span class="td-gold-lbl">💰</span>
+      <span class="td-gold-amt" id="tdGoldAmt">200</span>
+      <span class="td-wave-info" id="tdWaveInfo" style="flex:1;text-align:center">WAVE 1 ∞</span>
+      <span style="font-size:9px;color:var(--t3);font-family:var(--mono)">TD POINTS: <span id="tdPointsDisp" style="color:var(--p);font-weight:900">0</span></span>
     </div>
-    <div class="td-tower-row">
-      <button class="td-tower-btn" id="tdTBArcher" onclick="tdSelectTower('archer')">
-        <span class="tt-ico">🏹</span><span class="tt-nm">ARCHER</span><span class="tt-cost">50g</span>
-      </button>
-      <button class="td-tower-btn" id="tdTBMage" onclick="tdSelectTower('mage')">
-        <span class="tt-ico">🔮</span><span class="tt-nm">MAGE</span><span class="tt-cost">80g</span>
-      </button>
-      <button class="td-tower-btn" id="tdTBTesla" onclick="tdSelectTower('tesla')">
-        <span class="tt-ico">⚡</span><span class="tt-nm">TESLA</span><span class="tt-cost">100g</span>
-      </button>
-      <button class="td-tower-btn" id="tdTBCannon" onclick="tdSelectTower('cannon')">
-        <span class="tt-ico">💣</span><span class="tt-nm">CANNON</span><span class="tt-cost">120g</span>
-      </button>
+    <!-- Tower rows (2×5) -->
+    <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:4px;margin-bottom:4px">
+      <button class="td-tower-btn" id="tdTBArcher" onclick="tdSelectTower('archer')"><span class="tt-ico">🏹</span><span class="tt-nm">ARCHER</span><span class="tt-cost">50g</span></button>
+      <button class="td-tower-btn" id="tdTBMage" onclick="tdSelectTower('mage')"><span class="tt-ico">🔮</span><span class="tt-nm">MAGE</span><span class="tt-cost">80g</span></button>
+      <button class="td-tower-btn" id="tdTBTesla" onclick="tdSelectTower('tesla')"><span class="tt-ico">⚡</span><span class="tt-nm">TESLA</span><span class="tt-cost">100g</span></button>
+      <button class="td-tower-btn" id="tdTBCannon" onclick="tdSelectTower('cannon')"><span class="tt-ico">💣</span><span class="tt-nm">CANNON</span><span class="tt-cost">120g</span></button>
+      <button class="td-tower-btn" id="tdTBFrost" onclick="tdSelectTower('frost')"><span class="tt-ico">❄️</span><span class="tt-nm">FROST</span><span class="tt-cost">70g</span></button>
     </div>
-    <div class="td-sell-panel" id="tdSellPanel" style="display:none">
-      <div class="td-sell-info">
-        <span id="tdSellName">🏹 ARCHER</span>
-        <span id="tdSellLevel">Lv1</span>
-        <span id="tdSellDps">DPS: 27</span>
-      </div>
-      <div class="td-sell-actions">
-        <button class="td-upg-btn" id="tdUpgBtn" onclick="tdUpgradeSelected()">⬆️ UPGRADE <span id="tdUpgCost">75g</span></button>
-        <button class="td-sell-btn" onclick="tdSellSelected()">💰 SELL <span id="tdSellAmt">25g</span></button>
-        <button class="td-sell-close" onclick="tdDeselectTower()">✕</button>
+    <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:4px;margin-bottom:4px">
+      <button class="td-tower-btn" id="tdTBPoison" onclick="tdSelectTower('poison')"><span class="tt-ico">🧪</span><span class="tt-nm">POISON</span><span class="tt-cost">90g</span></button>
+      <button class="td-tower-btn" id="tdTBSniper" onclick="tdSelectTower('sniper')"><span class="tt-ico">🎯</span><span class="tt-nm">SNIPER</span><span class="tt-cost">150g</span></button>
+      <button class="td-tower-btn" id="tdTBInferno" onclick="tdSelectTower('inferno')"><span class="tt-ico">🔥</span><span class="tt-nm">INFERNO</span><span class="tt-cost">110g</span></button>
+      <button class="td-tower-btn" id="tdTBVortex" onclick="tdSelectTower('vortex')"><span class="tt-ico">🌀</span><span class="tt-nm">VORTEX</span><span class="tt-cost">130g</span></button>
+      <button class="td-tower-btn" id="tdTBLaser" onclick="tdSelectTower('laser')"><span class="tt-ico">🔴</span><span class="tt-nm">LASER</span><span class="tt-cost">160g</span></button>
+    </div>
+    <!-- Active Abilities row -->
+    <div style="display:flex;gap:5px;margin-bottom:4px">
+      <button id="tdAb0" onclick="tdUseAbility(0)" style="flex:1;background:rgba(255,69,0,.1);border:1.5px solid rgba(255,69,0,.45);border-radius:10px;padding:5px 2px;display:flex;flex-direction:column;align-items:center;gap:1px;cursor:pointer;transition:.15s">
+        <span id="tdAbLbl0" style="font-size:18px">✈️</span><span style="font-size:7px;color:rgba(255,69,0,.9);font-weight:900;font-family:var(--mono)">LUFTANFALL</span>
+      </button>
+      <button id="tdAb1" onclick="tdUseAbility(1)" style="flex:1;background:rgba(168,230,255,.07);border:1.5px solid rgba(168,230,255,.45);border-radius:10px;padding:5px 2px;display:flex;flex-direction:column;align-items:center;gap:1px;cursor:pointer;transition:.15s">
+        <span id="tdAbLbl1" style="font-size:18px">❄️</span><span style="font-size:7px;color:#A8E6FF;font-weight:900;font-family:var(--mono)">TOTAL FROST</span>
+      </button>
+      <button id="tdAb2" onclick="tdUseAbility(2)" style="flex:1;background:rgba(57,255,20,.07);border:1.5px solid rgba(57,255,20,.4);border-radius:10px;padding:5px 2px;display:flex;flex-direction:column;align-items:center;gap:1px;cursor:pointer;transition:.15s">
+        <span id="tdAbLbl2" style="font-size:18px">💖</span><span style="font-size:7px;color:#39FF14;font-weight:900;font-family:var(--mono)">REPARATION</span>
+      </button>
+      <!-- Tower upgrade panel (embedded in ability row when tower selected) -->
+      <div id="tdSellPanel" style="display:none;flex:3;background:rgba(255,215,0,.06);border:1.5px solid rgba(255,215,0,.3);border-radius:10px;padding:5px 8px">
+        <div style="display:flex;align-items:center;gap:5px;margin-bottom:4px">
+          <span id="tdSellName" style="font-size:11px;font-weight:900;color:var(--y);font-family:var(--mono);flex:1">🏹 ARCHER</span>
+          <span id="tdSellLevel" style="font-size:9px;color:var(--t3);font-family:var(--mono)">LV1</span>
+          <button onclick="tdDeselectTower()" style="background:none;border:none;color:var(--t3);font-size:14px;cursor:pointer;padding:0">✕</button>
+        </div>
+        <div style="font-size:9px;color:var(--t3);margin-bottom:5px" id="tdUpgDesc">Next upgrade</div>
+        <div style="display:flex;gap:4px">
+          <button class="td-upg-btn" id="tdUpgBtn" onclick="tdUpgradeSelected()" style="flex:1;font-size:9px;padding:4px 6px">⬆️ <span id="tdUpgCost">75g</span></button>
+          <button onclick="tdSellSelected()" style="background:rgba(255,45,85,.12);border:1px solid rgba(255,45,85,.35);border-radius:8px;color:var(--pk);font-size:9px;font-weight:900;padding:4px 6px;cursor:pointer">💰 <span id="tdSellAmt">25g</span></button>
+        </div>
       </div>
     </div>
   </div>
@@ -4719,22 +4739,24 @@ div[style*="LIVE"]{border-radius:16px!important;background:rgba(57,255,20,.03)!i
   <!-- Victory Overlay -->
   <div class="ba-victory" id="baVictory" style="display:none">
     <div class="ba-victory-content">
-      <div style="font-size:52px;margin-bottom:8px;animation:petBob 1s ease-in-out infinite">🏆</div>
-      <div style="font-size:28px;font-weight:900;color:var(--y);font-family:var(--mono);letter-spacing:2px;margin-bottom:4px">VICTORY!</div>
-      <div style="font-size:14px;color:var(--t2);margin-bottom:16px" id="baVicEnemy">Wave klarad!</div>
-      <div class="ba-rewards" id="baRewards"></div>
-      <button class="btn btn-g btn-lg" style="margin-top:16px" onclick="battleContinue()" id="baContBtn">NÄSTA WAVE →</button>
+      <div style="font-size:52px;margin-bottom:6px;animation:petBob 1s ease-in-out infinite">🏆</div>
+      <div style="font-size:24px;font-weight:900;color:var(--y);font-family:var(--mono);letter-spacing:2px;margin-bottom:2px">WAVE CLEAR!</div>
+      <div style="font-size:13px;color:var(--t2);margin-bottom:12px" id="baVicEnemy">Wave klarad!</div>
+      <div class="ba-rewards" id="baRewards" style="display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin-bottom:12px"></div>
+      <button class="btn btn-g btn-lg" style="width:100%;font-size:15px" onclick="battleContinue()" id="baContBtn">NÄSTA WAVE →</button>
+      <button class="btn btn-ghost" style="width:100%;margin-top:6px;font-size:12px" onclick="closeBattle()">← Avsluta</button>
     </div>
   </div>
 
   <!-- Defeat Overlay -->
   <div class="ba-defeat" id="baDefeat" style="display:none">
     <div style="text-align:center;padding:24px">
-      <div style="font-size:52px;margin-bottom:8px">💀</div>
-      <div style="font-size:24px;font-weight:900;color:var(--r);margin-bottom:8px">BASE FÖRSTÖRD!</div>
-      <div style="font-size:13px;color:var(--t3);margin-bottom:20px" id="tdDefeatSub">Du klarade dig till wave 1. Försök igen!</div>
-      <button class="btn btn-pk btn-lg" onclick="battleRetry()">⚔️ FÖRSÖK IGEN</button>
-      <button class="btn btn-ghost" style="margin-top:8px;display:block;width:100%" onclick="closeBattle()">← Avsluta</button>
+      <div style="font-size:48px;margin-bottom:6px">💀</div>
+      <div style="font-size:22px;font-weight:900;color:var(--r);margin-bottom:4px;font-family:var(--mono)">BASE FÖRSTÖRD!</div>
+      <div style="font-size:12px;color:var(--t3);margin-bottom:6px" id="tdDefeatSub">Wave 1</div>
+      <div style="font-size:14px;font-weight:900;color:var(--y);font-family:var(--mono);margin-bottom:16px">Score: <span id="tdDefeatScore">0</span></div>
+      <button class="btn btn-pk btn-lg" style="width:100%;margin-bottom:8px" onclick="battleRetry()">⚔️ FÖRSÖK IGEN</button>
+      <button class="btn btn-ghost" style="width:100%" onclick="closeBattle()">← Avsluta</button>
     </div>
   </div>
 </div>
@@ -5380,43 +5402,103 @@ const TD_PATH=[[0,1],[5,1],[5,3],[0,3],[0,5],[5,5],[5,7]]; // snake waypoints [c
 let _tdCell=60; // px per cell — set dynamically in tdInitCanvas
 
 const TD_ENEMIES=[
-  {id:'grunt',  em:'👾',name:'GRUNT',      weakness:'archer', hp:28, speed:1.0, gold:8,  reward:{xp:4,coins:3}},
-  {id:'mech',   em:'🤖',name:'MECH',       weakness:'tesla',  hp:40, speed:0.85,gold:10, reward:{xp:5,coins:4}},
-  {id:'imp',    em:'👹',name:'IMP',        weakness:'mage',   hp:32, speed:1.25,gold:8,  reward:{xp:4,coins:3}},
-  {id:'golem',  em:'🪨',name:'GOLEM',      weakness:'cannon', hp:70, speed:0.55,gold:14, reward:{xp:7,coins:5}},
-  {id:'wisp',   em:'👻',name:'WISP',       weakness:'mage',   hp:24, speed:1.6, gold:8,  reward:{xp:4,coins:3}},
-  {id:'brute',  em:'😈',name:'BRUTE',      weakness:'cannon', hp:58, speed:0.7, gold:12, reward:{xp:6,coins:5}},
-  {id:'shield', em:'🛡️',name:'SHIELDBOT', weakness:'cannon', hp:80, speed:0.65,gold:16, reward:{xp:8,coins:6},armor:'tesla'},
-  {id:'speeder',em:'💨',name:'SPEEDER',    weakness:'archer', hp:18, speed:2.2, gold:8,  reward:{xp:4,coins:3}},
+  {id:'grunt',  em:'👾',name:'GRUNT',       weakness:'archer', hp:28,  speed:1.0,  gold:8,  reward:{xp:4,coins:3}},
+  {id:'mech',   em:'🤖',name:'MECH',        weakness:'tesla',  hp:40,  speed:0.85, gold:10, reward:{xp:5,coins:4}},
+  {id:'imp',    em:'👹',name:'IMP',         weakness:'mage',   hp:32,  speed:1.25, gold:8,  reward:{xp:4,coins:3}},
+  {id:'golem',  em:'🪨',name:'GOLEM',       weakness:'cannon', hp:70,  speed:0.55, gold:14, reward:{xp:7,coins:5}},
+  {id:'wisp',   em:'👻',name:'WISP',        weakness:'mage',   hp:24,  speed:1.6,  gold:8,  reward:{xp:4,coins:3}},
+  {id:'brute',  em:'😈',name:'BRUTE',       weakness:'cannon', hp:58,  speed:0.7,  gold:12, reward:{xp:6,coins:5}},
+  {id:'shield', em:'🛡️',name:'SHIELDBOT',  weakness:'laser',  hp:80,  speed:0.65, gold:16, reward:{xp:8,coins:6},armor:0.5},
+  {id:'speeder',em:'💨',name:'SPEEDER',     weakness:'archer', hp:18,  speed:2.2,  gold:8,  reward:{xp:4,coins:3}},
+  {id:'healer', em:'💚',name:'HEALER',      weakness:'sniper', hp:35,  speed:0.9,  gold:18, reward:{xp:9,coins:7},heals:true,healRate:2,healRange:1.2},
+  {id:'split',  em:'🔴',name:'SPLITTER',    weakness:'frost',  hp:50,  speed:0.9,  gold:12, reward:{xp:6,coins:4},splits:2},
+  {id:'necro',  em:'☠️',name:'NECROMANCER', weakness:'laser',  hp:45,  speed:0.75, gold:22, reward:{xp:12,coins:8},revives:true},
+  {id:'phantom',em:'🌑',name:'PHANTOM',     weakness:'laser',  hp:38,  speed:1.4,  gold:14, reward:{xp:7,coins:5},magicImmune:true},
+  {id:'beast',  em:'🐗',name:'BEAST',       weakness:'cannon', hp:90,  speed:0.95, gold:20, reward:{xp:10,coins:8},rage:true},
+  {id:'swarm',  em:'🐛',name:'SWARM',       weakness:'inferno',hp:12,  speed:1.8,  gold:4,  reward:{xp:2,coins:1},count:4},
 ];
 const TD_BOSSES=[
-  {id:'dragon',em:'🐲',name:'SHADOW DRAGON',weakness:'mage',  hp:320,speed:0.5, gold:80, reward:{xp:50,coins:40},isBoss:true},
-  {id:'skull', em:'💀',name:'SKULL LORD',   weakness:'archer',hp:420,speed:0.45,gold:100,reward:{xp:65,coins:50},isBoss:true},
-  {id:'titan', em:'🗿',name:'STONE TITAN',  weakness:'cannon',hp:560,speed:0.4, gold:130,reward:{xp:90,coins:70},isBoss:true},
+  {id:'dragon', em:'🐲',name:'SHADOW DRAGON', weakness:'mage',   hp:320, speed:0.5,  gold:80,  reward:{xp:50,coins:40},isBoss:true},
+  {id:'skull',  em:'💀',name:'SKULL LORD',    weakness:'archer', hp:420, speed:0.45, gold:100, reward:{xp:65,coins:50},isBoss:true},
+  {id:'titan',  em:'🗿',name:'STONE TITAN',   weakness:'cannon', hp:560, speed:0.4,  gold:130, reward:{xp:90,coins:70},isBoss:true},
+  {id:'mech2',  em:'🤖',name:'MEGA MECH',     weakness:'tesla',  hp:700, speed:0.5,  gold:160, reward:{xp:120,coins:90},isBoss:true,shields:true},
+  {id:'lich',   em:'🧙',name:'LICH KING',     weakness:'laser',  hp:850, speed:0.38, gold:200, reward:{xp:160,coins:120},isBoss:true,revives:true},
+  {id:'chaos',  em:'🌋',name:'CHAOS TITAN',   weakness:'sniper', hp:1100,speed:0.35, gold:250, reward:{xp:200,coins:160},isBoss:true,enrages:true},
+  {id:'void',   em:'🌌',name:'VOID HERALD',   weakness:'inferno',hp:1500,speed:0.42, gold:350, reward:{xp:300,coins:220},isBoss:true,magicImmune:true,enrages:true},
 ];
 const TD_TOWER_DEFS={
-  archer:{em:'🏹',nm:'ARCHER', col:'#39FF14',cost:50, range:2.5,dmg:10,rate:22,type:'single',
+  archer:{em:'🏹',nm:'ARCHER', col:'#39FF14',cost:50, range:2.5,dmg:10,rate:22,type:'single',desc:'Snabb, enkel',
     upgrades:[
-      {cost:75, em:'🏹',nm:'ARCHER+', dmg:16,rate:16,desc:'Snabb skytt · +6 dmg'},
-      {cost:110,em:'🏹',nm:'ARCHER++',dmg:16,rate:16,multishot:3,desc:'Multi-shot · träffar 3'},
+      {cost:75, nm:'ARCHER+',  dmg:16, rate:16, desc:'Kraftigare pilar'},
+      {cost:120,nm:'ARCHER++', dmg:22, rate:14, multishot:2, desc:'Dubbel-skott'},
+      {cost:200,nm:'RAPID BOW',dmg:22, rate:8,  multishot:3, desc:'Trippel snabb-skott'},
+      {cost:320,nm:'STORM BOW',dmg:30, rate:6,  multishot:5, pierce:true, desc:'5-pil storm, genomträngande'},
     ]},
-  mage:{em:'🔮',nm:'MAGE',  col:'#BF5FFF',cost:80, range:2.0,dmg:22,rate:55,type:'aoe',aoeR:0.9,
+  mage:{em:'🔮',nm:'MAGE',   col:'#BF5FFF',cost:80, range:2.0,dmg:22,rate:55,type:'aoe',aoeR:0.9,desc:'AoE magi',
     upgrades:[
-      {cost:100,em:'🔮',nm:'MAGE+',  dmg:30,aoeR:1.5,desc:'Stor explosion · bigger AOE'},
-      {cost:140,em:'🔮',nm:'MAGE++', dmg:30,aoeR:1.5,slow:0.45,slowDur:80,desc:'Frost · saktar 55%'},
+      {cost:100,nm:'MAGE+',     dmg:30, aoeR:1.5, desc:'Stor explosion'},
+      {cost:150,nm:'FROST MAGE',dmg:30, aoeR:1.5, slow:0.45,slowDur:80, desc:'Frost-slow 55%'},
+      {cost:240,nm:'BLIZZARD',  dmg:40, aoeR:2.0, slow:0.6, slowDur:120, desc:'Massiv AoE frost'},
+      {cost:380,nm:'ARCHMAGE',  dmg:60, aoeR:2.5, slow:0.7, slowDur:180, stunDur:30, desc:'Arcane devastation'},
     ]},
-  tesla:{em:'⚡',nm:'TESLA', col:'#00D9FF',cost:100,range:2.5,dmg:14,rate:38,type:'chain',chains:2,
+  tesla:{em:'⚡',nm:'TESLA',  col:'#00D9FF',cost:100,range:2.5,dmg:14,rate:38,type:'chain',chains:2,desc:'Kedjeblixtar',
     upgrades:[
-      {cost:120,em:'⚡',nm:'TESLA+', dmg:20,chains:3,desc:'3 kedjor · +6 dmg'},
-      {cost:160,em:'⚡',nm:'TESLA++',dmg:20,chains:3,stunDur:45,desc:'Stun · 0.75s paralys'},
+      {cost:120,nm:'TESLA+',   dmg:20, chains:3, desc:'3-kedjor'},
+      {cost:160,nm:'STORM',    dmg:26, chains:4, stunDur:45, desc:'Stun + 4 kedjor'},
+      {cost:250,nm:'OVERLOAD', dmg:35, chains:5, stunDur:60, desc:'Paralys 5-kedjor'},
+      {cost:400,nm:'SUPERNOVA',dmg:55, chains:8, stunDur:90, aoeR:0.6, desc:'Massiv blixtstorm'},
     ]},
-  cannon:{em:'💣',nm:'CANNON',col:'#FF9F0A',cost:120,range:2.0,dmg:50,rate:75,type:'impact',impactR:0.8,
+  cannon:{em:'💣',nm:'CANNON',col:'#FF9F0A',cost:120,range:2.0,dmg:50,rate:75,type:'impact',impactR:0.8,desc:'Massiv splitter',
     upgrades:[
-      {cost:150,em:'💣',nm:'CANNON+', dmg:75,impactR:1.4,desc:'Bigger boom · +25 dmg'},
-      {cost:200,em:'💣',nm:'CANNON++',dmg:75,impactR:1.4,knockback:1.2,desc:'Knockback · skjuter tillbaka'},
+      {cost:150,nm:'CANNON+',    dmg:75,  impactR:1.4, desc:'Större explosion'},
+      {cost:200,nm:'HOWITZER',   dmg:90,  impactR:1.8, knockback:1.2, desc:'Knockback + splash'},
+      {cost:300,nm:'SIEGE',      dmg:130, impactR:2.2, knockback:2.0, desc:'Masskastning'},
+      {cost:450,nm:'ANNIHILATOR',dmg:200, impactR:3.0, knockback:3.0, desc:'Planet-krossen AoE'},
+    ]},
+  frost:{em:'❄️',nm:'FROST',  col:'#A8E6FF',cost:70, range:2.8,dmg:6, rate:30,type:'aoe',aoeR:1.0,slow:0.5,slowDur:100,desc:'Saktar fiender',
+    upgrades:[
+      {cost:90, nm:'CHILL',    dmg:8,  aoeR:1.4, slow:0.6, slowDur:120, desc:'Kraftigare kyla'},
+      {cost:130,nm:'BLIZZARD', dmg:10, aoeR:2.0, slow:0.7, slowDur:160, desc:'Massiv frost-AoE'},
+      {cost:210,nm:'ICE STORM',dmg:15, aoeR:2.5, slow:0.8, slowDur:200, stunDur:20, desc:'Fryser kortvarigt'},
+      {cost:350,nm:'PERMAFROST',dmg:20,aoeR:3.5, slow:0.9, slowDur:300, stunDur:60, desc:'Total nedfrysning'},
+    ]},
+  poison:{em:'🧪',nm:'POISON', col:'#39FF14',cost:90, range:2.2,dmg:4, rate:20,type:'aoe',aoeR:0.8,poison:true,poisonDmg:2,poisonDur:120,desc:'DOT gift',
+    upgrades:[
+      {cost:110,nm:'VENOM',      dmg:6,  aoeR:1.2, poisonDmg:4,  poisonDur:150, desc:'Starkare gift'},
+      {cost:160,nm:'PLAGUE',     dmg:8,  aoeR:1.8, poisonDmg:6,  poisonDur:200, desc:'Giftsmitta sprids'},
+      {cost:250,nm:'TOXIN',      dmg:12, aoeR:2.2, poisonDmg:10, poisonDur:240, desc:'Massdöd-gift'},
+      {cost:400,nm:'DEATH CLOUD',dmg:18, aoeR:3.0, poisonDmg:16, poisonDur:400, desc:'Dödens moln'},
+    ]},
+  sniper:{em:'🎯',nm:'SNIPER', col:'#FFE600',cost:150,range:5.0,dmg:80,rate:90,type:'single',crit:0.2,desc:'Extremt räckvidd',
+    upgrades:[
+      {cost:180,nm:'MARKSMAN', dmg:120, rate:80, crit:0.3, desc:'Kritisk chans +10%'},
+      {cost:260,nm:'SHARPSHOT',dmg:180, rate:70, crit:0.4, pierce:true, desc:'Genomträngande skott'},
+      {cost:380,nm:'DEADEYE',  dmg:280, rate:60, crit:0.55,pierce:true, desc:'55% crit + pierce'},
+      {cost:550,nm:'GODSHOT',  dmg:450, rate:50, crit:0.75,pierce:true, range:7.0, desc:'Hela banan synlig'},
+    ]},
+  inferno:{em:'🔥',nm:'INFERNO',col:'#FF4500',cost:110,range:2.0,dmg:18,rate:25,type:'aoe',aoeR:0.7,burn:true,burnDmg:3,burnDur:80,desc:'Bränner fiender',
+    upgrades:[
+      {cost:140,nm:'BLAZE',    dmg:26, aoeR:1.0, burnDmg:5,  burnDur:100, desc:'Hettare lågor'},
+      {cost:200,nm:'INFERNO+', dmg:35, aoeR:1.5, burnDmg:8,  burnDur:140, desc:'Massiv brasa'},
+      {cost:300,nm:'HELLFIRE', dmg:50, aoeR:2.0, burnDmg:14, burnDur:180, desc:'Helvetets eld'},
+      {cost:480,nm:'ARMAGEDDON',dmg:80,aoeR:3.0, burnDmg:22, burnDur:300, desc:'Allt brinner'},
+    ]},
+  vortex:{em:'🌀',nm:'VORTEX', col:'#BF5FFF',cost:130,range:2.2,dmg:8, rate:40,type:'aoe',aoeR:1.2,pull:true,pullStrength:0.4,desc:'Drar fiender tillbaka',
+    upgrades:[
+      {cost:160,nm:'WHIRLPOOL',dmg:12, aoeR:1.6, pullStrength:0.7, desc:'Kraftigare sug'},
+      {cost:220,nm:'SINGULARITY',dmg:18,aoeR:2.2,pullStrength:1.2, stunDur:15, desc:'Gravitationskollaps'},
+      {cost:340,nm:'BLACK HOLE',dmg:28, aoeR:3.0, pullStrength:2.0, stunDur:30, desc:'Svart hål'},
+      {cost:520,nm:'EVENT HORIZON',dmg:45,aoeR:4.0,pullStrength:3.5,stunDur:60, desc:'Total gravitation'},
+    ]},
+  laser:{em:'🔴',nm:'LASER',  col:'#FF2D55',cost:160,range:3.5,dmg:30,rate:15,type:'beam',pierce:true,desc:'Stråle, genomträngande',
+    upgrades:[
+      {cost:200,nm:'LASER+',      dmg:45, rate:12, desc:'Starkare stråle'},
+      {cost:280,nm:'FOCUS BEAM',  dmg:65, rate:10, pierce:true, crit:0.25, desc:'Fokuserad kraft'},
+      {cost:400,nm:'PLASMA',      dmg:100,rate:8,  pierce:true, crit:0.4, aoeR:0.4, desc:'Plasmastråle'},
+      {cost:620,nm:'DEATH LASER', dmg:180,rate:6,  pierce:true, crit:0.6, aoeR:0.8, desc:'Perfekt förstörelse'},
     ]},
 };
-const TD_WAVE_COUNT=10;
+const TD_WAVE_COUNT=999; // effectively infinite
 
 let _td={
   active:false,wave:1,gold:150,baseHp:100,baseMax:100,
@@ -5425,6 +5507,14 @@ let _td={
   selectedTowerId:null,placingType:null,
   shakeT:0,raf:null,lastT:0,paused:false,t:0,speed:1,
   earnedXp:0,earnedCoins:0,_pathCells:null,
+  // Active abilities
+  abilityCD:[0,0,0], // cooldown timers in frames
+  // Wave modifier
+  waveModifier:null,
+  // Session score
+  score:0,highscore:parseInt(localStorage.getItem('kv8_tdHS')||'0'),
+  // Total kills this session
+  totalKills:0,
 };
 
 function tdPathCells(){
@@ -5475,7 +5565,8 @@ function tdSafeCol(c,fb){return(typeof c==='string'&&c.length>1)?c:(fb||'#fff');
 
 function tdUpdateGoldUI(){
   const el=$('tdGoldAmt');if(el)el.textContent=_td.gold;
-  ['archer','mage','tesla','cannon'].forEach(t=>{
+  const ptEl=$('tdPointsDisp');if(ptEl)ptEl.textContent=G.tdPoints||0;
+  ['archer','mage','tesla','cannon','frost','poison','sniper','inferno','vortex','laser'].forEach(t=>{
     const btn=$('tdTB'+t.charAt(0).toUpperCase()+t.slice(1));if(!btn)return;
     const cost=TD_TOWER_DEFS[t]?.cost||999;
     btn.classList.toggle('disabled',_td.gold<cost);
@@ -5489,8 +5580,9 @@ function tdShowTowerPanel(tower){
   const def=tdGetDef(tower);
   const nm=$('tdSellName');if(nm)nm.textContent=(def.em||'🏰')+' '+(def.nm||'TOWER')+' LV'+(tower.level+1);
   const lv=$('tdSellLevel');if(lv){const nu=TD_TOWER_DEFS[tower.type]?.upgrades?.[tower.level];lv.textContent=nu?('→ LV'+(tower.level+2)):'MAX';}
-  const dp=$('tdSellDps');if(dp){const dps=((def.dmg||0)/(def.rate||60)*60).toFixed(0);dp.textContent='DPS: '+dps;}
+  const dps_val=((def.dmg||0)/(def.rate||60)*60).toFixed(0);
   const nu=TD_TOWER_DEFS[tower.type]?.upgrades?.[tower.level];
+  const desc=$('tdUpgDesc');if(desc)desc.textContent=nu?(nu.nm+' | '+dps_val+' DPS'):('MAX LEVEL | '+dps_val+' DPS');
   const ub=$('tdUpgBtn');const uc=$('tdUpgCost');
   if(ub){if(nu){ub.style.display='';if(uc)uc.textContent=nu.cost+'g';ub.classList.toggle('disabled',_td.gold<nu.cost);}else ub.style.display='none';}
   const sa=$('tdSellAmt');if(sa){
@@ -5568,18 +5660,25 @@ function tdCanvasTap(evt){
 }
 
 function openBattle(){
-  _td={active:false,wave:1,gold:150,baseHp:100,baseMax:100,
-    towers:[],enemies:[],projectiles:[],particles:[],ambient:[],
+  const hs=parseInt(localStorage.getItem('kv8_tdHS')||'0');
+  _td={active:false,wave:1,gold:200,baseHp:100,baseMax:100,
+    towers:[],enemies:[],projectiles:[],particles:[],ambient:Array.from({length:20},()=>({x:Math.random()*360,y:Math.random()*480,vx:(Math.random()-.5)*0.3,vy:-(0.2+Math.random()*0.4),life:60+Math.random()*80,col:Math.random()<0.5?'rgba(255,150,50,.5)':'rgba(180,100,255,.4)',r:Math.random()*2+0.5})),
     queue:[],spawnTimer:0,killsThisWave:0,enemiesThisWave:0,
     selectedTowerId:null,placingType:null,
     shakeT:0,raf:null,lastT:0,paused:false,t:0,speed:1,
     earnedXp:0,earnedCoins:0,_pathCells:null,
+    abilityCD:[0,0,0],waveModifier:null,score:0,highscore:hs,totalKills:0,
   };
   const _baV=$('baVictory');if(_baV)_baV.style.display='none';
   const _baD=$('baDefeat');if(_baD)_baD.style.display='none';
   if(!$('battleArena')){showT('Tower Defense laddas...','b');return;}
   $('battleArena').classList.add('open');
   tdInitCanvas();tdUpdateGoldUI();tdUpdateBaseUI();
+  // Show highscore
+  const hs2=$('tdHighscore');if(hs2)hs2.textContent='BEST:'+hs;
+  // Init score display
+  const sc=$('tdScoreDisp');if(sc)sc.textContent='0';
+  tdUpdateAbilityUI();
   tdStartWave();
   SFX.battle&&SFX.battle();vibe([20,10,20]);
 }
@@ -5602,28 +5701,60 @@ function tdInitCanvas(){
 
 function tdEnemyDefForWave(wave){
   const isBoss=wave%5===0;
+  const isMegaBoss=wave%15===0&&wave>0;
   if(isBoss){
-    const b=TD_BOSSES[Math.min(Math.floor(wave/5)-1,TD_BOSSES.length-1)];
-    return{...b,hp:Math.round(b.hp*(1+(wave-5)*0.12)),isBoss:true};
+    const bIdx=isMegaBoss?Math.min(Math.floor(wave/15)+3,TD_BOSSES.length-1):Math.min(Math.floor(wave/5)-1,2);
+    const b=TD_BOSSES[Math.max(0,Math.min(bIdx,TD_BOSSES.length-1))];
+    const bScale=1+Math.floor(wave/5)*0.15;
+    return{...b,hp:Math.round(b.hp*bScale),gold:Math.round(b.gold*Math.min(bScale,3)),isBoss:true,isMegaBoss};
   }
-  const base=TD_ENEMIES[Math.floor(Math.random()*TD_ENEMIES.length)];
-  const scale=1+(wave-1)*0.18;
-  return{...base,hp:Math.max(6,Math.round(base.hp*scale)),speed:Math.min(2.5,base.speed*(1+(wave-1)*0.05)),isBoss:false};
+  // Unlock harder enemies as waves progress
+  const pool=TD_ENEMIES.filter((_,i)=>i<Math.min(TD_ENEMIES.length,3+Math.floor(wave/3)));
+  const base=pool[Math.floor(Math.random()*pool.length)];
+  const scale=1+(wave-1)*0.2;
+  const speedScale=1+(wave-1)*0.04;
+  let e={...base,hp:Math.max(6,Math.round(base.hp*scale)),speed:Math.min(3.0,base.speed*speedScale),gold:Math.round((base.gold||8)*(1+wave*0.05)),isBoss:false};
+  // Apply wave modifier
+  if(_td.waveModifier==='horde')e.speed*=1.4;
+  if(_td.waveModifier==='elite'){e.hp=Math.round(e.hp*1.8);e.gold=Math.round(e.gold*2);}
+  if(_td.waveModifier==='armored')e.armor=(e.armor||0.5)*0.7;
+  return e;
 }
 
+const _TD_WAVE_MODIFIERS=[
+  {id:'horde',   label:'⚡ HORDE RUSH!',      desc:'2× enemies, 40% faster',     col:'#FF4500', extraEnemies:1.0},
+  {id:'elite',   label:'👑 ELITE FORCES!',    desc:'180% HP, 2× gold',           col:'#FFD700'},
+  {id:'armored', label:'🛡️ ARMORED!',         desc:'All enemies heavy armored',  col:'#888'},
+  {id:'speedy',  label:'💨 SPEED SURGE!',     desc:'All 60% faster',             col:'#00D9FF', speedMult:1.6},
+  {id:'undead',  label:'☠️ UNDEAD WAVE!',    desc:'Enemies revive once',         col:'#BF5FFF'},
+];
 function tdStartWave(){
-  const w=_td.wave,isBoss=w%5===0;
-  const count=isBoss?1:Math.min(4+Math.floor(w*1.3),18);
+  const w=_td.wave;
+  const isBoss=w%5===0;
+  const isMegaBoss=w%15===0&&w>0;
+  // Roll wave modifier every 10th wave (non-boss)
+  if(w%10===0&&!isBoss){
+    _td.waveModifier=_TD_WAVE_MODIFIERS[Math.floor(w/10-1)%_TD_WAVE_MODIFIERS.length].id;
+  }else if(isBoss){
+    _td.waveModifier=null;
+  }
+  const mod=_TD_WAVE_MODIFIERS.find(m=>m.id===_td.waveModifier);
+  let count=isBoss?1:Math.min(5+Math.floor(w*1.5),25);
+  if(mod?.extraEnemies)count=Math.round(count*(1+mod.extraEnemies));
   _td.queue=[];for(let i=0;i<count;i++)_td.queue.push(tdEnemyDefForWave(w));
   _td.enemies=[];_td.spawnTimer=0;_td.killsThisWave=0;_td.enemiesThisWave=count;
   _td.active=true;_td.paused=false;
-  const hw=$('baWave');if(hw)hw.textContent=(isBoss?'⚠️ BOSS WAVE ':'WAVE ')+w+'/'+TD_WAVE_COUNT;
-  const wi=$('tdWaveInfo');if(wi)wi.textContent='WAVE '+w+'/'+TD_WAVE_COUNT;
+  const hw=$('baWave');if(hw)hw.textContent=(isMegaBoss?'🔥 MEGA BOSS ':isBoss?'⚠️ BOSS ':'WAVE ')+w;
+  const wi=$('tdWaveInfo');if(wi)wi.textContent='WAVE '+w+(w>99?' 🔥':w>49?' 💀':w>24?' ⚡':'');
   const wb=$('tdWaveBanner');
-  const big=$('tdWaveBig');if(big)big.textContent=isBoss?('⚠️ BOSS WAVE '+w):('WAVE '+w);
-  const sub=$('tdWaveSub');if(sub)sub.textContent=isBoss?'A powerful foe approaches!':(count+' enemies incoming!');
-  if(wb){wb.classList.remove('show');void wb.offsetWidth;wb.classList.add('show');setTimeout(()=>wb.classList.remove('show'),1800);}
-  tdUpdateBaseUI();
+  const big=$('tdWaveBig');if(big)big.textContent=isMegaBoss?('🔥 MEGA BOSS '+w):isBoss?('⚠️ BOSS WAVE '+w):(mod?mod.label:('WAVE '+w));
+  const sub=$('tdWaveSub');if(sub)sub.textContent=isMegaBoss?'LEGENDARY foe — full power!':isBoss?'Mäktig fiende nalkas!':(mod?mod.desc:count+' fiender inkommande!');
+  if(wb){wb.classList.remove('show');void wb.offsetWidth;wb.classList.add('show');setTimeout(()=>wb.classList.remove('show'),2200);}
+  // Show modifier banner
+  if(mod){
+    const mb=$('tdModifierBanner');if(mb){mb.textContent=mod.label;mb.style.color=mod.col;mb.style.display='block';setTimeout(()=>{mb.style.display='none';},3000);}
+  }else{const mb=$('tdModifierBanner');if(mb)mb.style.display='none';}
+  tdUpdateBaseUI();tdUpdateAbilityUI();
   if(!_td.raf){_td.lastT=performance.now();_td.raf=requestAnimationFrame(tdLoop);}
 }
 
@@ -5642,17 +5773,29 @@ function tdLoop(t){
 function tdUpdate(dt){
   _td.t+=dt;
   const totalLen=tdTotalLen();
-  // Move enemies
+  // Ability cooldowns
+  for(let i=0;i<3;i++){if(_td.abilityCD[i]>0){_td.abilityCD[i]=Math.max(0,_td.abilityCD[i]-dt);if(i===(_td._lastAbilityIdx??-1))tdUpdateAbilityUI();}}
+  // Move enemies + DOTs
+  const toSpawn=[];
   for(let i=_td.enemies.length-1;i>=0;i--){
     const e=_td.enemies[i];
-    if(e.stunTimer>0){e.stunTimer=Math.max(0,e.stunTimer-dt);continue;}
+    if(e.stunTimer>0){e.stunTimer=Math.max(0,e.stunTimer-dt);if(e.hitFlash>0)e.hitFlash=Math.max(0,e.hitFlash-dt);continue;}
     const spd=e.slowTimer>0?e.speed*(e.slowFactor||1):e.speed;
-    e.progress+=Math.max(0.05,spd)*dt*(_tdCell*0.018);
+    // Pull mechanic
+    if(e.pullTimer>0){e.pullTimer=Math.max(0,e.pullTimer-dt);e.progress=Math.max(0,e.progress-(e.pullForce||0.5)*dt*(_tdCell*0.018));}
+    else e.progress+=Math.max(0.05,spd)*dt*(_tdCell*0.018);
     if(e.hitFlash>0)e.hitFlash=Math.max(0,e.hitFlash-dt);
     if(e.slowTimer>0)e.slowTimer=Math.max(0,e.slowTimer-dt);
+    // Poison DOT
+    if(e.poisonTimer>0){e.poisonTimer=Math.max(0,e.poisonTimer-dt);e.poisonTick=(e.poisonTick||0)+dt;if(e.poisonTick>=8){e.poisonTick=0;const pd=e.poisonDmg||2;e.hp=Math.max(0,e.hp-pd);e.hitFlash=4;if(e.hp<=0){tdKillEnemy(e);continue;}}}
+    // Burn DOT
+    if(e.burnTimer>0){e.burnTimer=Math.max(0,e.burnTimer-dt);e.burnTick=(e.burnTick||0)+dt;if(e.burnTick>=6){e.burnTick=0;const bd=e.burnDmg||3;e.hp=Math.max(0,e.hp-bd);e.hitFlash=4;if(e.hp<=0){tdKillEnemy(e);continue;}}}
+    // Healer behavior — heal nearby allies
+    if(e.heals){e.healTick=(e.healTick||0)+dt;if(e.healTick>=30){e.healTick=0;const hR=(e.healRange||1.2)*_tdCell;const{x:hx,y:hy}=tdEnemyPos(e);_td.enemies.forEach(a=>{if(a!==e){const{x:ax,y:ay}=tdEnemyPos(a);if(Math.hypot(ax-hx,ay-hy)<=hR&&a.hp<a.maxHp){a.hp=Math.min(a.maxHp,a.hp+(e.healRate||2));}}});}}
     if(e.progress>=totalLen){
-      _td.baseHp=Math.max(0,_td.baseHp-5);tdUpdateBaseUI();
-      _td.shakeT=10;vibe(30);_td.killsThisWave++;
+      const dmg=e.isBoss?20:5;
+      _td.baseHp=Math.max(0,_td.baseHp-dmg);tdUpdateBaseUI();
+      _td.shakeT=e.isBoss?22:10;vibe(e.isBoss?[40,20,80]:30);_td.killsThisWave++;
       _td.enemies.splice(i,1);
       if(_td.baseHp<=0){tdDefeat();return;}
     }
@@ -5661,8 +5804,12 @@ function tdUpdate(dt){
   _td.spawnTimer-=dt;
   if(_td.spawnTimer<=0&&_td.queue.length>0){
     const def=_td.queue.shift();
-    _td.enemies.push({...def,maxHp:def.hp,progress:0,hitFlash:0,stunTimer:0,slowTimer:0,slowFactor:1,id:Math.random().toString(36).slice(2)});
-    _td.spawnTimer=def.isBoss?0:Math.max(18,50-_td.wave*3);
+    // Swarm — spawn multiple at once
+    const cnt=def.count||1;
+    for(let s=0;s<cnt;s++){
+      _td.enemies.push({...def,count:1,maxHp:def.hp,progress:-s*_tdCell*0.3,hitFlash:0,stunTimer:0,slowTimer:0,slowFactor:1,poisonTimer:0,burnTimer:0,pullTimer:0,id:Math.random().toString(36).slice(2)});
+    }
+    _td.spawnTimer=def.isBoss?0:Math.max(12,45-_td.wave*2);
   }
   // Towers fire
   for(const tower of _td.towers){
@@ -5671,40 +5818,71 @@ function tdUpdate(dt){
     const def=tdGetDef(tower);if(!def||!def.range)continue;
     const rangePx=def.range*_tdCell;
     const tx=_tdCX(tower.col),ty=_tdCY(tower.row);
-    const inRange=_td.enemies.filter(e=>{const{x,y}=tdEnemyPos(e);return Math.hypot(x-tx,y-ty)<=rangePx;}).sort((a,b)=>b.progress-a.progress);
+    const inRange=_td.enemies.filter(e=>{if(e.progress<0)return false;const{x,y}=tdEnemyPos(e);return Math.hypot(x-tx,y-ty)<=rangePx;}).sort((a,b)=>b.progress-a.progress);
     if(!inRange.length)continue;
     const tType=def.type||'single';
     const primary=inRange[0];
-    if(tType==='aoe'){
+    const waveMult=1+_td.wave*0.025;
+    // Helper: calc damage with armor and weakness
+    const calcDmg=(e,baseDmg)=>{
+      let d=Math.round(baseDmg*(1+_td.wave*0.025));
+      if(e.weakness===tower.type)d=Math.round(d*2.0);
+      else if(e.magicImmune&&(tower.type==='mage'||tower.type==='frost'))d=Math.round(d*0.1);
+      if(e.armor&&tower.type!=='laser'&&tower.type!=='sniper')d=Math.round(d*(1-e.armor));
+      // Crit
+      if(def.crit&&Math.random()<def.crit)d=Math.round(d*2.5);
+      return Math.max(1,d);
+    };
+    if(tType==='aoe'||tType==='beam'){
       const{x:px,y:py}=tdEnemyPos(primary);const aR=(def.aoeR||0.9)*_tdCell;
-      _td.projectiles.push({x:tx,y:ty,tx:px,ty:py,col:def.col||'#BF5FFF',life:8,aoe:aR});
-      for(const e of _td.enemies){const{x,y}=tdEnemyPos(e);if(Math.hypot(x-px,y-py)<=aR){const iw=e.weakness===tower.type;const dmg=Math.round((def.dmg||22)*(iw?1.9:1)*(1+_td.wave*0.02));tdHitEnemy(e,dmg,tower.type);if(def.slow&&def.slowDur){e.slowTimer=def.slowDur;e.slowFactor=1-def.slow;}}}
+      _td.projectiles.push({x:tx,y:ty,tx:px,ty:py,col:tdSafeCol(def.col,'#BF5FFF'),life:8,aoe:aR});
+      const hitList=tType==='beam'?inRange:(def.aoeR>0?_td.enemies:inRange.slice(0,1));
+      for(const e of hitList){
+        if(tType!=='beam'){const{x,y}=tdEnemyPos(e);if(Math.hypot(x-px,y-py)>aR)continue;}
+        if(tType==='beam'&&!def.pierce&&e!==primary)break;
+        const dmg=calcDmg(e,def.dmg||22);
+        tdHitEnemy(e,dmg,tower.type);
+        if(def.slow&&def.slowDur){e.slowTimer=Math.max(e.slowTimer||0,def.slowDur);e.slowFactor=Math.min(e.slowFactor||1,1-def.slow);}
+        if(def.burn&&def.burnDur){e.burnTimer=Math.max(e.burnTimer||0,def.burnDur);e.burnDmg=Math.max(e.burnDmg||0,def.burnDmg||3);}
+        if(def.poison&&def.poisonDur){e.poisonTimer=Math.max(e.poisonTimer||0,def.poisonDur);e.poisonDmg=Math.max(e.poisonDmg||0,def.poisonDmg||2);}
+        if(def.stunDur&&Math.random()<0.25)e.stunTimer=Math.max(e.stunTimer||0,def.stunDur);
+        if(def.pull&&def.pullStrength){e.pullTimer=(e.pullTimer||0)+20;e.pullForce=def.pullStrength;}
+        if(e.weakness===tower.type)tdWeaknessPayoff();
+      }
     } else if(tType==='impact'){
       const{x:px,y:py}=tdEnemyPos(primary);const iR=(def.impactR||0.8)*_tdCell;
-      _td.projectiles.push({x:tx,y:ty,tx:px,ty:py,col:def.col||'#FF9F0A',life:8});
-      for(const e of _td.enemies){const{x,y}=tdEnemyPos(e);if(Math.hypot(x-px,y-py)<=iR){const iw=e.weakness===tower.type;const dmg=Math.round((def.dmg||50)*(iw?1.9:1)*(1+_td.wave*0.02));tdHitEnemy(e,dmg,tower.type);if(def.knockback&&e.progress>0)e.progress=Math.max(0,e.progress-def.knockback*_tdCell*0.3);}}
+      _td.projectiles.push({x:tx,y:ty,tx:px,ty:py,col:tdSafeCol(def.col,'#FF9F0A'),life:8,aoe:iR*0.5});
+      for(const e of _td.enemies){const{x,y}=tdEnemyPos(e);if(Math.hypot(x-px,y-py)<=iR){const dmg=calcDmg(e,def.dmg||50);tdHitEnemy(e,dmg,tower.type);if(def.knockback&&e.progress>0)e.progress=Math.max(0,e.progress-def.knockback*_tdCell*0.35);}}
     } else {
       const shots=def.multishot||1;
       inRange.slice(0,shots).forEach(target=>{
-        const iw=target.weakness===tower.type;
-        const dmg=Math.round((def.dmg||10)*(iw?1.9:1)*(1+_td.wave*0.02));
-        if(target.armor===tower.type)tdHitEnemy(target,Math.floor(dmg*0.3),tower.type);else tdHitEnemy(target,dmg,tower.type);
+        const dmg=calcDmg(target,def.dmg||10);
+        tdHitEnemy(target,dmg,tower.type);
+        if(def.poison&&def.poisonDur){target.poisonTimer=Math.max(target.poisonTimer||0,def.poisonDur);target.poisonDmg=Math.max(target.poisonDmg||0,def.poisonDmg||2);}
         const{x:ex,y:ey}=tdEnemyPos(target);
-        _td.projectiles.push({x:tx,y:ty,tx:ex,ty:ey,col:def.col||'#fff',life:6});
-        if(iw)tdWeaknessPayoff();
+        _td.projectiles.push({x:tx,y:ty,tx:ex,ty:ey,col:tdSafeCol(def.col,'#fff'),life:6});
+        if(target.weakness===tower.type)tdWeaknessPayoff();
       });
       if(tType==='chain'&&(def.chains||1)>1){
         const chained=inRange.slice(shots,shots+(def.chains||1)-1);
         const{x:ex,y:ey}=tdEnemyPos(primary);
-        chained.forEach(ch=>{const iw=ch.weakness===tower.type;const dmg=Math.round((def.dmg||10)*0.6*(iw?1.9:1));tdHitEnemy(ch,dmg,tower.type);const{x:cx,y:cy}=tdEnemyPos(ch);_td.projectiles.push({x:ex,y:ey,tx:cx,ty:cy,col:def.col||'#00D9FF',life:5});if(def.stunDur&&Math.random()<0.3)ch.stunTimer=(ch.stunTimer||0)+def.stunDur;});
+        chained.forEach(ch=>{
+          const dmg=Math.max(1,Math.round(calcDmg(ch,def.dmg||10)*0.6));
+          tdHitEnemy(ch,dmg,tower.type);
+          const{x:cx,y:cy}=tdEnemyPos(ch);
+          _td.projectiles.push({x:ex,y:ey,tx:cx,ty:cy,col:tdSafeCol(def.col,'#00D9FF'),life:5});
+          if(def.stunDur&&Math.random()<0.35)ch.stunTimer=Math.max(ch.stunTimer||0,def.stunDur);
+        });
       }
     }
     tower.fireTimer=def.rate||30;tower.firingT=8;
   }
   for(const t of _td.towers)if(t.firingT>0)t.firingT=Math.max(0,t.firingT-dt);
+  // Ambient
+  for(const a of (_td.ambient||[])){a.y+=a.vy*dt;a.x+=a.vx*dt;a.life-=dt;if(a.life<=0){a.y=_tdCell*TD_ROWS;a.x=Math.random()*_tdCell*TD_COLS;a.life=60+Math.random()*80;a.vy=-(0.2+Math.random()*0.5);a.vx=(Math.random()-.5)*0.3;}}
   // Decay
   for(let i=_td.projectiles.length-1;i>=0;i--){_td.projectiles[i].life-=dt;if(_td.projectiles[i].life<=0)_td.projectiles.splice(i,1);}
-  for(let i=_td.particles.length-1;i>=0;i--){const p=_td.particles[i];p.x+=p.vx*dt;p.y+=p.vy*dt;p.vy+=0.12*dt;p.life-=dt;if(p.life<=0)_td.particles.splice(i,1);}
+  for(let i=_td.particles.length-1;i>=0;i--){const p=_td.particles[i];p.x+=p.vx*dt;p.y+=p.vy*dt;p.vy+=0.1*dt;p.life-=dt;if(p.life<=0)_td.particles.splice(i,1);}
   if(_td.shakeT>0)_td.shakeT=Math.max(0,_td.shakeT-dt);
   // Wave clear
   if(_td.active&&_td.queue.length===0&&_td.enemies.length===0&&_td.killsThisWave>=_td.enemiesThisWave)tdWaveClear();
@@ -5716,32 +5894,97 @@ function tdHitEnemy(e,dmg,tType){
 }
 
 function tdKillEnemy(e){
-  _td.killsThisWave++;_td.gold+=(e.gold||8);
-  _td.earnedXp+=(e.reward?.xp||3);_td.earnedCoins+=(e.reward?.coins||2);
+  _td.killsThisWave++;_td.totalKills=(_td.totalKills||0)+1;
+  const gold=e.gold||8;_td.gold+=gold;
+  const xp=e.reward?.xp||3,coins=e.reward?.coins||2;
+  _td.earnedXp+=xp;_td.earnedCoins+=coins;
+  // Score: base 10 pts per kill × wave multiplier × boss bonus
+  const scorePts=Math.round((e.isBoss?500:10)*(1+_td.wave*0.1)*(e.isMegaBoss?3:1));
+  _td.score=(_td.score||0)+scorePts;
+  // Update highscore
+  if(_td.score>_td.highscore){_td.highscore=_td.score;localStorage.setItem('kv8_tdHS',_td.score);const hs=$('tdHighscore');if(hs)hs.textContent='BEST:'+_td.score;}
+  const sc=$('tdScoreDisp');if(sc)sc.textContent=_td.score;
   const{x,y}=tdEnemyPos(e);
   const canvas=$('tdCanvas');
-  if(canvas){const r=canvas.getBoundingClientRect();floatNum&&floatNum('+'+(e.gold||8)+'g',r.left+x*r.width/canvas.width,r.top+y*r.height/canvas.height,'#FFD700',16);}
-  // Death explosion particles — many more, varied
-  const pCount=e.isBoss?32:e.id&&e.id.includes('brute')?18:10;
-  const pCol=e.isBoss?['#FFD700','#FF9F0A','#FF2D55','#fff']:['#FF007F','#BF5FFF','#FF2D55','#FFD700'];
-  for(let i=0;i<pCount;i++){
-    const angle=Math.random()*Math.PI*2;const spd=Math.random()*(e.isBoss?5:3)+1;
-    _td.particles.push({x,y,vx:Math.cos(angle)*spd,vy:Math.sin(angle)*spd-1,col:pCol[Math.floor(Math.random()*pCol.length)],r:e.isBoss?(Math.random()*5+2):(Math.random()*3+1),life:e.isBoss?28:16});
+  if(canvas){const r=canvas.getBoundingClientRect();floatNum&&floatNum('+'+gold+'g',r.left+x*r.width/canvas.width,r.top+y*r.height/canvas.height,'#FFD700',16);}
+  // Split enemies
+  if(e.splits&&e.splits>1&&!e._split){
+    for(let s=0;s<e.splits;s++){
+      const splitBase=TD_ENEMIES.find(en=>en.id==='grunt')||TD_ENEMIES[0];
+      _td.queue.unshift({...splitBase,hp:Math.round(e.maxHp*0.35),maxHp:Math.round(e.maxHp*0.35),progress:Math.max(0,e.progress-s*_tdCell*0.1),_split:true,gold:Math.round(gold*0.3),reward:{xp:Math.round(xp*0.3),coins:1},isBoss:false});
+      _td.enemiesThisWave++;
+    }
+    _td.spawnTimer=0;
   }
-  // Shockwave ring — store in projectiles as special type
+  // Death explosion particles
+  const pCount=e.isBoss?40:e.isMegaBoss?60:12;
+  const pCol=e.isBoss?['#FFD700','#FF9F0A','#FF2D55','#fff','#BF5FFF']:['#FF007F','#BF5FFF','#FF2D55','#FFD700','#39FF14'];
+  for(let i=0;i<pCount;i++){
+    const angle=Math.random()*Math.PI*2;const spd=Math.random()*(e.isBoss?6:3)+1;
+    _td.particles.push({x,y,vx:Math.cos(angle)*spd,vy:Math.sin(angle)*spd-1.5,col:pCol[Math.floor(Math.random()*pCol.length)],r:e.isBoss?(Math.random()*6+2):(Math.random()*3+1),life:e.isBoss?32:14});
+  }
   if(e.isBoss){
-    _td.particles.push({x,y,vx:0,vy:0,col:'#FFD700',r:60,life:18,ring:true,ringGrow:true});
-    _td.shakeT=18;shakeScreen&&shakeScreen();vibe([50,25,100,25,150]);
-  } else if((e.hp<=0)&&!e.isBoss){
-    _td.particles.push({x,y,vx:0,vy:0,col:'rgba(255,0,127,.6)',r:24,life:8,ring:true});
+    _td.particles.push({x,y,vx:0,vy:0,col:'#FFD700',r:70,life:22,ring:true,ringGrow:true});
+    if(e.isMegaBoss){_td.particles.push({x,y,vx:0,vy:0,col:'#FF2D55',r:120,life:28,ring:true,ringGrow:true});}
+    _td.shakeT=e.isMegaBoss?30:20;shakeScreen&&shakeScreen();vibe([50,25,100,25,150]);
+    showT((e.isMegaBoss?'🌋':'⚔️')+' '+e.name+' besegrad! +'+gold+'g +'+xp+'XP','y');
+  } else {
+    _td.particles.push({x,y,vx:0,vy:0,col:'rgba(255,0,127,.5)',r:22,life:7,ring:true});
   }
   const idx=_td.enemies.indexOf(e);if(idx>=0)_td.enemies.splice(idx,1);
   tdUpdateGoldUI();
 }
 
 function tdToggleSpeed(){
-  _td.speed=(_td.speed||1)===1?2:1;
+  _td.speed=(_td.speed||1)===1?(_td.speed===1?2:3):(_td.speed===2?3:1);
+  if(_td.speed>2)_td.speed=1;
   const btn=$('tdSpeedBtn');if(btn)btn.textContent=_td.speed+'×';
+}
+
+// ── ACTIVE ABILITIES ──
+const TD_ABILITIES=[
+  {id:'airstrike',em:'✈️',nm:'LUFTANFALL',   desc:'Bombar en rad med fiender',  cd:240,col:'#FF4500'},
+  {id:'freeze',   em:'❄️',nm:'TOTAL-FROST',  desc:'Fryser ALLA i 3 sek',        cd:300,col:'#A8E6FF'},
+  {id:'heal',     em:'💖',nm:'BASE REPARATION',desc:'Återställer 25 HP till basen',cd:360,col:'#39FF14'},
+];
+function tdUseAbility(idx){
+  if(!_td.active)return;
+  if(_td.abilityCD[idx]>0){showT('⏳ Förmåga laddas: '+Math.ceil(_td.abilityCD[idx]/60)+' sek','y');return;}
+  const ab=TD_ABILITIES[idx];
+  _td._lastAbilityIdx=idx;
+  _td.abilityCD[idx]=ab.cd;
+  if(ab.id==='airstrike'){
+    // Bomb center third of map
+    const{x:cx,y:cy}=tdEnemyPos({progress:tdTotalLen()*0.5})||{x:_tdCell*TD_COLS/2,y:_tdCell*TD_ROWS/2};
+    const bRow=Math.floor(TD_ROWS/2);
+    for(const e of [..._td.enemies]){const{x,y}=tdEnemyPos(e);if(Math.abs(y-bRow*_tdCell)<_tdCell*1.5){const dmg=Math.round(80*(1+_td.wave*0.03));tdHitEnemy(e,dmg,'airstrike');}}
+    // Visual: drop particles
+    for(let c=0;c<TD_COLS;c++){for(let b=0;b<8;b++){_td.particles.push({x:c*_tdCell+Math.random()*_tdCell,y:bRow*_tdCell+Math.random()*_tdCell*3,vx:(Math.random()-.5)*4,vy:Math.random()*-6-2,col:['#FF4500','#FFD700','#FF2D55'][Math.floor(Math.random()*3)],r:Math.random()*5+2,life:25+Math.random()*15});}}
+    _td.shakeT=20;shakeScreen&&shakeScreen();vibe([40,20,80,20,60]);
+    showT('✈️ LUFTANFALL! Rad bombar!','r');
+  }else if(ab.id==='freeze'){
+    for(const e of _td.enemies){e.stunTimer=180;e.hitFlash=30;}
+    // Frost visual
+    for(let i=0;i<40;i++){_td.particles.push({x:Math.random()*_tdCell*TD_COLS,y:Math.random()*_tdCell*TD_ROWS,vx:(Math.random()-.5)*2,vy:-Math.random()*2,col:'#A8E6FF',r:Math.random()*4+1,life:60+Math.random()*40});}
+    showT('❄️ TOTAL FROST! Alla frysta 3 sek!','b');
+  }else if(ab.id==='heal'){
+    const heal=Math.min(25,_td.baseMax-_td.baseHp);
+    _td.baseHp=Math.min(_td.baseMax,_td.baseHp+25);
+    tdUpdateBaseUI();
+    for(let i=0;i<20;i++){_td.particles.push({x:Math.random()*_tdCell*TD_COLS,y:Math.random()*_tdCell*TD_ROWS,vx:(Math.random()-.5)*1.5,vy:-Math.random()*3,col:'#39FF14',r:Math.random()*3+1.5,life:40+Math.random()*30});}
+    showT('💖 BASE REPARERAD! +'+Math.min(25,heal+0)+' HP!','g');
+  }
+  tdUpdateAbilityUI();
+}
+function tdUpdateAbilityUI(){
+  TD_ABILITIES.forEach((ab,i)=>{
+    const btn=$('tdAb'+i);if(!btn)return;
+    const cd=_td.abilityCD[i]||0;
+    const ready=cd<=0;
+    btn.style.opacity=ready?'1':'0.45';
+    const lbl=$('tdAbLbl'+i);if(lbl)lbl.textContent=ready?ab.em:Math.ceil(cd/60)+'s';
+    btn.style.boxShadow=ready?('0 0 14px '+ab.col+'88'):'none';
+  });
 }
 
 function tdWeaknessPayoff(){
@@ -5960,12 +6203,27 @@ function tdDraw(){
 }
 
 function tdWaveClear(){
-  _td.active=false;const isFinal=_td.wave>=TD_WAVE_COUNT;
+  _td.active=false;
+  const w=_td.wave;
+  // Milestone bonuses
+  let bonusGold=0;
+  if(w%10===0)bonusGold=100+w*5;
+  else if(w%5===0)bonusGold=40+w*2;
+  if(bonusGold>0){_td.gold+=bonusGold;tdUpdateGoldUI();showT('💰 Wave '+w+' bonus: +'+bonusGold+'g!','y');}
+  // TD Points (meta-progression)
+  const tdPts=w%5===0?5:1;
+  G.tdPoints=(G.tdPoints||0)+tdPts;
   const v=$('baVictory');if(v)v.style.display='flex';
-  const ve=$('baVicEnemy');if(ve)ve.textContent=isFinal?('Alla '+TD_WAVE_COUNT+' waves klarade!'):('Wave '+_td.wave+' klarad!');
+  const ve=$('baVicEnemy');
+  const mile=w%50===0?'🌋 LEGENDARY! Wave '+w+'!':(w%25===0?'💀 GODLIKE! Wave '+w+'!':(w%10===0?'👑 Wave '+w+' MILESTONE!':(w%5===0?'⚔️ Boss wave '+w+' klarad!':'Wave '+w+' klarad!')));
+  if(ve)ve.textContent=mile;
   const rw=$('baRewards');
-  if(rw)rw.innerHTML='<div class="ba-reward-chip">+'+_td.earnedXp+' XP</div><div class="ba-reward-chip" style="animation-delay:.2s;color:var(--y)">+'+_td.earnedCoins+' ⚡</div>'+(isFinal?'<div class="ba-reward-chip" style="animation-delay:.4s;color:#FFD700;border-color:gold">👑 ALLA WAVES!</div>':'')+'';
-  const btn=$('baContBtn');if(btn){if(isFinal){btn.textContent='🏆 AVSLUTA';btn.onclick=()=>{tdFinalRewards();closeBattle();};}else{btn.textContent='NÄSTA WAVE →';btn.onclick=battleContinue;}}
+  if(rw)rw.innerHTML=
+    '<div class="ba-reward-chip">+'+_td.earnedXp+' XP</div>'+
+    '<div class="ba-reward-chip" style="animation-delay:.15s;color:var(--y)">+'+_td.earnedCoins+' ⚡</div>'+
+    '<div class="ba-reward-chip" style="animation-delay:.3s;color:#FFD700">Score: '+_td.score+'</div>'+
+    (tdPts>1?'<div class="ba-reward-chip" style="animation-delay:.45s;color:#BF5FFF">+'+tdPts+' TD Points</div>':'');
+  const btn=$('baContBtn');if(btn){btn.textContent='WAVE '+(w+1)+' →';btn.onclick=battleContinue;}
   SFX.win&&SFX.win();vibe([30,20,100,20,80]);
 }
 
@@ -5976,9 +6234,17 @@ function tdFinalRewards(){
   if(G._talentX12){gainCoins(20);showT('🏦 BATTLE TREASURY! +20 coins!','y');}
   addWorldPoints&&addWorldPoints(Math.floor(_td.wave*10),'battle');
   G.battlesWon=(G.battlesWon||0)+1;
+  // Update highscore
+  if(_td.score>_td.highscore){
+    _td.highscore=_td.score;
+    localStorage.setItem('kv8_tdHS',_td.score);
+    const hs2=$('tdHighscore');if(hs2)hs2.textContent='BEST:'+_td.score;
+  }
+  // Persist TD Points
+  save&&save();
   markBond&&markBond('quest');advanceQuest&&advanceQuest('battle');
   checkAchievements&&checkAchievements();
-  save&&save();updateHUD&&updateHUD();
+  updateHUD&&updateHUD();
   addDiaryEntry&&addDiaryEntry('Klarade '+_td.wave+' waves i Pet Tower Defense! ⚔️');
   showT('⚔️ TOWER DEFENSE! +'+xp+' XP · +'+coins+' coins'+(G._talentK7a?' (WARLORD ×3!)':'')+'','y');
 }
@@ -5993,7 +6259,10 @@ function battleContinue(){
 function battleRetry(){
   const d=$('baDefeat');if(d)d.style.display='none';
   _td.baseHp=_td.baseMax;_td.wave=Math.max(1,_td.wave-1);
-  tdUpdateBaseUI();tdStartWave();
+  _td.score=0;_td.abilityCD=[0,0,0];_td.totalKills=0;
+  _td.earnedXp=0;_td.earnedCoins=0;
+  const sc=$('tdScoreDisp');if(sc)sc.textContent='0';
+  tdUpdateBaseUI();tdUpdateAbilityUI();tdStartWave();
 }
 
 function tdDefeat(){
@@ -6003,8 +6272,15 @@ function tdDefeat(){
     tdUpdateBaseUI();return;
   }
   _td.active=false;
+  // Update highscore on defeat too
+  if(_td.score>_td.highscore){
+    _td.highscore=_td.score;
+    localStorage.setItem('kv8_tdHS',_td.score);
+    const hs2=$('tdHighscore');if(hs2)hs2.textContent='BEST:'+_td.score;
+  }
   SFX.error&&SFX.error();vibe([50,30,100]);
   const sub=$('tdDefeatSub');if(sub)sub.textContent='Du klarade dig till wave '+_td.wave+'. Försök igen!';
+  const ds=$('tdDefeatScore');if(ds)ds.textContent=_td.score;
   const d=$('baDefeat');if(d)d.style.display='flex';
 }
 function addH(t,c='var(--g)'){G.hist.unshift({c,t,time:'just nu'});if(G.hist.length>30)G.hist.pop();}
