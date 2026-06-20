@@ -1029,48 +1029,64 @@ button:active{opacity:.85;}
 .ba-close{background:none;border:none;color:var(--t2);font-size:22px;cursor:pointer;padding:4px 8px;}
 .ba-wave-lbl{font-size:10px;font-weight:900;color:var(--pk);font-family:var(--mono);letter-spacing:2px;}
 .ba-enemy-title{font-size:11px;color:var(--t3);font-family:var(--mono);}
-.ba-hdr{height:54px;display:flex;align-items:center;padding:0 14px;gap:10px;border-bottom:3px solid var(--pk);flex-shrink:0;background:#000;}
-.ba-hp-track{height:10px;background:#111;border:1px solid rgba(255,255,255,.1);border-radius:6px;overflow:hidden;flex:1;}
+.ba-hdr{height:54px;display:flex;align-items:center;padding:0 12px;gap:10px;border-bottom:2px solid rgba(255,0,127,.5);flex-shrink:0;background:linear-gradient(180deg,#0d0010 0%,#060008 100%);box-shadow:0 2px 20px rgba(255,0,127,.15);}
+.ba-hp-track{height:10px;background:rgba(0,0,0,.6);border:1px solid rgba(255,255,255,.1);border-radius:6px;overflow:hidden;flex:1;box-shadow:inset 0 1px 3px rgba(0,0,0,.8);}
 .ba-hp-bar-fill{height:100%;border-radius:6px;transition:width .4s ease-out;position:relative;}
-.ba-hp-bar-fill.player{background:linear-gradient(90deg,#00aa44,#39FF14,#80ff55);box-shadow:0 0 12px rgba(57,255,20,.4);}
+.ba-hp-bar-fill.player{background:linear-gradient(90deg,#00aa44,#39FF14,#80ff55);box-shadow:0 0 12px rgba(57,255,20,.6),0 0 4px rgba(57,255,20,.3);}
 /* Game field: canvas + html emoji overlay */
-.td-field{flex:1;position:relative;overflow:hidden;background:#040a04;}
+.td-field{flex:1;position:relative;overflow:hidden;background:#020804;}
 #tdCanvas{display:block;width:100%;height:100%;touch-action:none;}
 #tdEmojiOv{position:absolute;inset:0;pointer-events:none;z-index:2;overflow:hidden;}
 .td-weak-tag{position:absolute;transform:translate(-50%,-100%);font-size:10px;font-weight:900;font-family:var(--mono);letter-spacing:.5px;padding:2px 7px;border-radius:8px;white-space:nowrap;background:rgba(0,0,0,.75);border:1px solid currentColor;box-shadow:0 0 10px currentColor;}
-.td-base-hp-wrap{position:absolute;left:10px;right:10px;bottom:10px;z-index:3;display:flex;align-items:center;gap:8px;background:rgba(0,0,0,.55);border-radius:10px;padding:6px 10px;backdrop-filter:blur(4px);}
+.td-base-hp-wrap{position:absolute;left:10px;right:10px;bottom:10px;z-index:3;display:flex;align-items:center;gap:8px;background:rgba(0,0,0,.7);border-radius:10px;padding:6px 10px;backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.06);}
 .td-base-lbl{font-size:9px;font-weight:900;color:var(--t3);font-family:var(--mono);flex-shrink:0;}
 .td-wave-banner{position:absolute;top:14px;left:50%;transform:translateX(-50%) scale(.4);opacity:0;z-index:6;text-align:center;pointer-events:none;transition:transform .35s cubic-bezier(.34,1.56,.64,1),opacity .35s;}
 .td-wave-banner.show{transform:translateX(-50%) scale(1);opacity:1;}
-.td-wave-banner .tw-big{font-size:22px;font-weight:900;font-family:var(--mono);letter-spacing:2px;color:var(--y);text-shadow:0 0 16px rgba(255,230,0,.6);}
-.td-wave-banner .tw-sub{font-size:11px;color:var(--t2);font-family:var(--mono);margin-top:2px;}
-.td-actions{padding:6px 10px;padding-bottom:calc(6px + env(safe-area-inset-bottom,0px));background:linear-gradient(180deg,#0a0010 0%,#000 100%);border-top:2px solid rgba(255,0,127,.35);flex-shrink:0;}
-.td-gold-bar{display:flex;align-items:center;gap:8px;margin-bottom:6px;}
+.td-wave-banner .tw-big{font-size:24px;font-weight:900;font-family:var(--mono);letter-spacing:3px;color:var(--y);text-shadow:0 0 24px rgba(255,230,0,.8),0 0 48px rgba(255,200,0,.4);}
+.td-wave-banner .tw-sub{font-size:11px;color:var(--t2);font-family:var(--mono);margin-top:3px;letter-spacing:1px;}
+.td-actions{padding:6px 10px 6px;padding-bottom:calc(6px + env(safe-area-inset-bottom,0px));background:linear-gradient(180deg,#050010 0%,#020008 100%);border-top:1.5px solid rgba(191,95,255,.3);flex-shrink:0;box-shadow:0 -4px 24px rgba(0,0,0,.8);}
+.td-gold-bar{display:flex;align-items:center;gap:8px;margin-bottom:5px;}
 .td-gold-lbl{font-size:8px;font-weight:900;color:#FFD700;font-family:var(--mono);letter-spacing:1px;}
-.td-gold-amt{font-size:20px;font-weight:900;color:#FFD700;font-family:var(--mono);min-width:42px;text-shadow:0 0 14px rgba(255,215,0,.6);}
+.td-gold-amt{font-size:20px;font-weight:900;color:#FFD700;font-family:var(--mono);min-width:42px;text-shadow:0 0 14px rgba(255,215,0,.7),0 0 28px rgba(255,200,0,.3);}
 .td-wave-info{margin-left:auto;font-size:9px;font-weight:900;color:var(--t3);font-family:var(--mono);letter-spacing:1px;}
 .td-tower-row{display:grid;grid-template-columns:repeat(4,1fr);gap:5px;}
-.td-tower-btn{display:flex;flex-direction:column;align-items:center;gap:2px;padding:7px 3px 5px;background:rgba(255,255,255,.04);border:1.5px solid rgba(255,255,255,.1);border-radius:12px;cursor:pointer;transition:all .12s;font-family:var(--mono);color:var(--t1);-webkit-tap-highlight-color:transparent;touch-action:manipulation;position:relative;}
-.td-tower-btn:active{transform:scale(.91);}
-.td-tower-btn .tt-ico{font-size:24px;line-height:1;}
-.td-tower-btn .tt-nm{font-size:7px;font-weight:900;letter-spacing:.5px;color:rgba(255,255,255,.7);}
-.td-tower-btn .tt-cost{font-size:10px;color:#FFD700;font-weight:900;}
-.td-tower-btn.selected{border-color:#FFD700;background:rgba(255,215,0,.1);box-shadow:0 0 14px rgba(255,215,0,.4),inset 0 0 8px rgba(255,215,0,.08);}
-.td-tower-btn.disabled{opacity:.3;pointer-events:none;}
-.td-sell-panel{margin-top:7px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:10px;padding:7px 10px;}
+/* Per-type tower button glow colors */
+.td-tower-btn{display:flex;flex-direction:column;align-items:center;gap:2px;padding:6px 3px 5px;background:rgba(255,255,255,.03);border:1.5px solid rgba(255,255,255,.08);border-radius:12px;cursor:pointer;transition:all .12s;font-family:var(--mono);color:var(--t1);-webkit-tap-highlight-color:transparent;touch-action:manipulation;position:relative;overflow:hidden;}
+.td-tower-btn::before{content:'';position:absolute;inset:0;border-radius:11px;opacity:0;background:var(--tb-col,rgba(255,255,255,.1));transition:opacity .15s;}
+.td-tower-btn:active{transform:scale(.89);}
+.td-tower-btn:active::before{opacity:.15;}
+.td-tower-btn .tt-ico{font-size:22px;line-height:1;filter:drop-shadow(0 0 6px var(--tb-glow,#fff4));}
+.td-tower-btn .tt-nm{font-size:6.5px;font-weight:900;letter-spacing:.5px;color:var(--tb-col,rgba(255,255,255,.6));}
+.td-tower-btn .tt-cost{font-size:9.5px;color:#FFD700;font-weight:900;}
+.td-tower-btn.selected{border-color:var(--tb-col,#FFD700);background:var(--tb-bg,rgba(255,215,0,.08));box-shadow:0 0 16px var(--tb-glow,rgba(255,215,0,.4)),inset 0 0 8px var(--tb-bg,rgba(255,215,0,.06));animation:tdBtnPulse 1.4s ease-in-out infinite;}
+.td-tower-btn.disabled{opacity:.28;pointer-events:none;}
+@keyframes tdBtnPulse{0%,100%{box-shadow:0 0 16px var(--tb-glow,rgba(255,215,0,.4)),inset 0 0 8px var(--tb-bg,rgba(255,215,0,.06));}50%{box-shadow:0 0 28px var(--tb-glow,rgba(255,215,0,.6)),inset 0 0 14px var(--tb-bg,rgba(255,215,0,.1));}}
+/* Tower button type glow customization via inline style overrides */
+.td-sell-panel{margin-top:7px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:10px;padding:7px 10px;}
 .td-sell-info{display:flex;align-items:center;gap:6px;margin-bottom:5px;font-size:11px;font-family:var(--mono);}
 #tdSellName{font-weight:900;font-size:13px;color:#FFD700;}
 #tdSellLevel{background:rgba(255,255,255,.1);padding:1px 5px;border-radius:4px;font-size:10px;}
 #tdSellDps{margin-left:auto;font-size:10px;color:var(--t3);}
 .td-sell-actions{display:flex;gap:6px;align-items:center;}
-.td-upg-btn{flex:1;background:rgba(57,255,20,.1);border:1px solid rgba(57,255,20,.4);border-radius:8px;padding:6px;font-size:10px;font-weight:900;font-family:var(--mono);color:#39FF14;cursor:pointer;-webkit-tap-highlight-color:transparent;}
+.td-upg-btn{flex:1;background:linear-gradient(135deg,rgba(57,255,20,.12),rgba(0,200,100,.08));border:1px solid rgba(57,255,20,.5);border-radius:8px;padding:6px;font-size:10px;font-weight:900;font-family:var(--mono);color:#39FF14;cursor:pointer;-webkit-tap-highlight-color:transparent;box-shadow:0 0 10px rgba(57,255,20,.15);transition:all .1s;}
+.td-upg-btn:active{transform:scale(.94);}
 .td-upg-btn.disabled{opacity:.4;pointer-events:none;}
 .td-sell-btn{background:rgba(255,215,0,.1);border:1px solid rgba(255,215,0,.3);border-radius:8px;padding:6px 10px;font-size:10px;font-weight:900;font-family:var(--mono);color:#FFD700;cursor:pointer;-webkit-tap-highlight-color:transparent;}
 .td-sell-close{background:none;border:1px solid rgba(255,255,255,.15);border-radius:8px;padding:5px 8px;font-size:12px;color:var(--t3);cursor:pointer;}
-.ba-victory,.ba-defeat{position:absolute;inset:0;background:rgba(0,0,0,.92);display:flex;align-items:center;justify-content:center;z-index:20;}
-.ba-victory-content{text-align:center;padding:24px;}
-.ba-rewards{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;}
-.ba-reward-chip{background:var(--c2);border:1px solid var(--line2);border-radius:10px;padding:8px 14px;font-size:13px;font-weight:900;animation:spop .4s cubic-bezier(.34,1.56,.64,1) both;}
+/* Victory / Defeat overlays */
+.ba-victory,.ba-defeat{position:absolute;inset:0;background:rgba(0,0,0,.94);backdrop-filter:blur(12px);display:flex;align-items:center;justify-content:center;z-index:20;}
+.ba-victory{background:radial-gradient(ellipse at 50% 0%,rgba(255,215,0,.08) 0%,rgba(0,0,0,.96) 60%);}
+.ba-defeat{background:radial-gradient(ellipse at 50% 0%,rgba(255,0,0,.06) 0%,rgba(0,0,0,.96) 60%);}
+.ba-victory-content{text-align:center;padding:20px;width:100%;}
+.ba-rewards{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;}
+.ba-reward-chip{background:linear-gradient(135deg,rgba(255,255,255,.08),rgba(255,255,255,.04));border:1px solid rgba(255,255,255,.18);border-radius:12px;padding:8px 14px;font-size:12px;font-weight:900;animation:spop .4s cubic-bezier(.34,1.56,.64,1) both;font-family:var(--mono);}
+/* Ability buttons with cooldown ring overlay */
+.td-ab-btn{flex:1;border-radius:12px;padding:6px 2px;display:flex;flex-direction:column;align-items:center;gap:2px;cursor:pointer;transition:all .12s;touch-action:manipulation;-webkit-tap-highlight-color:transparent;position:relative;overflow:hidden;}
+.td-ab-btn::after{content:'';position:absolute;inset:0;background:conic-gradient(rgba(255,255,255,0) var(--cd-pct,0%),rgba(0,0,0,.55) var(--cd-pct,0%));border-radius:12px;pointer-events:none;transition:none;}
+.td-ab-btn.on-cd::after{opacity:1;}
+.td-ab-btn .ab-ico{font-size:20px;line-height:1;}
+.td-ab-btn .ab-nm{font-size:6.5px;font-weight:900;font-family:var(--mono);letter-spacing:.5px;}
+.td-ab-btn .ab-cd{font-size:9px;font-weight:900;font-family:var(--mono);}
 .td-weakness-payoff{position:absolute;top:38%;left:50%;transform:translate(-50%,-50%) scale(.3);opacity:0;z-index:7;pointer-events:none;text-align:center;transition:transform .25s cubic-bezier(.34,1.56,.64,1),opacity .25s;}
 .td-weakness-payoff.show{transform:translate(-50%,-50%) scale(1);opacity:1;}
 .td-weakness-payoff .twp-t{font-size:20px;font-weight:900;font-family:var(--mono);letter-spacing:1px;color:var(--y);text-shadow:0 0 20px rgba(255,230,0,.7);}
@@ -4711,34 +4727,34 @@ div[style*="LIVE"]{border-radius:16px!important;background:rgba(57,255,20,.03)!i
     <div class="td-gold-bar" style="margin-bottom:4px">
       <span class="td-gold-lbl">💰</span>
       <span class="td-gold-amt" id="tdGoldAmt">200</span>
-      <span class="td-wave-info" id="tdWaveInfo" style="flex:1;text-align:center">WAVE 1 ∞</span>
-      <span style="font-size:9px;color:var(--t3);font-family:var(--mono)">TD POINTS: <span id="tdPointsDisp" style="color:var(--p);font-weight:900">0</span></span>
+      <span class="td-wave-info" id="tdWaveInfo" style="flex:1;text-align:center;font-size:10px">WAVE 1 ∞</span>
+      <span style="font-size:8px;color:var(--t3);font-family:var(--mono);white-space:nowrap">⭐<span id="tdPointsDisp" style="color:#BF5FFF;font-weight:900;margin-left:2px">0</span></span>
     </div>
-    <!-- Tower rows (2×5) -->
-    <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:4px;margin-bottom:4px">
-      <button class="td-tower-btn" id="tdTBArcher" onclick="tdSelectTower('archer')"><span class="tt-ico">🏹</span><span class="tt-nm">ARCHER</span><span class="tt-cost">50g</span></button>
-      <button class="td-tower-btn" id="tdTBMage" onclick="tdSelectTower('mage')"><span class="tt-ico">🔮</span><span class="tt-nm">MAGE</span><span class="tt-cost">80g</span></button>
-      <button class="td-tower-btn" id="tdTBTesla" onclick="tdSelectTower('tesla')"><span class="tt-ico">⚡</span><span class="tt-nm">TESLA</span><span class="tt-cost">100g</span></button>
-      <button class="td-tower-btn" id="tdTBCannon" onclick="tdSelectTower('cannon')"><span class="tt-ico">💣</span><span class="tt-nm">CANNON</span><span class="tt-cost">120g</span></button>
-      <button class="td-tower-btn" id="tdTBFrost" onclick="tdSelectTower('frost')"><span class="tt-ico">❄️</span><span class="tt-nm">FROST</span><span class="tt-cost">70g</span></button>
+    <!-- Tower rows (2×5) with per-type glow colors -->
+    <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:3px;margin-bottom:3px">
+      <button class="td-tower-btn" id="tdTBArcher" onclick="tdSelectTower('archer')" style="--tb-col:#39FF14;--tb-glow:rgba(57,255,20,.5);--tb-bg:rgba(57,255,20,.08);border-color:rgba(57,255,20,.2)"><span class="tt-ico">🏹</span><span class="tt-nm" style="color:#39FF14">ARCHER</span><span class="tt-cost">50g</span></button>
+      <button class="td-tower-btn" id="tdTBMage" onclick="tdSelectTower('mage')" style="--tb-col:#BF5FFF;--tb-glow:rgba(191,95,255,.5);--tb-bg:rgba(191,95,255,.08);border-color:rgba(191,95,255,.2)"><span class="tt-ico">🔮</span><span class="tt-nm" style="color:#BF5FFF">MAGE</span><span class="tt-cost">80g</span></button>
+      <button class="td-tower-btn" id="tdTBTesla" onclick="tdSelectTower('tesla')" style="--tb-col:#00D9FF;--tb-glow:rgba(0,217,255,.5);--tb-bg:rgba(0,217,255,.08);border-color:rgba(0,217,255,.2)"><span class="tt-ico">⚡</span><span class="tt-nm" style="color:#00D9FF">TESLA</span><span class="tt-cost">100g</span></button>
+      <button class="td-tower-btn" id="tdTBCannon" onclick="tdSelectTower('cannon')" style="--tb-col:#FF9F0A;--tb-glow:rgba(255,159,10,.5);--tb-bg:rgba(255,159,10,.08);border-color:rgba(255,159,10,.2)"><span class="tt-ico">💣</span><span class="tt-nm" style="color:#FF9F0A">CANNON</span><span class="tt-cost">120g</span></button>
+      <button class="td-tower-btn" id="tdTBFrost" onclick="tdSelectTower('frost')" style="--tb-col:#A8E6FF;--tb-glow:rgba(168,230,255,.5);--tb-bg:rgba(168,230,255,.08);border-color:rgba(168,230,255,.2)"><span class="tt-ico">❄️</span><span class="tt-nm" style="color:#A8E6FF">FROST</span><span class="tt-cost">70g</span></button>
     </div>
-    <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:4px;margin-bottom:4px">
-      <button class="td-tower-btn" id="tdTBPoison" onclick="tdSelectTower('poison')"><span class="tt-ico">🧪</span><span class="tt-nm">POISON</span><span class="tt-cost">90g</span></button>
-      <button class="td-tower-btn" id="tdTBSniper" onclick="tdSelectTower('sniper')"><span class="tt-ico">🎯</span><span class="tt-nm">SNIPER</span><span class="tt-cost">150g</span></button>
-      <button class="td-tower-btn" id="tdTBInferno" onclick="tdSelectTower('inferno')"><span class="tt-ico">🔥</span><span class="tt-nm">INFERNO</span><span class="tt-cost">110g</span></button>
-      <button class="td-tower-btn" id="tdTBVortex" onclick="tdSelectTower('vortex')"><span class="tt-ico">🌀</span><span class="tt-nm">VORTEX</span><span class="tt-cost">130g</span></button>
-      <button class="td-tower-btn" id="tdTBLaser" onclick="tdSelectTower('laser')"><span class="tt-ico">🔴</span><span class="tt-nm">LASER</span><span class="tt-cost">160g</span></button>
+    <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:3px;margin-bottom:4px">
+      <button class="td-tower-btn" id="tdTBPoison" onclick="tdSelectTower('poison')" style="--tb-col:#7FFF00;--tb-glow:rgba(127,255,0,.5);--tb-bg:rgba(127,255,0,.08);border-color:rgba(127,255,0,.2)"><span class="tt-ico">🧪</span><span class="tt-nm" style="color:#7FFF00">POISON</span><span class="tt-cost">90g</span></button>
+      <button class="td-tower-btn" id="tdTBSniper" onclick="tdSelectTower('sniper')" style="--tb-col:#FFE600;--tb-glow:rgba(255,230,0,.5);--tb-bg:rgba(255,230,0,.08);border-color:rgba(255,230,0,.2)"><span class="tt-ico">🎯</span><span class="tt-nm" style="color:#FFE600">SNIPER</span><span class="tt-cost">150g</span></button>
+      <button class="td-tower-btn" id="tdTBInferno" onclick="tdSelectTower('inferno')" style="--tb-col:#FF4500;--tb-glow:rgba(255,69,0,.5);--tb-bg:rgba(255,69,0,.08);border-color:rgba(255,69,0,.2)"><span class="tt-ico">🔥</span><span class="tt-nm" style="color:#FF4500">INFERNO</span><span class="tt-cost">110g</span></button>
+      <button class="td-tower-btn" id="tdTBVortex" onclick="tdSelectTower('vortex')" style="--tb-col:#DA70D6;--tb-glow:rgba(218,112,214,.5);--tb-bg:rgba(218,112,214,.08);border-color:rgba(218,112,214,.2)"><span class="tt-ico">🌀</span><span class="tt-nm" style="color:#DA70D6">VORTEX</span><span class="tt-cost">130g</span></button>
+      <button class="td-tower-btn" id="tdTBLaser" onclick="tdSelectTower('laser')" style="--tb-col:#FF2D55;--tb-glow:rgba(255,45,85,.5);--tb-bg:rgba(255,45,85,.08);border-color:rgba(255,45,85,.2)"><span class="tt-ico">🔴</span><span class="tt-nm" style="color:#FF2D55">LASER</span><span class="tt-cost">160g</span></button>
     </div>
     <!-- Active Abilities row -->
-    <div style="display:flex;gap:5px;margin-bottom:4px">
-      <button id="tdAb0" onclick="tdUseAbility(0)" style="flex:1;background:rgba(255,69,0,.1);border:1.5px solid rgba(255,69,0,.45);border-radius:10px;padding:5px 2px;display:flex;flex-direction:column;align-items:center;gap:1px;cursor:pointer;transition:.15s">
-        <span id="tdAbLbl0" style="font-size:18px">✈️</span><span style="font-size:7px;color:rgba(255,69,0,.9);font-weight:900;font-family:var(--mono)">LUFTANFALL</span>
+    <div style="display:flex;gap:4px;margin-bottom:4px">
+      <button id="tdAb0" class="td-ab-btn" onclick="tdUseAbility(0)" style="background:rgba(255,69,0,.1);border:1.5px solid rgba(255,69,0,.5);box-shadow:0 0 10px rgba(255,69,0,.15)">
+        <span class="ab-ico" id="tdAbLbl0">✈️</span><span class="ab-nm" style="color:#FF4500">LUFTANFALL</span><span class="ab-cd" id="tdAbCD0" style="color:rgba(255,69,0,.7)">REDO</span>
       </button>
-      <button id="tdAb1" onclick="tdUseAbility(1)" style="flex:1;background:rgba(168,230,255,.07);border:1.5px solid rgba(168,230,255,.45);border-radius:10px;padding:5px 2px;display:flex;flex-direction:column;align-items:center;gap:1px;cursor:pointer;transition:.15s">
-        <span id="tdAbLbl1" style="font-size:18px">❄️</span><span style="font-size:7px;color:#A8E6FF;font-weight:900;font-family:var(--mono)">TOTAL FROST</span>
+      <button id="tdAb1" class="td-ab-btn" onclick="tdUseAbility(1)" style="background:rgba(168,230,255,.07);border:1.5px solid rgba(168,230,255,.5);box-shadow:0 0 10px rgba(168,230,255,.15)">
+        <span class="ab-ico" id="tdAbLbl1">❄️</span><span class="ab-nm" style="color:#A8E6FF">TOTAL FROST</span><span class="ab-cd" id="tdAbCD1" style="color:rgba(168,230,255,.7)">REDO</span>
       </button>
-      <button id="tdAb2" onclick="tdUseAbility(2)" style="flex:1;background:rgba(57,255,20,.07);border:1.5px solid rgba(57,255,20,.4);border-radius:10px;padding:5px 2px;display:flex;flex-direction:column;align-items:center;gap:1px;cursor:pointer;transition:.15s">
-        <span id="tdAbLbl2" style="font-size:18px">💖</span><span style="font-size:7px;color:#39FF14;font-weight:900;font-family:var(--mono)">REPARATION</span>
+      <button id="tdAb2" class="td-ab-btn" onclick="tdUseAbility(2)" style="background:rgba(57,255,20,.07);border:1.5px solid rgba(57,255,20,.45);box-shadow:0 0 10px rgba(57,255,20,.12)">
+        <span class="ab-ico" id="tdAbLbl2">💖</span><span class="ab-nm" style="color:#39FF14">REPARATION</span><span class="ab-cd" id="tdAbCD2" style="color:rgba(57,255,20,.7)">REDO</span>
       </button>
       <!-- Tower upgrade panel (embedded in ability row when tower selected) -->
       <div id="tdSellPanel" style="display:none;flex:3;background:rgba(255,215,0,.06);border:1.5px solid rgba(255,215,0,.3);border-radius:10px;padding:5px 8px">
@@ -6021,13 +6037,20 @@ function tdUseAbility(idx){
   tdUpdateAbilityUI();
 }
 function tdUpdateAbilityUI(){
+  const maxCDs=[240,300,360]; // base CDs
   TD_ABILITIES.forEach((ab,i)=>{
     const btn=$('tdAb'+i);if(!btn)return;
     const cd=_td.abilityCD[i]||0;
+    const baseCd=Math.round(maxCDs[i]*(G._tdAbCDMult||1));
     const ready=cd<=0;
-    btn.style.opacity=ready?'1':'0.45';
-    const lbl=$('tdAbLbl'+i);if(lbl)lbl.textContent=ready?ab.em:Math.ceil(cd/60)+'s';
-    btn.style.boxShadow=ready?('0 0 14px '+ab.col+'88'):'none';
+    const pct=ready?0:Math.round((cd/baseCd)*100);
+    // Cooldown ring overlay via CSS custom property
+    btn.style.setProperty('--cd-pct',pct+'%');
+    btn.classList.toggle('on-cd',!ready);
+    btn.style.opacity=ready?'1':'0.65';
+    const lbl=$('tdAbLbl'+i);if(lbl)lbl.textContent=ab.em;
+    const cdEl=$('tdAbCD'+i);if(cdEl)cdEl.textContent=ready?'REDO':Math.ceil(cd/60)+'s';
+    btn.style.boxShadow=ready?('0 0 16px '+ab.col+'99,0 0 8px '+ab.col+'44'):'none';
   });
 }
 
@@ -6049,122 +6072,205 @@ function tdDraw(){
   const W=canvas.width,H=canvas.height;
   if(!Number.isFinite(W)||!Number.isFinite(H)||W<=0||H<=0)return;
   ctx.save();
-  if(_td.shakeT>0)ctx.translate((Math.random()-.5)*Math.min(6,_td.shakeT),(Math.random()-.5)*Math.min(6,_td.shakeT));
+  if(_td.shakeT>0)ctx.translate((Math.random()-.5)*Math.min(7,_td.shakeT),(Math.random()-.5)*Math.min(7,_td.shakeT));
 
-  // ── TERRAIN ──
   const pathSet=tdPathCells();
   const t=_td.t||0;
+
+  // ── TERRAIN: rich grass + glowing stone path ──
   for(let r=0;r<TD_ROWS;r++){
     for(let c=0;c<TD_COLS;c++){
       const px=c*_tdCell,py=r*_tdCell;
       if(pathSet.has(c+','+r)){
-        // Stone path tiles — warm tones
-        ctx.fillStyle=(c+r)%2===0?'#1c1308':'#211507';
-        ctx.fillRect(px,py,_tdCell,_tdCell);
-        // Stone cracks/texture
-        ctx.strokeStyle='rgba(180,130,60,.08)';ctx.lineWidth=.5;
-        ctx.beginPath();ctx.moveTo(px+_tdCell*.2,py+_tdCell*.5);ctx.lineTo(px+_tdCell*.7,py+_tdCell*.3);ctx.stroke();
-        ctx.beginPath();ctx.moveTo(px+_tdCell*.5,py+_tdCell*.7);ctx.lineTo(px+_tdCell*.8,py+_tdCell*.8);ctx.stroke();
-        // Path glow pulse
-        const pulse=Math.sin(t*0.04+c*.5+r*.3)*.04+.04;
-        ctx.fillStyle='rgba(255,200,60,'+pulse.toFixed(3)+')';
+        // Alternating stone slabs
+        const shade=(c+r)%2===0?'#1e1507':'#251b08';
+        ctx.fillStyle=shade;ctx.fillRect(px,py,_tdCell,_tdCell);
+        // Stone slab border groove
+        ctx.strokeStyle='rgba(0,0,0,.4)';ctx.lineWidth=1.2;
+        ctx.strokeRect(px+1,py+1,_tdCell-2,_tdCell-2);
+        // Interior highlight
+        ctx.fillStyle='rgba(200,160,80,.04)';ctx.fillRect(px+2,py+2,_tdCell-4,_tdCell-4);
+        // Crack lines for texture
+        ctx.save();ctx.strokeStyle='rgba(180,130,60,.12)';ctx.lineWidth=.6;
+        ctx.beginPath();ctx.moveTo(px+_tdCell*.15,py+_tdCell*.45);ctx.lineTo(px+_tdCell*.65,py+_tdCell*.25);ctx.stroke();
+        ctx.beginPath();ctx.moveTo(px+_tdCell*.4,py+_tdCell*.6);ctx.lineTo(px+_tdCell*.8,py+_tdCell*.75);ctx.stroke();
+        ctx.restore();
+        // Animated lava-glow pulse
+        const pulse=Math.sin(t*0.035+c*.7+r*.5)*.06+.03;
+        ctx.fillStyle='rgba(255,150,0,'+pulse.toFixed(3)+')';
         ctx.fillRect(px,py,_tdCell,_tdCell);
       } else {
-        // Grass tiles
-        ctx.fillStyle=(c+r)%2===0?'#060e06':'#07110a';
-        ctx.fillRect(px,py,_tdCell,_tdCell);
-        // Subtle diagonal hatching
-        ctx.strokeStyle='rgba(0,60,0,.1)';ctx.lineWidth=.4;
-        ctx.beginPath();ctx.moveTo(px,py);ctx.lineTo(px+_tdCell*.5,py+_tdCell*.5);ctx.stroke();
+        // Grass with subtle checker
+        const gShade=(c+r)%2===0?'#060e06':'#081208';
+        ctx.fillStyle=gShade;ctx.fillRect(px,py,_tdCell,_tdCell);
+        // Grass blades (tiny lines)
+        ctx.save();ctx.strokeStyle='rgba(0,80,0,.12)';ctx.lineWidth=.5;
+        const gx=px+_tdCell*.3,gy=py+_tdCell*.7;
+        ctx.beginPath();ctx.moveTo(gx,gy);ctx.lineTo(gx-2,gy-4);ctx.stroke();
+        ctx.beginPath();ctx.moveTo(gx+5,gy-2);ctx.lineTo(gx+3,gy-6);ctx.stroke();
+        ctx.restore();
       }
     }
   }
 
-  // Edge vignette (darkness at borders for depth)
-  const vg=ctx.createLinearGradient(0,0,0,H);
-  vg.addColorStop(0,'rgba(0,0,0,.5)');vg.addColorStop(.12,'rgba(0,0,0,0)');vg.addColorStop(.88,'rgba(0,0,0,0)');vg.addColorStop(1,'rgba(0,0,0,.5)');
-  ctx.fillStyle=vg;ctx.fillRect(0,0,W,H);
-
-  // Path directional glow
+  // Path glow core (orange-amber river beneath path)
   ctx.save();
-  ctx.strokeStyle='rgba(255,180,0,.18)';ctx.lineWidth=_tdCell*.45;ctx.lineCap='round';ctx.lineJoin='round';
-  ctx.shadowColor='rgba(255,160,0,.5)';ctx.shadowBlur=20;
+  ctx.strokeStyle='rgba(255,140,0,.22)';ctx.lineWidth=_tdCell*.55;ctx.lineCap='round';ctx.lineJoin='round';
+  ctx.shadowColor='rgba(255,120,0,.7)';ctx.shadowBlur=28;
   ctx.beginPath();TD_PATH.forEach(([c,r],i)=>{const x=_tdCX(c),y=_tdCY(r);i===0?ctx.moveTo(x,y):ctx.lineTo(x,y);});
-  ctx.stroke();ctx.restore();
+  ctx.stroke();
+  // Second glow pass (brighter center)
+  ctx.strokeStyle='rgba(255,200,80,.08)';ctx.lineWidth=_tdCell*.25;ctx.shadowBlur=10;
+  ctx.beginPath();TD_PATH.forEach(([c,r],i)=>{const x=_tdCX(c),y=_tdCY(r);i===0?ctx.moveTo(x,y):ctx.lineTo(x,y);});
+  ctx.stroke();
+  ctx.restore();
 
-  // Grid lines — very faint
-  ctx.strokeStyle='rgba(255,255,255,.04)';ctx.lineWidth=.5;
+  // Edge vignette
+  const vg=ctx.createLinearGradient(0,0,0,H);
+  vg.addColorStop(0,'rgba(0,0,0,.6)');vg.addColorStop(.1,'rgba(0,0,0,0)');vg.addColorStop(.9,'rgba(0,0,0,0)');vg.addColorStop(1,'rgba(0,0,0,.6)');
+  ctx.fillStyle=vg;ctx.fillRect(0,0,W,H);
+  const vgh=ctx.createLinearGradient(0,0,W,0);
+  vgh.addColorStop(0,'rgba(0,0,0,.3)');vgh.addColorStop(.08,'rgba(0,0,0,0)');vgh.addColorStop(.92,'rgba(0,0,0,0)');vgh.addColorStop(1,'rgba(0,0,0,.3)');
+  ctx.fillStyle=vgh;ctx.fillRect(0,0,W,H);
+
+  // Spawn zone (start of path)
+  {const [sc2,sr2]=TD_PATH[0];const sx=_tdCX(sc2),sy=_tdCY(sr2);
+  ctx.save();const pulse2=0.4+Math.sin(t*0.06)*0.2;
+  ctx.shadowColor='#FF2D55';ctx.shadowBlur=20*pulse2;
+  ctx.strokeStyle='rgba(255,45,85,'+(.5+pulse2*.3).toFixed(2)+')';ctx.lineWidth=2;
+  ctx.beginPath();ctx.arc(sx,sy,_tdCell*.46,0,Math.PI*2);ctx.stroke();ctx.restore();}
+
+  // Grid lines — ultra faint
+  ctx.strokeStyle='rgba(255,255,255,.03)';ctx.lineWidth=.4;
   for(let c=0;c<=TD_COLS;c++){ctx.beginPath();ctx.moveTo(c*_tdCell,0);ctx.lineTo(c*_tdCell,H);ctx.stroke();}
   for(let r=0;r<=TD_ROWS;r++){ctx.beginPath();ctx.moveTo(0,r*_tdCell);ctx.lineTo(W,r*_tdCell);ctx.stroke();}
 
   // Placing overlay
-  if(_td.placingType){ctx.fillStyle='rgba(255,215,0,.04)';ctx.fillRect(0,0,W,H);}
+  if(_td.placingType){
+    const def2=TD_TOWER_DEFS[_td.placingType];
+    const pCol=def2?.col||'#FFD700';
+    ctx.fillStyle='rgba(255,215,0,.03)';ctx.fillRect(0,0,W,H);
+    // Show range preview for mouse hover (last cell)
+    if(_td._hoverCell){
+      const[hc,hr]=_td._hoverCell;const hx=_tdCX(hc),hy=_tdCY(hr);
+      const rp=tdSafeR((def2?.range||2)*(G._tdRngMult||1)*_tdCell);
+      ctx.save();ctx.globalAlpha=.18;
+      const rg2=ctx.createRadialGradient(hx,hy,0,hx,hy,rp);
+      rg2.addColorStop(0,pCol+'44');rg2.addColorStop(1,pCol+'00');
+      ctx.fillStyle=rg2;ctx.beginPath();ctx.arc(hx,hy,rp,0,Math.PI*2);ctx.fill();
+      ctx.globalAlpha=.4;ctx.strokeStyle=pCol;ctx.lineWidth=1.5;ctx.setLineDash([4,4]);
+      ctx.beginPath();ctx.arc(hx,hy,rp,0,Math.PI*2);ctx.stroke();ctx.setLineDash([]);ctx.restore();
+    }
+  }
 
-  // ── TOWERS (canvas base + glow; emoji on HTML overlay) ──
+  // ── AMBIENT PARTICLES (magic dust) ──
+  if(!_td.ambient||_td.ambient.length===0)
+    _td.ambient=Array.from({length:22},()=>({x:Math.random()*W,y:Math.random()*H,vx:(Math.random()-.5)*.15,vy:-Math.random()*.12-.02,r:Math.random()*2+.4,a:0,life:50+Math.random()*180,maxLife:230,col:Math.random()<.4?'255,160,40':'60,220,100'}));
+  _td.ambient.forEach((p,i)=>{
+    p.x+=p.vx;p.y+=p.vy;p.life--;
+    p.a=Math.sin((1-p.life/p.maxLife)*Math.PI)*.25;
+    if(p.life<=0){_td.ambient[i]={x:Math.random()*W,y:H*.8+Math.random()*H*.2,vx:(Math.random()-.5)*.15,vy:-Math.random()*.14-.03,r:Math.random()*2+.4,a:0,life:60+Math.random()*180,maxLife:240,col:Math.random()<.4?'255,160,40':'60,220,100'};}
+    ctx.save();ctx.globalAlpha=p.a;
+    ctx.fillStyle='rgba('+p.col+',1)';ctx.shadowColor='rgba('+p.col+',.8)';ctx.shadowBlur=6;
+    ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fill();ctx.restore();
+  });
+
+  // ── TOWERS ──
   _td.towers.forEach(tower=>{
     const def=tdGetDef(tower);
     const tx=_tdCX(tower.col),ty=_tdCY(tower.row);
     const col=def.col||'#fff';
-    const sz=_tdCell*.38;
+    const sz=_tdCell*.36;
     const isSelected=tower.id===_td.selectedTowerId;
     const isFiring=tower.firingT>0;
-    ctx.save();
-    // Dark stone base
-    const bg=ctx.createRadialGradient(tx,ty,0,tx,ty,sz+5);
-    bg.addColorStop(0,'rgba(30,30,30,.9)');bg.addColorStop(1,'rgba(10,10,10,.7)');
-    ctx.fillStyle=bg;ctx.beginPath();ctx.arc(tx,ty,sz+5,0,Math.PI*2);ctx.fill();
-    // Glow ring
-    ctx.shadowColor=col;ctx.shadowBlur=isFiring?28:isSelected?20:12;
-    ctx.strokeStyle=col+(isFiring?'ff':isSelected?'cc':'77');
-    ctx.lineWidth=isSelected?3:2;
-    ctx.beginPath();ctx.arc(tx,ty,sz+3,0,Math.PI*2);ctx.stroke();
-    // Level pips
     const lvl=tower.level||0;
-    for(let l=0;l<lvl&&l<3;l++){
-      const a=-Math.PI/2+l*(Math.PI*2/3);
-      ctx.fillStyle=col;ctx.shadowBlur=8;
-      ctx.beginPath();ctx.arc(tx+Math.cos(a)*(sz+9),ty+Math.sin(a)*(sz+9),2.5,0,Math.PI*2);ctx.fill();
+    ctx.save();
+    // Hexagonal base platform
+    ctx.beginPath();
+    for(let k=0;k<6;k++){const a=k*Math.PI/3-Math.PI/6;ctx.lineTo(tx+Math.cos(a)*(sz+6),ty+Math.sin(a)*(sz+6));}
+    ctx.closePath();
+    const platGrad=ctx.createRadialGradient(tx,ty-2,0,tx,ty,sz+8);
+    platGrad.addColorStop(0,'rgba(50,40,30,.95)');
+    platGrad.addColorStop(.7,'rgba(20,15,10,.9)');
+    platGrad.addColorStop(1,'rgba(5,5,5,.8)');
+    ctx.fillStyle=platGrad;ctx.shadowColor='rgba(0,0,0,.8)';ctx.shadowBlur=12;ctx.fill();
+    // Platform edge
+    ctx.strokeStyle='rgba(80,60,30,.6)';ctx.lineWidth=1;ctx.stroke();
+    ctx.shadowBlur=0;
+
+    // Colored glow disc
+    ctx.save();
+    ctx.shadowColor=col;ctx.shadowBlur=isFiring?36:isSelected?22:lvl>0?16:10;
+    const discGrad=ctx.createRadialGradient(tx,ty,0,tx,ty,sz);
+    discGrad.addColorStop(0,col+'22');discGrad.addColorStop(1,col+'08');
+    ctx.fillStyle=discGrad;ctx.beginPath();ctx.arc(tx,ty,sz,0,Math.PI*2);ctx.fill();
+    ctx.strokeStyle=col+(isFiring?'ff':isSelected?'dd':lvl>2?'cc':'88');
+    ctx.lineWidth=isFiring?3:isSelected?2.5:2;
+    ctx.beginPath();ctx.arc(tx,ty,sz+1,0,Math.PI*2);ctx.stroke();
+    ctx.restore();
+
+    // Level tier indicator: outer spinning arc per tier
+    if(lvl>0){
+      ctx.save();
+      const arcAngle=(Math.PI*2/4)*lvl; // 4 tiers = full circle
+      const startA=-Math.PI/2+t*0.03;
+      ctx.strokeStyle=col;ctx.lineWidth=2.5;ctx.shadowColor=col;ctx.shadowBlur=12;
+      ctx.beginPath();ctx.arc(tx,ty,sz+5,startA,startA+arcAngle);ctx.stroke();
+      // Level pips at corners
+      for(let l=0;l<lvl&&l<4;l++){
+        const a=-Math.PI/2+l*(Math.PI*2/4);
+        ctx.fillStyle=col;ctx.shadowBlur=10;
+        ctx.beginPath();ctx.arc(tx+Math.cos(a)*(sz+8),ty+Math.sin(a)*(sz+8),3,0,Math.PI*2);ctx.fill();
+      }
+      ctx.restore();
     }
-    // Selected range
+
+    // Firing burst flash
+    if(isFiring){
+      ctx.save();const fAlpha=Math.min(.7,tower.firingT/8*.7);
+      ctx.globalAlpha=fAlpha;ctx.fillStyle=col;ctx.shadowColor=col;ctx.shadowBlur=24;
+      ctx.beginPath();ctx.arc(tx,ty,sz*.5,0,Math.PI*2);ctx.fill();ctx.restore();
+    }
+
+    // Selected range circle (dashed, colored)
     if(isSelected){
-      const rp=tdSafeR((def.range||2)*_tdCell);
-      const rg=ctx.createRadialGradient(tx,ty,rp*.5,tx,ty,rp);
-      rg.addColorStop(0,col+'00');rg.addColorStop(1,col+'15');
+      const rp=tdSafeR((def.range||2)*(G._tdRngMult||1)*_tdCell);
+      ctx.save();
+      const rg=ctx.createRadialGradient(tx,ty,rp*.4,tx,ty,rp);
+      rg.addColorStop(0,col+'00');rg.addColorStop(1,col+'12');
       ctx.fillStyle=rg;ctx.beginPath();ctx.arc(tx,ty,rp,0,Math.PI*2);ctx.fill();
-      ctx.shadowBlur=0;ctx.strokeStyle=col+'55';ctx.lineWidth=1.5;ctx.setLineDash([5,5]);
+      ctx.shadowBlur=0;ctx.strokeStyle=col+'60';ctx.lineWidth=1.5;ctx.setLineDash([6,4]);
       ctx.beginPath();ctx.arc(tx,ty,rp,0,Math.PI*2);ctx.stroke();ctx.setLineDash([]);
+      ctx.restore();
     }
     ctx.restore();
   });
 
-  // ── AMBIENT SMOKE PARTICLES ──
-  if(!_td.ambient||_td.ambient.length===0){
-    _td.ambient=Array.from({length:16},(_,i)=>({x:Math.random()*W,y:Math.random()*H,vx:(Math.random()-.5)*.15,vy:-Math.random()*.12-.02,r:Math.random()*2.5+.5,a:0,life:50+Math.random()*180,maxLife:230,col:Math.random()<.4?'255,180,60':'100,200,80'}));
-  }
-  _td.ambient.forEach((p,i)=>{
-    p.x+=p.vx;p.y+=p.vy;p.life--;p.a=Math.min(.22,(p.life/p.maxLife)*.22);
-    if(p.life<=0){_td.ambient[i]={x:Math.random()*W,y:H*.7+Math.random()*H*.3,vx:(Math.random()-.5)*.15,vy:-Math.random()*.12-.02,r:Math.random()*2.5+.5,a:0,life:60+Math.random()*180,maxLife:240,col:Math.random()<.4?'255,180,60':'100,200,80'};}
-    ctx.fillStyle='rgba('+p.col+','+p.a.toFixed(3)+')';
-    ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fill();
-  });
-
   // ── PROJECTILES ──
   _td.projectiles.forEach(pr=>{
-    const alpha=Math.min(1,pr.life/6);
+    const alpha=Math.min(1,pr.life/5);
     ctx.save();ctx.globalAlpha=alpha;
-    ctx.shadowColor=pr.col;ctx.shadowBlur=12;
+    ctx.shadowColor=pr.col;ctx.shadowBlur=18;
     if(pr.aoe){
-      // AoE expanding ring
-      const aR=tdSafeR(pr.aoe);
-      ctx.strokeStyle=pr.col+'aa';ctx.lineWidth=3;
-      ctx.beginPath();ctx.arc(pr.tx,pr.ty,aR,0,Math.PI*2);ctx.stroke();
-      ctx.fillStyle=pr.col+'18';ctx.beginPath();ctx.arc(pr.tx,pr.ty,aR,0,Math.PI*2);ctx.fill();
+      const aR=tdSafeR(pr.aoe);const lifeF=1-alpha;
+      // Expanding ring
+      ctx.strokeStyle=pr.col;ctx.lineWidth=2.5;
+      ctx.beginPath();ctx.arc(pr.tx,pr.ty,aR*(0.3+lifeF*0.7),0,Math.PI*2);ctx.stroke();
+      ctx.fillStyle=pr.col+'14';ctx.beginPath();ctx.arc(pr.tx,pr.ty,aR,0,Math.PI*2);ctx.fill();
+      // Inner flash
+      ctx.globalAlpha=alpha*.8;ctx.fillStyle=pr.col+'40';ctx.beginPath();ctx.arc(pr.tx,pr.ty,aR*.4,0,Math.PI*2);ctx.fill();
     }
-    // Trail line
-    ctx.strokeStyle=pr.col;ctx.lineWidth=3;ctx.lineCap='round';
+    // Glowing trail
+    const grad=ctx.createLinearGradient(pr.x,pr.y,pr.tx,pr.ty);
+    grad.addColorStop(0,pr.col+'00');grad.addColorStop(1,pr.col);
+    ctx.strokeStyle=grad;ctx.lineWidth=3.5;ctx.lineCap='round';
     ctx.beginPath();ctx.moveTo(pr.x,pr.y);ctx.lineTo(pr.tx,pr.ty);ctx.stroke();
-    // Impact flash
-    ctx.fillStyle='#fff';ctx.shadowBlur=16;ctx.beginPath();ctx.arc(pr.tx,pr.ty,4,0,Math.PI*2);ctx.fill();
+    // Thick center trail
+    ctx.strokeStyle=pr.col+'80';ctx.lineWidth=6;ctx.globalAlpha=alpha*.4;
+    ctx.beginPath();ctx.moveTo(pr.x,pr.y);ctx.lineTo(pr.tx,pr.ty);ctx.stroke();
+    // Impact star
+    ctx.globalAlpha=alpha;ctx.fillStyle='#fff';ctx.shadowBlur=20;
+    ctx.beginPath();ctx.arc(pr.tx,pr.ty,3.5,0,Math.PI*2);ctx.fill();
     ctx.restore();
   });
 
@@ -6172,50 +6278,110 @@ function tdDraw(){
   for(let i=_td.particles.length-1;i>=0;i--){
     const p=_td.particles[i];
     if(p.ring){
-      // Ring shockwave — expand and fade
-      const age=1-p.life/18;
-      ctx.save();ctx.globalAlpha=Math.max(0,1-age)*0.7;
-      ctx.strokeStyle=p.col;ctx.lineWidth=3;ctx.shadowColor=p.col;ctx.shadowBlur=16;
-      ctx.beginPath();ctx.arc(p.x,p.y,tdSafeR(p.r*(0.2+age*1.8)),0,Math.PI*2);ctx.stroke();
-      ctx.restore();
-      continue;
+      const maxL=p.maxLife||22;const age=1-p.life/maxL;
+      ctx.save();ctx.globalAlpha=Math.max(0,1-age)*.8;
+      ctx.strokeStyle=p.col;ctx.lineWidth=p.isMegaBoss?5:3;ctx.shadowColor=p.col;ctx.shadowBlur=20;
+      ctx.beginPath();ctx.arc(p.x,p.y,tdSafeR(p.r*(0.1+age*2)),0,Math.PI*2);ctx.stroke();
+      ctx.restore();continue;
     }
-    const a=Math.min(1,p.life/12);
-    ctx.save();ctx.globalAlpha=a;ctx.shadowColor=p.col;ctx.shadowBlur=8;
+    const a=Math.min(1,p.life/14);
+    ctx.save();ctx.globalAlpha=a;ctx.shadowColor=p.col;ctx.shadowBlur=p.r>3?14:7;
     ctx.fillStyle=p.col;ctx.beginPath();ctx.arc(p.x,p.y,tdSafeR(p.r||2),0,Math.PI*2);ctx.fill();
+    // Bright center on large particles
+    if(p.r>3){ctx.fillStyle='rgba(255,255,255,.5)';ctx.beginPath();ctx.arc(p.x,p.y,tdSafeR(p.r*.35),0,Math.PI*2);ctx.fill();}
     ctx.restore();
   }
 
-  // ── ENEMY HEALTH BARS + STATUS ──
+  // ── ENEMIES ──
   _td.enemies.forEach(e=>{
     const{x,y}=tdEnemyPos(e);
-    const bw=e.isBoss?48:32;const bh=e.isBoss?7:5;
+    const bw=e.isBoss?52:36;const bh=e.isBoss?8:5;
     const hp=Math.max(0,Math.min(1,e.hp/Math.max(1,e.maxHp)));
     const hpCol=hp>.6?'#39FF14':hp>.3?'#FFE600':'#FF2D55';
-    // HP shadow
-    ctx.fillStyle='rgba(0,0,0,.75)';ctx.fillRect(x-bw/2-1,y-32-1,bw+2,bh+2);
-    ctx.fillStyle='rgba(40,0,0,.8)';ctx.fillRect(x-bw/2,y-32,bw,bh);
-    // HP fill with glow
-    ctx.save();ctx.shadowColor=hpCol;ctx.shadowBlur=6;
-    ctx.fillStyle=hpCol;ctx.fillRect(x-bw/2,y-32,Math.max(0,bw*hp),bh);
-    ctx.restore();
-    // Hit flash
-    if(e.hitFlash>0){const fa=Math.min(.55,e.hitFlash/8*.55);ctx.save();ctx.globalAlpha=fa;ctx.fillStyle='#fff';ctx.beginPath();ctx.arc(x,y,e.isBoss?30:16,0,Math.PI*2);ctx.fill();ctx.restore();}
-    // Slow ring (cyan)
-    if(e.slowTimer>0){ctx.save();ctx.shadowColor='#00D9FF';ctx.shadowBlur=10;ctx.strokeStyle='rgba(0,180,255,.75)';ctx.lineWidth=2;ctx.beginPath();ctx.arc(x,y,e.isBoss?32:18,0,Math.PI*2);ctx.stroke();ctx.restore();}
-    // Stun ring (yellow dashed)
-    if(e.stunTimer>0){ctx.save();ctx.shadowColor='#FFE600';ctx.shadowBlur=10;ctx.strokeStyle='rgba(255,230,0,.85)';ctx.lineWidth=2;ctx.setLineDash([3,3]);ctx.beginPath();ctx.arc(x,y,e.isBoss?34:20,0,Math.PI*2);ctx.stroke();ctx.setLineDash([]);ctx.restore();}
-    // Boss aura — pulsing double ring
-    if(e.isBoss){
-      const r1=32+Math.sin(t*0.05)*5;
-      const r2=44+Math.sin(t*0.04+1)*4;
-      ctx.save();ctx.shadowColor='#FFD700';ctx.shadowBlur=20;
-      ctx.strokeStyle='rgba(255,215,0,.55)';ctx.lineWidth=2.5;ctx.beginPath();ctx.arc(x,y,tdSafeR(r1),0,Math.PI*2);ctx.stroke();
-      ctx.strokeStyle='rgba(255,100,0,.25)';ctx.lineWidth=1.5;ctx.beginPath();ctx.arc(x,y,tdSafeR(r2),0,Math.PI*2);ctx.stroke();
+    const baseR=e.isBoss?28:15;
+
+    // Shadow under enemy
+    ctx.save();ctx.globalAlpha=.35;ctx.fillStyle='#000';
+    ctx.beginPath();ctx.ellipse(x,y+baseR*.8,baseR*.9,baseR*.28,0,0,Math.PI*2);ctx.fill();ctx.restore();
+
+    // Poison glow (green haze)
+    if(e.poisonTimer>0){
+      ctx.save();ctx.shadowColor='#7FFF00';ctx.shadowBlur=22;ctx.globalAlpha=.55;
+      ctx.strokeStyle='#7FFF00';ctx.lineWidth=2;
+      ctx.beginPath();ctx.arc(x,y,baseR+3,0,Math.PI*2);ctx.stroke();
+      // Drip particles (static dots)
+      for(let d=0;d<4;d++){const da=d*Math.PI/2+t*.04;const dr=baseR+6;
+        ctx.fillStyle='rgba(127,255,0,.7)';ctx.beginPath();ctx.arc(x+Math.cos(da)*dr,y+Math.sin(da)*dr,2,0,Math.PI*2);ctx.fill();}
       ctx.restore();
     }
-    // Shadow under enemy
-    ctx.save();ctx.globalAlpha=.3;ctx.fillStyle='#000';ctx.beginPath();ctx.ellipse(x,y+Math.round(_tdCell*.28),Math.round(_tdCell*.22),Math.round(_tdCell*.07),0,0,Math.PI*2);ctx.fill();ctx.restore();
+    // Burn glow (orange flame aura)
+    if(e.burnTimer>0){
+      ctx.save();ctx.shadowColor='#FF4500';ctx.shadowBlur=24;ctx.globalAlpha=.6;
+      const bpulse=0.4+Math.sin(t*0.15)*0.3;
+      ctx.strokeStyle='rgba(255,69,0,'+bpulse.toFixed(2)+')';ctx.lineWidth=2.5;
+      ctx.beginPath();ctx.arc(x,y,baseR+4,0,Math.PI*2);ctx.stroke();ctx.restore();
+    }
+    // Slow = ice blue ring
+    if(e.slowTimer>0){
+      ctx.save();ctx.shadowColor='#A8E6FF';ctx.shadowBlur=16;
+      ctx.strokeStyle='rgba(168,230,255,.8)';ctx.lineWidth=2;ctx.setLineDash([3,4]);
+      ctx.beginPath();ctx.arc(x,y,baseR+6,0,Math.PI*2);ctx.stroke();ctx.setLineDash([]);ctx.restore();
+    }
+    // Stun = yellow electric sparks
+    if(e.stunTimer>0){
+      ctx.save();ctx.shadowColor='#FFE600';ctx.shadowBlur=18;
+      ctx.strokeStyle='rgba(255,230,0,.9)';ctx.lineWidth=2;ctx.setLineDash([2,3]);
+      ctx.beginPath();ctx.arc(x,y,baseR+8,0,Math.PI*2);ctx.stroke();ctx.setLineDash([]);
+      // Spark lines
+      for(let s=0;s<3;s++){const sa=(s/3)*Math.PI*2+t*.2;const sr=baseR+10;
+        ctx.strokeStyle='rgba(255,230,0,.7)';ctx.lineWidth=1.5;ctx.setLineDash([]);
+        ctx.beginPath();ctx.moveTo(x+Math.cos(sa)*sr,y+Math.sin(sa)*sr);
+        ctx.lineTo(x+Math.cos(sa)*(sr+5+Math.random()*5),y+Math.sin(sa)*(sr+5+Math.random()*5));ctx.stroke();}
+      ctx.restore();
+    }
+    // Hit flash (white burst)
+    if(e.hitFlash>0){
+      const fa=Math.min(.6,e.hitFlash/8*.6);
+      ctx.save();ctx.globalAlpha=fa;ctx.fillStyle='#fff';ctx.shadowColor='#fff';ctx.shadowBlur=20;
+      ctx.beginPath();ctx.arc(x,y,baseR+4,0,Math.PI*2);ctx.fill();ctx.restore();
+    }
+    // Boss: dramatic pulsing triple aura
+    if(e.isBoss){
+      const p1=baseR+4+Math.sin(t*.06)*6,p2=baseR+18+Math.sin(t*.04+1)*5;
+      const bossCol=e.isMegaBoss?'255,20,80':'255,200,0';
+      ctx.save();ctx.shadowColor='rgb('+bossCol+')';ctx.shadowBlur=28;
+      ctx.strokeStyle='rgba('+bossCol+',.65)';ctx.lineWidth=3;ctx.beginPath();ctx.arc(x,y,tdSafeR(p1),0,Math.PI*2);ctx.stroke();
+      ctx.strokeStyle='rgba('+bossCol+',.25)';ctx.lineWidth=2;ctx.beginPath();ctx.arc(x,y,tdSafeR(p2),0,Math.PI*2);ctx.stroke();
+      if(e.isMegaBoss){
+        ctx.strokeStyle='rgba(255,100,200,.15)';ctx.lineWidth=1.5;ctx.beginPath();ctx.arc(x,y,tdSafeR(p2+14),0,Math.PI*2);ctx.stroke();
+        // Rotating energy lines
+        for(let m=0;m<3;m++){const ma=t*.025+m*(Math.PI*2/3);
+          ctx.strokeStyle='rgba(255,100,200,.4)';ctx.lineWidth=1;ctx.shadowBlur=8;
+          ctx.beginPath();ctx.moveTo(x,y);ctx.lineTo(x+Math.cos(ma)*(p2+8),y+Math.sin(ma)*(p2+8));ctx.stroke();}
+      }
+      ctx.restore();
+    }
+
+    // Armor overlay (metallic shimmer)
+    if(e.armor>0){
+      ctx.save();ctx.globalAlpha=.35;
+      const armGrad=ctx.createRadialGradient(x-baseR*.3,y-baseR*.3,0,x,y,baseR*1.2);
+      armGrad.addColorStop(0,'rgba(180,180,220,.8)');armGrad.addColorStop(1,'rgba(100,100,140,.1)');
+      ctx.fillStyle=armGrad;ctx.beginPath();ctx.arc(x,y,baseR,0,Math.PI*2);ctx.fill();ctx.restore();
+    }
+
+    // HP bar (rounded, glowing)
+    const barX=x-bw/2,barY=y-baseR-14;
+    ctx.fillStyle='rgba(0,0,0,.8)';
+    ctx.beginPath();ctx.roundRect?ctx.roundRect(barX-1,barY-1,bw+2,bh+2,3):ctx.rect(barX-1,barY-1,bw+2,bh+2);ctx.fill();
+    ctx.fillStyle='rgba(40,0,0,.9)';
+    ctx.beginPath();ctx.roundRect?ctx.roundRect(barX,barY,bw,bh,2):ctx.rect(barX,barY,bw,bh);ctx.fill();
+    if(hp>0){
+      ctx.save();ctx.shadowColor=hpCol;ctx.shadowBlur=8;ctx.fillStyle=hpCol;
+      const fw=Math.max(0,bw*hp);
+      ctx.beginPath();ctx.roundRect?ctx.roundRect(barX,barY,fw,bh,2):ctx.rect(barX,barY,fw,bh);ctx.fill();
+      ctx.restore();
+    }
   });
 
   ctx.restore();
@@ -6225,23 +6391,46 @@ function tdDraw(){
   ov.style.height=H+'px';
   const scX=canvas.offsetWidth/W||1,scY=canvas.offsetHeight/H||1;
   let html='';
+
+  // Spawn marker (start of path)
+  {const[sc2,sr2]=TD_PATH[0];const sx=_tdCX(sc2)*scX,sy=_tdCY(sr2)*scY;
+  html+='<div style="position:absolute;left:'+Math.round(sx)+'px;top:'+Math.round(sy)+'px;transform:translate(-50%,-50%);font-size:'+Math.round(_tdCell*.5*scX)+'px;line-height:1;z-index:1;opacity:.7">🌀</div>';}
+  // Base marker (end of path)
+  {const[ec,er]=TD_PATH[TD_PATH.length-1];const ex2=_tdCX(ec)*scX,ey2=_tdCY(er)*scY;
+  html+='<div style="position:absolute;left:'+Math.round(ex2)+'px;top:'+Math.round(ey2)+'px;transform:translate(-50%,-50%);font-size:'+Math.round(_tdCell*.6*scX)+'px;line-height:1;z-index:1;filter:drop-shadow(0 0 8px rgba(57,255,20,.8))">🏠</div>';}
+
   _td.towers.forEach(tower=>{
     const def=tdGetDef(tower);const tx=_tdCX(tower.col)*scX,ty=_tdCY(tower.row)*scY;
     const firing=tower.firingT>0,sel=tower.id===_td.selectedTowerId;
-    const sz=sel?Math.round(_tdCell*.52):Math.round(_tdCell*.4);
-    const sc=firing?'scale(1.3)':'scale(1)';
-    const glow=sel?'drop-shadow(0 0 10px '+tdSafeCol(def.col,'#fff')+') drop-shadow(0 0 4px '+tdSafeCol(def.col,'#fff')+')':'drop-shadow(0 0 4px '+tdSafeCol(def.col,'#fff')+'66)';
-    html+='<div style="position:absolute;left:'+Math.round(tx)+'px;top:'+Math.round(ty)+'px;transform:translate(-50%,-50%) '+sc+';font-size:'+sz+'px;line-height:1;filter:'+glow+';transition:transform .08s;z-index:3">'+( def.em||'🏰')+'</div>';
-    if(sel){const lv=tower.level||0;html+='<div style="position:absolute;left:'+Math.round(tx)+'px;top:'+Math.round(ty-_tdCell*.46*scY)+'px;transform:translateX(-50%);font-size:8px;font-weight:900;font-family:var(--mono);color:'+tdSafeCol(def.col,'#fff')+';white-space:nowrap;letter-spacing:.5px;text-shadow:0 0 8px '+tdSafeCol(def.col,'#fff')+'">LV'+(lv+1)+' '+( def.nm||'')+'</div>';}
+    const sz=sel?Math.round(_tdCell*.5):firing?Math.round(_tdCell*.46):Math.round(_tdCell*.38);
+    const sc2=firing?'scale(1.35) rotate('+(Math.random()*8-4)+'deg)':'scale(1)';
+    const glow=sel
+      ?'drop-shadow(0 0 12px '+tdSafeCol(def.col,'#fff')+') drop-shadow(0 0 6px '+tdSafeCol(def.col,'#fff')+')'
+      :firing
+        ?'drop-shadow(0 0 8px '+tdSafeCol(def.col,'#fff')+') drop-shadow(0 0 3px #fff)'
+        :'drop-shadow(0 0 5px '+tdSafeCol(def.col,'#fff')+'55)';
+    html+='<div style="position:absolute;left:'+Math.round(tx)+'px;top:'+Math.round(ty)+'px;transform:translate(-50%,-50%) '+sc2+';font-size:'+sz+'px;line-height:1;filter:'+glow+';transition:transform .06s;z-index:3">'+(def.em||'🏰')+'</div>';
+    // Selected: show name+level label
+    if(sel){
+      const lv=tower.level||0;
+      const tierLabels=['','⭐','⭐⭐','⭐⭐⭐','⭐⭐⭐⭐'];
+      const tLabel=tierLabels[lv]||'';
+      html+='<div style="position:absolute;left:'+Math.round(tx)+'px;top:'+Math.round(ty-(_tdCell*.5+4)*scY)+'px;transform:translateX(-50%);font-size:8px;font-weight:900;font-family:var(--mono);color:'+tdSafeCol(def.col,'#fff')+';white-space:nowrap;letter-spacing:.5px;text-shadow:0 0 10px '+tdSafeCol(def.col,'#fff')+',0 1px 3px #000;background:rgba(0,0,0,.6);padding:1px 5px;border-radius:5px;">'+( def.nm||'')+' '+tLabel+'</div>';
+    }
   });
+
   _td.enemies.forEach(e=>{
     const{x,y}=tdEnemyPos(e);const ex=x*scX,ey=y*scY;
-    const bump=e.hitFlash>0?'scale(1.3)':'scale(1)';
-    const sz=e.isBoss?Math.round(_tdCell*.62):Math.round(_tdCell*.42);
-    const bossglow=e.isBoss?'drop-shadow(0 0 14px rgba(255,215,0,.9)) drop-shadow(0 0 6px rgba(255,100,0,.6))':'';
-    html+='<div style="position:absolute;left:'+Math.round(ex)+'px;top:'+Math.round(ey)+'px;transform:translate(-50%,-50%) '+bump+';font-size:'+sz+'px;line-height:1;filter:'+bossglow+';transition:transform .08s;z-index:4">'+( e.em||'👾')+'</div>';
+    const bump=e.hitFlash>0?'scale(1.35) rotate('+(Math.random()*12-6)+'deg)':'scale(1)';
+    const sz=e.isMegaBoss?Math.round(_tdCell*.8):e.isBoss?Math.round(_tdCell*.65):Math.round(_tdCell*.44);
+    const bossglow=e.isMegaBoss?'drop-shadow(0 0 20px rgba(255,20,80,.9)) drop-shadow(0 0 10px #fff)':e.isBoss?'drop-shadow(0 0 14px rgba(255,215,0,.9)) drop-shadow(0 0 7px rgba(255,100,0,.6))':'';
+    html+='<div style="position:absolute;left:'+Math.round(ex)+'px;top:'+Math.round(ey)+'px;transform:translate(-50%,-50%) '+bump+';font-size:'+sz+'px;line-height:1;filter:'+bossglow+';transition:transform .06s;z-index:4">'+(e.em||'👾')+'</div>';
+    // Weakness tag
     const wCol=TD_TOWER_DEFS[e.weakness]?.col||'#FFE600';
-    if(!e.isBoss)html+='<div style="position:absolute;left:'+Math.round(ex)+'px;top:'+Math.round(ey-34*scY)+'px;transform:translateX(-50%);font-size:7px;font-weight:900;font-family:var(--mono);color:'+wCol+';white-space:nowrap;opacity:.85">⚠'+( e.weakness?.slice(0,3).toUpperCase()||'?')+'</div>';
+    if(!e.isBoss){
+      const wr=(e.weakHit?'⚡':'')+((e.weakness||'?').slice(0,3).toUpperCase());
+      html+='<div style="position:absolute;left:'+Math.round(ex)+'px;top:'+Math.round((ey-(sz*.6+18))*1)+'px;transform:translateX(-50%);font-size:6.5px;font-weight:900;font-family:var(--mono);color:'+wCol+';white-space:nowrap;opacity:.8;text-shadow:0 0 6px '+wCol+'">'+wr+'</div>';
+    }
   });
   ov.innerHTML=html;
 }
