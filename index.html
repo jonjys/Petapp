@@ -2867,6 +2867,15 @@ div[style*="LIVE"]{border-radius:16px!important;background:rgba(57,255,20,.03)!i
         </div>
       </div>
 
+      <!-- DAILY MISSIONS -->
+      <div style="margin:0 14px 10px">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
+          <div style="font-size:9px;font-weight:900;color:rgba(57,255,20,.7);font-family:var(--mono);letter-spacing:2px">🎯 DAGLIGA UPPDRAG</div>
+          <div id="dmResetTimer" style="font-size:8px;color:rgba(255,255,255,.3);font-family:var(--mono)">Reset: 24h</div>
+        </div>
+        <div id="dailyMissionsBox" style="display:flex;flex-direction:column;gap:6px"></div>
+      </div>
+
       <!-- SOCIAL POWER — friends boost your pet -->
       <div class="sp-panel" id="spPanel">
         <div class="sp-top">
@@ -4295,6 +4304,16 @@ div[style*="LIVE"]{border-radius:16px!important;background:rgba(57,255,20,.03)!i
   </div>
   <div class="talent-scroll" id="diaryList"></div>
 </div>
+<!-- TD PERMANENT UPGRADE SHOP -->
+<div class="talent-modal" id="tdShopModal">
+  <div class="talent-hdr">
+    <button class="pack-back" onclick="closeTDShop()">←</button>
+    <div class="pack-title">🏰 TD UPPGRADERINGAR</div>
+    <div class="talent-pts" id="tdShopPtsDisp">0 TD PTS</div>
+  </div>
+  <div style="padding:10px 14px 4px;font-size:9px;color:var(--t3);font-family:var(--mono);letter-spacing:1.5px">PERMANENTA FÖRBÄTTRINGAR · KÖPS MED TD POINTS</div>
+  <div style="flex:1;overflow-y:auto;padding:0 14px 80px;scrollbar-width:none" id="tdShopGrid"></div>
+</div>
 <!-- TALENT TREE -->
 <div class="talent-modal" id="talentModal">
   <div class="talent-hdr">
@@ -4662,6 +4681,7 @@ div[style*="LIVE"]{border-radius:16px!important;background:rgba(57,255,20,.03)!i
     </div>
     <div style="display:flex;align-items:center;gap:5px">
       <button id="tdSpeedBtn" onclick="tdToggleSpeed()" style="background:rgba(255,215,0,.12);border:1.5px solid rgba(255,215,0,.4);border-radius:8px;color:#FFD700;font-size:10px;font-weight:900;padding:4px 8px;cursor:pointer;font-family:var(--mono)">1×</button>
+      <button onclick="openTDShop()" style="background:rgba(191,95,255,.12);border:1.5px solid rgba(191,95,255,.4);border-radius:8px;color:var(--p);font-size:10px;font-weight:900;padding:4px 8px;cursor:pointer;font-family:var(--mono)">🏪</button>
       <div id="tdFormLbl" style="font-size:16px">✨</div>
     </div>
   </div>
@@ -4741,10 +4761,28 @@ div[style*="LIVE"]{border-radius:16px!important;background:rgba(57,255,20,.03)!i
     <div class="ba-victory-content">
       <div style="font-size:52px;margin-bottom:6px;animation:petBob 1s ease-in-out infinite">🏆</div>
       <div style="font-size:24px;font-weight:900;color:var(--y);font-family:var(--mono);letter-spacing:2px;margin-bottom:2px">WAVE CLEAR!</div>
-      <div style="font-size:13px;color:var(--t2);margin-bottom:12px" id="baVicEnemy">Wave klarad!</div>
-      <div class="ba-rewards" id="baRewards" style="display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin-bottom:12px"></div>
-      <button class="btn btn-g btn-lg" style="width:100%;font-size:15px" onclick="battleContinue()" id="baContBtn">NÄSTA WAVE →</button>
-      <button class="btn btn-ghost" style="width:100%;margin-top:6px;font-size:12px" onclick="closeBattle()">← Avsluta</button>
+      <div style="font-size:13px;color:var(--t2);margin-bottom:8px" id="baVicEnemy">Wave klarad!</div>
+      <!-- Kill stats row -->
+      <div style="display:flex;gap:8px;justify-content:center;margin-bottom:8px">
+        <div style="background:rgba(255,45,85,.08);border:1px solid rgba(255,45,85,.25);border-radius:10px;padding:5px 10px;text-align:center">
+          <div style="font-size:16px;font-weight:900;color:var(--pk);font-family:var(--mono)" id="baKillCount">0</div>
+          <div style="font-size:7px;color:var(--t3);font-family:var(--mono)">KILLS</div>
+        </div>
+        <div style="background:rgba(255,215,0,.08);border:1px solid rgba(255,215,0,.25);border-radius:10px;padding:5px 10px;text-align:center">
+          <div style="font-size:16px;font-weight:900;color:var(--y);font-family:var(--mono)" id="baScoreVic">0</div>
+          <div style="font-size:7px;color:var(--t3);font-family:var(--mono)">SCORE</div>
+        </div>
+        <div style="background:rgba(191,95,255,.08);border:1px solid rgba(191,95,255,.25);border-radius:10px;padding:5px 10px;text-align:center">
+          <div style="font-size:16px;font-weight:900;color:var(--p);font-family:var(--mono)" id="baTDPtsVic">0</div>
+          <div style="font-size:7px;color:var(--t3);font-family:var(--mono)">TD PTS</div>
+        </div>
+      </div>
+      <div class="ba-rewards" id="baRewards" style="display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin-bottom:10px"></div>
+      <button class="btn btn-g btn-lg" style="width:100%;font-size:15px;margin-bottom:6px" onclick="battleContinue()" id="baContBtn">NÄSTA WAVE →</button>
+      <div style="display:flex;gap:6px">
+        <button class="btn btn-ghost" style="flex:1;font-size:11px" onclick="openTDShop()">🏪 TD SHOP</button>
+        <button class="btn btn-ghost" style="flex:1;font-size:11px" onclick="closeBattle()">← Avsluta</button>
+      </div>
     </div>
   </div>
 
@@ -5660,8 +5698,11 @@ function tdCanvasTap(evt){
 }
 
 function openBattle(){
+  _applyTDUpgrades&&_applyTDUpgrades();
   const hs=parseInt(localStorage.getItem('kv8_tdHS')||'0');
-  _td={active:false,wave:1,gold:200,baseHp:100,baseMax:100,
+  const bonusHp=G._tdBonusHp||0;
+  const startGold=200+(G._tdStartGold||0);
+  _td={active:false,wave:1,gold:startGold,baseHp:100+bonusHp,baseMax:100+bonusHp,
     towers:[],enemies:[],projectiles:[],particles:[],ambient:Array.from({length:20},()=>({x:Math.random()*360,y:Math.random()*480,vx:(Math.random()-.5)*0.3,vy:-(0.2+Math.random()*0.4),life:60+Math.random()*80,col:Math.random()<0.5?'rgba(255,150,50,.5)':'rgba(180,100,255,.4)',r:Math.random()*2+0.5})),
     queue:[],spawnTimer:0,killsThisWave:0,enemiesThisWave:0,
     selectedTowerId:null,placingType:null,
@@ -5807,7 +5848,8 @@ function tdUpdate(dt){
     // Swarm — spawn multiple at once
     const cnt=def.count||1;
     for(let s=0;s<cnt;s++){
-      _td.enemies.push({...def,count:1,maxHp:def.hp,progress:-s*_tdCell*0.3,hitFlash:0,stunTimer:0,slowTimer:0,slowFactor:1,poisonTimer:0,burnTimer:0,pullTimer:0,id:Math.random().toString(36).slice(2)});
+      const spBase=G._tdSlowBase!=null?Math.min(def.speed,def.speed*(G._tdSlowBase)):def.speed;
+      _td.enemies.push({...def,speed:spBase,count:1,maxHp:def.hp,progress:-s*_tdCell*0.3,hitFlash:0,stunTimer:0,slowTimer:0,slowFactor:1,poisonTimer:0,burnTimer:0,pullTimer:0,id:Math.random().toString(36).slice(2)});
     }
     _td.spawnTimer=def.isBoss?0:Math.max(12,45-_td.wave*2);
   }
@@ -5816,7 +5858,7 @@ function tdUpdate(dt){
     tower.fireTimer=Math.max(0,(tower.fireTimer||0)-dt);
     if(tower.fireTimer>0)continue;
     const def=tdGetDef(tower);if(!def||!def.range)continue;
-    const rangePx=def.range*_tdCell;
+    const rangePx=def.range*(G._tdRngMult||1)*_tdCell;
     const tx=_tdCX(tower.col),ty=_tdCY(tower.row);
     const inRange=_td.enemies.filter(e=>{if(e.progress<0)return false;const{x,y}=tdEnemyPos(e);return Math.hypot(x-tx,y-ty)<=rangePx;}).sort((a,b)=>b.progress-a.progress);
     if(!inRange.length)continue;
@@ -5825,16 +5867,17 @@ function tdUpdate(dt){
     const waveMult=1+_td.wave*0.025;
     // Helper: calc damage with armor and weakness
     const calcDmg=(e,baseDmg)=>{
-      let d=Math.round(baseDmg*(1+_td.wave*0.025));
+      let d=Math.round(baseDmg*(G._tdDmgMult||1)*(1+_td.wave*0.025));
       if(e.weakness===tower.type)d=Math.round(d*2.0);
       else if(e.magicImmune&&(tower.type==='mage'||tower.type==='frost'))d=Math.round(d*0.1);
       if(e.armor&&tower.type!=='laser'&&tower.type!=='sniper')d=Math.round(d*(1-e.armor));
-      // Crit
-      if(def.crit&&Math.random()<def.crit)d=Math.round(d*2.5);
+      // Crit (base + permanent bonus)
+      const critChance=(def.crit||0)+(G._tdCritBonus||0);
+      if(critChance>0&&Math.random()<critChance)d=Math.round(d*2.5);
       return Math.max(1,d);
     };
     if(tType==='aoe'||tType==='beam'){
-      const{x:px,y:py}=tdEnemyPos(primary);const aR=(def.aoeR||0.9)*_tdCell;
+      const{x:px,y:py}=tdEnemyPos(primary);const aR=(def.aoeR||0.9)*(G._tdAoeMult||1)*_tdCell;
       _td.projectiles.push({x:tx,y:ty,tx:px,ty:py,col:tdSafeCol(def.col,'#BF5FFF'),life:8,aoe:aR});
       const hitList=tType==='beam'?inRange:(def.aoeR>0?_td.enemies:inRange.slice(0,1));
       for(const e of hitList){
@@ -5895,7 +5938,8 @@ function tdHitEnemy(e,dmg,tType){
 
 function tdKillEnemy(e){
   _td.killsThisWave++;_td.totalKills=(_td.totalKills||0)+1;
-  const gold=e.gold||8;_td.gold+=gold;
+  advanceDailyMission&&advanceDailyMission('tdkill',1);
+  const gold=Math.round((e.gold||8)*(G._tdGoldMult||1));_td.gold+=gold;
   const xp=e.reward?.xp||3,coins=e.reward?.coins||2;
   _td.earnedXp+=xp;_td.earnedCoins+=coins;
   // Score: base 10 pts per kill × wave multiplier × boss bonus
@@ -5952,7 +5996,7 @@ function tdUseAbility(idx){
   if(_td.abilityCD[idx]>0){showT('⏳ Förmåga laddas: '+Math.ceil(_td.abilityCD[idx]/60)+' sek','y');return;}
   const ab=TD_ABILITIES[idx];
   _td._lastAbilityIdx=idx;
-  _td.abilityCD[idx]=ab.cd;
+  _td.abilityCD[idx]=Math.round(ab.cd*(G._tdAbCDMult||1));
   if(ab.id==='airstrike'){
     // Bomb center third of map
     const{x:cx,y:cy}=tdEnemyPos({progress:tdTotalLen()*0.5})||{x:_tdCell*TD_COLS/2,y:_tdCell*TD_ROWS/2};
@@ -6211,19 +6255,25 @@ function tdWaveClear(){
   else if(w%5===0)bonusGold=40+w*2;
   if(bonusGold>0){_td.gold+=bonusGold;tdUpdateGoldUI();showT('💰 Wave '+w+' bonus: +'+bonusGold+'g!','y');}
   // TD Points (meta-progression)
-  const tdPts=w%5===0?5:1;
+  const ptsMult=G._tdPtsMult||1;
+  const tdPts=Math.round((w%5===0?5:1)*ptsMult);
   G.tdPoints=(G.tdPoints||0)+tdPts;
   const v=$('baVictory');if(v)v.style.display='flex';
   const ve=$('baVicEnemy');
   const mile=w%50===0?'🌋 LEGENDARY! Wave '+w+'!':(w%25===0?'💀 GODLIKE! Wave '+w+'!':(w%10===0?'👑 Wave '+w+' MILESTONE!':(w%5===0?'⚔️ Boss wave '+w+' klarad!':'Wave '+w+' klarad!')));
   if(ve)ve.textContent=mile;
+  // Update stats display
+  const kEl=$('baKillCount');if(kEl)kEl.textContent=_td.totalKills||0;
+  const sEl=$('baScoreVic');if(sEl)sEl.textContent=_td.score||0;
+  const pEl=$('baTDPtsVic');if(pEl)pEl.textContent=G.tdPoints||0;
   const rw=$('baRewards');
   if(rw)rw.innerHTML=
     '<div class="ba-reward-chip">+'+_td.earnedXp+' XP</div>'+
     '<div class="ba-reward-chip" style="animation-delay:.15s;color:var(--y)">+'+_td.earnedCoins+' ⚡</div>'+
-    '<div class="ba-reward-chip" style="animation-delay:.3s;color:#FFD700">Score: '+_td.score+'</div>'+
-    (tdPts>1?'<div class="ba-reward-chip" style="animation-delay:.45s;color:#BF5FFF">+'+tdPts+' TD Points</div>':'');
+    (tdPts>0?'<div class="ba-reward-chip" style="animation-delay:.3s;color:#BF5FFF">+'+tdPts+' TD PTS</div>':'');
   const btn=$('baContBtn');if(btn){btn.textContent='WAVE '+(w+1)+' →';btn.onclick=battleContinue;}
+  // Daily mission: wave cleared
+  advanceDailyMission&&advanceDailyMission('wave',1);
   SFX.win&&SFX.win();vibe([30,20,100,20,80]);
 }
 
@@ -6251,9 +6301,11 @@ function tdFinalRewards(){
 
 function battleContinue(){
   const v=$('baVictory');if(v)v.style.display='none';
-  tdFinalRewards();_td.wave++;_td.baseHp=Math.min(_td.baseMax,_td.baseHp+15);
+  tdFinalRewards();_td.wave++;
+  const baseRegen=15+(G._tdHpRegen||0);
+  _td.baseHp=Math.min(_td.baseMax,_td.baseHp+baseRegen);
   _td.earnedXp=0;_td.earnedCoins=0;tdUpdateBaseUI();
-  showT('❤️ Base +15 HP reparerat!','g');tdStartWave();
+  showT('❤️ Base +'+baseRegen+' HP reparerat!','g');tdStartWave();
 }
 
 function battleRetry(){
@@ -6302,7 +6354,7 @@ function _offsetLatLon(lat,lon,distM,bearingDeg){
   }catch(e){return{lat:lat,lon:lon};}
 }
 function fmtD(m){return m<1000?Math.round(m)+'m':+(m/1000).toFixed(1)+'km';}
-function save(){try{const d={n:G.name,p:G.petEmoji,pn:G.petName,l:G.level,c:G.coins,kc:G.kc||0,st:G.streak,x:G.exp,as:G.actionStat,cs:G.commerceStat,ss:G.socialStat,g:JSON.stringify(G.gear),eg:G.equippedGear||'',sek:G.totalSEK,ts:G.trustScore,posts:G.postCount,b:G.bountiesDone,hu:G.hunger,en:G.energy,mo:G.mood,brands:JSON.stringify(G.brands),circles:JSON.stringify(G.circles),sw:JSON.stringify(G.streakWeek),petCfg:JSON.stringify(G.petConfig),pm:G.premium?1:0,pt:G.premiumTier,wld:G.world,bond:JSON.stringify(G.todayBond),bdate:G.bondDate,wp:G.worldPoints,bz:JSON.stringify(G.builtZones),wpc:G.wildPetsCaught,wflash:G.wldFlash,wbattle:G.wldBattle,wmarket:G.wldMarket,wstreak:G.wldStreak,wsocial:G.wldSocial,po:G.packsOpened,col:JSON.stringify(G.collectibles),tp:G.talentPoints,tl:JSON.stringify(G.talents),tlvl:JSON.stringify(G.talentLvls||{}),diary:JSON.stringify(G.diaryEntries.slice(-20)),ls:G.lastSpin,ltt:G.lastTalkTime||0,lwb:G.lastWpBoost||0,castle:JSON.stringify(G.castle||{}),ownedZones:JSON.stringify(G.ownedZones||[]),expeditionVisits:JSON.stringify(G.expeditionVisits||[]),terrLastIncome:JSON.stringify(G.terrLastIncome||{}),dnaMixes:JSON.stringify(G.dnaMixes||[]),lastFortune:G.lastFortune||'',lft:G.lastFlashTime||0,lfd:G.lastFlashDate||'',pdna:JSON.stringify(G.petDNA||{body:'base',element:'none',perk:'none'}),dinv:JSON.stringify(G.dnaInventory||[]),pmem:JSON.stringify(G.petMemory||{}),expd:JSON.stringify(G.expedition||{}),pbd:G.birthDate||0,psk:G.petSick?1:0,pmems:JSON.stringify(G.petMemories||[]),lpc:G.lastPassiveCheck||0};for(const k in d)localStorage.setItem('kv8_'+k,d[k]);localStorage.setItem('kv8_lastFortune',G.lastFortune||'');}catch(e){}sbQueueSync();}
+function save(){try{const d={n:G.name,p:G.petEmoji,pn:G.petName,l:G.level,c:G.coins,kc:G.kc||0,st:G.streak,x:G.exp,as:G.actionStat,cs:G.commerceStat,ss:G.socialStat,g:JSON.stringify(G.gear),eg:G.equippedGear||'',sek:G.totalSEK,ts:G.trustScore,posts:G.postCount,b:G.bountiesDone,hu:G.hunger,en:G.energy,mo:G.mood,brands:JSON.stringify(G.brands),circles:JSON.stringify(G.circles),sw:JSON.stringify(G.streakWeek),petCfg:JSON.stringify(G.petConfig),pm:G.premium?1:0,pt:G.premiumTier,wld:G.world,bond:JSON.stringify(G.todayBond),bdate:G.bondDate,wp:G.worldPoints,bz:JSON.stringify(G.builtZones),wpc:G.wildPetsCaught,wflash:G.wldFlash,wbattle:G.wldBattle,wmarket:G.wldMarket,wstreak:G.wldStreak,wsocial:G.wldSocial,po:G.packsOpened,col:JSON.stringify(G.collectibles),tp:G.talentPoints,tl:JSON.stringify(G.talents),tlvl:JSON.stringify(G.talentLvls||{}),diary:JSON.stringify(G.diaryEntries.slice(-20)),ls:G.lastSpin,ltt:G.lastTalkTime||0,lwb:G.lastWpBoost||0,castle:JSON.stringify(G.castle||{}),ownedZones:JSON.stringify(G.ownedZones||[]),expeditionVisits:JSON.stringify(G.expeditionVisits||[]),terrLastIncome:JSON.stringify(G.terrLastIncome||{}),dnaMixes:JSON.stringify(G.dnaMixes||[]),lastFortune:G.lastFortune||'',lft:G.lastFlashTime||0,lfd:G.lastFlashDate||'',pdna:JSON.stringify(G.petDNA||{body:'base',element:'none',perk:'none'}),dinv:JSON.stringify(G.dnaInventory||[]),pmem:JSON.stringify(G.petMemory||{}),expd:JSON.stringify(G.expedition||{}),pbd:G.birthDate||0,psk:G.petSick?1:0,pmems:JSON.stringify(G.petMemories||[]),lpc:G.lastPassiveCheck||0,dmp:JSON.stringify(G.dmProgress||{}),dmc:JSON.stringify(G.dmCompleted||{}),dmd:G.dmDate||0,tdup:JSON.stringify(G.tdUpgrades||{}),tdpts:G.tdPoints||0};for(const k in d)localStorage.setItem('kv8_'+k,d[k]);localStorage.setItem('kv8_lastFortune',G.lastFortune||'');}catch(e){}sbQueueSync();}
 
 // ── DNA + MOOD SYSTEM ──
 function getPetDNA(){
@@ -6723,7 +6775,7 @@ function gainCoins(n,stat){
   if(G._talentM7)n=Math.round(n*2);                    // GRAND MASTER: coins ×2
   if(n>0&&G._talentH2)n+=5;                            // Investor: flat +5 per gain
   if(n>0&&G._talentH6a)n+=15;                          // Central Bank: flat +15 per gain
-  G.coins+=n;updateHUD();if(n>0){cp(n);vibe(20);SFX.coin();advanceQuest('coins',n);}
+  G.coins+=n;updateHUD();if(n>0){cp(n);vibe(20);SFX.coin();advanceQuest('coins',n);advanceDailyMission&&advanceDailyMission('coins',n);}
 }
 function _talentXPMult(stat){
   let m=1;
@@ -6827,7 +6879,7 @@ function pcFeed(){
   if(mult===1)showT('🍖 +35 HUNGER · +3XP · CD: 30 min','g');
   floatStat('🍖 +35 HUNGER  +3XP','#FF9F0A');
   if(Math.random()<.3)addDiaryEntry(G.petName+' åt mat med stor aptit! Hunger är nu '+Math.min(100,G.hunger)+'%. Mums! 🍖');
-  SFX.click();advanceQuest('feed');advanceDailyChallenge('feed');updateHUD();updatePetView();save();
+  SFX.click();advanceQuest('feed');advanceDailyChallenge('feed');advanceDailyMission('feed');updateHUD();updatePetView();save();
   if(G.mood>80&&Math.random()<0.35)setTimeout(()=>showT('📸 '+G.petName+' är glad — posta en Flash! +bonus XP','pk'),1800);
 }
 function pcTrain(){
@@ -6855,7 +6907,7 @@ function pcTrain(){
   pcReact('happy');showPetEmote('💪');
   if(mult===1)showT('🏋️ +15 XP','g');
   floatStat('💪 +15 XP','#FF007F');
-  SFX.click();advanceQuest('train');advanceDailyChallenge('train');
+  SFX.click();advanceQuest('train');advanceDailyChallenge('train');advanceDailyMission('train');
 }
 function pcSleep(){
   const CD_MIN=60;const now=Date.now();const last=G._lastSleep||0;const elapsed=(now-last)/60000;
@@ -6883,7 +6935,7 @@ function pcPlay(){
   gainCoins(Math.floor(5*mult2()));gainXP(Math.floor(5*mult2()),'social');
   pcReact('happy');showPetEmote('🎉');
   if(mult===1)showT('🎮 +25 MOOD · +5⚡ · CD: 15 min','g');
-  SFX.click();advanceQuest('play');save();
+  SFX.click();advanceQuest('play');advanceDailyMission('play');save();
 }
 function pcBath(){
   const CD_MIN=5;const now=Date.now();const last=G._lastBath||0;
@@ -6898,7 +6950,7 @@ function pcBath(){
   gainXP(10,'social');pcReact('happy');showPetEmote('✨');
   const mult=_triggerCombo('+18 MOOD');
   if(mult===1)showT('🛁 +18 MOOD · +3 KARMA · CD: 5 min','b');
-  SFX.click();updateHUD();updatePetView();save();
+  SFX.click();advanceDailyMission('bath');updateHUD();updatePetView();save();
 }
 function pcTalk(){
   const now=Date.now();
@@ -9480,6 +9532,7 @@ function _prGameOver(){
   const coins=Math.floor(_pr.gemsCollected*2+m*.3);
   gainCoins(coins);gainXP(Math.floor(m*.5),'action');
   advanceDailyChallenge&&advanceDailyChallenge('play',1);
+  advanceDailyMission&&advanceDailyMission('run',m);
   const go=$('prGameOver');if(go)go.style.display='flex';
   const fs=$('prFinalScore');if(fs)fs.textContent=m+'m';
   const nb=$('prNewBest');if(nb)nb.style.display=isNew?'block':'none';
@@ -10155,6 +10208,7 @@ function _fcCatch(ft){
   if(_fc.streak>_fc.streakRecord){_fc.streakRecord=_fc.streak;localStorage.setItem('kv8_fishStreak',_fc.streakRecord);}
   if(!G.fishJournal)G.fishJournal={};G.fishJournal[ft.nm]=(G.fishJournal[ft.nm]||0)+1;
   gainCoins(earnedCoins);gainXP(earnedXP,'action');
+  advanceDailyMission&&advanceDailyMission('fish',1);
   if(ft.petFood){G.hunger=Math.min(100,G.hunger+30);updatePetView();}
   if(ft.special==='xp2x'){gainXP(earnedXP,'action');showT('⭐ STJÄRNFISK! Dubbel XP!','y');}
   else if(ft.special==='coins2x'){gainCoins(earnedCoins);showT('🧜 SJÖJUNGFRU! Dubbla coins!','pk');}
@@ -10745,7 +10799,7 @@ function nav(name){
   const btn=document.querySelector('.nb[data-v="'+name+'"]');if(btn)btn.classList.add('on');
   vibe(8);
   ({
-    home:()=>{updatePetView();renderSocialPower();renderFriendCarePackages();renderCareNotifs();renderStreakMilestones();renderFriendLB();updatePetStatusRings();updatePetWeather();if(!_speechTimer)schedulePetSpeech();startKarmaPulse();renderJackpot();const st=$('spinTeaserSub');if(st)st.textContent=G.lastSpin===new Date().toDateString()?'✅ Spinnat idag — kom tillbaka imorgon':'🎰 Gratis spin tillgängligt nu!';},
+    home:()=>{updatePetView();renderSocialPower();renderFriendCarePackages();renderCareNotifs();renderStreakMilestones();renderFriendLB();updatePetStatusRings();updatePetWeather();if(!_speechTimer)schedulePetSpeech();startKarmaPulse();renderJackpot();renderDailyMissions();const st=$('spinTeaserSub');if(st)st.textContent=G.lastSpin===new Date().toDateString()?'✅ Spinnat idag — kom tillbaka imorgon':'🎰 Gratis spin tillgängligt nu!';},
     flash:()=>{renderFlashFeed();renderStoriesBar();startFlashTimeReward();renderDailyChallenges();},
     circles:renderCircles,
     social:()=>switchSocial('activity',document.querySelector('#socialTabs .tab')),
@@ -13771,6 +13825,10 @@ async function sbLoadProfile(){
     G.petSick=data.pet_sick||false;
     G.lastPassiveCheck=parseInt(localStorage.getItem('kv8_lpc')||'0')||Date.now();
     try{const pmems=localStorage.getItem('kv8_pmems');if(pmems)G.petMemories=JSON.parse(pmems);else G.petMemories=[];}catch(e){G.petMemories=[];}
+    try{const dmp=localStorage.getItem('kv8_dmp');G.dmProgress=dmp?JSON.parse(dmp):{};const dmc=localStorage.getItem('kv8_dmc');G.dmCompleted=dmc?JSON.parse(dmc):{};G.dmDate=parseInt(localStorage.getItem('kv8_dmd')||'0');}catch(e){G.dmProgress={};G.dmCompleted={};}
+    try{const tdup=localStorage.getItem('kv8_tdup');G.tdUpgrades=tdup?JSON.parse(tdup):{};}catch(e){G.tdUpgrades={};}
+    G.tdPoints=parseInt(localStorage.getItem('kv8_tdpts')||'0');
+    _applyTDUpgrades&&_applyTDUpgrades();
     save(); // mirror to localStorage cache
     return true;
   }catch(e){console.warn('[SB] loadProfile',e);return false;}
@@ -14096,6 +14154,10 @@ function _loadFromLocalStorage(){
     G.petSick=localStorage.getItem('kv8_psk')==='1';
     G.lastPassiveCheck=parseInt(localStorage.getItem('kv8_lpc')||'0')||Date.now();
     try{const pmems=localStorage.getItem('kv8_pmems');if(pmems)G.petMemories=JSON.parse(pmems);}catch(e){G.petMemories=[];}
+    try{const dmp=localStorage.getItem('kv8_dmp');G.dmProgress=dmp?JSON.parse(dmp):{};const dmc=localStorage.getItem('kv8_dmc');G.dmCompleted=dmc?JSON.parse(dmc):{};G.dmDate=parseInt(localStorage.getItem('kv8_dmd')||'0');}catch(e){G.dmProgress={};G.dmCompleted={};}
+    try{const tdup=localStorage.getItem('kv8_tdup');G.tdUpgrades=tdup?JSON.parse(tdup):{};}catch(e){G.tdUpgrades={};}
+    G.tdPoints=parseInt(localStorage.getItem('kv8_tdpts')||'0');
+    _applyTDUpgrades&&_applyTDUpgrades();
     let _dailyShownToday=false;
     const _today=new Date().toDateString();const _last=localStorage.getItem('kv8_lastLogin');
     if(_last!==_today){localStorage.setItem('kv8_lastLogin',_today);if(_last){
@@ -14226,6 +14288,7 @@ submitFlash=function(){
   _origSubmitFlash();
   advanceDailyChallenge('flash',1);
   advanceDailyChallenge('streak',1);
+  advanceDailyMission&&advanceDailyMission('flash',1);
 };
 const _origAddWorldPoints=addWorldPoints;
 addWorldPoints=function(n,source){
@@ -16886,6 +16949,162 @@ function renderFriendStories(){
     <div style="font-size:7px;color:${f.color};font-family:var(--mono);white-space:nowrap">${f.pts}</div>
   </div>`).join('');
 }
+
+// ══════════════════════════════════════════
+// ── TD PERMANENT UPGRADE SHOP ──
+// ══════════════════════════════════════════
+const TD_PERM_UPGRADES=[
+  // DAMAGE
+  {id:'dmg1',cat:'⚔️ ATTACK',em:'⚔️',nm:'Skärpare Blad',desc:'+15% skada alla torn',cost:10,maxLv:5,ef:(lv)=>{G._tdDmgMult=1+lv*0.15;}},
+  {id:'rng1',cat:'⚔️ ATTACK',em:'🎯',nm:'Utökat Räckvidd',desc:'+12% räckvidd alla torn',cost:8,maxLv:5,ef:(lv)=>{G._tdRngMult=1+lv*0.12;}},
+  {id:'rate1',cat:'⚔️ ATTACK',em:'⚡',nm:'Snabbare Eld',desc:'+10% eldhastighet',cost:12,maxLv:5,ef:(lv)=>{G._tdRateMult=1+lv*0.10;}},
+  {id:'crit1',cat:'⚔️ ATTACK',em:'💥',nm:'Kritisk Instinkt',desc:'+5% crit-chans globalt',cost:15,maxLv:3,ef:(lv)=>{G._tdCritBonus=lv*0.05;}},
+  // ECONOMY
+  {id:'gold1',cat:'💰 EKONOMI',em:'💰',nm:'Guldfeber',desc:'+20% gold per kill',cost:12,maxLv:5,ef:(lv)=>{G._tdGoldMult=1+lv*0.20;}},
+  {id:'start1',cat:'💰 EKONOMI',em:'🏦',nm:'Startkapital',desc:'+50 startgold per match',cost:10,maxLv:4,ef:(lv)=>{G._tdStartGold=lv*50;}},
+  {id:'pts1',cat:'💰 EKONOMI',em:'🌟',nm:'TD Mästare',desc:'+50% TD Points intäkt',cost:20,maxLv:3,ef:(lv)=>{G._tdPtsMult=1+lv*0.50;}},
+  // DEFENSE
+  {id:'hp1',cat:'🛡️ FÖRSVAR',em:'❤️',nm:'Förstärkt Bas',desc:'+25 max base HP',cost:10,maxLv:6,ef:(lv)=>{G._tdBonusHp=lv*25;}},
+  {id:'regen1',cat:'🛡️ FÖRSVAR',em:'💚',nm:'Basreparation',desc:'+2 HP återhämtning/wave',cost:18,maxLv:4,ef:(lv)=>{G._tdHpRegen=lv*2;}},
+  {id:'armor1',cat:'🛡️ FÖRSVAR',em:'🛡️',nm:'Magiska Barriärer',desc:'Fiender -10% speed',cost:15,maxLv:3,ef:(lv)=>{G._tdSlowBase=1-lv*0.10;}},
+  // SPECIAL
+  {id:'aoe1',cat:'✨ SPECIAL',em:'🌀',nm:'Explosiv Kraft',desc:'+20% AoE-radius',cost:20,maxLv:3,ef:(lv)=>{G._tdAoeMult=1+lv*0.20;}},
+  {id:'ab1',cat:'✨ SPECIAL',em:'🚀',nm:'Ability Refill',desc:'-15% ability cooldown',cost:25,maxLv:3,ef:(lv)=>{G._tdAbCDMult=1-lv*0.15;}},
+];
+
+function openTDShop(){
+  const m=$('tdShopModal');if(!m)return;
+  m.classList.add('open');
+  renderTDShop();
+}
+function closeTDShop(){const m=$('tdShopModal');if(m)m.classList.remove('open');}
+
+function renderTDShop(){
+  const pts=G.tdPoints||0;
+  const el=$('tdShopPtsDisp');if(el)el.textContent=pts+' TD PTS';
+  const grid=$('tdShopGrid');if(!grid)return;
+  const cats=[...new Set(TD_PERM_UPGRADES.map(u=>u.cat))];
+  if(!G.tdUpgrades)G.tdUpgrades={};
+  grid.innerHTML=cats.map(cat=>{
+    const items=TD_PERM_UPGRADES.filter(u=>u.cat===cat);
+    return `<div style="margin-bottom:18px">
+      <div style="font-size:9px;font-weight:900;color:var(--p);font-family:var(--mono);letter-spacing:2px;margin-bottom:8px">${cat}</div>
+      ${items.map(u=>{
+        const lv=G.tdUpgrades[u.id]||0;
+        const maxed=lv>=u.maxLv;
+        const cost=u.cost*(lv+1);
+        const canAfford=pts>=cost;
+        return `<div style="display:flex;align-items:center;gap:10px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:10px 12px;margin-bottom:6px${maxed?';border-color:rgba(255,215,0,.4)':''}">
+          <div style="font-size:28px;flex-shrink:0">${u.em}</div>
+          <div style="flex:1;min-width:0">
+            <div style="font-size:12px;font-weight:900;color:${maxed?'var(--y)':'var(--t1)'};font-family:var(--mono)">${u.nm} ${maxed?'✅':lv>0?'LV'+lv:''}</div>
+            <div style="font-size:9px;color:var(--t3);margin:1px 0">${u.desc}</div>
+            <div style="display:flex;gap:3px;margin-top:4px">${Array.from({length:u.maxLv},(_,i)=>`<div style="width:14px;height:4px;border-radius:2px;background:${i<lv?'var(--g)':'rgba(255,255,255,.12)'}"></div>`).join('')}</div>
+          </div>
+          <button onclick="buyTDUpgrade('${u.id}')" style="flex-shrink:0;padding:7px 10px;border-radius:10px;font-size:9px;font-weight:900;font-family:var(--mono);cursor:pointer;border:1.5px solid ${maxed?'rgba(255,215,0,.4)':canAfford?'rgba(191,95,255,.5)':'rgba(255,255,255,.12)'};background:${maxed?'rgba(255,215,0,.06)':canAfford?'rgba(191,95,255,.1)':'rgba(0,0,0,.4)'};color:${maxed?'var(--y)':canAfford?'var(--p)':'var(--t3)'}">${maxed?'MAX':cost+' PTS'}</button>
+        </div>`;
+      }).join('')}
+    </div>`;
+  }).join('');
+}
+
+function buyTDUpgrade(id){
+  const u=TD_PERM_UPGRADES.find(x=>x.id===id);if(!u)return;
+  if(!G.tdUpgrades)G.tdUpgrades={};
+  const lv=G.tdUpgrades[id]||0;
+  if(lv>=u.maxLv){showT('✅ Max level!','y');return;}
+  const cost=u.cost*(lv+1);
+  if((G.tdPoints||0)<cost){showT('❌ Behöver '+cost+' TD Points!','r');return;}
+  G.tdPoints-=cost;
+  G.tdUpgrades[id]=lv+1;
+  u.ef(lv+1);
+  vibe([20,10,40]);SFX.click&&SFX.click();
+  showT('🏪 '+u.nm+' LV'+(lv+1)+'!','g');
+  save();renderTDShop();
+}
+
+function _applyTDUpgrades(){
+  if(!G.tdUpgrades)return;
+  TD_PERM_UPGRADES.forEach(u=>{const lv=G.tdUpgrades[u.id]||0;if(lv>0)u.ef(lv);});
+}
+
+// ══════════════════════════════════════════
+// ── DAILY MISSIONS ──
+// ══════════════════════════════════════════
+const DAILY_MISSIONS=[
+  {id:'dm_feed',   ico:'🍖',nm:'Mat-Marathon',    desc:'Mata din pet 3 gånger', goal:3, stat:'feed',   reward:{xp:50,coins:30}},
+  {id:'dm_train',  ico:'🏋️',nm:'Styrketräning',   desc:'Träna din pet 5 gånger', goal:5, stat:'train',  reward:{xp:80,coins:20}},
+  {id:'dm_wave',   ico:'⚔️',nm:'Tower Defense',   desc:'Klara 3 waves i TD',     goal:3, stat:'wave',   reward:{xp:100,coins:50}},
+  {id:'dm_play',   ico:'🎮',nm:'Lekstund',         desc:'Lek med din pet 4 gånger', goal:4, stat:'play',  reward:{xp:60,coins:25}},
+  {id:'dm_fish',   ico:'🎣',nm:'Sportfiskare',     desc:'Fånga 5 fiskar i Deep Catch', goal:5, stat:'fish', reward:{xp:70,coins:40}},
+  {id:'dm_run',    ico:'🏃',nm:'Löptid',           desc:'Spring 300m i Pet Runner',    goal:300, stat:'run', reward:{xp:60,coins:20}},
+  {id:'dm_bath',   ico:'🛁',nm:'Ren & Fin',        desc:'Bada din pet 3 gånger',    goal:3, stat:'bath',  reward:{xp:40,coins:20}},
+  {id:'dm_coins',  ico:'💰',nm:'Coin Hunter',      desc:'Samla 200 coins',           goal:200, stat:'coins', reward:{xp:80,coins:0}},
+  {id:'dm_kills',  ico:'💀',nm:'Fiende Slaktare',  desc:'Döda 50 fiender i TD',     goal:50, stat:'tdkill', reward:{xp:120,coins:60}},
+  {id:'dm_flash',  ico:'⚡',nm:'Flash Star',       desc:'Posta en Flash',            goal:1, stat:'flash', reward:{xp:50,coins:35}},
+];
+
+function _getDailyMissionSeed(){
+  const d=new Date();return d.getFullYear()*10000+((d.getMonth()+1)*100)+d.getDate();
+}
+function _getTodayMissions(){
+  let seed=_getDailyMissionSeed();
+  const arr=[...DAILY_MISSIONS];
+  // Seeded shuffle — pick 3
+  const pick=[];const used=new Set();
+  for(let i=0;i<3;i++){seed=(seed*1664525+1013904223)&0x7fffffff;const idx=seed%arr.length;let offset=0;while(used.has((idx+offset)%arr.length))offset++;const fi=(idx+offset)%arr.length;pick.push(arr[fi]);used.add(fi);}
+  return pick;
+}
+
+function renderDailyMissions(){
+  const box=$('dailyMissionsBox');if(!box)return;
+  if(!G.dmProgress)G.dmProgress={};
+  if(!G.dmDate||G.dmDate!==_getDailyMissionSeed()){G.dmProgress={};G.dmDate=_getDailyMissionSeed();G.dmCompleted={};}
+  if(!G.dmCompleted)G.dmCompleted={};
+  const missions=_getTodayMissions();
+  box.innerHTML=missions.map(m=>{
+    const prog=G.dmProgress[m.id]||0;
+    const done=G.dmCompleted[m.id];
+    const pct=Math.min(100,Math.round(prog/m.goal*100));
+    const col=done?'rgba(57,255,20,.25)':'rgba(255,255,255,.03)';
+    const bdr=done?'rgba(57,255,20,.4)':'rgba(255,255,255,.08)';
+    return `<div style="background:${col};border:1px solid ${bdr};border-radius:12px;padding:8px 12px;display:flex;align-items:center;gap:10px">
+      <div style="font-size:24px;flex-shrink:0">${m.ico}</div>
+      <div style="flex:1;min-width:0">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:3px">
+          <div style="font-size:11px;font-weight:900;color:${done?'var(--g)':'var(--t1)'};font-family:var(--mono)">${m.nm}</div>
+          <div style="font-size:8px;color:var(--y);font-family:var(--mono);font-weight:900">+${m.reward.xp}XP${m.reward.coins?' +'+m.reward.coins+'💰':''}</div>
+        </div>
+        <div style="font-size:9px;color:var(--t3);margin-bottom:5px">${m.desc}</div>
+        <div style="height:4px;background:rgba(255,255,255,.08);border-radius:2px;overflow:hidden">
+          <div style="height:100%;width:${pct}%;background:${done?'var(--g)':'linear-gradient(90deg,var(--p),var(--b))'};border-radius:2px;transition:width .5s"></div>
+        </div>
+        <div style="font-size:8px;color:var(--t3);margin-top:2px;font-family:var(--mono)">${done?'✅ KLAR!':prog+'/'+m.goal}</div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function advanceDailyMission(stat,amt=1){
+  if(!G.dmProgress)G.dmProgress={};
+  if(!G.dmDate||G.dmDate!==_getDailyMissionSeed()){G.dmProgress={};G.dmDate=_getDailyMissionSeed();G.dmCompleted={};}
+  if(!G.dmCompleted)G.dmCompleted={};
+  const missions=_getTodayMissions();
+  missions.forEach(m=>{
+    if(m.stat!==stat||G.dmCompleted[m.id])return;
+    G.dmProgress[m.id]=(G.dmProgress[m.id]||0)+amt;
+    if(G.dmProgress[m.id]>=m.goal){
+      G.dmCompleted[m.id]=true;
+      gainXP(m.reward.xp,'daily');
+      if(m.reward.coins)gainCoins(m.reward.coins);
+      showT('🎯 '+m.nm+' KLAR! +'+m.reward.xp+'XP'+(m.reward.coins?' +'+m.reward.coins+'💰':''),'y');
+      vibe([30,20,60]);SFX.win&&SFX.win();
+    }
+  });
+  if(document.querySelector('#view-home.active'))renderDailyMissions();
+  save();
+}
+
 </script>
 
 <!-- ZONE DETAIL MODAL -->
