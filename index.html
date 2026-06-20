@@ -1406,6 +1406,8 @@ button:active{opacity:.85;}
 .es3{background:rgba(191,95,255,.1);border:1px solid rgba(191,95,255,.5);color:var(--p);}
 .es4{background:rgba(255,230,0,.1);border:1px solid rgba(255,230,0,.55);color:var(--y);animation:es4Glow 2.2s ease-in-out infinite;}
 @keyframes es4Glow{0%,100%{box-shadow:0 0 8px rgba(255,230,0,.2),0 0 0 0 rgba(255,230,0,.2);}50%{box-shadow:0 0 22px rgba(255,230,0,.5),0 0 40px rgba(255,230,0,.1);}}
+.es5{background:linear-gradient(135deg,rgba(191,95,255,.15),rgba(255,215,0,.12));border:1.5px solid rgba(191,95,255,.7);color:#BF5FFF;animation:es5Glow 1.8s ease-in-out infinite;}
+@keyframes es5Glow{0%,100%{box-shadow:0 0 12px rgba(191,95,255,.3),0 0 24px rgba(255,215,0,.1);}50%{box-shadow:0 0 28px rgba(191,95,255,.6),0 0 50px rgba(255,215,0,.2);}}
 
 /* ── EXPANDED CARE HERO — overridden by base care-hero rules above ── */
 .chb-med{border-color:rgba(57,255,20,.38);}.chb-med .chb-lbl{color:var(--g);}
@@ -4484,12 +4486,25 @@ div[style*="LIVE"]{border-radius:16px!important;background:rgba(57,255,20,.03)!i
       <button onclick="openFishCatchBox()" style="background:rgba(255,159,10,.1);border:1px solid rgba(255,159,10,.3);border-radius:10px;color:var(--o);font-size:10px;font-weight:900;padding:4px 10px;cursor:pointer;font-family:var(--ff)" id="fishBoxBtn">📦 Låda</button>
       <button onclick="openFishJournal()" style="background:rgba(0,180,255,.1);border:1px solid rgba(0,180,255,.3);border-radius:10px;color:var(--b);font-size:10px;font-weight:900;padding:4px 10px;cursor:pointer;font-family:var(--ff)">📖 Samling</button>
       <button onclick="openRodShop()" style="background:rgba(57,255,20,.1);border:1px solid rgba(57,255,20,.3);border-radius:10px;color:var(--g);font-size:10px;font-weight:900;padding:4px 10px;cursor:pointer;font-family:var(--ff)">🔧 Uppgradera</button>
+      <button id="fishTournBtn" onclick="openFishTournament()" style="background:rgba(255,215,0,.15);border:1.5px solid rgba(255,215,0,.5);border-radius:10px;color:var(--y);font-size:10px;font-weight:900;padding:4px 10px;cursor:pointer;font-family:var(--ff);box-shadow:0 0 8px rgba(255,215,0,.2)">🏆 TOURN</button>
     </div>
   </div>
   <div style="display:flex;align-items:center;justify-content:space-between;padding:4px 14px;background:rgba(0,8,20,.95);flex-shrink:0;border-bottom:1px solid rgba(0,100,200,.15)">
     <div id="fishWeatherBadge" style="font-size:11px;font-weight:700;color:var(--b)">☀️ Klart</div>
     <div id="fishStatus" style="font-size:10px;color:var(--t2);text-align:center;flex:1;padding:0 8px">Tryck en fisk för att fånga!</div>
     <div id="fishStreakBadge" style="font-size:10px;font-weight:900;color:var(--o);font-family:var(--mono)"></div>
+  </div>
+  <!-- Tournament HUD -->
+  <div id="fishTournHud" style="display:none;background:linear-gradient(90deg,rgba(255,215,0,.12),rgba(255,215,0,.06));border-bottom:1.5px solid rgba(255,215,0,.4);padding:5px 14px;flex-shrink:0">
+    <div style="display:flex;align-items:center;gap:10px">
+      <div style="font-size:9px;font-weight:900;color:var(--y);font-family:var(--mono);letter-spacing:1px">🏆 TURNERING</div>
+      <div style="flex:1;height:4px;background:rgba(255,215,0,.15);border-radius:2px;overflow:hidden">
+        <div id="fishTournTimerBar" style="height:100%;width:100%;background:linear-gradient(90deg,#FFD700,#FF9F0A);border-radius:2px;transition:width .5s linear"></div>
+      </div>
+      <div id="fishTournTimerNum" style="font-size:14px;font-weight:900;color:var(--y);font-family:var(--mono);min-width:28px;text-align:right">90</div>
+      <div style="font-size:9px;color:var(--t3);font-family:var(--mono)">×<span id="fishTournMult" style="color:var(--o)">1.0</span></div>
+      <div id="fishTournScore" style="font-size:11px;font-weight:900;color:var(--y);font-family:var(--mono)">0</div>
+    </div>
   </div>
   <!-- Canvas underwater world -->
   <div style="flex:1;position:relative;overflow:hidden;display:flex;flex-direction:column">
@@ -4714,11 +4729,23 @@ div[style*="LIVE"]{border-radius:16px!important;background:rgba(57,255,20,.03)!i
     <div class="td-weakness-payoff" id="tdWeaknessPayoff">
       <div class="twp-t">⚡ WEAKNESS HIT!</div>
     </div>
+    <!-- Boss kill popup -->
+    <div id="tdBossKillPopup" style="position:absolute;top:38%;left:50%;transform:translate(-50%,-50%) scale(.8);pointer-events:none;text-align:center;background:rgba(0,0,0,.9);border:2px solid #FFD700;border-radius:16px;padding:14px 24px;opacity:0;transition:opacity .3s,transform .3s;z-index:9;box-shadow:0 0 30px rgba(255,215,0,.4)"></div>
     <!-- Base HP -->
     <div class="td-base-hp-wrap">
       <div class="td-base-lbl">🏠 BASE</div>
       <div class="ba-hp-track"><div class="ba-hp-bar-fill player" id="tdBaseHpFill" style="width:100%"></div></div>
       <div style="font-size:10px;font-weight:900;font-family:var(--mono);min-width:46px;text-align:right" id="tdBaseHpNum">100/100</div>
+    </div>
+    <!-- Boss HP Bar (hidden by default) -->
+    <div id="tdBossBar" style="display:none;position:absolute;top:4px;left:50%;transform:translateX(-50%);width:70%;background:rgba(0,0,0,.85);border:2px solid #FF2D55;border-radius:10px;padding:4px 10px;z-index:8;box-shadow:0 0 20px rgba(255,45,85,.4)">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:3px">
+        <div id="tdBossName" style="font-size:9px;font-weight:900;color:#FF2D55;font-family:var(--mono);letter-spacing:1px">BOSS</div>
+        <div id="tdBossHpNum" style="font-size:9px;color:rgba(255,255,255,.7);font-family:var(--mono)">0/0</div>
+      </div>
+      <div style="height:8px;background:rgba(255,255,255,.1);border-radius:4px;overflow:hidden">
+        <div id="tdBossHpFill" style="height:100%;width:100%;background:linear-gradient(90deg,#FF2D55,#FF9F0A);border-radius:4px;transition:width .2s"></div>
+      </div>
     </div>
   </div>
 
@@ -5866,7 +5893,9 @@ function tdUpdate(dt){
     const cnt=def.count||1;
     for(let s=0;s<cnt;s++){
       const spBase=G._tdSlowBase!=null?Math.min(def.speed,def.speed*(G._tdSlowBase)):def.speed;
-      _td.enemies.push({...def,speed:spBase,count:1,maxHp:def.hp,progress:-s*_tdCell*0.3,hitFlash:0,stunTimer:0,slowTimer:0,slowFactor:1,poisonTimer:0,burnTimer:0,pullTimer:0,id:Math.random().toString(36).slice(2)});
+      const newE={...def,speed:spBase,count:1,maxHp:def.hp,progress:-s*_tdCell*0.3,hitFlash:0,stunTimer:0,slowTimer:0,slowFactor:1,poisonTimer:0,burnTimer:0,pullTimer:0,id:Math.random().toString(36).slice(2)};
+      _td.enemies.push(newE);
+      if(def.isBoss){_td._currentBoss=newE;_tdShowBossBar(newE);}
     }
     _td.spawnTimer=def.isBoss?0:Math.max(12,45-_td.wave*2);
   }
@@ -5950,7 +5979,25 @@ function tdUpdate(dt){
 
 function tdHitEnemy(e,dmg,tType){
   e.hp=Math.max(0,e.hp-dmg);e.hitFlash=8;
+  if(e.isBoss&&_td._currentBoss===e)_tdUpdateBossBar(e);
   if(e.hp<=0)tdKillEnemy(e);
+}
+function _tdShowBossBar(e){
+  const bar=$('tdBossBar');if(!bar)return;
+  bar.style.display='block';
+  const nm=$('tdBossName');if(nm)nm.textContent=(e.isMegaBoss?'🔥 MEGA ':'⚠️ ')+e.name;
+  _tdUpdateBossBar(e);
+}
+function _tdUpdateBossBar(e){
+  const pct=Math.max(0,e.hp/e.maxHp*100);
+  const fill=$('tdBossHpFill');if(fill)fill.style.width=pct+'%';
+  const num=$('tdBossHpNum');if(num)num.textContent=Math.ceil(e.hp)+'/'+e.maxHp;
+  // Color shifts red→yellow as HP drops
+  if(fill){
+    if(pct<25)fill.style.background='linear-gradient(90deg,#FF0000,#FF2D55)';
+    else if(pct<50)fill.style.background='linear-gradient(90deg,#FF2D55,#FF9F0A)';
+    else fill.style.background='linear-gradient(90deg,#FF2D55,#FF9F0A)';
+  }
 }
 
 function tdKillEnemy(e){
@@ -5988,6 +6035,17 @@ function tdKillEnemy(e){
     _td.particles.push({x,y,vx:0,vy:0,col:'#FFD700',r:70,life:22,ring:true,ringGrow:true});
     if(e.isMegaBoss){_td.particles.push({x,y,vx:0,vy:0,col:'#FF2D55',r:120,life:28,ring:true,ringGrow:true});}
     _td.shakeT=e.isMegaBoss?30:20;shakeScreen&&shakeScreen();vibe([50,25,100,25,150]);
+    // Hide boss bar with delay
+    if(_td._currentBoss===e){
+      setTimeout(()=>{const bar=$('tdBossBar');if(bar)bar.style.display='none';_td._currentBoss=null;},1800);
+    }
+    // Boss kill popup
+    const bossPopup=$('tdBossKillPopup');
+    if(bossPopup){
+      bossPopup.innerHTML=`<div style="font-size:28px">${e.em}</div><div style="font-size:11px;font-weight:900;color:#FF2D55;font-family:var(--mono);letter-spacing:2px">${e.isMegaBoss?'MEGA BOSS':'BOSS'} KILLED!</div><div style="font-size:9px;color:var(--y);font-family:var(--mono);margin-top:2px">+${gold}g +${xp}XP</div>`;
+      bossPopup.style.opacity='1';bossPopup.style.transform='translate(-50%,-50%) scale(1)';
+      setTimeout(()=>{bossPopup.style.opacity='0';bossPopup.style.transform='translate(-50%,-50%) scale(.8)';},2200);
+    }
     showT((e.isMegaBoss?'🌋':'⚔️')+' '+e.name+' besegrad! +'+gold+'g +'+xp+'XP','y');
   } else {
     _td.particles.push({x,y,vx:0,vy:0,col:'rgba(255,0,127,.5)',r:22,life:7,ring:true});
@@ -6957,6 +7015,7 @@ function gainKC(n,src){
   save();
 }
 function gainCoins(n,stat){
+  if(G._evoCoinMult&&G._evoCoinMult>1)n=Math.round(n*(G._evoCoinMult));
   if(G._talentK9)n=Math.round(n*2);                    // GOD OF WAR: coins ×2
   if(G._talentS5a&&stat==='social')n=Math.round(n*2);  // Viral Legend: social coins ×2
   if(G._talentH5a)n=Math.round(n*2);                   // Tycoon: all coins ×2
@@ -6989,7 +7048,7 @@ function _talentXPMult(stat){
 }
 function gainXP(n,stat){
   const _nightMult = typeof getNightXPMult === 'function' ? getNightXPMult() : 1;
-  n = Math.round(n * _nightMult * _talentXPMult(stat||''));
+  n = Math.round(n * _nightMult * _talentXPMult(stat||'') * (G._evoXPMult||1));
   if(G.premium){n=Math.round(n*(G.premiumTier>=2?2.5:G.premiumTier>=1?1.75:1.25));}
   G.exp+=n;
   if(stat==='action')G.actionStat+=Math.ceil(n/4);
@@ -8528,15 +8587,34 @@ function sendAI(){
 
 // ── EVOLUTION STAGES (battle/badge system, 4 tiers) ──
 const BATTLE_EVOL_STAGES=[
-  {min:1, max:4,  stage:1, name:'ROOKIE',    badge:'es1', power:'BABY',   ico:'🌱', bonuses:'+10 HP',          desc:'Din pet håller på att växa upp. Mata den varje dag!'},
-  {min:5, max:9,  stage:2, name:'CHALLENGER',badge:'es2', power:'TEEN',   ico:'💫', bonuses:'+25 HP · +5% ATK', desc:'Din pet är starkare nu! Fortsätt streaket.'},
-  {min:10,max:19, stage:3, name:'ELITE',     badge:'es3', power:'ADULT',  ico:'⚡', bonuses:'+50 HP · +15% ATK',desc:'Elite-level! Din pet lyser med kraft.'},
-  {min:20,max:999,stage:4, name:'LEGENDARY', badge:'es4', power:'LEGEND', ico:'👑', bonuses:'+100 HP · +30% ALL',desc:'LEGENDARY! Världens starkaste pet.'},
+  {min:1, max:4,  stage:1, name:'ROOKIE',    badge:'es1', power:'BABY',   ico:'🌱', bonuses:'+10 HP',          desc:'Din pet håller på att växa upp. Mata den varje dag!',
+   glow:'none', coinReward:50, statFn:(g)=>{}},
+  {min:5, max:9,  stage:2, name:'CHALLENGER',badge:'es2', power:'TEEN',   ico:'💫', bonuses:'+25 HP · +5% XP', desc:'Din pet är starkare nu! Fortsätt streaket.',
+   glow:'drop-shadow(0 0 8px rgba(57,255,20,.6))', coinReward:150,
+   statFn:(g)=>{g._evoXPMult=1.05;}},
+  {min:10,max:19, stage:3, name:'ELITE',     badge:'es3', power:'ADULT',  ico:'⚡', bonuses:'+50 HP · +15% XP · +8% coins', desc:'Elite-level! Din pet lyser med kraft.',
+   glow:'drop-shadow(0 0 14px rgba(0,217,255,.7)) drop-shadow(0 0 4px rgba(57,255,20,.4))', coinReward:400,
+   statFn:(g)=>{g._evoXPMult=1.15;g._evoCoinMult=1.08;}},
+  {min:20,max:49, stage:4, name:'LEGENDARY', badge:'es4', power:'LEGEND', ico:'👑', bonuses:'+100 HP · +30% XP · +15% coins · +5% TD DMG', desc:'LEGENDARY! Världens starkaste pet.',
+   glow:'drop-shadow(0 0 20px rgba(255,215,0,.8)) drop-shadow(0 0 8px rgba(191,95,255,.5))', coinReward:1000,
+   statFn:(g)=>{g._evoXPMult=1.3;g._evoCoinMult=1.15;g._evoTDDmg=1.05;}},
+  {min:50,max:999,stage:5, name:'GODLIKE',   badge:'es5', power:'GOD',    ico:'🌌', bonuses:'+200 HP · +50% XP · +25% coins · +10% ALL stats', desc:'GODLIKE! En legendarisk pet för evigheten.',
+   glow:'drop-shadow(0 0 28px rgba(191,95,255,.9)) drop-shadow(0 0 12px rgba(255,215,0,.7))', coinReward:3000,
+   statFn:(g)=>{g._evoXPMult=1.5;g._evoCoinMult=1.25;g._evoTDDmg=1.1;}},
 ];
 function getEvolStage(lv=G.level){return BATTLE_EVOL_STAGES.find(s=>lv>=s.min&&lv<=s.max)||BATTLE_EVOL_STAGES[0];}
 function updateEvolBadge(){
   const s=getEvolStage();const el=$('evolStageBadge');
   if(el){el.className='es-badge '+s.badge;el.textContent=s.ico+' '+s.name;}
+  // Apply persistent visual glow to pet
+  const petAv=$('petAvWrap');if(petAv&&s.glow!=='none')petAv.style.filter=s.glow||'';
+  const petCornerEm=document.querySelector('#petCornerWidget .pc-em');
+  if(petCornerEm)petCornerEm.style.filter=s.glow||'';
+  // Apply stat bonuses
+  s.statFn&&s.statFn(G);
+  // Boost TD damage from evo
+  if(G._evoTDDmg&&!G._tdDmgMult)G._tdDmgMult=G._evoTDDmg;
+  else if(G._evoTDDmg&&G._tdDmgMult)G._tdDmgMult=Math.max(G._tdDmgMult,G._evoTDDmg);
 }
 function checkEvolution(prevLv,newLv){
   const was=getEvolStage(prevLv).stage;const now=getEvolStage(newLv).stage;
@@ -8554,7 +8632,12 @@ function triggerEvolution(stage){
   const raysEl=$('evolRays');if(raysEl){raysEl.innerHTML='';for(let i=0;i<16;i++){const r=document.createElement('div');r.className='evol-ray';r.style.cssText=`width:2px;height:${40+Math.random()*30}%;transform:rotate(${i*(360/16)}deg);opacity:${0.3+Math.random()*.5};animation:evolRayFade ${1.5+Math.random()}s ease-out ${Math.random()*0.5}s infinite;transform-origin:0 0`;raysEl.appendChild(r);}}
   el.classList.add('show');SFX.win();vibe([50,30,100,30,150,50,200]);
   spawnParticles(window.innerWidth/2,window.innerHeight*.45,'stars');
-  gainCoins(100);showT('🎉 EVOLUTION! +100 COINS','g');
+  const reward=stage.coinReward||100;
+  gainCoins(reward);showT('🎉 EVOLUTION STAGE '+stage.stage+'! +'+reward+'⚡','g');
+  // Apply stats immediately
+  stage.statFn&&stage.statFn(G);
+  updateEvolBadge();
+  save();
 }
 function closeEvolCeremony(){if(_evolClosed)return;_evolClosed=true;$('evolCeremony')?.classList.remove('show');}
 
@@ -8711,11 +8794,49 @@ let _dna = {
   fusionCharge:0, combo:0,
   best:parseInt(localStorage.getItem('kv8_dnaBest')||'0'),
   W:0, H:0, paddleY:0,
-  dnaFrags:[], // drifting dna pickup orbs
-  particles:[],
-  ballTrail:[],
+  dnaFrags:[], particles:[], ballTrail:[],
+  // Power-up system
+  powerUps:[], activePWs:{}, extraBalls:[], laserBeams:[],
+  laserFireTimer:0, _origPW:0,
 };
 
+const DNA_PW_DEFS={
+  multiball:{em:'🎱',col:'#FF007F',nm:'MULTI-BALL',dur:0},
+  widePad:  {em:'↔️', col:'#00D9FF',nm:'WIDE PADDLE',dur:600},
+  laser:    {em:'🔫',col:'#FF4500',nm:'LASER',dur:480},
+  slowmo:   {em:'⏰',col:'#BF5FFF',nm:'SLOW-MO',dur:480},
+  fireball: {em:'🔥',col:'#FF9F0A',nm:'FIREBALL',dur:360},
+};
+function _dnaActivatePW(type){
+  const def=DNA_PW_DEFS[type];if(!def)return;
+  vibe&&vibe([15,10,30]);SFX&&SFX.win&&SFX.win();
+  showT(def.em+' '+def.nm+'!','g');
+  switch(type){
+    case 'multiball':
+      for(let i=0;i<2;i++){
+        const ang=(Math.random()-.5)*(Math.PI*.8)-Math.PI/2;
+        const spd=Math.max(4,Math.sqrt(_dna.vx*_dna.vx+_dna.vy*_dna.vy));
+        _dna.extraBalls.push({x:_dna.bx,y:_dna.by,vx:Math.cos(ang)*spd,vy:Math.sin(ang)*spd,r:_dna.br,trail:[],life:900,fireball:false});
+      }
+      break;
+    case 'widePad':
+      if(!_dna.activePWs.widePad){_dna._origPW=_dna.pw;}
+      _dna.activePWs.widePad=(def.dur||600);
+      const newPw=Math.round((_dna._origPW||_dna.pw)*1.85);
+      _dna.px=Math.max(0,Math.min(_dna.W-newPw,_dna.px-Math.round((newPw-_dna.pw)/2)));
+      _dna.pw=newPw;
+      break;
+    case 'laser':
+      _dna.activePWs.laser=(def.dur||480);_dna.laserFireTimer=0;break;
+    case 'slowmo':
+      _dna.activePWs.slowmo=(def.dur||480);
+      _dna.vx*=0.55;_dna.vy*=0.55;
+      _dna.extraBalls.forEach(b=>{b.vx*=0.55;b.vy*=0.55;});
+      break;
+    case 'fireball':
+      _dna.activePWs.fireball=(def.dur||360);break;
+  }
+}
 function openPetBlocks(){
   const g=$('petBlocksGame');if(!g)return;
   g.classList.add('open');
@@ -8751,6 +8872,8 @@ function startPetBlocks(){
   _dna.score=0;_dna.coins=0;_dna.lives=3;
   _dna.fusionCharge=0;_dna.combo=0;_dna.wave=1;
   _dna.blocks=[];_dna.dnaFrags=[];_dna.particles=[];_dna.ballTrail=[];
+  _dna.powerUps=[];_dna.activePWs={};_dna.extraBalls=[];_dna.laserBeams=[];
+  _dna.laserFireTimer=0;_dna._origPW=_dna.pw;_dna._waveFlash=0;
   _dna.active=true;
   _dnaBuildWave();
   _dnaUpdateHUD();
@@ -8864,7 +8987,8 @@ function _dnaUpdate(){
       bl.hp--;bl.flash=1;
       if(bl.hp<=0){
         bl.alive=false;
-        _dna.score+=bl.pts;_dna.combo++;
+        const isFire=_dna.activePWs.fireball&&_dna.activePWs.fireball>0;
+        _dna.score+=isFire?bl.pts*2:bl.pts;_dna.combo++;
         const coinGain=bl.type===3?5:bl.type===2?3:1;
         _dna.coins+=coinGain;
         _dna.fusionCharge=Math.min(100,_dna.fusionCharge+(bl.type===3?15:bl.type===2?10:5));
@@ -8878,6 +9002,13 @@ function _dnaUpdate(){
           });
         }
         _dnaSparkAt(bl.x+bl.w/2,bl.y+bl.h/2,bl.glow);
+        // Power-up drop
+        const dropChance=bl.type===3?.45:bl.type===2?.3:.18;
+        if(Math.random()<dropChance){
+          const pwKeys=Object.keys(DNA_PW_DEFS);
+          const pt=pwKeys[Math.floor(Math.random()*pwKeys.length)];
+          _dna.powerUps.push({type:pt,x:bl.x+bl.w/2,y:bl.y+bl.h/2,vy:2.2,r:14,age:0});
+        }
         hitAny=true;
         if(_dna.combo>=3){
           const comboEl=$('dnaCombo');
@@ -8928,6 +9059,108 @@ function _dnaUpdate(){
     p.x+=p.vx;p.y+=p.vy;p.vy+=.15;p.t-=.04;p.r=Math.max(.5,p.r-.1);
     return p.t>0;
   });
+
+  // ── Power-up drops: fall & catch ──
+  _dna.powerUps=(_dna.powerUps||[]).filter(pw=>{
+    pw.y+=pw.vy;pw.age++;
+    if(pw.y>_dna.H+20)return false;
+    if(pw.y+pw.r>=_dna.paddleY&&pw.y-pw.r<=_dna.paddleY+_dna.ph&&pw.x>=_dna.px&&pw.x<=_dna.px+_dna.pw){
+      _dnaActivatePW(pw.type);
+      _dnaSparkAt(pw.x,pw.y,DNA_PW_DEFS[pw.type]?.col||'#fff');
+      return false;
+    }
+    return true;
+  });
+  // ── Active power-up timers ──
+  const pwNow=Object.keys(_dna.activePWs);
+  pwNow.forEach(k=>{
+    _dna.activePWs[k]-=dt*60;
+    if(_dna.activePWs[k]<=0){
+      delete _dna.activePWs[k];
+      if(k==='widePad'){
+        const orig=_dna._origPW||Math.round(_dna.W*0.22);
+        _dna.px=Math.max(0,Math.min(_dna.W-orig,_dna.px+Math.round((_dna.pw-orig)/2)));
+        _dna.pw=orig;
+      }
+      showT('⏱️ '+(DNA_PW_DEFS[k]?.nm||k)+' slut!','r');
+    }
+  });
+  // ── Laser fire ──
+  if(_dna.activePWs.laser>0){
+    _dna.laserFireTimer=Math.max(0,(_dna.laserFireTimer||0)-dt*60);
+    if(_dna.laserFireTimer<=0){
+      _dna.laserFireTimer=55;
+      const lx=_dna.px+_dna.pw/2;
+      _dna.laserBeams=(_dna.laserBeams||[]);
+      _dna.laserBeams.push({x:lx,y:_dna.paddleY,life:1});
+      // find first block in path
+      let best=null,bestY=Infinity;
+      _dna.blocks.forEach(bl=>{if(!bl.alive)return;if(lx>=bl.x&&lx<=bl.x+bl.w&&bl.y<bestY){best=bl;bestY=bl.y;}});
+      if(best){
+        best.hp=0;best.flash=1;best.alive=false;
+        _dna.score+=best.pts;_dna.coins+=1;
+        _dna.fusionCharge=Math.min(100,_dna.fusionCharge+8);
+        _dnaSparkAt(best.x+best.w/2,best.y+best.h/2,best.glow);
+        _pbUpdateScore();_dnaUpdateHUD();
+      }
+    }
+    _dna.laserBeams=(_dna.laserBeams||[]).filter(lb=>{lb.life-=.07;return lb.life>0;});
+  }
+  // ── Extra balls (multiball) ──
+  _dna.extraBalls=(_dna.extraBalls||[]).filter(b=>{
+    b.life-=dt*60;if(b.life<=0)return false;
+    // Trail
+    b.trail=b.trail||[];
+    b.trail.push({x:b.x,y:b.y,t:1});
+    if(b.trail.length>8)b.trail.shift();
+    b.trail.forEach(t=>{t.t-=.08;});
+    // Move
+    b.x+=b.vx;b.y+=b.vy;
+    // Walls
+    if(b.x<=b.r){b.x=b.r;b.vx=Math.abs(b.vx);}
+    if(b.x>=_dna.W-b.r){b.x=_dna.W-b.r;b.vx=-Math.abs(b.vx);}
+    if(b.y<=b.r){b.y=b.r;b.vy=Math.abs(b.vy);}
+    // Paddle
+    if(b.y+b.r>=_dna.paddleY&&b.y<_dna.paddleY+_dna.ph&&b.x>=_dna.px&&b.x<=_dna.px+_dna.pw){
+      b.y=_dna.paddleY-b.r;
+      const hp=(b.x-_dna.px)/_dna.pw;
+      const ang=(hp-.5)*(Math.PI*(2/3))-Math.PI/2;
+      const spd=Math.max(3.5,Math.sqrt(b.vx*b.vx+b.vy*b.vy));
+      b.vx=Math.cos(ang)*spd;b.vy=Math.sin(ang)*spd;
+      if(b.vy>-spd*0.3)b.vy=-spd*0.3;
+    }
+    // Block collisions
+    for(const bl of _dna.blocks){
+      if(!bl.alive)continue;
+      if(b.x+b.r>bl.x&&b.x-b.r<bl.x+bl.w&&b.y+b.r>bl.y&&b.y-b.r<bl.y+bl.h){
+        const oL=b.x+b.r-bl.x,oR=bl.x+bl.w-(b.x-b.r),oT=b.y+b.r-bl.y,oB=bl.y+bl.h-(b.y-b.r);
+        const mO=Math.min(oL,oR,oT,oB);
+        if(mO===oL||mO===oR)b.vx*=-1;else b.vy*=-1;
+        bl.hp--;
+        if(bl.hp<=0){
+          bl.alive=false;_dna.score+=bl.pts;_dna.combo++;_dna.coins+=bl.type===3?5:1;
+          _dnaSparkAt(bl.x+bl.w/2,bl.y+bl.h/2,bl.glow);_pbUpdateScore();_dnaUpdateHUD();
+        }else{bl.flash=.7;}
+        break;
+      }
+    }
+    if(b.y>_dna.H+b.r*2)return false;
+    return true;
+  });
+  // Update power-up HUD strip
+  const pwHud=$('dnaPwHud');
+  if(pwHud){
+    const active=Object.entries(_dna.activePWs);
+    const falling=_dna.powerUps.length;
+    pwHud.innerHTML=active.map(([k,timer])=>{
+      const d=DNA_PW_DEFS[k];if(!d)return'';
+      const pct=Math.max(0,timer/d.dur*100)||0;
+      return`<div style="display:flex;flex-direction:column;align-items:center;gap:1px;min-width:32px">
+        <span style="font-size:16px">${d.em}</span>
+        <div style="width:28px;height:3px;background:#222;border-radius:2px"><div style="height:100%;width:${pct}%;background:${d.col};border-radius:2px;transition:width .1s"></div></div>
+      </div>`;
+    }).join('');
+  }
 
   // Fusion bar UI
   const fb=$('dnaFusionBar');if(fb)fb.style.width=_dna.fusionCharge+'%';
@@ -9150,6 +9383,55 @@ function _dnaDraw(canvas,ctx){
   ctx.shadowBlur=0;ctx.fillStyle='rgba(255,255,255,.3)';
   ctx.fillRect(px+4,paddleY+1,pw-8,ph*.45);
   ctx.restore();
+
+  // Falling power-ups
+  (_dna.powerUps||[]).forEach(pw=>{
+    const d=DNA_PW_DEFS[pw.type];if(!d)return;
+    const pulse=0.85+0.15*Math.sin(t*.01+pw.age*.05);
+    // Outer corona
+    const grd=ctx.createRadialGradient(pw.x,pw.y,0,pw.x,pw.y,pw.r*2.2*pulse);
+    grd.addColorStop(0,d.col+'44');grd.addColorStop(1,d.col+'00');
+    ctx.fillStyle=grd;ctx.beginPath();ctx.arc(pw.x,pw.y,pw.r*2.2*pulse,0,Math.PI*2);ctx.fill();
+    // Ring
+    ctx.shadowColor=d.col;ctx.shadowBlur=14;
+    ctx.strokeStyle=d.col;ctx.lineWidth=2;
+    ctx.beginPath();ctx.arc(pw.x,pw.y,pw.r*pulse,0,Math.PI*2);ctx.stroke();
+    ctx.shadowBlur=0;
+    // Inner fill
+    ctx.fillStyle=d.col+'22';ctx.beginPath();ctx.arc(pw.x,pw.y,pw.r*pulse,0,Math.PI*2);ctx.fill();
+  });
+
+  // Laser beams
+  (_dna.laserBeams||[]).forEach(lb=>{
+    ctx.save();ctx.globalAlpha=lb.life;
+    ctx.shadowColor='rgba(255,69,0,.9)';ctx.shadowBlur=16;
+    ctx.strokeStyle='rgba(255,140,0,.9)';ctx.lineWidth=3;
+    ctx.beginPath();ctx.moveTo(lb.x,lb.y);ctx.lineTo(lb.x,0);ctx.stroke();
+    ctx.strokeStyle='rgba(255,255,255,.6)';ctx.lineWidth=1;
+    ctx.beginPath();ctx.moveTo(lb.x,lb.y);ctx.lineTo(lb.x,0);ctx.stroke();
+    ctx.restore();
+  });
+
+  // Extra balls (multiball)
+  (_dna.extraBalls||[]).forEach(b=>{
+    // Trail
+    (b.trail||[]).forEach(tr=>{
+      if(tr.t<=0)return;
+      const grad=ctx.createRadialGradient(tr.x,tr.y,0,tr.x,tr.y,b.r*tr.t*.6);
+      grad.addColorStop(0,`rgba(255,0,127,${tr.t*.3})`);grad.addColorStop(1,'rgba(255,0,127,0)');
+      ctx.fillStyle=grad;ctx.beginPath();ctx.arc(tr.x,tr.y,b.r*tr.t*.6,0,Math.PI*2);ctx.fill();
+    });
+    // Ball
+    ctx.shadowColor='rgba(255,0,127,.9)';ctx.shadowBlur=14;
+    const bGrd=ctx.createRadialGradient(b.x-1.5,b.y-1.5,0,b.x,b.y,b.r);
+    bGrd.addColorStop(0,'#fff');bGrd.addColorStop(.4,'#FF007F');bGrd.addColorStop(1,'rgba(180,0,80,.8)');
+    ctx.fillStyle=bGrd;ctx.beginPath();ctx.arc(b.x,b.y,b.r,0,Math.PI*2);ctx.fill();
+    ctx.shadowBlur=0;
+    // Life indicator
+    const lifePct=Math.max(0,b.life/900);
+    ctx.strokeStyle=`rgba(255,0,127,${lifePct*.5})`;ctx.lineWidth=1;
+    ctx.beginPath();ctx.arc(b.x,b.y,b.r+4,0,Math.PI*2*lifePct);ctx.stroke();
+  });
 
   // Floor danger line — pulsing red
   const dangerAlpha=0.2+0.1*Math.sin(t*.008);
@@ -10203,6 +10485,8 @@ function _sfHitFish(ft,fishEl){
   if((G.fishBonuses||{}).xp5pct)baseXP=Math.round(baseXP*1.05);
   if((G.fishBonuses||{}).coins10pct)baseCoins=Math.round(baseCoins*1.1);
   gainCoins(baseCoins);gainXP(baseXP,'action');
+  // Tournament: register catch
+  if(_ft&&_ft.active)_ftRegisterCatch(ft,baseCoins);
   // Journal
   if(!G.fishJournal)G.fishJournal={};G.fishJournal[ft.nm]=(G.fishJournal[ft.nm]||0)+1;
   // Add to catch box (fångstlåda)
@@ -10324,8 +10608,120 @@ function closeFishingGame(){
   const ov=$('fishReelOverlay');if(ov){ov.style.opacity='0';ov.style.pointerEvents='none';}
   const fishOv=$('fishHtmlOv');if(fishOv)fishOv.innerHTML='';
   _fc.phase='idle';
+  if(_ft.active)_ftEnd(false);
   closeModal('rodShopModal');closeModal('fishJournalModal');
   _hidePetCorner();
+}
+
+// ── FISHING TOURNAMENT ──
+const TOURN_FISH=[
+  {em:'🐡',nm:'Guldfisk',coins:120,xp:50,rarity:'rare',zone:'any',speed:1.8,scale:1.2},
+  {em:'🦈',nm:'Turneringshaj',coins:300,xp:100,rarity:'epic',zone:'any',speed:2.2,scale:1.4},
+  {em:'🐙',nm:'Bläckfisken',coins:500,xp:180,rarity:'legendary',zone:'any',speed:1.5,scale:1.5},
+  {em:'🦋',nm:'Regnbåge',coins:80,xp:30,rarity:'uncommon',zone:'any',speed:2.5,scale:1.0},
+  {em:'🌟',nm:'Stjärnfisk',coins:800,xp:300,rarity:'ultra',zone:'any',speed:3.0,scale:1.6,bonus:'ultra'},
+];
+const TOURN_DURATION=90;
+let _ft={active:false,score:0,mult:1,timer:0,_iv:null,bestScores:[],catchStreak:0};
+function openFishTournament(){
+  const today=new Date().toISOString().slice(0,10);
+  if(G.fishTournDate===today){
+    _ftShowLeaderboard();return;
+  }
+  // Launch tournament
+  _ft.active=true;_ft.score=0;_ft.mult=1;_ft.timer=TOURN_DURATION;_ft.catchStreak=0;
+  _ft.bestScores=JSON.parse(localStorage.getItem('kv8_ftLB')||'[]');
+  // Show HUD
+  const hud=$('fishTournHud');if(hud)hud.style.display='block';
+  _ftUpdateHud();
+  if(_ft._iv)clearInterval(_ft._iv);
+  _ft._iv=setInterval(()=>{
+    if(!_ft.active)return;
+    _ft.timer=Math.max(0,_ft.timer-1);
+    _ftUpdateHud();
+    if(_ft.timer<=0)_ftEnd(true);
+  },1000);
+  // Inject tournament fish into scene
+  _fcSpawnTournFish();
+  showT('🏆 TURNERING STARTAD! 90 sekunder!','y');vibe([30,20,60,20,100]);
+}
+function _fcSpawnTournFish(){
+  const canvas=$('fishCanvas');if(!canvas)return;
+  TOURN_FISH.forEach((ft,i)=>{
+    _fc.fish.push({
+      ft,em:ft.em,x:.1+i*.18,y:.25+Math.random()*.5,
+      vx:(Math.random()>.5?.008:-.008)*ft.speed,
+      animT:Math.random()*Math.PI*2,
+      scale:ft.scale||1,caught:false,
+      _tourn:true
+    });
+  });
+}
+function _ftRegisterCatch(ft,coins){
+  if(!_ft.active)return;
+  _ft.catchStreak++;
+  const streakBonus=Math.min(5,1+Math.floor(_ft.catchStreak/2)*.5);
+  _ft.mult=Math.round(streakBonus*10)/10;
+  const pts=Math.round(coins*_ft.mult);
+  _ft.score+=pts;
+  floatNum&&floatNum('🏆+'+pts,window.innerWidth*.5,window.innerHeight*.35,'#FFD700',18);
+  _ftUpdateHud();
+}
+function _ftUpdateHud(){
+  const timer=$('fishTournTimerNum');if(timer)timer.textContent=_ft.timer;
+  const bar=$('fishTournTimerBar');if(bar)bar.style.width=(_ft.timer/TOURN_DURATION*100)+'%';
+  const mult=$('fishTournMult');if(mult)mult.textContent=_ft.mult.toFixed(1);
+  const score=$('fishTournScore');if(score)score.textContent=_ft.score;
+  // Color warning when time low
+  const timerEl=$('fishTournTimerNum');
+  if(timerEl)timerEl.style.color=_ft.timer<15?'#FF2D55':_ft.timer<30?'#FF9F0A':'var(--y)';
+}
+function _ftEnd(saveScore){
+  _ft.active=false;
+  if(_ft._iv){clearInterval(_ft._iv);_ft._iv=null;}
+  const hud=$('fishTournHud');if(hud)hud.style.display='none';
+  if(!saveScore)return;
+  const today=new Date().toISOString().slice(0,10);
+  G.fishTournDate=today;
+  // Save score to leaderboard
+  const scores=JSON.parse(localStorage.getItem('kv8_ftLB')||'[]');
+  scores.push({score:_ft.score,date:today,pet:G.petEmoji||'🐉'});
+  scores.sort((a,b)=>b.score-a.score);scores.splice(5);
+  localStorage.setItem('kv8_ftLB',JSON.stringify(scores));
+  _ft.bestScores=scores;
+  // Rewards
+  const reward=Math.round(_ft.score*.3);
+  gainCoins(reward);gainXP(Math.round(_ft.score*.1),'action');
+  save();
+  vibe([50,30,100,30,150]);SFX.win&&SFX.win();
+  showT('🏆 TURNERING SLUT! '+_ft.score+' PTS! +'+reward+'⚡','y');
+  setTimeout(()=>_ftShowLeaderboard(),600);
+}
+function _ftShowLeaderboard(){
+  const scores=JSON.parse(localStorage.getItem('kv8_ftLB')||'[]');
+  const html=`<div style="background:rgba(0,0,0,.97);border-radius:20px;border:2px solid rgba(255,215,0,.5);padding:22px 20px;max-width:320px;width:90%;margin:auto">
+    <div style="text-align:center;margin-bottom:16px">
+      <div style="font-size:32px">🏆</div>
+      <div style="font-size:16px;font-weight:900;color:var(--y);font-family:var(--mono);letter-spacing:2px">TURNERING TOPPLISTA</div>
+      <div style="font-size:9px;color:var(--t3);font-family:var(--mono);margin-top:2px">En turnering per dag</div>
+    </div>
+    ${scores.length===0?'<div style="text-align:center;color:var(--t3);font-size:12px;padding:20px">Inga resultat än!</div>':
+      scores.map((s,i)=>`<div style="display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid rgba(255,255,255,.06)">
+        <div style="font-size:18px">${['🥇','🥈','🥉','4️⃣','5️⃣'][i]}</div>
+        <div style="font-size:22px">${s.pet}</div>
+        <div style="flex:1">
+          <div style="font-size:14px;font-weight:900;color:var(--y);font-family:var(--mono)">${s.score} PTS</div>
+          <div style="font-size:9px;color:var(--t3)">${s.date}</div>
+        </div>
+      </div>`).join('')}
+    <div style="margin-top:16px;display:flex;gap:8px">
+      <button onclick="this.closest('.tourn-lb-wrap').remove()" style="flex:1;padding:12px;background:rgba(255,255,255,.07);border:1.5px solid rgba(255,255,255,.15);border-radius:12px;color:var(--t2);font-size:13px;font-weight:900;cursor:pointer;font-family:var(--mono)">STÄNG</button>
+      ${G.fishTournDate!==new Date().toISOString().slice(0,10)?`<button onclick="this.closest('.tourn-lb-wrap').remove();openFishTournament()" style="flex:1;padding:12px;background:rgba(255,215,0,.15);border:1.5px solid rgba(255,215,0,.5);border-radius:12px;color:var(--y);font-size:13px;font-weight:900;cursor:pointer;font-family:var(--mono)">🏆 SPELA</button>`:'<div style="flex:1;text-align:center;font-size:10px;color:var(--t3);font-family:var(--mono);padding:12px">IMORGON IGEN!</div>'}
+    </div>
+  </div>`;
+  const wrap=document.createElement('div');wrap.className='tourn-lb-wrap';
+  wrap.style.cssText='position:fixed;inset:0;z-index:2000;background:rgba(0,0,0,.8);display:flex;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(6px)';
+  wrap.innerHTML=html;document.body.appendChild(wrap);
 }
 
 function _fishSetStatus(msg){if($('fishStatus'))$('fishStatus').textContent=msg;}
@@ -14335,6 +14731,7 @@ async function sbLoadProfile(){
     try{const tdup=localStorage.getItem('kv8_tdup');G.tdUpgrades=tdup?JSON.parse(tdup):{};}catch(e){G.tdUpgrades={};}
     G.tdPoints=parseInt(localStorage.getItem('kv8_tdpts')||'0');
     _applyTDUpgrades&&_applyTDUpgrades();
+    updateEvolBadge&&updateEvolBadge();
     save(); // mirror to localStorage cache
     return true;
   }catch(e){console.warn('[SB] loadProfile',e);return false;}
@@ -14664,6 +15061,7 @@ function _loadFromLocalStorage(){
     try{const tdup=localStorage.getItem('kv8_tdup');G.tdUpgrades=tdup?JSON.parse(tdup):{};}catch(e){G.tdUpgrades={};}
     G.tdPoints=parseInt(localStorage.getItem('kv8_tdpts')||'0');
     _applyTDUpgrades&&_applyTDUpgrades();
+    updateEvolBadge&&updateEvolBadge();
     let _dailyShownToday=false;
     const _today=new Date().toDateString();const _last=localStorage.getItem('kv8_lastLogin');
     if(_last!==_today){localStorage.setItem('kv8_lastLogin',_today);if(_last){
@@ -17752,9 +18150,11 @@ function advanceDailyMission(stat,amt=1){
     <canvas id="dnaCanvas" style="display:block;touch-action:none;cursor:crosshair;"></canvas>
     <div class="dna-combo-banner" id="dnaCombo"></div>
   </div>
+  <!-- Power-up HUD strip -->
+  <div id="dnaPwHud" style="min-height:38px;background:rgba(0,0,0,.6);border-top:1px solid rgba(255,0,127,.1);display:flex;align-items:center;justify-content:center;gap:12px;padding:4px 14px;flex-shrink:0"></div>
   <!-- Fusion button -->
-  <div style="padding:10px 14px 20px;display:flex;gap:10px;align-items:center;background:#000;border-top:1px solid rgba(255,0,127,.15)">
-    <button class="dna-fusion-btn" id="dnaFusionBtn" onclick="_dnaFusion()" disabled>⚡ FUSION STRIKE!</button>
+  <div style="padding:8px 14px 16px;display:flex;gap:10px;align-items:center;background:#000;border-top:1px solid rgba(255,0,127,.15)">
+    <button class="dna-fusion-btn" id="dnaFusionBtn" onclick="_dnaFusion()" disabled>⚡ FUSION</button>
     <div style="flex:1;display:flex;flex-direction:column;gap:4px">
       <div style="font-size:9px;color:var(--t3);font-family:var(--mono)">FUSION CHARGE</div>
       <div style="height:6px;background:#111;border:1px solid rgba(255,230,0,.25);border-radius:3px;overflow:hidden"><div id="dnaFusionBar" style="height:100%;background:linear-gradient(90deg,var(--pk),var(--y));border-radius:3px;transition:width .3s;width:0%"></div></div>
