@@ -1255,6 +1255,7 @@ button:active{opacity:.85;}
 .ob-world[data-world="pixel"].sel{border-color:var(--pk);box-shadow:0 0 0;transform:translate(3px,3px);}
 .ob-world-ico{font-size:34px;display:block;margin-bottom:6px;animation:petBob 2.5s ease-in-out infinite;}
 @keyframes petBob{0%,100%{transform:translateY(0);}50%{transform:translateY(-6px);}}
+@keyframes feBannerIn{from{transform:translateY(-100%);opacity:0;}to{transform:translateY(0);opacity:1;}}
 .ob-world-nm{font-size:13px;font-weight:900;color:#fff;display:block;margin-bottom:3px;font-family:var(--mono);letter-spacing:1px;}
 .ob-world-ds{font-size:9px;color:rgba(255,255,255,.5);font-family:var(--mono);}
 /* Pet selection — 5 cols so all 10 fit in 2 rows, button always visible */
@@ -3002,7 +3003,7 @@ div[style*="LIVE"]{border-radius:16px!important;background:rgba(57,255,20,.03)!i
             <div class="wc-prog-bar"><div id="wcProgFill" style="width:40%"></div></div>
             <span id="wcProgText">2/5</span>
           </div>
-          <div class="wc-reward">🔮 +50 KC belöning</div>
+          <div class="wc-reward" id="wcRewardLbl">🔮 Tryck för detaljer</div>
         </div>
       </div>
 
@@ -3798,6 +3799,12 @@ div[style*="LIVE"]{border-radius:16px!important;background:rgba(57,255,20,.03)!i
       </div>
       <!-- ACHIEVEMENTS -->
       <div id="cosmeticsAccessOverlay" style="display:none;position:fixed;top:180px;right:20px;z-index:50;font-size:22px;line-height:1;pointer-events:none;filter:drop-shadow(0 0 6px rgba(255,215,0,.6))"></div>
+      <!-- PET SKILLS PANEL -->
+      <div id="petSkillsPanel" style="display:none;margin:0 14px 12px;background:rgba(191,95,255,.06);border:1.5px solid rgba(191,95,255,.25);border-radius:18px;padding:12px"></div>
+      <div style="margin:4px 14px 10px;display:flex;gap:8px">
+        <button onclick="openPetSkills()" style="flex:1;background:rgba(191,95,255,.1);border:1.5px solid rgba(191,95,255,.3);border-radius:12px;padding:9px;cursor:pointer;color:#BF5FFF;font-size:11px;font-weight:900;font-family:var(--mono)">🌟 FÖRMÅGOR</button>
+        <div id="personalityBadge" style="display:none;align-items:center;gap:4px;background:rgba(255,159,10,.1);border:1.5px solid rgba(255,159,10,.35);border-radius:12px;padding:9px 12px;font-size:11px;font-weight:900;color:var(--o);font-family:var(--mono)"></div>
+      </div>
       <div class="sh" style="margin-top:8px"><div class="sh-t">🏆 ACHIEVEMENTS</div><div class="sh-a" id="playAchCount" style="color:var(--y)">0 / 40</div></div>
       <div id="playAchGrid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;padding:0 14px 4px"></div>
       <div id="playUppdragList" style="display:none"></div>
@@ -4708,6 +4715,18 @@ div[style*="LIVE"]{border-radius:16px!important;background:rgba(57,255,20,.03)!i
 </div>
 <!-- LIVE EVENT -->
 <div class="live-event" id="liveEvent">⚡ EVENT</div>
+<!-- FLASH EVENT BANNER -->
+<div id="flashEventBanner" style="display:none;position:fixed;top:0;left:0;right:0;z-index:1000;background:rgba(10,0,20,.95);border-bottom:2px solid #BF5FFF;padding:8px 14px;align-items:center;gap:10px;box-shadow:0 4px 20px rgba(191,95,255,.4);backdrop-filter:blur(10px)">
+  <div id="feBannerIco" style="font-size:24px;flex-shrink:0">⚡</div>
+  <div style="flex:1;min-width:0">
+    <div style="display:flex;align-items:center;gap:6px">
+      <div id="feBannerNm" style="font-size:13px;font-weight:900;color:#BF5FFF;font-family:var(--mono);letter-spacing:.5px">EVENT</div>
+      <div style="background:#BF5FFF;color:#000;font-size:8px;font-weight:900;padding:1px 5px;border-radius:4px;font-family:var(--mono)">LIVE</div>
+    </div>
+    <div id="feBannerDesc" style="font-size:10px;color:rgba(255,255,255,.7);margin-top:1px"></div>
+  </div>
+  <div id="feBannerTimer" style="font-size:14px;font-weight:900;color:#FFD700;font-family:var(--mono);flex-shrink:0">5:00</div>
+</div>
 <!-- COMBO METER -->
 <div class="combo-meter" id="comboMeter"><div style="font-size:10px;color:var(--t2);font-weight:900">x</div><div class="combo-n" id="comboCnt">5</div><div style="font-size:10px;color:var(--y);font-weight:900">COMBO 🔥</div></div>
 <!-- BATTLE ARENA -->
@@ -5186,11 +5205,13 @@ function initQuests(){
   localStorage.setItem('kv8_qdate',today);saveQuests();renderQuests();
 }
 function saveQuests(){localStorage.setItem('kv8_quests',JSON.stringify(_quests));}
+
 function advanceQuest(id,amt=1){
   const q=_quests.find(x=>x.id===id);if(!q||q.done)return;
   q.progress=Math.min(q.goal,q.progress+amt);
   if(q.progress>=q.goal){q.done=true;gainXP(q.reward.xp,'action');if(q.reward.coins>0)gainCoins(q.reward.coins);showAchievement('✅','Quest klar: '+q.txt);showT('✅ QUEST KLAR! +'+q.reward.xp+'XP','g');SFX.win();}
   saveQuests();renderQuests();renderKmbDaily&&renderKmbDaily();
+  advanceWeeklyChallenge&&advanceWeeklyChallenge(id,amt);
 }
 function renderQuests(){
   const el=$('questCard');if(!el)return;
@@ -7075,6 +7096,10 @@ function gainKC(n,src){
 }
 function gainCoins(n,stat){
   if(G._evoCoinMult&&G._evoCoinMult>1)n=Math.round(n*(G._evoCoinMult));
+  if(G._skillCoinBonus)n=Math.round(n*(1+G._skillCoinBonus));  // Pet Skill: Lucky Paw
+  if(G._personalityCoinBonus)n=Math.round(n*(1+G._personalityCoinBonus)); // Foodie personality
+  if(G._eventCoinMult&&G._eventCoinMult>1)n=Math.round(n*G._eventCoinMult); // Live event
+  if(G._godModeBonus)n=Math.round(n*1.2); // God Mode skill
   if(G._talentK9)n=Math.round(n*2);                    // GOD OF WAR: coins ×2
   if(G._talentS5a&&stat==='social')n=Math.round(n*2);  // Viral Legend: social coins ×2
   if(G._talentH5a)n=Math.round(n*2);                   // Tycoon: all coins ×2
@@ -7083,7 +7108,7 @@ function gainCoins(n,stat){
   if(G._talentM7)n=Math.round(n*2);                    // GRAND MASTER: coins ×2
   if(n>0&&G._talentH2)n+=5;                            // Investor: flat +5 per gain
   if(n>0&&G._talentH6a)n+=15;                          // Central Bank: flat +15 per gain
-  G.coins+=n;updateHUD();if(n>0){cp(n);vibe(20);SFX.coin();advanceQuest('coins',n);advanceDailyMission&&advanceDailyMission('coins',n);}
+  G.coins+=n;updateHUD();if(n>0){cp(n);vibe(20);SFX.coin();advanceQuest('coins',n);advanceDailyMission&&advanceDailyMission('coins',n);advanceWeeklyChallenge&&advanceWeeklyChallenge('coins',n);}
 }
 function _talentXPMult(stat){
   let m=1;
@@ -7108,6 +7133,10 @@ function _talentXPMult(stat){
 function gainXP(n,stat){
   const _nightMult = typeof getNightXPMult === 'function' ? getNightXPMult() : 1;
   n = Math.round(n * _nightMult * _talentXPMult(stat||'') * (G._evoXPMult||1));
+  if(G._eventXPMult&&G._eventXPMult>1)n=Math.round(n*G._eventXPMult); // Live event
+  if(G._godModeBonus)n=Math.round(n*1.2); // God Mode skill
+  if(stat==='battle'&&G._personalityBattleXPBonus)n=Math.round(n*(1+G._personalityBattleXPBonus)); // Warrior personality
+  if(stat==='social'&&G._personalitySocialXPBonus)n=Math.round(n*(1+G._personalitySocialXPBonus)); // Influencer personality
   if(G.premium){n=Math.round(n*(G.premiumTier>=2?2.5:G.premiumTier>=1?1.75:1.25));}
   G.exp+=n;
   if(stat==='action')G.actionStat+=Math.ceil(n/4);
@@ -7188,6 +7217,8 @@ function pcFeed(){
   floatStat('🍖 +35 HUNGER  +3XP','#FF9F0A');
   if(Math.random()<.3)addDiaryEntry(G.petName+' åt mat med stor aptit! Hunger är nu '+Math.min(100,G.hunger)+'%. Mums! 🍖');
   SFX.click();advanceQuest('feed');advanceDailyChallenge('feed');advanceDailyMission('feed');updateHUD();updatePetView();save();
+  if(!G.petMemory)G.petMemory={};G.petMemory.totalFeeds=(G.petMemory.totalFeeds||0)+1;
+  updatePersonalityBadge&&updatePersonalityBadge();
   if(G.mood>80&&Math.random()<0.35)setTimeout(()=>showT('📸 '+G.petName+' är glad — posta en Flash! +bonus XP','pk'),1800);
 }
 function pcTrain(){
@@ -7489,6 +7520,193 @@ function openHallOfFame(){
     buildBoard('PET LEVEL — Världsrankning','#FFD700','⭐',r=>r.lvl,' LV');
   oWin('hallWin');
 }
+
+// ── I: PET SECRET SKILLS ──
+const PET_SKILLS=[
+  {lv:5,  id:'lucky_paw',  ico:'🐾', nm:'Lucky Paw',      desc:'+5% coins från alla aktiviteter',  apply:(g)=>{g._skillCoinBonus=(g._skillCoinBonus||0)+0.05;}},
+  {lv:10, id:'battle_inst',ico:'⚔️', nm:'Battle Instinct', desc:'+8% TD-skada på alla torn',        apply:(g)=>{g._tdDmgMult=Math.max(g._tdDmgMult||1,(g._tdDmgMult||1)+0.08);}},
+  {lv:20, id:'fish_sense', ico:'🎣', nm:'Fish Sense',      desc:'+10% sannolikhet att få sällsynt fisk', apply:(g)=>{g._fishRareMult=(g._fishRareMult||1)+0.10;}},
+  {lv:35, id:'dna_harmony',ico:'🧬', nm:'DNA Harmony',     desc:'+15% poängbonus i DNA Breaker',    apply:(g)=>{g._dnaScoreBonus=(g._dnaScoreBonus||0)+0.15;}},
+  {lv:50, id:'god_mode',   ico:'🌌', nm:'GOD MODE',        desc:'+20% till ALLA belöningar',        apply:(g)=>{g._godModeBonus=true;}},
+];
+function applyPetSkills(){
+  PET_SKILLS.forEach(sk=>{
+    if(G.level>=sk.lv)sk.apply(G);
+  });
+}
+function checkSkillUnlocks(prevLv,newLv){
+  PET_SKILLS.forEach(sk=>{
+    if(prevLv<sk.lv&&newLv>=sk.lv){
+      setTimeout(()=>{
+        showAchievement(sk.ico,'SKILL OLÅST: '+sk.nm);
+        showT('🌟 NYA FÖRMÅGA: '+sk.nm+'! '+sk.desc,'p');
+        vibe([30,20,80,20,120]);spawnParticles&&spawnParticles(window.innerWidth/2,window.innerHeight*.4,'stars');
+        sk.apply(G);save();
+      },800);
+    }
+  });
+}
+function openPetSkills(){
+  const el=$('petSkillsPanel');if(!el)return;
+  el.innerHTML='<div style="font-size:11px;font-weight:900;color:#BF5FFF;letter-spacing:1px;margin-bottom:12px;font-family:var(--mono)">🌟 HEMLIGA FÖRMÅGOR</div>'+
+  PET_SKILLS.map(sk=>{
+    const unlocked=G.level>=sk.lv;
+    return`<div style="display:flex;align-items:center;gap:12px;padding:10px 12px;background:${unlocked?'rgba(191,95,255,.08)':'rgba(255,255,255,.02)'};border:1.5px solid ${unlocked?'rgba(191,95,255,.4)':'rgba(255,255,255,.06)'};border-radius:14px;margin-bottom:6px;opacity:${unlocked?'1':'.4'}">
+      <div style="font-size:26px">${unlocked?sk.ico:'🔒'}</div>
+      <div style="flex:1">
+        <div style="font-size:12px;font-weight:800;color:${unlocked?'var(--t1)':'var(--t3)'}">${unlocked?sk.nm:'Lås upp på LV'+sk.lv}</div>
+        <div style="font-size:10px;color:var(--t3);margin-top:2px">${unlocked?sk.desc:'???'}</div>
+      </div>
+      <div style="font-size:9px;font-weight:900;font-family:var(--mono);color:${unlocked?'rgba(191,95,255,.8)':'var(--t3)'};text-align:right">LV${sk.lv}${unlocked?' ✓':''}</div>
+    </div>`;
+  }).join('');
+  el.style.display='block';
+}
+
+// ── J: WEEKLY MEGA CHALLENGE ──
+const WC_POOL=[
+  {id:'social_post',ico:'⚡',ttl:'SOCIAL WAVE',   desc:'Posta 5 Flashar den här veckan',   stat:'post',   goal:5,  tiers:[1,3,5],  reward:{bronze:{xp:100,coins:80},silver:{xp:300,coins:200},gold:{xp:600,coins:500}}},
+  {id:'combat_wave',ico:'🏰',ttl:'WARLORD WEEK',  desc:'Klara 10 TD-waves den här veckan', stat:'tdwave', goal:10, tiers:[3,7,10], reward:{bronze:{xp:150,coins:100},silver:{xp:400,coins:250},gold:{xp:800,coins:600}}},
+  {id:'fishing_run', ico:'🎣',ttl:'FISKFEBER',    desc:'Fånga 15 fiskar den här veckan',   stat:'fish',   goal:15, tiers:[4,9,15], reward:{bronze:{xp:120,coins:80},silver:{xp:350,coins:220},gold:{xp:700,coins:550}}},
+  {id:'collector',   ico:'💰',ttl:'COINS GRINDER',desc:'Tjäna 500 coins den här veckan',   stat:'coins',  goal:500,tiers:[100,300,500],reward:{bronze:{xp:100,coins:0},silver:{xp:280,coins:0},gold:{xp:600,coins:0}}},
+  {id:'trainer',     ico:'💪',ttl:'TRÄNINGSVECKA', desc:'Träna 8 gånger den här veckan',   stat:'train',  goal:8,  tiers:[2,5,8],  reward:{bronze:{xp:120,coins:60},silver:{xp:320,coins:180},gold:{xp:700,coins:420}}},
+  {id:'gamer',       ico:'🎮',ttl:'GAMER WEEK',    desc:'Krossa 60 DNA-block den här veckan',stat:'dna_blocks',goal:60,tiers:[15,40,60],reward:{bronze:{xp:130,coins:70},silver:{xp:350,coins:200},gold:{xp:750,coins:480}}},
+];
+function _wcGetWeek(){const d=new Date();const jan=new Date(d.getFullYear(),0,1);return Math.ceil(((d-jan)/86400000+jan.getDay()+1)/7);}
+function _wcGetCurrentChallenge(){
+  const wk=_wcGetWeek();const yr=new Date().getFullYear();
+  const idx=(wk+yr)%WC_POOL.length;return WC_POOL[idx];
+}
+function _wcGetSavedKey(){return'kv8_wc_'+(new Date().getFullYear())+'_'+_wcGetWeek();}
+function _wcGetProgress(){try{return JSON.parse(localStorage.getItem(_wcGetSavedKey())||'{}')}catch(e){return{};}}
+function _wcSaveProgress(p){localStorage.setItem(_wcGetSavedKey(),JSON.stringify(p));}
+function advanceWeeklyChallenge(stat,amt=1){
+  const wc=_wcGetCurrentChallenge();if(wc.stat!==stat)return;
+  const p=_wcGetProgress();p.val=(p.val||0)+amt;
+  const tiers=wc.tiers;const r=wc.reward;
+  if(p.val>=tiers[0]&&!p.bronze){p.bronze=true;gainXP(r.bronze.xp,'action');if(r.bronze.coins>0)gainCoins(r.bronze.coins);showT('🥉 VECKA BRONZE KLAR! +'+r.bronze.xp+'XP','y');vibe([40,20,80]);}
+  if(p.val>=tiers[1]&&!p.silver){p.silver=true;gainXP(r.silver.xp,'action');if(r.silver.coins>0)gainCoins(r.silver.coins);showT('🥈 VECKA SILVER! +'+r.silver.xp+'XP','y');vibe([50,25,100]);}
+  if(p.val>=tiers[2]&&!p.gold){p.gold=true;gainXP(r.gold.xp,'action');if(r.gold.coins>0)gainCoins(r.gold.coins);showT('🏆 VECKA GOLD KOMPLETT! +'+r.gold.xp+'XP!','pk');vibe([60,30,120,30,180]);SFX.win();spawnParticles&&spawnParticles(window.innerWidth/2,window.innerHeight*.4,'stars');}
+  _wcSaveProgress(p);_wcUpdateCard();
+}
+function _wcUpdateCard(){
+  const wc=_wcGetCurrentChallenge();const p=_wcGetProgress();
+  const val=p.val||0;const pct=Math.min(100,(val/wc.tiers[2])*100);
+  const descEl=$('wcDesc');if(descEl)descEl.textContent=wc.desc;
+  const fill=$('wcProgFill');if(fill)fill.style.width=pct+'%';
+  const prog=$('wcProgText');if(prog)prog.textContent=val+'/'+wc.tiers[2];
+  const rw=$('wcRewardLbl');
+  const tier=p.gold?'🏆 GULD KLAR!':p.silver?'🥈 SILVER KLAR — mot guld!':p.bronze?'🥉 BRONS KLAR — fortsätt!':wc.ico+' Brons: '+wc.tiers[0]+' | Silver: '+wc.tiers[1]+' | Guld: '+wc.tiers[2];
+  if(rw)rw.textContent=tier;
+}
+function openWeeklyChallenge(){
+  const wc=_wcGetCurrentChallenge();const p=_wcGetProgress();const val=p.val||0;
+  const now=new Date();const monday=new Date(now);monday.setDate(now.getDate()-now.getDay()+8);monday.setHours(0,0,0,0);
+  const msLeft=monday-now;const dLeft=Math.floor(msLeft/86400000);const hLeft=Math.floor((msLeft%86400000)/3600000);
+  const tierHtml=(tier,icon,tval,tgoal,color,done)=>`<div style="background:${done?'rgba(57,255,20,.06)':'rgba(255,255,255,.03)'};border:1.5px solid ${done?color:'rgba(255,255,255,.08)'};border-radius:12px;padding:10px 12px;margin-bottom:6px">
+    <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px">
+      <div style="font-size:16px">${icon}</div>
+      <div style="flex:1;font-size:11px;font-weight:800;color:${done?color:'var(--t1)'}">${tier}${done?' ✅':''}</div>
+      <div style="font-size:10px;font-weight:900;font-family:var(--mono);color:${done?color:'var(--y)'}">+${wc.reward[tier.toLowerCase()].xp}XP${wc.reward[tier.toLowerCase()].coins>0?' +'+wc.reward[tier.toLowerCase()].coins+'⚡':''}</div>
+    </div>
+    <div style="height:6px;background:rgba(255,255,255,.06);border-radius:100px;overflow:hidden">
+      <div style="height:100%;width:${Math.min(100,(val/tgoal)*100)}%;background:${done?color:'linear-gradient(90deg,var(--pk),var(--p))'};border-radius:100px;transition:width .6s"></div>
+    </div>
+    <div style="font-size:9px;color:var(--t3);margin-top:3px;font-family:var(--mono)">${Math.min(val,tgoal)}/'+tgoal}</div>
+  </div>`;
+  const body=`<div style="text-align:center;padding:10px 0 16px">
+    <div style="font-size:30px">${wc.ico}</div>
+    <div style="font-size:16px;font-weight:900;color:var(--y);letter-spacing:1px;margin-top:4px">${wc.ttl}</div>
+    <div style="font-size:12px;color:var(--t2);margin-top:4px">${wc.desc}</div>
+    <div style="font-size:10px;color:var(--t3);margin-top:6px;font-family:var(--mono)">⏳ ${dLeft}d ${hLeft}h kvar tills reset</div>
+  </div>
+  ${tierHtml('BRONZE','🥉',wc.tiers[0],wc.tiers[0],'#CD7F32',p.bronze)}
+  ${tierHtml('SILVER','🥈',wc.tiers[1],wc.tiers[1],'#C0C0C0',p.silver)}
+  ${tierHtml('GOLD','🏆',wc.tiers[2],wc.tiers[2],'#FFD700',p.gold)}
+  <div style="text-align:center;margin-top:6px;font-size:10px;color:var(--t3);font-family:var(--mono)">TOTAL: ${val} / ${wc.tiers[2]}</div>`;
+  const oldW=$('wcModal');if(oldW)oldW.remove();
+  const div=document.createElement('div');div.id='wcModal';
+  div.style.cssText='position:fixed;inset:0;z-index:500;background:rgba(0,0,0,.88);backdrop-filter:blur(16px);display:flex;align-items:flex-end;padding:0';
+  div.innerHTML=`<div style="width:100%;max-height:80vh;overflow-y:auto;background:var(--c1);border-radius:24px 24px 0 0;padding:20px 16px 32px">
+    <div style="width:40px;height:4px;background:rgba(255,255,255,.15);border-radius:2px;margin:0 auto 16px"></div>
+    ${body}
+    <button onclick="this.closest('#wcModal').remove()" style="width:100%;padding:13px;margin-top:12px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:14px;color:var(--t2);font-size:13px;font-weight:700;cursor:pointer">Stäng</button>
+  </div>`;
+  div.onclick=e=>{if(e.target===div)div.remove();};
+  document.body.appendChild(div);
+}
+
+// ── K: PET PERSONALITY SYSTEM ──
+const PET_PERSONALITIES=[
+  {id:'foodie',   ico:'🍖', nm:'FOODIE',     desc:'Du matar din pet konstant!',     bonus:'coins',bonusTxt:'+8% coins',   check:(g)=>((g.petMemory||{}).totalFeeds||0)>=20 && ((g.actionStat||0)<(g.socialStat||0)+(g.commerceStat||0))&&((g.petMemory||{}).totalFeeds||0)>((g.bountiesDone||0)*3)},
+  {id:'warrior',  ico:'⚔️', nm:'WARRIOR',    desc:'Du lever för battles och TD!',   bonus:'xp',  bonusTxt:'+10% XP från battles', check:(g)=>(g.battlesWon||0)>=3&&(g.actionStat||0)>=(g.socialStat||0)&&(g.actionStat||0)>=(g.commerceStat||0)},
+  {id:'influencer',ico:'📸',nm:'INFLUENCER', desc:'Flash-kungen/drottningen!',      bonus:'social',bonusTxt:'+10% social XP',check:(g)=>(g.postCount||0)>=5&&(g.socialStat||0)>=(g.actionStat||0)&&(g.socialStat||0)>=(g.commerceStat||0)},
+  {id:'gamer',    ico:'🎮', nm:'GAMER',      desc:'Spelen är allt för dig!',        bonus:'game', bonusTxt:'+10% DNA & TD score', check:(g)=>parseInt(localStorage.getItem('kv8_dnaBest')||'0')>=200||parseInt(localStorage.getItem('kv8_tdBestWave')||'0')>=5},
+  {id:'explorer', ico:'🌍', nm:'EXPLORER',   desc:'Alltid på äventyr och fiske!',   bonus:'fish', bonusTxt:'+10% fiskreward',     check:(g)=>Object.values(g.fishJournal||{}).reduce((a,b)=>a+(b||0),0)>=10},
+];
+function getPetPersonality(){
+  for(const p of PET_PERSONALITIES)if(p.check(G))return p;
+  return null;
+}
+function applyPersonalityBonus(){
+  const p=getPetPersonality();if(!p)return;
+  G._personality=p.id;
+  if(p.bonus==='coins')G._personalityCoinBonus=0.08;
+  else if(p.bonus==='xp')G._personalityBattleXPBonus=0.10;
+  else if(p.bonus==='social')G._personalitySocialXPBonus=0.10;
+  else if(p.bonus==='game')G._personalityGameBonus=0.10;
+  else if(p.bonus==='fish')G._personalityFishBonus=0.10;
+}
+function updatePersonalityBadge(){
+  applyPersonalityBonus();
+  const p=getPetPersonality();
+  const el=$('personalityBadge');
+  if(el){
+    if(p){el.textContent=p.ico+' '+p.nm;el.style.display='inline-flex';}
+    else{el.textContent='';el.style.display='none';}
+  }
+}
+
+// ── L: LIVE FLASH EVENTS ──
+const FLASH_EVENTS=[
+  {id:'bonus_xp',  ico:'⚡', nm:'BONUS XP',    col:'#BF5FFF',dur:300,desc:'2× XP från ALLT i 5 min!',   apply:(on)=>{G._eventXPMult=on?2:1;}},
+  {id:'coin_rush', ico:'💰', nm:'COIN RUSH',   col:'#FFD700',dur:300,desc:'2× Coins i 5 min!',           apply:(on)=>{G._eventCoinMult=on?2:1;}},
+  {id:'enemy_weak',ico:'💀', nm:'FIENDER SVAGA',col:'#FF2D55',dur:300,desc:'TD-fiender tar 50% mer skada!',apply:(on)=>{G._tdEnemyWeakness=on?1.5:1;}},
+  {id:'rare_catch',ico:'🎣', nm:'SÄLLSYNT FISK',col:'#00D9FF',dur:300,desc:'Sällsynta fiskar dyker upp!', apply:(on)=>{G._fishEventRare=on;}},
+  {id:'power_drop',ico:'🎱', nm:'POWER DROP',  col:'#39FF14',dur:300,desc:'Varje DNA-block ger power-up!',apply:(on)=>{G._dnaPowerEveryBlock=on;}},
+  {id:'pet_surge', ico:'🐾', nm:'PET SURGE',   col:'#FF9F0A',dur:300,desc:'Alla pet-stats ökade 5 min!',  apply:(on)=>{if(on){G.mood=Math.min(100,(G.mood||70)+20);G.energy=Math.min(100,(G.energy||80)+20);G.hunger=Math.min(100,(G.hunger||70)+10);updateHUD&&updateHUD();}}},
+];
+let _activeEvent=null,_eventTimer=null,_eventCountdownEl=null;
+function triggerFlashEvent(evId){
+  if(_activeEvent)return;
+  const ev=FLASH_EVENTS.find(x=>x.id===evId)||FLASH_EVENTS[Math.floor(Math.random()*FLASH_EVENTS.length)];
+  _activeEvent=ev;ev.apply(true);
+  const banner=$('flashEventBanner');
+  if(banner){
+    $('feBannerIco').textContent=ev.ico;
+    $('feBannerNm').textContent=ev.nm;
+    $('feBannerDesc').textContent=ev.desc;
+    $('feBannerTimer').textContent='5:00';
+    banner.style.borderColor=ev.col;
+    banner.style.display='flex';
+    banner.style.animation='feBannerIn .4s ease-out';
+  }
+  SFX.win&&SFX.win();vibe&&vibe([30,15,60,15,90]);
+  let secs=ev.dur;
+  _eventTimer=setInterval(()=>{
+    secs--;
+    const m=Math.floor(secs/60),s=secs%60;
+    const te=$('feBannerTimer');if(te)te.textContent=m+':'+(s<10?'0':'')+s;
+    if(secs<=0){clearInterval(_eventTimer);_eventTimer=null;_activeEvent=null;ev.apply(false);const b=$('flashEventBanner');if(b)b.style.display='none';showT('⏰ '+ev.nm+' SLUT!','y');}
+  },1000);
+  showT(ev.ico+' '+ev.nm+' AKTIVERAT! '+ev.desc,'p');
+}
+function _scheduleRandomEvents(){
+  const minGap=10*60*1000,maxGap=22*60*1000;
+  const delay=minGap+Math.random()*(maxGap-minGap);
+  setTimeout(()=>{if(G.name&&!_activeEvent){triggerFlashEvent(FLASH_EVENTS[Math.floor(Math.random()*FLASH_EVENTS.length)].id);}setTimeout(_scheduleRandomEvents,delay);},delay);
+}
+
 // ── PET COSMETICS SHOP ──
 const PET_COSMETICS={
   backgrounds:[
@@ -14961,7 +15179,7 @@ async function sbLoadProfile(){
     try{const tdup=localStorage.getItem('kv8_tdup');G.tdUpgrades=tdup?JSON.parse(tdup):{};}catch(e){G.tdUpgrades={};}
     G.tdPoints=parseInt(localStorage.getItem('kv8_tdpts')||'0');
     _applyTDUpgrades&&_applyTDUpgrades();
-    updateEvolBadge&&updateEvolBadge();_applyCosmeticsVisually&&_applyCosmeticsVisually();
+    updateEvolBadge&&updateEvolBadge();_applyCosmeticsVisually&&_applyCosmeticsVisually();applyPetSkills&&applyPetSkills();applyPersonalityBonus&&applyPersonalityBonus();setTimeout(()=>{updatePersonalityBadge&&updatePersonalityBadge();openPetSkills&&openPetSkills();_wcUpdateCard&&_wcUpdateCard();_scheduleRandomEvents&&_scheduleRandomEvents();},800);
     save(); // mirror to localStorage cache
     return true;
   }catch(e){console.warn('[SB] loadProfile',e);return false;}
@@ -15291,7 +15509,7 @@ function _loadFromLocalStorage(){
     try{const tdup=localStorage.getItem('kv8_tdup');G.tdUpgrades=tdup?JSON.parse(tdup):{};}catch(e){G.tdUpgrades={};}
     G.tdPoints=parseInt(localStorage.getItem('kv8_tdpts')||'0');
     _applyTDUpgrades&&_applyTDUpgrades();
-    updateEvolBadge&&updateEvolBadge();_applyCosmeticsVisually&&_applyCosmeticsVisually();
+    updateEvolBadge&&updateEvolBadge();_applyCosmeticsVisually&&_applyCosmeticsVisually();applyPetSkills&&applyPetSkills();applyPersonalityBonus&&applyPersonalityBonus();setTimeout(()=>{updatePersonalityBadge&&updatePersonalityBadge();openPetSkills&&openPetSkills();_wcUpdateCard&&_wcUpdateCard();_scheduleRandomEvents&&_scheduleRandomEvents();},800);
     let _dailyShownToday=false;
     const _today=new Date().toDateString();const _last=localStorage.getItem('kv8_lastLogin');
     if(_last!==_today){localStorage.setItem('kv8_lastLogin',_today);if(_last){
@@ -17396,10 +17614,6 @@ const EVENT_MILESTONES=[
   {wp:100000,em:'❄️',nm:'Vinter',reward:'LEGENDARY Item + 500 Coins',done:false},
 ];
 let _eventMyContrib=0;
-function openWeeklyChallenge(){
-  showT('📅 Veckans utmaning: Logga in 5 dagar i rad! Fortsätt din streak!','b');
-}
-
 function openSeasonalEvent(){
   const em=$('eventModal');if(!em)return;
   em.classList.add('open');
@@ -17612,6 +17826,7 @@ initPetRoom=function(){
 // Wire +1 TP on level-up by patching gainXP's internal lvlup trigger
 const _baseTriggerLvlUp=triggerLvlUp;
 triggerLvlUp=function(){
+  const prevLv=G.level-1;
   _baseTriggerLvlUp();
   // Scaling TP: +1 at lv1-5, +2 at lv6-15, +3 at lv16-30, +4 at lv31-50, +5 at lv51+
   const lv=G.level;
@@ -17621,6 +17836,7 @@ triggerLvlUp=function(){
   const tp=$('talentPts');if(tp)tp.textContent=G.talentPoints+' TP';
   const teaserPts=$('talentTeaserPts');if(teaserPts)teaserPts.textContent=G.talentPoints+' TP';
   addDiaryEntry('Nådde Level '+G.level+'! '+G.petName+' är starkare än någonsin! 🎉');
+  checkSkillUnlocks&&checkSkillUnlocks(prevLv,G.level);
   save();
 };
 
