@@ -3788,14 +3788,17 @@ div[style*="LIVE"]{border-radius:16px!important;background:rgba(57,255,20,.03)!i
             <!-- DAILY REWARD BUTTON -->
       <div style="margin:4px 14px 8px;display:flex;gap:8px">
         <button onclick="showDailyRewardModal(parseInt(localStorage.getItem('kv8_rewardDay')||'1'))" style="flex:1;background:linear-gradient(135deg,rgba(255,215,0,.15),rgba(255,159,10,.1));border:1px solid rgba(255,215,0,.4);border-radius:14px;padding:12px;cursor:pointer;color:#FFD700;font-size:13px;font-weight:900;font-family:var(--mono)">🎁 DAGLIG BELÖNING</button>
+        <button onclick="openHallOfFame()" style="background:linear-gradient(135deg,rgba(255,215,0,.12),rgba(255,45,85,.08));border:1.5px solid rgba(255,215,0,.35);border-radius:14px;padding:12px 14px;cursor:pointer;color:#FFD700;font-size:13px;font-weight:900;font-family:var(--mono)">🏆</button>
       </div>
       <!-- PET PROFILE CARD + SHARE -->
       <div style="margin:0 14px 10px;display:flex;gap:8px">
         <button onclick="openPetProfileCard()" style="flex:1;background:linear-gradient(135deg,rgba(191,95,255,.15),rgba(0,217,255,.1));border:1.5px solid rgba(191,95,255,.4);border-radius:14px;padding:11px;cursor:pointer;color:var(--p);font-size:12px;font-weight:900;font-family:var(--mono);display:flex;align-items:center;justify-content:center;gap:7px">✨ MITT PET-KORT</button>
+        <button onclick="openCosmeticsShop()" style="background:linear-gradient(135deg,rgba(255,215,0,.12),rgba(255,159,10,.08));border:1.5px solid rgba(255,215,0,.4);border-radius:14px;padding:11px 13px;cursor:pointer;color:#FFD700;font-size:12px;font-weight:900;font-family:var(--mono)">🎨 GARDEROB</button>
         <button onclick="sharePet()" style="background:rgba(57,255,20,.1);border:1.5px solid rgba(57,255,20,.35);border-radius:14px;padding:11px 14px;cursor:pointer;color:var(--g);font-size:12px;font-weight:900;font-family:var(--mono)">📤 DELA</button>
       </div>
       <!-- ACHIEVEMENTS -->
-      <div class="sh" style="margin-top:8px"><div class="sh-t">🏆 ACHIEVEMENTS</div><div class="sh-a" id="playAchCount" style="color:var(--y)">0 / 17</div></div>
+      <div id="cosmeticsAccessOverlay" style="display:none;position:fixed;top:180px;right:20px;z-index:50;font-size:22px;line-height:1;pointer-events:none;filter:drop-shadow(0 0 6px rgba(255,215,0,.6))"></div>
+      <div class="sh" style="margin-top:8px"><div class="sh-t">🏆 ACHIEVEMENTS</div><div class="sh-a" id="playAchCount" style="color:var(--y)">0 / 40</div></div>
       <div id="playAchGrid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;padding:0 14px 4px"></div>
       <div id="playUppdragList" style="display:none"></div>
       <div class="vend"></div>
@@ -4052,6 +4055,18 @@ div[style*="LIVE"]{border-radius:16px!important;background:rgba(57,255,20,.03)!i
   </div>
   <div class="cw-msgs" id="aiMsgs"><div class="msg them">Hej! 👋 Fråga om Flash, Circles, uppdrag, pet eller strategi!</div></div>
   <div class="cw-inp-row"><input class="cw-inp" id="aiInp" placeholder="Fråga AI..." onkeydown="if(event.key==='Enter')sendAI()"><button class="cw-snd" onclick="sendAI()" style="background:var(--p)">→</button></div>
+</div>
+
+<!-- HALL OF FAME -->
+<div class="fsw" id="hallWin">
+  <div class="fsh"><button class="fbk" onclick="cWin('hallWin')">←</button><div class="ftl">🏆 Hall of Fame</div></div>
+  <div class="fbd" style="padding:12px" id="hallBody"></div>
+</div>
+
+<!-- COSMETICS SHOP -->
+<div class="fsw" id="cosmeticsWin">
+  <div class="fsh"><button class="fbk" onclick="cWin('cosmeticsWin')">←</button><div class="ftl">🎨 Garderob</div><div class="pill pill-y">⚡<b id="cosCoinsLbl">0</b></div></div>
+  <div class="fbd" style="padding:12px" id="cosmeticsBody"></div>
 </div>
 
 <!-- GEAR WINDOW -->
@@ -4882,6 +4897,7 @@ const G={
   dnaInventory:[],
   petMemory:{lastFed:0,lastTrained:0,lastBattle:0,lastFish:0,totalFeeds:0,favouriteAct:'none'},
   expedition:{active:false,id:null,startTime:0,endTime:0},
+  cosmetics:{skin:null,bg:'default',accessories:[]},
 };
 
 const EVOL={
@@ -5075,32 +5091,67 @@ function floatNum(txt,x,y,color='var(--g)',size=16){
 
 // ── ACHIEVEMENT SYSTEM ──
 const ACHIEVEMENTS=[
-  {id:'first_post',ico:'⚡',nm:'First Flash!',check:()=>G.postCount>=1},
-  {id:'streak3',ico:'🔥',nm:'3 Dagars Streak!',check:()=>G.streak>=3},
-  {id:'streak7',ico:'💀',nm:'7 Dagar Straight!',check:()=>G.streak>=7},
-  {id:'streak30',ico:'🌟',nm:'30 Dagars LEGEND!',check:()=>G.streak>=30},
-  {id:'lv5',ico:'⬆️',nm:'Level 5 Reached!',check:()=>G.level>=5},
-  {id:'lv10',ico:'👑',nm:'Level 10! Legend!',check:()=>G.level>=10},
-  {id:'lv20',ico:'🌟',nm:'Level 20! GOD!',check:()=>G.level>=20},
-  {id:'lv50',ico:'💫',nm:'Level 50! IMMORTAL!',check:()=>G.level>=50},
-  {id:'coins1k',ico:'💰',nm:'1000 Coins!',check:()=>G.coins>=1000},
-  {id:'coins10k',ico:'💎',nm:'10 000 Coins! RICH!',check:()=>G.coins>=10000},
-  {id:'bounty1',ico:'🎯',nm:'First Bounty Done!',check:()=>G.bountiesDone>=1},
-  {id:'bounty10',ico:'🏆',nm:'10 Bounties!',check:()=>G.bountiesDone>=10},
-  {id:'premium',ico:'👑',nm:'KARMA PRO Member!',check:()=>G.premium},
-  {id:'trust70',ico:'✅',nm:'Silver Trust Badge!',check:()=>G.trustScore>=70},
-  {id:'trust90',ico:'🥇',nm:'GOLD TRUST!',check:()=>G.trustScore>=90},
-  {id:'battle1',ico:'⚔️',nm:'First Battle Won!',check:()=>(G.battlesWon||0)>=1},
-  {id:'battle5',ico:'💀',nm:'5 Battles Won!',check:()=>(G.battlesWon||0)>=5},
+  // Social
+  {id:'first_post',ico:'⚡',nm:'First Flash!',coins:20,check:()=>G.postCount>=1},
+  {id:'flash10',ico:'📸',nm:'10 Flashar Postade!',coins:50,check:()=>G.postCount>=10},
+  {id:'flash50',ico:'🎬',nm:'50 Flash Veteran!',coins:150,check:()=>G.postCount>=50},
+  {id:'streak3',ico:'🔥',nm:'3 Dagars Streak!',coins:30,check:()=>G.streak>=3},
+  {id:'streak7',ico:'💀',nm:'7 Dagar Straight!',coins:80,check:()=>G.streak>=7},
+  {id:'streak30',ico:'🌟',nm:'30 Dagars LEGEND!',coins:300,check:()=>G.streak>=30},
+  // Levels
+  {id:'lv5',ico:'⬆️',nm:'Level 5 Reached!',coins:50,check:()=>G.level>=5},
+  {id:'lv10',ico:'👑',nm:'Level 10! Legend!',coins:150,check:()=>G.level>=10},
+  {id:'lv20',ico:'🌟',nm:'Level 20! GOD!',coins:400,check:()=>G.level>=20},
+  {id:'lv50',ico:'💫',nm:'Level 50! IMMORTAL!',coins:1000,check:()=>G.level>=50},
+  // Economy
+  {id:'coins1k',ico:'💰',nm:'1000 Coins!',coins:0,check:()=>G.coins>=1000},
+  {id:'coins10k',ico:'💎',nm:'10 000 Coins! RICH!',coins:0,check:()=>G.coins>=10000},
+  {id:'coins50k',ico:'🤑',nm:'50 000 COINS! MOGUL!',coins:500,check:()=>G.coins>=50000},
+  // Bounties
+  {id:'bounty1',ico:'🎯',nm:'First Bounty Done!',coins:30,check:()=>G.bountiesDone>=1},
+  {id:'bounty10',ico:'🏆',nm:'10 Bounties!',coins:100,check:()=>G.bountiesDone>=10},
+  {id:'bounty25',ico:'🏅',nm:'25 Bounties! HUNTER!',coins:250,check:()=>G.bountiesDone>=25},
+  // Trust
+  {id:'premium',ico:'👑',nm:'KARMA PRO Member!',coins:0,check:()=>G.premium},
+  {id:'trust70',ico:'✅',nm:'Silver Trust Badge!',coins:60,check:()=>G.trustScore>=70},
+  {id:'trust90',ico:'🥇',nm:'GOLD TRUST!',coins:150,check:()=>G.trustScore>=90},
+  // Battle/TD
+  {id:'battle1',ico:'⚔️',nm:'First Battle Won!',coins:40,check:()=>(G.battlesWon||0)>=1},
+  {id:'battle5',ico:'💀',nm:'5 Battles Won!',coins:100,check:()=>(G.battlesWon||0)>=5},
+  {id:'td_wave10',ico:'🏰',nm:'TD Wave 10 Survivor!',coins:100,check:()=>parseInt(localStorage.getItem('kv8_tdBestWave')||'0')>=10},
+  {id:'td_wave25',ico:'⚔️',nm:'TD Wave 25 WARRIOR!',coins:250,check:()=>parseInt(localStorage.getItem('kv8_tdBestWave')||'0')>=25},
+  {id:'td_wave50',ico:'🌋',nm:'TD Wave 50 DESTROYER!',coins:600,check:()=>parseInt(localStorage.getItem('kv8_tdBestWave')||'0')>=50},
+  {id:'td_boss1',ico:'💀',nm:'First TD Boss Slain!',coins:80,check:()=>parseInt(localStorage.getItem('kv8_tdBossKills')||'0')>=1},
+  {id:'td_boss5',ico:'👹',nm:'5 TD Bosses Slain!',coins:200,check:()=>parseInt(localStorage.getItem('kv8_tdBossKills')||'0')>=5},
+  // DNA Breaker
+  {id:'dna_wave3',ico:'🧬',nm:'DNA Wave 3 Reached!',coins:60,check:()=>parseInt(localStorage.getItem('kv8_dnaBestWave')||'0')>=3},
+  {id:'dna_wave5',ico:'🎱',nm:'DNA Wave 5 MASTER!',coins:150,check:()=>parseInt(localStorage.getItem('kv8_dnaBestWave')||'0')>=5},
+  {id:'dna_wave10',ico:'💥',nm:'DNA Wave 10 LEGEND!',coins:400,check:()=>parseInt(localStorage.getItem('kv8_dnaBestWave')||'0')>=10},
+  {id:'dna_score1k',ico:'🔥',nm:'DNA 1000 Score!',coins:80,check:()=>parseInt(localStorage.getItem('kv8_dnaBest')||'0')>=1000},
+  {id:'dna_score5k',ico:'⚡',nm:'DNA 5000 Score! ELITE!',coins:300,check:()=>parseInt(localStorage.getItem('kv8_dnaBest')||'0')>=5000},
+  // Fishing
+  {id:'fish5',ico:'🎣',nm:'5 Fiskar Fångade!',coins:40,check:()=>(G.fishJournal?Object.values(G.fishJournal).reduce((a,b)=>a+(b||0),0):0)>=5},
+  {id:'fish25',ico:'🐟',nm:'25 Fiskar! Proffisfiskare!',coins:120,check:()=>(G.fishJournal?Object.values(G.fishJournal).reduce((a,b)=>a+(b||0),0):0)>=25},
+  {id:'fish50',ico:'🦈',nm:'50 Fiskar! HAVETS KUNG!',coins:300,check:()=>(G.fishJournal?Object.values(G.fishJournal).reduce((a,b)=>a+(b||0),0):0)>=50},
+  {id:'fish_tourn',ico:'🏆',nm:'Fisketurnering Spelad!',coins:80,check:()=>(JSON.parse(localStorage.getItem('kv8_ftLB')||'[]')).length>=1},
+  // Evolution
+  {id:'evo_challenger',ico:'💫',nm:'CHALLENGER Evolution!',coins:100,check:()=>(G._evolStage||0)>=2},
+  {id:'evo_elite',ico:'⚡',nm:'ELITE Evolution!',coins:250,check:()=>(G._evolStage||0)>=3},
+  {id:'evo_legendary',ico:'👑',nm:'LEGENDARY Evolution!',coins:600,check:()=>(G._evolStage||0)>=4},
+  {id:'evo_godlike',ico:'🌌',nm:'GODLIKE! Du är ett fenomen!',coins:1500,check:()=>(G._evolStage||0)>=5},
+  // Cosmetics
+  {id:'cosm_first',ico:'🎨',nm:'Första Kosmetikan Köpt!',coins:30,check:()=>G.cosmetics&&(G.cosmetics.bg!=='default'||G.cosmetics.skin||((G.cosmetics.accessories||[]).length>0))},
+  {id:'cosm_collector',ico:'🌈',nm:'5 Kosmetikor Samlade!',coins:100,check:()=>{const c=G.cosmetics||{};const n=(c.bg&&c.bg!=='default'?1:0)+(c.skin?1:0)+((c.accessories||[]).length);return n>=5;}},
 ];
 let _earnedAchs=new Set(JSON.parse(localStorage.getItem('kv8_achs')||'[]'));
 let _achTimer=null;
 function checkAchievements(){
-  ACHIEVEMENTS.forEach(a=>{if(!_earnedAchs.has(a.id)&&a.check()){_earnedAchs.add(a.id);localStorage.setItem('kv8_achs',JSON.stringify([..._earnedAchs]));showAchievement(a.ico,a.nm);}});
+  ACHIEVEMENTS.forEach(a=>{if(!_earnedAchs.has(a.id)&&a.check()){_earnedAchs.add(a.id);localStorage.setItem('kv8_achs',JSON.stringify([..._earnedAchs]));if(a.coins&&a.coins>0){gainCoins(a.coins);}showAchievement(a.ico,a.nm,a.coins);}});
+  const ac=$('playAchCount');if(ac)ac.textContent=_earnedAchs.size+' / '+ACHIEVEMENTS.length;
 }
-function showAchievement(ico,nm){
+function showAchievement(ico,nm,coinReward){
   const b=$('achBanner');if(!b)return;
-  $('achIco').textContent=ico;$('achNm').textContent=nm;
+  $('achIco').textContent=ico;$('achNm').textContent=nm+(coinReward&&coinReward>0?' +'+coinReward+'⚡':'');
   clearTimeout(_achTimer);
   b.classList.remove('hide');void b.offsetWidth;b.classList.add('show');
   SFX.win();vibe([20,10,50]);
@@ -5119,6 +5170,12 @@ const QUEST_DEFS=[
   {id:'shout',ico:'📣',txt:'Skicka ett shoutout',goal:1,reward:{xp:30,coins:20}},
   {id:'battle',ico:'⚔️',txt:'Vinn en battle',goal:1,reward:{xp:90,coins:60}},
   {id:'coins',ico:'💰',txt:'Tjäna 200 coins',goal:200,reward:{xp:70,coins:0}},
+  {id:'fish',ico:'🎣',txt:'Fånga 3 fiskar',goal:3,reward:{xp:55,coins:35}},
+  {id:'tdwave',ico:'🏰',txt:'Klara 1 TD-wave',goal:1,reward:{xp:100,coins:60}},
+  {id:'tdkill',ico:'💀',txt:'Döda 20 fiender i TD',goal:20,reward:{xp:80,coins:50}},
+  {id:'dnawave',ico:'🧬',txt:'Nå Wave 3 i DNA Breaker',goal:3,reward:{xp:90,coins:55}},
+  {id:'dna_blocks',ico:'🎱',txt:'Krossa 30 block i DNA Breaker',goal:30,reward:{xp:70,coins:45}},
+  {id:'fishtourn',ico:'🏆',txt:'Spela Fisketurnering',goal:1,reward:{xp:150,coins:100}},
 ];
 let _quests=[];
 function initQuests(){
@@ -6002,7 +6059,8 @@ function _tdUpdateBossBar(e){
 
 function tdKillEnemy(e){
   _td.killsThisWave++;_td.totalKills=(_td.totalKills||0)+1;
-  advanceDailyMission&&advanceDailyMission('tdkill',1);
+  advanceDailyMission&&advanceDailyMission('tdkill',1);advanceQuest&&advanceQuest('tdkill',1);
+  if(e.isBoss){const bk=parseInt(localStorage.getItem('kv8_tdBossKills')||'0');localStorage.setItem('kv8_tdBossKills',bk+1);checkAchievements&&checkAchievements();}
   const gold=Math.round((e.gold||8)*(G._tdGoldMult||1));_td.gold+=gold;
   const xp=e.reward?.xp||3,coins=e.reward?.coins||2;
   _td.earnedXp+=xp;_td.earnedCoins+=coins;
@@ -6521,7 +6579,7 @@ function tdWaveClear(){
     (tdPts>0?'<div class="ba-reward-chip" style="animation-delay:.3s;color:#BF5FFF">+'+tdPts+' TD PTS</div>':'');
   const btn=$('baContBtn');if(btn){btn.textContent='WAVE '+(w+1)+' →';btn.onclick=battleContinue;}
   // Daily mission: wave cleared
-  advanceDailyMission&&advanceDailyMission('wave',1);
+  advanceDailyMission&&advanceDailyMission('wave',1);advanceQuest('tdwave',1);
   SFX.win&&SFX.win();vibe([30,20,100,20,80]);
 }
 
@@ -6544,6 +6602,7 @@ function tdFinalRewards(){
   checkAchievements&&checkAchievements();
   updateHUD&&updateHUD();
   addDiaryEntry&&addDiaryEntry('Klarade '+_td.wave+' waves i Pet Tower Defense! ⚔️');
+  const _bw=parseInt(localStorage.getItem('kv8_tdBestWave')||'0');if(_td.wave>_bw)localStorage.setItem('kv8_tdBestWave',_td.wave);checkAchievements&&checkAchievements();
   showT('⚔️ TOWER DEFENSE! +'+xp+' XP · +'+coins+' coins'+(G._talentK7a?' (WARLORD ×3!)':'')+'','y');
 }
 
@@ -6602,7 +6661,7 @@ function _offsetLatLon(lat,lon,distM,bearingDeg){
   }catch(e){return{lat:lat,lon:lon};}
 }
 function fmtD(m){return m<1000?Math.round(m)+'m':+(m/1000).toFixed(1)+'km';}
-function save(){try{const d={n:G.name,p:G.petEmoji,pn:G.petName,l:G.level,c:G.coins,kc:G.kc||0,st:G.streak,x:G.exp,as:G.actionStat,cs:G.commerceStat,ss:G.socialStat,g:JSON.stringify(G.gear),eg:G.equippedGear||'',sek:G.totalSEK,ts:G.trustScore,posts:G.postCount,b:G.bountiesDone,hu:G.hunger,en:G.energy,mo:G.mood,brands:JSON.stringify(G.brands),circles:JSON.stringify(G.circles),sw:JSON.stringify(G.streakWeek),petCfg:JSON.stringify(G.petConfig),pm:G.premium?1:0,pt:G.premiumTier,wld:G.world,bond:JSON.stringify(G.todayBond),bdate:G.bondDate,wp:G.worldPoints,bz:JSON.stringify(G.builtZones),wpc:G.wildPetsCaught,wflash:G.wldFlash,wbattle:G.wldBattle,wmarket:G.wldMarket,wstreak:G.wldStreak,wsocial:G.wldSocial,po:G.packsOpened,col:JSON.stringify(G.collectibles),tp:G.talentPoints,tl:JSON.stringify(G.talents),tlvl:JSON.stringify(G.talentLvls||{}),diary:JSON.stringify(G.diaryEntries.slice(-20)),ls:G.lastSpin,ltt:G.lastTalkTime||0,lwb:G.lastWpBoost||0,castle:JSON.stringify(G.castle||{}),ownedZones:JSON.stringify(G.ownedZones||[]),expeditionVisits:JSON.stringify(G.expeditionVisits||[]),terrLastIncome:JSON.stringify(G.terrLastIncome||{}),dnaMixes:JSON.stringify(G.dnaMixes||[]),lastFortune:G.lastFortune||'',lft:G.lastFlashTime||0,lfd:G.lastFlashDate||'',pdna:JSON.stringify(G.petDNA||{body:'base',element:'none',perk:'none'}),dinv:JSON.stringify(G.dnaInventory||[]),pmem:JSON.stringify(G.petMemory||{}),expd:JSON.stringify(G.expedition||{}),pbd:G.birthDate||0,psk:G.petSick?1:0,pmems:JSON.stringify(G.petMemories||[]),lpc:G.lastPassiveCheck||0,dmp:JSON.stringify(G.dmProgress||{}),dmc:JSON.stringify(G.dmCompleted||{}),dmd:G.dmDate||0,tdup:JSON.stringify(G.tdUpgrades||{}),tdpts:G.tdPoints||0};for(const k in d)localStorage.setItem('kv8_'+k,d[k]);localStorage.setItem('kv8_lastFortune',G.lastFortune||'');}catch(e){}sbQueueSync();}
+function save(){try{const d={n:G.name,p:G.petEmoji,pn:G.petName,l:G.level,c:G.coins,kc:G.kc||0,st:G.streak,x:G.exp,as:G.actionStat,cs:G.commerceStat,ss:G.socialStat,g:JSON.stringify(G.gear),eg:G.equippedGear||'',sek:G.totalSEK,ts:G.trustScore,posts:G.postCount,b:G.bountiesDone,hu:G.hunger,en:G.energy,mo:G.mood,brands:JSON.stringify(G.brands),circles:JSON.stringify(G.circles),sw:JSON.stringify(G.streakWeek),petCfg:JSON.stringify(G.petConfig),pm:G.premium?1:0,pt:G.premiumTier,wld:G.world,bond:JSON.stringify(G.todayBond),bdate:G.bondDate,wp:G.worldPoints,bz:JSON.stringify(G.builtZones),wpc:G.wildPetsCaught,wflash:G.wldFlash,wbattle:G.wldBattle,wmarket:G.wldMarket,wstreak:G.wldStreak,wsocial:G.wldSocial,po:G.packsOpened,col:JSON.stringify(G.collectibles),tp:G.talentPoints,tl:JSON.stringify(G.talents),tlvl:JSON.stringify(G.talentLvls||{}),diary:JSON.stringify(G.diaryEntries.slice(-20)),ls:G.lastSpin,ltt:G.lastTalkTime||0,lwb:G.lastWpBoost||0,castle:JSON.stringify(G.castle||{}),ownedZones:JSON.stringify(G.ownedZones||[]),expeditionVisits:JSON.stringify(G.expeditionVisits||[]),terrLastIncome:JSON.stringify(G.terrLastIncome||{}),dnaMixes:JSON.stringify(G.dnaMixes||[]),lastFortune:G.lastFortune||'',lft:G.lastFlashTime||0,lfd:G.lastFlashDate||'',pdna:JSON.stringify(G.petDNA||{body:'base',element:'none',perk:'none'}),dinv:JSON.stringify(G.dnaInventory||[]),pmem:JSON.stringify(G.petMemory||{}),expd:JSON.stringify(G.expedition||{}),pbd:G.birthDate||0,psk:G.petSick?1:0,pmems:JSON.stringify(G.petMemories||[]),lpc:G.lastPassiveCheck||0,dmp:JSON.stringify(G.dmProgress||{}),dmc:JSON.stringify(G.dmCompleted||{}),dmd:G.dmDate||0,tdup:JSON.stringify(G.tdUpgrades||{}),tdpts:G.tdPoints||0,cos:JSON.stringify(G.cosmetics||{skin:null,bg:'default',accessories:[]})};for(const k in d)localStorage.setItem('kv8_'+k,d[k]);localStorage.setItem('kv8_lastFortune',G.lastFortune||'');}catch(e){}sbQueueSync();}
 
 // ── DNA + MOOD SYSTEM ──
 function getPetDNA(){
@@ -7380,6 +7439,174 @@ function renderGearHome(){
   }else{el.innerHTML=`<div style="width:52px;height:52px;border-radius:13px;background:var(--c1);border:2px dashed var(--line);display:flex;align-items:center;justify-content:center;font-size:18px;cursor:pointer;flex-shrink:0;opacity:.3" onclick="nav('shop');switchShop('gear')">+</div><span style="font-size:12px;color:var(--t3);display:flex;align-items:center;padding-left:10px">Inget gear ännu</span>`;}
 }
 function equipGear(em,id){G.equippedGear=G.equippedGear===em?null:em;updateHUD();updatePetView();showT(G.equippedGear?`⚡ ${em} EQUIPPED!`:'GEAR REMOVED','g');vibe(30);}
+// ── HALL OF FAME ──
+const HOF_RIVALS=[
+  {nm:'ella_sthlm',em:'🐉',dna:4820,td:28,fish:3200,lvl:18},
+  {nm:'maxruns',em:'🐺',dna:7340,td:52,fish:5800,lvl:31},
+  {nm:'sagas_world',em:'🦋',dna:2100,td:12,fish:9400,lvl:14},
+  {nm:'carlos_leo',em:'🦊',dna:9650,td:76,fish:2800,lvl:42},
+  {nm:'linnea_k',em:'🐱',dna:1880,td:8,fish:6300,lvl:9},
+  {nm:'viktor_v',em:'🦁',dna:12500,td:95,fish:4100,lvl:55},
+  {nm:'amira_s',em:'🌙',dna:3300,td:19,fish:7700,lvl:22},
+  {nm:'cyber_maya',em:'🐻',dna:6600,td:41,fish:1200,lvl:28},
+];
+function openHallOfFame(){
+  const body=$('hallBody');if(!body)return;
+  const myDNA=parseInt(localStorage.getItem('kv8_dnaBest')||'0');
+  const myTD=parseInt(localStorage.getItem('kv8_tdBestWave')||'0');
+  const myFish=(()=>{const lb=JSON.parse(localStorage.getItem('kv8_ftLB')||'[]');return lb.length?Math.max(...lb.map(x=>x.score||0)):0;})();
+  const myLvl=G.level||1;
+  const myNm=G.name||(G.petName||'Du');
+  const myEm=G.petEmoji||'🐾';
+  function buildBoard(title,accent,icon,statFn,unit){
+    const all=[...HOF_RIVALS.map(r=>({nm:r.nm,em:r.em,val:statFn(r)})),{nm:myNm,em:myEm,val:statFn({dna:myDNA,td:myTD,fish:myFish,lvl:myLvl}),isMe:true}];
+    all.sort((a,b)=>b.val-a.val);
+    const rows=all.map((p,i)=>{
+      const medal=i===0?'🥇':i===1?'🥈':i===2?'🥉':'';
+      return`<div style="display:flex;align-items:center;gap:10px;padding:8px 10px;background:${p.isMe?'rgba(57,255,20,.08)':'rgba(255,255,255,.02)'};border:1px solid ${p.isMe?'rgba(57,255,20,.3)':'rgba(255,255,255,.05)'};border-radius:12px;margin-bottom:4px">
+        <div style="font-size:11px;font-weight:900;color:var(--t3);font-family:var(--mono);width:18px">${medal||'#'+(i+1)}</div>
+        <div style="font-size:20px">${p.em}</div>
+        <div style="flex:1;min-width:0">
+          <div style="font-size:12px;font-weight:700;color:${p.isMe?'var(--g)':'var(--t1)'}">${p.nm}${p.isMe?' (DU)':''}</div>
+        </div>
+        <div style="font-size:13px;font-weight:900;font-family:var(--mono);color:${accent}">${p.val.toLocaleString('sv')}${unit}</div>
+      </div>`;
+    }).join('');
+    return`<div style="margin-bottom:16px">
+      <div style="font-size:10px;font-weight:900;color:${accent};letter-spacing:1px;margin-bottom:8px;font-family:var(--mono)">${icon} ${title}</div>
+      ${rows}
+    </div>`;
+  }
+  body.innerHTML=
+    `<div style="text-align:center;padding:8px 0 16px">
+      <div style="font-size:28px">🏆</div>
+      <div style="font-size:15px;font-weight:900;color:var(--y);letter-spacing:1px">HALL OF FAME</div>
+      <div style="font-size:10px;color:var(--t3);margin-top:2px">Topplistan för alla spel</div>
+    </div>`+
+    buildBoard('DNA BREAKER — Bästa Poäng','#39FF14','🧬',r=>r.dna,'p')+
+    buildBoard('TOWER DEFENSE — Bästa Wave','#FF2D55','🏰',r=>r.td,' W')+
+    buildBoard('FISKETURNERING — Bästa Score','#00D9FF','🎣',r=>r.fish,'p')+
+    buildBoard('PET LEVEL — Världsrankning','#FFD700','⭐',r=>r.lvl,' LV');
+  oWin('hallWin');
+}
+// ── PET COSMETICS SHOP ──
+const PET_COSMETICS={
+  backgrounds:[
+    {id:'default',nm:'Standard',em:'🌌',cost:0,bg:'linear-gradient(135deg,#0a0010 0%,#050008 100%)',desc:'Standard bakgrund'},
+    {id:'sunset',nm:'Sunset Vibe',em:'🌅',cost:200,bg:'linear-gradient(135deg,#1a0505 0%,#2d0a0a 40%,#1a0a00 100%)',desc:'Varm solnedgång'},
+    {id:'ocean',nm:'Deep Ocean',em:'🌊',cost:300,bg:'linear-gradient(135deg,#00061a 0%,#000f2d 50%,#001a0f 100%)',desc:'Djuphavsvibe'},
+    {id:'forest',nm:'Enchanted Forest',em:'🌲',cost:350,bg:'linear-gradient(135deg,#000d02 0%,#001204 50%,#000d08 100%)',desc:'Magisk skog'},
+    {id:'neon',nm:'Neon City',em:'🏙️',cost:500,bg:'linear-gradient(135deg,#0d0020 0%,#00001a 50%,#001a1a 100%)',desc:'Cyberpunk neon'},
+    {id:'galaxy',nm:'GALAXY',em:'🪐',cost:800,bg:'linear-gradient(135deg,#010010 0%,#0a0028 30%,#000018 70%,#100020 100%)',desc:'Kosmisk galax'},
+    {id:'lava',nm:'Lava Core',em:'🌋',cost:600,bg:'linear-gradient(135deg,#1a0000 0%,#200500 50%,#180200 100%)',desc:'Glödande lava'},
+    {id:'aurora',nm:'Aurora Borealis',em:'✨',cost:1000,bg:'linear-gradient(135deg,#001210 0%,#001a10 30%,#0a0020 70%,#000a18 100%)',desc:'Norrskenet'},
+  ],
+  accessories:[
+    {id:'crown',nm:'Guld Krona',em:'👑',cost:400,desc:'För de sanna kungarna'},
+    {id:'sunglasses',nm:'Solglasögon',em:'🕶️',cost:150,desc:'Coola vibes'},
+    {id:'sparkles',nm:'Glittrande Aura',em:'✨',cost:250,desc:'Lyser upp rummet'},
+    {id:'fire',nm:'Eldaura',em:'🔥',cost:300,desc:'Brinner av passion'},
+    {id:'lightning',nm:'Blixthalo',em:'⚡',cost:350,desc:'Elektrisk energi'},
+    {id:'star',nm:'Stjärnmantel',em:'🌟',cost:500,desc:'Stjärnans val'},
+    {id:'ice',nm:'Isfrost',em:'❄️',cost:300,desc:'Kylan är din vän'},
+    {id:'rainbow',nm:'Regnbåge',em:'🌈',cost:700,desc:'Spektralt skimmer'},
+  ],
+  skins:[
+    {id:'normal',nm:'Standard',em:'🐾',cost:0,filter:'none',desc:'Klassisk look'},
+    {id:'golden',nm:'Guld-skin',em:'✨',cost:600,filter:'sepia(1) saturate(4) hue-rotate(10deg) brightness(1.1)',desc:'Allt som glimmar är guld'},
+    {id:'neon_green',nm:'Neon Grön',em:'💚',cost:400,filter:'hue-rotate(80deg) saturate(3) brightness(1.2)',desc:'Grön neon-aura'},
+    {id:'purple',nm:'Purple Reign',em:'💜',cost:400,filter:'hue-rotate(260deg) saturate(3) brightness(1.1)',desc:'Lila majestät'},
+    {id:'cyber',nm:'Cyber Blue',em:'💙',cost:500,filter:'hue-rotate(190deg) saturate(4) brightness(1.15)',desc:'Digitalt blå'},
+    {id:'fire_skin',nm:'Fire Mode',em:'🔥',cost:700,filter:'hue-rotate(350deg) saturate(4) brightness(1.2) contrast(1.1)',desc:'Ren eld'},
+    {id:'ghost',nm:'Ghost',em:'👻',cost:800,filter:'grayscale(1) brightness(1.4) contrast(.8)',desc:'Spöklikt vit'},
+    {id:'rainbow_skin',nm:'Regnbåge',em:'🌈',cost:1200,filter:'saturate(5) brightness(1.1)',desc:'Alla färger på en gång'},
+  ],
+};
+function openCosmeticsShop(){
+  if(!G.cosmetics)G.cosmetics={skin:null,bg:'default',accessories:[]};
+  const w=$('cosmeticsWin');if(!w)return;
+  const body=$('cosmeticsBody');if(!body)return;
+  const cl=$('cosCoinsLbl');if(cl)cl.textContent=G.coins.toLocaleString('sv');
+  const isOwned=(item,cat)=>{
+    if(item.id==='default'||item.id==='normal')return true;
+    if(item.cost===0)return true;
+    const c=G.cosmetics;
+    if(cat==='backgrounds')return c.bg===item.id;
+    if(cat==='skins')return c.skin===item.id;
+    if(cat==='accessories')return (c.accessories||[]).includes(item.id);
+    return false;
+  };
+  const isActive=(item,cat)=>{
+    if(cat==='backgrounds')return G.cosmetics.bg===item.id;
+    if(cat==='skins')return G.cosmetics.skin===item.id||(item.id==='normal'&&!G.cosmetics.skin);
+    if(cat==='accessories')return (G.cosmetics.accessories||[]).includes(item.id);
+    return false;
+  };
+  const makeGrid=(items,cat,title,accent)=>{
+    const rows=items.map(it=>{
+      const owned=isOwned(it,cat);
+      const active=isActive(it,cat);
+      return`<div onclick="buyCosmeticsItem('${it.id}','${cat}')" style="background:${active?'rgba(57,255,20,.1)':'rgba(255,255,255,.03)'};border:1.5px solid ${active?'rgba(57,255,20,.5)':owned?'rgba(255,255,255,.15)':'rgba(255,255,255,.06)'};border-radius:16px;padding:10px;text-align:center;cursor:pointer;transition:all .15s;position:relative">
+        ${active?'<div style="position:absolute;top:5px;right:6px;font-size:9px;font-weight:900;color:var(--g);font-family:var(--mono)">✓ PÅ</div>':''}
+        <div style="font-size:30px;margin-bottom:4px">${it.em}</div>
+        <div style="font-size:11px;font-weight:700;color:var(--t1);margin-bottom:2px">${it.nm}</div>
+        <div style="font-size:9px;color:var(--t3);margin-bottom:4px">${it.desc}</div>
+        <div style="font-size:12px;font-weight:900;font-family:var(--mono);color:${owned?'var(--g)':'var(--y)'}">${owned?'ÄGER':'⚡'+it.cost}</div>
+      </div>`;
+    }).join('');
+    return`<div style="font-size:10px;font-weight:900;color:${accent};letter-spacing:1px;margin:14px 0 8px;font-family:var(--mono)">${title}</div>
+      <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:8px">${rows}</div>`;
+  };
+  body.innerHTML=makeGrid(PET_COSMETICS.backgrounds,'backgrounds','🌌 BAKGRUNDER','#00D9FF')
+    +makeGrid(PET_COSMETICS.skins,'skins','🎨 SKINS','#BF5FFF')
+    +makeGrid(PET_COSMETICS.accessories,'accessories','✨ TILLBEHÖR','#FFD700');
+  oWin('cosmeticsWin');
+}
+function buyCosmeticsItem(id,cat){
+  if(!G.cosmetics)G.cosmetics={skin:null,bg:'default',accessories:[]};
+  const pool=PET_COSMETICS[cat];if(!pool)return;
+  const item=pool.find(x=>x.id===id);if(!item)return;
+  const owned=()=>{
+    if(item.cost===0||id==='default'||id==='normal')return true;
+    if(cat==='backgrounds')return G.cosmetics.bg===id||id==='default';
+    if(cat==='skins')return G.cosmetics.skin===id||id==='normal';
+    if(cat==='accessories')return (G.cosmetics.accessories||[]).includes(id);
+    return false;
+  };
+  if(!owned()){
+    if(G.coins<item.cost){showT('❌ Behöver '+item.cost+'⚡ (saknar '+(item.cost-G.coins)+')','r');SFX.error();return;}
+    G.coins-=item.cost;gainXP(15,'commerce');vibe([30,20,60]);SFX.win();showT('🎨 '+item.em+' '+item.nm+' köpt!','g');updateHUD();
+  }
+  if(cat==='backgrounds')G.cosmetics.bg=id;
+  else if(cat==='skins'){G.cosmetics.skin=(id==='normal'?null:id);}
+  else if(cat==='accessories'){
+    if(!G.cosmetics.accessories)G.cosmetics.accessories=[];
+    const idx=(G.cosmetics.accessories||[]).indexOf(id);
+    if(idx>=0){G.cosmetics.accessories.splice(idx,1);showT('✓ '+item.em+' avaktiverad','y');}
+    else{G.cosmetics.accessories.push(id);showT('✓ '+item.em+' '+item.nm+' aktiverad!','g');}
+  }
+  save();_applyCosmeticsVisually();openCosmeticsShop();checkAchievements();
+}
+function _applyCosmeticsVisually(){
+  if(!G.cosmetics)return;
+  const cosm=PET_COSMETICS.backgrounds.find(x=>x.id===(G.cosmetics.bg||'default'));
+  const bg=cosm?cosm.bg:'linear-gradient(135deg,#0a0010 0%,#050008 100%)';
+  const sky=$('prlSky');if(sky)sky.style.background=bg;
+  const ph=document.querySelector('.pet-hero');if(ph)ph.style.background=bg;
+  const skinDef=PET_COSMETICS.skins.find(x=>x.id===G.cosmetics.skin);
+  const skinFilter=skinDef?skinDef.filter:'none';
+  document.querySelectorAll('.pc-em, .pet-em-big, #petEmojiMain').forEach(el=>{
+    if(el)el.style.filter=(skinFilter&&skinFilter!=='none')?skinFilter:'';
+  });
+  const ovEl=$('cosmeticsAccessOverlay');
+  if(ovEl){
+    const accs=(G.cosmetics.accessories||[]).slice(0,3).map(id=>{
+      const a=PET_COSMETICS.accessories.find(x=>x.id===id);return a?a.em:'';
+    }).filter(Boolean);
+    ovEl.textContent=accs.join('');
+    ovEl.style.display=accs.length?'block':'none';
+  }
+}
 function openGearShop(){
   $('gearGrid').innerHTML=GEAR.map(g=>`<div style="background:var(--c2);border:2px solid ${G.gear.includes(g.id)?'var(--g)':'var(--line)'};border-radius:14px;padding:13px;text-align:center;cursor:pointer;transition:all .15s" onclick="buyGear('${g.id}')"><div style="font-size:34px;margin-bottom:5px">${g.em}</div><div style="font-size:12px;font-weight:700">${g.nm}</div><div style="font-size:10px;color:var(--t3);margin:2px 0">${g.st}</div><div style="font-size:13px;font-weight:900;font-family:var(--mono);color:${G.gear.includes(g.id)?'var(--g)':'var(--y)'}">${G.gear.includes(g.id)?'✓ ÄGER':g.cost+'⚡'}</div></div>`).join('');
   oWin('gearWin');
@@ -8605,6 +8832,7 @@ const BATTLE_EVOL_STAGES=[
 function getEvolStage(lv=G.level){return BATTLE_EVOL_STAGES.find(s=>lv>=s.min&&lv<=s.max)||BATTLE_EVOL_STAGES[0];}
 function updateEvolBadge(){
   const s=getEvolStage();const el=$('evolStageBadge');
+  G._evolStage=s.stage;
   if(el){el.className='es-badge '+s.badge;el.textContent=s.ico+' '+s.name;}
   // Apply persistent visual glow to pet
   const petAv=$('petAvWrap');if(petAv&&s.glow!=='none')petAv.style.filter=s.glow||'';
@@ -8988,7 +9216,7 @@ function _dnaUpdate(){
       if(bl.hp<=0){
         bl.alive=false;
         const isFire=_dna.activePWs.fireball&&_dna.activePWs.fireball>0;
-        _dna.score+=isFire?bl.pts*2:bl.pts;_dna.combo++;
+        _dna.score+=isFire?bl.pts*2:bl.pts;_dna.combo++;advanceQuest&&advanceQuest('dna_blocks',1);
         const coinGain=bl.type===3?5:bl.type===2?3:1;
         _dna.coins+=coinGain;
         _dna.fusionCharge=Math.min(100,_dna.fusionCharge+(bl.type===3?15:bl.type===2?10:5));
@@ -9168,6 +9396,8 @@ function _dnaUpdate(){
 
   // Check wave clear
   if(_dna.blocks.every(b=>!b.alive)){
+    advanceQuest&&advanceQuest('dnawave',1);
+    const _dbw=parseInt(localStorage.getItem('kv8_dnaBestWave')||'0');if(_dna.wave>=_dbw)localStorage.setItem('kv8_dnaBestWave',_dna.wave+1);
     _dna.wave++;
     showT('🌊 WAVE '+_dna.wave+'! +100','y');
     _dna.score+=100;gainXP(10,'action');
@@ -10691,7 +10921,7 @@ function _ftEnd(saveScore){
   _ft.bestScores=scores;
   // Rewards
   const reward=Math.round(_ft.score*.3);
-  gainCoins(reward);gainXP(Math.round(_ft.score*.1),'action');
+  gainCoins(reward);gainXP(Math.round(_ft.score*.1),'action');advanceQuest&&advanceQuest('fishtourn',1);checkAchievements&&checkAchievements();
   save();
   vibe([50,30,100,30,150]);SFX.win&&SFX.win();
   showT('🏆 TURNERING SLUT! '+_ft.score+' PTS! +'+reward+'⚡','y');
@@ -14731,7 +14961,7 @@ async function sbLoadProfile(){
     try{const tdup=localStorage.getItem('kv8_tdup');G.tdUpgrades=tdup?JSON.parse(tdup):{};}catch(e){G.tdUpgrades={};}
     G.tdPoints=parseInt(localStorage.getItem('kv8_tdpts')||'0');
     _applyTDUpgrades&&_applyTDUpgrades();
-    updateEvolBadge&&updateEvolBadge();
+    updateEvolBadge&&updateEvolBadge();_applyCosmeticsVisually&&_applyCosmeticsVisually();
     save(); // mirror to localStorage cache
     return true;
   }catch(e){console.warn('[SB] loadProfile',e);return false;}
@@ -15061,7 +15291,7 @@ function _loadFromLocalStorage(){
     try{const tdup=localStorage.getItem('kv8_tdup');G.tdUpgrades=tdup?JSON.parse(tdup):{};}catch(e){G.tdUpgrades={};}
     G.tdPoints=parseInt(localStorage.getItem('kv8_tdpts')||'0');
     _applyTDUpgrades&&_applyTDUpgrades();
-    updateEvolBadge&&updateEvolBadge();
+    updateEvolBadge&&updateEvolBadge();_applyCosmeticsVisually&&_applyCosmeticsVisually();
     let _dailyShownToday=false;
     const _today=new Date().toDateString();const _last=localStorage.getItem('kv8_lastLogin');
     if(_last!==_today){localStorage.setItem('kv8_lastLogin',_today);if(_last){
@@ -17309,6 +17539,8 @@ try{const fb=localStorage.getItem('kv8_fishBox');if(fb)G.fishInventoryBox=JSON.p
 if(!G.fishInventoryBox)G.fishInventoryBox=[];
 try{const fbn=localStorage.getItem('kv8_fishBonuses');if(fbn)G.fishBonuses=JSON.parse(fbn);}catch(e){G.fishBonuses={};}
 if(!G.fishBonuses)G.fishBonuses={};
+try{const _cos=localStorage.getItem('kv8_cos');if(_cos)G.cosmetics=JSON.parse(_cos);}catch(e){}
+if(!G.cosmetics)G.cosmetics={skin:null,bg:'default',accessories:[]};
 // Update room deco teaser on load
 setTimeout(()=>{
   const sub=$('roomDecoSub');if(sub&&G.roomDeco.length>0)sub.textContent=G.roomDeco.length+' items i ditt rum';
