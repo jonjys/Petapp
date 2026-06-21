@@ -1256,6 +1256,9 @@ button:active{opacity:.85;}
 .ob-world-ico{font-size:34px;display:block;margin-bottom:6px;animation:petBob 2.5s ease-in-out infinite;}
 @keyframes petBob{0%,100%{transform:translateY(0);}50%{transform:translateY(-6px);}}
 @keyframes feBannerIn{from{transform:translateY(-100%);opacity:0;}to{transform:translateY(0);opacity:1;}}
+@keyframes treasurePulse{0%,100%{transform:scale(1);}50%{transform:scale(1.3);}}
+@keyframes pvpSlide{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);}}
+@keyframes dojoShake{0%,100%{transform:translateX(0);}20%,60%{transform:translateX(-3px);}40%,80%{transform:translateX(3px);}}
 .ob-world-nm{font-size:13px;font-weight:900;color:#fff;display:block;margin-bottom:3px;font-family:var(--mono);letter-spacing:1px;}
 .ob-world-ds{font-size:9px;color:rgba(255,255,255,.5);font-family:var(--mono);}
 /* Pet selection — 5 cols so all 10 fit in 2 rows, button always visible */
@@ -2968,6 +2971,17 @@ div[style*="LIVE"]{border-radius:16px!important;background:rgba(57,255,20,.03)!i
           <span style="font-size:18px;color:var(--y)">→</span>
         </div>
       </div>
+      <!-- TREASURE HUNT -->
+      <div style="margin:0 12px 10px">
+        <div style="background:rgba(255,215,0,.06);border:1.5px solid rgba(255,215,0,.3);border-radius:20px;padding:14px;overflow:hidden">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
+            <div style="font-size:12px;font-weight:900;color:var(--y);font-family:var(--mono)">💎 DAGLIG SKATTJAKT</div>
+            <div id="treasureCounter" style="font-size:10px;color:var(--t3);font-family:var(--mono)">0/8 skatter</div>
+          </div>
+          <div id="treasureHuntGrid" style="position:relative;height:80px;background:rgba(0,0,0,.3);border-radius:12px;overflow:hidden"></div>
+          <div style="font-size:9px;color:var(--t3);margin-top:6px;text-align:center">Tryck på skatter för att samla coins · Resettas varje dag</div>
+        </div>
+      </div>
       <!-- KARMA JACKPOT -->
       <div id="jackpotCard" style="margin:0 12px 10px"></div>
       <!-- STREAK MILESTONES -->
@@ -3786,6 +3800,27 @@ div[style*="LIVE"]{border-radius:16px!important;background:rgba(57,255,20,.03)!i
           <div style="font-size:18px;color:rgba(0,200,255,.6);flex-shrink:0">▶</div>
         </div>
       </div>
+      <!-- PVP ARENA + TRAINING DOJO CARDS -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:0 14px 10px">
+        <div onclick="openPvpArena()" ontouchstart="this.style.transform='scale(.94)'" ontouchend="this.style.transform=''" style="border-radius:16px;cursor:pointer;-webkit-tap-highlight-color:transparent;background:linear-gradient(160deg,#1a0010 0%,#0e0008 100%);border:1.5px solid rgba(255,45,85,.5);overflow:hidden;box-shadow:0 0 16px rgba(255,45,85,.15);transition:transform .08s;position:relative">
+          <div style="height:2px;background:linear-gradient(90deg,transparent,#FF2D55,transparent)"></div>
+          <div style="padding:14px 10px;display:flex;flex-direction:column;align-items:center;gap:6px;text-align:center">
+            <div style="font-size:40px;line-height:1;filter:drop-shadow(0 0 14px rgba(255,45,85,.8))">⚔️</div>
+            <div style="font-size:11px;font-weight:900;color:#FF2D55;font-family:var(--mono);letter-spacing:.5px">PvP ARENA</div>
+            <div style="font-size:7px;background:rgba(255,45,85,.12);border:1px solid rgba(255,45,85,.3);border-radius:20px;padding:2px 8px;color:#FF2D55;font-family:var(--mono)">RANKED 🏆</div>
+            <div style="font-size:8px;color:rgba(255,255,255,.35)" id="pvpRankTag">🥉 BRONZE</div>
+          </div>
+        </div>
+        <div onclick="openDojo()" ontouchstart="this.style.transform='scale(.94)'" ontouchend="this.style.transform=''" style="border-radius:16px;cursor:pointer;-webkit-tap-highlight-color:transparent;background:linear-gradient(160deg,#0a1200 0%,#060900 100%);border:1.5px solid rgba(255,159,10,.5);overflow:hidden;box-shadow:0 0 16px rgba(255,159,10,.1);transition:transform .08s;position:relative">
+          <div style="height:2px;background:linear-gradient(90deg,transparent,#FF9F0A,transparent)"></div>
+          <div style="padding:14px 10px;display:flex;flex-direction:column;align-items:center;gap:6px;text-align:center">
+            <div style="font-size:40px;line-height:1;filter:drop-shadow(0 0 14px rgba(255,159,10,.8))">🥋</div>
+            <div style="font-size:11px;font-weight:900;color:#FF9F0A;font-family:var(--mono);letter-spacing:.5px">TRÄNINGS DOJO</div>
+            <div style="font-size:7px;background:rgba(255,159,10,.12);border:1px solid rgba(255,159,10,.3);border-radius:20px;padding:2px 8px;color:#FF9F0A;font-family:var(--mono)">STATS 💪</div>
+            <div style="font-size:8px;color:rgba(255,255,255,.35)" id="dojoTPTag">0 TP</div>
+          </div>
+        </div>
+      </div>
             <!-- DAILY REWARD BUTTON -->
       <div style="margin:4px 14px 8px;display:flex;gap:8px">
         <button onclick="showDailyRewardModal(parseInt(localStorage.getItem('kv8_rewardDay')||'1'))" style="flex:1;background:linear-gradient(135deg,rgba(255,215,0,.15),rgba(255,159,10,.1));border:1px solid rgba(255,215,0,.4);border-radius:14px;padding:12px;cursor:pointer;color:#FFD700;font-size:13px;font-weight:900;font-family:var(--mono)">🎁 DAGLIG BELÖNING</button>
@@ -4058,6 +4093,16 @@ div[style*="LIVE"]{border-radius:16px!important;background:rgba(57,255,20,.03)!i
   </div>
 </div>
 
+<!-- PVP ARENA WINDOW -->
+<div class="fsw" id="pvpWin">
+  <div class="fsh"><button class="fbk" onclick="cWin('pvpWin')">←</button><div class="ftl">⚔️ PvP Arena</div><div id="pvpRankBadge" style="font-size:10px;font-weight:900;padding:4px 10px;border-radius:8px;background:rgba(255,45,85,.15);border:1px solid rgba(255,45,85,.4);color:#FF2D55;font-family:var(--mono)">🥉 BRONZE</div></div>
+  <div class="fbd" style="padding:0" id="pvpInner"></div>
+</div>
+<!-- TRAINING DOJO WINDOW -->
+<div class="fsw" id="dojoWin">
+  <div class="fsh"><button class="fbk" onclick="cWin('dojoWin')">←</button><div class="ftl">🥋 Tränings Dojo</div><div id="dojoPointsBadge" style="font-size:10px;font-weight:900;padding:4px 10px;border-radius:8px;background:rgba(255,159,10,.15);border:1px solid rgba(255,159,10,.4);color:var(--o);font-family:var(--mono)">0 TP</div></div>
+  <div class="fbd" style="padding:0" id="dojoInner"></div>
+</div>
 <!-- AI WINDOW -->
 <div class="fsw" id="aiWin">
   <div class="fsh">
@@ -7105,6 +7150,7 @@ function gainCoins(n,stat){
   if(G._personalityCoinBonus)n=Math.round(n*(1+G._personalityCoinBonus)); // Foodie personality
   if(G._eventCoinMult&&G._eventCoinMult>1)n=Math.round(n*G._eventCoinMult); // Live event
   if(G._godModeBonus)n=Math.round(n*1.2); // God Mode skill
+  if(G._dojoCoinBoost&&G._dojoCoinBoost>Date.now())n=Math.round(n*1.25); // Dojo boost
   if(G._talentK9)n=Math.round(n*2);                    // GOD OF WAR: coins ×2
   if(G._talentS5a&&stat==='social')n=Math.round(n*2);  // Viral Legend: social coins ×2
   if(G._talentH5a)n=Math.round(n*2);                   // Tycoon: all coins ×2
@@ -7140,6 +7186,7 @@ function gainXP(n,stat){
   n = Math.round(n * _nightMult * _talentXPMult(stat||'') * (G._evoXPMult||1));
   if(G._eventXPMult&&G._eventXPMult>1)n=Math.round(n*G._eventXPMult); // Live event
   if(G._godModeBonus)n=Math.round(n*1.2); // God Mode skill
+  if(G._dojoXPBoost&&G._dojoXPBoost>Date.now())n=Math.round(n*1.25); // Dojo boost
   if(stat==='battle'&&G._personalityBattleXPBonus)n=Math.round(n*(1+G._personalityBattleXPBonus)); // Warrior personality
   if(stat==='social'&&G._personalitySocialXPBonus)n=Math.round(n*(1+G._personalitySocialXPBonus)); // Influencer personality
   if(G.premium){n=Math.round(n*(G.premiumTier>=2?2.5:G.premiumTier>=1?1.75:1.25));}
@@ -12578,32 +12625,47 @@ function renderMeDagbok(){
 
 function renderMeEvent(){
   const el=$('meEventInner');if(!el)return;
+  const ep=G.eventPoints||0;
+  const msDone=(typeof SUMMER_MILESTONES!=='undefined'?SUMMER_MILESTONES:[]).filter(m=>localStorage.getItem('kv8_summerM_'+m.pts));
+  const summerQuests=[
+    {ico:'📸',txt:'Posta 3 gånger',done:(G.postCount||0)>=3,pts:20},
+    {ico:'🎣',txt:'Fånga 5 fiskar',done:Object.values(G.fishJournal||{}).reduce((a,b)=>a+(b||0),0)>=5,pts:25},
+    {ico:'⚔️',txt:'Klara 3 TD-waves',done:parseInt(localStorage.getItem('kv8_tdBestWave')||'0')>=3,pts:30},
+    {ico:'🧬',txt:'Spela DNA Breaker',done:parseInt(localStorage.getItem('kv8_dnaBest')||'0')>=50,pts:15},
+    {ico:'🥋',txt:'Gör 1 Dojo-drill',done:parseInt(localStorage.getItem('kv8_dojoTP')||'0')>=3,pts:20},
+    {ico:'⚔️',txt:'Vinn 1 PvP-match',done:parseInt(localStorage.getItem('kv8_pvpPts')||'0')>=1,pts:30},
+  ];
   el.innerHTML=`
-    <div style="text-align:center;margin-bottom:16px">
-      <div style="font-size:48px;margin-bottom:8px">🌞</div>
-      <div style="font-size:18px;font-weight:900">SOMMAR EVENT 2025</div>
-      <div style="font-size:11px;color:var(--t3);margin-top:4px">Tävla med din pet och vinn exklusiva priser!</div>
+    <div style="text-align:center;margin-bottom:14px">
+      <div style="font-size:48px;margin-bottom:6px">☀️</div>
+      <div style="font-size:18px;font-weight:900">SOMMAR EVENT 2026</div>
+      <div style="font-size:10px;color:var(--t3);margin-top:4px">Samla WP och vinn exklusiva belöningar!</div>
     </div>
-    <div style="background:var(--c1);border:1.5px solid rgba(255,215,0,.35);border-radius:18px;padding:14px;margin-bottom:12px">
-      <div style="display:flex;justify-content:space-between;font-size:11px;font-weight:900;margin-bottom:8px"><span style="color:var(--y)">Event Progress</span><span style="color:var(--y);font-family:var(--mono)">${G.eventPoints||0} / 500 WP</span></div>
-      <div style="height:10px;background:rgba(255,255,255,.08);border-radius:100px;overflow:hidden"><div style="height:100%;width:${Math.min(100,Math.round(((G.eventPoints||0)/500)*100))}%;background:linear-gradient(90deg,#FFE600,#FF9F0A);border-radius:100px;transition:width .5s"></div></div>
-      <div style="font-size:10px;color:var(--t3);margin-top:6px">${Math.max(0,500-(G.eventPoints||0))} WP kvar till final-belöningen!</div>
+    <div style="background:rgba(255,215,0,.08);border:1.5px solid rgba(255,215,0,.35);border-radius:18px;padding:14px;margin-bottom:12px">
+      <div style="display:flex;justify-content:space-between;font-size:11px;font-weight:900;margin-bottom:8px"><span style="color:var(--y)">☀️ Event Points</span><span style="color:var(--y);font-family:var(--mono)" id="epHud">${ep}</span><span style="color:var(--t3);font-size:9px">/ 500 WP</span></div>
+      <div style="height:10px;background:rgba(255,255,255,.08);border-radius:100px;overflow:hidden"><div style="height:100%;width:${Math.min(100,Math.round((ep/500)*100))}%;background:linear-gradient(90deg,#FFE600,#FF9F0A);border-radius:100px;transition:width .5s"></div></div>
+      <div style="font-size:9px;color:var(--t3);margin-top:5px">${Math.max(0,500-ep)} WP kvar till SOMMAR LEGEND!</div>
     </div>
+    <div style="font-size:10px;font-weight:900;color:var(--y);font-family:var(--mono);letter-spacing:1px;margin-bottom:8px">🎯 SOMMAR QUESTS</div>
+    <div style="display:flex;flex-direction:column;gap:6px;margin-bottom:14px">
+      ${summerQuests.map(q=>`<div style="display:flex;align-items:center;gap:10px;background:${q.done?'rgba(57,255,20,.08)':'rgba(255,255,255,.04)'};border:1px solid ${q.done?'rgba(57,255,20,.3)':'rgba(255,255,255,.08)'};border-radius:12px;padding:10px 12px">
+        <span style="font-size:22px">${q.ico}</span>
+        <span style="flex:1;font-size:11px;color:${q.done?'var(--g)':'var(--t2)'}">${q.txt}</span>
+        <span style="font-size:10px;font-weight:900;font-family:var(--mono);color:${q.done?'var(--g)':'var(--y)'}">${q.done?'✓ +'+q.pts:'+'+ q.pts+' WP'}</span>
+      </div>`).join('')}
+    </div>
+    <div style="font-size:10px;font-weight:900;color:var(--y);font-family:var(--mono);letter-spacing:1px;margin-bottom:8px">🏆 MILSTOLPAR</div>
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px">
-      <div style="background:rgba(255,215,0,.08);border:1px solid rgba(255,215,0,.25);border-radius:14px;padding:12px;text-align:center">
-        <div style="font-size:24px">🏅</div><div style="font-size:10px;font-weight:900;margin-top:4px">Sommar Badge</div><div style="font-size:9px;color:var(--t3)">100 WP</div>
-      </div>
-      <div style="background:rgba(255,215,0,.08);border:1px solid rgba(255,215,0,.25);border-radius:14px;padding:12px;text-align:center">
-        <div style="font-size:24px">🌴</div><div style="font-size:10px;font-weight:900;margin-top:4px">Beach Skin</div><div style="font-size:9px;color:var(--t3)">250 WP</div>
-      </div>
-      <div style="background:rgba(255,215,0,.08);border:1px solid rgba(255,215,0,.25);border-radius:14px;padding:12px;text-align:center">
-        <div style="font-size:24px">☀️</div><div style="font-size:10px;font-weight:900;margin-top:4px">Summer Crown</div><div style="font-size:9px;color:var(--t3)">400 WP</div>
-      </div>
-      <div style="background:rgba(255,215,0,.08);border:1px solid rgba(255,215,0,.25);border-radius:14px;padding:12px;text-align:center">
-        <div style="font-size:24px">🏆</div><div style="font-size:10px;font-weight:900;margin-top:4px">SOMMAR LEGEND</div><div style="font-size:9px;color:var(--t3)">500 WP</div>
-      </div>
+      ${(typeof SUMMER_MILESTONES!=='undefined'?SUMMER_MILESTONES:[{pts:50,ico:'🏅',nm:'Badge'},{pts:150,ico:'🌴',nm:'Beach Skin'},{pts:300,ico:'☀️',nm:'Summer Crown'},{pts:500,ico:'🏆',nm:'LEGEND'}]).map(m=>{
+        const done=!!localStorage.getItem('kv8_summerM_'+m.pts);
+        return `<div style="background:${done?'rgba(57,255,20,.08)':'rgba(255,215,0,.06)'};border:1px solid ${done?'rgba(57,255,20,.3)':'rgba(255,215,0,.2)'};border-radius:14px;padding:12px;text-align:center">
+          <div style="font-size:24px">${m.ico}${done?' ✓':''}</div>
+          <div style="font-size:10px;font-weight:900;margin-top:4px;color:${done?'var(--g)':'var(--t2)'}">${m.nm}</div>
+          <div style="font-size:9px;color:var(--t3)">${m.pts} WP</div>
+        </div>`;
+      }).join('')}
     </div>
-    <button onclick="contributeToEvent();renderMeEvent()" style="width:100%;padding:13px;border-radius:16px;font-size:14px;font-weight:900;cursor:pointer;font-family:var(--ff);border:none;background:linear-gradient(135deg,#FFE600,#FF9F0A);color:#000">⚡ BIDRA +5 WP TILL EVENTET</button>`;
+    <button onclick="contributeToEvent();renderMeEvent()" style="width:100%;padding:13px;border-radius:16px;font-size:14px;font-weight:900;cursor:pointer;font-family:var(--ff);border:none;background:linear-gradient(135deg,#FFE600,#FF9F0A);color:#000">☀️ BIDRA +5 WP (kostar 5⚡)</button>`;
 }
 
 // ── WORLD TAB TOGGLE ──
@@ -15183,7 +15245,7 @@ async function sbLoadProfile(){
     try{const tdup=localStorage.getItem('kv8_tdup');G.tdUpgrades=tdup?JSON.parse(tdup):{};}catch(e){G.tdUpgrades={};}
     G.tdPoints=parseInt(localStorage.getItem('kv8_tdpts')||'0');
     _applyTDUpgrades&&_applyTDUpgrades();
-    updateEvolBadge&&updateEvolBadge();_applyCosmeticsVisually&&_applyCosmeticsVisually();applyPetSkills&&applyPetSkills();applyPersonalityBonus&&applyPersonalityBonus();setTimeout(()=>{updatePersonalityBadge&&updatePersonalityBadge();openPetSkills&&openPetSkills();_wcUpdateCard&&_wcUpdateCard();_scheduleRandomEvents&&_scheduleRandomEvents();},800);
+    updateEvolBadge&&updateEvolBadge();_applyCosmeticsVisually&&_applyCosmeticsVisually();applyPetSkills&&applyPetSkills();applyPersonalityBonus&&applyPersonalityBonus();initTreasureHunt&&initTreasureHunt();setTimeout(()=>{updatePersonalityBadge&&updatePersonalityBadge();openPetSkills&&openPetSkills();_wcUpdateCard&&_wcUpdateCard();_scheduleRandomEvents&&_scheduleRandomEvents();const rt=$('pvpRankTag');if(rt){const r=_pvpGetRank&&_pvpGetRank();if(r)rt.textContent=r.ico+' '+r.nm;}const dt=$('dojoTPTag');if(dt)dt.textContent=(localStorage.getItem('kv8_dojoTP')||'0')+' TP';},800);
     save(); // mirror to localStorage cache
     return true;
   }catch(e){console.warn('[SB] loadProfile',e);return false;}
@@ -15513,7 +15575,7 @@ function _loadFromLocalStorage(){
     try{const tdup=localStorage.getItem('kv8_tdup');G.tdUpgrades=tdup?JSON.parse(tdup):{};}catch(e){G.tdUpgrades={};}
     G.tdPoints=parseInt(localStorage.getItem('kv8_tdpts')||'0');
     _applyTDUpgrades&&_applyTDUpgrades();
-    updateEvolBadge&&updateEvolBadge();_applyCosmeticsVisually&&_applyCosmeticsVisually();applyPetSkills&&applyPetSkills();applyPersonalityBonus&&applyPersonalityBonus();setTimeout(()=>{updatePersonalityBadge&&updatePersonalityBadge();openPetSkills&&openPetSkills();_wcUpdateCard&&_wcUpdateCard();_scheduleRandomEvents&&_scheduleRandomEvents();},800);
+    updateEvolBadge&&updateEvolBadge();_applyCosmeticsVisually&&_applyCosmeticsVisually();applyPetSkills&&applyPetSkills();applyPersonalityBonus&&applyPersonalityBonus();initTreasureHunt&&initTreasureHunt();setTimeout(()=>{updatePersonalityBadge&&updatePersonalityBadge();openPetSkills&&openPetSkills();_wcUpdateCard&&_wcUpdateCard();_scheduleRandomEvents&&_scheduleRandomEvents();const rt=$('pvpRankTag');if(rt){const r=_pvpGetRank&&_pvpGetRank();if(r)rt.textContent=r.ico+' '+r.nm;}const dt=$('dojoTPTag');if(dt)dt.textContent=(localStorage.getItem('kv8_dojoTP')||'0')+' TP';},800);
     let _dailyShownToday=false;
     const _today=new Date().toDateString();const _last=localStorage.getItem('kv8_lastLogin');
     if(_last!==_today){localStorage.setItem('kv8_lastLogin',_today);if(_last){
@@ -17633,11 +17695,320 @@ function closeSeasonalEvent(){const em=$('eventModal');if(em)em.classList.remove
 function contributeToEvent(){
   if(G.coins<5){showT('❌ Behöver 5 coins','r');return;}
   G.coins-=5;_eventMyContrib+=5;addWorldPoints(5);
+  gainEventPoints&&gainEventPoints(5);
   save();updateHUD();
   SFX.click();vibe([20,15,40]);
   showT('🌸 +5 WP bidragit till eventet!','pk');
   const mc=$('myContribBig');if(mc)mc.textContent=_eventMyContrib+' WP';
   const ec=$('eventMyContrib');if(ec)ec.textContent=_eventMyContrib;
+}
+
+// ══════════════════════════════════════════
+// ── PvP BATTLE ARENA ──
+// ══════════════════════════════════════════
+const PVP_RANKS=[
+  {nm:'BRONZE', ico:'🥉',pts:0,  color:'#CD7F32'},
+  {nm:'SILVER', ico:'🥈',pts:15, color:'#C0C0C0'},
+  {nm:'GOLD',   ico:'🥇',pts:40, color:'#FFD700'},
+  {nm:'DIAMOND',ico:'💎',pts:80, color:'#00D9FF'},
+  {nm:'LEGEND', ico:'👑',pts:150,color:'#BF5FFF'},
+];
+const PVP_RIVALS=[
+  {nm:'DragonSlayer',em:'🐲',atk:14,def:8, hp:80, reward:{coins:80,xp:40}},
+  {nm:'NeonKitty',   em:'🐱',atk:12,def:12,hp:75, reward:{coins:60,xp:30}},
+  {nm:'StormPup',    em:'🐺',atk:18,def:6, hp:65, reward:{coins:100,xp:50}},
+  {nm:'MysticFox',   em:'🦊',atk:16,def:14,hp:100,reward:{coins:120,xp:60}},
+  {nm:'CosmicBear',  em:'🐻',atk:20,def:16,hp:130,reward:{coins:150,xp:80}},
+];
+function _pvpGetRank(){
+  const pts=parseInt(localStorage.getItem('kv8_pvpPts')||'0');
+  return PVP_RANKS.slice().reverse().find(r=>pts>=r.pts)||PVP_RANKS[0];
+}
+function openPvpArena(){
+  const today=new Date().toDateString();
+  if(localStorage.getItem('kv8_pvpDay')!==today){localStorage.setItem('kv8_pvpDay',today);localStorage.setItem('kv8_pvpLeft','5');}
+  _pvpRender();oWin('pvpWin');
+}
+function _pvpRender(){
+  const el=$('pvpInner');if(!el)return;
+  const pts=parseInt(localStorage.getItem('kv8_pvpPts')||'0');
+  const rank=_pvpGetRank();
+  const left=parseInt(localStorage.getItem('kv8_pvpLeft')||'5');
+  const rb=$('pvpRankBadge');if(rb)rb.innerHTML=rank.ico+' '+rank.nm+' · '+pts+' RP';
+  const rt=$('pvpRankTag');if(rt)rt.textContent=rank.ico+' '+rank.nm;
+  const nextRank=PVP_RANKS.find(r=>r.pts>pts);
+  el.innerHTML=`<div style="padding:14px">
+    <div style="text-align:center;margin-bottom:16px;animation:pvpSlide .4s ease">
+      <div style="font-size:48px">${rank.ico}</div>
+      <div style="font-size:16px;font-weight:900;color:${rank.color};font-family:var(--mono)">${rank.nm}</div>
+      <div style="font-size:10px;color:var(--t3);margin-top:4px">${pts} Rank Points${nextRank?` · ${nextRank.pts-pts} till ${nextRank.ico} ${nextRank.nm}`:' · MAX RANK!'}</div>
+      <div style="margin:8px 0;height:6px;background:rgba(255,255,255,.08);border-radius:100px;overflow:hidden"><div style="height:100%;width:${nextRank?Math.min(100,Math.round((pts-rank.pts)/(nextRank.pts-rank.pts)*100)):100}%;background:linear-gradient(90deg,${rank.color},#fff8);border-radius:100px;transition:width .5s"></div></div>
+      <div style="font-size:10px;color:var(--t3)">${left}/5 strider kvar idag</div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:10px">
+      ${PVP_RIVALS.map((r,i)=>`<div style="background:rgba(255,255,255,.04);border:1.5px solid rgba(255,255,255,.1);border-radius:16px;padding:14px;display:flex;align-items:center;gap:12px">
+        <div style="font-size:40px;filter:drop-shadow(0 0 10px rgba(255,45,85,.5))">${r.em}</div>
+        <div style="flex:1"><div style="font-weight:900;font-size:13px;margin-bottom:2px">${r.nm}</div>
+        <div style="font-size:9px;color:var(--t3)">⚔️ ATK ${r.atk} · 🛡️ DEF ${r.def} · ❤️ HP ${r.hp}</div>
+        <div style="font-size:9px;color:var(--y);margin-top:2px">Vinst: +${r.reward.coins}⚡ +${r.reward.xp}XP +1RP</div></div>
+        <button onclick="_pvpFight(${i})" ${left<=0?'disabled':''} style="background:${left>0?'linear-gradient(135deg,#FF2D55,#BF5FFF)':'rgba(255,255,255,.06)'};border:none;border-radius:12px;padding:10px 14px;color:${left>0?'#fff':'var(--t3)'};font-size:13px;font-weight:900;cursor:${left>0?'pointer':'not-allowed'};font-family:var(--mono);white-space:nowrap">⚔️ FIGHT</button>
+      </div>`).join('')}
+    </div></div>`;
+}
+function _pvpFight(rivalIdx){
+  const left=parseInt(localStorage.getItem('kv8_pvpLeft')||'0');
+  if(left<=0){showT('Inga strider kvar idag!','r');return;}
+  const rival=PVP_RIVALS[rivalIdx];
+  const myAtk=Math.max(5,(G.petStats&&G.petStats.strength||10)+(G.level||1)*2);
+  const myDef=Math.max(3,(G.petStats&&G.petStats.endurance||8)+(G.level||1));
+  const myHp=50+(G.level||1)*5;
+  let myHpLeft=myHp,rivHpLeft=rival.hp,rounds=0;
+  while(myHpLeft>0&&rivHpLeft>0&&rounds<60){
+    rivHpLeft-=Math.max(1,myAtk-rival.def*0.5+(Math.random()*6-3));
+    if(rivHpLeft<=0)break;
+    myHpLeft-=Math.max(1,rival.atk-myDef*0.5+(Math.random()*5-2.5));
+    rounds++;
+  }
+  const won=rivHpLeft<=0;
+  localStorage.setItem('kv8_pvpLeft',Math.max(0,left-1));
+  if(won){
+    gainCoins(rival.reward.coins);gainXP(rival.reward.xp,'battle');
+    const pts=parseInt(localStorage.getItem('kv8_pvpPts')||'0')+1;
+    localStorage.setItem('kv8_pvpPts',pts);
+    SFX.win&&SFX.win();vibe([50,30,100]);
+    showT('🏆 VANN! '+rival.em+' '+rival.nm+' · +'+rival.reward.coins+'⚡ +1RP','g');
+    spawnParticles&&spawnParticles(window.innerWidth/2,window.innerHeight*.4,'stars');
+    advanceQuest&&advanceQuest('battle',1);
+    gainEventPoints&&gainEventPoints(3);
+  }else{
+    gainCoins(20);SFX.error&&SFX.error();vibe([80]);
+    showT('💔 Förlorade mot '+rival.em+' '+rival.nm+'... +20⚡ tröst','r');
+  }
+  addDiaryEntry&&addDiaryEntry((won?'Vann':'Förlorade')+' i PvP Arena mot '+rival.em+' '+rival.nm+'!');
+  save();updateHUD();
+  setTimeout(()=>_pvpRender(),400);
+  checkAchievements&&checkAchievements();
+}
+
+// ══════════════════════════════════════════
+// ── TRAINING DOJO ──
+// ══════════════════════════════════════════
+let _dojoTapCount=0,_dojoActiveTimer=null,_dojoHoldTs=0,_dojoHoldInt=null;
+let _dojoMemPattern=[],_dojoMemUserPattern=[];
+function openDojo(){
+  const today=new Date().toDateString();
+  if(localStorage.getItem('kv8_dojoDay')!==today){localStorage.setItem('kv8_dojoDay',today);localStorage.setItem('kv8_dojoLeft','3');}
+  _dojoRender();oWin('dojoWin');
+}
+function _dojoRender(){
+  const el=$('dojoInner');if(!el)return;
+  const tp=parseInt(localStorage.getItem('kv8_dojoTP')||'0');
+  const left=parseInt(localStorage.getItem('kv8_dojoLeft')||'3');
+  const pb=$('dojoPointsBadge');if(pb)pb.textContent=tp+' TP';
+  const dt=$('dojoTPTag');if(dt)dt.textContent=tp+' TP';
+  el.innerHTML=`<div style="padding:14px">
+    <div style="text-align:center;background:rgba(255,159,10,.08);border:1.5px solid rgba(255,159,10,.25);border-radius:16px;padding:10px;margin-bottom:14px">
+      <div style="font-size:11px;color:var(--t3)">Training Points: <span style="color:var(--o);font-weight:900">${tp} TP</span> · Sessions kvar: <span style="color:var(--g);font-weight:900">${left}/3</span></div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:10px" id="dojoExArea">
+      <div style="background:rgba(255,45,85,.06);border:1.5px solid rgba(255,45,85,.25);border-radius:18px;padding:14px">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
+          <div style="font-size:30px">⚡</div>
+          <div><div style="font-weight:900;font-size:13px">SNABB TAP</div><div style="font-size:10px;color:var(--t3)">Tryck så snabbt du kan i 5 sekunder</div></div>
+        </div>
+        <button onclick="_dojoStartDrill('tap')" ${left<=0?'disabled':''} style="width:100%;padding:10px;border-radius:12px;font-size:13px;font-weight:900;cursor:${left>0?'pointer':'not-allowed'};font-family:var(--ff);border:none;background:${left>0?'rgba(255,45,85,.2)':'rgba(255,255,255,.04)'};color:${left>0?'#FF2D55':'var(--t3)'}">🚀 STARTA DRILL</button>
+      </div>
+      <div style="background:rgba(57,255,20,.06);border:1.5px solid rgba(57,255,20,.25);border-radius:18px;padding:14px">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
+          <div style="font-size:30px">💪</div>
+          <div><div style="font-weight:900;font-size:13px">UTHÅLLIGHET</div><div style="font-size:10px;color:var(--t3)">Håll knappen intryckt i 8 sekunder</div></div>
+        </div>
+        <button id="dojoHoldBtn" onmousedown="_dojoHoldStart(event)" ontouchstart="_dojoHoldStart(event)" onmouseup="_dojoHoldEnd()" ontouchend="_dojoHoldEnd()" ${left<=0?'disabled':''} style="width:100%;padding:10px;border-radius:12px;font-size:13px;font-weight:900;cursor:${left>0?'pointer':'not-allowed'};font-family:var(--ff);border:none;background:${left>0?'rgba(57,255,20,.15)':'rgba(255,255,255,.04)'};color:${left>0?'var(--g)':'var(--t3)'}">💪 HÅLL INNE</button>
+      </div>
+      <div style="background:rgba(0,217,255,.06);border:1.5px solid rgba(0,217,255,.25);border-radius:18px;padding:14px">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
+          <div style="font-size:30px">🧠</div>
+          <div><div style="font-weight:900;font-size:13px">MINNESTEST</div><div style="font-size:10px;color:var(--t3)">Memorera sekvensen och upprepa</div></div>
+        </div>
+        <button onclick="_dojoStartDrill('memory')" ${left<=0?'disabled':''} style="width:100%;padding:10px;border-radius:12px;font-size:13px;font-weight:900;cursor:${left>0?'pointer':'not-allowed'};font-family:var(--ff);border:none;background:${left>0?'rgba(0,217,255,.15)':'rgba(255,255,255,.04)'};color:${left>0?'var(--b)':'var(--t3)'}">🎯 STARTA DRILL</button>
+      </div>
+    </div>
+    <div id="dojoResultArea"></div>
+    <div style="margin-top:14px;background:rgba(255,159,10,.06);border:1.5px solid rgba(255,159,10,.25);border-radius:18px;padding:14px">
+      <div style="font-size:11px;font-weight:900;color:var(--o);font-family:var(--mono);letter-spacing:1px;margin-bottom:10px">🛒 TP SHOP</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+        <button onclick="_dojoBuy('xp',20)" style="background:rgba(57,255,20,.08);border:1.5px solid rgba(57,255,20,.25);border-radius:12px;padding:10px;cursor:pointer;font-family:var(--mono);color:var(--g);font-size:10px;font-weight:900">+25% XP<br><span style="font-size:8px;color:var(--t3)">20TP · 1h</span></button>
+        <button onclick="_dojoBuy('coins',20)" style="background:rgba(255,215,0,.08);border:1.5px solid rgba(255,215,0,.25);border-radius:12px;padding:10px;cursor:pointer;font-family:var(--mono);color:var(--y);font-size:10px;font-weight:900">+25% Coins<br><span style="font-size:8px;color:var(--t3)">20TP · 1h</span></button>
+        <button onclick="_dojoBuy('stats',50)" style="background:rgba(191,95,255,.08);border:1.5px solid rgba(191,95,255,.25);border-radius:12px;padding:10px;cursor:pointer;font-family:var(--mono);color:var(--p);font-size:10px;font-weight:900">+1 Alla Stats<br><span style="font-size:8px;color:var(--t3)">50TP · permanent</span></button>
+        <button onclick="_dojoBuy('energy',15)" style="background:rgba(0,217,255,.08);border:1.5px solid rgba(0,217,255,.25);border-radius:12px;padding:10px;cursor:pointer;font-family:var(--mono);color:var(--b);font-size:10px;font-weight:900">Full Energi<br><span style="font-size:8px;color:var(--t3)">15TP</span></button>
+      </div>
+    </div>
+  </div>`;
+}
+function _dojoStartDrill(type){
+  const left=parseInt(localStorage.getItem('kv8_dojoLeft')||'0');
+  if(left<=0){showT('Inga träningspass kvar idag!','r');return;}
+  if(_dojoActiveTimer){clearInterval(_dojoActiveTimer);_dojoActiveTimer=null;}
+  const area=$('dojoExArea');if(!area)return;
+  if(type==='tap'){
+    _dojoTapCount=0;
+    area.innerHTML=`<div style="text-align:center;padding:20px;animation:pvpSlide .3s ease">
+      <div style="font-size:18px;font-weight:900;color:var(--pk);margin-bottom:6px">SNABB TAP DRILL</div>
+      <div style="font-size:56px;font-weight:900;font-family:var(--mono);color:var(--b);line-height:1" id="dojoTapCount">0</div>
+      <div style="font-size:10px;color:var(--t3);margin:4px 0 12px">TRYCK SÅ SNABBT DU KAN!</div>
+      <div style="height:8px;background:rgba(255,255,255,.08);border-radius:100px;overflow:hidden;margin-bottom:14px"><div id="dojoTapBar" style="height:100%;width:100%;background:linear-gradient(90deg,var(--pk),var(--p));border-radius:100px;transition:width .1s"></div></div>
+      <button id="dojoTapBtn" onclick="_dojoTap()" style="width:100%;height:90px;border-radius:20px;font-size:28px;font-weight:900;cursor:pointer;background:linear-gradient(135deg,rgba(255,45,85,.3),rgba(191,95,255,.3));border:2px solid rgba(255,45,85,.6);color:#fff;font-family:var(--ff);-webkit-tap-highlight-color:transparent;user-select:none;letter-spacing:2px">TAP!</button>
+    </div>`;
+    let timeLeft=5;
+    _dojoActiveTimer=setInterval(()=>{
+      timeLeft-=0.05;
+      const bar=$('dojoTapBar');if(bar)bar.style.width=Math.max(0,timeLeft/5*100)+'%';
+      if(timeLeft<=0){clearInterval(_dojoActiveTimer);_dojoActiveTimer=null;_dojoFinishDrill('tap',_dojoTapCount);}
+    },50);
+  } else if(type==='memory'){
+    const emojis=['🌟','🎮','🐲','⚡','🎣','🏆','🧬','💎'];
+    _dojoMemPattern=Array.from({length:4},()=>emojis[Math.floor(Math.random()*emojis.length)]);
+    _dojoMemUserPattern=[];
+    area.innerHTML=`<div style="text-align:center;padding:20px;animation:pvpSlide .3s ease">
+      <div style="font-size:18px;font-weight:900;color:var(--b);margin-bottom:12px">MINNESTEST</div>
+      <div style="font-size:10px;color:var(--t3);margin-bottom:14px">Kom ihåg sekvensen!</div>
+      <div id="dojoMemPat" style="display:flex;justify-content:center;gap:10px;margin-bottom:20px">${_dojoMemPattern.map(e=>`<span style="font-size:36px;opacity:0;transition:opacity .3s">${e}</span>`).join('')}</div>
+      <div id="dojoMemBtns" style="display:none;flex-wrap:wrap;justify-content:center;gap:8px;margin-bottom:12px"></div>
+      <div id="dojoMemSt" style="font-size:11px;color:var(--y);min-height:18px"></div>
+    </div>`;
+    const spans=$('dojoMemPat').querySelectorAll('span');
+    spans.forEach((s,i)=>setTimeout(()=>{
+      s.style.opacity='1';
+      if(i===spans.length-1)setTimeout(()=>{
+        spans.forEach(x=>x.style.opacity='.1');
+        _dojoShowMemBtns();
+      },900);
+    },i*600));
+  }
+}
+function _dojoTap(){_dojoTapCount++;const tc=$('dojoTapCount');if(tc)tc.textContent=_dojoTapCount;}
+function _dojoShowMemBtns(){
+  const btns=$('dojoMemBtns');const st=$('dojoMemSt');
+  if(st)st.textContent='Tryck i rätt ordning!';
+  if(!btns)return;btns.style.display='flex';
+  const emojis=['🌟','🎮','🐲','⚡','🎣','🏆','🧬','💎'];
+  const choices=[..._dojoMemPattern,...emojis.filter(e=>!_dojoMemPattern.includes(e)).slice(0,2)].sort(()=>Math.random()-.5).slice(0,6);
+  btns.innerHTML=choices.map(e=>`<button onclick="_dojoMemTap('${e}')" style="font-size:30px;background:rgba(0,217,255,.1);border:1.5px solid rgba(0,217,255,.3);border-radius:14px;padding:10px 14px;cursor:pointer;-webkit-tap-highlight-color:transparent">${e}</button>`).join('');
+}
+function _dojoMemTap(em){
+  _dojoMemUserPattern.push(em);
+  const idx=_dojoMemUserPattern.length-1;
+  if(_dojoMemUserPattern[idx]!==_dojoMemPattern[idx]){
+    const st=$('dojoMemSt');if(st){st.textContent='❌ Fel! +5TP tröst';st.style.color='var(--pk)';}
+    setTimeout(()=>_dojoFinishDrill('memory',0),800);return;
+  }
+  if(_dojoMemUserPattern.length===_dojoMemPattern.length)_dojoFinishDrill('memory',1);
+}
+function _dojoHoldStart(e){if(e)e.preventDefault();const left=parseInt(localStorage.getItem('kv8_dojoLeft')||'0');if(left<=0){showT('Inga träningspass kvar idag!','r');return;}_dojoHoldTs=Date.now();const btn=$('dojoHoldBtn');if(btn){btn.style.background='rgba(57,255,20,.35)';btn.textContent='HÅLLER... ⏱️';}}
+function _dojoHoldEnd(){if(!_dojoHoldTs)return;const held=Math.min((Date.now()-_dojoHoldTs)/1000,8);_dojoHoldTs=0;const btn=$('dojoHoldBtn');if(btn){btn.style.background='';btn.textContent='💪 HÅLL INNE';}_dojoFinishDrill('hold',held);}
+function _dojoFinishDrill(type,score){
+  if(_dojoActiveTimer){clearInterval(_dojoActiveTimer);_dojoActiveTimer=null;}
+  const left=parseInt(localStorage.getItem('kv8_dojoLeft')||'0');if(left<=0)return;
+  localStorage.setItem('kv8_dojoLeft',Math.max(0,left-1));
+  let tp=0,xp=0,msg='';
+  if(type==='tap'){
+    tp=score>=30?25:score>=20?15:score>=10?8:3;xp=score*2;
+    msg=score>=30?'🔥 LEGENDAR! '+score+' tryck!':score>=20?'💪 IMPONERANDE! '+score:score>=10?'⚡ BRA! '+score:'👋 '+score+' tryck';
+  }else if(type==='memory'){
+    tp=score?35:5;xp=score?90:15;msg=score?'🧠 EXAKT RÄTT! PERFEKT!':'😅 BRA FÖRSÖK! +5TP';
+  }else{
+    tp=score>=8?30:score>=5?18:Math.max(2,Math.floor(score*3));xp=Math.floor(score*8);
+    msg=score>=8?'💪 8 SEK! BEAST MODE!':score>=5?`⏱️ ${score.toFixed(1)}s - BRA!`:`⏱️ ${score.toFixed(1)}s - Öva mer!`;
+  }
+  const totalTP=(parseInt(localStorage.getItem('kv8_dojoTP')||'0'))+tp;
+  localStorage.setItem('kv8_dojoTP',totalTP);
+  gainXP(xp,'battle');SFX.win&&SFX.win();vibe([40,20,80]);
+  showT('🥋 '+msg+' · +'+tp+'TP +'+xp+'XP','g');
+  addDiaryEntry&&addDiaryEntry('Träning i Dojo: '+msg);
+  gainEventPoints&&gainEventPoints(2);
+  save();updateHUD();setTimeout(()=>_dojoRender(),700);
+}
+function _dojoBuy(type,cost){
+  const tp=parseInt(localStorage.getItem('kv8_dojoTP')||'0');
+  if(tp<cost){showT('Behöver '+cost+' TP!','r');return;}
+  localStorage.setItem('kv8_dojoTP',tp-cost);
+  if(type==='xp'){G._dojoXPBoost=Date.now()+3600000;showT('⚡ +25% XP i 1 timme!','g');}
+  else if(type==='coins'){G._dojoCoinBoost=Date.now()+3600000;showT('💰 +25% Coins i 1 timme!','g');}
+  else if(type==='stats'){
+    if(!G.petStats)G.petStats={strength:0,endurance:0,speed:0,agility:0,luck:0};
+    ['strength','endurance','speed','agility','luck'].forEach(s=>G.petStats[s]=(G.petStats[s]||0)+1);
+    showT('💪 +1 till ALLA stats permanent!','p');
+    spawnParticles&&spawnParticles(window.innerWidth/2,window.innerHeight*.4,'stars');
+  }else if(type==='energy'){G.energy=100;showT('⚡ Full energi!','b');}
+  SFX.win&&SFX.win();save();updateHUD();_dojoRender();checkAchievements&&checkAchievements();
+}
+
+// ══════════════════════════════════════════
+// ── DAILY TREASURE HUNT ──
+// ══════════════════════════════════════════
+const _TREASURES=[
+  {id:'t1',top:15,left:8, coins:20},{id:'t2',top:10,left:50,coins:15},
+  {id:'t3',top:60,left:5, coins:35},{id:'t4',top:30,left:70,coins:25},
+  {id:'t5',top:70,left:80,coins:50},{id:'t6',top:50,left:40,coins:30},
+  {id:'t7',top:80,left:25,coins:40},{id:'t8',top:20,left:88,coins:45},
+];
+function initTreasureHunt(){
+  const today=new Date().toDateString();
+  if(localStorage.getItem('kv8_treasureDay')!==today){
+    localStorage.setItem('kv8_treasureDay',today);
+    localStorage.setItem('kv8_treasureClaimed','[]');
+  }
+  _renderTreasures();
+}
+function _renderTreasures(){
+  const grid=$('treasureHuntGrid');const ctr=$('treasureCounter');
+  if(!grid)return;
+  const claimed=JSON.parse(localStorage.getItem('kv8_treasureClaimed')||'[]');
+  if(ctr)ctr.textContent=claimed.length+'/8 skatter';
+  const unclaimed=_TREASURES.filter(s=>!claimed.includes(s.id));
+  grid.innerHTML=unclaimed.map(s=>`<div onclick="claimTreasure('${s.id}')" style="position:absolute;top:${s.top}%;left:${s.left}%;transform:translate(-50%,-50%);cursor:pointer;-webkit-tap-highlight-color:transparent;animation:treasurePulse 1.4s ease-in-out infinite;filter:drop-shadow(0 0 6px rgba(255,215,0,.9))"><span style="font-size:24px">💰</span></div>`).join('')+(claimed.length===8?'<div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:900;color:var(--g)">🎉 ALLA HITTADE! +100⚡ BONUS!</div>':'');
+}
+function claimTreasure(id){
+  const spot=_TREASURES.find(s=>s.id===id);if(!spot)return;
+  const claimed=JSON.parse(localStorage.getItem('kv8_treasureClaimed')||'[]');
+  if(claimed.includes(id))return;
+  claimed.push(id);
+  localStorage.setItem('kv8_treasureClaimed',JSON.stringify(claimed));
+  gainCoins(spot.coins);SFX.coin&&SFX.coin();vibe([20,10,30]);
+  showT('💰 Skatt! +'+spot.coins+'⚡','y');
+  _renderTreasures();
+  if(claimed.length===8){
+    setTimeout(()=>{gainCoins(100);gainXP(50,'social');showT('🎉 ALLA 8 SKATTER! +100⚡ BONUS!','g');spawnParticles&&spawnParticles(window.innerWidth/2,window.innerHeight*.4,'stars');},400);
+  }
+  save();updateHUD();checkAchievements&&checkAchievements();
+}
+
+// ══════════════════════════════════════════
+// ── SUMMER FESTIVAL / EVENT POINTS ──
+// ══════════════════════════════════════════
+const SUMMER_MILESTONES=[
+  {pts:50,  ico:'🏅',nm:'Sommar Badge',   reward:'Exklusiv badge',coins:30},
+  {pts:150, ico:'🌴',nm:'Beach Skin',     reward:'Beach Pet Skin',coins:0,skin:'beach'},
+  {pts:300, ico:'☀️', nm:'Summer Crown',   reward:'+2 till alla stats',coins:0,statBoost:2},
+  {pts:500, ico:'🏆',nm:'SOMMAR LEGEND',  reward:'+500 coins bonus!',coins:500},
+];
+function gainEventPoints(n){
+  if(!n||n<=0)return;
+  G.eventPoints=(G.eventPoints||0)+n;
+  const ep=$('epHud');if(ep)ep.textContent=G.eventPoints;
+  SUMMER_MILESTONES.forEach(m=>{
+    const key='kv8_summerM_'+m.pts;
+    if(G.eventPoints>=m.pts&&!localStorage.getItem(key)){
+      localStorage.setItem(key,'1');
+      if(m.coins)gainCoins(m.coins);
+      if(m.statBoost){if(!G.petStats)G.petStats={strength:0,endurance:0,speed:0,agility:0,luck:0};['strength','endurance','speed','agility','luck'].forEach(s=>G.petStats[s]=(G.petStats[s]||0)+m.statBoost);}
+      if(m.skin&&G.cosmetics)G.cosmetics.skin=m.skin;
+      SFX.win&&SFX.win();vibe([60,30,120]);
+      showT(m.ico+' '+m.nm+' UPPLÅST! '+m.reward,'p');
+      spawnParticles&&spawnParticles(window.innerWidth/2,window.innerHeight*.4,'stars');
+      save();
+    }
+  });
 }
 
 // ══════════════════════════════════════════
