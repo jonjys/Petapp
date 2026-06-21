@@ -3822,6 +3822,27 @@ div[style*="LIVE"]{border-radius:16px!important;background:rgba(57,255,20,.03)!i
         </div>
       </div>
             <!-- DAILY REWARD BUTTON -->
+      <!-- CHEST OPENER HERO CARD -->
+      <div onclick="openChestShop()" ontouchstart="this.style.transform='scale(.98)'" ontouchend="this.style.transform=''" style="margin:0 14px 10px;border-radius:20px;cursor:pointer;-webkit-tap-highlight-color:transparent;background:linear-gradient(135deg,#0d0820 0%,#070410 100%);border:2px solid rgba(255,215,0,.5);overflow:hidden;box-shadow:0 0 28px rgba(255,215,0,.15),inset 0 1px 0 rgba(255,255,255,.06);transition:transform .08s;position:relative">
+        <div style="position:absolute;inset:0;background:radial-gradient(ellipse at 50% 0%,rgba(255,215,0,.12) 0%,transparent 60%);pointer-events:none"></div>
+        <div style="position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,#FFD700,#BF5FFF,transparent)"></div>
+        <div style="padding:14px 16px;display:flex;align-items:center;gap:14px;position:relative">
+          <div style="font-size:48px;filter:drop-shadow(0 0 16px rgba(255,215,0,.9));animation:petBob 2s ease-in-out infinite">🎁</div>
+          <div style="flex:1">
+            <div style="display:flex;align-items:center;gap:6px;margin-bottom:4px">
+              <div style="font-size:15px;font-weight:900;color:#FFD700;font-family:var(--mono);letter-spacing:.5px">CHEST OPENING</div>
+              <div style="background:linear-gradient(135deg,#FFD700,#FF9F0A);color:#000;font-size:7px;font-weight:900;padding:2px 7px;border-radius:6px;font-family:var(--mono)">🔥 NY</div>
+            </div>
+            <div style="font-size:9px;color:rgba(255,255,255,.45);margin-bottom:6px">Öppna kistor · Vinn LEGENDARISKA saker</div>
+            <div style="display:flex;gap:5px">
+              <div style="background:rgba(205,127,50,.15);border:1px solid rgba(205,127,50,.35);border-radius:8px;padding:3px 8px;font-size:8px;font-weight:900;color:#CD7F32;font-family:var(--mono)">🥉 BRONS</div>
+              <div style="background:rgba(255,215,0,.12);border:1px solid rgba(255,215,0,.3);border-radius:8px;padding:3px 8px;font-size:8px;font-weight:900;color:#FFD700;font-family:var(--mono)">🥇 GULD</div>
+              <div style="background:rgba(191,95,255,.12);border:1px solid rgba(191,95,255,.3);border-radius:8px;padding:3px 8px;font-size:8px;font-weight:900;color:#BF5FFF;font-family:var(--mono)">👑 LEGEND</div>
+            </div>
+          </div>
+          <div style="font-size:24px;color:#FFD700;flex-shrink:0;text-shadow:0 0 16px rgba(255,215,0,.6)">▶</div>
+        </div>
+      </div>
       <div style="margin:4px 14px 8px;display:flex;gap:8px">
         <button onclick="showDailyRewardModal(parseInt(localStorage.getItem('kv8_rewardDay')||'1'))" style="flex:1;background:linear-gradient(135deg,rgba(255,215,0,.15),rgba(255,159,10,.1));border:1px solid rgba(255,215,0,.4);border-radius:14px;padding:12px;cursor:pointer;color:#FFD700;font-size:13px;font-weight:900;font-family:var(--mono)">🎁 DAGLIG BELÖNING</button>
         <button onclick="openHallOfFame()" style="background:linear-gradient(135deg,rgba(255,215,0,.12),rgba(255,45,85,.08));border:1.5px solid rgba(255,215,0,.35);border-radius:14px;padding:12px 14px;cursor:pointer;color:#FFD700;font-size:13px;font-weight:900;font-family:var(--mono)">🏆</button>
@@ -4093,6 +4114,22 @@ div[style*="LIVE"]{border-radius:16px!important;background:rgba(57,255,20,.03)!i
   </div>
 </div>
 
+<!-- CHEST OPENING SYSTEM -->
+<div class="fsw" id="chestWin">
+  <div class="fsh"><button class="fbk" onclick="cWin('chestWin')">←</button><div class="ftl">🎁 Chest</div><div class="pill pill-y">⚡<b id="chestCoinsLbl">0</b></div></div>
+  <div class="fbd" id="chestInner" style="display:flex;flex-direction:column;align-items:center;padding:0 14px 24px"></div>
+</div>
+<!-- CHEST REVEAL OVERLAY -->
+<div id="chestRevealOverlay" style="display:none;position:fixed;inset:0;z-index:900;background:rgba(0,0,0,.92);display:none;flex-direction:column;align-items:center;justify-content:center;gap:0">
+  <div id="chestRevealBox" style="position:relative;text-align:center">
+    <div id="chestRevealEmoji" style="font-size:80px;line-height:1;transition:transform .4s cubic-bezier(.34,1.56,.64,1)">📦</div>
+    <div id="chestRevealGlow" style="position:absolute;inset:-30px;border-radius:50%;opacity:0;transition:opacity .3s;pointer-events:none"></div>
+  </div>
+  <div id="chestRevealRarity" style="font-size:11px;font-weight:900;letter-spacing:3px;font-family:var(--mono);margin-top:16px;opacity:0;transition:opacity .4s"></div>
+  <div id="chestRevealName" style="font-size:22px;font-weight:900;margin-top:6px;opacity:0;transition:opacity .4s;text-align:center;padding:0 24px"></div>
+  <div id="chestRevealDesc" style="font-size:13px;color:var(--t3);margin-top:4px;opacity:0;transition:opacity .4s;text-align:center;padding:0 32px"></div>
+  <button onclick="$('chestRevealOverlay').style.display='none'" style="margin-top:28px;background:rgba(255,255,255,.1);border:1.5px solid rgba(255,255,255,.2);border-radius:16px;padding:12px 32px;color:#fff;font-size:14px;font-weight:900;cursor:pointer;font-family:var(--ff);opacity:0;transition:opacity .4s" id="chestRevealOkBtn">TAP FOR CONTINUE</button>
+</div>
 <!-- PVP ARENA WINDOW -->
 <div class="fsw" id="pvpWin">
   <div class="fsh"><button class="fbk" onclick="cWin('pvpWin')">←</button><div class="ftl">⚔️ PvP Arena</div><div id="pvpRankBadge" style="font-size:10px;font-weight:900;padding:4px 10px;border-radius:8px;background:rgba(255,45,85,.15);border:1px solid rgba(255,45,85,.4);color:#FF2D55;font-family:var(--mono)">🥉 BRONZE</div></div>
@@ -5259,7 +5296,16 @@ function saveQuests(){localStorage.setItem('kv8_quests',JSON.stringify(_quests))
 function advanceQuest(id,amt=1){
   const q=_quests.find(x=>x.id===id);if(!q||q.done)return;
   q.progress=Math.min(q.goal,q.progress+amt);
-  if(q.progress>=q.goal){q.done=true;gainXP(q.reward.xp,'action');if(q.reward.coins>0)gainCoins(q.reward.coins);showAchievement('✅','Quest klar: '+q.txt);showT('✅ QUEST KLAR! +'+q.reward.xp+'XP','g');SFX.win();}
+  if(q.progress>=q.goal){
+    q.done=true;gainXP(q.reward.xp,'action');if(q.reward.coins>0)gainCoins(q.reward.coins);
+    showAchievement('✅','Quest klar: '+q.txt);showT('✅ QUEST KLAR! +'+q.reward.xp+'XP','g');SFX.win&&SFX.win();
+    gainEventPoints&&gainEventPoints(10);
+    // Grant bronze key when all 3 daily quests done
+    if(_quests.filter(x=>x.done).length===_quests.length){
+      _grantChestKey&&_grantChestKey('bronze');
+      showT('🔑 Alla quests klara → BRONS KISTA nyckel!','y');
+    }
+  }
   saveQuests();renderQuests();renderKmbDaily&&renderKmbDaily();
   advanceWeeklyChallenge&&advanceWeeklyChallenge(id,amt);
 }
@@ -7638,7 +7684,7 @@ function advanceWeeklyChallenge(stat,amt=1){
   const tiers=wc.tiers;const r=wc.reward;
   if(p.val>=tiers[0]&&!p.bronze){p.bronze=true;gainXP(r.bronze.xp,'action');if(r.bronze.coins>0)gainCoins(r.bronze.coins);showT('🥉 VECKA BRONZE KLAR! +'+r.bronze.xp+'XP','y');vibe([40,20,80]);}
   if(p.val>=tiers[1]&&!p.silver){p.silver=true;gainXP(r.silver.xp,'action');if(r.silver.coins>0)gainCoins(r.silver.coins);showT('🥈 VECKA SILVER! +'+r.silver.xp+'XP','y');vibe([50,25,100]);}
-  if(p.val>=tiers[2]&&!p.gold){p.gold=true;gainXP(r.gold.xp,'action');if(r.gold.coins>0)gainCoins(r.gold.coins);showT('🏆 VECKA GOLD KOMPLETT! +'+r.gold.xp+'XP!','pk');vibe([60,30,120,30,180]);SFX.win();spawnParticles&&spawnParticles(window.innerWidth/2,window.innerHeight*.4,'stars');}
+  if(p.val>=tiers[2]&&!p.gold){p.gold=true;gainXP(r.gold.xp,'action');if(r.gold.coins>0)gainCoins(r.gold.coins);showT('🏆 VECKA GOLD KOMPLETT! +'+r.gold.xp+'XP!','pk');vibe([60,30,120,30,180]);SFX.win&&SFX.win();spawnParticles&&spawnParticles(window.innerWidth/2,window.innerHeight*.4,'stars');_grantChestKey&&_grantChestKey('silver');gainEventPoints&&gainEventPoints(30);}
   _wcSaveProgress(p);_wcUpdateCard();
 }
 function _wcUpdateCard(){
@@ -9371,7 +9417,7 @@ function startPetBlocks(){
   _dna.fusionCharge=0;_dna.combo=0;_dna.wave=1;
   _dna.blocks=[];_dna.dnaFrags=[];_dna.particles=[];_dna.ballTrail=[];
   _dna.powerUps=[];_dna.activePWs={};_dna.extraBalls=[];_dna.laserBeams=[];
-  _dna.laserFireTimer=0;_dna._origPW=_dna.pw;_dna._waveFlash=0;
+  _dna.laserFireTimer=0;_dna._origPW=_dna.pw;_dna._waveFlash=0;_dna._stuckFrames=0;
   _dna.active=true;
   _dnaBuildWave();
   _dnaUpdateHUD();
@@ -9430,11 +9476,38 @@ function _dnaUpdate(){
   _dna.bx+=_dna.vx;
   _dna.by+=_dna.vy;
   const br=_dna.br;
+  // Anti-stuck: count frames with no block hit
+  _dna._stuckFrames=(_dna._stuckFrames||0)+1;
+  if(_dna._stuckFrames>220){
+    // Force a valid angle toward blocks
+    const ang=-Math.PI/2+(Math.random()-.5)*.9;
+    const spd=Math.max(4,Math.sqrt(_dna.vx*_dna.vx+_dna.vy*_dna.vy));
+    _dna.vx=Math.cos(ang)*spd;_dna.vy=Math.sin(ang)*spd;
+    _dna._stuckFrames=0;
+    showT&&showT('🎱 Räddar bollen!','b');
+  }
 
-  // Wall bounce
-  if(_dna.bx<=br){_dna.bx=br;_dna.vx=Math.abs(_dna.vx);_dnaSparkAt(_dna.bx,_dna.by,'#00D9FF');}
-  if(_dna.bx>=W-br){_dna.bx=W-br;_dna.vx=-Math.abs(_dna.vx);_dnaSparkAt(_dna.bx,_dna.by,'#00D9FF');}
-  if(_dna.by<=br){_dna.by=br;_dna.vy=Math.abs(_dna.vy);_dnaSparkAt(_dna.bx,_dna.by,'#39FF14');}
+  // Wall bounce — enforce minimum vertical component to prevent infinite horizontal loop
+  if(_dna.bx<=br){
+    _dna.bx=br;_dna.vx=Math.abs(_dna.vx);
+    const spd=Math.sqrt(_dna.vx*_dna.vx+_dna.vy*_dna.vy);
+    if(Math.abs(_dna.vy)<spd*0.3)_dna.vy=_dna.vy<0?-spd*0.35:spd*0.35;
+    _dnaSparkAt(_dna.bx,_dna.by,'#00D9FF');
+  }
+  if(_dna.bx>=W-br){
+    _dna.bx=W-br;_dna.vx=-Math.abs(_dna.vx);
+    const spd=Math.sqrt(_dna.vx*_dna.vx+_dna.vy*_dna.vy);
+    if(Math.abs(_dna.vy)<spd*0.3)_dna.vy=_dna.vy<0?-spd*0.35:spd*0.35;
+    _dnaSparkAt(_dna.bx,_dna.by,'#00D9FF');
+  }
+  if(_dna.by<=br){
+    _dna.by=br;_dna.vy=Math.abs(_dna.vy);
+    // Always ensure downward motion after top bounce
+    if(_dna.vy<0.5)_dna.vy=Math.max(1.5,Math.sqrt(_dna.vx*_dna.vx+_dna.vy*_dna.vy)*0.4);
+    _dnaSparkAt(_dna.bx,_dna.by,'#39FF14');
+  }
+  // Hard cap on ball speed
+  {const spd=Math.sqrt(_dna.vx*_dna.vx+_dna.vy*_dna.vy);const maxS=10+_dna.wave*.4;if(spd>maxS){const f=maxS/spd;_dna.vx*=f;_dna.vy*=f;}}
 
   // Paddle collision
   const py=_dna.paddleY;
@@ -9520,9 +9593,10 @@ function _dnaUpdate(){
         if(_dna.score>_dna.best){_dna.best=_dna.score;localStorage.setItem('kv8_dnaBest',_dna.best);}
         _pbUpdateScore();
         _dnaUpdateHUD();
-        // Speed up slightly
+        _dna._stuckFrames=0;
+        // Speed up slightly, cap at maxSpd
         const spd=Math.sqrt(_dna.vx*_dna.vx+_dna.vy*_dna.vy);
-        const maxSpd=7+_dna.wave*.5;
+        const maxSpd=Math.min(10,7+_dna.wave*.4);
         if(spd<maxSpd){const f=(spd+.04)/spd;_dna.vx*=f;_dna.vy*=f;}
         SFX&&SFX.tap&&SFX.tap();vibe&&vibe(5);
         break;
@@ -17773,13 +17847,22 @@ function _pvpFight(rivalIdx){
   localStorage.setItem('kv8_pvpLeft',Math.max(0,left-1));
   if(won){
     gainCoins(rival.reward.coins);gainXP(rival.reward.xp,'battle');
-    const pts=parseInt(localStorage.getItem('kv8_pvpPts')||'0')+1;
+    const prevPts=parseInt(localStorage.getItem('kv8_pvpPts')||'0');
+    const pts=prevPts+1;
     localStorage.setItem('kv8_pvpPts',pts);
     SFX.win&&SFX.win();vibe([50,30,100]);
     showT('🏆 VANN! '+rival.em+' '+rival.nm+' · +'+rival.reward.coins+'⚡ +1RP','g');
     spawnParticles&&spawnParticles(window.innerWidth/2,window.innerHeight*.4,'stars');
     advanceQuest&&advanceQuest('battle',1);
     gainEventPoints&&gainEventPoints(3);
+    // Rank-up chest key rewards
+    const prevRank=_pvpGetRank?_pvpGetRank():null;
+    const newRank=PVP_RANKS?PVP_RANKS.slice().reverse().find(r=>pts>=r.pts)||PVP_RANKS[0]:null;
+    if(prevRank&&newRank&&newRank.nm!==prevRank.nm){
+      const keyMap={SILVER:'bronze',GOLD:'silver',DIAMOND:'gold',LEGEND:'diamond'};
+      if(keyMap[newRank.nm])_grantChestKey&&_grantChestKey(keyMap[newRank.nm]);
+      showT(newRank.ico+' RANK UP: '+newRank.nm+'! 🎉','p');
+    }
   }else{
     gainCoins(20);SFX.error&&SFX.error();vibe([80]);
     showT('💔 Förlorade mot '+rival.em+' '+rival.nm+'... +20⚡ tröst','r');
@@ -18009,6 +18092,179 @@ function gainEventPoints(n){
       save();
     }
   });
+}
+
+// ══════════════════════════════════════════
+// ── CHEST OPENING SYSTEM ──
+// ══════════════════════════════════════════
+const CHEST_DEFS=[
+  {id:'bronze', nm:'Brons Kista',  ico:'📦', rarityCol:'#CD7F32', glow:'rgba(205,127,50,.6)',  cost:120, freeKeys:'kv8_bronzeKeys',
+   drops:[
+    {w:35,ico:'💰',nm:'Coin Stash',   desc:'+{v} coins', v:[60,80,100],    apply:(v)=>gainCoins(v)},
+    {w:30,ico:'⭐',nm:'XP Crystal',   desc:'+{v} XP',    v:[30,50,70],     apply:(v)=>gainXP(v,'social')},
+    {w:20,ico:'🍖',nm:'Mega Mat',     desc:'Pet full hunger',v:[1],         apply:()=>{G.hunger=100;save();}},
+    {w:10,ico:'🎲',nm:'Lucky Roll',   desc:'+1 Gacha-spin',v:[1],           apply:()=>{const k=parseInt(localStorage.getItem('kv8_freeSpins')||'0');localStorage.setItem('kv8_freeSpins',k+1);}},
+    {w:5, ico:'🥉',nm:'Brons Trofé', desc:'+30 coins bonus',v:[30],rarity:'RARE',apply:(v)=>gainCoins(v)},
+  ]},
+  {id:'silver', nm:'Silver Kista', ico:'🎀', rarityCol:'#C0C0C0', glow:'rgba(192,192,192,.7)', cost:350, freeKeys:'kv8_silverKeys',
+   drops:[
+    {w:30,ico:'💰',nm:'Coin Jackpot',desc:'+{v} coins',  v:[150,200,250],  apply:(v)=>gainCoins(v)},
+    {w:25,ico:'⭐',nm:'XP Bomb',     desc:'+{v} XP',     v:[100,150,200],  apply:(v)=>gainXP(v,'social')},
+    {w:20,ico:'🥋',nm:'Training Boost',desc:'+20 TP',   v:[20],           apply:(v)=>{const t=parseInt(localStorage.getItem('kv8_dojoTP')||'0');localStorage.setItem('kv8_dojoTP',t+v);}},
+    {w:15,ico:'🎨',nm:'Style Fragment',desc:'Unlock random accessory',v:[1],rarity:'RARE',apply:()=>{if(G.cosmetics&&!G.cosmetics.accessories.includes('star_hat'))G.cosmetics.accessories.push('star_hat');save();}},
+    {w:7, ico:'☀️', nm:'Event Burst', desc:'+25 Summer WP',v:[25],rarity:'RARE',apply:(v)=>gainEventPoints(v)},
+    {w:3, ico:'🥈',nm:'Silver Trofé', desc:'+100 coins',v:[100],rarity:'EPIC',apply:(v)=>gainCoins(v)},
+  ]},
+  {id:'gold',   nm:'Guld Kista',   ico:'✨', rarityCol:'#FFD700', glow:'rgba(255,215,0,.8)',    cost:800, freeKeys:'kv8_goldKeys',
+   drops:[
+    {w:25,ico:'💰',nm:'Gold Vault', desc:'+{v} coins',   v:[300,400,500],  apply:(v)=>gainCoins(v)},
+    {w:20,ico:'⭐',nm:'XP Mega',   desc:'+{v} XP',       v:[250,350,500],  apply:(v)=>gainXP(v,'social')},
+    {w:20,ico:'🧬',nm:'DNA Shard', desc:'+15 DNA frags', v:[15],           apply:(v)=>{G.dnaFrags=(G.dnaFrags||0)+v;save();}},
+    {w:15,ico:'🎁',nm:'Item Crate', desc:'Gratis Silver-kista',v:[1],rarity:'RARE',apply:()=>{const k=parseInt(localStorage.getItem('kv8_silverKeys')||'0');localStorage.setItem('kv8_silverKeys',k+1);}},
+    {w:12,ico:'🥇',nm:'Guld Trofé', desc:'+300 coins + 200 XP',v:[1],rarity:'EPIC',apply:()=>{gainCoins(300);gainXP(200,'social');}},
+    {w:8, ico:'🌟',nm:'Stat Boost', desc:'+1 alla stats',v:[1],rarity:'EPIC',apply:()=>{if(!G.petStats)G.petStats={};['strength','endurance','speed','agility','luck'].forEach(s=>G.petStats[s]=(G.petStats[s]||0)+1);save();}},
+  ]},
+  {id:'diamond',nm:'Diamond Kista',ico:'💎', rarityCol:'#00D9FF', glow:'rgba(0,217,255,.9)',   cost:1800, freeKeys:'kv8_diamondKeys',
+   drops:[
+    {w:20,ico:'💎',nm:'Diamond Rain',desc:'+{v} coins',  v:[600,800,1000], apply:(v)=>gainCoins(v)},
+    {w:20,ico:'⭐',nm:'XP Legend',  desc:'+{v} XP',      v:[400,600,800],  apply:(v)=>gainXP(v,'social')},
+    {w:18,ico:'🌟',nm:'Multi Boost',desc:'+2 alla stats perm.',v:[2],rarity:'EPIC',apply:(v)=>{if(!G.petStats)G.petStats={};['strength','endurance','speed','agility','luck'].forEach(s=>G.petStats[s]=(G.petStats[s]||0)+v);save();}},
+    {w:15,ico:'☀️', nm:'Festival Bomb',desc:'+100 Summer WP',v:[100],rarity:'EPIC',apply:(v)=>gainEventPoints(v)},
+    {w:15,ico:'💎',nm:'Diamond Trofé',desc:'+500 coins bonus',v:[500],rarity:'LEGENDARY',apply:(v)=>gainCoins(v)},
+    {w:12,ico:'🌌',nm:'GOD MODE Frag',desc:'+24h God Mode',v:[1],rarity:'LEGENDARY',apply:()=>{G._godModeBonus=true;G._godModeExp=Date.now()+86400000;showT('🌌 GOD MODE aktiverat i 24h!','p');}},
+  ]},
+  {id:'legend', nm:'LEGEND Kista',  ico:'👑', rarityCol:'#BF5FFF', glow:'rgba(191,95,255,1)',  cost:0,   freeKeys:'kv8_legendKeys',
+   drops:[
+    {w:25,ico:'💰',nm:'MEGA VAULT', desc:'+{v} coins',   v:[1000,1500,2000],apply:(v)=>gainCoins(v)},
+    {w:20,ico:'⭐',nm:'XP GODLIKE',desc:'+{v} XP',       v:[1000,1500],    apply:(v)=>gainXP(v,'social')},
+    {w:20,ico:'🌌',nm:'GOD MODE',  desc:'Permanent aktiv',v:[1],rarity:'LEGENDARY',apply:()=>{G._godModeBonus=true;save();}},
+    {w:20,ico:'👑',nm:'KRONANS KRONA',desc:'+3 ALLA stats perm.',v:[3],rarity:'LEGENDARY',apply:(v)=>{if(!G.petStats)G.petStats={};['strength','endurance','speed','agility','luck'].forEach(s=>G.petStats[s]=(G.petStats[s]||0)+v);save();}},
+    {w:15,ico:'🏆',nm:'LEGEND TITLE',desc:'+2000 coins +1000 XP',v:[1],rarity:'LEGENDARY',apply:()=>{gainCoins(2000);gainXP(1000,'social');}},
+  ]},
+];
+
+function _chestRoll(chest){
+  const drops=chest.drops;
+  const totalW=drops.reduce((a,d)=>a+d.w,0);
+  let r=Math.random()*totalW;
+  for(const d of drops){r-=d.w;if(r<=0)return d;}
+  return drops[drops.length-1];
+}
+
+function openChestShop(){
+  const el=$('chestInner');const cl=$('chestCoinsLbl');
+  if(cl)cl.textContent=G.coins||0;
+  if(!el)return;
+  el.innerHTML=`<div style="width:100%;padding-top:14px">
+    <div style="text-align:center;margin-bottom:16px">
+      <div style="font-size:36px">🎁</div>
+      <div style="font-size:16px;font-weight:900;color:var(--y);font-family:var(--mono)">CHEST OPENING</div>
+      <div style="font-size:10px;color:var(--t3);margin-top:4px">Öppna kistor och vinn legendariska saker!</div>
+    </div>
+    ${CHEST_DEFS.map(c=>{
+      const keys=parseInt(localStorage.getItem(c.freeKeys)||'0');
+      const hasKey=keys>0;
+      return `<div style="background:rgba(255,255,255,.04);border:2px solid ${c.rarityCol}44;border-radius:20px;padding:16px;margin-bottom:12px;position:relative;overflow:hidden;box-shadow:0 0 20px ${c.glow.replace('.8','0.08').replace('.9','0.08').replace('.7','0.08').replace('.6','0.08').replace('1)','0.08)')}">
+        <div style="position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,${c.rarityCol},transparent)"></div>
+        <div style="display:flex;align-items:center;gap:12px">
+          <div style="font-size:48px;filter:drop-shadow(0 0 16px ${c.glow})">${c.ico}</div>
+          <div style="flex:1">
+            <div style="font-weight:900;font-size:15px;color:${c.rarityCol}">${c.nm}</div>
+            <div style="font-size:9px;color:var(--t3);margin:2px 0 6px">${c.drops.map(d=>d.ico).join(' ')} möjliga drops</div>
+            ${hasKey?`<div style="font-size:10px;color:var(--g);font-weight:900;font-family:var(--mono)">🔑 ${keys} nyckel${keys>1?'ar':''} tillgänglig${keys>1?'a':''}!</div>`:''}
+          </div>
+          <button onclick="openChest('${c.id}',${hasKey})" style="background:${hasKey?'linear-gradient(135deg,'+c.rarityCol+','+c.rarityCol+'aa)':'c.cost>0?\"linear-gradient(135deg,rgba(255,215,0,.2),rgba(255,159,10,.15))\":\"rgba(191,95,255,.2)\""};border:none;border-radius:14px;padding:12px 16px;cursor:pointer;font-family:var(--mono);font-size:${c.cost>0?'10':'11'}px;font-weight:900;color:${hasKey?'#000':'var(--y)'};min-width:80px;text-align:center;line-height:1.3">
+            ${hasKey?'🔑 ÖPPNA':(c.cost>0?'<span style="font-size:12px">'+c.ico+'</span><br>'+c.cost+'⚡':'🏆 INTJÄNA')}
+          </button>
+        </div>
+        ${c.id==='legend'?'<div style="font-size:9px;color:var(--p);margin-top:8px;text-align:center">Intjänas via: Alla dagliga quests klara · Weekly gold · Turneringsvinst</div>':''}
+      </div>`;
+    }).join('')}
+    <div style="text-align:center;margin-top:10px">
+      <div style="font-size:10px;color:var(--t3)">🔑 Gratis nycklar via: Dagliga quests · Veckoutmaningar · PvP-vinster</div>
+    </div>
+  </div>`;
+  oWin('chestWin');
+}
+
+function openChest(chestId, usingKey=false){
+  const chest=CHEST_DEFS.find(c=>c.id===chestId);if(!chest)return;
+  if(usingKey){
+    const keys=parseInt(localStorage.getItem(chest.freeKeys)||'0');
+    if(keys<=0){showT('Inga nycklar!','r');return;}
+    localStorage.setItem(chest.freeKeys,keys-1);
+  } else {
+    if(chest.cost<=0){showT('Intjäna nycklar för att öppna!','y');return;}
+    if(G.coins<chest.cost){showT('Behöver '+chest.cost+'⚡!','r');SFX.error&&SFX.error();return;}
+    G.coins-=chest.cost;save();updateHUD();
+  }
+
+  const drop=_chestRoll(chest);
+  const val=drop.v?drop.v[Math.floor(Math.random()*drop.v.length)]:1;
+  const desc=(drop.desc||'').replace('{v}',val);
+  const rarity=drop.rarity||'COMMON';
+  const rarityColors={COMMON:'rgba(255,255,255,.6)',RARE:'#39FF14',EPIC:'#BF5FFF',LEGENDARY:'#FFD700'};
+  const rarityCol=rarityColors[rarity]||'#fff';
+
+  // Show reveal overlay
+  const ov=$('chestRevealOverlay');if(!ov)return;
+  const emo=$('chestRevealEmoji');const rEl=$('chestRevealRarity');
+  const nEl=$('chestRevealName');const dEl=$('chestRevealDesc');const btn=$('chestRevealOkBtn');
+  const glow=$('chestRevealGlow');
+  if(emo)emo.textContent=chest.ico;
+  if(rEl){rEl.textContent='';rEl.style.opacity='0';}
+  if(nEl){nEl.textContent='';nEl.style.opacity='0';}
+  if(dEl){dEl.textContent='';dEl.style.opacity='0';}
+  if(btn){btn.style.opacity='0';}
+  if(glow){glow.style.opacity='0';glow.style.background=`radial-gradient(circle,${chest.glow} 0%,transparent 70%)`;}
+
+  ov.style.display='flex';
+
+  // Phase 1: Shake chest (300ms)
+  if(emo){emo.style.animation='dojoShake .15s ease infinite';emo.style.fontSize='80px';}
+  SFX.coin&&SFX.coin();vibe&&vibe([20,10,20,10,40]);
+
+  setTimeout(()=>{
+    // Phase 2: Glow burst
+    if(glow){glow.style.opacity='1';}
+    if(emo){emo.style.animation='none';emo.style.transform='scale(1.3)';}
+  },350);
+
+  setTimeout(()=>{
+    // Phase 3: Reveal item
+    if(emo){emo.textContent=drop.ico;emo.style.transform='scale(1.5)';emo.style.fontSize='90px';emo.style.filter='drop-shadow(0 0 30px '+rarityCol+')';}
+    if(rEl){rEl.textContent=rarity;rEl.style.color=rarityCol;rEl.style.opacity='1';rEl.style.textShadow='0 0 20px '+rarityCol;}
+    if(nEl){nEl.textContent=drop.nm;nEl.style.color=rarityCol;nEl.style.opacity='1';}
+    if(dEl){dEl.textContent=desc;dEl.style.opacity='1';}
+
+    // Apply reward
+    drop.apply(val);
+    save();updateHUD();checkAchievements&&checkAchievements();
+    gainEventPoints&&gainEventPoints(rarity==='LEGENDARY'?20:rarity==='EPIC'?10:rarity==='RARE'?5:2);
+    advanceQuest&&advanceQuest('chest',1);
+
+    if(rarity==='LEGENDARY'||rarity==='EPIC'){
+      spawnParticles&&spawnParticles(window.innerWidth/2,window.innerHeight*.35,'stars');
+    }
+    SFX.win&&SFX.win();vibe&&vibe([40,20,80,30,150]);
+
+    setTimeout(()=>{if(btn)btn.style.opacity='1';},500);
+  },750);
+
+  // Update chest shop coins label
+  const cl=$('chestCoinsLbl');if(cl)cl.textContent=G.coins||0;
+  addDiaryEntry&&addDiaryEntry('Öppnade '+chest.nm+' och fick '+drop.ico+' '+drop.nm+'!');
+  // Refresh shop after close
+  ov._refreshOnClose=true;
+}
+
+// Grant chest keys for achievements
+function _grantChestKey(tier){
+  const map={bronze:'kv8_bronzeKeys',silver:'kv8_silverKeys',gold:'kv8_goldKeys',diamond:'kv8_diamondKeys',legend:'kv8_legendKeys'};
+  const k=map[tier];if(!k)return;
+  localStorage.setItem(k,(parseInt(localStorage.getItem(k)||'0')+1));
+  showT('🔑 '+tier.toUpperCase()+' Kista nyckel intjänad!','y');
+  SFX.win&&SFX.win();
 }
 
 // ══════════════════════════════════════════
