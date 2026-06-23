@@ -1283,10 +1283,11 @@ button:active{opacity:.85;}
 /* Big animated pet preview */
 .ob-pet-preview{font-size:88px;text-align:center;display:block;margin:4px auto 16px;animation:petBob 1.8s ease-in-out infinite;filter:drop-shadow(0 0 28px rgba(57,255,20,.45));}
 /* Tutorial feed action */
-.ob-feed-btn{width:100%;padding:18px 16px;border-radius:6px;background:#0d0d0d;border:3px solid var(--o);box-shadow:5px 5px 0px var(--o);display:flex;align-items:center;gap:14px;cursor:pointer;margin-bottom:14px;-webkit-tap-highlight-color:transparent;transition:transform .08s,box-shadow .08s;}
-.ob-feed-btn:active{transform:translate(5px,5px);box-shadow:0px 0px 0px transparent;}
-.ob-feed-btn.done{background:#001a00;border-color:var(--g);box-shadow:5px 5px 0px var(--g);}
-.ob-feed-ico{font-size:40px;flex-shrink:0;}
+.ob-feed-btn{width:100%;padding:18px 16px;border-radius:18px;background:linear-gradient(135deg,rgba(255,159,10,.12),rgba(255,100,0,.06));border:2px solid rgba(255,159,10,.5);box-shadow:0 0 28px rgba(255,159,10,.2),inset 0 1px 0 rgba(255,255,255,.08);display:flex;align-items:center;gap:14px;cursor:pointer;margin-bottom:14px;-webkit-tap-highlight-color:transparent;transition:all .18s cubic-bezier(.34,1.56,.64,1);animation:obFeedPulse 2s ease-in-out infinite;}
+.ob-feed-btn:active{transform:scale(.95);box-shadow:0 0 14px rgba(255,159,10,.15);}
+.ob-feed-btn.done{background:linear-gradient(135deg,rgba(57,255,20,.12),rgba(0,200,50,.06));border-color:rgba(57,255,20,.5);box-shadow:0 0 28px rgba(57,255,20,.2),inset 0 1px 0 rgba(57,255,20,.08);animation:none;}
+@keyframes obFeedPulse{0%,100%{box-shadow:0 0 20px rgba(255,159,10,.2),inset 0 1px 0 rgba(255,255,255,.08);}50%{box-shadow:0 0 40px rgba(255,159,10,.4),inset 0 1px 0 rgba(255,255,255,.1);}}
+.ob-feed-ico{font-size:44px;flex-shrink:0;animation:petBob 1.4s ease-in-out infinite;filter:drop-shadow(0 0 8px rgba(255,159,10,.6));}
 .ob-feed-main{font-size:15px;font-weight:900;margin-bottom:3px;font-family:var(--mono);}
 .ob-feed-sub{font-size:11px;color:rgba(255,255,255,.5);font-family:var(--mono);}
 
@@ -3487,8 +3488,8 @@ div[style*="LIVE"]{border-radius:16px!important;background:rgba(57,255,20,.03)!i
 
     <!-- EXPLORE VIEW -->
     <div class="view" id="view-explore">
-      <div class="explore-hdr">🔍 Utforska</div>
-      <div class="explore-sub">Hitta vänner, trending pets och nya uppdrag</div>
+      <div class="explore-hdr" style="font-size:22px;letter-spacing:1px;padding:14px 14px 4px;background:linear-gradient(135deg,var(--b),var(--p));-webkit-background-clip:text;-webkit-text-fill-color:transparent">🔍 UTFORSKA</div>
+      <div class="explore-sub" style="font-size:11px;letter-spacing:.5px;font-weight:700;color:rgba(255,255,255,.35);text-transform:uppercase;font-family:var(--mono)">Hitta vänner · trending pets · nya uppdrag</div>
       <!-- PACK SHOP TEASER -->
       <div style="margin:0 14px 12px;cursor:pointer;-webkit-tap-highlight-color:transparent" onclick="openPackShop()">
         <div style="background:linear-gradient(135deg,rgba(255,230,0,.08),rgba(255,100,0,.04));border:1.5px solid rgba(255,230,0,.4);border-radius:18px;padding:16px 18px;display:flex;align-items:center;gap:14px;box-shadow:0 0 28px rgba(255,230,0,.1),inset 0 1px 0 rgba(255,255,255,.06);transition:transform .1s" ontouchstart="this.style.transform='scale(.98)'" ontouchend="this.style.transform=''">
