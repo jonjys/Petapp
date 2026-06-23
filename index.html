@@ -2550,6 +2550,7 @@ div[style*="LIVE"]{border-radius:16px!important;background:rgba(57,255,20,.03)!i
 <!-- ONBOARDING -->
 <div class="ob" id="ob">
   <div class="ob-bg" id="obBg"></div>
+  <div style="position:absolute;bottom:8px;left:10px;z-index:100;font-size:8px;color:rgba(255,255,255,.25);font-family:var(--mono);letter-spacing:1px;pointer-events:none">v523</div>
   <button id="langToggle" onclick="toggleLang()" style="position:absolute;top:14px;right:14px;z-index:100;background:rgba(255,255,255,.1);border:1.5px solid rgba(255,255,255,.2);border-radius:12px;padding:6px 12px;font-size:15px;cursor:pointer;backdrop-filter:blur(8px);-webkit-tap-highlight-color:transparent;color:#fff;font-weight:900;letter-spacing:.5px">🇸🇪 SV</button>
 
   <!-- WORLD SELECTION — shown first -->
@@ -2561,28 +2562,28 @@ div[style*="LIVE"]{border-radius:16px!important;background:rgba(57,255,20,.03)!i
       <div class="ob-h2" id="obWorldTitle" style="margin-bottom:3px">VÄLJ DIN VÄRLD.</div>
       <div class="ob-p2" id="obWorldSub" style="margin-bottom:12px;font-size:12px">Välj miljön din pet ska leva i.</div>
       <div class="ob-worlds" style="margin-bottom:12px;gap:8px">
-        <div class="ob-world sel" data-world="cosmic" ontouchstart="event.preventDefault();pickWorld(this)" onclick="pickWorld(this)">
+        <div class="ob-world sel" data-world="cosmic" onclick="pickWorld(this)">
           <span class="ob-world-ico">🌌</span>
           <span class="ob-world-nm">COSMIC</span>
           <div class="ob-world-ds">Universum & stjärnor</div>
         </div>
-        <div class="ob-world" data-world="nature" ontouchstart="event.preventDefault();pickWorld(this)" onclick="pickWorld(this)">
+        <div class="ob-world" data-world="nature" onclick="pickWorld(this)">
           <span class="ob-world-ico">🌿</span>
           <span class="ob-world-nm">NATURE</span>
           <div class="ob-world-ds">Skog & natur</div>
         </div>
-        <div class="ob-world" data-world="city" ontouchstart="event.preventDefault();pickWorld(this)" onclick="pickWorld(this)">
+        <div class="ob-world" data-world="city" onclick="pickWorld(this)">
           <span class="ob-world-ico">🏙️</span>
           <span class="ob-world-nm">CITY</span>
           <div class="ob-world-ds">Neon city vibes</div>
         </div>
-        <div class="ob-world" data-world="pixel" ontouchstart="event.preventDefault();pickWorld(this)" onclick="pickWorld(this)">
+        <div class="ob-world" data-world="pixel" onclick="pickWorld(this)">
           <span class="ob-world-ico">🎮</span>
           <span class="ob-world-nm">PIXEL</span>
           <div class="ob-world-ds">8-bit retro pixel</div>
         </div>
       </div>
-      <button class="btn btn-g btn-lg btn-full ob-cta-btn" id="obwBtn" style="font-family:var(--mono);font-size:15px;letter-spacing:2px;padding:14px;border-radius:12px;border:none;position:relative;overflow:hidden" ontouchstart="event.preventDefault();if(!this._b){this._b=true;this.style.opacity='.7';obNext(0);setTimeout(()=>this._b=false,600);}" onclick="if(!this._b){obNext(0);}">VÄLJ VÄRLD →</button>
+      <button class="btn btn-g btn-lg btn-full ob-cta-btn" id="obwBtn" style="font-family:var(--mono);font-size:15px;letter-spacing:2px;padding:14px;border-radius:12px;border:none;position:relative;overflow:hidden" onclick="if(this._b)return;this._b=1;this.style.opacity='.7';obNext(0);setTimeout(()=>{this._b=0;this.style.opacity='';},600);">VÄLJ VÄRLD →</button>
     </div>
   </div>
 
@@ -2596,7 +2597,7 @@ div[style*="LIVE"]{border-radius:16px!important;background:rgba(57,255,20,.03)!i
       <div class="ob-p2">Välj ett smeknamn — det är din KARMA-identitet i appen.</div>
       <label class="lbl">DITT NAMN</label>
       <input class="inp" id="obName" placeholder="Ex: ella_runs / axelsthlm" maxlength="18" style="font-size:16px;margin-bottom:16px;border-radius:6px;border:3px solid rgba(57,255,20,.4);background:#0d0d0d;color:#fff;font-family:var(--mono)">
-      <button class="btn btn-g btn-lg btn-full ob-cta-btn" style="font-family:var(--mono);font-size:15px;letter-spacing:2px;padding:14px;border-radius:12px;border:none;position:relative;overflow:hidden" ontouchstart="event.preventDefault();if(!this._b){this._b=true;this.style.opacity='.7';obNext(1);setTimeout(()=>this._b=false,600);}" onclick="if(!this._b){obNext(1);}">NÄSTA →</button>
+      <button class="btn btn-g btn-lg btn-full ob-cta-btn" style="font-family:var(--mono);font-size:15px;letter-spacing:2px;padding:14px;border-radius:12px;border:none;position:relative;overflow:hidden" onclick="if(this._b)return;this._b=1;this.style.opacity='.7';obNext(1);setTimeout(()=>{this._b=0;this.style.opacity='';},600);">NÄSTA →</button>
     </div>
   </div>
 
@@ -2609,7 +2610,7 @@ div[style*="LIVE"]{border-radius:16px!important;background:rgba(57,255,20,.03)!i
       <div class="ob-pet-big" id="obPetGrid"></div>
       <label class="lbl">PET-NAMN</label>
       <input class="inp" id="obPetName" placeholder="Ex: Eldrake / Luna / Shadow" style="font-size:16px;margin-bottom:16px">
-      <button class="btn btn-g btn-lg btn-full ob-cta-btn" style="font-family:var(--mono);font-size:15px;letter-spacing:2px;padding:14px;border-radius:12px;border:none;position:relative;overflow:hidden" ontouchstart="event.preventDefault();if(!this._b){this._b=true;this.style.opacity='.7';obNext(2);setTimeout(()=>this._b=false,600);}" onclick="if(!this._b){obNext(2);}">NÄSTA →</button>
+      <button class="btn btn-g btn-lg btn-full ob-cta-btn" style="font-family:var(--mono);font-size:15px;letter-spacing:2px;padding:14px;border-radius:12px;border:none;position:relative;overflow:hidden" onclick="if(this._b)return;this._b=1;this.style.opacity='.7';obNext(2);setTimeout(()=>{this._b=0;this.style.opacity='';},600);">NÄSTA →</button>
     </div>
   </div>
 
@@ -2649,7 +2650,7 @@ div[style*="LIVE"]{border-radius:16px!important;background:rgba(57,255,20,.03)!i
           <span style="font-size:28px">👤</span><div><div id="obAge3Lbl" style="font-size:14px;font-weight:900;font-family:var(--mono)">18+</div><div id="obAge3Desc" style="font-size:10px;color:rgba(255,255,255,.5);font-family:var(--mono)">Full app + exklusivt innehåll</div></div>
         </div>
       </div>
-      <button class="btn btn-g btn-lg btn-full ob-cta-btn" style="font-family:var(--mono);font-size:15px;letter-spacing:2px;padding:14px;border-radius:12px;border:none;position:relative;overflow:hidden" ontouchstart="event.preventDefault();if(!this._b){this._b=true;this.style.opacity='.7';obNext(4);setTimeout(()=>this._b=false,600);}" onclick="if(!this._b){obNext(4);}">NÄSTA →</button>
+      <button class="btn btn-g btn-lg btn-full ob-cta-btn" style="font-family:var(--mono);font-size:15px;letter-spacing:2px;padding:14px;border-radius:12px;border:none;position:relative;overflow:hidden" onclick="if(this._b)return;this._b=1;this.style.opacity='.7';obNext(4);setTimeout(()=>{this._b=0;this.style.opacity='';},600);">NÄSTA →</button>
     </div>
   </div>
 
@@ -2681,7 +2682,7 @@ div[style*="LIVE"]{border-radius:16px!important;background:rgba(57,255,20,.03)!i
           <span class="ob-world-ds" id="obMode4Desc">Ge mig hela paketet</span>
         </div>
       </div>
-      <button class="btn btn-g btn-lg btn-full ob-cta-btn" id="obStartKarmaBtn" style="font-family:var(--mono);font-size:17px;letter-spacing:2px;padding:16px;border-radius:12px;border:none;position:relative;overflow:hidden" ontouchstart="event.preventDefault();if(!this._b){this._b=true;this.style.opacity='.7';finishOB();setTimeout(()=>this._b=false,1000);}" onclick="if(!this._b){finishOB();}">🚀 STARTA KARMA!</button>
+      <button class="btn btn-g btn-lg btn-full ob-cta-btn" id="obStartKarmaBtn" style="font-family:var(--mono);font-size:17px;letter-spacing:2px;padding:16px;border-radius:12px;border:none;position:relative;overflow:hidden" onclick="if(this._b)return;this._b=1;this.style.opacity='.7';finishOB();setTimeout(()=>{this._b=0;this.style.opacity='';},1000);">🚀 STARTA KARMA!</button>
     </div>
   </div>
 </div>
