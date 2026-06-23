@@ -148,6 +148,8 @@ textarea.inp{resize:none;min-height:68px;}
 .topt:active{transform:translate(3px,3px);box-shadow:0px 0px 0px rgba(255,255,255,.08)!important;}
 .fsw{position:fixed;inset:0;z-index:700;background:var(--bg);display:flex;flex-direction:column;transform:translateX(100%);transition:transform .28s cubic-bezier(.32,.72,0,1);}
 .fsw.open{transform:translateX(0);}
+.fsw-panel{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);max-height:90vh;overflow-y:auto;border-radius:22px;background:rgba(6,6,18,.98);border:1px solid rgba(255,255,255,.1);box-shadow:0 0 60px rgba(0,0,0,.8),0 0 30px rgba(57,255,20,.04);z-index:950;width:min(420px,94vw);-webkit-overflow-scrolling:touch;}
+.fsw-overlay{position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:940;backdrop-filter:blur(4px);}
 .fsh{height:50px;display:flex;align-items:center;padding:0 14px;gap:10px;border-bottom:1px solid var(--line);flex-shrink:0;background:rgba(4,4,10,.97);}
 .fbk{background:none;border:none;color:var(--t2);font-size:22px;cursor:pointer;}
 .ftl{font-size:15px;font-weight:800;flex:1;}
@@ -454,11 +456,13 @@ textarea.inp{resize:none;min-height:68px;}
 @keyframes gameCardHover{0%,100%{box-shadow:0 0 20px rgba(var(--gc),0.2)}50%{box-shadow:0 0 40px rgba(var(--gc),0.5),0 0 80px rgba(var(--gc),0.1)}}
 /* NEO-BRUTALISM GLOBAL OVERRIDES */
 .nb-card{background:#0d0d0d;border:2px solid rgba(255,255,255,.18);border-radius:6px;box-shadow:4px 4px 0px rgba(57,255,20,.22);}
+.nb-card:active{transform:scale(.97);}
 .nb-section{font-size:9px;font-weight:900;color:var(--g);font-family:var(--mono);letter-spacing:2px;text-transform:uppercase;padding:10px 14px 4px;}
 .shop-item-card{background:#0d0d0d;border:3px solid rgba(255,255,255,.15);border-radius:6px;box-shadow:4px 4px 0px rgba(255,255,255,.08);cursor:pointer;transition:transform .08s,box-shadow .08s;}
 .shop-item-card:active{transform:translate(4px,4px);box-shadow:0px 0px 0px rgba(255,255,255,.08)!important;}
 .xgame-card{min-height:90px;background:#0d0d0d;border:2px solid rgba(255,255,255,.15);border-radius:6px;box-shadow:3px 3px 0px rgba(57,255,20,.2);cursor:pointer;transition:transform .08s,box-shadow .08s;}
 .xgame-card:active{transform:translate(3px,3px);box-shadow:0px 0px 0px rgba(57,255,20,.2)!important;}
+@media(hover:hover){.xgame-card:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,.5);transition:all .15s;}}
 /* Section labels across app */
 .sh{display:flex;align-items:center;justify-content:space-between;padding:9px 14px 5px;}
 .sh-t{font-size:9px;font-weight:900;color:var(--g);text-transform:uppercase;letter-spacing:1.2px;font-family:var(--mono);}
@@ -1154,7 +1158,7 @@ button:active{opacity:.85;}
 .nb-inner{position:relative;display:inline-flex;width:32px;height:32px;align-items:center;justify-content:center;border-radius:10px;transition:background .15s;}
 .nb .ni{font-size:19px;transition:transform .15s;}
 .nb .nl{font-size:9px;font-weight:800;color:var(--t3);text-transform:uppercase;letter-spacing:.3px;transition:color .15s;}
-@keyframes fabPulse{0%,100%{box-shadow:0 6px 24px rgba(255,45,85,.5),0 0 0 1.5px rgba(255,255,255,.12);}50%{box-shadow:0 8px 32px rgba(255,45,85,.7),0 0 0 1.5px rgba(255,255,255,.2);}}
+@keyframes fabPulse{0%,100%{box-shadow:0 6px 28px rgba(255,45,85,.65),0 0 50px rgba(255,45,85,.2);}50%{box-shadow:0 6px 36px rgba(255,45,85,.85),0 0 70px rgba(255,45,85,.35),0 0 0 4px rgba(255,45,85,.12);}}
 @keyframes pulse{0%,100%{opacity:1;}50%{opacity:.5;}}
 @keyframes incomeFloat{0%{opacity:1;transform:translateY(0) scale(1);}80%{opacity:.8;transform:translateY(-60px) scale(1.2);}100%{opacity:0;transform:translateY(-90px) scale(.8);}}
 /* SpawnEngine-style: colored bg square on active tab */
@@ -1222,14 +1226,14 @@ button:active{opacity:.85;}
 /* ═══════════════════════════════════
    CINEMATIC ONBOARDING
 ═══════════════════════════════════ */
-.ob{position:fixed;inset:0;background:#000;z-index:9999;display:flex;flex-direction:column;align-items:center;overflow-y:auto;padding-bottom:env(safe-area-inset-bottom,16px);}
+.ob{position:fixed;inset:0;background:#000;z-index:9999;display:flex;flex-direction:column;align-items:center;overflow:hidden;padding-bottom:env(safe-area-inset-bottom,16px);}
 .ob-bg{position:absolute;inset:0;pointer-events:none;}
 .ob-bg-star{position:absolute;border-radius:50%;background:#fff;animation:obStar var(--dur) ease-in-out infinite var(--del);}
 @keyframes obStar{0%,100%{opacity:.1;}50%{opacity:.85;}}
 .ob-float-em{position:absolute;animation:obFloatUp var(--dur) linear infinite var(--del);font-size:var(--sz);pointer-events:none;}
 @keyframes obFloatUp{0%{transform:translateY(100vh) scale(0);opacity:0;}10%{opacity:.7;}90%{opacity:.5;}100%{transform:translateY(-20vh) scale(1);opacity:0;}}
-.ob-step{width:100%;max-width:400px;flex-shrink:0;}
-.ob-content{position:relative;z-index:2;padding:16px 20px 24px;flex:1;display:flex;flex-direction:column;justify-content:center;scrollbar-width:none;}
+.ob-step{width:100%;max-width:400px;flex-shrink:0;min-height:100%;display:flex;flex-direction:column;justify-content:center;}
+.ob-content{position:relative;z-index:2;padding:16px 20px 24px;flex:1;display:flex;flex-direction:column;justify-content:center;scrollbar-width:none;overflow-y:auto;max-height:calc(100vh - 40px);min-height:0;}
 .ob-content::-webkit-scrollbar{display:none;}
 .ob-logo-hero{font-size:64px;font-weight:900;font-family:var(--mono);text-align:center;letter-spacing:-2px;margin-bottom:4px;animation:obLogoIn .6s cubic-bezier(.34,1.56,.64,1);}
 @keyframes obLogoIn{from{transform:scale(0) rotate(-12deg);opacity:0;}to{transform:none;opacity:1;}}
@@ -1245,16 +1249,16 @@ button:active{opacity:.85;}
 @keyframes stepIn{from{opacity:0;transform:translateX(24px);}to{opacity:1;transform:none;}}
 /* World selection — neo-brutalism */
 .ob-worlds{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px;}
-.ob-world{border-radius:6px;padding:12px 8px;text-align:center;cursor:pointer;border:3px solid rgba(255,255,255,.18);transition:transform .08s,box-shadow .08s;-webkit-tap-highlight-color:transparent;background:#0d0d0d;box-shadow:4px 4px 0px rgba(255,255,255,.15);user-select:none;}
-.ob-world.sel{transform:translate(3px,3px);box-shadow:0px 0px 0px transparent;}
-.ob-world[data-world="cosmic"].sel,.ob-world[data-world="cosmic"]:active{border-color:var(--p);box-shadow:0 0 0;transform:translate(3px,3px);}
-.ob-world[data-world="cosmic"]{border-color:var(--p);box-shadow:4px 4px 0px var(--p);background:#0a0010;}
-.ob-world[data-world="nature"]{border-color:var(--g);box-shadow:4px 4px 0px var(--g);background:#001a00;}
-.ob-world[data-world="nature"].sel{border-color:var(--g);box-shadow:0 0 0;transform:translate(3px,3px);}
-.ob-world[data-world="city"]{border-color:var(--b);box-shadow:4px 4px 0px var(--b);background:#000d1a;}
-.ob-world[data-world="city"].sel{border-color:var(--b);box-shadow:0 0 0;transform:translate(3px,3px);}
-.ob-world[data-world="pixel"]{border-color:var(--pk);box-shadow:4px 4px 0px var(--pk);background:#1a000d;}
-.ob-world[data-world="pixel"].sel{border-color:var(--pk);box-shadow:0 0 0;transform:translate(3px,3px);}
+.ob-world{border-radius:18px;padding:16px 10px;text-align:center;cursor:pointer;border:2px solid rgba(255,255,255,.15);transition:all .2s cubic-bezier(.34,1.56,.64,1);-webkit-tap-highlight-color:transparent;background:rgba(255,255,255,.03);box-shadow:0 4px 20px rgba(0,0,0,.4),inset 0 1px 0 rgba(255,255,255,.08);user-select:none;}
+.ob-world.sel{transform:scale(1.06) translateY(-2px);}
+.ob-world[data-world="cosmic"].sel,.ob-world[data-world="cosmic"]:active{border-color:rgba(191,95,255,.6);background:linear-gradient(135deg,rgba(191,95,255,.15),#0a0010);box-shadow:0 0 28px rgba(191,95,255,.3),inset 0 1px 0 rgba(255,255,255,.1);}
+.ob-world[data-world="cosmic"]{border-color:rgba(191,95,255,.6);background:linear-gradient(135deg,rgba(191,95,255,.15),#0a0010);box-shadow:0 0 28px rgba(191,95,255,.3),inset 0 1px 0 rgba(255,255,255,.1);}
+.ob-world[data-world="nature"]{border-color:rgba(57,255,20,.6);background:linear-gradient(135deg,rgba(57,255,20,.12),#001a00);box-shadow:0 0 28px rgba(57,255,20,.25),inset 0 1px 0 rgba(255,255,255,.08);}
+.ob-world[data-world="nature"].sel{border-color:rgba(57,255,20,.6);background:linear-gradient(135deg,rgba(57,255,20,.12),#001a00);box-shadow:0 0 28px rgba(57,255,20,.25),inset 0 1px 0 rgba(255,255,255,.08);}
+.ob-world[data-world="city"]{border-color:rgba(0,217,255,.6);background:linear-gradient(135deg,rgba(0,217,255,.12),#000d1a);box-shadow:0 0 28px rgba(0,217,255,.25),inset 0 1px 0 rgba(255,255,255,.08);}
+.ob-world[data-world="city"].sel{border-color:rgba(0,217,255,.6);background:linear-gradient(135deg,rgba(0,217,255,.12),#000d1a);box-shadow:0 0 28px rgba(0,217,255,.25),inset 0 1px 0 rgba(255,255,255,.08);}
+.ob-world[data-world="pixel"]{border-color:rgba(255,0,127,.6);background:linear-gradient(135deg,rgba(255,0,127,.12),#1a000d);box-shadow:0 0 28px rgba(255,0,127,.25),inset 0 1px 0 rgba(255,255,255,.08);}
+.ob-world[data-world="pixel"].sel{border-color:rgba(255,0,127,.6);background:linear-gradient(135deg,rgba(255,0,127,.12),#1a000d);box-shadow:0 0 28px rgba(255,0,127,.25),inset 0 1px 0 rgba(255,255,255,.08);}
 .ob-world-ico{font-size:34px;display:block;margin-bottom:6px;animation:petBob 2.5s ease-in-out infinite;}
 @keyframes petBob{0%,100%{transform:translateY(0);}50%{transform:translateY(-6px);}}
 @keyframes heroAura{0%,100%{box-shadow:0 0 40px rgba(57,255,20,.25),0 0 80px rgba(57,255,20,.1),inset 0 0 40px rgba(57,255,20,.05);}50%{box-shadow:0 0 60px rgba(57,255,20,.45),0 0 120px rgba(57,255,20,.18),inset 0 0 60px rgba(57,255,20,.1);}}
@@ -1272,17 +1276,20 @@ button:active{opacity:.85;}
 .ob-world-ds{font-size:9px;color:rgba(255,255,255,.5);font-family:var(--mono);}
 /* Pet selection — 5 cols so all 10 fit in 2 rows, button always visible */
 .ob-pet-big{display:grid;grid-template-columns:repeat(5,1fr);gap:5px;margin-bottom:12px;}
-.ob-pb{border-radius:10px;padding:8px 2px;text-align:center;cursor:pointer;border:2px solid rgba(255,255,255,.12);transition:all .12s;background:#0a0a0a;-webkit-tap-highlight-color:transparent;}
-.ob-pb.sel{border-color:var(--g);background:rgba(57,255,20,.08);box-shadow:0 0 12px rgba(57,255,20,.25);}
-.ob-pb-em{font-size:26px;display:block;margin-bottom:2px;}
-.ob-pb-nm{font-size:7px;font-weight:700;color:var(--t2);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.ob-pb{border-radius:14px;padding:10px 4px 8px;text-align:center;cursor:pointer;border:1.5px solid rgba(255,255,255,.1);transition:all .18s cubic-bezier(.34,1.56,.64,1);background:rgba(255,255,255,.03);-webkit-tap-highlight-color:transparent;box-shadow:0 2px 10px rgba(0,0,0,.3),inset 0 1px 0 rgba(255,255,255,.06);}
+.ob-pb:active{transform:scale(.9);}
+.ob-pb.sel{border-color:rgba(57,255,20,.7);background:rgba(57,255,20,.1);box-shadow:0 0 20px rgba(57,255,20,.35),inset 0 1px 0 rgba(57,255,20,.15);transform:scale(1.06) translateY(-2px);}
+.ob-pb-em{font-size:28px;display:block;margin-bottom:3px;transition:filter .18s;}
+.ob-pb.sel .ob-pb-em{filter:drop-shadow(0 0 6px rgba(57,255,20,.7));}
+.ob-pb-nm{font-size:7px;font-weight:800;color:var(--t2);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-family:var(--mono);letter-spacing:.3px;}
 /* Big animated pet preview */
 .ob-pet-preview{font-size:88px;text-align:center;display:block;margin:4px auto 16px;animation:petBob 1.8s ease-in-out infinite;filter:drop-shadow(0 0 28px rgba(57,255,20,.45));}
 /* Tutorial feed action */
-.ob-feed-btn{width:100%;padding:18px 16px;border-radius:6px;background:#0d0d0d;border:3px solid var(--o);box-shadow:5px 5px 0px var(--o);display:flex;align-items:center;gap:14px;cursor:pointer;margin-bottom:14px;-webkit-tap-highlight-color:transparent;transition:transform .08s,box-shadow .08s;}
-.ob-feed-btn:active{transform:translate(5px,5px);box-shadow:0px 0px 0px transparent;}
-.ob-feed-btn.done{background:#001a00;border-color:var(--g);box-shadow:5px 5px 0px var(--g);}
-.ob-feed-ico{font-size:40px;flex-shrink:0;}
+.ob-feed-btn{width:100%;padding:18px 16px;border-radius:18px;background:linear-gradient(135deg,rgba(255,159,10,.12),rgba(255,100,0,.06));border:2px solid rgba(255,159,10,.5);box-shadow:0 0 28px rgba(255,159,10,.2),inset 0 1px 0 rgba(255,255,255,.08);display:flex;align-items:center;gap:14px;cursor:pointer;margin-bottom:14px;-webkit-tap-highlight-color:transparent;transition:all .18s cubic-bezier(.34,1.56,.64,1);animation:obFeedPulse 2s ease-in-out infinite;}
+.ob-feed-btn:active{transform:scale(.95);box-shadow:0 0 14px rgba(255,159,10,.15);}
+.ob-feed-btn.done{background:linear-gradient(135deg,rgba(57,255,20,.12),rgba(0,200,50,.06));border-color:rgba(57,255,20,.5);box-shadow:0 0 28px rgba(57,255,20,.2),inset 0 1px 0 rgba(57,255,20,.08);animation:none;}
+@keyframes obFeedPulse{0%,100%{box-shadow:0 0 20px rgba(255,159,10,.2),inset 0 1px 0 rgba(255,255,255,.08);}50%{box-shadow:0 0 40px rgba(255,159,10,.4),inset 0 1px 0 rgba(255,255,255,.1);}}
+.ob-feed-ico{font-size:44px;flex-shrink:0;animation:petBob 1.4s ease-in-out infinite;filter:drop-shadow(0 0 8px rgba(255,159,10,.6));}
 .ob-feed-main{font-size:15px;font-weight:900;margin-bottom:3px;font-family:var(--mono);}
 .ob-feed-sub{font-size:11px;color:rgba(255,255,255,.5);font-family:var(--mono);}
 
@@ -1536,10 +1543,10 @@ button:active{opacity:.85;}
 
 /* ── ROOM V3 ── */
 .rv3-wrap{width:100%;border-radius:18px;overflow:hidden;position:relative;background:#000;}
-.rv3-profile{padding:14px 16px 10px;display:flex;align-items:center;gap:14px;background:rgba(0,0,0,.45);border-bottom:1px solid rgba(255,255,255,.07);}
+.rv3-profile{display:flex;align-items:center;gap:12px;padding:10px 14px;background:linear-gradient(135deg,rgba(0,0,0,.9),rgba(10,10,30,.95));border-bottom:1px solid rgba(57,255,20,.2);position:relative;z-index:20;}
 .rv3-pet-bob{font-size:52px;animation:petBob 2s ease-in-out infinite;filter:drop-shadow(0 4px 18px rgba(57,255,20,.45));flex-shrink:0;cursor:pointer;}
 .rv3-info{flex:1;min-width:0;}
-.rv3-username{font-size:16px;font-weight:900;color:var(--t1);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.rv3-username{font-size:15px;font-weight:900;color:#fff;font-family:var(--mono);letter-spacing:.5px;display:flex;align-items:center;gap:6px;}
 .rv3-handle{font-size:10px;color:var(--t3);font-family:var(--mono);margin-bottom:5px;}
 .rv3-lvbadge{display:inline-flex;align-items:center;gap:4px;padding:3px 8px;border-radius:10px;font-size:10px;font-weight:900;font-family:var(--mono);border:1.5px solid;animation:lvGlow 2.5s ease-in-out infinite;}
 @keyframes lvGlow{0%,100%{box-shadow:0 0 6px currentColor;}50%{box-shadow:0 0 16px currentColor,0 0 28px currentColor;}}
@@ -1551,12 +1558,12 @@ button:active{opacity:.85;}
 .rv3-ring-svg{width:40px;height:40px;}
 .rv3-ring-val{font-size:9px;font-weight:900;font-family:var(--mono);margin-top:-2px;}
 /* Room scene */
-.rv3-scene{position:relative;width:100%;height:260px;overflow:hidden;}
+.rv3-scene{position:relative;overflow:hidden;border-radius:0 0 14px 14px;aspect-ratio:16/9;min-height:200px;box-shadow:inset 0 0 60px rgba(0,0,0,.5);}
 .rv3-sky{position:absolute;inset:0;transition:background 1.5s ease;}
 .rv3-clouds{position:absolute;top:0;left:0;right:0;height:45%;pointer-events:none;}
 .rv3-cloud{position:absolute;font-size:22px;opacity:.55;animation:cloudDrift var(--cd,18s) linear infinite var(--cdd,0s);}
 .rv3-wall{position:absolute;top:0;left:0;right:0;height:72%;pointer-events:none;}
-.rv3-window{position:absolute;top:7%;right:7%;width:24%;height:32%;border-radius:8px;overflow:hidden;cursor:pointer;transition:all .2s;}
+.rv3-window{position:absolute;top:8%;right:8%;width:25%;aspect-ratio:.75;border:3px solid rgba(255,255,255,.3);border-radius:4px 4px 2px 2px;overflow:hidden;box-shadow:0 0 30px rgba(255,255,255,.08),inset 0 0 20px rgba(0,0,0,.3);z-index:5;cursor:pointer;}
 .rv3-window:hover{transform:scale(1.04);filter:brightness(1.15);}
 .rv3-window-frame{position:absolute;inset:0;border:2.5px solid rgba(255,255,255,.22);border-radius:8px;z-index:2;pointer-events:none;}
 .rv3-window-cross{position:absolute;inset:0;z-index:2;pointer-events:none;}
@@ -1576,7 +1583,7 @@ button:active{opacity:.85;}
 .rv3-mood-heart{position:absolute;pointer-events:none;z-index:12;font-size:14px;animation:rv3HFloat var(--hd,1.5s) ease-out forwards;}
 @keyframes rv3HFloat{0%{transform:translateY(0) scale(1);opacity:1;}100%{transform:translateY(-60px) scale(.6);opacity:0;}}
 /* Floor + furniture */
-.rv3-floor{position:absolute;bottom:0;left:0;right:0;height:32%;border-top:2px solid rgba(255,255,255,.1);}
+.rv3-floor{position:absolute;bottom:0;left:0;right:0;height:32%;z-index:2;background:linear-gradient(180deg,rgba(0,0,0,.1) 0%,rgba(0,0,0,.6) 100%);}
 .rv3-obj{position:absolute;font-size:22px;cursor:pointer;z-index:8;transition:transform .15s,filter .15s;user-select:none;}
 .rv3-obj:hover{transform:scale(1.15);filter:brightness(1.2);}
 .rv3-obj:active{transform:scale(.9);}
@@ -1594,7 +1601,7 @@ button:active{opacity:.85;}
 .rv3-gear-item{position:absolute;z-index:6;font-size:18px;cursor:pointer;filter:drop-shadow(0 0 6px rgba(255,200,0,.3));transition:transform .3s;}
 .rv3-gear-item:hover{transform:rotate(15deg) scale(1.2);}
 /* Pet */
-.rv3-pet{position:absolute;bottom:31%;font-size:38px;z-index:10;user-select:none;cursor:pointer;transition:left 2.5s cubic-bezier(.45,0,.55,1);}
+.rv3-pet{position:absolute;font-size:52px;z-index:10;bottom:30%;transition:left .6s cubic-bezier(.34,1.56,.64,1),transform .2s;cursor:pointer;filter:drop-shadow(0 0 18px rgba(57,255,20,.5)) drop-shadow(0 4px 8px rgba(0,0,0,.8));animation:petBob 2s ease-in-out infinite;}
 .rv3-pet.sleeping{animation:sleepBob 2.5s ease-in-out infinite;}
 .rv3-pet.dancing{animation:petDance .6s ease-in-out infinite;}
 .rv3-pet.playing{animation:petPlay .4s ease-in-out infinite;}
@@ -1605,6 +1612,15 @@ button:active{opacity:.85;}
 .rv3-stat-popup{position:fixed;inset:0;z-index:850;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.75);backdrop-filter:blur(6px);}
 .rv3-stat-box{background:var(--c1);border:1.5px solid var(--line2);border-radius:20px;padding:18px 20px;min-width:220px;}
 
+/* ══ KARMA CITY ══ */
+.kc-world{position:fixed;inset:0;z-index:800;background:#010614;display:none;flex-direction:column;overflow:hidden;}
+.kc-world.open{display:flex;}
+.kc-hdr{display:flex;align-items:center;padding:10px 14px;background:rgba(0,0,0,.9);border-bottom:1px solid rgba(57,255,20,.2);flex-shrink:0;gap:10px;}
+.kc-city-canvas{flex:1;display:block;width:100%;min-height:0;}
+.kc-feed{background:rgba(0,0,0,.88);border-top:1px solid rgba(57,255,20,.15);padding:8px 14px;flex-shrink:0;max-height:80px;overflow:hidden;}
+.kc-feed-item{font-size:9px;color:rgba(255,255,255,.5);font-family:var(--mono);animation:slideInLeft .3s ease;}
+@keyframes slideInLeft{from{transform:translateX(-20px);opacity:0;}to{transform:none;opacity:1;}}
+.kc-zone-btn{background:rgba(57,255,20,.08);border:1.5px solid rgba(57,255,20,.3);border-radius:10px;padding:6px 14px;font-size:10px;font-weight:900;font-family:var(--mono);color:var(--g);cursor:pointer;-webkit-tap-highlight-color:transparent;}
 /* ── STREET FISHING UPGRADE ── */
 .fish-loc-bar{display:flex;gap:5px;overflow-x:auto;scrollbar-width:none;padding:6px 14px;background:rgba(0,10,25,.95);border-bottom:1px solid rgba(0,180,255,.12);flex-shrink:0;}
 .fish-loc-bar::-webkit-scrollbar{display:none;}
@@ -1777,10 +1793,10 @@ button:active{opacity:.85;}
 .gp-preview{width:110px;height:94px;flex-shrink:0;position:relative;overflow:hidden;}
 .gp-info{flex:1;padding:11px 12px;min-width:0;}
 .gp-name{font-size:15px;font-weight:900;font-family:var(--mono);color:#fff;letter-spacing:.5px;text-shadow:0 0 20px rgba(255,255,255,.2);}
-.gp-sub{font-size:9px;color:var(--t3);margin-top:2px;line-height:1.4;}
-.gp-tags{display:flex;gap:5px;margin-top:5px;flex-wrap:wrap;}
-.gp-tag{font-size:9px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);padding:2px 7px;border-radius:8px;font-family:var(--mono);}
-.gp-arrow{padding:0 14px;font-size:18px;flex-shrink:0;}
+.gp-sub{font-size:11px;color:var(--t2);margin:3px 0 6px;}
+.gp-tags{display:flex;gap:5px;flex-wrap:wrap;margin-top:4px;}
+.gp-tag{font-size:8px;font-weight:900;font-family:var(--mono);padding:2px 7px;border-radius:6px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);}
+.gp-arrow{font-size:18px;flex-shrink:0;opacity:.6;margin-right:4px;}
 @keyframes runnerMiniAnim{0%,100%{transform:translateY(0);}50%{transform:translateY(-8px);}}
 /* ── ACTIVITY NOTIFICATIONS BADGE ── */
 .notif-badge-row{display:flex;gap:7px;padding:6px 12px 2px;flex-wrap:wrap;}
@@ -2004,6 +2020,7 @@ button:active{opacity:.85;}
 .talent-pts{font-size:15px;font-weight:900;color:var(--y);font-family:var(--mono);margin-left:auto;background:linear-gradient(135deg,rgba(255,230,0,.15),rgba(191,95,255,.1));border:1.5px solid rgba(255,230,0,.4);border-radius:20px;padding:5px 14px;box-shadow:0 0 20px rgba(255,230,0,.2),inset 0 1px 0 rgba(255,255,255,.1);text-shadow:0 0 12px rgba(255,230,0,.5);}
 .talent-scroll{flex:1;overflow-y:auto;padding:14px;scrollbar-width:none;}
 .talent-scroll::-webkit-scrollbar{display:none;}
+.talent-scroll::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse at 20% 80%,rgba(191,95,255,.04) 0%,transparent 60%),radial-gradient(ellipse at 80% 20%,rgba(57,255,20,.03) 0%,transparent 60%);pointer-events:none;z-index:0;}
 .talent-branch{background:linear-gradient(135deg,rgba(255,255,255,.03),rgba(191,95,255,.04));border:1.5px solid rgba(191,95,255,.2);border-radius:22px;padding:18px;margin-bottom:16px;box-shadow:0 4px 24px rgba(0,0,0,.4),inset 0 1px 0 rgba(255,255,255,.06);}
 .tb-hdr{display:flex;align-items:center;gap:12px;margin-bottom:16px;}
 .tb-ico{font-size:30px;filter:drop-shadow(0 0 10px rgba(191,95,255,.4));}
@@ -2367,14 +2384,14 @@ button:active{opacity:.85;}
 ═══════════════════════════════════ */
 
 /* ── TOPBAR ── */
-.tb{border-bottom:1px solid rgba(255,255,255,.05)!important;}
+.tb{border-bottom:1px solid rgba(57,255,20,.25)!important;box-shadow:0 2px 20px rgba(57,255,20,.06),0 1px 0 rgba(57,255,20,.08)!important;}
 .logo{box-shadow:0 0 18px rgba(57,255,20,.35)!important;border:none!important;letter-spacing:-1px!important;}
 
 /* ── BOTTOM NAV ── */
-.bnav{background:rgba(4,4,14,.99)!important;border-top:1px solid rgba(255,255,255,.05)!important;padding:8px 0 calc(8px + var(--sab))!important;}
+.bnav{background:rgba(4,4,14,.99)!important;border-top:1px solid rgba(57,255,20,.2)!important;padding:8px 0 calc(8px + var(--sab))!important;box-shadow:0 -2px 20px rgba(57,255,20,.04)!important;}
 
 /* ── PET HERO ── */
-.pet-hero{background:linear-gradient(180deg,#06040f 0%,#030209 100%)!important;border-bottom:1px solid rgba(255,255,255,.04)!important;padding-bottom:12px!important;}
+.pet-hero{background:linear-gradient(180deg,#020c02 0%,#050810 50%,#000 100%)!important;border-bottom:2px solid rgba(57,255,20,.35)!important;padding-bottom:12px!important;box-shadow:0 4px 40px rgba(57,255,20,.06)!important;}
 .pet-hero::after{display:none!important;}
 
 /* ── CARE BUTTONS — glassmorphism ── */
@@ -2428,8 +2445,13 @@ div[style*="LIVE"]{border-radius:16px!important;background:rgba(57,255,20,.03)!i
 .tab.on{background:rgba(57,255,20,.07)!important;}
 
 /* ── ONBOARDING WORLD CARDS ── */
-.ob-world{border-radius:18px!important;transition:all .18s cubic-bezier(.34,1.56,.64,1)!important;}
-.ob-world.sel{transform:scale(1.05) translate(-2px,-2px)!important;}
+.ob-world{border-radius:18px!important;transition:all .22s cubic-bezier(.34,1.56,.64,1)!important;position:relative!important;}
+.ob-world.sel{transform:scale(1.06) translateY(-3px)!important;box-shadow:0 0 36px var(--ob-world-glow,rgba(57,255,20,.4)),inset 0 1px 0 rgba(255,255,255,.12)!important;}
+.ob-world[data-world="cosmic"]{--ob-world-glow:rgba(191,95,255,.4);}
+.ob-world[data-world="nature"]{--ob-world-glow:rgba(57,255,20,.4);}
+.ob-world[data-world="city"]{--ob-world-glow:rgba(0,217,255,.4);}
+.ob-world[data-world="pixel"]{--ob-world-glow:rgba(255,0,127,.4);}
+.ob-world.sel::after{content:'✓';position:absolute;top:6px;right:8px;font-size:10px;font-weight:900;color:#fff;font-family:var(--mono);background:rgba(255,255,255,.15);border-radius:50%;width:18px;height:18px;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(4px);}
 .ob-h2{font-size:22px!important;font-weight:900!important;font-family:var(--mono)!important;letter-spacing:.5px!important;margin-bottom:6px!important;}
 .ob-p2{font-size:12px!important;color:rgba(255,255,255,.5)!important;line-height:1.5!important;}
 
@@ -2438,8 +2460,14 @@ div[style*="LIVE"]{border-radius:16px!important;background:rgba(57,255,20,.03)!i
 .ob-d2.on{background:var(--g)!important;box-shadow:0 0 10px var(--g),0 0 20px rgba(57,255,20,.3)!important;transform:scaleX(1.5)!important;}
 
 /* ── STARTA KARMA BUTTON PULSE ── */
-#obStartKarmaBtn{animation:skPulse 2.2s ease-in-out infinite!important;}
-@keyframes skPulse{0%,100%{box-shadow:0 0 20px rgba(57,255,20,.35),0 0 40px rgba(57,255,20,.08);}50%{box-shadow:0 0 40px rgba(57,255,20,.65),0 0 80px rgba(57,255,20,.2),0 0 130px rgba(57,255,20,.06);}}
+#obStartKarmaBtn{animation:skPulse 2.2s ease-in-out infinite,obBtnShimmer 2.4s ease-in-out infinite!important;}
+@keyframes skPulse{0%,100%{box-shadow:0 0 24px rgba(57,255,20,.5),0 0 50px rgba(57,255,20,.12);}50%{box-shadow:0 0 48px rgba(57,255,20,.8),0 0 90px rgba(57,255,20,.25),0 0 140px rgba(57,255,20,.08);}}
+
+/* ── OB CTA BUTTON SHIMMER ── */
+.ob-cta-btn{animation:obBtnGlow 2.4s ease-in-out infinite!important;}
+.ob-cta-btn::before{content:'';position:absolute;top:0;left:-100%;width:60%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.22),transparent);animation:obBtnShimmer 2.4s ease-in-out infinite;pointer-events:none;}
+@keyframes obBtnGlow{0%,100%{box-shadow:0 0 20px rgba(57,255,20,.45),0 0 40px rgba(57,255,20,.1);}50%{box-shadow:0 0 36px rgba(57,255,20,.7),0 0 72px rgba(57,255,20,.2);}}
+@keyframes obBtnShimmer{0%{left:-100%;}60%,100%{left:160%;}}
 
 /* ── PARTICLE BURST ── */
 .ob-ptcl{position:fixed;border-radius:50%;pointer-events:none;z-index:99999;animation:ptclFly var(--d,.9s) ease-out forwards;}
@@ -2533,38 +2561,41 @@ div[style*="LIVE"]{border-radius:16px!important;background:rgba(57,255,20,.03)!i
 <!-- ONBOARDING -->
 <div class="ob" id="ob">
   <div class="ob-bg" id="obBg"></div>
+  <div style="position:absolute;bottom:8px;left:10px;z-index:100;font-size:8px;color:rgba(255,255,255,.25);font-family:var(--mono);letter-spacing:1px;pointer-events:none">v523</div>
   <button id="langToggle" onclick="toggleLang()" style="position:absolute;top:14px;right:14px;z-index:100;background:rgba(255,255,255,.1);border:1.5px solid rgba(255,255,255,.2);border-radius:12px;padding:6px 12px;font-size:15px;cursor:pointer;backdrop-filter:blur(8px);-webkit-tap-highlight-color:transparent;color:#fff;font-weight:900;letter-spacing:.5px">🇸🇪 SV</button>
 
   <!-- WORLD SELECTION — shown first -->
-  <div class="ob-step" id="obsw" style="min-height:min(100svh,100vh);display:flex;flex-direction:column;justify-content:center;padding:16px 20px max(env(safe-area-inset-bottom,16px),16px)">
-    <div class="ob-logo-hero" style="font-size:40px;margin-bottom:0"><span class="ok">K</span>ARMA</div>
-    <div style="text-align:center;margin-bottom:10px"><span class="ob-tag2" style="font-size:9px;padding:3px 10px;margin-bottom:0">REAL LIFE · GAME ENGINE ⚡</span></div>
-    <div class="ob-prog2" style="margin-bottom:10px"><div class="ob-d2 on"></div><div class="ob-d2"></div><div class="ob-d2"></div><div class="ob-d2"></div></div>
-    <div class="ob-h2" id="obWorldTitle" style="margin-bottom:3px">VÄLJ DIN VÄRLD.</div>
-    <div class="ob-p2" id="obWorldSub" style="margin-bottom:12px;font-size:12px">Välj miljön din pet ska leva i.</div>
-    <div class="ob-worlds" style="margin-bottom:12px;gap:8px">
-      <div class="ob-world sel" data-world="cosmic" ontouchstart="event.preventDefault();pickWorld(this)" onclick="pickWorld(this)">
-        <span class="ob-world-ico">🌌</span>
-        <span class="ob-world-nm">COSMIC</span>
-        <div class="ob-world-ds">Universum & stjärnor</div>
+  <div class="ob-step" id="obsw">
+    <div class="ob-content">
+      <div class="ob-logo-hero" style="font-size:40px;margin-bottom:0"><span class="ok">K</span>ARMA</div>
+      <div style="text-align:center;margin-bottom:10px"><span class="ob-tag2" style="font-size:9px;padding:3px 10px;margin-bottom:0">REAL LIFE · GAME ENGINE ⚡</span></div>
+      <div class="ob-prog2" style="margin-bottom:10px"><div class="ob-d2 on"></div><div class="ob-d2"></div><div class="ob-d2"></div><div class="ob-d2"></div></div>
+      <div class="ob-h2" id="obWorldTitle" style="margin-bottom:3px">VÄLJ DIN VÄRLD.</div>
+      <div class="ob-p2" id="obWorldSub" style="margin-bottom:12px;font-size:12px">Välj miljön din pet ska leva i.</div>
+      <div class="ob-worlds" style="margin-bottom:12px;gap:8px">
+        <div class="ob-world sel" data-world="cosmic" onclick="pickWorld(this)">
+          <span class="ob-world-ico">🌌</span>
+          <span class="ob-world-nm">COSMIC</span>
+          <div class="ob-world-ds">Universum & stjärnor</div>
+        </div>
+        <div class="ob-world" data-world="nature" onclick="pickWorld(this)">
+          <span class="ob-world-ico">🌿</span>
+          <span class="ob-world-nm">NATURE</span>
+          <div class="ob-world-ds">Skog & natur</div>
+        </div>
+        <div class="ob-world" data-world="city" onclick="pickWorld(this)">
+          <span class="ob-world-ico">🏙️</span>
+          <span class="ob-world-nm">CITY</span>
+          <div class="ob-world-ds">Neon city vibes</div>
+        </div>
+        <div class="ob-world" data-world="pixel" onclick="pickWorld(this)">
+          <span class="ob-world-ico">🎮</span>
+          <span class="ob-world-nm">PIXEL</span>
+          <div class="ob-world-ds">8-bit retro pixel</div>
+        </div>
       </div>
-      <div class="ob-world" data-world="nature" ontouchstart="event.preventDefault();pickWorld(this)" onclick="pickWorld(this)">
-        <span class="ob-world-ico">🌿</span>
-        <span class="ob-world-nm">NATURE</span>
-        <div class="ob-world-ds">Skog & natur</div>
-      </div>
-      <div class="ob-world" data-world="city" ontouchstart="event.preventDefault();pickWorld(this)" onclick="pickWorld(this)">
-        <span class="ob-world-ico">🏙️</span>
-        <span class="ob-world-nm">CITY</span>
-        <div class="ob-world-ds">Neon city vibes</div>
-      </div>
-      <div class="ob-world" data-world="pixel" ontouchstart="event.preventDefault();pickWorld(this)" onclick="pickWorld(this)">
-        <span class="ob-world-ico">🎮</span>
-        <span class="ob-world-nm">PIXEL</span>
-        <div class="ob-world-ds">8-bit retro pixel</div>
-      </div>
+      <button class="btn btn-g btn-lg btn-full ob-cta-btn" id="obwBtn" style="font-family:var(--mono);font-size:15px;letter-spacing:2px;padding:14px;border-radius:12px;border:none;position:relative;overflow:hidden" onclick="if(this._b)return;this._b=1;this.style.opacity='.7';obNext(0);setTimeout(()=>{this._b=0;this.style.opacity='';},600);">VÄLJ VÄRLD →</button>
     </div>
-    <button class="btn btn-g btn-lg btn-full" id="obwBtn" style="font-family:var(--mono);font-size:15px;letter-spacing:2px;padding:14px;border-radius:8px;border:none;box-shadow:0 0 24px rgba(57,255,20,.5)" ontouchstart="event.preventDefault();if(!this._b){this._b=true;this.style.opacity='.7';obNext(0);setTimeout(()=>this._b=false,600);}" onclick="if(!this._b){obNext(0);}">VÄLJ VÄRLD →</button>
   </div>
 
   <!-- STEP 0: Name -->
@@ -2577,7 +2608,7 @@ div[style*="LIVE"]{border-radius:16px!important;background:rgba(57,255,20,.03)!i
       <div class="ob-p2">Välj ett smeknamn — det är din KARMA-identitet i appen.</div>
       <label class="lbl">DITT NAMN</label>
       <input class="inp" id="obName" placeholder="Ex: ella_runs / axelsthlm" maxlength="18" style="font-size:16px;margin-bottom:16px;border-radius:6px;border:3px solid rgba(57,255,20,.4);background:#0d0d0d;color:#fff;font-family:var(--mono)">
-      <button class="btn btn-g btn-lg btn-full" style="font-family:var(--mono);font-size:15px;letter-spacing:2px;padding:14px;border-radius:8px;border:none;box-shadow:0 0 24px rgba(57,255,20,.5)" ontouchstart="event.preventDefault();if(!this._b){this._b=true;obNext(1);setTimeout(()=>this._b=false,600);}" onclick="if(!this._b){obNext(1);}">NÄSTA →</button>
+      <button class="btn btn-g btn-lg btn-full ob-cta-btn" style="font-family:var(--mono);font-size:15px;letter-spacing:2px;padding:14px;border-radius:12px;border:none;position:relative;overflow:hidden" onclick="if(this._b)return;this._b=1;this.style.opacity='.7';obNext(1);setTimeout(()=>{this._b=0;this.style.opacity='';},600);">NÄSTA →</button>
     </div>
   </div>
 
@@ -2590,7 +2621,7 @@ div[style*="LIVE"]{border-radius:16px!important;background:rgba(57,255,20,.03)!i
       <div class="ob-pet-big" id="obPetGrid"></div>
       <label class="lbl">PET-NAMN</label>
       <input class="inp" id="obPetName" placeholder="Ex: Eldrake / Luna / Shadow" style="font-size:16px;margin-bottom:16px">
-      <button class="btn btn-g btn-lg btn-full" style="font-family:var(--mono);font-size:15px;letter-spacing:2px;padding:14px;border-radius:8px;border:none;box-shadow:0 0 24px rgba(57,255,20,.5)" ontouchstart="event.preventDefault();if(!this._b){this._b=true;obNext(2);setTimeout(()=>this._b=false,600);}" onclick="if(!this._b){obNext(2);}">NÄSTA →</button>
+      <button class="btn btn-g btn-lg btn-full ob-cta-btn" style="font-family:var(--mono);font-size:15px;letter-spacing:2px;padding:14px;border-radius:12px;border:none;position:relative;overflow:hidden" onclick="if(this._b)return;this._b=1;this.style.opacity='.7';obNext(2);setTimeout(()=>{this._b=0;this.style.opacity='';},600);">NÄSTA →</button>
     </div>
   </div>
 
@@ -2620,17 +2651,17 @@ div[style*="LIVE"]{border-radius:16px!important;background:rgba(57,255,20,.03)!i
       <div class="ob-h2" id="obAgeTitle">Hur gammal är du? 🎂</div>
       <div class="ob-p2" id="obAgeSub">Anpassar appen efter dig</div>
       <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:20px">
-        <div class="ob-world" id="obAge1" onclick="setObAge('kid',this)" style="text-align:left;padding:14px 16px;display:flex;align-items:center;gap:12px;border-color:var(--b);box-shadow:4px 4px 0px var(--b);background:#000d1a">
+        <div class="ob-world" id="obAge1" onclick="setObAge('kid',this)" style="text-align:left;padding:14px 16px;display:flex;align-items:center;gap:12px;border-color:rgba(0,217,255,.5);background:linear-gradient(135deg,rgba(0,217,255,.1),#000d1a)">
           <span style="font-size:28px">🧒</span><div><div id="obAge1Lbl" style="font-size:14px;font-weight:900;font-family:var(--mono)">UNDER 13</div><div id="obAge1Desc" style="font-size:10px;color:rgba(255,255,255,.5);font-family:var(--mono)">Pet &amp; spel-läge — ingen social</div></div>
         </div>
-        <div class="ob-world" id="obAge2" onclick="setObAge('teen',this)" style="text-align:left;padding:14px 16px;display:flex;align-items:center;gap:12px;border-color:var(--pk);box-shadow:4px 4px 0px var(--pk);background:#1a000d">
+        <div class="ob-world" id="obAge2" onclick="setObAge('teen',this)" style="text-align:left;padding:14px 16px;display:flex;align-items:center;gap:12px;border-color:rgba(255,0,127,.5);background:linear-gradient(135deg,rgba(255,0,127,.1),#1a000d)">
           <span style="font-size:28px">🧑</span><div><div id="obAge2Lbl" style="font-size:14px;font-weight:900;font-family:var(--mono)">13–17</div><div id="obAge2Desc" style="font-size:10px;color:rgba(255,255,255,.5);font-family:var(--mono)">Full app — socialt + spel + pet</div></div>
         </div>
-        <div class="ob-world" id="obAge3" onclick="setObAge('adult',this)" style="text-align:left;padding:14px 16px;display:flex;align-items:center;gap:12px;border-color:var(--g);box-shadow:4px 4px 0px var(--g);background:#001200">
+        <div class="ob-world" id="obAge3" onclick="setObAge('adult',this)" style="text-align:left;padding:14px 16px;display:flex;align-items:center;gap:12px;border-color:rgba(57,255,20,.5);background:linear-gradient(135deg,rgba(57,255,20,.1),#001200)">
           <span style="font-size:28px">👤</span><div><div id="obAge3Lbl" style="font-size:14px;font-weight:900;font-family:var(--mono)">18+</div><div id="obAge3Desc" style="font-size:10px;color:rgba(255,255,255,.5);font-family:var(--mono)">Full app + exklusivt innehåll</div></div>
         </div>
       </div>
-      <button class="btn btn-g btn-lg btn-full ob-next-btn" style="font-family:var(--mono);letter-spacing:2px;border-radius:6px;border:3px solid var(--g);box-shadow:5px 5px 0px var(--g);transition:transform .08s,box-shadow .08s" ontouchstart="event.preventDefault();if(!this._b){this._b=true;obNext(4);setTimeout(()=>this._b=false,600);}" onclick="if(!this._b){obNext(4);}">NÄSTA →</button>
+      <button class="btn btn-g btn-lg btn-full ob-cta-btn" style="font-family:var(--mono);font-size:15px;letter-spacing:2px;padding:14px;border-radius:12px;border:none;position:relative;overflow:hidden" onclick="if(this._b)return;this._b=1;this.style.opacity='.7';obNext(4);setTimeout(()=>{this._b=0;this.style.opacity='';},600);">NÄSTA →</button>
     </div>
   </div>
 
@@ -2641,28 +2672,28 @@ div[style*="LIVE"]{border-radius:16px!important;background:rgba(57,255,20,.03)!i
       <div class="ob-h2">Vad lockar dig mest? ✨</div>
       <div class="ob-p2" id="obModeSub">Vi anpassar din startsida</div>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:20px">
-        <div class="ob-world" id="obMode1" onclick="setObMode('games',this)" style="padding:16px 10px;border-color:var(--pk);box-shadow:4px 4px 0px var(--pk);background:#1a000d">
+        <div class="ob-world" id="obMode1" onclick="setObMode('games',this)" style="padding:16px 10px;border-color:rgba(255,0,127,.5);background:linear-gradient(135deg,rgba(255,0,127,.1),#1a000d)">
           <span class="ob-world-ico">🎮</span>
           <span class="ob-world-nm" id="obMode1Lbl">MINISPEL</span>
           <span class="ob-world-ds" id="obMode1Desc">Battle, fiska, spin</span>
         </div>
-        <div class="ob-world sel" id="obMode2" onclick="setObMode('social',this)" style="padding:16px 10px;border-color:var(--y);box-shadow:4px 4px 0px var(--y);background:#1a1400">
+        <div class="ob-world sel" id="obMode2" onclick="setObMode('social',this)" style="padding:16px 10px;border-color:rgba(255,230,0,.5);background:linear-gradient(135deg,rgba(255,230,0,.1),#1a1400)">
           <span class="ob-world-ico">⚡</span>
           <span class="ob-world-nm" id="obMode2Lbl">SOCIALT</span>
           <span class="ob-world-ds" id="obMode2Desc">Flash, följ, chat</span>
         </div>
-        <div class="ob-world" id="obMode3" onclick="setObMode('pet',this)" style="padding:16px 10px;border-color:var(--g);box-shadow:4px 4px 0px var(--g);background:#001200">
+        <div class="ob-world" id="obMode3" onclick="setObMode('pet',this)" style="padding:16px 10px;border-color:rgba(57,255,20,.5);background:linear-gradient(135deg,rgba(57,255,20,.1),#001200)">
           <span class="ob-world-ico">🐾</span>
           <span class="ob-world-nm" id="obMode3Lbl">PET</span>
           <span class="ob-world-ds" id="obMode3Desc">Träna, mata, vård</span>
         </div>
-        <div class="ob-world" id="obMode4" onclick="setObMode('full',this)" style="padding:16px 10px;border-color:var(--p);box-shadow:4px 4px 0px var(--p);background:#0a0010">
+        <div class="ob-world" id="obMode4" onclick="setObMode('full',this)" style="padding:16px 10px;border-color:rgba(191,95,255,.5);background:linear-gradient(135deg,rgba(191,95,255,.1),#0a0010)">
           <span class="ob-world-ico">🌟</span>
           <span class="ob-world-nm" id="obMode4Lbl">ALLT!</span>
           <span class="ob-world-ds" id="obMode4Desc">Ge mig hela paketet</span>
         </div>
       </div>
-      <button class="btn btn-g btn-lg btn-full" id="obStartKarmaBtn" style="font-family:var(--mono);font-size:17px;letter-spacing:2px;padding:16px;border-radius:8px;border:none;box-shadow:0 0 28px rgba(57,255,20,.6)" ontouchstart="event.preventDefault();if(!this._b){this._b=true;finishOB();setTimeout(()=>this._b=false,1000);}" onclick="if(!this._b){finishOB();}">🚀 STARTA KARMA!</button>
+      <button class="btn btn-g btn-lg btn-full ob-cta-btn" id="obStartKarmaBtn" style="font-family:var(--mono);font-size:17px;letter-spacing:2px;padding:16px;border-radius:12px;border:none;position:relative;overflow:hidden" onclick="if(this._b)return;this._b=1;this.style.opacity='.7';finishOB();setTimeout(()=>{this._b=0;this.style.opacity='';},1000);">🚀 STARTA KARMA!</button>
     </div>
   </div>
 </div>
@@ -2816,6 +2847,15 @@ div[style*="LIVE"]{border-radius:16px!important;background:rgba(57,255,20,.03)!i
         <div style="display:flex;align-items:center;gap:0;overflow-x:auto;scrollbar-width:none;padding-bottom:4px" id="evolTreeRow">
           <!-- rendered by renderEvolTree() -->
         </div>
+      </div>
+      <!-- DAILY GREETING STRIP -->
+      <div id="dailyGreetStrip" style="margin:8px 14px 0;padding:10px 14px;background:linear-gradient(135deg,rgba(57,255,20,.08),rgba(0,217,255,.05));border:1px solid rgba(57,255,20,.2);border-radius:14px;display:flex;align-items:center;gap:10px;box-shadow:0 0 20px rgba(57,255,20,.05)">
+        <span style="font-size:22px" id="greetEmoji">☀️</span>
+        <div style="flex:1">
+          <div style="font-size:11px;font-weight:900;color:#fff;font-family:var(--mono)" id="greetMsg">God morgon! Din pet väntar.</div>
+          <div style="font-size:9px;color:rgba(255,255,255,.4);margin-top:1px" id="greetSub">Mata din pet för att starta dagen starkt</div>
+        </div>
+        <div style="font-size:9px;font-weight:900;color:var(--g);font-family:var(--mono)" id="greetDate"></div>
       </div>
       <!-- KARMA PULSE — live community activity ticker -->
       <div style="margin:0 14px 10px;background:linear-gradient(135deg,rgba(57,255,20,.05),rgba(0,217,255,.03));border:1px solid rgba(57,255,20,.28);border-radius:14px;padding:6px 10px;display:flex;align-items:center;gap:10px;overflow:hidden;box-shadow:0 0 24px rgba(57,255,20,.1),inset 0 1px 0 rgba(255,255,255,.04)">
@@ -3460,23 +3500,23 @@ div[style*="LIVE"]{border-radius:16px!important;background:rgba(57,255,20,.03)!i
 
     <!-- EXPLORE VIEW -->
     <div class="view" id="view-explore">
-      <div class="explore-hdr">🔍 Utforska</div>
-      <div class="explore-sub">Hitta vänner, trending pets och nya uppdrag</div>
+      <div class="explore-hdr" style="font-size:22px;letter-spacing:1px;padding:14px 14px 4px;background:linear-gradient(135deg,var(--b),var(--p));-webkit-background-clip:text;-webkit-text-fill-color:transparent">🔍 UTFORSKA</div>
+      <div class="explore-sub" style="font-size:11px;letter-spacing:.5px;font-weight:700;color:rgba(255,255,255,.35);text-transform:uppercase;font-family:var(--mono)">Hitta vänner · trending pets · nya uppdrag</div>
       <!-- PACK SHOP TEASER -->
-      <div style="margin:0 14px 12px;cursor:pointer" onclick="openPackShop()">
-        <div style="background:#0d0d0d;border:2px solid var(--y);border-radius:6px;box-shadow:3px 3px 0px var(--y);padding:16px 18px;display:flex;align-items:center;gap:14px">
+      <div style="margin:0 14px 12px;cursor:pointer;-webkit-tap-highlight-color:transparent" onclick="openPackShop()">
+        <div style="background:linear-gradient(135deg,rgba(255,230,0,.08),rgba(255,100,0,.04));border:1.5px solid rgba(255,230,0,.4);border-radius:18px;padding:16px 18px;display:flex;align-items:center;gap:14px;box-shadow:0 0 28px rgba(255,230,0,.1),inset 0 1px 0 rgba(255,255,255,.06);transition:transform .1s" ontouchstart="this.style.transform='scale(.98)'" ontouchend="this.style.transform=''">
           <span style="font-size:42px;animation:petBob 2s ease-in-out infinite;filter:drop-shadow(0 0 12px rgba(255,230,0,.5))">🎁</span>
           <div style="flex:1">
             <div style="font-size:16px;font-weight:900;color:var(--y);margin-bottom:3px">PACK SHOP</div>
             <div style="font-size:12px;color:var(--t2);margin-bottom:6px">Öppna packs — få gear, XP, coins och legendariska items</div>
             <div style="display:flex;gap:6px"><span style="font-size:9px;font-weight:900;background:rgba(255,230,0,.15);border:1px solid rgba(255,230,0,.4);color:var(--y);padding:2px 7px;border-radius:6px;font-family:var(--mono)">3 PACKS</span><span style="font-size:9px;font-weight:700;color:var(--t3)">STARTER · PRO · LEGENDARY</span></div>
           </div>
-          <span style="font-size:22px;color:var(--y)">→</span>
+          <span style="font-size:22px;color:rgba(255,230,0,.7)">▶</span>
         </div>
       </div>
       <!-- TALENT TREE TEASER -->
-      <div style="margin:0 14px 12px;cursor:pointer" onclick="openTalentTree()">
-        <div style="background:#0d0d0d;border:2px solid var(--g);border-radius:6px;box-shadow:3px 3px 0px var(--g);padding:14px 18px;display:flex;align-items:center;gap:14px">
+      <div style="margin:0 14px 12px;cursor:pointer;-webkit-tap-highlight-color:transparent" onclick="openTalentTree()">
+        <div style="background:linear-gradient(135deg,rgba(57,255,20,.08),rgba(0,217,255,.04));border:1.5px solid rgba(57,255,20,.35);border-radius:18px;padding:14px 18px;display:flex;align-items:center;gap:14px;box-shadow:0 0 24px rgba(57,255,20,.08),inset 0 1px 0 rgba(255,255,255,.06);transition:transform .1s" ontouchstart="this.style.transform='scale(.98)'" ontouchend="this.style.transform=''">
           <span style="font-size:36px;filter:drop-shadow(0 0 10px rgba(57,255,20,.4))">🌳</span>
           <div style="flex:1">
             <div style="font-size:15px;font-weight:900;color:var(--g);margin-bottom:2px">TALENT TRÄD</div>
@@ -3486,17 +3526,17 @@ div[style*="LIVE"]{border-radius:16px!important;background:rgba(57,255,20,.03)!i
         </div>
       </div>
       <!-- World Builder banner -->
-      <div style="margin:0 14px 12px;background:#0d0d0d;border:2px solid var(--g);border-radius:6px;box-shadow:3px 3px 0px var(--g);padding:16px 18px;cursor:pointer;-webkit-tap-highlight-color:transparent;transition:transform .1s;display:flex;align-items:center;gap:14px" onclick="nav('world')" ontouchstart="">
+      <div style="margin:0 14px 12px;background:linear-gradient(135deg,rgba(57,255,20,.06),rgba(0,217,255,.03));border:1.5px solid rgba(57,255,20,.3);border-radius:18px;padding:16px 18px;cursor:pointer;-webkit-tap-highlight-color:transparent;transition:transform .1s;display:flex;align-items:center;gap:14px;box-shadow:0 0 24px rgba(57,255,20,.06),inset 0 1px 0 rgba(255,255,255,.05)" onclick="nav('world')" ontouchstart="this.style.transform='scale(.98)'" ontouchend="this.style.transform=''">
         <span style="font-size:42px;filter:drop-shadow(0 0 12px rgba(57,255,20,.5))">🌍</span>
         <div style="flex:1">
           <div style="font-size:16px;font-weight:900;color:var(--g);margin-bottom:3px">KARMA WORLD</div>
           <div style="font-size:12px;color:var(--t2);margin-bottom:6px">Dina actions bygger en hel stad. Som Minecraft — men med ditt liv.</div>
           <div style="display:flex;gap:6px"><span style="font-size:9px;font-weight:900;background:rgba(57,255,20,.12);border:1px solid rgba(57,255,20,.3);color:var(--g);padding:2px 7px;border-radius:6px;font-family:var(--mono)">LIVE</span><span style="font-size:9px;font-weight:700;color:var(--t3)">Bygg · Utforska · Fånga wild pets</span></div>
         </div>
-        <span style="font-size:22px;color:var(--g)">→</span>
+        <span style="font-size:22px;color:rgba(57,255,20,.7)">▶</span>
       </div>
       <!-- Territory Leaderboard teaser -->
-      <div style="margin:0 14px 12px;background:#0d0d0d;border:2px solid var(--y);border-radius:6px;box-shadow:3px 3px 0px var(--y);padding:14px 16px;cursor:pointer;-webkit-tap-highlight-color:transparent" onclick="nav('world')">
+      <div style="margin:0 14px 12px;background:linear-gradient(135deg,rgba(255,230,0,.06),rgba(255,100,0,.03));border:1.5px solid rgba(255,230,0,.3);border-radius:18px;padding:14px 16px;cursor:pointer;-webkit-tap-highlight-color:transparent;box-shadow:0 0 20px rgba(255,230,0,.06),inset 0 1px 0 rgba(255,255,255,.05);transition:transform .1s" onclick="nav('world')" ontouchstart="this.style.transform='scale(.98)'" ontouchend="this.style.transform=''">
         <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
           <div style="font-size:14px;font-weight:900;color:var(--y)">🏆 TERRITORIUM TOPPLISTA</div>
           <div style="font-size:10px;color:var(--t3);font-family:var(--mono)">LIVE</div>
@@ -3768,6 +3808,20 @@ div[style*="LIVE"]{border-radius:16px!important;background:rgba(57,255,20,.03)!i
       </div>
       <!-- 2x2 MINI CARDS -->
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:0 14px 10px">
+        <!-- KARMA CITY -->
+        <div onclick="openKarmaCity()" ontouchstart="this.style.transform='scale(.94)'" ontouchend="this.style.transform=''" style="border-radius:16px;cursor:pointer;-webkit-tap-highlight-color:transparent;background:linear-gradient(160deg,#010d1a 0%,#020810 100%);border:2px solid rgba(57,255,20,.5);overflow:hidden;box-shadow:0 0 24px rgba(57,255,20,.15);transition:transform .08s;position:relative;grid-column:span 2">
+          <div style="padding:16px">
+            <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px">
+              <div style="font-size:36px;animation:petBob 2s ease-in-out infinite">🌆</div>
+              <div>
+                <div style="font-size:13px;font-weight:900;color:var(--g);font-family:var(--mono);letter-spacing:1px">KARMA CITY</div>
+                <div style="font-size:9px;color:rgba(255,255,255,.5);font-family:var(--mono)">LIVE WORLD MAP</div>
+              </div>
+              <div style="margin-left:auto;background:rgba(57,255,20,.15);border:1px solid rgba(57,255,20,.4);border-radius:8px;padding:3px 8px;font-size:8px;font-weight:900;color:var(--g);font-family:var(--mono);animation:pulse 2s ease-in-out infinite">● LIVE</div>
+            </div>
+            <div style="font-size:10px;color:rgba(255,255,255,.45);font-family:var(--mono)">Din pet lever i en levande stad med andra spelare. Ta kontroll över zoner!</div>
+          </div>
+        </div>
         <!-- DNA BREAKER -->
         <div onclick="openPetBlocks()" ontouchstart="this.style.transform='scale(.94)'" ontouchend="this.style.transform=''" style="border-radius:16px;cursor:pointer;-webkit-tap-highlight-color:transparent;background:linear-gradient(160deg,#0b180b 0%,#060e06 100%);border:1.5px solid rgba(57,255,20,.45);overflow:hidden;box-shadow:0 0 16px rgba(57,255,20,.1);transition:transform .08s;position:relative">
           <div style="height:2px;background:linear-gradient(90deg,transparent,#39FF14,transparent)"></div>
@@ -5691,7 +5745,13 @@ function updateComboMeter(n){
 // Place towers on a grid, earn gold from kills, upgrade them, survive 10 waves.
 
 const TD_COLS=6,TD_ROWS=8;
-const TD_PATH=[[0,1],[5,1],[5,3],[0,3],[0,5],[5,5],[5,7]]; // snake waypoints [col,row]
+const TD_MAPS_CONFIG=[
+  {id:'city',   nm:'NEON CITY',   em:'🏙️', desc:'Klassisk slingrig väg',          path:[[0,1],[5,1],[5,3],[0,3],[0,5],[5,5],[5,7]], startGold:200},
+  {id:'spiral', nm:'SPIRAL',      em:'🌀', desc:'Spiral-bana, fler torn möjliga', path:[[0,0],[5,0],[5,2],[1,2],[1,4],[4,4],[4,6],[0,6],[0,7]], startGold:220},
+  {id:'gauntlet',nm:'GAUNTLET',   em:'⚔️', desc:'Dubbel-fälla, extremt svår',    path:[[0,0],[2,0],[2,4],[0,4],[0,7],[3,7],[3,3],[5,3],[5,7]], startGold:260},
+];
+let TD_PATH=TD_MAPS_CONFIG[0].path;
+let _tdActiveMap=TD_MAPS_CONFIG[0];
 let _tdCell=60; // px per cell — set dynamically in tdInitCanvas
 
 const TD_ENEMIES=[
@@ -5726,6 +5786,7 @@ const TD_TOWER_DEFS={
       {cost:120,nm:'ARCHER++', dmg:22, rate:14, multishot:2, desc:'Dubbel-skott'},
       {cost:200,nm:'RAPID BOW',dmg:22, rate:8,  multishot:3, desc:'Trippel snabb-skott'},
       {cost:320,nm:'STORM BOW',dmg:30, rate:6,  multishot:5, pierce:true, desc:'5-pil storm, genomträngande'},
+      {cost:800,nm:'⚡ KARMA BOW',dmg:55,rate:4,multishot:8,pierce:true,aoeR:0.4,desc:'8 pilar · AoE · Karma välsignelse'},
     ]},
   mage:{em:'🔮',nm:'MAGE',   col:'#BF5FFF',cost:80, range:2.0,dmg:22,rate:55,type:'aoe',aoeR:0.9,desc:'AoE magi',
     upgrades:[
@@ -5733,6 +5794,7 @@ const TD_TOWER_DEFS={
       {cost:150,nm:'FROST MAGE',dmg:30, aoeR:1.5, slow:0.45,slowDur:80, desc:'Frost-slow 55%'},
       {cost:240,nm:'BLIZZARD',  dmg:40, aoeR:2.0, slow:0.6, slowDur:120, desc:'Massiv AoE frost'},
       {cost:380,nm:'ARCHMAGE',  dmg:60, aoeR:2.5, slow:0.7, slowDur:180, stunDur:30, desc:'Arcane devastation'},
+      {cost:950,nm:'⚡ VOID MAGE',dmg:100,aoeR:3.5,slow:0.85,slowDur:250,stunDur:60,desc:'Void-explosion · Total kontroll'},
     ]},
   tesla:{em:'⚡',nm:'TESLA',  col:'#00D9FF',cost:100,range:2.5,dmg:14,rate:38,type:'chain',chains:2,desc:'Kedjeblixtar',
     upgrades:[
@@ -5740,6 +5802,7 @@ const TD_TOWER_DEFS={
       {cost:160,nm:'STORM',    dmg:26, chains:4, stunDur:45, desc:'Stun + 4 kedjor'},
       {cost:250,nm:'OVERLOAD', dmg:35, chains:5, stunDur:60, desc:'Paralys 5-kedjor'},
       {cost:400,nm:'SUPERNOVA',dmg:55, chains:8, stunDur:90, aoeR:0.6, desc:'Massiv blixtstorm'},
+      {cost:1000,nm:'⚡ GOD BOLT',dmg:90,chains:12,stunDur:150,aoeR:1.2,desc:'12-kedjor · Massdöd'},
     ]},
   cannon:{em:'💣',nm:'CANNON',col:'#FF9F0A',cost:120,range:2.0,dmg:50,rate:75,type:'impact',impactR:0.8,desc:'Massiv splitter',
     upgrades:[
@@ -5747,6 +5810,7 @@ const TD_TOWER_DEFS={
       {cost:200,nm:'HOWITZER',   dmg:90,  impactR:1.8, knockback:1.2, desc:'Knockback + splash'},
       {cost:300,nm:'SIEGE',      dmg:130, impactR:2.2, knockback:2.0, desc:'Masskastning'},
       {cost:450,nm:'ANNIHILATOR',dmg:200, impactR:3.0, knockback:3.0, desc:'Planet-krossen AoE'},
+      {cost:1100,nm:'⚡ METEOR',dmg:400,impactR:4.0,knockback:5.0,desc:'Meteornedslag · Allt dör'},
     ]},
   frost:{em:'❄️',nm:'FROST',  col:'#A8E6FF',cost:70, range:2.8,dmg:6, rate:30,type:'aoe',aoeR:1.0,slow:0.5,slowDur:100,desc:'Saktar fiender',
     upgrades:[
@@ -5754,6 +5818,7 @@ const TD_TOWER_DEFS={
       {cost:130,nm:'BLIZZARD', dmg:10, aoeR:2.0, slow:0.7, slowDur:160, desc:'Massiv frost-AoE'},
       {cost:210,nm:'ICE STORM',dmg:15, aoeR:2.5, slow:0.8, slowDur:200, stunDur:20, desc:'Fryser kortvarigt'},
       {cost:350,nm:'PERMAFROST',dmg:20,aoeR:3.5, slow:0.9, slowDur:300, stunDur:60, desc:'Total nedfrysning'},
+      {cost:900,nm:'⚡ ABSOLUTE ZERO',dmg:35,aoeR:5.0,slow:0.99,slowDur:500,stunDur:120,desc:'Total frysning · Absolut noll'},
     ]},
   poison:{em:'🧪',nm:'POISON', col:'#39FF14',cost:90, range:2.2,dmg:4, rate:20,type:'aoe',aoeR:0.8,poison:true,poisonDmg:2,poisonDur:120,desc:'DOT gift',
     upgrades:[
@@ -5761,6 +5826,7 @@ const TD_TOWER_DEFS={
       {cost:160,nm:'PLAGUE',     dmg:8,  aoeR:1.8, poisonDmg:6,  poisonDur:200, desc:'Giftsmitta sprids'},
       {cost:250,nm:'TOXIN',      dmg:12, aoeR:2.2, poisonDmg:10, poisonDur:240, desc:'Massdöd-gift'},
       {cost:400,nm:'DEATH CLOUD',dmg:18, aoeR:3.0, poisonDmg:16, poisonDur:400, desc:'Dödens moln'},
+      {cost:950,nm:'⚡ PLAGUE GOD',dmg:30,aoeR:4.0,poisonDmg:30,poisonDur:600,desc:'Smittar hela banan'},
     ]},
   sniper:{em:'🎯',nm:'SNIPER', col:'#FFE600',cost:150,range:5.0,dmg:80,rate:90,type:'single',crit:0.2,desc:'Extremt räckvidd',
     upgrades:[
@@ -5768,6 +5834,7 @@ const TD_TOWER_DEFS={
       {cost:260,nm:'SHARPSHOT',dmg:180, rate:70, crit:0.4, pierce:true, desc:'Genomträngande skott'},
       {cost:380,nm:'DEADEYE',  dmg:280, rate:60, crit:0.55,pierce:true, desc:'55% crit + pierce'},
       {cost:550,nm:'GODSHOT',  dmg:450, rate:50, crit:0.75,pierce:true, range:7.0, desc:'Hela banan synlig'},
+      {cost:1200,nm:'⚡ OMNISLAYER',dmg:999,rate:40,crit:0.9,pierce:true,range:10.0,desc:'90% crit · Hela kartan'},
     ]},
   inferno:{em:'🔥',nm:'INFERNO',col:'#FF4500',cost:110,range:2.0,dmg:18,rate:25,type:'aoe',aoeR:0.7,burn:true,burnDmg:3,burnDur:80,desc:'Bränner fiender',
     upgrades:[
@@ -5775,6 +5842,7 @@ const TD_TOWER_DEFS={
       {cost:200,nm:'INFERNO+', dmg:35, aoeR:1.5, burnDmg:8,  burnDur:140, desc:'Massiv brasa'},
       {cost:300,nm:'HELLFIRE', dmg:50, aoeR:2.0, burnDmg:14, burnDur:180, desc:'Helvetets eld'},
       {cost:480,nm:'ARMAGEDDON',dmg:80,aoeR:3.0, burnDmg:22, burnDur:300, desc:'Allt brinner'},
+      {cost:1050,nm:'⚡ SOLAR FLARE',dmg:150,aoeR:4.0,burnDmg:40,burnDur:500,desc:'Solexplosion · Allt brinner länge'},
     ]},
   vortex:{em:'🌀',nm:'VORTEX', col:'#BF5FFF',cost:130,range:2.2,dmg:8, rate:40,type:'aoe',aoeR:1.2,pull:true,pullStrength:0.4,desc:'Drar fiender tillbaka',
     upgrades:[
@@ -5782,6 +5850,7 @@ const TD_TOWER_DEFS={
       {cost:220,nm:'SINGULARITY',dmg:18,aoeR:2.2,pullStrength:1.2, stunDur:15, desc:'Gravitationskollaps'},
       {cost:340,nm:'BLACK HOLE',dmg:28, aoeR:3.0, pullStrength:2.0, stunDur:30, desc:'Svart hål'},
       {cost:520,nm:'EVENT HORIZON',dmg:45,aoeR:4.0,pullStrength:3.5,stunDur:60, desc:'Total gravitation'},
+      {cost:1100,nm:'⚡ DIMENSION RIP',dmg:80,aoeR:5.5,pullStrength:6.0,stunDur:120,desc:'Riftar dimension · Allt sugs in'},
     ]},
   laser:{em:'🔴',nm:'LASER',  col:'#FF2D55',cost:160,range:3.5,dmg:30,rate:15,type:'beam',pierce:true,desc:'Stråle, genomträngande',
     upgrades:[
@@ -5789,6 +5858,7 @@ const TD_TOWER_DEFS={
       {cost:280,nm:'FOCUS BEAM',  dmg:65, rate:10, pierce:true, crit:0.25, desc:'Fokuserad kraft'},
       {cost:400,nm:'PLASMA',      dmg:100,rate:8,  pierce:true, crit:0.4, aoeR:0.4, desc:'Plasmastråle'},
       {cost:620,nm:'DEATH LASER', dmg:180,rate:6,  pierce:true, crit:0.6, aoeR:0.8, desc:'Perfekt förstörelse'},
+      {cost:1300,nm:'⚡ STAR FORGE',dmg:350,rate:4,pierce:true,crit:0.8,aoeR:1.2,desc:'Stjärnsmide · Maximal förstörelse'},
     ]},
 };
 const TD_WAVE_COUNT=999; // effectively infinite
@@ -5952,11 +6022,50 @@ function tdCanvasTap(evt){
   tdDraw();
 }
 
+function _tdShowMapPicker(){
+  const existing=$('tdMapPicker');if(existing)existing.remove();
+  const picker=document.createElement('div');
+  picker.id='tdMapPicker';
+  picker.style.cssText='position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,.95);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;padding:24px;backdrop-filter:blur(8px);';
+  picker.innerHTML=`
+    <div style="font-size:11px;font-weight:900;font-family:var(--mono);color:var(--g);letter-spacing:3px;margin-bottom:4px">VÄLJ BANA</div>
+    <div style="font-size:32px;animation:petBob 1s ease-in-out infinite">🏰</div>
+    ${TD_MAPS_CONFIG.map((m,i)=>`
+      <div onclick="window._tdPickMap(${i})" style="width:100%;max-width:320px;background:rgba(255,255,255,.04);border:2px solid rgba(255,255,255,.12);border-radius:16px;padding:16px 20px;cursor:pointer;transition:all .15s;-webkit-tap-highlight-color:transparent" onmouseenter="this.style.borderColor='var(--g)';this.style.background='rgba(57,255,20,.06)'" onmouseleave="this.style.borderColor='rgba(255,255,255,.12)';this.style.background='rgba(255,255,255,.04)'">
+        <div style="display:flex;align-items:center;gap:12px">
+          <span style="font-size:28px">${m.em}</span>
+          <div>
+            <div style="font-size:14px;font-weight:900;font-family:var(--mono);color:#fff">${m.nm}</div>
+            <div style="font-size:10px;color:rgba(255,255,255,.45);font-family:var(--mono);margin-top:2px">${m.desc} · Start: ${m.startGold}g</div>
+          </div>
+        </div>
+      </div>`).join('')}
+    <div style="font-size:9px;color:rgba(255,255,255,.3);font-family:var(--mono)">Svårare bana = mer guld</div>`;
+  document.body.appendChild(picker);
+  window._tdPickMap=(i)=>{
+    _tdActiveMap=TD_MAPS_CONFIG[i];
+    TD_PATH=_tdActiveMap.path;
+    _td._pathCells=null;
+    _td._mapPicked=true;
+    picker.remove();
+    openBattle();
+  };
+}
+
 function openBattle(){
   _applyTDUpgrades&&_applyTDUpgrades();
+  // Show map picker if not chosen yet
+  if(!_td._mapPicked){
+    if(!$('battleArena')){showT('Tower Defense laddas...','b');return;}
+    $('battleArena').classList.add('open');
+    _tdShowMapPicker();return;
+  }
+  _td._mapPicked=false; // reset for next session
   const hs=parseInt(localStorage.getItem('kv8_tdHS')||'0');
   const bonusHp=G._tdBonusHp||0;
-  const startGold=200+(G._tdStartGold||0);
+  const startGold=(_tdActiveMap?_tdActiveMap.startGold:200)+(G._tdStartGold||0);
+  // Apply active map
+  if(_tdActiveMap){TD_PATH=_tdActiveMap.path;}
   _td={active:false,wave:1,gold:startGold,baseHp:100+bonusHp,baseMax:100+bonusHp,
     towers:[],enemies:[],projectiles:[],particles:[],ambient:Array.from({length:20},()=>({x:Math.random()*360,y:Math.random()*480,vx:(Math.random()-.5)*0.3,vy:-(0.2+Math.random()*0.4),life:60+Math.random()*80,col:Math.random()<0.5?'rgba(255,150,50,.5)':'rgba(180,100,255,.4)',r:Math.random()*2+0.5})),
     queue:[],spawnTimer:0,killsThisWave:0,enemiesThisWave:0,
@@ -6007,8 +6116,10 @@ function tdEnemyDefForWave(wave){
   // Unlock harder enemies as waves progress
   const pool=TD_ENEMIES.filter((_,i)=>i<Math.min(TD_ENEMIES.length,3+Math.floor(wave/3)));
   const base=pool[Math.floor(Math.random()*pool.length)];
-  const scale=1+(wave-1)*0.2;
-  const speedScale=1+(wave-1)*0.04;
+  const linearScale=1+(wave-1)*0.22;
+  const expBonus=wave>10?Math.pow(1.08,wave-10)-1:0;
+  const scale=linearScale+expBonus;
+  const speedScale=Math.min(3.2,1+(wave-1)*0.05+(wave>15?Math.pow(1.04,wave-15)-1:0));
   let e={...base,hp:Math.max(6,Math.round(base.hp*scale)),speed:Math.min(3.0,base.speed*speedScale),gold:Math.round((base.gold||8)*(1+wave*0.05)),isBoss:false};
   // Apply wave modifier
   if(_td.waveModifier==='horde')e.speed*=1.4;
@@ -6051,6 +6162,18 @@ function tdStartWave(){
     const mb=$('tdModifierBanner');if(mb){mb.textContent=mod.label;mb.style.color=mod.col;mb.style.display='block';setTimeout(()=>{mb.style.display='none';},3000);}
   }else{const mb=$('tdModifierBanner');if(mb)mb.style.display='none';}
   tdUpdateBaseUI();tdUpdateAbilityUI();
+  // KARMA SURGE: pet stats boost towers
+  const petMood=G.mood||100;const petHunger=G.hunger||100;const petEnergy=G.energy||100;
+  const karmaSurge=petMood>70&&petHunger>70&&petEnergy>70;
+  if(karmaSurge&&!_td._karmaSurgeActive){
+    _td._karmaSurgeActive=true;
+    const mb=$('tdModifierBanner');if(mb){mb.textContent='💚 KARMA SURGE AKTIV! +25% skada';mb.style.color='#39FF14';mb.style.display='block';setTimeout(()=>mb.style.display='none',3500);}
+    showT('💚 KARMA SURGE! Din pet bostar tornen!','g');
+  } else if(!karmaSurge){_td._karmaSurgeActive=false;}
+  // Apply wave environment theme (visual change every 10 waves)
+  const waveEra=Math.floor((w-1)/10);
+  const waveEras=['#39FF14','#FF9F0A','#FF2D55','#BF5FFF','#FFE600'];
+  _td._waveCol=waveEras[Math.min(waveEra,waveEras.length-1)];
   if(!_td.raf){_td.lastT=performance.now();_td.raf=requestAnimationFrame(tdLoop);}
 }
 
@@ -6108,7 +6231,7 @@ function tdUpdate(dt){
       _td.enemies.push(newE);
       if(def.isBoss){_td._currentBoss=newE;_tdShowBossBar(newE);}
     }
-    _td.spawnTimer=def.isBoss?0:Math.max(12,45-_td.wave*2);
+    _td.spawnTimer=def.isBoss?0:Math.max(6,45-_td.wave*2.2);
   }
   // Towers fire
   for(const tower of _td.towers){
@@ -6121,7 +6244,7 @@ function tdUpdate(dt){
     if(!inRange.length)continue;
     const tType=def.type||'single';
     const primary=inRange[0];
-    const waveMult=1+_td.wave*0.025;
+    const waveMult=1+_td.wave*0.025+(_td._karmaSurgeActive?(((G.mood||100)/100)*0.15):0);
     // Helper: calc damage with armor and weakness
     const calcDmg=(e,baseDmg)=>{
       let d=Math.round(baseDmg*(G._tdDmgMult||1)*(1+_td.wave*0.025));
@@ -7466,7 +7589,7 @@ function pcReact(m){
 
 // ── UPDATE ──
 function updateHUD(){
-  $('hCoins').textContent=G.coins.toLocaleString('sv');
+  const ch=$('hCoins');if(ch){const prev=ch.textContent;ch.textContent=G.coins.toLocaleString('sv');if(prev!==ch.textContent){ch.style.transform='scale(1.3)';ch.style.color='#FFE600';setTimeout(()=>{ch.style.transform='';ch.style.color='';},300);}}
   const hkc=$('hKC');if(hkc)hkc.textContent=(G.kc||0).toLocaleString('sv');
   $('hStreak').textContent=G.streak;
   const hTrust=$('hTrust');if(hTrust)hTrust.textContent=G.trustScore;
@@ -7545,6 +7668,9 @@ function updatePetView(){
   $('vE').style.width=Math.round(G.energy)+'%';$('vEv').textContent=Math.round(G.energy);
   $('vM').style.width=Math.round(G.mood)+'%';$('vMv').textContent=Math.round(G.mood);
   $('vK').style.width=Math.round(G.trustScore)+'%';$('vKv').textContent=Math.round(G.trustScore);
+  const cbFeedVal=document.querySelector('.chb-feed .chb-val');if(cbFeedVal)cbFeedVal.textContent=Math.round(G.hunger||80)+'%';
+  const cbEnVal=document.querySelector('.chb-sleep .chb-val');if(cbEnVal)cbEnVal.textContent=Math.round(G.energy||100)+'%';
+  const cbMoodVal=document.querySelector('.chb-play .chb-val');if(cbMoodVal)cbMoodVal.textContent=Math.round(G.mood||90)+'%';
   // XP Progress Bar
   const xpFill=$('xpBarFill');if(xpFill)xpFill.style.width=pct+'%';
   const xpLbl=$('xpBarLabel');if(xpLbl)xpLbl.textContent='LV'+G.level+' PROGRESS';
@@ -9392,6 +9518,8 @@ const DNA_PW_DEFS={
   laser:    {em:'🔫',col:'#FF4500',nm:'LASER',dur:480},
   slowmo:   {em:'⏰',col:'#BF5FFF',nm:'SLOW-MO',dur:480},
   fireball: {em:'🔥',col:'#FF9F0A',nm:'FIREBALL',dur:360},
+  shield:   {em:'🛡️',col:'#39FF14',nm:'SHIELD',dur:300},
+  storm:    {em:'⚡',col:'#FFE600',nm:'LIGHTNING',dur:0},
 };
 function _dnaActivatePW(type){
   const def=DNA_PW_DEFS[type];if(!def)return;
@@ -9408,9 +9536,9 @@ function _dnaActivatePW(type){
     case 'widePad':
       if(!_dna.activePWs.widePad){_dna._origPW=_dna.pw;}
       _dna.activePWs.widePad=(def.dur||600);
-      const newPw=Math.round((_dna._origPW||_dna.pw)*1.85);
+      {const newPw=Math.round((_dna._origPW||_dna.pw)*1.85);
       _dna.px=Math.max(0,Math.min(_dna.W-newPw,_dna.px-Math.round((newPw-_dna.pw)/2)));
-      _dna.pw=newPw;
+      _dna.pw=newPw;}
       break;
     case 'laser':
       _dna.activePWs.laser=(def.dur||480);_dna.laserFireTimer=0;break;
@@ -9421,6 +9549,15 @@ function _dnaActivatePW(type){
       break;
     case 'fireball':
       _dna.activePWs.fireball=(def.dur||360);break;
+    case 'shield':
+      _dna.activePWs.shield=(def.dur||300);break;
+    case 'storm':
+      // Destroy up to 6 random blocks instantly with lightning
+      {const alive=_dna.blocks.filter(b=>b.alive);
+      const targets=alive.sort(()=>Math.random()-.5).slice(0,6);
+      targets.forEach(b=>{b.alive=false;b.flash=1;_dna.score+=b.pts*3;_dna.coins+=3;_dnaSparkAt(b.x+b.w/2,b.y+b.h/2,'#FFE600');});
+      _pbUpdateScore();_dnaUpdateHUD();}
+      break;
   }
 }
 function openPetBlocks(){
@@ -9498,16 +9635,18 @@ function _dnaBuildWave(){
   }
 }
 
-function _dnaLoop(){
+function _dnaLoop(ts){
   if(!_dna.active){_dna.raf=null;return;}
   const canvas=$('dnaCanvas');if(!canvas){_dna.active=false;_dna.raf=null;return;}
   const ctx=canvas.getContext('2d');if(!ctx){_dna.active=false;_dna.raf=null;return;}
-  _dnaUpdate();
+  const dt=Math.min(2.5,Math.max(0.3,(ts-(_dna._lastTs||ts))/16.67));
+  _dna._lastTs=ts;
+  _dnaUpdate(dt);
   _dnaDraw(canvas,ctx);
   _dna.raf=requestAnimationFrame(_dnaLoop);
 }
 
-function _dnaUpdate(){
+function _dnaUpdate(dt=1){
   const {W,H}=_dna;
   // Ball trail (short for performance)
   _dna.ballTrail.push({x:_dna.bx,y:_dna.by,t:1});
@@ -10145,13 +10284,18 @@ const _PR_LANES=3;
 const _PR_GEM_COLS=['#FF2D55','#00D9FF','#39FF14','#FFE600','#BF5FFF'];
 const _PR_GEM_NMS=['RÖDA','BLÅA','GRÖNA','GULD','LILA'];
 function _prLaneY(lane){const H=_pr.H||300;return H*.78-Math.min(H*.14,64)*lane;}
-function _prSwitchLane(dir){
+function _prJump(){
   if(!_pr.active)return;
-  const next=(_pr.lane||1)-dir;
-  if(next<0||next>=_PR_LANES)return;
-  _pr.lane=next;
-  const fl=$('prLaneFlash');if(fl){fl.style.opacity='1';setTimeout(()=>{if(fl)fl.style.opacity='0';},80);}
-  vibe&&vibe(10);
+  if(_pr.grounded){
+    _pr.vy=_pr.JUMP_F;_pr.grounded=false;_pr.canDblJump=true;
+    vibe&&vibe(15);
+    // Spawn jump dust
+    for(let i=0;i<4;i++)_pr.particles.push({x:_pr.x-8+Math.random()*16,y:_pr.groundY,vx:(Math.random()-.5)*3,vy:-(1+Math.random()*2),life:12,col:'rgba(255,255,255,.4)'});
+  } else if(_pr.canDblJump){
+    _pr.vy=_pr.JUMP_F*.85;_pr.canDblJump=false;
+    vibe&&vibe([10,5,10]);
+    for(let i=0;i<6;i++)_pr.particles.push({x:_pr.x-12+Math.random()*24,y:_pr.y,vx:(Math.random()-.5)*4,vy:-(1+Math.random()*3),life:15,col:'#00D9FF'});
+  }
 }
 function openPetRunner(){
   let g=$('petRunnerGame');
@@ -10179,7 +10323,7 @@ function openPetRunner(){
             <div style="font-size:80px;animation:petBob 1s ease-in-out infinite;margin-bottom:8px" id="prStartPet">🐉</div>
             <div style="font-size:24px;font-weight:900;color:#39FF14;font-family:var(--mono);letter-spacing:2px;text-shadow:0 0 20px rgba(57,255,20,.5)">KARMA RUSH</div>
             <div style="font-size:10px;color:rgba(255,255,255,.4);font-family:var(--mono);letter-spacing:3px;text-transform:uppercase;margin:6px 0 4px">LANE SWITCHER + GEM COMBO</div>
-            <div style="font-size:9px;color:rgba(255,255,255,.25);font-family:var(--mono);margin-bottom:16px">TAP TOPP=UPP · TAP BOTT=NER · MATCHA GEMS!</div>
+            <div style="font-size:9px;color:rgba(255,255,255,.25);font-family:var(--mono);margin-bottom:16px">TRYCK = HOPPA · TRYCK IGEN I LUFTEN = DUBBELHOPP!</div>
             <div style="display:inline-block;background:#0d0d0d;border:3px solid var(--y);border-radius:6px;box-shadow:4px 4px 0px var(--y);padding:8px 18px;margin-bottom:16px">
               <span style="font-size:10px;color:rgba(255,255,255,.5);font-family:var(--mono)">BÄST: </span>
               <span id="prBestDisp" style="color:var(--y);font-weight:900;font-family:var(--mono);font-size:16px">0m</span>
@@ -10206,16 +10350,12 @@ function openPetRunner(){
       if(e.target.closest('button'))return;
       e.preventDefault();
       if(!_pr.started){_pr.started=true;const ss=$('prStartScreen');if(ss)ss.style.display='none';_prInitGame();_prLoop();return;}
-      const rect=g.getBoundingClientRect();
-      const relY=(e.touches[0].clientY-rect.top)/rect.height;
-      _prSwitchLane(relY<0.5?-1:1);
+      _prJump();
     },{passive:false});
     g.addEventListener('mousedown',e=>{
       if(e.target.closest('button')||e.pointerType==='touch'||e.pointerType==='pen')return;
       if(!_pr.started){_pr.started=true;const ss=$('prStartScreen');if(ss)ss.style.display='none';_prInitGame();_prLoop();return;}
-      const rect=g.getBoundingClientRect();
-      const relY=(e.clientY-rect.top)/rect.height;
-      _prSwitchLane(relY<0.5?-1:1);
+      _prJump();
     });
   }
   g.classList.add('open');
@@ -10244,14 +10384,14 @@ function _prInitGame(){
   const H=parent?parent.offsetHeight:(window.innerHeight-52);
   canvas.width=Math.max(W,200);canvas.height=Math.max(H,300);
   _pr.W=canvas.width;_pr.H=canvas.height;
+  _pr.groundY=Math.round(H*.82);
   _pr.active=true;_pr.score=0;_pr.gemsCollected=0;
-  _pr.lane=1; // start middle lane
-  _pr.x=Math.round(W*.15);
+  _pr.x=Math.round(W*.18);
+  _pr.y=_pr.groundY;_pr.vy=0;_pr.grounded=true;_pr.canDblJump=true;
   _pr.pHp=3;_pr.maxHp=3;_pr.combo=0;_pr.comboMult=1;_pr.comboColor=null;
   _pr.obstacles=[];_pr.gems=[];_pr.powerups=[];_pr.bgOffset=0;_pr.particles=[];
   _pr.nextObstacle=130;_pr.nextGem=60;_pr.nextPowerup=500;
   _pr.shield=false;_pr.shieldTimer=0;_pr.magnetTimer=0;_pr.lastHitT=0;
-  // Init background buildings (parallax)
   _pr.buildings=Array.from({length:14},()=>({x:Math.random()*W,h:40+Math.random()*200,w:28+Math.random()*80,spd:0.3+Math.random()*.5,col:`hsl(${200+Math.random()*60},55%,${3+Math.random()*7}%)`}));
   _pr.stars=Array.from({length:30},()=>({x:Math.random()*W,y:Math.random()*H*.55,r:Math.random()*1.5+.3,a:Math.random()*6.28}));
   _pr.level=parseInt(localStorage.getItem('kv8_prLv')||'1');
@@ -10267,116 +10407,102 @@ function _prLoop(){
 function _prUpdate(canvas){
   const W=canvas.width,H=canvas.height;
   _pr.H=H;_pr.W=W;
-  const spd=2.5+Math.min((_pr.score/600)*0.4,3);
+  if(!_pr.groundY)_pr.groundY=Math.round(H*.82);
+  const spd=2.8+Math.min((_pr.score/500)*0.6,4.5)+(_pr.level-1)*.4;
   _pr.score++;
-  // Score / level HUD
   const sc=$('prScore');if(sc)sc.textContent=Math.floor(_pr.score/10)+'m';
   const hp=$('prHpDots');if(hp)hp.textContent='❤️'.repeat(_pr.pHp)+'🤍'.repeat(Math.max(0,(_pr.maxHp||3)-_pr.pHp));
-  // Level up check
   const newLv=Math.floor(_pr.score/2500)+1;
   if(newLv>(_pr.level||1)){
     _pr.level=newLv;localStorage.setItem('kv8_prLv',_pr.level);
     const lb2=$('prLvBadge2');if(lb2)lb2.textContent='LV'+_pr.level;
     showT('⚡ LV'+_pr.level+' SPEED UP!','y');vibe&&vibe([30,15,60,15,90]);
   }
-  // Move parallax buildings
+  // Gravity
+  _pr.vy+=_pr.GRAVITY||0.55;
+  _pr.y+=_pr.vy;
+  if(_pr.y>=_pr.groundY){_pr.y=_pr.groundY;_pr.vy=0;_pr.grounded=true;_pr.canDblJump=true;}
+  // Parallax buildings
   (_pr.buildings||[]).forEach(b=>{b.x-=b.spd*spd*.3;if(b.x+b.w<0)b.x=W+b.w;});
-  // Obstacles
+  // Obstacles: ground spikes and flying orbs
   _pr.nextObstacle-=spd;
   if(_pr.nextObstacle<0){
     const lvl=_pr.level||1;
-    const gapMin=Math.max(150,210-lvl*8);
-    if(Math.random()<0.35&&_pr.obstacles.length<4){
-      // Multi-lane barrier: 2 of 3 lanes blocked, one free
-      const freeLane=Math.floor(Math.random()*_PR_LANES);
-      for(let l=0;l<_PR_LANES;l++){
-        if(l!==freeLane){const ci=Math.floor(Math.random()*_PR_GEM_COLS.length);_pr.obstacles.push({x:W+10+l*5,lane:l,type:'block',col:_PR_GEM_COLS[ci]});}
-      }
-    } else {
-      const lane=Math.floor(Math.random()*_PR_LANES);
-      const types=['spike','block','orb'];const ci=Math.floor(Math.random()*_PR_GEM_COLS.length);
-      _pr.obstacles.push({x:W+10,lane,type:types[Math.floor(Math.random()*types.length)],col:_PR_GEM_COLS[ci]});
-    }
+    const gapMin=Math.max(140,200-lvl*7);
+    const type=Math.random()<0.4?'fly':'spike';
+    const flyY=_pr.groundY-(40+Math.random()*90); // flying obstacle height
+    _pr.obstacles.push({x:W+10,y:type==='fly'?flyY:_pr.groundY,type,h:type==='fly'?24:28,w:28,col:_PR_GEM_COLS[Math.floor(Math.random()*_PR_GEM_COLS.length)]});
     _pr.nextObstacle=gapMin*.5+Math.random()*gapMin*.8;
   }
-  // Gems with colors
+  // Gems at varying heights
   _pr.nextGem-=spd;
   if(_pr.nextGem<0){
-    const lane=Math.floor(Math.random()*_PR_LANES);
     const ci=Math.floor(Math.random()*_PR_GEM_COLS.length);
-    _pr.gems.push({x:W+10,lane,col:_PR_GEM_COLS[ci],nm:_PR_GEM_NMS[ci],alive:true,ci});
-    _pr.nextGem=50+Math.random()*60;
+    const gemY=_pr.groundY-(18+Math.random()*110);
+    _pr.gems.push({x:W+10,y:gemY,col:_PR_GEM_COLS[ci],nm:_PR_GEM_NMS[ci],alive:true,ci});
+    _pr.nextGem=45+Math.random()*55;
   }
   // Powerups
   _pr.nextPowerup-=spd;
   if(_pr.nextPowerup<0){
     const types=['shield','magnet','hp'];
-    const lane=Math.floor(Math.random()*_PR_LANES);
-    _pr.powerups.push({x:W+10,lane,type:types[Math.floor(Math.random()*types.length)],alive:true});
+    const py=_pr.groundY-60;
+    _pr.powerups.push({x:W+10,y:py,type:types[Math.floor(Math.random()*types.length)],alive:true});
     _pr.nextPowerup=400+Math.random()*450;
   }
-  // Collision detection
-  const now=Date.now();const petR=15;
+  // Collision: obstacles
+  const now=Date.now();const petR=14;
   for(let i=_pr.obstacles.length-1;i>=0;i--){
     const ob=_pr.obstacles[i];ob.x-=spd;
     if(ob.x+40<0){_pr.obstacles.splice(i,1);continue;}
-    if(!_pr.shield&&!(_pr.shieldTimer>0)&&(now-(_pr.lastHitT||0))>700){
-      const oy=_prLaneY(ob.lane);const py=_prLaneY(_pr.lane);
-      if(ob.x<_pr.x+petR&&ob.x+32>_pr.x-petR&&Math.abs(py-oy)<28){
-        _pr.pHp--;_pr.lastHitT=now;vibe&&vibe([40,20,60]);
-        _pr.combo=0;_pr.comboMult=1;_pr.comboColor=null;
-        const cb=$('prComboBar');if(cb)cb.style.display='none';
-        _pr.obstacles.splice(i,1);
-        if(_pr.pHp<=0){_prGameOver();return;}
-      }
+    const oy=ob.y;
+    const hitX=ob.x<_pr.x+petR&&ob.x+ob.w>_pr.x-petR;
+    const hitY=Math.abs(_pr.y-oy)<petR+ob.h*.5;
+    if(hitX&&hitY&&!_pr.shield&&!(_pr.shieldTimer>0)&&(now-(_pr.lastHitT||0))>700){
+      _pr.pHp--;_pr.lastHitT=now;vibe&&vibe([40,20,60]);
+      _pr.combo=0;_pr.comboMult=1;_pr.comboColor=null;
+      const cb=$('prComboBar');if(cb)cb.style.display='none';
+      _pr.obstacles.splice(i,1);
+      if(_pr.pHp<=0){_prGameOver();return;}
     }
   }
   // Gem collection
   for(let i=_pr.gems.length-1;i>=0;i--){
-    const gm=_pr.gems[i];
-    if(_pr.magnetTimer>0)gm.x-=spd*.2;
-    gm.x-=spd;
-    if(gm.x+12<0){_pr.gems.splice(i,1);if(_pr.combo>0){_pr.combo=0;_pr.comboColor=null;}continue;}
-    if(gm.alive){
-      const gy=_prLaneY(gm.lane);const py=_prLaneY(_pr.lane);
-      const hit=(_pr.magnetTimer>0&&gm.lane===_pr.lane)||
-                (Math.abs(gm.x-_pr.x)<22&&Math.abs(gy-py)<26);
-      if(hit){
-        gm.alive=false;_pr.gemsCollected++;
-        if(_pr.comboColor===gm.ci){_pr.combo++;_pr.comboMult=Math.min(8,1+Math.floor(_pr.combo/3));}
-        else{_pr.combo=1;_pr.comboMult=1;_pr.comboColor=gm.ci;}
-        const coins=_pr.comboMult*Math.max(1,_pr.level||1);
-        gainCoins(coins);gainXP(1,'action');
-        const cb=$('prComboBar');const cm=$('prComboMult');
-        if(cb&&cm){cb.style.display='block';cm.textContent=_pr.comboMult;cb.style.borderColor=gm.col;cb.style.color=gm.col;}
-        if(_pr.combo>0&&_pr.combo%3===0)showT('🎯 COMBO ×'+_pr.comboMult+' '+_PR_GEM_NMS[gm.ci]+'!','y');
-        if(_pr.particles)_pr.particles.push({x:gm.x,y:gy,col:gm.col,life:18,vy:-1.5,vx:(Math.random()-.5)*2.5});
-        _pr.gems.splice(i,1);vibe&&vibe(8);
-      }
+    const gm=_pr.gems[i];gm.x-=spd;
+    if(gm.x+20<0){_pr.gems.splice(i,1);continue;}
+    if(!gm.alive)continue;
+    const distX=Math.abs(gm.x-_pr.x),distY=Math.abs(gm.y-_pr.y);
+    const catchR=_pr.magnetTimer>0?80:22;
+    if(distX<catchR&&distY<catchR){
+      gm.alive=false;_pr.gemsCollected++;
+      // Combo
+      if(_pr.comboColor===gm.ci){_pr.combo++;_pr.comboMult=Math.min(8,1+Math.floor(_pr.combo/3));}
+      else{_pr.combo=1;_pr.comboColor=gm.ci;_pr.comboMult=1;}
+      const pts=10*_pr.comboMult;
+      _pr.score+=pts;
+      for(let p=0;p<5;p++)_pr.particles.push({x:gm.x,y:gm.y,vx:(Math.random()-.5)*4,vy:-(1+Math.random()*3),life:18,col:gm.col});
+      if(_pr.comboMult>1){const cb=$('prComboBar');if(cb){cb.style.display='block';$('prComboMult').textContent=_pr.comboMult;}}
+      else{const cb=$('prComboBar');if(cb)cb.style.display='none';}
+      _pr.gems.splice(i,1);vibe&&vibe(8);SFX&&SFX.tap&&SFX.tap();
     }
   }
-  // Powerup collection
+  // Powerups
   for(let i=_pr.powerups.length-1;i>=0;i--){
-    const pw=_pr.powerups[i];pw.x-=spd;
-    if(pw.x+20<0){_pr.powerups.splice(i,1);continue;}
-    if(pw.alive){
-      const py=_prLaneY(pw.lane);const myY=_prLaneY(_pr.lane);
-      if(Math.abs(pw.x-_pr.x)<24&&Math.abs(py-myY)<26){
-        pw.alive=false;_pr.powerups.splice(i,1);vibe&&vibe([20,10,30]);
-        if(pw.type==='shield'){_pr.shield=true;_pr.shieldTimer=180;showT('🛡️ SHIELD!','b');}
-        else if(pw.type==='magnet'){_pr.magnetTimer=250;showT('🧲 MAGNET!','y');}
-        else if(pw.type==='hp'&&_pr.pHp<(_pr.maxHp||3)){_pr.pHp++;showT('❤️ +1 HP!','g');}
-        else{gainCoins(5);showT('❤️ +5⚡','g');}
-      }
+    const pw=_pr.powerups[i];if(!pw.alive){_pr.powerups.splice(i,1);continue;}
+    pw.x-=spd;
+    if(pw.x+30<0){_pr.powerups.splice(i,1);continue;}
+    if(Math.abs(pw.x-_pr.x)<28&&Math.abs(pw.y-_pr.y)<28){
+      pw.alive=false;
+      if(pw.type==='shield'){_pr.shield=true;_pr.shieldTimer=180;showT('🛡️ Shield!','b');}
+      else if(pw.type==='magnet'){_pr.magnetTimer=220;showT('🧲 Magnet!','y');}
+      else if(pw.type==='hp'&&_pr.pHp<(_pr.maxHp||3)){_pr.pHp++;showT('❤️ +1 HP!','g');}
+      else{gainCoins(5);showT('❤️ +5⚡','g');}
     }
   }
   if(_pr.shieldTimer>0){_pr.shieldTimer--;if(_pr.shieldTimer<=0)_pr.shield=false;}
   if(_pr.magnetTimer>0)_pr.magnetTimer--;
-  // Particles
   if(_pr.particles){for(let i=_pr.particles.length-1;i>=0;i--){const p=_pr.particles[i];p.x+=p.vx;p.y+=p.vy;p.life--;if(p.life<=0)_pr.particles.splice(i,1);}
-  if(_pr.particles.length>30)_pr.particles.splice(0,_pr.particles.length-30);}
-  if(_pr.obstacles.length>20)_pr.obstacles.splice(0,_pr.obstacles.length-20);
-  if(_pr.gems.length>20)_pr.gems.splice(0,_pr.gems.length-20);
+  if(_pr.particles.length>40)_pr.particles.splice(0,_pr.particles.length-40);}
 }
 // Particle trail pool for Pet Runner
 if(!window._prParticles)window._prParticles=[];
@@ -10454,39 +10580,37 @@ function _prDraw(canvas,ctx){
   const gg=ctx.createLinearGradient(0,groundY-4,0,groundY+H*.2);
   gg.addColorStop(0,th.acc+'44');gg.addColorStop(.15,th.bg2);gg.addColorStop(1,'#000');
   ctx.fillStyle=gg;ctx.fillRect(0,groundY-4,W,H*.24);
-  // Lane guide lines
-  const laneGap=Math.min(H*.14,64);
-  const offset=(t*.1)%50;
-  for(let l=0;l<_PR_LANES;l++){
-    const ly=_prLaneY(l);
-    ctx.save();ctx.strokeStyle=th.acc+'28';ctx.lineWidth=1;ctx.setLineDash([15,35]);ctx.lineDashOffset=-offset;
-    ctx.beginPath();ctx.moveTo(0,ly+18);ctx.lineTo(W,ly+18);ctx.stroke();ctx.setLineDash([]);ctx.restore();
-  }
-  // Current lane highlight
-  {const myY=_prLaneY(_pr.lane||1);ctx.save();ctx.globalAlpha=.06;ctx.fillStyle=th.acc2;ctx.fillRect(0,myY-28,W,46);ctx.restore();}
-  // Obstacles
+  // Ground line
+  ctx.save();ctx.strokeStyle=th.acc+'30';ctx.lineWidth=1.5;ctx.setLineDash([8,16]);
+  ctx.beginPath();ctx.moveTo(0,_pr.groundY||H*.82);ctx.lineTo(W,_pr.groundY||H*.82);ctx.stroke();ctx.setLineDash([]);ctx.restore();
+  // Shadow under character
+  {const gY=_pr.groundY||H*.82;ctx.save();ctx.globalAlpha=.18;ctx.fillStyle='#000';ctx.beginPath();const sw=Math.max(10,(1-Math.min(1,(gY-_pr.y)/(H*.25)))*32);ctx.ellipse(_pr.x,gY+4,sw,5,0,0,Math.PI*2);ctx.fill();ctx.restore();}
+  // Obstacles (positional, not lane-based)
   (_pr.obstacles||[]).forEach(ob=>{
-    const oy=_prLaneY(ob.lane);
+    const oy=ob.y||(_pr.groundY||H*.82);
     ctx.save();ctx.shadowColor=ob.col;ctx.shadowBlur=18;
     if(ob.type==='spike'){
-      ctx.fillStyle=ob.col;ctx.beginPath();ctx.moveTo(ob.x,oy+18);ctx.lineTo(ob.x+16,oy-10);ctx.lineTo(ob.x+32,oy+18);ctx.closePath();ctx.fill();
+      ctx.fillStyle=ob.col;ctx.beginPath();ctx.moveTo(ob.x,oy);ctx.lineTo(ob.x+14,oy-ob.h);ctx.lineTo(ob.x+28,oy);ctx.closePath();ctx.fill();
       ctx.strokeStyle='rgba(255,255,255,.5)';ctx.lineWidth=1.2;ctx.stroke();
-    } else if(ob.type==='block'){
-      ctx.fillStyle=ob.col+'28';ctx.strokeStyle=ob.col;ctx.lineWidth=2.2;
-      ctx.beginPath();if(ctx.roundRect)ctx.roundRect(ob.x,oy-16,32,26,4);else ctx.rect(ob.x,oy-16,32,26);ctx.fill();ctx.stroke();
-      ctx.fillStyle='rgba(255,255,255,.12)';ctx.fillRect(ob.x+3,oy-13,26,8);
+    } else if(ob.type==='fly'){
+      // Flying drone/UFO obstacle
+      const cx2=ob.x+14,cy2=oy;
+      ctx.fillStyle=ob.col+'44';ctx.strokeStyle=ob.col;ctx.lineWidth=2;
+      ctx.beginPath();ctx.ellipse(cx2,cy2,16,8,0,0,Math.PI*2);ctx.fill();ctx.stroke();
+      ctx.fillStyle=ob.col;ctx.beginPath();ctx.ellipse(cx2,cy2-5,8,4,0,0,Math.PI*2);ctx.fill();
+      ctx.fillStyle='rgba(255,255,255,.7)';ctx.beginPath();ctx.arc(cx2,cy2-5,2,0,Math.PI*2);ctx.fill();
     } else {
-      const cx=ob.x+16,cy=oy-4;
-      const gr=ctx.createRadialGradient(cx,cy,2,cx,cy,14);
+      const cx2=ob.x+16,cy2=oy-4;
+      const gr=ctx.createRadialGradient(cx2,cy2,2,cx2,cy2,14);
       gr.addColorStop(0,'#fff');gr.addColorStop(.3,ob.col);gr.addColorStop(1,ob.col+'00');
-      ctx.fillStyle=gr;ctx.beginPath();ctx.arc(cx,cy,14,0,Math.PI*2);ctx.fill();
+      ctx.fillStyle=gr;ctx.beginPath();ctx.arc(cx2,cy2,14,0,Math.PI*2);ctx.fill();
     }
     ctx.restore();
   });
   // Gems — color-coded neon orbs
   (_pr.gems||[]).forEach(gm=>{
     if(!gm.alive)return;
-    const gy=_prLaneY(gm.lane);const pulse=.85+.15*Math.sin(t*.007+gm.x*.04);
+    const gy=gm.y||(_pr.groundY||H*.82)-20;const pulse=.85+.15*Math.sin(t*.007+gm.x*.04);
     ctx.save();ctx.shadowColor=gm.col;ctx.shadowBlur=22;
     const gr=ctx.createRadialGradient(gm.x,gy-8,1.5,gm.x,gy-8,10*pulse);
     gr.addColorStop(0,'#fff');gr.addColorStop(.3,gm.col);gr.addColorStop(1,gm.col+'00');
@@ -10497,9 +10621,9 @@ function _prDraw(canvas,ctx){
   });
   // Powerups
   (_pr.powerups||[]).forEach(pw=>{
-    const py=_prLaneY(pw.lane);const em={shield:'🛡️',magnet:'🧲',hp:'❤️'}[pw.type]||'⭐';
+    const py2=pw.y||(_pr.groundY||H*.82)-60;const em={shield:'🛡️',magnet:'🧲',hp:'❤️'}[pw.type]||'⭐';
     const p2=.8+.2*Math.sin(t*.008+pw.x*.02);
-    ctx.save();ctx.font=Math.round(20*p2)+'px serif';ctx.textAlign='center';ctx.fillText(em,pw.x,py-2);ctx.restore();
+    ctx.save();ctx.font=Math.round(20*p2)+'px serif';ctx.textAlign='center';ctx.fillText(em,pw.x,py2-2);ctx.restore();
   });
   // Gem-collect particles
   (_pr.particles||[]).forEach(p=>{
@@ -10507,7 +10631,7 @@ function _prDraw(canvas,ctx){
     ctx.beginPath();ctx.arc(p.x,p.y,4*a,0,Math.PI*2);ctx.fill();ctx.restore();
   });
   // Pet character
-  const petLane=_pr.lane||1;const petY2=_prLaneY(petLane);const petX2=_pr.x;
+  const petY2=(_pr.y!=null?_pr.y:(_pr.groundY||H*.82));const petX2=_pr.x;
   // Shield glow
   if(_pr.shield||_pr.shieldTimer>0){
     const sg=.4+.3*Math.sin(t*.01);ctx.save();ctx.strokeStyle='#00D9FF';ctx.lineWidth=2.5;ctx.shadowColor='#00D9FF';ctx.shadowBlur=18;ctx.globalAlpha=sg;
@@ -10552,6 +10676,233 @@ function _prGameOver(){
   vibe&&vibe([50,30,100]);SFX.error&&SFX.error();
   if(isNew)setTimeout(()=>{spawnParticles&&spawnParticles(window.innerWidth/2,window.innerHeight*.4,'stars');},200);
   save();updateHUD();
+}
+
+// ═══════════════════════════════════════
+// ── KARMA CITY — Live World Map ──
+// ═══════════════════════════════════════
+const _KC_NAMES=['KarmaUser','NeonPet','VoidRunner','StarBond','CityKing','PixelPet','NightOwl','SunRiser','MoonWalker','GemHunter'];
+const _KC_PETS=['🐉','🦊','🐺','🦁','🐯','🦅','🐸','🐙','🦋','🐠','🦄','🐻','🦈','🐧','🦊'];
+let _kc={active:false,raf:null,t:0,myX:120,myY:200,myDir:1,mySpeed:0.8,npcs:[],buildings:[],zones:[],feedItems:[],lastFeed:0};
+
+function openKarmaCity(){
+  let g=$('karmaCityWorld');
+  if(!g){
+    g=document.createElement('div');g.className='kc-world';g.id='karmaCityWorld';
+    g.innerHTML=`
+      <div class="kc-hdr">
+        <button onclick="closeKarmaCity()" style="background:#111;border:2px solid rgba(255,255,255,.15);border-radius:6px;color:#fff;font-size:16px;cursor:pointer;padding:4px 10px;font-family:var(--mono)">←</button>
+        <div style="flex:1">
+          <div style="font-size:13px;font-weight:900;font-family:var(--mono);color:var(--g);letter-spacing:2px">🌆 KARMA CITY</div>
+          <div style="font-size:9px;color:rgba(255,255,255,.4);font-family:var(--mono)" id="kcPlayerCount">2,847 aktiva spelare</div>
+        </div>
+        <div style="text-align:right">
+          <div style="font-size:9px;color:rgba(255,255,255,.4);font-family:var(--mono)">DIN ZON</div>
+          <div style="font-size:12px;font-weight:900;font-family:var(--mono);color:var(--y)" id="kcZoneInfo">Zon 3</div>
+        </div>
+      </div>
+      <canvas id="kcCanvas" class="kc-city-canvas" style="touch-action:none"></canvas>
+      <div class="kc-feed" id="kcFeed">
+        <div class="kc-feed-item">🌆 Välkommen till KARMA CITY!</div>
+      </div>`;
+    document.body.appendChild(g);
+    const canvas=$('kcCanvas');
+    canvas.addEventListener('click',e=>{
+      const r=canvas.getBoundingClientRect();
+      const cx=(e.clientX-r.left)*(canvas.width/r.width);
+      const cy=(e.clientY-r.top)*(canvas.height/r.height);
+      _kcHandleClick(cx,cy);
+    });
+  }
+  g.classList.add('open');
+  _kcInit();
+}
+
+function closeKarmaCity(){
+  const g=$('karmaCityWorld');if(g)g.classList.remove('open');
+  _kc.active=false;if(_kc.raf){cancelAnimationFrame(_kc.raf);_kc.raf=null;}
+}
+
+function _kcInit(){
+  const canvas=$('kcCanvas');if(!canvas)return;
+  const W=canvas.offsetWidth||window.innerWidth;
+  const H=canvas.offsetHeight||300;
+  canvas.width=W;canvas.height=H;
+  _kc.W=W;_kc.H=H;_kc.t=0;_kc.active=true;
+  // Generate city buildings
+  _kc.buildings=[];
+  const cols=Math.floor(W/55);
+  for(let c=0;c<cols*2;c++){
+    const bh=30+Math.random()*140;
+    const bw=28+Math.random()*30;
+    _kc.buildings.push({x:c*55+Math.random()*15,y:H-bh-H*.2,w:bw,h:bh,col:`hsl(${200+Math.random()*60},40%,${4+Math.random()*8}%)`,windowCol:Math.random()<.5?'#00D9FF':'#FFE600'});
+  }
+  // Generate zones (colored districts)
+  _kc.zones=[
+    {x:0,y:H*.25,w:W*.35,h:H*.55,col:'rgba(57,255,20,.08)',border:'rgba(57,255,20,.3)',nm:'KARMA DISTRICT',owned:true},
+    {x:W*.35,y:H*.2,w:W*.3,h:H*.6,col:'rgba(0,217,255,.06)',border:'rgba(0,217,255,.2)',nm:'NEON ZONE',owned:false},
+    {x:W*.65,y:H*.22,w:W*.35,h:H*.58,col:'rgba(191,95,255,.06)',border:'rgba(191,95,255,.2)',nm:'VOID SECTOR',owned:false},
+  ];
+  // My pet start position
+  _kc.myX=W*.2;_kc.myY=H*.75;_kc.myDir=1;_kc.mySpeed=0.6;
+  // NPC pets (simulated players)
+  _kc.npcs=Array.from({length:12},(_,i)=>({
+    x:Math.random()*W,y:H*.65+Math.random()*H*.15,
+    vx:(Math.random()-.5)*0.8,vy:0,
+    pet:_KC_PETS[Math.floor(Math.random()*_KC_PETS.length)],
+    nm:_KC_NAMES[Math.floor(Math.random()*_KC_NAMES.length)]+(Math.floor(Math.random()*99)+1),
+    lv:Math.floor(Math.random()*20)+1,
+    zoneTimer:100+Math.random()*200,dir:Math.random()<.5?1:-1,
+    speechTimer:0,speech:'',talkChance:0.002,
+  }));
+  _kc.feedItems=['🌆 Välkommen till KARMA CITY!'];
+  if(_kc.raf)cancelAnimationFrame(_kc.raf);
+  _kc.raf=requestAnimationFrame(_kcLoop);
+  // Update player count
+  const pc=$('kcPlayerCount');if(pc)pc.textContent=(2800+Math.floor(Math.random()*100))+' aktiva spelare';
+}
+
+function _kcLoop(ts){
+  if(!_kc.active){_kc.raf=null;return;}
+  _kcUpdate(ts);_kcDraw();
+  _kc.raf=requestAnimationFrame(_kcLoop);
+}
+
+function _kcUpdate(ts){
+  _kc.t++;
+  const W=_kc.W,H=_kc.H;
+  // Move my pet
+  _kc.myX+=_kc.myDir*_kc.mySpeed;
+  if(_kc.myX>W*.85){_kc.myDir=-1;}
+  if(_kc.myX<W*.05){_kc.myDir=1;}
+  // Move NPCs
+  _kc.npcs.forEach(n=>{
+    n.x+=n.vx;
+    if(n.x<10||n.x>W-10){n.vx*=-1;n.dir=n.vx>0?1:-1;}
+    n.zoneTimer--;
+    if(n.zoneTimer<=0){n.vx=(Math.random()-.5)*1.2;n.zoneTimer=80+Math.random()*180;}
+    if(n.speechTimer>0)n.speechTimer--;
+    if(Math.random()<n.talkChance&&n.speechTimer<=0){
+      const msgs=['🔥 gang gang','💎 let\'s go!','⚡ KARMA++','🐾 pet on top','🏆 level up!','💚 hi!'];
+      n.speech=msgs[Math.floor(Math.random()*msgs.length)];
+      n.speechTimer=90;
+    }
+  });
+  // Simulate activity feed
+  if(_kc.t%180===0){
+    const n=_kc.npcs[Math.floor(Math.random()*_kc.npcs.length)];
+    const actions=['matade sin pet 🍖','spelade DNA Breaker 🧬','vann Tower Defense 🏰','nådde LV'+Math.floor(Math.random()*5+n.lv)+' ⚡','samlade karma-poäng 💎'];
+    const msg=n.nm+' '+actions[Math.floor(Math.random()*actions.length)];
+    _kc.feedItems.unshift(msg);
+    if(_kc.feedItems.length>3)_kc.feedItems.pop();
+    const feed=$('kcFeed');
+    if(feed)feed.innerHTML=_kc.feedItems.map(f=>`<div class="kc-feed-item">${f}</div>`).join('');
+  }
+}
+
+function _kcDraw(){
+  const canvas=$('kcCanvas');if(!canvas)return;
+  const ctx=canvas.getContext('2d');if(!ctx)return;
+  const W=_kc.W,H=_kc.H,t=_kc.t;
+  // Night sky gradient
+  const sky=ctx.createLinearGradient(0,0,0,H*.45);
+  sky.addColorStop(0,'#010614');sky.addColorStop(1,'#020d22');
+  ctx.fillStyle=sky;ctx.fillRect(0,0,W,H);
+  // Stars
+  for(let i=0;i<20;i++){
+    const sx=(i*137.5)%W,sy=(i*89.3)%H*.4;
+    const a=.3+.2*Math.sin(t*.02+i);
+    ctx.save();ctx.globalAlpha=a;ctx.fillStyle='#fff';ctx.beginPath();ctx.arc(sx,sy,i%3===0?1.5:.7,0,Math.PI*2);ctx.fill();ctx.restore();
+  }
+  // Buildings
+  _kc.buildings.forEach(b=>{
+    ctx.fillStyle=b.col;ctx.fillRect(b.x,b.y,b.w,b.h);
+    // Windows
+    for(let wy=b.y+8;wy<b.y+b.h-8;wy+=12){
+      for(let wx=b.x+4;wx<b.x+b.w-4;wx+=9){
+        const on=Math.sin(wx*.5+t*.002+wy*.3)>0.4;
+        if(on){ctx.fillStyle=b.windowCol;ctx.globalAlpha=.6+.2*Math.sin(t*.01+wx);ctx.fillRect(wx,wy,4,5);ctx.globalAlpha=1;}
+      }
+    }
+  });
+  // Ground
+  const grdY=H*.72;
+  const grd=ctx.createLinearGradient(0,grdY,0,H);
+  grd.addColorStop(0,'#0a1a0a');grd.addColorStop(1,'#050a05');
+  ctx.fillStyle=grd;ctx.fillRect(0,grdY,W,H-grdY);
+  // Road markings
+  ctx.strokeStyle='rgba(255,255,0,.2)';ctx.lineWidth=1;ctx.setLineDash([15,25]);
+  const roadY=grdY+H*.05;
+  ctx.beginPath();ctx.moveTo(0,roadY);ctx.lineTo(W,roadY);ctx.stroke();ctx.setLineDash([]);
+  // Zone overlays
+  _kc.zones.forEach(z=>{
+    ctx.save();ctx.globalAlpha=.5+.1*Math.sin(t*.02);
+    ctx.fillStyle=z.col;ctx.fillRect(z.x,z.y,z.w,z.h);
+    ctx.strokeStyle=z.border;ctx.lineWidth=z.owned?2:1;ctx.setLineDash(z.owned?[]:[5,8]);
+    ctx.beginPath();ctx.rect(z.x,z.y,z.w,z.h);ctx.stroke();ctx.setLineDash([]);
+    if(z.owned){ctx.fillStyle=z.border;ctx.font='9px monospace';ctx.globalAlpha=.8;ctx.fillText('★ '+z.nm,z.x+8,z.y+14);}
+    ctx.restore();
+  });
+  // NPC pets walking
+  _kc.npcs.forEach(n=>{
+    ctx.save();
+    const yPos=grdY+8;
+    ctx.font='18px serif';ctx.textAlign='center';
+    ctx.save();if(n.vx<0)ctx.scale(-1,1);
+    ctx.fillText(n.pet,n.vx<0?-n.x:n.x,yPos);
+    ctx.restore();
+    // Level badge
+    ctx.font='7px monospace';ctx.fillStyle='rgba(255,255,255,.5)';ctx.fillText('LV'+n.lv,n.x,yPos-14);
+    // Speech bubble
+    if(n.speechTimer>0&&n.speech){
+      ctx.globalAlpha=Math.min(1,n.speechTimer/15);
+      ctx.fillStyle='rgba(0,0,0,.8)';
+      const tw=ctx.measureText(n.speech).width+12;
+      ctx.beginPath();if(ctx.roundRect)ctx.roundRect(n.x-tw/2,yPos-38,tw,16,4);else ctx.rect(n.x-tw/2,yPos-38,tw,16);
+      ctx.fill();
+      ctx.fillStyle='rgba(255,255,255,.9)';ctx.font='8px monospace';
+      ctx.fillText(n.speech,n.x,yPos-26);
+    }
+    ctx.restore();
+  });
+  // MY PET (larger, glowing)
+  ctx.save();
+  const myY=grdY+8;
+  ctx.shadowColor='#39FF14';ctx.shadowBlur=16+8*Math.sin(t*.05);
+  ctx.font='26px serif';ctx.textAlign='center';
+  if(_kc.myDir<0){ctx.translate(_kc.myX*2,0);ctx.scale(-1,1);}
+  ctx.fillText(G.petEmoji||'🐉',_kc.myDir<0?-_kc.myX:_kc.myX,myY);
+  ctx.restore();
+  // Name tag for my pet
+  ctx.save();ctx.font='bold 9px monospace';ctx.textAlign='center';
+  ctx.fillStyle='#39FF14';ctx.fillText(G.petName||'Min Pet',_kc.myX,grdY-6);
+  ctx.restore();
+  // Neon street lights
+  for(let lx=60;lx<W;lx+=Math.max(80,W/5)){
+    ctx.save();ctx.strokeStyle='rgba(255,220,100,.4)';ctx.lineWidth=1;
+    ctx.beginPath();ctx.moveTo(lx,grdY-40);ctx.lineTo(lx,grdY);ctx.stroke();
+    const lg=ctx.createRadialGradient(lx,grdY-40,0,lx,grdY-40,30);
+    lg.addColorStop(0,'rgba(255,220,100,.2)');lg.addColorStop(1,'transparent');
+    ctx.fillStyle=lg;ctx.beginPath();ctx.arc(lx,grdY-40,30,0,Math.PI*2);ctx.fill();
+    ctx.restore();
+  }
+  ctx.textAlign='left';ctx.setLineDash([]);
+}
+
+function _kcHandleClick(cx,cy){
+  // Check if clicking on a zone
+  const zone=_kc.zones.find(z=>cx>=z.x&&cx<=z.x+z.w&&cy>=z.y&&cy<=z.y+z.h);
+  if(zone){
+    if(!zone.owned){
+      showT('⚔️ Kämpa för zon: '+zone.nm+'!','y');
+      // Check if player has enough level to claim
+      if((G.level||1)>=5&&(G.coins||0)>=50){
+        zone.owned=true;gainCoins(-50);showT('✅ Du äger nu '+zone.nm+'!','g');
+        _kc.feedItems.unshift('⭐ '+(G.name||'Du')+' tog kontroll över '+zone.nm+'!');
+        const feed=$('kcFeed');if(feed)feed.innerHTML=_kc.feedItems.map(f=>`<div class="kc-feed-item">${f}</div>`).join('');
+      } else {showT('❌ Behöver LV5 + 50💎 för att ta zonen','r');}
+    } else {showT('💚 Du äger '+zone.nm+'!','g');}
+  }
 }
 
 // ══════════════════════════════════════════
@@ -12055,7 +12406,7 @@ function nav(name){
   const btn=document.querySelector('.nb[data-v="'+name+'"]');if(btn)btn.classList.add('on');
   vibe(8);
   ({
-    home:()=>{updatePetView();renderSocialPower();renderFriendCarePackages();renderCareNotifs();renderStreakMilestones();renderFriendLB();updatePetStatusRings();updatePetWeather();if(!_speechTimer)schedulePetSpeech();startKarmaPulse();renderJackpot();renderDailyMissions();const st=$('spinTeaserSub');if(st)st.textContent=G.lastSpin===new Date().toDateString()?'✅ Spinnat idag — kom tillbaka imorgon':'🎰 Gratis spin tillgängligt nu!';},
+    home:()=>{updateDailyGreeting();updatePetView();renderSocialPower();renderFriendCarePackages();renderCareNotifs();renderStreakMilestones();renderFriendLB();updatePetStatusRings();updatePetWeather();if(!_speechTimer)schedulePetSpeech();startKarmaPulse();renderJackpot();renderDailyMissions();const st=$('spinTeaserSub');if(st)st.textContent=G.lastSpin===new Date().toDateString()?'✅ Spinnat idag — kom tillbaka imorgon':'🎰 Gratis spin tillgängligt nu!';},
     flash:()=>{renderFlashFeed();renderStoriesBar();startFlashTimeReward();renderDailyChallenges();},
     circles:renderCircles,
     social:()=>switchSocial('activity',document.querySelector('#socialTabs .tab')),
@@ -12745,7 +13096,7 @@ function obNext(step){
   const targetEl=$('obs'+step);
   if(targetEl)targetEl.style.display='block';
   // Always scroll to top so the next step is visible (desktop fix)
-  const ob=$('ob');if(ob){ob.scrollTop=0;ob.scrollTo&&ob.scrollTo({top:0,behavior:'instant'});}
+  requestAnimationFrame(()=>{const ob=$('ob');if(ob){ob.scrollTop=0;ob.scrollTo&&ob.scrollTo({top:0,behavior:'instant'});}});
   vibe(20);
 }
 // ── LANGUAGE ──
@@ -13182,6 +13533,20 @@ const PET_SPEECH_MSGS={
   bored:['Lek med mig... 😑','Tråkigt 😒','Gör nåt! 🙄','...'],
   idle:['Hej! 👋','Titta på mig! ⭐','*gäspar*','Vad händer? 🤔','Peta mig! 👉'],
 };
+// ── DAILY GREETING ──
+function updateDailyGreeting(){
+  const h=new Date().getHours();
+  const greetEmoji=$('greetEmoji');const greetMsg=$('greetMsg');const greetSub=$('greetSub');const greetDate=$('greetDate');
+  if(!greetMsg)return;
+  const em=h<5?'🌙':h<12?'☀️':h<17?'🌤':h<21?'🌆':'🌙';
+  const msg=h<5?'Natten är din! Mata din pet.':h<12?`God morgon, ${G.name||'warrior'}!`:h<17?`God eftermiddag, ${G.name||'warrior'}!`:h<21?`God kväll, ${G.name||'warrior'}!`:`Sen kväll! Ta hand om din pet.`;
+  const sub=G.hunger<40?'⚠️ Pet är hungrig — mata nu!':G.energy<30?'😴 Pet behöver energi — sova!':G.mood<40?'😢 Pet är ledsen — lek lite!':'✨ Pet mår bra! Fortsätt så.';
+  if(greetEmoji)greetEmoji.textContent=em;
+  greetMsg.textContent=msg;
+  if(greetSub)greetSub.textContent=sub;
+  if(greetDate){const d=new Date();greetDate.textContent=d.toLocaleDateString('sv-SE',{weekday:'short',day:'numeric',month:'short'}).toUpperCase();}
+}
+
 // ── KARMA PULSE — live activity ticker ──
 const _PULSE_MSGS=[
   ()=>`ella_s tränade sin 🐉 Eldraken · +${10+~~(Math.random()*20)} XP`,
@@ -14051,6 +14416,17 @@ function openCastleWorld(){
         </div>
         <div style="font-size:10px;color:var(--y);font-family:var(--mono)" id="cwGold">💰 0</div>
       </div>
+      <div style="background:rgba(57,255,20,.04);border:1px solid rgba(57,255,20,.15);border-radius:14px;padding:14px;margin:10px 14px;display:flex;align-items:center;gap:14px;flex-shrink:0">
+        <div style="font-size:52px;animation:petBob 1.5s ease-in-out infinite;filter:drop-shadow(0 0 12px rgba(57,255,20,.5))" id="castlePetEmoji">🐉</div>
+        <div>
+          <div style="font-size:13px;font-weight:900;color:#fff;font-family:var(--mono)" id="castlePetName">Din Pet</div>
+          <div style="font-size:9px;color:rgba(255,255,255,.4);font-family:var(--mono);margin-top:2px">Skyddar ditt slott</div>
+          <div style="display:flex;gap:6px;margin-top:6px">
+            <span style="font-size:9px;background:rgba(57,255,20,.1);border:1px solid rgba(57,255,20,.3);border-radius:6px;padding:2px 8px;color:var(--g);font-family:var(--mono)" id="castlePetMood">😊 90</span>
+            <span style="font-size:9px;background:rgba(255,159,10,.1);border:1px solid rgba(255,159,10,.3);border-radius:6px;padding:2px 8px;color:var(--o);font-family:var(--mono)" id="castlePetHunger">🍖 80</span>
+          </div>
+        </div>
+      </div>
       <canvas id="castleCanvas" style="display:block;width:100%;touch-action:none;flex:1;"></canvas>
       <div class="cw-build-panel" id="cwBuildPanel"></div>
       <div class="cw-popup" id="cwPopup" style="display:none">
@@ -14082,6 +14458,10 @@ function openCastleWorld(){
   _cwRenderPanel();
   const gold=$('cwGold');if(gold)gold.textContent='💰 '+(G.coins||0);
   const sub=$('cwSubtitle');if(sub)sub.textContent=(G.name||'Spelaren')+'s rike';
+  const cpe=$('castlePetEmoji');if(cpe)cpe.textContent=G.petEmoji||'🐉';
+  const cpn=$('castlePetName');if(cpn)cpn.textContent=G.petName||'Din Pet';
+  const cpm=$('castlePetMood');if(cpm)cpm.textContent='😊 '+(G.mood||100);
+  const cph=$('castlePetHunger');if(cph)cph.textContent='🍖 '+(G.hunger||100);
   setTimeout(function(){(function _cwLoop(){if($('castleWorld')?.classList.contains('open')){renderCastleWorld();requestAnimationFrame(_cwLoop);}})();},80);
   const canvas=$('castleCanvas');
   if(canvas){
@@ -17980,7 +18360,7 @@ function openChestShop(){
             <div style="font-size:9px;color:var(--t3);margin:2px 0 6px">${c.drops.map(d=>d.ico).join(' ')} möjliga drops</div>
             ${hasKey?`<div style="font-size:10px;color:var(--g);font-weight:900;font-family:var(--mono)">🔑 ${keys} nyckel${keys>1?'ar':''} tillgänglig${keys>1?'a':''}!</div>`:''}
           </div>
-          <button onclick="openChest('${c.id}',${hasKey})" style="background:${hasKey?'linear-gradient(135deg,'+c.rarityCol+','+c.rarityCol+'aa)':'c.cost>0?\"linear-gradient(135deg,rgba(255,215,0,.2),rgba(255,159,10,.15))\":\"rgba(191,95,255,.2)\""};border:none;border-radius:14px;padding:12px 16px;cursor:pointer;font-family:var(--mono);font-size:${c.cost>0?'10':'11'}px;font-weight:900;color:${hasKey?'#000':'var(--y)'};min-width:80px;text-align:center;line-height:1.3">
+          <button onclick="openChest('${c.id}',${hasKey})" style="background:${hasKey?'linear-gradient(135deg,'+c.rarityCol+','+c.rarityCol+'aa)':c.cost>0?'linear-gradient(135deg,rgba(255,215,0,.2),rgba(255,159,10,.15))':'rgba(191,95,255,.2)'};border:none;border-radius:14px;padding:12px 16px;cursor:pointer;font-family:var(--mono);font-size:${c.cost>0?'10':'11'}px;font-weight:900;color:${hasKey?'#000':'var(--y)'};min-width:80px;text-align:center;line-height:1.3">
             ${hasKey?'🔑 ÖPPNA':(c.cost>0?'<span style="font-size:12px">'+c.ico+'</span><br>'+c.cost+'⚡':'🏆 INTJÄNA')}
           </button>
         </div>
