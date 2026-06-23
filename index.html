@@ -2431,8 +2431,13 @@ div[style*="LIVE"]{border-radius:16px!important;background:rgba(57,255,20,.03)!i
 .tab.on{background:rgba(57,255,20,.07)!important;}
 
 /* ── ONBOARDING WORLD CARDS ── */
-.ob-world{border-radius:18px!important;transition:all .18s cubic-bezier(.34,1.56,.64,1)!important;}
-.ob-world.sel{transform:scale(1.05) translate(-2px,-2px)!important;}
+.ob-world{border-radius:18px!important;transition:all .22s cubic-bezier(.34,1.56,.64,1)!important;position:relative!important;}
+.ob-world.sel{transform:scale(1.06) translateY(-3px)!important;box-shadow:0 0 36px var(--ob-world-glow,rgba(57,255,20,.4)),inset 0 1px 0 rgba(255,255,255,.12)!important;}
+.ob-world[data-world="cosmic"]{--ob-world-glow:rgba(191,95,255,.4);}
+.ob-world[data-world="nature"]{--ob-world-glow:rgba(57,255,20,.4);}
+.ob-world[data-world="city"]{--ob-world-glow:rgba(0,217,255,.4);}
+.ob-world[data-world="pixel"]{--ob-world-glow:rgba(255,0,127,.4);}
+.ob-world.sel::after{content:'✓';position:absolute;top:6px;right:8px;font-size:10px;font-weight:900;color:#fff;font-family:var(--mono);background:rgba(255,255,255,.15);border-radius:50%;width:18px;height:18px;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(4px);}
 .ob-h2{font-size:22px!important;font-weight:900!important;font-family:var(--mono)!important;letter-spacing:.5px!important;margin-bottom:6px!important;}
 .ob-p2{font-size:12px!important;color:rgba(255,255,255,.5)!important;line-height:1.5!important;}
 
@@ -2441,8 +2446,14 @@ div[style*="LIVE"]{border-radius:16px!important;background:rgba(57,255,20,.03)!i
 .ob-d2.on{background:var(--g)!important;box-shadow:0 0 10px var(--g),0 0 20px rgba(57,255,20,.3)!important;transform:scaleX(1.5)!important;}
 
 /* ── STARTA KARMA BUTTON PULSE ── */
-#obStartKarmaBtn{animation:skPulse 2.2s ease-in-out infinite!important;}
-@keyframes skPulse{0%,100%{box-shadow:0 0 20px rgba(57,255,20,.35),0 0 40px rgba(57,255,20,.08);}50%{box-shadow:0 0 40px rgba(57,255,20,.65),0 0 80px rgba(57,255,20,.2),0 0 130px rgba(57,255,20,.06);}}
+#obStartKarmaBtn{animation:skPulse 2.2s ease-in-out infinite,obBtnShimmer 2.4s ease-in-out infinite!important;}
+@keyframes skPulse{0%,100%{box-shadow:0 0 24px rgba(57,255,20,.5),0 0 50px rgba(57,255,20,.12);}50%{box-shadow:0 0 48px rgba(57,255,20,.8),0 0 90px rgba(57,255,20,.25),0 0 140px rgba(57,255,20,.08);}}
+
+/* ── OB CTA BUTTON SHIMMER ── */
+.ob-cta-btn{animation:obBtnGlow 2.4s ease-in-out infinite!important;}
+.ob-cta-btn::before{content:'';position:absolute;top:0;left:-100%;width:60%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.22),transparent);animation:obBtnShimmer 2.4s ease-in-out infinite;pointer-events:none;}
+@keyframes obBtnGlow{0%,100%{box-shadow:0 0 20px rgba(57,255,20,.45),0 0 40px rgba(57,255,20,.1);}50%{box-shadow:0 0 36px rgba(57,255,20,.7),0 0 72px rgba(57,255,20,.2);}}
+@keyframes obBtnShimmer{0%{left:-100%;}60%,100%{left:160%;}}
 
 /* ── PARTICLE BURST ── */
 .ob-ptcl{position:fixed;border-radius:50%;pointer-events:none;z-index:99999;animation:ptclFly var(--d,.9s) ease-out forwards;}
@@ -2567,7 +2578,7 @@ div[style*="LIVE"]{border-radius:16px!important;background:rgba(57,255,20,.03)!i
         <div class="ob-world-ds">8-bit retro pixel</div>
       </div>
     </div>
-    <button class="btn btn-g btn-lg btn-full" id="obwBtn" style="font-family:var(--mono);font-size:15px;letter-spacing:2px;padding:14px;border-radius:8px;border:none;box-shadow:0 0 24px rgba(57,255,20,.5)" ontouchstart="event.preventDefault();if(!this._b){this._b=true;this.style.opacity='.7';obNext(0);setTimeout(()=>this._b=false,600);}" onclick="if(!this._b){obNext(0);}">VÄLJ VÄRLD →</button>
+    <button class="btn btn-g btn-lg btn-full ob-cta-btn" id="obwBtn" style="font-family:var(--mono);font-size:15px;letter-spacing:2px;padding:14px;border-radius:12px;border:none;position:relative;overflow:hidden" ontouchstart="event.preventDefault();if(!this._b){this._b=true;this.style.opacity='.7';obNext(0);setTimeout(()=>this._b=false,600);}" onclick="if(!this._b){obNext(0);}">VÄLJ VÄRLD →</button>
   </div>
 
   <!-- STEP 0: Name -->
@@ -2580,7 +2591,7 @@ div[style*="LIVE"]{border-radius:16px!important;background:rgba(57,255,20,.03)!i
       <div class="ob-p2">Välj ett smeknamn — det är din KARMA-identitet i appen.</div>
       <label class="lbl">DITT NAMN</label>
       <input class="inp" id="obName" placeholder="Ex: ella_runs / axelsthlm" maxlength="18" style="font-size:16px;margin-bottom:16px;border-radius:6px;border:3px solid rgba(57,255,20,.4);background:#0d0d0d;color:#fff;font-family:var(--mono)">
-      <button class="btn btn-g btn-lg btn-full" style="font-family:var(--mono);font-size:15px;letter-spacing:2px;padding:14px;border-radius:8px;border:none;box-shadow:0 0 24px rgba(57,255,20,.5)" ontouchstart="event.preventDefault();if(!this._b){this._b=true;obNext(1);setTimeout(()=>this._b=false,600);}" onclick="if(!this._b){obNext(1);}">NÄSTA →</button>
+      <button class="btn btn-g btn-lg btn-full ob-cta-btn" style="font-family:var(--mono);font-size:15px;letter-spacing:2px;padding:14px;border-radius:12px;border:none;position:relative;overflow:hidden" ontouchstart="event.preventDefault();if(!this._b){this._b=true;this.style.opacity='.7';obNext(1);setTimeout(()=>this._b=false,600);}" onclick="if(!this._b){obNext(1);}">NÄSTA →</button>
     </div>
   </div>
 
@@ -2593,7 +2604,7 @@ div[style*="LIVE"]{border-radius:16px!important;background:rgba(57,255,20,.03)!i
       <div class="ob-pet-big" id="obPetGrid"></div>
       <label class="lbl">PET-NAMN</label>
       <input class="inp" id="obPetName" placeholder="Ex: Eldrake / Luna / Shadow" style="font-size:16px;margin-bottom:16px">
-      <button class="btn btn-g btn-lg btn-full" style="font-family:var(--mono);font-size:15px;letter-spacing:2px;padding:14px;border-radius:8px;border:none;box-shadow:0 0 24px rgba(57,255,20,.5)" ontouchstart="event.preventDefault();if(!this._b){this._b=true;obNext(2);setTimeout(()=>this._b=false,600);}" onclick="if(!this._b){obNext(2);}">NÄSTA →</button>
+      <button class="btn btn-g btn-lg btn-full ob-cta-btn" style="font-family:var(--mono);font-size:15px;letter-spacing:2px;padding:14px;border-radius:12px;border:none;position:relative;overflow:hidden" ontouchstart="event.preventDefault();if(!this._b){this._b=true;this.style.opacity='.7';obNext(2);setTimeout(()=>this._b=false,600);}" onclick="if(!this._b){obNext(2);}">NÄSTA →</button>
     </div>
   </div>
 
@@ -2665,7 +2676,7 @@ div[style*="LIVE"]{border-radius:16px!important;background:rgba(57,255,20,.03)!i
           <span class="ob-world-ds" id="obMode4Desc">Ge mig hela paketet</span>
         </div>
       </div>
-      <button class="btn btn-g btn-lg btn-full" id="obStartKarmaBtn" style="font-family:var(--mono);font-size:17px;letter-spacing:2px;padding:16px;border-radius:8px;border:none;box-shadow:0 0 28px rgba(57,255,20,.6)" ontouchstart="event.preventDefault();if(!this._b){this._b=true;finishOB();setTimeout(()=>this._b=false,1000);}" onclick="if(!this._b){finishOB();}">🚀 STARTA KARMA!</button>
+      <button class="btn btn-g btn-lg btn-full ob-cta-btn" id="obStartKarmaBtn" style="font-family:var(--mono);font-size:17px;letter-spacing:2px;padding:16px;border-radius:12px;border:none;position:relative;overflow:hidden" ontouchstart="event.preventDefault();if(!this._b){this._b=true;this.style.opacity='.7';finishOB();setTimeout(()=>this._b=false,1000);}" onclick="if(!this._b){finishOB();}">🚀 STARTA KARMA!</button>
     </div>
   </div>
 </div>
