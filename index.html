@@ -1541,10 +1541,10 @@ button:active{opacity:.85;}
 
 /* ── ROOM V3 ── */
 .rv3-wrap{width:100%;border-radius:18px;overflow:hidden;position:relative;background:#000;}
-.rv3-profile{padding:14px 16px 10px;display:flex;align-items:center;gap:14px;background:rgba(0,0,0,.45);border-bottom:1px solid rgba(255,255,255,.07);}
+.rv3-profile{display:flex;align-items:center;gap:12px;padding:10px 14px;background:linear-gradient(135deg,rgba(0,0,0,.9),rgba(10,10,30,.95));border-bottom:1px solid rgba(57,255,20,.2);position:relative;z-index:20;}
 .rv3-pet-bob{font-size:52px;animation:petBob 2s ease-in-out infinite;filter:drop-shadow(0 4px 18px rgba(57,255,20,.45));flex-shrink:0;cursor:pointer;}
 .rv3-info{flex:1;min-width:0;}
-.rv3-username{font-size:16px;font-weight:900;color:var(--t1);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.rv3-username{font-size:15px;font-weight:900;color:#fff;font-family:var(--mono);letter-spacing:.5px;display:flex;align-items:center;gap:6px;}
 .rv3-handle{font-size:10px;color:var(--t3);font-family:var(--mono);margin-bottom:5px;}
 .rv3-lvbadge{display:inline-flex;align-items:center;gap:4px;padding:3px 8px;border-radius:10px;font-size:10px;font-weight:900;font-family:var(--mono);border:1.5px solid;animation:lvGlow 2.5s ease-in-out infinite;}
 @keyframes lvGlow{0%,100%{box-shadow:0 0 6px currentColor;}50%{box-shadow:0 0 16px currentColor,0 0 28px currentColor;}}
@@ -1556,12 +1556,12 @@ button:active{opacity:.85;}
 .rv3-ring-svg{width:40px;height:40px;}
 .rv3-ring-val{font-size:9px;font-weight:900;font-family:var(--mono);margin-top:-2px;}
 /* Room scene */
-.rv3-scene{position:relative;width:100%;height:260px;overflow:hidden;}
+.rv3-scene{position:relative;overflow:hidden;border-radius:0 0 14px 14px;aspect-ratio:16/9;min-height:200px;box-shadow:inset 0 0 60px rgba(0,0,0,.5);}
 .rv3-sky{position:absolute;inset:0;transition:background 1.5s ease;}
 .rv3-clouds{position:absolute;top:0;left:0;right:0;height:45%;pointer-events:none;}
 .rv3-cloud{position:absolute;font-size:22px;opacity:.55;animation:cloudDrift var(--cd,18s) linear infinite var(--cdd,0s);}
 .rv3-wall{position:absolute;top:0;left:0;right:0;height:72%;pointer-events:none;}
-.rv3-window{position:absolute;top:7%;right:7%;width:24%;height:32%;border-radius:8px;overflow:hidden;cursor:pointer;transition:all .2s;}
+.rv3-window{position:absolute;top:8%;right:8%;width:25%;aspect-ratio:.75;border:3px solid rgba(255,255,255,.3);border-radius:4px 4px 2px 2px;overflow:hidden;box-shadow:0 0 30px rgba(255,255,255,.08),inset 0 0 20px rgba(0,0,0,.3);z-index:5;cursor:pointer;}
 .rv3-window:hover{transform:scale(1.04);filter:brightness(1.15);}
 .rv3-window-frame{position:absolute;inset:0;border:2.5px solid rgba(255,255,255,.22);border-radius:8px;z-index:2;pointer-events:none;}
 .rv3-window-cross{position:absolute;inset:0;z-index:2;pointer-events:none;}
@@ -1581,7 +1581,7 @@ button:active{opacity:.85;}
 .rv3-mood-heart{position:absolute;pointer-events:none;z-index:12;font-size:14px;animation:rv3HFloat var(--hd,1.5s) ease-out forwards;}
 @keyframes rv3HFloat{0%{transform:translateY(0) scale(1);opacity:1;}100%{transform:translateY(-60px) scale(.6);opacity:0;}}
 /* Floor + furniture */
-.rv3-floor{position:absolute;bottom:0;left:0;right:0;height:32%;border-top:2px solid rgba(255,255,255,.1);}
+.rv3-floor{position:absolute;bottom:0;left:0;right:0;height:32%;z-index:2;background:linear-gradient(180deg,rgba(0,0,0,.1) 0%,rgba(0,0,0,.6) 100%);}
 .rv3-obj{position:absolute;font-size:22px;cursor:pointer;z-index:8;transition:transform .15s,filter .15s;user-select:none;}
 .rv3-obj:hover{transform:scale(1.15);filter:brightness(1.2);}
 .rv3-obj:active{transform:scale(.9);}
@@ -1599,7 +1599,7 @@ button:active{opacity:.85;}
 .rv3-gear-item{position:absolute;z-index:6;font-size:18px;cursor:pointer;filter:drop-shadow(0 0 6px rgba(255,200,0,.3));transition:transform .3s;}
 .rv3-gear-item:hover{transform:rotate(15deg) scale(1.2);}
 /* Pet */
-.rv3-pet{position:absolute;bottom:31%;font-size:38px;z-index:10;user-select:none;cursor:pointer;transition:left 2.5s cubic-bezier(.45,0,.55,1);}
+.rv3-pet{position:absolute;font-size:52px;z-index:10;bottom:30%;transition:left .6s cubic-bezier(.34,1.56,.64,1),transform .2s;cursor:pointer;filter:drop-shadow(0 0 18px rgba(57,255,20,.5)) drop-shadow(0 4px 8px rgba(0,0,0,.8));animation:petBob 2s ease-in-out infinite;}
 .rv3-pet.sleeping{animation:sleepBob 2.5s ease-in-out infinite;}
 .rv3-pet.dancing{animation:petDance .6s ease-in-out infinite;}
 .rv3-pet.playing{animation:petPlay .4s ease-in-out infinite;}
@@ -6036,8 +6036,10 @@ function tdEnemyDefForWave(wave){
   // Unlock harder enemies as waves progress
   const pool=TD_ENEMIES.filter((_,i)=>i<Math.min(TD_ENEMIES.length,3+Math.floor(wave/3)));
   const base=pool[Math.floor(Math.random()*pool.length)];
-  const scale=1+(wave-1)*0.2;
-  const speedScale=1+(wave-1)*0.04;
+  const linearScale=1+(wave-1)*0.22;
+  const expBonus=wave>10?Math.pow(1.08,wave-10)-1:0;
+  const scale=linearScale+expBonus;
+  const speedScale=Math.min(3.2,1+(wave-1)*0.05+(wave>15?Math.pow(1.04,wave-15)-1:0));
   let e={...base,hp:Math.max(6,Math.round(base.hp*scale)),speed:Math.min(3.0,base.speed*speedScale),gold:Math.round((base.gold||8)*(1+wave*0.05)),isBoss:false};
   // Apply wave modifier
   if(_td.waveModifier==='horde')e.speed*=1.4;
@@ -6080,6 +6082,18 @@ function tdStartWave(){
     const mb=$('tdModifierBanner');if(mb){mb.textContent=mod.label;mb.style.color=mod.col;mb.style.display='block';setTimeout(()=>{mb.style.display='none';},3000);}
   }else{const mb=$('tdModifierBanner');if(mb)mb.style.display='none';}
   tdUpdateBaseUI();tdUpdateAbilityUI();
+  // KARMA SURGE: pet stats boost towers
+  const petMood=G.mood||100;const petHunger=G.hunger||100;const petEnergy=G.energy||100;
+  const karmaSurge=petMood>70&&petHunger>70&&petEnergy>70;
+  if(karmaSurge&&!_td._karmaSurgeActive){
+    _td._karmaSurgeActive=true;
+    const mb=$('tdModifierBanner');if(mb){mb.textContent='💚 KARMA SURGE AKTIV! +25% skada';mb.style.color='#39FF14';mb.style.display='block';setTimeout(()=>mb.style.display='none',3500);}
+    showT('💚 KARMA SURGE! Din pet bostar tornen!','g');
+  } else if(!karmaSurge){_td._karmaSurgeActive=false;}
+  // Apply wave environment theme (visual change every 10 waves)
+  const waveEra=Math.floor((w-1)/10);
+  const waveEras=['#39FF14','#FF9F0A','#FF2D55','#BF5FFF','#FFE600'];
+  _td._waveCol=waveEras[Math.min(waveEra,waveEras.length-1)];
   if(!_td.raf){_td.lastT=performance.now();_td.raf=requestAnimationFrame(tdLoop);}
 }
 
@@ -6137,7 +6151,7 @@ function tdUpdate(dt){
       _td.enemies.push(newE);
       if(def.isBoss){_td._currentBoss=newE;_tdShowBossBar(newE);}
     }
-    _td.spawnTimer=def.isBoss?0:Math.max(12,45-_td.wave*2);
+    _td.spawnTimer=def.isBoss?0:Math.max(6,45-_td.wave*2.2);
   }
   // Towers fire
   for(const tower of _td.towers){
@@ -6150,7 +6164,7 @@ function tdUpdate(dt){
     if(!inRange.length)continue;
     const tType=def.type||'single';
     const primary=inRange[0];
-    const waveMult=1+_td.wave*0.025;
+    const waveMult=1+_td.wave*0.025+(_td._karmaSurgeActive?(((G.mood||100)/100)*0.15):0);
     // Helper: calc damage with armor and weakness
     const calcDmg=(e,baseDmg)=>{
       let d=Math.round(baseDmg*(G._tdDmgMult||1)*(1+_td.wave*0.025));
@@ -9424,6 +9438,8 @@ const DNA_PW_DEFS={
   laser:    {em:'🔫',col:'#FF4500',nm:'LASER',dur:480},
   slowmo:   {em:'⏰',col:'#BF5FFF',nm:'SLOW-MO',dur:480},
   fireball: {em:'🔥',col:'#FF9F0A',nm:'FIREBALL',dur:360},
+  shield:   {em:'🛡️',col:'#39FF14',nm:'SHIELD',dur:300},
+  storm:    {em:'⚡',col:'#FFE600',nm:'LIGHTNING',dur:0},
 };
 function _dnaActivatePW(type){
   const def=DNA_PW_DEFS[type];if(!def)return;
@@ -9440,9 +9456,9 @@ function _dnaActivatePW(type){
     case 'widePad':
       if(!_dna.activePWs.widePad){_dna._origPW=_dna.pw;}
       _dna.activePWs.widePad=(def.dur||600);
-      const newPw=Math.round((_dna._origPW||_dna.pw)*1.85);
+      {const newPw=Math.round((_dna._origPW||_dna.pw)*1.85);
       _dna.px=Math.max(0,Math.min(_dna.W-newPw,_dna.px-Math.round((newPw-_dna.pw)/2)));
-      _dna.pw=newPw;
+      _dna.pw=newPw;}
       break;
     case 'laser':
       _dna.activePWs.laser=(def.dur||480);_dna.laserFireTimer=0;break;
@@ -9453,6 +9469,15 @@ function _dnaActivatePW(type){
       break;
     case 'fireball':
       _dna.activePWs.fireball=(def.dur||360);break;
+    case 'shield':
+      _dna.activePWs.shield=(def.dur||300);break;
+    case 'storm':
+      // Destroy up to 6 random blocks instantly with lightning
+      {const alive=_dna.blocks.filter(b=>b.alive);
+      const targets=alive.sort(()=>Math.random()-.5).slice(0,6);
+      targets.forEach(b=>{b.alive=false;b.flash=1;_dna.score+=b.pts*3;_dna.coins+=3;_dnaSparkAt(b.x+b.w/2,b.y+b.h/2,'#FFE600');});
+      _pbUpdateScore();_dnaUpdateHUD();}
+      break;
   }
 }
 function openPetBlocks(){
@@ -9530,16 +9555,18 @@ function _dnaBuildWave(){
   }
 }
 
-function _dnaLoop(){
+function _dnaLoop(ts){
   if(!_dna.active){_dna.raf=null;return;}
   const canvas=$('dnaCanvas');if(!canvas){_dna.active=false;_dna.raf=null;return;}
   const ctx=canvas.getContext('2d');if(!ctx){_dna.active=false;_dna.raf=null;return;}
-  _dnaUpdate();
+  const dt=Math.min(2.5,Math.max(0.3,(ts-(_dna._lastTs||ts))/16.67));
+  _dna._lastTs=ts;
+  _dnaUpdate(dt);
   _dnaDraw(canvas,ctx);
   _dna.raf=requestAnimationFrame(_dnaLoop);
 }
 
-function _dnaUpdate(){
+function _dnaUpdate(dt=1){
   const {W,H}=_dna;
   // Ball trail (short for performance)
   _dna.ballTrail.push({x:_dna.bx,y:_dna.by,t:1});
@@ -10179,10 +10206,14 @@ const _PR_GEM_NMS=['RÖDA','BLÅA','GRÖNA','GULD','LILA'];
 function _prLaneY(lane){const H=_pr.H||300;return H*.78-Math.min(H*.14,64)*lane;}
 function _prSwitchLane(dir){
   if(!_pr.active)return;
-  const next=(_pr.lane||1)-dir;
+  const curLane=(_pr.lane!=null?_pr.lane:1);
+  const next=curLane-dir;
   if(next<0||next>=_PR_LANES)return;
   _pr.lane=next;
+  _pr.targetLane=next;
   const fl=$('prLaneFlash');if(fl){fl.style.opacity='1';setTimeout(()=>{if(fl)fl.style.opacity='0';},80);}
+  // Visual feedback: tilt emoji
+  const ov=$('prEmojiOv');if(ov){ov.style.transition='transform .12s';ov.style.transform=dir<0?'rotate(-18deg)':'rotate(18deg)';setTimeout(()=>{if(ov)ov.style.transform='';},140);}
   vibe&&vibe(10);
 }
 function openPetRunner(){
@@ -10278,6 +10309,7 @@ function _prInitGame(){
   _pr.W=canvas.width;_pr.H=canvas.height;
   _pr.active=true;_pr.score=0;_pr.gemsCollected=0;
   _pr.lane=1; // start middle lane
+  _pr.targetLane=1;_pr.drawLane=1;
   _pr.x=Math.round(W*.15);
   _pr.pHp=3;_pr.maxHp=3;_pr.combo=0;_pr.comboMult=1;_pr.comboColor=null;
   _pr.obstacles=[];_pr.gems=[];_pr.powerups=[];_pr.bgOffset=0;_pr.particles=[];
@@ -10301,6 +10333,10 @@ function _prUpdate(canvas){
   _pr.H=H;_pr.W=W;
   const spd=2.5+Math.min((_pr.score/600)*0.4,3);
   _pr.score++;
+  // Smooth lane lerp
+  if(_pr.drawLane==null)_pr.drawLane=_pr.lane;
+  if(_pr.targetLane==null)_pr.targetLane=_pr.lane;
+  _pr.drawLane+=(_pr.targetLane-_pr.drawLane)*0.25;
   // Score / level HUD
   const sc=$('prScore');if(sc)sc.textContent=Math.floor(_pr.score/10)+'m';
   const hp=$('prHpDots');if(hp)hp.textContent='❤️'.repeat(_pr.pHp)+'🤍'.repeat(Math.max(0,(_pr.maxHp||3)-_pr.pHp));
@@ -10539,7 +10575,7 @@ function _prDraw(canvas,ctx){
     ctx.beginPath();ctx.arc(p.x,p.y,4*a,0,Math.PI*2);ctx.fill();ctx.restore();
   });
   // Pet character
-  const petLane=_pr.lane||1;const petY2=_prLaneY(petLane);const petX2=_pr.x;
+  const petLane=(_pr.drawLane!=null?_pr.drawLane:(_pr.lane!=null?_pr.lane:1));const petY2=_prLaneY(petLane);const petX2=_pr.x;
   // Shield glow
   if(_pr.shield||_pr.shieldTimer>0){
     const sg=.4+.3*Math.sin(t*.01);ctx.save();ctx.strokeStyle='#00D9FF';ctx.lineWidth=2.5;ctx.shadowColor='#00D9FF';ctx.shadowBlur=18;ctx.globalAlpha=sg;
