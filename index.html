@@ -2550,35 +2550,37 @@ div[style*="LIVE"]{border-radius:16px!important;background:rgba(57,255,20,.03)!i
   <button id="langToggle" onclick="toggleLang()" style="position:absolute;top:14px;right:14px;z-index:100;background:rgba(255,255,255,.1);border:1.5px solid rgba(255,255,255,.2);border-radius:12px;padding:6px 12px;font-size:15px;cursor:pointer;backdrop-filter:blur(8px);-webkit-tap-highlight-color:transparent;color:#fff;font-weight:900;letter-spacing:.5px">🇸🇪 SV</button>
 
   <!-- WORLD SELECTION — shown first -->
-  <div class="ob-step" id="obsw" style="min-height:min(100svh,100vh);display:flex;flex-direction:column;justify-content:center;padding:16px 20px max(env(safe-area-inset-bottom,16px),16px)">
-    <div class="ob-logo-hero" style="font-size:40px;margin-bottom:0"><span class="ok">K</span>ARMA</div>
-    <div style="text-align:center;margin-bottom:10px"><span class="ob-tag2" style="font-size:9px;padding:3px 10px;margin-bottom:0">REAL LIFE · GAME ENGINE ⚡</span></div>
-    <div class="ob-prog2" style="margin-bottom:10px"><div class="ob-d2 on"></div><div class="ob-d2"></div><div class="ob-d2"></div><div class="ob-d2"></div></div>
-    <div class="ob-h2" id="obWorldTitle" style="margin-bottom:3px">VÄLJ DIN VÄRLD.</div>
-    <div class="ob-p2" id="obWorldSub" style="margin-bottom:12px;font-size:12px">Välj miljön din pet ska leva i.</div>
-    <div class="ob-worlds" style="margin-bottom:12px;gap:8px">
-      <div class="ob-world sel" data-world="cosmic" ontouchstart="event.preventDefault();pickWorld(this)" onclick="pickWorld(this)">
-        <span class="ob-world-ico">🌌</span>
-        <span class="ob-world-nm">COSMIC</span>
-        <div class="ob-world-ds">Universum & stjärnor</div>
+  <div class="ob-step" id="obsw">
+    <div class="ob-content">
+      <div class="ob-logo-hero" style="font-size:40px;margin-bottom:0"><span class="ok">K</span>ARMA</div>
+      <div style="text-align:center;margin-bottom:10px"><span class="ob-tag2" style="font-size:9px;padding:3px 10px;margin-bottom:0">REAL LIFE · GAME ENGINE ⚡</span></div>
+      <div class="ob-prog2" style="margin-bottom:10px"><div class="ob-d2 on"></div><div class="ob-d2"></div><div class="ob-d2"></div><div class="ob-d2"></div></div>
+      <div class="ob-h2" id="obWorldTitle" style="margin-bottom:3px">VÄLJ DIN VÄRLD.</div>
+      <div class="ob-p2" id="obWorldSub" style="margin-bottom:12px;font-size:12px">Välj miljön din pet ska leva i.</div>
+      <div class="ob-worlds" style="margin-bottom:12px;gap:8px">
+        <div class="ob-world sel" data-world="cosmic" ontouchstart="event.preventDefault();pickWorld(this)" onclick="pickWorld(this)">
+          <span class="ob-world-ico">🌌</span>
+          <span class="ob-world-nm">COSMIC</span>
+          <div class="ob-world-ds">Universum & stjärnor</div>
+        </div>
+        <div class="ob-world" data-world="nature" ontouchstart="event.preventDefault();pickWorld(this)" onclick="pickWorld(this)">
+          <span class="ob-world-ico">🌿</span>
+          <span class="ob-world-nm">NATURE</span>
+          <div class="ob-world-ds">Skog & natur</div>
+        </div>
+        <div class="ob-world" data-world="city" ontouchstart="event.preventDefault();pickWorld(this)" onclick="pickWorld(this)">
+          <span class="ob-world-ico">🏙️</span>
+          <span class="ob-world-nm">CITY</span>
+          <div class="ob-world-ds">Neon city vibes</div>
+        </div>
+        <div class="ob-world" data-world="pixel" ontouchstart="event.preventDefault();pickWorld(this)" onclick="pickWorld(this)">
+          <span class="ob-world-ico">🎮</span>
+          <span class="ob-world-nm">PIXEL</span>
+          <div class="ob-world-ds">8-bit retro pixel</div>
+        </div>
       </div>
-      <div class="ob-world" data-world="nature" ontouchstart="event.preventDefault();pickWorld(this)" onclick="pickWorld(this)">
-        <span class="ob-world-ico">🌿</span>
-        <span class="ob-world-nm">NATURE</span>
-        <div class="ob-world-ds">Skog & natur</div>
-      </div>
-      <div class="ob-world" data-world="city" ontouchstart="event.preventDefault();pickWorld(this)" onclick="pickWorld(this)">
-        <span class="ob-world-ico">🏙️</span>
-        <span class="ob-world-nm">CITY</span>
-        <div class="ob-world-ds">Neon city vibes</div>
-      </div>
-      <div class="ob-world" data-world="pixel" ontouchstart="event.preventDefault();pickWorld(this)" onclick="pickWorld(this)">
-        <span class="ob-world-ico">🎮</span>
-        <span class="ob-world-nm">PIXEL</span>
-        <div class="ob-world-ds">8-bit retro pixel</div>
-      </div>
+      <button class="btn btn-g btn-lg btn-full ob-cta-btn" id="obwBtn" style="font-family:var(--mono);font-size:15px;letter-spacing:2px;padding:14px;border-radius:12px;border:none;position:relative;overflow:hidden" ontouchstart="event.preventDefault();if(!this._b){this._b=true;this.style.opacity='.7';obNext(0);setTimeout(()=>this._b=false,600);}" onclick="if(!this._b){obNext(0);}">VÄLJ VÄRLD →</button>
     </div>
-    <button class="btn btn-g btn-lg btn-full ob-cta-btn" id="obwBtn" style="font-family:var(--mono);font-size:15px;letter-spacing:2px;padding:14px;border-radius:12px;border:none;position:relative;overflow:hidden" ontouchstart="event.preventDefault();if(!this._b){this._b=true;this.style.opacity='.7';obNext(0);setTimeout(()=>this._b=false,600);}" onclick="if(!this._b){obNext(0);}">VÄLJ VÄRLD →</button>
   </div>
 
   <!-- STEP 0: Name -->
