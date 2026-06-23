@@ -2636,17 +2636,17 @@ div[style*="LIVE"]{border-radius:16px!important;background:rgba(57,255,20,.03)!i
       <div class="ob-h2" id="obAgeTitle">Hur gammal är du? 🎂</div>
       <div class="ob-p2" id="obAgeSub">Anpassar appen efter dig</div>
       <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:20px">
-        <div class="ob-world" id="obAge1" onclick="setObAge('kid',this)" style="text-align:left;padding:14px 16px;display:flex;align-items:center;gap:12px;border-color:var(--b);box-shadow:4px 4px 0px var(--b);background:#000d1a">
+        <div class="ob-world" id="obAge1" onclick="setObAge('kid',this)" style="text-align:left;padding:14px 16px;display:flex;align-items:center;gap:12px;border-color:rgba(0,217,255,.5);background:linear-gradient(135deg,rgba(0,217,255,.1),#000d1a)">
           <span style="font-size:28px">🧒</span><div><div id="obAge1Lbl" style="font-size:14px;font-weight:900;font-family:var(--mono)">UNDER 13</div><div id="obAge1Desc" style="font-size:10px;color:rgba(255,255,255,.5);font-family:var(--mono)">Pet &amp; spel-läge — ingen social</div></div>
         </div>
-        <div class="ob-world" id="obAge2" onclick="setObAge('teen',this)" style="text-align:left;padding:14px 16px;display:flex;align-items:center;gap:12px;border-color:var(--pk);box-shadow:4px 4px 0px var(--pk);background:#1a000d">
+        <div class="ob-world" id="obAge2" onclick="setObAge('teen',this)" style="text-align:left;padding:14px 16px;display:flex;align-items:center;gap:12px;border-color:rgba(255,0,127,.5);background:linear-gradient(135deg,rgba(255,0,127,.1),#1a000d)">
           <span style="font-size:28px">🧑</span><div><div id="obAge2Lbl" style="font-size:14px;font-weight:900;font-family:var(--mono)">13–17</div><div id="obAge2Desc" style="font-size:10px;color:rgba(255,255,255,.5);font-family:var(--mono)">Full app — socialt + spel + pet</div></div>
         </div>
-        <div class="ob-world" id="obAge3" onclick="setObAge('adult',this)" style="text-align:left;padding:14px 16px;display:flex;align-items:center;gap:12px;border-color:var(--g);box-shadow:4px 4px 0px var(--g);background:#001200">
+        <div class="ob-world" id="obAge3" onclick="setObAge('adult',this)" style="text-align:left;padding:14px 16px;display:flex;align-items:center;gap:12px;border-color:rgba(57,255,20,.5);background:linear-gradient(135deg,rgba(57,255,20,.1),#001200)">
           <span style="font-size:28px">👤</span><div><div id="obAge3Lbl" style="font-size:14px;font-weight:900;font-family:var(--mono)">18+</div><div id="obAge3Desc" style="font-size:10px;color:rgba(255,255,255,.5);font-family:var(--mono)">Full app + exklusivt innehåll</div></div>
         </div>
       </div>
-      <button class="btn btn-g btn-lg btn-full ob-next-btn" style="font-family:var(--mono);letter-spacing:2px;border-radius:6px;border:3px solid var(--g);box-shadow:5px 5px 0px var(--g);transition:transform .08s,box-shadow .08s" ontouchstart="event.preventDefault();if(!this._b){this._b=true;obNext(4);setTimeout(()=>this._b=false,600);}" onclick="if(!this._b){obNext(4);}">NÄSTA →</button>
+      <button class="btn btn-g btn-lg btn-full ob-cta-btn" style="font-family:var(--mono);font-size:15px;letter-spacing:2px;padding:14px;border-radius:12px;border:none;position:relative;overflow:hidden" ontouchstart="event.preventDefault();if(!this._b){this._b=true;this.style.opacity='.7';obNext(4);setTimeout(()=>this._b=false,600);}" onclick="if(!this._b){obNext(4);}">NÄSTA →</button>
     </div>
   </div>
 
@@ -2657,22 +2657,22 @@ div[style*="LIVE"]{border-radius:16px!important;background:rgba(57,255,20,.03)!i
       <div class="ob-h2">Vad lockar dig mest? ✨</div>
       <div class="ob-p2" id="obModeSub">Vi anpassar din startsida</div>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:20px">
-        <div class="ob-world" id="obMode1" onclick="setObMode('games',this)" style="padding:16px 10px;border-color:var(--pk);box-shadow:4px 4px 0px var(--pk);background:#1a000d">
+        <div class="ob-world" id="obMode1" onclick="setObMode('games',this)" style="padding:16px 10px;border-color:rgba(255,0,127,.5);background:linear-gradient(135deg,rgba(255,0,127,.1),#1a000d)">
           <span class="ob-world-ico">🎮</span>
           <span class="ob-world-nm" id="obMode1Lbl">MINISPEL</span>
           <span class="ob-world-ds" id="obMode1Desc">Battle, fiska, spin</span>
         </div>
-        <div class="ob-world sel" id="obMode2" onclick="setObMode('social',this)" style="padding:16px 10px;border-color:var(--y);box-shadow:4px 4px 0px var(--y);background:#1a1400">
+        <div class="ob-world sel" id="obMode2" onclick="setObMode('social',this)" style="padding:16px 10px;border-color:rgba(255,230,0,.5);background:linear-gradient(135deg,rgba(255,230,0,.1),#1a1400)">
           <span class="ob-world-ico">⚡</span>
           <span class="ob-world-nm" id="obMode2Lbl">SOCIALT</span>
           <span class="ob-world-ds" id="obMode2Desc">Flash, följ, chat</span>
         </div>
-        <div class="ob-world" id="obMode3" onclick="setObMode('pet',this)" style="padding:16px 10px;border-color:var(--g);box-shadow:4px 4px 0px var(--g);background:#001200">
+        <div class="ob-world" id="obMode3" onclick="setObMode('pet',this)" style="padding:16px 10px;border-color:rgba(57,255,20,.5);background:linear-gradient(135deg,rgba(57,255,20,.1),#001200)">
           <span class="ob-world-ico">🐾</span>
           <span class="ob-world-nm" id="obMode3Lbl">PET</span>
           <span class="ob-world-ds" id="obMode3Desc">Träna, mata, vård</span>
         </div>
-        <div class="ob-world" id="obMode4" onclick="setObMode('full',this)" style="padding:16px 10px;border-color:var(--p);box-shadow:4px 4px 0px var(--p);background:#0a0010">
+        <div class="ob-world" id="obMode4" onclick="setObMode('full',this)" style="padding:16px 10px;border-color:rgba(191,95,255,.5);background:linear-gradient(135deg,rgba(191,95,255,.1),#0a0010)">
           <span class="ob-world-ico">🌟</span>
           <span class="ob-world-nm" id="obMode4Lbl">ALLT!</span>
           <span class="ob-world-ds" id="obMode4Desc">Ge mig hela paketet</span>
