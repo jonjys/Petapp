@@ -148,6 +148,8 @@ textarea.inp{resize:none;min-height:68px;}
 .topt:active{transform:translate(3px,3px);box-shadow:0px 0px 0px rgba(255,255,255,.08)!important;}
 .fsw{position:fixed;inset:0;z-index:700;background:var(--bg);display:flex;flex-direction:column;transform:translateX(100%);transition:transform .28s cubic-bezier(.32,.72,0,1);}
 .fsw.open{transform:translateX(0);}
+.fsw-panel{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);max-height:90vh;overflow-y:auto;border-radius:22px;background:rgba(6,6,18,.98);border:1px solid rgba(255,255,255,.1);box-shadow:0 0 60px rgba(0,0,0,.8),0 0 30px rgba(57,255,20,.04);z-index:950;width:min(420px,94vw);-webkit-overflow-scrolling:touch;}
+.fsw-overlay{position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:940;backdrop-filter:blur(4px);}
 .fsh{height:50px;display:flex;align-items:center;padding:0 14px;gap:10px;border-bottom:1px solid var(--line);flex-shrink:0;background:rgba(4,4,10,.97);}
 .fbk{background:none;border:none;color:var(--t2);font-size:22px;cursor:pointer;}
 .ftl{font-size:15px;font-weight:800;flex:1;}
@@ -1610,6 +1612,15 @@ button:active{opacity:.85;}
 .rv3-stat-popup{position:fixed;inset:0;z-index:850;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.75);backdrop-filter:blur(6px);}
 .rv3-stat-box{background:var(--c1);border:1.5px solid var(--line2);border-radius:20px;padding:18px 20px;min-width:220px;}
 
+/* ══ KARMA CITY ══ */
+.kc-world{position:fixed;inset:0;z-index:800;background:#010614;display:none;flex-direction:column;overflow:hidden;}
+.kc-world.open{display:flex;}
+.kc-hdr{display:flex;align-items:center;padding:10px 14px;background:rgba(0,0,0,.9);border-bottom:1px solid rgba(57,255,20,.2);flex-shrink:0;gap:10px;}
+.kc-city-canvas{flex:1;display:block;width:100%;min-height:0;}
+.kc-feed{background:rgba(0,0,0,.88);border-top:1px solid rgba(57,255,20,.15);padding:8px 14px;flex-shrink:0;max-height:80px;overflow:hidden;}
+.kc-feed-item{font-size:9px;color:rgba(255,255,255,.5);font-family:var(--mono);animation:slideInLeft .3s ease;}
+@keyframes slideInLeft{from{transform:translateX(-20px);opacity:0;}to{transform:none;opacity:1;}}
+.kc-zone-btn{background:rgba(57,255,20,.08);border:1.5px solid rgba(57,255,20,.3);border-radius:10px;padding:6px 14px;font-size:10px;font-weight:900;font-family:var(--mono);color:var(--g);cursor:pointer;-webkit-tap-highlight-color:transparent;}
 /* ── STREET FISHING UPGRADE ── */
 .fish-loc-bar{display:flex;gap:5px;overflow-x:auto;scrollbar-width:none;padding:6px 14px;background:rgba(0,10,25,.95);border-bottom:1px solid rgba(0,180,255,.12);flex-shrink:0;}
 .fish-loc-bar::-webkit-scrollbar{display:none;}
@@ -3797,6 +3808,20 @@ div[style*="LIVE"]{border-radius:16px!important;background:rgba(57,255,20,.03)!i
       </div>
       <!-- 2x2 MINI CARDS -->
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:0 14px 10px">
+        <!-- KARMA CITY -->
+        <div onclick="openKarmaCity()" ontouchstart="this.style.transform='scale(.94)'" ontouchend="this.style.transform=''" style="border-radius:16px;cursor:pointer;-webkit-tap-highlight-color:transparent;background:linear-gradient(160deg,#010d1a 0%,#020810 100%);border:2px solid rgba(57,255,20,.5);overflow:hidden;box-shadow:0 0 24px rgba(57,255,20,.15);transition:transform .08s;position:relative;grid-column:span 2">
+          <div style="padding:16px">
+            <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px">
+              <div style="font-size:36px;animation:petBob 2s ease-in-out infinite">🌆</div>
+              <div>
+                <div style="font-size:13px;font-weight:900;color:var(--g);font-family:var(--mono);letter-spacing:1px">KARMA CITY</div>
+                <div style="font-size:9px;color:rgba(255,255,255,.5);font-family:var(--mono)">LIVE WORLD MAP</div>
+              </div>
+              <div style="margin-left:auto;background:rgba(57,255,20,.15);border:1px solid rgba(57,255,20,.4);border-radius:8px;padding:3px 8px;font-size:8px;font-weight:900;color:var(--g);font-family:var(--mono);animation:pulse 2s ease-in-out infinite">● LIVE</div>
+            </div>
+            <div style="font-size:10px;color:rgba(255,255,255,.45);font-family:var(--mono)">Din pet lever i en levande stad med andra spelare. Ta kontroll över zoner!</div>
+          </div>
+        </div>
         <!-- DNA BREAKER -->
         <div onclick="openPetBlocks()" ontouchstart="this.style.transform='scale(.94)'" ontouchend="this.style.transform=''" style="border-radius:16px;cursor:pointer;-webkit-tap-highlight-color:transparent;background:linear-gradient(160deg,#0b180b 0%,#060e06 100%);border:1.5px solid rgba(57,255,20,.45);overflow:hidden;box-shadow:0 0 16px rgba(57,255,20,.1);transition:transform .08s;position:relative">
           <div style="height:2px;background:linear-gradient(90deg,transparent,#39FF14,transparent)"></div>
@@ -5720,7 +5745,13 @@ function updateComboMeter(n){
 // Place towers on a grid, earn gold from kills, upgrade them, survive 10 waves.
 
 const TD_COLS=6,TD_ROWS=8;
-const TD_PATH=[[0,1],[5,1],[5,3],[0,3],[0,5],[5,5],[5,7]]; // snake waypoints [col,row]
+const TD_MAPS_CONFIG=[
+  {id:'city',   nm:'NEON CITY',   em:'🏙️', desc:'Klassisk slingrig väg',          path:[[0,1],[5,1],[5,3],[0,3],[0,5],[5,5],[5,7]], startGold:200},
+  {id:'spiral', nm:'SPIRAL',      em:'🌀', desc:'Spiral-bana, fler torn möjliga', path:[[0,0],[5,0],[5,2],[1,2],[1,4],[4,4],[4,6],[0,6],[0,7]], startGold:220},
+  {id:'gauntlet',nm:'GAUNTLET',   em:'⚔️', desc:'Dubbel-fälla, extremt svår',    path:[[0,0],[2,0],[2,4],[0,4],[0,7],[3,7],[3,3],[5,3],[5,7]], startGold:260},
+];
+let TD_PATH=TD_MAPS_CONFIG[0].path;
+let _tdActiveMap=TD_MAPS_CONFIG[0];
 let _tdCell=60; // px per cell — set dynamically in tdInitCanvas
 
 const TD_ENEMIES=[
@@ -5755,6 +5786,7 @@ const TD_TOWER_DEFS={
       {cost:120,nm:'ARCHER++', dmg:22, rate:14, multishot:2, desc:'Dubbel-skott'},
       {cost:200,nm:'RAPID BOW',dmg:22, rate:8,  multishot:3, desc:'Trippel snabb-skott'},
       {cost:320,nm:'STORM BOW',dmg:30, rate:6,  multishot:5, pierce:true, desc:'5-pil storm, genomträngande'},
+      {cost:800,nm:'⚡ KARMA BOW',dmg:55,rate:4,multishot:8,pierce:true,aoeR:0.4,desc:'8 pilar · AoE · Karma välsignelse'},
     ]},
   mage:{em:'🔮',nm:'MAGE',   col:'#BF5FFF',cost:80, range:2.0,dmg:22,rate:55,type:'aoe',aoeR:0.9,desc:'AoE magi',
     upgrades:[
@@ -5762,6 +5794,7 @@ const TD_TOWER_DEFS={
       {cost:150,nm:'FROST MAGE',dmg:30, aoeR:1.5, slow:0.45,slowDur:80, desc:'Frost-slow 55%'},
       {cost:240,nm:'BLIZZARD',  dmg:40, aoeR:2.0, slow:0.6, slowDur:120, desc:'Massiv AoE frost'},
       {cost:380,nm:'ARCHMAGE',  dmg:60, aoeR:2.5, slow:0.7, slowDur:180, stunDur:30, desc:'Arcane devastation'},
+      {cost:950,nm:'⚡ VOID MAGE',dmg:100,aoeR:3.5,slow:0.85,slowDur:250,stunDur:60,desc:'Void-explosion · Total kontroll'},
     ]},
   tesla:{em:'⚡',nm:'TESLA',  col:'#00D9FF',cost:100,range:2.5,dmg:14,rate:38,type:'chain',chains:2,desc:'Kedjeblixtar',
     upgrades:[
@@ -5769,6 +5802,7 @@ const TD_TOWER_DEFS={
       {cost:160,nm:'STORM',    dmg:26, chains:4, stunDur:45, desc:'Stun + 4 kedjor'},
       {cost:250,nm:'OVERLOAD', dmg:35, chains:5, stunDur:60, desc:'Paralys 5-kedjor'},
       {cost:400,nm:'SUPERNOVA',dmg:55, chains:8, stunDur:90, aoeR:0.6, desc:'Massiv blixtstorm'},
+      {cost:1000,nm:'⚡ GOD BOLT',dmg:90,chains:12,stunDur:150,aoeR:1.2,desc:'12-kedjor · Massdöd'},
     ]},
   cannon:{em:'💣',nm:'CANNON',col:'#FF9F0A',cost:120,range:2.0,dmg:50,rate:75,type:'impact',impactR:0.8,desc:'Massiv splitter',
     upgrades:[
@@ -5776,6 +5810,7 @@ const TD_TOWER_DEFS={
       {cost:200,nm:'HOWITZER',   dmg:90,  impactR:1.8, knockback:1.2, desc:'Knockback + splash'},
       {cost:300,nm:'SIEGE',      dmg:130, impactR:2.2, knockback:2.0, desc:'Masskastning'},
       {cost:450,nm:'ANNIHILATOR',dmg:200, impactR:3.0, knockback:3.0, desc:'Planet-krossen AoE'},
+      {cost:1100,nm:'⚡ METEOR',dmg:400,impactR:4.0,knockback:5.0,desc:'Meteornedslag · Allt dör'},
     ]},
   frost:{em:'❄️',nm:'FROST',  col:'#A8E6FF',cost:70, range:2.8,dmg:6, rate:30,type:'aoe',aoeR:1.0,slow:0.5,slowDur:100,desc:'Saktar fiender',
     upgrades:[
@@ -5783,6 +5818,7 @@ const TD_TOWER_DEFS={
       {cost:130,nm:'BLIZZARD', dmg:10, aoeR:2.0, slow:0.7, slowDur:160, desc:'Massiv frost-AoE'},
       {cost:210,nm:'ICE STORM',dmg:15, aoeR:2.5, slow:0.8, slowDur:200, stunDur:20, desc:'Fryser kortvarigt'},
       {cost:350,nm:'PERMAFROST',dmg:20,aoeR:3.5, slow:0.9, slowDur:300, stunDur:60, desc:'Total nedfrysning'},
+      {cost:900,nm:'⚡ ABSOLUTE ZERO',dmg:35,aoeR:5.0,slow:0.99,slowDur:500,stunDur:120,desc:'Total frysning · Absolut noll'},
     ]},
   poison:{em:'🧪',nm:'POISON', col:'#39FF14',cost:90, range:2.2,dmg:4, rate:20,type:'aoe',aoeR:0.8,poison:true,poisonDmg:2,poisonDur:120,desc:'DOT gift',
     upgrades:[
@@ -5790,6 +5826,7 @@ const TD_TOWER_DEFS={
       {cost:160,nm:'PLAGUE',     dmg:8,  aoeR:1.8, poisonDmg:6,  poisonDur:200, desc:'Giftsmitta sprids'},
       {cost:250,nm:'TOXIN',      dmg:12, aoeR:2.2, poisonDmg:10, poisonDur:240, desc:'Massdöd-gift'},
       {cost:400,nm:'DEATH CLOUD',dmg:18, aoeR:3.0, poisonDmg:16, poisonDur:400, desc:'Dödens moln'},
+      {cost:950,nm:'⚡ PLAGUE GOD',dmg:30,aoeR:4.0,poisonDmg:30,poisonDur:600,desc:'Smittar hela banan'},
     ]},
   sniper:{em:'🎯',nm:'SNIPER', col:'#FFE600',cost:150,range:5.0,dmg:80,rate:90,type:'single',crit:0.2,desc:'Extremt räckvidd',
     upgrades:[
@@ -5797,6 +5834,7 @@ const TD_TOWER_DEFS={
       {cost:260,nm:'SHARPSHOT',dmg:180, rate:70, crit:0.4, pierce:true, desc:'Genomträngande skott'},
       {cost:380,nm:'DEADEYE',  dmg:280, rate:60, crit:0.55,pierce:true, desc:'55% crit + pierce'},
       {cost:550,nm:'GODSHOT',  dmg:450, rate:50, crit:0.75,pierce:true, range:7.0, desc:'Hela banan synlig'},
+      {cost:1200,nm:'⚡ OMNISLAYER',dmg:999,rate:40,crit:0.9,pierce:true,range:10.0,desc:'90% crit · Hela kartan'},
     ]},
   inferno:{em:'🔥',nm:'INFERNO',col:'#FF4500',cost:110,range:2.0,dmg:18,rate:25,type:'aoe',aoeR:0.7,burn:true,burnDmg:3,burnDur:80,desc:'Bränner fiender',
     upgrades:[
@@ -5804,6 +5842,7 @@ const TD_TOWER_DEFS={
       {cost:200,nm:'INFERNO+', dmg:35, aoeR:1.5, burnDmg:8,  burnDur:140, desc:'Massiv brasa'},
       {cost:300,nm:'HELLFIRE', dmg:50, aoeR:2.0, burnDmg:14, burnDur:180, desc:'Helvetets eld'},
       {cost:480,nm:'ARMAGEDDON',dmg:80,aoeR:3.0, burnDmg:22, burnDur:300, desc:'Allt brinner'},
+      {cost:1050,nm:'⚡ SOLAR FLARE',dmg:150,aoeR:4.0,burnDmg:40,burnDur:500,desc:'Solexplosion · Allt brinner länge'},
     ]},
   vortex:{em:'🌀',nm:'VORTEX', col:'#BF5FFF',cost:130,range:2.2,dmg:8, rate:40,type:'aoe',aoeR:1.2,pull:true,pullStrength:0.4,desc:'Drar fiender tillbaka',
     upgrades:[
@@ -5811,6 +5850,7 @@ const TD_TOWER_DEFS={
       {cost:220,nm:'SINGULARITY',dmg:18,aoeR:2.2,pullStrength:1.2, stunDur:15, desc:'Gravitationskollaps'},
       {cost:340,nm:'BLACK HOLE',dmg:28, aoeR:3.0, pullStrength:2.0, stunDur:30, desc:'Svart hål'},
       {cost:520,nm:'EVENT HORIZON',dmg:45,aoeR:4.0,pullStrength:3.5,stunDur:60, desc:'Total gravitation'},
+      {cost:1100,nm:'⚡ DIMENSION RIP',dmg:80,aoeR:5.5,pullStrength:6.0,stunDur:120,desc:'Riftar dimension · Allt sugs in'},
     ]},
   laser:{em:'🔴',nm:'LASER',  col:'#FF2D55',cost:160,range:3.5,dmg:30,rate:15,type:'beam',pierce:true,desc:'Stråle, genomträngande',
     upgrades:[
@@ -5818,6 +5858,7 @@ const TD_TOWER_DEFS={
       {cost:280,nm:'FOCUS BEAM',  dmg:65, rate:10, pierce:true, crit:0.25, desc:'Fokuserad kraft'},
       {cost:400,nm:'PLASMA',      dmg:100,rate:8,  pierce:true, crit:0.4, aoeR:0.4, desc:'Plasmastråle'},
       {cost:620,nm:'DEATH LASER', dmg:180,rate:6,  pierce:true, crit:0.6, aoeR:0.8, desc:'Perfekt förstörelse'},
+      {cost:1300,nm:'⚡ STAR FORGE',dmg:350,rate:4,pierce:true,crit:0.8,aoeR:1.2,desc:'Stjärnsmide · Maximal förstörelse'},
     ]},
 };
 const TD_WAVE_COUNT=999; // effectively infinite
@@ -5981,11 +6022,50 @@ function tdCanvasTap(evt){
   tdDraw();
 }
 
+function _tdShowMapPicker(){
+  const existing=$('tdMapPicker');if(existing)existing.remove();
+  const picker=document.createElement('div');
+  picker.id='tdMapPicker';
+  picker.style.cssText='position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,.95);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;padding:24px;backdrop-filter:blur(8px);';
+  picker.innerHTML=`
+    <div style="font-size:11px;font-weight:900;font-family:var(--mono);color:var(--g);letter-spacing:3px;margin-bottom:4px">VÄLJ BANA</div>
+    <div style="font-size:32px;animation:petBob 1s ease-in-out infinite">🏰</div>
+    ${TD_MAPS_CONFIG.map((m,i)=>`
+      <div onclick="window._tdPickMap(${i})" style="width:100%;max-width:320px;background:rgba(255,255,255,.04);border:2px solid rgba(255,255,255,.12);border-radius:16px;padding:16px 20px;cursor:pointer;transition:all .15s;-webkit-tap-highlight-color:transparent" onmouseenter="this.style.borderColor='var(--g)';this.style.background='rgba(57,255,20,.06)'" onmouseleave="this.style.borderColor='rgba(255,255,255,.12)';this.style.background='rgba(255,255,255,.04)'">
+        <div style="display:flex;align-items:center;gap:12px">
+          <span style="font-size:28px">${m.em}</span>
+          <div>
+            <div style="font-size:14px;font-weight:900;font-family:var(--mono);color:#fff">${m.nm}</div>
+            <div style="font-size:10px;color:rgba(255,255,255,.45);font-family:var(--mono);margin-top:2px">${m.desc} · Start: ${m.startGold}g</div>
+          </div>
+        </div>
+      </div>`).join('')}
+    <div style="font-size:9px;color:rgba(255,255,255,.3);font-family:var(--mono)">Svårare bana = mer guld</div>`;
+  document.body.appendChild(picker);
+  window._tdPickMap=(i)=>{
+    _tdActiveMap=TD_MAPS_CONFIG[i];
+    TD_PATH=_tdActiveMap.path;
+    _td._pathCells=null;
+    _td._mapPicked=true;
+    picker.remove();
+    openBattle();
+  };
+}
+
 function openBattle(){
   _applyTDUpgrades&&_applyTDUpgrades();
+  // Show map picker if not chosen yet
+  if(!_td._mapPicked){
+    if(!$('battleArena')){showT('Tower Defense laddas...','b');return;}
+    $('battleArena').classList.add('open');
+    _tdShowMapPicker();return;
+  }
+  _td._mapPicked=false; // reset for next session
   const hs=parseInt(localStorage.getItem('kv8_tdHS')||'0');
   const bonusHp=G._tdBonusHp||0;
-  const startGold=200+(G._tdStartGold||0);
+  const startGold=(_tdActiveMap?_tdActiveMap.startGold:200)+(G._tdStartGold||0);
+  // Apply active map
+  if(_tdActiveMap){TD_PATH=_tdActiveMap.path;}
   _td={active:false,wave:1,gold:startGold,baseHp:100+bonusHp,baseMax:100+bonusHp,
     towers:[],enemies:[],projectiles:[],particles:[],ambient:Array.from({length:20},()=>({x:Math.random()*360,y:Math.random()*480,vx:(Math.random()-.5)*0.3,vy:-(0.2+Math.random()*0.4),life:60+Math.random()*80,col:Math.random()<0.5?'rgba(255,150,50,.5)':'rgba(180,100,255,.4)',r:Math.random()*2+0.5})),
     queue:[],spawnTimer:0,killsThisWave:0,enemiesThisWave:0,
@@ -10204,17 +10284,18 @@ const _PR_LANES=3;
 const _PR_GEM_COLS=['#FF2D55','#00D9FF','#39FF14','#FFE600','#BF5FFF'];
 const _PR_GEM_NMS=['RÖDA','BLÅA','GRÖNA','GULD','LILA'];
 function _prLaneY(lane){const H=_pr.H||300;return H*.78-Math.min(H*.14,64)*lane;}
-function _prSwitchLane(dir){
+function _prJump(){
   if(!_pr.active)return;
-  const curLane=(_pr.lane!=null?_pr.lane:1);
-  const next=curLane-dir;
-  if(next<0||next>=_PR_LANES)return;
-  _pr.lane=next;
-  _pr.targetLane=next;
-  const fl=$('prLaneFlash');if(fl){fl.style.opacity='1';setTimeout(()=>{if(fl)fl.style.opacity='0';},80);}
-  // Visual feedback: tilt emoji
-  const ov=$('prEmojiOv');if(ov){ov.style.transition='transform .12s';ov.style.transform=dir<0?'rotate(-18deg)':'rotate(18deg)';setTimeout(()=>{if(ov)ov.style.transform='';},140);}
-  vibe&&vibe(10);
+  if(_pr.grounded){
+    _pr.vy=_pr.JUMP_F;_pr.grounded=false;_pr.canDblJump=true;
+    vibe&&vibe(15);
+    // Spawn jump dust
+    for(let i=0;i<4;i++)_pr.particles.push({x:_pr.x-8+Math.random()*16,y:_pr.groundY,vx:(Math.random()-.5)*3,vy:-(1+Math.random()*2),life:12,col:'rgba(255,255,255,.4)'});
+  } else if(_pr.canDblJump){
+    _pr.vy=_pr.JUMP_F*.85;_pr.canDblJump=false;
+    vibe&&vibe([10,5,10]);
+    for(let i=0;i<6;i++)_pr.particles.push({x:_pr.x-12+Math.random()*24,y:_pr.y,vx:(Math.random()-.5)*4,vy:-(1+Math.random()*3),life:15,col:'#00D9FF'});
+  }
 }
 function openPetRunner(){
   let g=$('petRunnerGame');
@@ -10242,7 +10323,7 @@ function openPetRunner(){
             <div style="font-size:80px;animation:petBob 1s ease-in-out infinite;margin-bottom:8px" id="prStartPet">🐉</div>
             <div style="font-size:24px;font-weight:900;color:#39FF14;font-family:var(--mono);letter-spacing:2px;text-shadow:0 0 20px rgba(57,255,20,.5)">KARMA RUSH</div>
             <div style="font-size:10px;color:rgba(255,255,255,.4);font-family:var(--mono);letter-spacing:3px;text-transform:uppercase;margin:6px 0 4px">LANE SWITCHER + GEM COMBO</div>
-            <div style="font-size:9px;color:rgba(255,255,255,.25);font-family:var(--mono);margin-bottom:16px">TAP TOPP=UPP · TAP BOTT=NER · MATCHA GEMS!</div>
+            <div style="font-size:9px;color:rgba(255,255,255,.25);font-family:var(--mono);margin-bottom:16px">TRYCK = HOPPA · TRYCK IGEN I LUFTEN = DUBBELHOPP!</div>
             <div style="display:inline-block;background:#0d0d0d;border:3px solid var(--y);border-radius:6px;box-shadow:4px 4px 0px var(--y);padding:8px 18px;margin-bottom:16px">
               <span style="font-size:10px;color:rgba(255,255,255,.5);font-family:var(--mono)">BÄST: </span>
               <span id="prBestDisp" style="color:var(--y);font-weight:900;font-family:var(--mono);font-size:16px">0m</span>
@@ -10269,16 +10350,12 @@ function openPetRunner(){
       if(e.target.closest('button'))return;
       e.preventDefault();
       if(!_pr.started){_pr.started=true;const ss=$('prStartScreen');if(ss)ss.style.display='none';_prInitGame();_prLoop();return;}
-      const rect=g.getBoundingClientRect();
-      const relY=(e.touches[0].clientY-rect.top)/rect.height;
-      _prSwitchLane(relY<0.5?-1:1);
+      _prJump();
     },{passive:false});
     g.addEventListener('mousedown',e=>{
       if(e.target.closest('button')||e.pointerType==='touch'||e.pointerType==='pen')return;
       if(!_pr.started){_pr.started=true;const ss=$('prStartScreen');if(ss)ss.style.display='none';_prInitGame();_prLoop();return;}
-      const rect=g.getBoundingClientRect();
-      const relY=(e.clientY-rect.top)/rect.height;
-      _prSwitchLane(relY<0.5?-1:1);
+      _prJump();
     });
   }
   g.classList.add('open');
@@ -10307,15 +10384,14 @@ function _prInitGame(){
   const H=parent?parent.offsetHeight:(window.innerHeight-52);
   canvas.width=Math.max(W,200);canvas.height=Math.max(H,300);
   _pr.W=canvas.width;_pr.H=canvas.height;
+  _pr.groundY=Math.round(H*.82);
   _pr.active=true;_pr.score=0;_pr.gemsCollected=0;
-  _pr.lane=1; // start middle lane
-  _pr.targetLane=1;_pr.drawLane=1;
-  _pr.x=Math.round(W*.15);
+  _pr.x=Math.round(W*.18);
+  _pr.y=_pr.groundY;_pr.vy=0;_pr.grounded=true;_pr.canDblJump=true;
   _pr.pHp=3;_pr.maxHp=3;_pr.combo=0;_pr.comboMult=1;_pr.comboColor=null;
   _pr.obstacles=[];_pr.gems=[];_pr.powerups=[];_pr.bgOffset=0;_pr.particles=[];
   _pr.nextObstacle=130;_pr.nextGem=60;_pr.nextPowerup=500;
   _pr.shield=false;_pr.shieldTimer=0;_pr.magnetTimer=0;_pr.lastHitT=0;
-  // Init background buildings (parallax)
   _pr.buildings=Array.from({length:14},()=>({x:Math.random()*W,h:40+Math.random()*200,w:28+Math.random()*80,spd:0.3+Math.random()*.5,col:`hsl(${200+Math.random()*60},55%,${3+Math.random()*7}%)`}));
   _pr.stars=Array.from({length:30},()=>({x:Math.random()*W,y:Math.random()*H*.55,r:Math.random()*1.5+.3,a:Math.random()*6.28}));
   _pr.level=parseInt(localStorage.getItem('kv8_prLv')||'1');
@@ -10331,120 +10407,102 @@ function _prLoop(){
 function _prUpdate(canvas){
   const W=canvas.width,H=canvas.height;
   _pr.H=H;_pr.W=W;
-  const spd=2.5+Math.min((_pr.score/600)*0.4,3);
+  if(!_pr.groundY)_pr.groundY=Math.round(H*.82);
+  const spd=2.8+Math.min((_pr.score/500)*0.6,4.5)+(_pr.level-1)*.4;
   _pr.score++;
-  // Smooth lane lerp
-  if(_pr.drawLane==null)_pr.drawLane=_pr.lane;
-  if(_pr.targetLane==null)_pr.targetLane=_pr.lane;
-  _pr.drawLane+=(_pr.targetLane-_pr.drawLane)*0.25;
-  // Score / level HUD
   const sc=$('prScore');if(sc)sc.textContent=Math.floor(_pr.score/10)+'m';
   const hp=$('prHpDots');if(hp)hp.textContent='❤️'.repeat(_pr.pHp)+'🤍'.repeat(Math.max(0,(_pr.maxHp||3)-_pr.pHp));
-  // Level up check
   const newLv=Math.floor(_pr.score/2500)+1;
   if(newLv>(_pr.level||1)){
     _pr.level=newLv;localStorage.setItem('kv8_prLv',_pr.level);
     const lb2=$('prLvBadge2');if(lb2)lb2.textContent='LV'+_pr.level;
     showT('⚡ LV'+_pr.level+' SPEED UP!','y');vibe&&vibe([30,15,60,15,90]);
   }
-  // Move parallax buildings
+  // Gravity
+  _pr.vy+=_pr.GRAVITY||0.55;
+  _pr.y+=_pr.vy;
+  if(_pr.y>=_pr.groundY){_pr.y=_pr.groundY;_pr.vy=0;_pr.grounded=true;_pr.canDblJump=true;}
+  // Parallax buildings
   (_pr.buildings||[]).forEach(b=>{b.x-=b.spd*spd*.3;if(b.x+b.w<0)b.x=W+b.w;});
-  // Obstacles
+  // Obstacles: ground spikes and flying orbs
   _pr.nextObstacle-=spd;
   if(_pr.nextObstacle<0){
     const lvl=_pr.level||1;
-    const gapMin=Math.max(150,210-lvl*8);
-    if(Math.random()<0.35&&_pr.obstacles.length<4){
-      // Multi-lane barrier: 2 of 3 lanes blocked, one free
-      const freeLane=Math.floor(Math.random()*_PR_LANES);
-      for(let l=0;l<_PR_LANES;l++){
-        if(l!==freeLane){const ci=Math.floor(Math.random()*_PR_GEM_COLS.length);_pr.obstacles.push({x:W+10+l*5,lane:l,type:'block',col:_PR_GEM_COLS[ci]});}
-      }
-    } else {
-      const lane=Math.floor(Math.random()*_PR_LANES);
-      const types=['spike','block','orb'];const ci=Math.floor(Math.random()*_PR_GEM_COLS.length);
-      _pr.obstacles.push({x:W+10,lane,type:types[Math.floor(Math.random()*types.length)],col:_PR_GEM_COLS[ci]});
-    }
+    const gapMin=Math.max(140,200-lvl*7);
+    const type=Math.random()<0.4?'fly':'spike';
+    const flyY=_pr.groundY-(40+Math.random()*90); // flying obstacle height
+    _pr.obstacles.push({x:W+10,y:type==='fly'?flyY:_pr.groundY,type,h:type==='fly'?24:28,w:28,col:_PR_GEM_COLS[Math.floor(Math.random()*_PR_GEM_COLS.length)]});
     _pr.nextObstacle=gapMin*.5+Math.random()*gapMin*.8;
   }
-  // Gems with colors
+  // Gems at varying heights
   _pr.nextGem-=spd;
   if(_pr.nextGem<0){
-    const lane=Math.floor(Math.random()*_PR_LANES);
     const ci=Math.floor(Math.random()*_PR_GEM_COLS.length);
-    _pr.gems.push({x:W+10,lane,col:_PR_GEM_COLS[ci],nm:_PR_GEM_NMS[ci],alive:true,ci});
-    _pr.nextGem=50+Math.random()*60;
+    const gemY=_pr.groundY-(18+Math.random()*110);
+    _pr.gems.push({x:W+10,y:gemY,col:_PR_GEM_COLS[ci],nm:_PR_GEM_NMS[ci],alive:true,ci});
+    _pr.nextGem=45+Math.random()*55;
   }
   // Powerups
   _pr.nextPowerup-=spd;
   if(_pr.nextPowerup<0){
     const types=['shield','magnet','hp'];
-    const lane=Math.floor(Math.random()*_PR_LANES);
-    _pr.powerups.push({x:W+10,lane,type:types[Math.floor(Math.random()*types.length)],alive:true});
+    const py=_pr.groundY-60;
+    _pr.powerups.push({x:W+10,y:py,type:types[Math.floor(Math.random()*types.length)],alive:true});
     _pr.nextPowerup=400+Math.random()*450;
   }
-  // Collision detection
-  const now=Date.now();const petR=15;
+  // Collision: obstacles
+  const now=Date.now();const petR=14;
   for(let i=_pr.obstacles.length-1;i>=0;i--){
     const ob=_pr.obstacles[i];ob.x-=spd;
     if(ob.x+40<0){_pr.obstacles.splice(i,1);continue;}
-    if(!_pr.shield&&!(_pr.shieldTimer>0)&&(now-(_pr.lastHitT||0))>700){
-      const oy=_prLaneY(ob.lane);const py=_prLaneY(_pr.lane);
-      if(ob.x<_pr.x+petR&&ob.x+32>_pr.x-petR&&Math.abs(py-oy)<28){
-        _pr.pHp--;_pr.lastHitT=now;vibe&&vibe([40,20,60]);
-        _pr.combo=0;_pr.comboMult=1;_pr.comboColor=null;
-        const cb=$('prComboBar');if(cb)cb.style.display='none';
-        _pr.obstacles.splice(i,1);
-        if(_pr.pHp<=0){_prGameOver();return;}
-      }
+    const oy=ob.y;
+    const hitX=ob.x<_pr.x+petR&&ob.x+ob.w>_pr.x-petR;
+    const hitY=Math.abs(_pr.y-oy)<petR+ob.h*.5;
+    if(hitX&&hitY&&!_pr.shield&&!(_pr.shieldTimer>0)&&(now-(_pr.lastHitT||0))>700){
+      _pr.pHp--;_pr.lastHitT=now;vibe&&vibe([40,20,60]);
+      _pr.combo=0;_pr.comboMult=1;_pr.comboColor=null;
+      const cb=$('prComboBar');if(cb)cb.style.display='none';
+      _pr.obstacles.splice(i,1);
+      if(_pr.pHp<=0){_prGameOver();return;}
     }
   }
   // Gem collection
   for(let i=_pr.gems.length-1;i>=0;i--){
-    const gm=_pr.gems[i];
-    if(_pr.magnetTimer>0)gm.x-=spd*.2;
-    gm.x-=spd;
-    if(gm.x+12<0){_pr.gems.splice(i,1);if(_pr.combo>0){_pr.combo=0;_pr.comboColor=null;}continue;}
-    if(gm.alive){
-      const gy=_prLaneY(gm.lane);const py=_prLaneY(_pr.lane);
-      const hit=(_pr.magnetTimer>0&&gm.lane===_pr.lane)||
-                (Math.abs(gm.x-_pr.x)<22&&Math.abs(gy-py)<26);
-      if(hit){
-        gm.alive=false;_pr.gemsCollected++;
-        if(_pr.comboColor===gm.ci){_pr.combo++;_pr.comboMult=Math.min(8,1+Math.floor(_pr.combo/3));}
-        else{_pr.combo=1;_pr.comboMult=1;_pr.comboColor=gm.ci;}
-        const coins=_pr.comboMult*Math.max(1,_pr.level||1);
-        gainCoins(coins);gainXP(1,'action');
-        const cb=$('prComboBar');const cm=$('prComboMult');
-        if(cb&&cm){cb.style.display='block';cm.textContent=_pr.comboMult;cb.style.borderColor=gm.col;cb.style.color=gm.col;}
-        if(_pr.combo>0&&_pr.combo%3===0)showT('🎯 COMBO ×'+_pr.comboMult+' '+_PR_GEM_NMS[gm.ci]+'!','y');
-        if(_pr.particles)_pr.particles.push({x:gm.x,y:gy,col:gm.col,life:18,vy:-1.5,vx:(Math.random()-.5)*2.5});
-        _pr.gems.splice(i,1);vibe&&vibe(8);
-      }
+    const gm=_pr.gems[i];gm.x-=spd;
+    if(gm.x+20<0){_pr.gems.splice(i,1);continue;}
+    if(!gm.alive)continue;
+    const distX=Math.abs(gm.x-_pr.x),distY=Math.abs(gm.y-_pr.y);
+    const catchR=_pr.magnetTimer>0?80:22;
+    if(distX<catchR&&distY<catchR){
+      gm.alive=false;_pr.gemsCollected++;
+      // Combo
+      if(_pr.comboColor===gm.ci){_pr.combo++;_pr.comboMult=Math.min(8,1+Math.floor(_pr.combo/3));}
+      else{_pr.combo=1;_pr.comboColor=gm.ci;_pr.comboMult=1;}
+      const pts=10*_pr.comboMult;
+      _pr.score+=pts;
+      for(let p=0;p<5;p++)_pr.particles.push({x:gm.x,y:gm.y,vx:(Math.random()-.5)*4,vy:-(1+Math.random()*3),life:18,col:gm.col});
+      if(_pr.comboMult>1){const cb=$('prComboBar');if(cb){cb.style.display='block';$('prComboMult').textContent=_pr.comboMult;}}
+      else{const cb=$('prComboBar');if(cb)cb.style.display='none';}
+      _pr.gems.splice(i,1);vibe&&vibe(8);SFX&&SFX.tap&&SFX.tap();
     }
   }
-  // Powerup collection
+  // Powerups
   for(let i=_pr.powerups.length-1;i>=0;i--){
-    const pw=_pr.powerups[i];pw.x-=spd;
-    if(pw.x+20<0){_pr.powerups.splice(i,1);continue;}
-    if(pw.alive){
-      const py=_prLaneY(pw.lane);const myY=_prLaneY(_pr.lane);
-      if(Math.abs(pw.x-_pr.x)<24&&Math.abs(py-myY)<26){
-        pw.alive=false;_pr.powerups.splice(i,1);vibe&&vibe([20,10,30]);
-        if(pw.type==='shield'){_pr.shield=true;_pr.shieldTimer=180;showT('🛡️ SHIELD!','b');}
-        else if(pw.type==='magnet'){_pr.magnetTimer=250;showT('🧲 MAGNET!','y');}
-        else if(pw.type==='hp'&&_pr.pHp<(_pr.maxHp||3)){_pr.pHp++;showT('❤️ +1 HP!','g');}
-        else{gainCoins(5);showT('❤️ +5⚡','g');}
-      }
+    const pw=_pr.powerups[i];if(!pw.alive){_pr.powerups.splice(i,1);continue;}
+    pw.x-=spd;
+    if(pw.x+30<0){_pr.powerups.splice(i,1);continue;}
+    if(Math.abs(pw.x-_pr.x)<28&&Math.abs(pw.y-_pr.y)<28){
+      pw.alive=false;
+      if(pw.type==='shield'){_pr.shield=true;_pr.shieldTimer=180;showT('🛡️ Shield!','b');}
+      else if(pw.type==='magnet'){_pr.magnetTimer=220;showT('🧲 Magnet!','y');}
+      else if(pw.type==='hp'&&_pr.pHp<(_pr.maxHp||3)){_pr.pHp++;showT('❤️ +1 HP!','g');}
+      else{gainCoins(5);showT('❤️ +5⚡','g');}
     }
   }
   if(_pr.shieldTimer>0){_pr.shieldTimer--;if(_pr.shieldTimer<=0)_pr.shield=false;}
   if(_pr.magnetTimer>0)_pr.magnetTimer--;
-  // Particles
   if(_pr.particles){for(let i=_pr.particles.length-1;i>=0;i--){const p=_pr.particles[i];p.x+=p.vx;p.y+=p.vy;p.life--;if(p.life<=0)_pr.particles.splice(i,1);}
-  if(_pr.particles.length>30)_pr.particles.splice(0,_pr.particles.length-30);}
-  if(_pr.obstacles.length>20)_pr.obstacles.splice(0,_pr.obstacles.length-20);
-  if(_pr.gems.length>20)_pr.gems.splice(0,_pr.gems.length-20);
+  if(_pr.particles.length>40)_pr.particles.splice(0,_pr.particles.length-40);}
 }
 // Particle trail pool for Pet Runner
 if(!window._prParticles)window._prParticles=[];
@@ -10522,39 +10580,37 @@ function _prDraw(canvas,ctx){
   const gg=ctx.createLinearGradient(0,groundY-4,0,groundY+H*.2);
   gg.addColorStop(0,th.acc+'44');gg.addColorStop(.15,th.bg2);gg.addColorStop(1,'#000');
   ctx.fillStyle=gg;ctx.fillRect(0,groundY-4,W,H*.24);
-  // Lane guide lines
-  const laneGap=Math.min(H*.14,64);
-  const offset=(t*.1)%50;
-  for(let l=0;l<_PR_LANES;l++){
-    const ly=_prLaneY(l);
-    ctx.save();ctx.strokeStyle=th.acc+'28';ctx.lineWidth=1;ctx.setLineDash([15,35]);ctx.lineDashOffset=-offset;
-    ctx.beginPath();ctx.moveTo(0,ly+18);ctx.lineTo(W,ly+18);ctx.stroke();ctx.setLineDash([]);ctx.restore();
-  }
-  // Current lane highlight
-  {const myY=_prLaneY(_pr.lane||1);ctx.save();ctx.globalAlpha=.06;ctx.fillStyle=th.acc2;ctx.fillRect(0,myY-28,W,46);ctx.restore();}
-  // Obstacles
+  // Ground line
+  ctx.save();ctx.strokeStyle=th.acc+'30';ctx.lineWidth=1.5;ctx.setLineDash([8,16]);
+  ctx.beginPath();ctx.moveTo(0,_pr.groundY||H*.82);ctx.lineTo(W,_pr.groundY||H*.82);ctx.stroke();ctx.setLineDash([]);ctx.restore();
+  // Shadow under character
+  {const gY=_pr.groundY||H*.82;ctx.save();ctx.globalAlpha=.18;ctx.fillStyle='#000';ctx.beginPath();const sw=Math.max(10,(1-Math.min(1,(gY-_pr.y)/(H*.25)))*32);ctx.ellipse(_pr.x,gY+4,sw,5,0,0,Math.PI*2);ctx.fill();ctx.restore();}
+  // Obstacles (positional, not lane-based)
   (_pr.obstacles||[]).forEach(ob=>{
-    const oy=_prLaneY(ob.lane);
+    const oy=ob.y||(_pr.groundY||H*.82);
     ctx.save();ctx.shadowColor=ob.col;ctx.shadowBlur=18;
     if(ob.type==='spike'){
-      ctx.fillStyle=ob.col;ctx.beginPath();ctx.moveTo(ob.x,oy+18);ctx.lineTo(ob.x+16,oy-10);ctx.lineTo(ob.x+32,oy+18);ctx.closePath();ctx.fill();
+      ctx.fillStyle=ob.col;ctx.beginPath();ctx.moveTo(ob.x,oy);ctx.lineTo(ob.x+14,oy-ob.h);ctx.lineTo(ob.x+28,oy);ctx.closePath();ctx.fill();
       ctx.strokeStyle='rgba(255,255,255,.5)';ctx.lineWidth=1.2;ctx.stroke();
-    } else if(ob.type==='block'){
-      ctx.fillStyle=ob.col+'28';ctx.strokeStyle=ob.col;ctx.lineWidth=2.2;
-      ctx.beginPath();if(ctx.roundRect)ctx.roundRect(ob.x,oy-16,32,26,4);else ctx.rect(ob.x,oy-16,32,26);ctx.fill();ctx.stroke();
-      ctx.fillStyle='rgba(255,255,255,.12)';ctx.fillRect(ob.x+3,oy-13,26,8);
+    } else if(ob.type==='fly'){
+      // Flying drone/UFO obstacle
+      const cx2=ob.x+14,cy2=oy;
+      ctx.fillStyle=ob.col+'44';ctx.strokeStyle=ob.col;ctx.lineWidth=2;
+      ctx.beginPath();ctx.ellipse(cx2,cy2,16,8,0,0,Math.PI*2);ctx.fill();ctx.stroke();
+      ctx.fillStyle=ob.col;ctx.beginPath();ctx.ellipse(cx2,cy2-5,8,4,0,0,Math.PI*2);ctx.fill();
+      ctx.fillStyle='rgba(255,255,255,.7)';ctx.beginPath();ctx.arc(cx2,cy2-5,2,0,Math.PI*2);ctx.fill();
     } else {
-      const cx=ob.x+16,cy=oy-4;
-      const gr=ctx.createRadialGradient(cx,cy,2,cx,cy,14);
+      const cx2=ob.x+16,cy2=oy-4;
+      const gr=ctx.createRadialGradient(cx2,cy2,2,cx2,cy2,14);
       gr.addColorStop(0,'#fff');gr.addColorStop(.3,ob.col);gr.addColorStop(1,ob.col+'00');
-      ctx.fillStyle=gr;ctx.beginPath();ctx.arc(cx,cy,14,0,Math.PI*2);ctx.fill();
+      ctx.fillStyle=gr;ctx.beginPath();ctx.arc(cx2,cy2,14,0,Math.PI*2);ctx.fill();
     }
     ctx.restore();
   });
   // Gems — color-coded neon orbs
   (_pr.gems||[]).forEach(gm=>{
     if(!gm.alive)return;
-    const gy=_prLaneY(gm.lane);const pulse=.85+.15*Math.sin(t*.007+gm.x*.04);
+    const gy=gm.y||(_pr.groundY||H*.82)-20;const pulse=.85+.15*Math.sin(t*.007+gm.x*.04);
     ctx.save();ctx.shadowColor=gm.col;ctx.shadowBlur=22;
     const gr=ctx.createRadialGradient(gm.x,gy-8,1.5,gm.x,gy-8,10*pulse);
     gr.addColorStop(0,'#fff');gr.addColorStop(.3,gm.col);gr.addColorStop(1,gm.col+'00');
@@ -10565,9 +10621,9 @@ function _prDraw(canvas,ctx){
   });
   // Powerups
   (_pr.powerups||[]).forEach(pw=>{
-    const py=_prLaneY(pw.lane);const em={shield:'🛡️',magnet:'🧲',hp:'❤️'}[pw.type]||'⭐';
+    const py2=pw.y||(_pr.groundY||H*.82)-60;const em={shield:'🛡️',magnet:'🧲',hp:'❤️'}[pw.type]||'⭐';
     const p2=.8+.2*Math.sin(t*.008+pw.x*.02);
-    ctx.save();ctx.font=Math.round(20*p2)+'px serif';ctx.textAlign='center';ctx.fillText(em,pw.x,py-2);ctx.restore();
+    ctx.save();ctx.font=Math.round(20*p2)+'px serif';ctx.textAlign='center';ctx.fillText(em,pw.x,py2-2);ctx.restore();
   });
   // Gem-collect particles
   (_pr.particles||[]).forEach(p=>{
@@ -10575,7 +10631,7 @@ function _prDraw(canvas,ctx){
     ctx.beginPath();ctx.arc(p.x,p.y,4*a,0,Math.PI*2);ctx.fill();ctx.restore();
   });
   // Pet character
-  const petLane=(_pr.drawLane!=null?_pr.drawLane:(_pr.lane!=null?_pr.lane:1));const petY2=_prLaneY(petLane);const petX2=_pr.x;
+  const petY2=(_pr.y!=null?_pr.y:(_pr.groundY||H*.82));const petX2=_pr.x;
   // Shield glow
   if(_pr.shield||_pr.shieldTimer>0){
     const sg=.4+.3*Math.sin(t*.01);ctx.save();ctx.strokeStyle='#00D9FF';ctx.lineWidth=2.5;ctx.shadowColor='#00D9FF';ctx.shadowBlur=18;ctx.globalAlpha=sg;
@@ -10620,6 +10676,233 @@ function _prGameOver(){
   vibe&&vibe([50,30,100]);SFX.error&&SFX.error();
   if(isNew)setTimeout(()=>{spawnParticles&&spawnParticles(window.innerWidth/2,window.innerHeight*.4,'stars');},200);
   save();updateHUD();
+}
+
+// ═══════════════════════════════════════
+// ── KARMA CITY — Live World Map ──
+// ═══════════════════════════════════════
+const _KC_NAMES=['KarmaUser','NeonPet','VoidRunner','StarBond','CityKing','PixelPet','NightOwl','SunRiser','MoonWalker','GemHunter'];
+const _KC_PETS=['🐉','🦊','🐺','🦁','🐯','🦅','🐸','🐙','🦋','🐠','🦄','🐻','🦈','🐧','🦊'];
+let _kc={active:false,raf:null,t:0,myX:120,myY:200,myDir:1,mySpeed:0.8,npcs:[],buildings:[],zones:[],feedItems:[],lastFeed:0};
+
+function openKarmaCity(){
+  let g=$('karmaCityWorld');
+  if(!g){
+    g=document.createElement('div');g.className='kc-world';g.id='karmaCityWorld';
+    g.innerHTML=`
+      <div class="kc-hdr">
+        <button onclick="closeKarmaCity()" style="background:#111;border:2px solid rgba(255,255,255,.15);border-radius:6px;color:#fff;font-size:16px;cursor:pointer;padding:4px 10px;font-family:var(--mono)">←</button>
+        <div style="flex:1">
+          <div style="font-size:13px;font-weight:900;font-family:var(--mono);color:var(--g);letter-spacing:2px">🌆 KARMA CITY</div>
+          <div style="font-size:9px;color:rgba(255,255,255,.4);font-family:var(--mono)" id="kcPlayerCount">2,847 aktiva spelare</div>
+        </div>
+        <div style="text-align:right">
+          <div style="font-size:9px;color:rgba(255,255,255,.4);font-family:var(--mono)">DIN ZON</div>
+          <div style="font-size:12px;font-weight:900;font-family:var(--mono);color:var(--y)" id="kcZoneInfo">Zon 3</div>
+        </div>
+      </div>
+      <canvas id="kcCanvas" class="kc-city-canvas" style="touch-action:none"></canvas>
+      <div class="kc-feed" id="kcFeed">
+        <div class="kc-feed-item">🌆 Välkommen till KARMA CITY!</div>
+      </div>`;
+    document.body.appendChild(g);
+    const canvas=$('kcCanvas');
+    canvas.addEventListener('click',e=>{
+      const r=canvas.getBoundingClientRect();
+      const cx=(e.clientX-r.left)*(canvas.width/r.width);
+      const cy=(e.clientY-r.top)*(canvas.height/r.height);
+      _kcHandleClick(cx,cy);
+    });
+  }
+  g.classList.add('open');
+  _kcInit();
+}
+
+function closeKarmaCity(){
+  const g=$('karmaCityWorld');if(g)g.classList.remove('open');
+  _kc.active=false;if(_kc.raf){cancelAnimationFrame(_kc.raf);_kc.raf=null;}
+}
+
+function _kcInit(){
+  const canvas=$('kcCanvas');if(!canvas)return;
+  const W=canvas.offsetWidth||window.innerWidth;
+  const H=canvas.offsetHeight||300;
+  canvas.width=W;canvas.height=H;
+  _kc.W=W;_kc.H=H;_kc.t=0;_kc.active=true;
+  // Generate city buildings
+  _kc.buildings=[];
+  const cols=Math.floor(W/55);
+  for(let c=0;c<cols*2;c++){
+    const bh=30+Math.random()*140;
+    const bw=28+Math.random()*30;
+    _kc.buildings.push({x:c*55+Math.random()*15,y:H-bh-H*.2,w:bw,h:bh,col:`hsl(${200+Math.random()*60},40%,${4+Math.random()*8}%)`,windowCol:Math.random()<.5?'#00D9FF':'#FFE600'});
+  }
+  // Generate zones (colored districts)
+  _kc.zones=[
+    {x:0,y:H*.25,w:W*.35,h:H*.55,col:'rgba(57,255,20,.08)',border:'rgba(57,255,20,.3)',nm:'KARMA DISTRICT',owned:true},
+    {x:W*.35,y:H*.2,w:W*.3,h:H*.6,col:'rgba(0,217,255,.06)',border:'rgba(0,217,255,.2)',nm:'NEON ZONE',owned:false},
+    {x:W*.65,y:H*.22,w:W*.35,h:H*.58,col:'rgba(191,95,255,.06)',border:'rgba(191,95,255,.2)',nm:'VOID SECTOR',owned:false},
+  ];
+  // My pet start position
+  _kc.myX=W*.2;_kc.myY=H*.75;_kc.myDir=1;_kc.mySpeed=0.6;
+  // NPC pets (simulated players)
+  _kc.npcs=Array.from({length:12},(_,i)=>({
+    x:Math.random()*W,y:H*.65+Math.random()*H*.15,
+    vx:(Math.random()-.5)*0.8,vy:0,
+    pet:_KC_PETS[Math.floor(Math.random()*_KC_PETS.length)],
+    nm:_KC_NAMES[Math.floor(Math.random()*_KC_NAMES.length)]+(Math.floor(Math.random()*99)+1),
+    lv:Math.floor(Math.random()*20)+1,
+    zoneTimer:100+Math.random()*200,dir:Math.random()<.5?1:-1,
+    speechTimer:0,speech:'',talkChance:0.002,
+  }));
+  _kc.feedItems=['🌆 Välkommen till KARMA CITY!'];
+  if(_kc.raf)cancelAnimationFrame(_kc.raf);
+  _kc.raf=requestAnimationFrame(_kcLoop);
+  // Update player count
+  const pc=$('kcPlayerCount');if(pc)pc.textContent=(2800+Math.floor(Math.random()*100))+' aktiva spelare';
+}
+
+function _kcLoop(ts){
+  if(!_kc.active){_kc.raf=null;return;}
+  _kcUpdate(ts);_kcDraw();
+  _kc.raf=requestAnimationFrame(_kcLoop);
+}
+
+function _kcUpdate(ts){
+  _kc.t++;
+  const W=_kc.W,H=_kc.H;
+  // Move my pet
+  _kc.myX+=_kc.myDir*_kc.mySpeed;
+  if(_kc.myX>W*.85){_kc.myDir=-1;}
+  if(_kc.myX<W*.05){_kc.myDir=1;}
+  // Move NPCs
+  _kc.npcs.forEach(n=>{
+    n.x+=n.vx;
+    if(n.x<10||n.x>W-10){n.vx*=-1;n.dir=n.vx>0?1:-1;}
+    n.zoneTimer--;
+    if(n.zoneTimer<=0){n.vx=(Math.random()-.5)*1.2;n.zoneTimer=80+Math.random()*180;}
+    if(n.speechTimer>0)n.speechTimer--;
+    if(Math.random()<n.talkChance&&n.speechTimer<=0){
+      const msgs=['🔥 gang gang','💎 let\'s go!','⚡ KARMA++','🐾 pet on top','🏆 level up!','💚 hi!'];
+      n.speech=msgs[Math.floor(Math.random()*msgs.length)];
+      n.speechTimer=90;
+    }
+  });
+  // Simulate activity feed
+  if(_kc.t%180===0){
+    const n=_kc.npcs[Math.floor(Math.random()*_kc.npcs.length)];
+    const actions=['matade sin pet 🍖','spelade DNA Breaker 🧬','vann Tower Defense 🏰','nådde LV'+Math.floor(Math.random()*5+n.lv)+' ⚡','samlade karma-poäng 💎'];
+    const msg=n.nm+' '+actions[Math.floor(Math.random()*actions.length)];
+    _kc.feedItems.unshift(msg);
+    if(_kc.feedItems.length>3)_kc.feedItems.pop();
+    const feed=$('kcFeed');
+    if(feed)feed.innerHTML=_kc.feedItems.map(f=>`<div class="kc-feed-item">${f}</div>`).join('');
+  }
+}
+
+function _kcDraw(){
+  const canvas=$('kcCanvas');if(!canvas)return;
+  const ctx=canvas.getContext('2d');if(!ctx)return;
+  const W=_kc.W,H=_kc.H,t=_kc.t;
+  // Night sky gradient
+  const sky=ctx.createLinearGradient(0,0,0,H*.45);
+  sky.addColorStop(0,'#010614');sky.addColorStop(1,'#020d22');
+  ctx.fillStyle=sky;ctx.fillRect(0,0,W,H);
+  // Stars
+  for(let i=0;i<20;i++){
+    const sx=(i*137.5)%W,sy=(i*89.3)%H*.4;
+    const a=.3+.2*Math.sin(t*.02+i);
+    ctx.save();ctx.globalAlpha=a;ctx.fillStyle='#fff';ctx.beginPath();ctx.arc(sx,sy,i%3===0?1.5:.7,0,Math.PI*2);ctx.fill();ctx.restore();
+  }
+  // Buildings
+  _kc.buildings.forEach(b=>{
+    ctx.fillStyle=b.col;ctx.fillRect(b.x,b.y,b.w,b.h);
+    // Windows
+    for(let wy=b.y+8;wy<b.y+b.h-8;wy+=12){
+      for(let wx=b.x+4;wx<b.x+b.w-4;wx+=9){
+        const on=Math.sin(wx*.5+t*.002+wy*.3)>0.4;
+        if(on){ctx.fillStyle=b.windowCol;ctx.globalAlpha=.6+.2*Math.sin(t*.01+wx);ctx.fillRect(wx,wy,4,5);ctx.globalAlpha=1;}
+      }
+    }
+  });
+  // Ground
+  const grdY=H*.72;
+  const grd=ctx.createLinearGradient(0,grdY,0,H);
+  grd.addColorStop(0,'#0a1a0a');grd.addColorStop(1,'#050a05');
+  ctx.fillStyle=grd;ctx.fillRect(0,grdY,W,H-grdY);
+  // Road markings
+  ctx.strokeStyle='rgba(255,255,0,.2)';ctx.lineWidth=1;ctx.setLineDash([15,25]);
+  const roadY=grdY+H*.05;
+  ctx.beginPath();ctx.moveTo(0,roadY);ctx.lineTo(W,roadY);ctx.stroke();ctx.setLineDash([]);
+  // Zone overlays
+  _kc.zones.forEach(z=>{
+    ctx.save();ctx.globalAlpha=.5+.1*Math.sin(t*.02);
+    ctx.fillStyle=z.col;ctx.fillRect(z.x,z.y,z.w,z.h);
+    ctx.strokeStyle=z.border;ctx.lineWidth=z.owned?2:1;ctx.setLineDash(z.owned?[]:[5,8]);
+    ctx.beginPath();ctx.rect(z.x,z.y,z.w,z.h);ctx.stroke();ctx.setLineDash([]);
+    if(z.owned){ctx.fillStyle=z.border;ctx.font='9px monospace';ctx.globalAlpha=.8;ctx.fillText('★ '+z.nm,z.x+8,z.y+14);}
+    ctx.restore();
+  });
+  // NPC pets walking
+  _kc.npcs.forEach(n=>{
+    ctx.save();
+    const yPos=grdY+8;
+    ctx.font='18px serif';ctx.textAlign='center';
+    ctx.save();if(n.vx<0)ctx.scale(-1,1);
+    ctx.fillText(n.pet,n.vx<0?-n.x:n.x,yPos);
+    ctx.restore();
+    // Level badge
+    ctx.font='7px monospace';ctx.fillStyle='rgba(255,255,255,.5)';ctx.fillText('LV'+n.lv,n.x,yPos-14);
+    // Speech bubble
+    if(n.speechTimer>0&&n.speech){
+      ctx.globalAlpha=Math.min(1,n.speechTimer/15);
+      ctx.fillStyle='rgba(0,0,0,.8)';
+      const tw=ctx.measureText(n.speech).width+12;
+      ctx.beginPath();if(ctx.roundRect)ctx.roundRect(n.x-tw/2,yPos-38,tw,16,4);else ctx.rect(n.x-tw/2,yPos-38,tw,16);
+      ctx.fill();
+      ctx.fillStyle='rgba(255,255,255,.9)';ctx.font='8px monospace';
+      ctx.fillText(n.speech,n.x,yPos-26);
+    }
+    ctx.restore();
+  });
+  // MY PET (larger, glowing)
+  ctx.save();
+  const myY=grdY+8;
+  ctx.shadowColor='#39FF14';ctx.shadowBlur=16+8*Math.sin(t*.05);
+  ctx.font='26px serif';ctx.textAlign='center';
+  if(_kc.myDir<0){ctx.translate(_kc.myX*2,0);ctx.scale(-1,1);}
+  ctx.fillText(G.petEmoji||'🐉',_kc.myDir<0?-_kc.myX:_kc.myX,myY);
+  ctx.restore();
+  // Name tag for my pet
+  ctx.save();ctx.font='bold 9px monospace';ctx.textAlign='center';
+  ctx.fillStyle='#39FF14';ctx.fillText(G.petName||'Min Pet',_kc.myX,grdY-6);
+  ctx.restore();
+  // Neon street lights
+  for(let lx=60;lx<W;lx+=Math.max(80,W/5)){
+    ctx.save();ctx.strokeStyle='rgba(255,220,100,.4)';ctx.lineWidth=1;
+    ctx.beginPath();ctx.moveTo(lx,grdY-40);ctx.lineTo(lx,grdY);ctx.stroke();
+    const lg=ctx.createRadialGradient(lx,grdY-40,0,lx,grdY-40,30);
+    lg.addColorStop(0,'rgba(255,220,100,.2)');lg.addColorStop(1,'transparent');
+    ctx.fillStyle=lg;ctx.beginPath();ctx.arc(lx,grdY-40,30,0,Math.PI*2);ctx.fill();
+    ctx.restore();
+  }
+  ctx.textAlign='left';ctx.setLineDash([]);
+}
+
+function _kcHandleClick(cx,cy){
+  // Check if clicking on a zone
+  const zone=_kc.zones.find(z=>cx>=z.x&&cx<=z.x+z.w&&cy>=z.y&&cy<=z.y+z.h);
+  if(zone){
+    if(!zone.owned){
+      showT('⚔️ Kämpa för zon: '+zone.nm+'!','y');
+      // Check if player has enough level to claim
+      if((G.level||1)>=5&&(G.coins||0)>=50){
+        zone.owned=true;gainCoins(-50);showT('✅ Du äger nu '+zone.nm+'!','g');
+        _kc.feedItems.unshift('⭐ '+(G.name||'Du')+' tog kontroll över '+zone.nm+'!');
+        const feed=$('kcFeed');if(feed)feed.innerHTML=_kc.feedItems.map(f=>`<div class="kc-feed-item">${f}</div>`).join('');
+      } else {showT('❌ Behöver LV5 + 50💎 för att ta zonen','r');}
+    } else {showT('💚 Du äger '+zone.nm+'!','g');}
+  }
 }
 
 // ══════════════════════════════════════════
@@ -14133,6 +14416,17 @@ function openCastleWorld(){
         </div>
         <div style="font-size:10px;color:var(--y);font-family:var(--mono)" id="cwGold">💰 0</div>
       </div>
+      <div style="background:rgba(57,255,20,.04);border:1px solid rgba(57,255,20,.15);border-radius:14px;padding:14px;margin:10px 14px;display:flex;align-items:center;gap:14px;flex-shrink:0">
+        <div style="font-size:52px;animation:petBob 1.5s ease-in-out infinite;filter:drop-shadow(0 0 12px rgba(57,255,20,.5))" id="castlePetEmoji">🐉</div>
+        <div>
+          <div style="font-size:13px;font-weight:900;color:#fff;font-family:var(--mono)" id="castlePetName">Din Pet</div>
+          <div style="font-size:9px;color:rgba(255,255,255,.4);font-family:var(--mono);margin-top:2px">Skyddar ditt slott</div>
+          <div style="display:flex;gap:6px;margin-top:6px">
+            <span style="font-size:9px;background:rgba(57,255,20,.1);border:1px solid rgba(57,255,20,.3);border-radius:6px;padding:2px 8px;color:var(--g);font-family:var(--mono)" id="castlePetMood">😊 90</span>
+            <span style="font-size:9px;background:rgba(255,159,10,.1);border:1px solid rgba(255,159,10,.3);border-radius:6px;padding:2px 8px;color:var(--o);font-family:var(--mono)" id="castlePetHunger">🍖 80</span>
+          </div>
+        </div>
+      </div>
       <canvas id="castleCanvas" style="display:block;width:100%;touch-action:none;flex:1;"></canvas>
       <div class="cw-build-panel" id="cwBuildPanel"></div>
       <div class="cw-popup" id="cwPopup" style="display:none">
@@ -14164,6 +14458,10 @@ function openCastleWorld(){
   _cwRenderPanel();
   const gold=$('cwGold');if(gold)gold.textContent='💰 '+(G.coins||0);
   const sub=$('cwSubtitle');if(sub)sub.textContent=(G.name||'Spelaren')+'s rike';
+  const cpe=$('castlePetEmoji');if(cpe)cpe.textContent=G.petEmoji||'🐉';
+  const cpn=$('castlePetName');if(cpn)cpn.textContent=G.petName||'Din Pet';
+  const cpm=$('castlePetMood');if(cpm)cpm.textContent='😊 '+(G.mood||100);
+  const cph=$('castlePetHunger');if(cph)cph.textContent='🍖 '+(G.hunger||100);
   setTimeout(function(){(function _cwLoop(){if($('castleWorld')?.classList.contains('open')){renderCastleWorld();requestAnimationFrame(_cwLoop);}})();},80);
   const canvas=$('castleCanvas');
   if(canvas){
