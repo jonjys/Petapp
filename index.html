@@ -2387,6 +2387,17 @@ button:active{opacity:.85;}
 .tb{border-bottom:1px solid rgba(57,255,20,.25)!important;box-shadow:0 2px 20px rgba(57,255,20,.06),0 1px 0 rgba(57,255,20,.08)!important;}
 .logo{box-shadow:0 0 18px rgba(57,255,20,.35)!important;border:none!important;letter-spacing:-1px!important;}
 
+/* ── FEATURE TOUR ── */
+.tour-ov{position:fixed;inset:0;z-index:9990;cursor:pointer;}
+.tour-sp{position:fixed;border-radius:16px;box-shadow:0 0 0 4000px rgba(0,0,0,.84),0 0 0 3px #39FF14,0 0 28px rgba(57,255,20,.6);pointer-events:none;transition:left .32s cubic-bezier(.34,1.56,.64,1),top .32s cubic-bezier(.34,1.56,.64,1),width .32s,height .32s;z-index:9991;animation:tourGlow 1.1s ease-in-out infinite;}
+@keyframes tourGlow{0%,100%{box-shadow:0 0 0 4000px rgba(0,0,0,.84),0 0 0 3px #39FF14,0 0 28px rgba(57,255,20,.6);}50%{box-shadow:0 0 0 4000px rgba(0,0,0,.84),0 0 0 6px rgba(57,255,20,.6),0 0 52px rgba(57,255,20,.9);}}
+.tour-tip{position:fixed;z-index:9992;background:rgba(4,4,18,.98);border:1.5px solid rgba(57,255,20,.45);border-radius:20px;padding:18px 20px;max-width:290px;box-shadow:0 8px 40px rgba(0,0,0,.7),0 0 24px rgba(57,255,20,.08);transition:top .32s cubic-bezier(.34,1.56,.64,1),left .32s ease;pointer-events:all;}
+.tour-arr{position:absolute;width:14px;height:14px;background:rgba(4,4,18,.98);border:1.5px solid rgba(57,255,20,.45);transform:rotate(45deg);}
+.tour-arr.down{bottom:-8px;border-top:none;border-left:none;}
+.tour-arr.up{top:-8px;border-bottom:none;border-right:none;}
+@keyframes tourBtnBlink{0%,100%{box-shadow:0 0 0 3px rgba(57,255,20,.8),0 0 16px rgba(57,255,20,.5);}50%{box-shadow:0 0 0 6px rgba(57,255,20,.3),0 0 32px rgba(57,255,20,.9);}}
+.tour-blink{animation:tourBtnBlink .7s ease-in-out infinite!important;border-radius:12px!important;}
+
 /* ── BOTTOM NAV ── */
 .bnav{background:rgba(4,4,14,.99)!important;border-top:1px solid rgba(57,255,20,.2)!important;padding:8px 0 calc(8px + var(--sab))!important;box-shadow:0 -2px 20px rgba(57,255,20,.04)!important;}
 
@@ -13284,8 +13295,91 @@ function finishOB(){
     setTimeout(_schedulePetEvent,12000);
     setTimeout(sbCreateProfile,1500);
     setTimeout(sbSubscribeRealtime,2000);
+    setTimeout(startAppTour,2000);
   },180);
 }
+
+// ══════════════════════════════════════════
+// ── APP FEATURE TOUR — Coach Mark System ──
+// ══════════════════════════════════════════
+const _TOUR=[
+  {noSpot:true,emoji:'⚡',title:'VÄLKOMMEN TILL KARMA!',desc:'Vi visar dig runt snabbt — tryck var som helst för att fortsätta!',cta:'STARTA RUNDTUREN →'},
+  {sel:'.nb[data-v="home"]',title:'🐾 HEM — Din Pet',desc:'Här bor din pet! Mata och lek med den dagligen för att hålla den glad.',blink:true,nav:'home'},
+  {sel:'.chb.chb-feed',title:'🍖 MATA VARJE DAG!',desc:'Tryck MATA för att ge din pet mat. Dagliga streaks ger bonus-coins!',blink:true,nav:'home'},
+  {sel:'.nb[data-v="play"]',title:'🎮 SPELA SPEL',desc:'4 unika spel: Pet Runner (hoppa!), DNA Breaker, Tower Defense + KARMA CITY!',blink:true},
+  {sel:'.nb[data-v="explore"]',title:'🔍 UTFORSKA',desc:'KARMA CITY — en levande stad med din pet och tusentals andra spelare. Ta kontroll över zoner!',blink:true,nav:'explore'},
+  {sel:'.nb[data-v="world"]',title:'🌍 VÄRLDEN',desc:'Dagliga uppdrag, vilda pets att fånga och spännande världshändelser.',nav:'world'},
+  {sel:'.nb[data-v="me"]',title:'👤 DIN PROFIL',desc:'Se dina stats, achievements och KARMA-poäng — bygg upp din legend!'},
+  {noSpot:true,emoji:'💚',title:'DU ÄR REDO!',desc:'Mata din pet varje dag, spela spelen och bygg upp ditt KARMA-imperium!',cta:'SÄTT IGÅNG! 🚀',last:true},
+];
+let _tourSt=0;let _tourEl=null;let _tourSp=null;let _tourTp=null;
+
+function startAppTour(){
+  if(localStorage.getItem('kv8_tourDone')==='1')return;
+  if(_tourEl)return;
+  _tourEl=document.createElement('div');_tourEl.className='tour-ov';
+  _tourSp=document.createElement('div');_tourSp.className='tour-sp';_tourSp.style.display='none';
+  _tourTp=document.createElement('div');_tourTp.className='tour-tip';
+  document.body.appendChild(_tourEl);document.body.appendChild(_tourSp);document.body.appendChild(_tourTp);
+  _tourEl.addEventListener('click',()=>{if(!_tourTp.contains(event.target))_tourAdv();});
+  window._tourAdv=_tourAdv;window._tourClose=_tourClose;
+  _tourShow(0);
+}
+function _tourAdv(){_tourBlink(false);_tourSt++;if(_tourSt>=_TOUR.length){_tourClose();return;}_tourShow(_tourSt);}
+function _tourBlink(on){
+  const prev=_TOUR[_tourSt];
+  if(prev&&prev.sel){const el=document.querySelector(prev.sel);if(el){if(on)el.classList.add('tour-blink');else el.classList.remove('tour-blink');}}
+}
+function _tourShow(idx){
+  const s=_TOUR[idx];if(!s)return;
+  if(s.nav)nav(s.nav);
+  setTimeout(()=>_tourRender(s,idx),s.nav?280:0);
+}
+function _tourRender(s,idx){
+  const total=_TOUR.length;
+  const dots=Array.from({length:total},(_,i)=>`<div style="width:${i===idx?18:5}px;height:5px;border-radius:3px;background:${i===idx?'#39FF14':i<idx?'rgba(57,255,20,.35)':'rgba(255,255,255,.12)'};transition:all .3s"></div>`).join('');
+  if(s.noSpot){
+    _tourSp.style.display='none';
+    Object.assign(_tourTp.style,{left:'50%',top:'50%',transform:'translate(-50%,-50%)',width:'min(300px,88vw)',textAlign:'center',transition:'none'});
+    _tourTp.innerHTML=`<div style="font-size:48px;margin-bottom:12px">${s.emoji||'⚡'}</div>
+      <div style="font-size:15px;font-weight:900;font-family:var(--mono);color:#39FF14;margin-bottom:8px;letter-spacing:.5px">${s.title}</div>
+      <div style="font-size:12px;color:rgba(255,255,255,.6);line-height:1.55;margin-bottom:18px">${s.desc}</div>
+      <div style="display:flex;justify-content:center;gap:4px;margin-bottom:16px">${dots}</div>
+      <button onclick="window._tourAdv()" style="background:linear-gradient(135deg,#39FF14,#00cc40);color:#000;border:none;border-radius:12px;padding:14px 0;font-size:14px;font-weight:900;cursor:pointer;font-family:var(--mono);width:100%;letter-spacing:.5px">${s.cta||'NÄSTA →'}</button>
+      ${!s.last?`<div onclick="window._tourClose()" style="font-size:10px;color:rgba(255,255,255,.25);margin-top:12px;cursor:pointer;font-family:var(--mono)">hoppa över</div>`:''}`;
+  } else {
+    _tourSp.style.display='';
+    const el=document.querySelector(s.sel);if(!el){_tourAdv();return;}
+    if(s.blink)el.classList.add('tour-blink');
+    const r=el.getBoundingClientRect();const pad=10;
+    Object.assign(_tourSp.style,{left:(r.left-pad)+'px',top:(r.top-pad)+'px',width:(r.width+pad*2)+'px',height:(r.height+pad*2)+'px',display:''});
+    const tipW=Math.min(290,window.innerWidth-24);
+    const above=r.top>200;
+    const tipLeft=Math.max(12,Math.min(window.innerWidth-tipW-12,r.left+r.width/2-tipW/2));
+    const tipTop=above?(r.top-pad-12-160):(r.bottom+pad+14);
+    const arCls=above?'down':'up';
+    const arLeft=Math.max(16,Math.min(tipW-30,r.left+r.width/2-tipLeft-7));
+    Object.assign(_tourTp.style,{left:tipLeft+'px',top:tipTop+'px',width:tipW+'px',textAlign:'left',transform:'none',transition:'left .32s cubic-bezier(.34,1.56,.64,1),top .32s cubic-bezier(.34,1.56,.64,1)'});
+    _tourTp.innerHTML=`<div class="tour-arr ${arCls}" style="left:${arLeft}px"></div>
+      <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:8px;margin-bottom:6px">
+        <div style="font-size:13px;font-weight:900;font-family:var(--mono);color:#39FF14">${s.title}</div>
+        <div onclick="window._tourClose()" style="font-size:11px;color:rgba(255,255,255,.25);cursor:pointer;flex-shrink:0;margin-top:1px">✕</div>
+      </div>
+      <div style="font-size:11px;color:rgba(255,255,255,.6);line-height:1.55;margin-bottom:12px">${s.desc}</div>
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:8px">
+        <div style="display:flex;gap:3px">${dots}</div>
+        <button onclick="window._tourAdv()" style="background:rgba(57,255,20,.14);border:1.5px solid rgba(57,255,20,.5);border-radius:10px;padding:8px 18px;font-size:11px;font-weight:900;cursor:pointer;font-family:var(--mono);color:#39FF14;flex-shrink:0">NÄSTA →</button>
+      </div>`;
+  }
+}
+function _tourClose(){
+  _tourBlink(false);
+  localStorage.setItem('kv8_tourDone','1');
+  if(_tourEl)_tourEl.remove();if(_tourSp)_tourSp.remove();if(_tourTp)_tourTp.remove();
+  _tourEl=_tourSp=_tourTp=null;_tourSt=0;
+  nav('home');showT('💚 Välkommen till KARMA!','g');
+}
+
 // Init onboarding background
 setTimeout(()=>{applyWorldTheme('cosmic',$('obBg'));},100);
 
