@@ -6986,7 +6986,7 @@ function _offsetLatLon(lat,lon,distM,bearingDeg){
   }catch(e){return{lat:lat,lon:lon};}
 }
 function fmtD(m){return m<1000?Math.round(m)+'m':+(m/1000).toFixed(1)+'km';}
-function save(){try{const d={n:G.name,p:G.petEmoji,pn:G.petName,l:G.level,c:G.coins,kc:G.kc||0,st:G.streak,x:G.exp,as:G.actionStat,cs:G.commerceStat,ss:G.socialStat,g:JSON.stringify(G.gear),eg:G.equippedGear||'',sek:G.totalSEK,ts:G.trustScore,posts:G.postCount,b:G.bountiesDone,hu:G.hunger,en:G.energy,mo:G.mood,brands:JSON.stringify(G.brands),circles:JSON.stringify(G.circles),sw:JSON.stringify(G.streakWeek),petCfg:JSON.stringify(G.petConfig),pm:G.premium?1:0,pt:G.premiumTier,wld:G.world,bond:JSON.stringify(G.todayBond),bdate:G.bondDate,wp:G.worldPoints,bz:JSON.stringify(G.builtZones),wpc:G.wildPetsCaught,wflash:G.wldFlash,wbattle:G.wldBattle,wmarket:G.wldMarket,wstreak:G.wldStreak,wsocial:G.wldSocial,po:G.packsOpened,col:JSON.stringify(G.collectibles),tp:G.talentPoints,tl:JSON.stringify(G.talents),tlvl:JSON.stringify(G.talentLvls||{}),diary:JSON.stringify(G.diaryEntries.slice(-20)),ls:G.lastSpin,ltt:G.lastTalkTime||0,lwb:G.lastWpBoost||0,castle:JSON.stringify(G.castle||{}),ownedZones:JSON.stringify(G.ownedZones||[]),expeditionVisits:JSON.stringify(G.expeditionVisits||[]),terrLastIncome:JSON.stringify(G.terrLastIncome||{}),dnaMixes:JSON.stringify(G.dnaMixes||[]),lastFortune:G.lastFortune||'',lft:G.lastFlashTime||0,lfd:G.lastFlashDate||'',pdna:JSON.stringify(G.petDNA||{body:'base',element:'none',perk:'none'}),dinv:JSON.stringify(G.dnaInventory||[]),pmem:JSON.stringify(G.petMemory||{}),expd:JSON.stringify(G.expedition||{}),pbd:G.birthDate||0,psk:G.petSick?1:0,pmems:JSON.stringify(G.petMemories||[]),lpc:G.lastPassiveCheck||0,dmp:JSON.stringify(G.dmProgress||{}),dmc:JSON.stringify(G.dmCompleted||{}),dmd:G.dmDate||0,tdup:JSON.stringify(G.tdUpgrades||{}),tdpts:G.tdPoints||0,cos:JSON.stringify(G.cosmetics||{skin:null,bg:'default',accessories:[]})};for(const k in d)localStorage.setItem('kv8_'+k,d[k]);localStorage.setItem('kv8_lastFortune',G.lastFortune||'');}catch(e){}sbQueueSync();}
+function save(){try{const d={n:G.name,p:G.petEmoji,pn:G.petName,l:G.level,c:G.coins,kc:G.kc||0,st:G.streak,x:G.exp,as:G.actionStat,cs:G.commerceStat,ss:G.socialStat,g:JSON.stringify(G.gear),eg:G.equippedGear||'',sek:G.totalSEK,ts:G.trustScore,posts:G.postCount,b:G.bountiesDone,hu:G.hunger,en:G.energy,mo:G.mood,brands:JSON.stringify(G.brands),circles:JSON.stringify(G.circles),sw:JSON.stringify(G.streakWeek),petCfg:JSON.stringify(G.petConfig),pm:G.premium?1:0,pt:G.premiumTier,wld:G.world,bond:JSON.stringify(G.todayBond),bdate:G.bondDate,wp:G.worldPoints,bz:JSON.stringify(G.builtZones),wpc:G.wildPetsCaught,wflash:G.wldFlash,wbattle:G.wldBattle,wmarket:G.wldMarket,wstreak:G.wldStreak,wsocial:G.wldSocial,po:G.packsOpened,col:JSON.stringify(G.collectibles),tp:G.talentPoints,tl:JSON.stringify(G.talents),tlvl:JSON.stringify(G.talentLvls||{}),diary:JSON.stringify(G.diaryEntries.slice(-20)),ls:G.lastSpin,ltt:G.lastTalkTime||0,lwb:G.lastWpBoost||0,castle:JSON.stringify(G.castle||{}),ownedZones:JSON.stringify(G.ownedZones||[]),expeditionVisits:JSON.stringify(G.expeditionVisits||[]),terrLastIncome:JSON.stringify(G.terrLastIncome||{}),dnaMixes:JSON.stringify(G.dnaMixes||[]),lastFortune:G.lastFortune||'',lft:G.lastFlashTime||0,lfd:G.lastFlashDate||'',pdna:JSON.stringify(G.petDNA||{body:'base',element:'none',perk:'none'}),dinv:JSON.stringify(G.dnaInventory||[]),pmem:JSON.stringify(G.petMemory||{}),expd:JSON.stringify(G.expedition||{}),pbd:G.birthDate||0,psk:G.petSick?1:0,pmems:JSON.stringify(G.petMemories||[]),lpc:G.lastPassiveCheck||0,dmp:JSON.stringify(G.dmProgress||{}),dmc:JSON.stringify(G.dmCompleted||{}),dmd:G.dmDate||0,tdup:JSON.stringify(G.tdUpgrades||{}),tdpts:G.tdPoints||0,cos:JSON.stringify(G.cosmetics||{skin:null,bg:'default',accessories:[]}),stdt:G.stepsToday||0};for(const k in d)localStorage.setItem('kv8_'+k,d[k]);localStorage.setItem('kv8_lastFortune',G.lastFortune||'');}catch(e){}sbQueueSync();}
 
 // ── DNA + MOOD SYSTEM ──
 function getPetDNA(){
@@ -13424,27 +13424,45 @@ setTimeout(()=>{applyWorldTheme('cosmic',$('obBg'));},100);
 // ═══════════════════════════════════════════════
 // ── PET LIFE CANVAS — Animated Living Scene ──
 // ═══════════════════════════════════════════════
-let _plc={active:false,raf:null,t:0,particles:[],lastDay:-1};
+// ═══════════════════════════════════════════════════════════
+// ── PET WORLD — Living 3D-parallax scene + step counter ──
+// ═══════════════════════════════════════════════════════════
+let _plc={active:false,raf:null,t:0,particles:[],lastDay:-1,
+  worldX:0,charBob:0,lastStep:0,stepsSession:0,walkPhase:0,isWalking:false,
+  lastAccMag:0};
+
+function _plcOnMotion(e){
+  const acc=e.accelerationIncludingGravity;if(!acc)return;
+  const tot=Math.sqrt((acc.x||0)**2+(acc.y||0)**2+(acc.z||0)**2);
+  const now=Date.now();
+  // Peak detection: magnitude crosses threshold from below
+  if(tot>13.5&&_plc.lastAccMag<=13.5&&now-_plc.lastStep>280){
+    _plc.lastStep=now;_plc.stepsSession++;_plc.worldX+=10;
+    _plc.walkPhase=(_plc.walkPhase+1)%4;_plc.isWalking=true;
+    if(G){G.stepsToday=(G.stepsToday||0)+1;if(G.stepsToday%10===0)gainXP(2,'steps');}
+  }
+  _plc.lastAccMag=tot;
+  // Auto-stop walking after 1.5s of no steps
+  if(now-_plc.lastStep>1500)_plc.isWalking=false;
+}
 
 function startPetLifeCanvas(){
   const canvas=$('petLifeCanvas');if(!canvas)return;
   const hero=$('sec-pet');if(!hero)return;
   const W=hero.offsetWidth||window.innerWidth;
-  const H=hero.offsetHeight||320;
+  const H=hero.offsetHeight||340;
   canvas.width=W;canvas.height=H;
   _plc.W=W;_plc.H=H;_plc.active=true;_plc.t=0;_plc.particles=[];
   if(_plc.raf)cancelAnimationFrame(_plc.raf);
   _plc.raf=requestAnimationFrame(_plcLoop);
-  // Check daily gift
+  // Step counter via DeviceMotion
+  if(typeof DeviceMotionEvent!=='undefined'){
+    window.removeEventListener('devicemotion',_plcOnMotion);
+    window.addEventListener('devicemotion',_plcOnMotion,{passive:true});
+  }
   const today=new Date().toDateString();
-  const lastGift=localStorage.getItem('kv8_lastGift')||'';
-  const giftEl=$('petDailyGift');if(giftEl)giftEl.style.display=lastGift!==today?'block':'none';
-  // Check urgent
-  _plcUpdateUrgent();
-  // Check arena challenger
-  _plcCheckArena();
-  // Apply evolution aura
-  _plcApplyEvolAura();
+  const giftEl=$('petDailyGift');if(giftEl)giftEl.style.display=localStorage.getItem('kv8_lastGift')!==today?'block':'none';
+  _plcUpdateUrgent();_plcCheckArena();_plcApplyEvolAura();
 }
 
 function _plcLoop(){
@@ -13455,94 +13473,207 @@ function _plcLoop(){
 
 function _plcUpdate(){
   _plc.t++;
-  const mood=G.mood||100;const hunger=G.hunger||100;const energy=G.energy||100;
-  // Spawn ambient particles based on pet state
-  if(_plc.t%8===0){
+  const t=_plc.t;
+  // Character idle bob or walk bob
+  if(_plc.isWalking){
+    _plc.charBob=Math.sin(t*.28)*5;
+    // Slow auto-scroll when walking
+    if(t%3===0)_plc.worldX+=1;
+  } else {
+    _plc.charBob=Math.sin(t*.04)*2.5;
+  }
+  const mood=G.mood||100,hunger=G.hunger||100,energy=G.energy||100;
+  // Ambient particles
+  if(t%10===0){
     const happy=mood>70&&hunger>50&&energy>40;
     const sad=mood<35||hunger<25;
     const tired=energy<25;
-    if(happy&&Math.random()<.6){
-      // Sparkles, hearts
-      const em=['✨','💚','⭐','💎'][Math.floor(Math.random()*4)];
-      const cx=(_plc.W||300)*.5+(Math.random()-.5)*120;
-      _plc.particles.push({x:cx,y:(_plc.H||280)*.7,vx:(Math.random()-.5)*1.5,vy:-(0.5+Math.random()*1.5),life:1,em,sz:12+Math.random()*10});
+    if(happy&&Math.random()<.5){
+      const em=['✨','💚','⭐','🌸','💎'][Math.floor(Math.random()*5)];
+      const cx=(_plc.W||320)*.42+(Math.random()-.5)*80;
+      _plc.particles.push({x:cx,y:(_plc.H||320)*.68,vx:(Math.random()-.5)*1.2,vy:-(0.6+Math.random()*1.4),life:1,em,sz:11+Math.random()*9});
     }
-    if(sad&&Math.random()<.4){
-      // Rain drops / tears
-      _plc.particles.push({x:Math.random()*(_plc.W||300),y:0,vx:(Math.random()-.5)*.5,vy:2+Math.random()*2,life:1,rain:true});
-    }
-    if(tired&&Math.random()<.3){
-      // Zzz
-      const cx=(_plc.W||300)*.5+40+Math.random()*30;
-      _plc.particles.push({x:cx,y:(_plc.H||280)*.45,vx:.3,vy:-0.4,life:1,em:'💤',sz:10+Math.random()*6});
-    }
+    if(sad&&Math.random()<.35)_plc.particles.push({x:Math.random()*(_plc.W||320),y:0,vx:(Math.random()-.5)*.4,vy:1.8+Math.random()*1.5,life:1,rain:true});
+    if(tired&&Math.random()<.25){const cx=(_plc.W||320)*.42+35+Math.random()*25;_plc.particles.push({x:cx,y:(_plc.H||320)*.52,vx:.25,vy:-0.35,life:1,em:'💤',sz:9+Math.random()*5});}
   }
-  // Update particles
-  _plc.particles=_plc.particles.filter(p=>{
-    p.x+=p.vx;p.y+=p.vy;p.life-=p.rain?.04:.025;
-    return p.life>0&&p.y<(_plc.H||280)+20;
-  });
-  if(_plc.particles.length>40)_plc.particles.splice(0,_plc.particles.length-40);
+  _plc.particles=_plc.particles.filter(p=>{p.x+=p.vx;p.y+=p.vy;p.life-=p.rain?.035:.02;return p.life>0&&p.y<(_plc.H||320)+20;});
+  if(_plc.particles.length>50)_plc.particles.splice(0,_plc.particles.length-50);
 }
 
 function _plcDraw(){
   const canvas=$('petLifeCanvas');if(!canvas)return;
   const ctx=canvas.getContext('2d');if(!ctx)return;
   const W=_plc.W||canvas.width,H=_plc.H||canvas.height,t=_plc.t;
+  const wx=_plc.worldX;
   const hour=new Date().getHours();
-  // Sky gradient based on time of day
-  const skyPalettes=[
-    {s:'#030a1a',e:'#071528'},  // 0-5: deep night
-    {s:'#1a0a28',e:'#2d1a08'},  // 6-7: dawn purple->orange
-    {s:'#020e04',e:'#030d0a'},  // 8-16: day green-dark
-    {s:'#1a0808',e:'#0a030d'},  // 17-20: sunset
-    {s:'#030a1a',e:'#071528'},  // 21-23: night
-  ];
-  const pi=hour<6?0:hour<8?1:hour<17?2:hour<21?3:4;
-  const pal=skyPalettes[pi];
-  const sky=ctx.createLinearGradient(0,0,0,H);
-  sky.addColorStop(0,pal.s);sky.addColorStop(1,pal.e);
-  ctx.fillStyle=sky;ctx.fillRect(0,0,W,H);
-  // Stars at night
-  if(pi===0||pi===4){
-    for(let i=0;i<18;i++){
-      const sx=(i*127.4)%W,sy=(i*73.1)%(H*.5);
-      const a=.2+.15*Math.sin(t*.02+i*1.1);
-      ctx.save();ctx.globalAlpha=a;ctx.fillStyle='#fff';ctx.beginPath();ctx.arc(sx,sy,i%4===0?1.5:.6,0,Math.PI*2);ctx.fill();ctx.restore();
+  const isNight=hour<6||hour>21,isDawn=hour>=6&&hour<9,isDusk=hour>=18&&hour<=21;
+
+  // ── SKY ──
+  let skyTop,skyBot,skyMid;
+  if(isNight){skyTop='#020818';skyBot='#060f1a';skyMid='#03101a';}
+  else if(isDawn){skyTop='#1a0520';skyBot='#c85a10';skyMid='#8b2a05';}
+  else if(isDusk){skyTop='#0d0118';skyBot='#c83c05';skyMid='#7a1a02';}
+  else{skyTop='#061a0a';skyBot='#0a2212';skyMid='#083010';}
+  const skyGrd=ctx.createLinearGradient(0,0,0,H*.62);
+  skyGrd.addColorStop(0,skyTop);skyGrd.addColorStop(.5,skyMid);skyGrd.addColorStop(1,skyBot);
+  ctx.fillStyle=skyGrd;ctx.fillRect(0,0,W,H);
+
+  // ── STARS (night) ──
+  if(isNight){
+    for(let i=0;i<24;i++){
+      const sx=((i*137.5+wx*.04)%W+W)%W,sy=(i*71.3)%(H*.45);
+      const a=.1+.2*Math.sin(t*.022+i*1.3);
+      ctx.save();ctx.globalAlpha=a;ctx.fillStyle='#e8eeff';
+      ctx.beginPath();ctx.arc(sx,sy,i%6===0?1.8:i%3===0?1.1:.55,0,Math.PI*2);ctx.fill();
+      ctx.restore();
     }
+    // Moon
+    ctx.save();ctx.globalAlpha=.5;
+    ctx.fillStyle='#dde8ff';ctx.beginPath();ctx.arc(W*.82,H*.12,14,0,Math.PI*2);ctx.fill();
+    ctx.fillStyle='#060f1a';ctx.beginPath();ctx.arc(W*.82-4,H*.12,11,0,Math.PI*2);ctx.fill();
+    ctx.restore();
   }
-  // Castle silhouette in background (based on built buildings)
-  const castle=G.castle||{};const bld=castle.buildings||{};
-  ctx.save();ctx.globalAlpha=.18;ctx.fillStyle=pi===2?'#0a1f0a':'#0a0f1a';
-  // Base castle tower
-  const cx=W*.5,by=H*.55;
-  ctx.fillRect(cx-20,by-60,40,70); // main tower
-  ctx.fillRect(cx-28,by-40,10,50); // left wing
-  ctx.fillRect(cx+18,by-40,10,50); // right wing
-  // Battlements
-  for(let b=0;b<5;b++)ctx.fillRect(cx-24+b*12,by-68,8,10);
-  // Farm = trees
-  if(bld.farm){ctx.fillStyle='#0c2a0c';for(let ti=0;ti<3;ti++){const tx=W*.12+ti*W*.06;ctx.beginPath();ctx.arc(tx,H*.58,12+ti*4,0,Math.PI*2);ctx.fill();}}
-  // Market = extra building
-  if(bld.market){ctx.fillStyle=pi===2?'#0a2218':'#0a1428';ctx.fillRect(W*.75,H*.52,30,H*.1);ctx.fillRect(W*.78,H*.42,24,H*.1);}
+
+  // ── SUN/DAWN GLOW ──
+  if(isDawn||isDusk){
+    ctx.save();ctx.globalAlpha=.18;
+    const sunY=H*.55,sunX=isDawn?W*.15:W*.85;
+    const sunGrd=ctx.createRadialGradient(sunX,sunY,0,sunX,sunY,120);
+    sunGrd.addColorStop(0,'#FFE600');sunGrd.addColorStop(.4,'#FF6600');sunGrd.addColorStop(1,'transparent');
+    ctx.fillStyle=sunGrd;ctx.fillRect(0,0,W,H);ctx.restore();
+  }
+
+  // ── LAYER 1 — Far castle silhouette (parallax 0.06) ──
+  const castle=G&&G.castle||{},bld=(castle.buildings)||{};
+  const fcx=W*.55+(-(wx*.06)%(W*2));
+  ctx.save();ctx.globalAlpha=isNight?.28:.2;
+  ctx.fillStyle=isNight?'#07152a':'#081a08';
+  // Main tower
+  ctx.fillRect(fcx-22,H*.28-52,44,62);
+  ctx.fillRect(fcx-32,H*.28-34,12,46);
+  ctx.fillRect(fcx+20,H*.28-34,12,46);
+  for(let b=0;b<7;b++)ctx.fillRect(fcx-28+b*9,H*.28-60,7,10);
+  ctx.beginPath();ctx.moveTo(fcx,H*.28-72);ctx.lineTo(fcx-9,H*.28-52);ctx.lineTo(fcx+9,H*.28-52);ctx.closePath();ctx.fill();
+  if(bld.market){ctx.fillRect(fcx+50,H*.32-18,22,28);ctx.fillRect(fcx+53,H*.32-26,16,10);}
+  if(isNight){ctx.save();ctx.globalAlpha=.5;ctx.fillStyle='rgba(255,200,60,.7)';for(let w=0;w<4;w++)ctx.fillRect(fcx-12+w*9,H*.28-22,5,7);ctx.restore();}
   ctx.restore();
-  // Ground gradient
-  const grdY=H*.72;
-  const grd=ctx.createLinearGradient(0,grdY,0,H);
-  grd.addColorStop(0,'rgba(10,30,10,.6)');grd.addColorStop(1,'rgba(0,5,0,.9)');
-  ctx.fillStyle=grd;ctx.fillRect(0,grdY,W,H-grdY);
-  // Floor neon line
-  ctx.save();ctx.strokeStyle='rgba(57,255,20,.2)';ctx.lineWidth=1;ctx.shadowColor='#39FF14';ctx.shadowBlur=8;
-  ctx.beginPath();ctx.moveTo(0,grdY);ctx.lineTo(W,grdY);ctx.stroke();ctx.restore();
-  // Draw particles
+
+  // ── LAYER 2 — Mid hills (parallax 0.14) ──
+  ctx.save();ctx.globalAlpha=isNight?.15:.22;
+  ctx.fillStyle=isNight?'#050e05':'#061408';
+  ctx.beginPath();
+  const hillShift=(-(wx*.14))%(W*1.5);
+  for(let h=0;h<3;h++){
+    const hx=hillShift+h*(W*.7);
+    ctx.moveTo(hx,H*.56);ctx.quadraticCurveTo(hx+W*.18,H*.32,hx+W*.36,H*.56);
+  }
+  ctx.fill();ctx.restore();
+
+  // ── LAYER 3 — Mid trees (parallax 0.28) ──
+  const treeShift=(-(wx*.28))%(W*2.5);
+  const treeRows=[
+    [40,0,26,0],[110,0,22,1],[190,0,30,0],[270,0,20,2],[350,0,28,1],[430,0,24,0],[520,0,32,2],[600,0,22,1],
+  ];
+  treeRows.forEach(([bx,,h,v],i)=>{
+    const tx=((treeShift+bx*(W/480))%(W*2.5)+W*2.5)%(W*2.5)-50;
+    if(tx<-50||tx>W+50)return;
+    const gy=H*.56;
+    ctx.save();ctx.globalAlpha=isNight?.2:.3;
+    ctx.fillStyle=isNight?'#1a1a08':'#2a1408';
+    ctx.fillRect(tx-2.5,gy-h*.4,5,h*.45);
+    ctx.fillStyle=isNight?'#050f05':'#071208';
+    if(v===0){// Pine
+      for(let l=0;l<3;l++){ctx.beginPath();ctx.moveTo(tx,gy-h-l*7);ctx.lineTo(tx-(11+l*5),gy-h+(l+1)*13);ctx.lineTo(tx+(11+l*5),gy-h+(l+1)*13);ctx.closePath();ctx.fill();}
+    }else if(v===1){// Round
+      ctx.beginPath();ctx.arc(tx,gy-h,13+i%2*4,0,Math.PI*2);ctx.fill();
+    }else{// Wide
+      ctx.beginPath();ctx.ellipse(tx,gy-h*.7,18,13,0,0,Math.PI*2);ctx.fill();
+    }
+    ctx.restore();
+  });
+
+  // ── GROUND PLANE (perspective) ──
+  const groundY=H*.56;
+  const grdGrd=ctx.createLinearGradient(0,groundY,0,H);
+  if(isNight){grdGrd.addColorStop(0,'#071207');grdGrd.addColorStop(1,'#020602');}
+  else{grdGrd.addColorStop(0,'#0a2a08');grdGrd.addColorStop(1,'#040f03');}
+  ctx.fillStyle=grdGrd;ctx.fillRect(0,groundY,W,H-groundY);
+
+  // Path (perspective trapezoid receding to horizon)
+  const pathNW=W*.22,pathFW=W*.06;
+  ctx.save();
+  const pathGrd=ctx.createLinearGradient(0,groundY,0,H);
+  pathGrd.addColorStop(0,'rgba(90,65,28,.5)');pathGrd.addColorStop(1,'rgba(60,40,15,.3)');
+  ctx.fillStyle=pathGrd;
+  ctx.beginPath();
+  ctx.moveTo(W/2-pathFW/2,groundY+1);ctx.lineTo(W/2+pathFW/2,groundY+1);
+  ctx.lineTo(W/2+pathNW/2,H);ctx.lineTo(W/2-pathNW/2,H);
+  ctx.closePath();ctx.fill();
+  // Center dash
+  ctx.strokeStyle='rgba(120,90,35,.25)';ctx.lineWidth=1.5;ctx.setLineDash([6,10]);
+  ctx.beginPath();ctx.moveTo(W/2,groundY+2);ctx.lineTo(W/2,H);ctx.stroke();
+  ctx.setLineDash([]);ctx.restore();
+
+  // ── LAYER 4 — Near grass tufts / flowers (parallax 0.75) ──
+  const fgShift=(-(wx*.75))%(W*1.2);
+  const fgItems=[[30,0,'#39FF14'],[80,1,'#FF007F'],[150,0,'#FFE600'],[220,1,'#00D9FF'],[310,0,'#39FF14'],[380,1,'#BF5FFF'],[460,0,'#FF9F0A'],[540,1,'#39FF14']];
+  fgItems.forEach(([bx,v,col],i)=>{
+    const fx=((fgShift+bx*(W/500))%(W*1.2)+W*1.2)%(W*1.2)-20;
+    if(fx<-20||fx>W+20)return;
+    const fy=groundY+6+i%4*5;
+    ctx.save();ctx.globalAlpha=.55;
+    if(v===0){ctx.fillStyle=col;ctx.beginPath();ctx.arc(fx,fy,2.5,0,Math.PI*2);ctx.fill();ctx.strokeStyle='rgba(57,255,20,.35)';ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(fx,fy);ctx.lineTo(fx-1,fy+7);ctx.stroke();}
+    else{ctx.strokeStyle='rgba(57,255,20,.3)';ctx.lineWidth=1.2;for(let g=0;g<3;g++){ctx.beginPath();ctx.moveTo(fx+g*3-3,fy+5);ctx.quadraticCurveTo(fx+g*3-2,fy,fx+g*3,fy-5);ctx.stroke();}}
+    ctx.restore();
+  });
+
+  // ── NEON GROUND LINE ──
+  ctx.save();ctx.strokeStyle='rgba(57,255,20,.22)';ctx.lineWidth=1.5;
+  ctx.shadowColor='#39FF14';ctx.shadowBlur=8;
+  ctx.beginPath();ctx.moveTo(0,groundY);ctx.lineTo(W,groundY);ctx.stroke();ctx.restore();
+
+  // ── CHARACTER — Pet emoji with walk/idle animation ──
+  const charX=W*.42;
+  const mood=G&&G.mood||100;
+  const petEm=(G&&G.petEmoji)||'🐉';
+  const walkBob=_plc.isWalking?Math.sin(t*.3)*6:_plc.charBob;
+  const walkLean=_plc.isWalking?Math.sin(t*.3)*.08:0;
+  // Shadow
+  ctx.save();ctx.globalAlpha=.22;ctx.fillStyle='#000';
+  ctx.beginPath();ctx.ellipse(charX,groundY+3,20,5.5,0,0,Math.PI*2);ctx.fill();ctx.restore();
+  // Glow when happy/walking
+  const glowCol=_plc.isWalking?'rgba(57,255,20,.6)':mood>70?'rgba(57,255,20,.35)':'rgba(0,0,0,.3)';
+  ctx.save();
+  ctx.shadowColor=glowCol;ctx.shadowBlur=_plc.isWalking?18:mood>70?10:4;
+  ctx.font='40px serif';ctx.textAlign='center';
+  ctx.save();ctx.translate(charX,groundY-14+walkBob);ctx.rotate(walkLean);
+  ctx.fillText(petEm,0,0);
+  ctx.restore();ctx.restore();
+  // Walk dust particles (emit when walking)
+  if(_plc.isWalking&&t%4===0){
+    _plc.particles.push({x:charX-15,y:groundY-2,vx:-(0.5+Math.random()),vy:-(Math.random()*.8),life:.8,em:Math.random()>.5?'·':'˙',sz:8+Math.random()*4});
+  }
+
+  // ── STEP HUD (top-left) ──
+  if(_plc.stepsSession>0||_plc.isWalking){
+    ctx.save();
+    ctx.globalAlpha=.85;
+    const hStr='👟 '+(_plc.stepsSession+(G&&G.stepsToday||0))+' STEG';
+    ctx.font='bold 9.5px monospace';
+    const tw=ctx.measureText(hStr).width;
+    ctx.fillStyle='rgba(0,0,0,.5)';
+    ctx.beginPath();if(ctx.roundRect)ctx.roundRect(6,5,tw+16,18,6);else ctx.rect(6,5,tw+16,18);ctx.fill();
+    ctx.fillStyle=_plc.isWalking?'#39FF14':'#aaa';
+    if(_plc.isWalking){ctx.shadowColor='#39FF14';ctx.shadowBlur=6;}
+    ctx.fillText(hStr,14,17);
+    ctx.restore();
+  }
+
+  // ── PARTICLES ──
   _plc.particles.forEach(p=>{
     ctx.save();ctx.globalAlpha=p.life;
-    if(p.rain){
-      ctx.strokeStyle='rgba(100,160,255,.6)';ctx.lineWidth=1;
-      ctx.beginPath();ctx.moveTo(p.x,p.y);ctx.lineTo(p.x-1,p.y+6);ctx.stroke();
-    } else if(p.em){
-      ctx.font=(p.sz||14)+'px serif';ctx.textAlign='center';ctx.fillText(p.em,p.x,p.y);
-    }
+    if(p.rain){ctx.strokeStyle='rgba(100,160,255,.55)';ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(p.x,p.y);ctx.lineTo(p.x-1,p.y+5);ctx.stroke();}
+    else if(p.em){ctx.font=(p.sz||13)+'px serif';ctx.textAlign='center';ctx.fillText(p.em,p.x,p.y);}
     ctx.restore();
   });
 }
@@ -16156,6 +16287,10 @@ function _loadFromLocalStorage(){
     G.totalSEK=parseInt(localStorage.getItem('kv8_sek')||'0');G.trustScore=parseInt(localStorage.getItem('kv8_ts')||'42');
     G.postCount=parseInt(localStorage.getItem('kv8_posts')||'0');G.bountiesDone=parseInt(localStorage.getItem('kv8_b')||'0');
     G.hunger=parseInt(localStorage.getItem('kv8_hu')||'80');G.energy=parseInt(localStorage.getItem('kv8_en')||'100');G.mood=parseInt(localStorage.getItem('kv8_mo')||'90');
+    G.stepsToday=parseInt(localStorage.getItem('kv8_stdt')||'0');
+    // Reset steps if new day
+    const _stepsDate=localStorage.getItem('kv8_stepsDate')||'';
+    if(_stepsDate!==new Date().toDateString()){G.stepsToday=0;localStorage.setItem('kv8_stepsDate',new Date().toDateString());};
     try{G.brands=JSON.parse(localStorage.getItem('kv8_brands')||'[]');}catch(e){G.brands=[];}
     try{G.circles=JSON.parse(localStorage.getItem('kv8_circles')||'[]');}catch(e){G.circles=[];}
     try{G.streakWeek=JSON.parse(localStorage.getItem('kv8_sw')||'[false,false,false,false,false,false,false]');}catch(e){G.streakWeek=[false,false,false,false,false,false,false];}
