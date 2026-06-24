@@ -2404,6 +2404,31 @@ button:active{opacity:.85;}
 /* ── PET HERO ── */
 .pet-hero{background:linear-gradient(180deg,#020c02 0%,#050810 50%,#000 100%)!important;border-bottom:2px solid rgba(57,255,20,.35)!important;padding-bottom:12px!important;box-shadow:0 4px 40px rgba(57,255,20,.06)!important;}
 .pet-hero::after{display:none!important;}
+/* ── PET LIFE CANVAS ── */
+#petLifeCanvas{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:0;}
+.pet-hero{position:relative;overflow:hidden;}
+.pet-hero-content{position:relative;z-index:2;}
+.pet-status-urgent{position:absolute;top:10px;left:50%;transform:translateX(-50%);z-index:10;background:rgba(255,45,85,.9);border:1.5px solid #FF2D55;border-radius:20px;padding:5px 16px;font-size:10px;font-weight:900;font-family:var(--mono);color:#fff;letter-spacing:1px;animation:urgentBlink .5s ease-in-out infinite;white-space:nowrap;backdrop-filter:blur(4px);}
+@keyframes urgentBlink{0%,100%{opacity:1;}50%{opacity:.6;}}
+.pet-daily-gift{position:absolute;right:14px;top:14px;z-index:10;font-size:32px;cursor:pointer;animation:giftBounce 1.2s ease-in-out infinite;filter:drop-shadow(0 0 12px rgba(255,230,0,.8));-webkit-tap-highlight-color:transparent;}
+@keyframes giftBounce{0%,100%{transform:translateY(0) rotate(-5deg);}50%{transform:translateY(-8px) rotate(5deg);}}
+.pet-evolve-ring{position:absolute;inset:-20px;border-radius:50%;pointer-events:none;z-index:0;}
+/* Care button juice */
+.chb{position:relative;overflow:hidden;transition:transform .1s,box-shadow .1s!important;}
+.chb:active{transform:scale(.88) !important;}
+.chb::after{content:'';position:absolute;inset:0;border-radius:inherit;background:rgba(255,255,255,.15);opacity:0;transition:opacity .1s;}
+.chb:active::after{opacity:1;}
+.chb-ripple{position:absolute;border-radius:50%;background:rgba(255,255,255,.35);transform:scale(0);animation:ripple .5s ease-out;pointer-events:none;}
+@keyframes ripple{to{transform:scale(4);opacity:0;}}
+/* Evolution aura levels */
+.pet-aura.aura-1{background:radial-gradient(circle,rgba(57,255,20,.15) 0%,transparent 70%)!important;animation:auraBreath 3s ease-in-out infinite!important;}
+.pet-aura.aura-2{background:radial-gradient(circle,rgba(255,230,0,.2) 0%,rgba(57,255,20,.1) 50%,transparent 70%)!important;animation:auraBreath 2s ease-in-out infinite!important;}
+.pet-aura.aura-3{background:radial-gradient(circle,rgba(191,95,255,.25) 0%,rgba(255,230,0,.15) 40%,rgba(57,255,20,.1) 70%,transparent 90%)!important;animation:legendAura 1.5s ease-in-out infinite!important;}
+@keyframes legendAura{0%,100%{transform:scale(1);opacity:.7;}50%{transform:scale(1.15);opacity:1;}}
+/* Arena challenger */
+.arena-challenger{position:absolute;right:10px;bottom:10px;z-index:8;cursor:pointer;text-align:center;animation:chalPulse 2s ease-in-out infinite;-webkit-tap-highlight-color:transparent;}
+@keyframes chalPulse{0%,100%{transform:scale(1);}50%{transform:scale(1.08);}}
+.arena-speech{position:absolute;right:100%;top:0;background:rgba(0,0,0,.85);border:1.5px solid rgba(255,45,85,.6);border-radius:10px 10px 0 10px;padding:5px 8px;font-size:9px;font-family:var(--mono);color:#FF2D55;white-space:nowrap;backdrop-filter:blur(4px);}
 
 /* ── CARE BUTTONS — glassmorphism ── */
 .chb{border-radius:20px!important;border:none!important;padding:14px 4px!important;min-height:72px!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.06)!important;transition:transform .12s,opacity .1s!important;}
@@ -2764,9 +2789,10 @@ div[style*="LIVE"]{border-radius:16px!important;background:rgba(57,255,20,.03)!i
     <!-- HOME -->
     <div class="view active" id="view-home">
       <!-- PET HERO — TAMAGOTCHI FOCUS -->
-      <div class="pet-hero" id="sec-pet" style="padding:0;overflow:hidden">
+      <div class="pet-hero" id="sec-pet" style="padding:0;overflow:hidden;min-height:380px">
+        <canvas id="petLifeCanvas"></canvas>
         <div class="pet-hero-bg"></div>
-        <div class="pet-room-layer" id="petRoomLayer" style="opacity:.4;pointer-events:none">
+        <div class="pet-room-layer" id="petRoomLayer" style="opacity:.25;pointer-events:none">
           <div class="prl-sky" id="prlSky"></div>
           <div class="prl-floor"><div class="prl-floor-glow"></div><div class="prl-floor-shimmer"></div></div>
           <div class="prl-weather" id="petWeather"></div>
@@ -2850,6 +2876,16 @@ div[style*="LIVE"]{border-radius:16px!important;background:rgba(57,255,20,.03)!i
           <span id="ringH"></span><span id="ringHv"></span><span id="ringE"></span><span id="ringEv"></span><span id="ringM"></span><span id="ringMv"></span><span id="ringK"></span><span id="ringKv"></span>
           <span id="needHunger"></span><span id="needHungerV"></span><span id="needEnergy"></span><span id="needEnergyV"></span><span id="needMood"></span><span id="needMoodV"></span>
           <span id="tamaFace"></span><span id="tamaState"></span><div class="pet-scanlines"></div>
+        </div>
+        <!-- Daily gift (shown by JS if available) -->
+        <div id="petDailyGift" class="pet-daily-gift" style="display:none" onclick="claimDailyGift()" title="Klicka för att hämta din dagliga gåva!">🎁</div>
+        <!-- Urgent status (shown by JS if pet needs care) -->
+        <div id="petUrgentAlert" class="pet-status-urgent" style="display:none">⚠️ DIN PET BEHÖVER DIG!</div>
+        <!-- Arena daily challenger -->
+        <div id="arenaChallengerWrap" class="arena-challenger" style="display:none" onclick="startArenaChallenge()">
+          <div class="arena-speech" id="arenaSpeech">Kom och slåss!</div>
+          <div id="arenaChallPet" style="font-size:36px">🐺</div>
+          <div style="font-size:7px;font-weight:900;color:#FF2D55;font-family:var(--mono);margin-top:2px">UTMANING!</div>
         </div>
       </div>
       <!-- EVOLUTION TREE -->
@@ -7636,6 +7672,8 @@ function updateHUD(){
   const wd=$('streakWeekDots');
   if(wd){const days=['M','T','O','T','F','L','S'];wd.innerHTML=days.map((d,i)=>`<div style="width:20px;height:20px;border-radius:5px;background:${G.streakWeek[i]?'var(--g)':'var(--c3)'};display:flex;align-items:center;justify-content:center;font-size:8px;font-weight:800;color:${G.streakWeek[i]?'var(--bg)':'var(--t3)'}">${d}</div>`).join('');}
   save();
+  _plcUpdateUrgent&&_plcUpdateUrgent();
+  _plcApplyEvolAura&&_plcApplyEvolAura();
 }
 const EVOL_STAGES=[
   {id:'egg',   em:'🥚', nm:'Ägg',      lv:0,  col:'#aaa'},
@@ -12417,7 +12455,7 @@ function nav(name){
   const btn=document.querySelector('.nb[data-v="'+name+'"]');if(btn)btn.classList.add('on');
   vibe(8);
   ({
-    home:()=>{updateDailyGreeting();updatePetView();renderSocialPower();renderFriendCarePackages();renderCareNotifs();renderStreakMilestones();renderFriendLB();updatePetStatusRings();updatePetWeather();if(!_speechTimer)schedulePetSpeech();startKarmaPulse();renderJackpot();renderDailyMissions();const st=$('spinTeaserSub');if(st)st.textContent=G.lastSpin===new Date().toDateString()?'✅ Spinnat idag — kom tillbaka imorgon':'🎰 Gratis spin tillgängligt nu!';},
+    home:()=>{updateDailyGreeting();updatePetView();renderSocialPower();renderFriendCarePackages();renderCareNotifs();renderStreakMilestones();renderFriendLB();updatePetStatusRings();updatePetWeather();if(!_speechTimer)schedulePetSpeech();startKarmaPulse();renderJackpot();renderDailyMissions();const st=$('spinTeaserSub');if(st)st.textContent=G.lastSpin===new Date().toDateString()?'✅ Spinnat idag — kom tillbaka imorgon':'🎰 Gratis spin tillgängligt nu!';startPetLifeCanvas();setTimeout(_plcUpdateUrgent,100);setTimeout(_plcApplyEvolAura,150);setTimeout(_plcCheckArena,200);},
     flash:()=>{renderFlashFeed();renderStoriesBar();startFlashTimeReward();renderDailyChallenges();},
     circles:renderCircles,
     social:()=>switchSocial('activity',document.querySelector('#socialTabs .tab')),
@@ -13382,6 +13420,268 @@ function _tourClose(){
 
 // Init onboarding background
 setTimeout(()=>{applyWorldTheme('cosmic',$('obBg'));},100);
+
+// ═══════════════════════════════════════════════
+// ── PET LIFE CANVAS — Animated Living Scene ──
+// ═══════════════════════════════════════════════
+let _plc={active:false,raf:null,t:0,particles:[],lastDay:-1};
+
+function startPetLifeCanvas(){
+  const canvas=$('petLifeCanvas');if(!canvas)return;
+  const hero=$('sec-pet');if(!hero)return;
+  const W=hero.offsetWidth||window.innerWidth;
+  const H=hero.offsetHeight||320;
+  canvas.width=W;canvas.height=H;
+  _plc.W=W;_plc.H=H;_plc.active=true;_plc.t=0;_plc.particles=[];
+  if(_plc.raf)cancelAnimationFrame(_plc.raf);
+  _plc.raf=requestAnimationFrame(_plcLoop);
+  // Check daily gift
+  const today=new Date().toDateString();
+  const lastGift=localStorage.getItem('kv8_lastGift')||'';
+  const giftEl=$('petDailyGift');if(giftEl)giftEl.style.display=lastGift!==today?'block':'none';
+  // Check urgent
+  _plcUpdateUrgent();
+  // Check arena challenger
+  _plcCheckArena();
+  // Apply evolution aura
+  _plcApplyEvolAura();
+}
+
+function _plcLoop(){
+  if(!_plc.active){_plc.raf=null;return;}
+  _plcUpdate();_plcDraw();
+  _plc.raf=requestAnimationFrame(_plcLoop);
+}
+
+function _plcUpdate(){
+  _plc.t++;
+  const mood=G.mood||100;const hunger=G.hunger||100;const energy=G.energy||100;
+  // Spawn ambient particles based on pet state
+  if(_plc.t%8===0){
+    const happy=mood>70&&hunger>50&&energy>40;
+    const sad=mood<35||hunger<25;
+    const tired=energy<25;
+    if(happy&&Math.random()<.6){
+      // Sparkles, hearts
+      const em=['✨','💚','⭐','💎'][Math.floor(Math.random()*4)];
+      const cx=(_plc.W||300)*.5+(Math.random()-.5)*120;
+      _plc.particles.push({x:cx,y:(_plc.H||280)*.7,vx:(Math.random()-.5)*1.5,vy:-(0.5+Math.random()*1.5),life:1,em,sz:12+Math.random()*10});
+    }
+    if(sad&&Math.random()<.4){
+      // Rain drops / tears
+      _plc.particles.push({x:Math.random()*(_plc.W||300),y:0,vx:(Math.random()-.5)*.5,vy:2+Math.random()*2,life:1,rain:true});
+    }
+    if(tired&&Math.random()<.3){
+      // Zzz
+      const cx=(_plc.W||300)*.5+40+Math.random()*30;
+      _plc.particles.push({x:cx,y:(_plc.H||280)*.45,vx:.3,vy:-0.4,life:1,em:'💤',sz:10+Math.random()*6});
+    }
+  }
+  // Update particles
+  _plc.particles=_plc.particles.filter(p=>{
+    p.x+=p.vx;p.y+=p.vy;p.life-=p.rain?.04:.025;
+    return p.life>0&&p.y<(_plc.H||280)+20;
+  });
+  if(_plc.particles.length>40)_plc.particles.splice(0,_plc.particles.length-40);
+}
+
+function _plcDraw(){
+  const canvas=$('petLifeCanvas');if(!canvas)return;
+  const ctx=canvas.getContext('2d');if(!ctx)return;
+  const W=_plc.W||canvas.width,H=_plc.H||canvas.height,t=_plc.t;
+  const hour=new Date().getHours();
+  // Sky gradient based on time of day
+  const skyPalettes=[
+    {s:'#030a1a',e:'#071528'},  // 0-5: deep night
+    {s:'#1a0a28',e:'#2d1a08'},  // 6-7: dawn purple->orange
+    {s:'#020e04',e:'#030d0a'},  // 8-16: day green-dark
+    {s:'#1a0808',e:'#0a030d'},  // 17-20: sunset
+    {s:'#030a1a',e:'#071528'},  // 21-23: night
+  ];
+  const pi=hour<6?0:hour<8?1:hour<17?2:hour<21?3:4;
+  const pal=skyPalettes[pi];
+  const sky=ctx.createLinearGradient(0,0,0,H);
+  sky.addColorStop(0,pal.s);sky.addColorStop(1,pal.e);
+  ctx.fillStyle=sky;ctx.fillRect(0,0,W,H);
+  // Stars at night
+  if(pi===0||pi===4){
+    for(let i=0;i<18;i++){
+      const sx=(i*127.4)%W,sy=(i*73.1)%(H*.5);
+      const a=.2+.15*Math.sin(t*.02+i*1.1);
+      ctx.save();ctx.globalAlpha=a;ctx.fillStyle='#fff';ctx.beginPath();ctx.arc(sx,sy,i%4===0?1.5:.6,0,Math.PI*2);ctx.fill();ctx.restore();
+    }
+  }
+  // Castle silhouette in background (based on built buildings)
+  const castle=G.castle||{};const bld=castle.buildings||{};
+  ctx.save();ctx.globalAlpha=.18;ctx.fillStyle=pi===2?'#0a1f0a':'#0a0f1a';
+  // Base castle tower
+  const cx=W*.5,by=H*.55;
+  ctx.fillRect(cx-20,by-60,40,70); // main tower
+  ctx.fillRect(cx-28,by-40,10,50); // left wing
+  ctx.fillRect(cx+18,by-40,10,50); // right wing
+  // Battlements
+  for(let b=0;b<5;b++)ctx.fillRect(cx-24+b*12,by-68,8,10);
+  // Farm = trees
+  if(bld.farm){ctx.fillStyle='#0c2a0c';for(let ti=0;ti<3;ti++){const tx=W*.12+ti*W*.06;ctx.beginPath();ctx.arc(tx,H*.58,12+ti*4,0,Math.PI*2);ctx.fill();}}
+  // Market = extra building
+  if(bld.market){ctx.fillStyle=pi===2?'#0a2218':'#0a1428';ctx.fillRect(W*.75,H*.52,30,H*.1);ctx.fillRect(W*.78,H*.42,24,H*.1);}
+  ctx.restore();
+  // Ground gradient
+  const grdY=H*.72;
+  const grd=ctx.createLinearGradient(0,grdY,0,H);
+  grd.addColorStop(0,'rgba(10,30,10,.6)');grd.addColorStop(1,'rgba(0,5,0,.9)');
+  ctx.fillStyle=grd;ctx.fillRect(0,grdY,W,H-grdY);
+  // Floor neon line
+  ctx.save();ctx.strokeStyle='rgba(57,255,20,.2)';ctx.lineWidth=1;ctx.shadowColor='#39FF14';ctx.shadowBlur=8;
+  ctx.beginPath();ctx.moveTo(0,grdY);ctx.lineTo(W,grdY);ctx.stroke();ctx.restore();
+  // Draw particles
+  _plc.particles.forEach(p=>{
+    ctx.save();ctx.globalAlpha=p.life;
+    if(p.rain){
+      ctx.strokeStyle='rgba(100,160,255,.6)';ctx.lineWidth=1;
+      ctx.beginPath();ctx.moveTo(p.x,p.y);ctx.lineTo(p.x-1,p.y+6);ctx.stroke();
+    } else if(p.em){
+      ctx.font=(p.sz||14)+'px serif';ctx.textAlign='center';ctx.fillText(p.em,p.x,p.y);
+    }
+    ctx.restore();
+  });
+}
+
+function _plcUpdateUrgent(){
+  const el=$('petUrgentAlert');if(!el)return;
+  const hu=G.hunger||100,en=G.energy||100,mo=G.mood||100;
+  if(hu<25){el.style.display='block';el.textContent='🍖 DIN PET ÄR HUNGRIG — MATA NU!';}
+  else if(en<20){el.style.display='block';el.textContent='😴 DIN PET ÄR UTMATTAD — SOVA!';}
+  else if(mo<20){el.style.display='block';el.textContent='😢 DIN PET ÄR LEDSEN — LEK!';}
+  else el.style.display='none';
+}
+
+function _plcApplyEvolAura(){
+  const aura=$('petAura');if(!aura)return;
+  const lv=G.level||1;
+  aura.className='pet-aura'+(lv>=20?' aura-3':lv>=10?' aura-2':lv>=5?' aura-1':'');
+  // Level badge glow enhancement
+  const lvEl=$('petLvlN');if(lvEl){
+    lvEl.style.color=lv>=20?'#FFE600':lv>=10?'#BF5FFF':lv>=5?'#00D9FF':'';
+    lvEl.style.textShadow=lv>=20?'0 0 12px #FFE600':lv>=10?'0 0 10px #BF5FFF':lv>=5?'0 0 8px #00D9FF':'';
+  }
+  // Evolution badge text
+  const evolEl=$('petEvol');if(evolEl){
+    if(lv>=20)evolEl.textContent='🌈 LEGENDÄR';
+    else if(lv>=10)evolEl.textContent='👑 EPISK';
+    else if(lv>=5)evolEl.textContent='✨ GROWING';
+    else evolEl.textContent='NEXT EVOL: LV5';
+    evolEl.style.color=lv>=20?'#FFE600':lv>=10?'#BF5FFF':lv>=5?'#00D9FF':'var(--y)';
+  }
+}
+
+function _plcCheckArena(){
+  const today=new Date().toDateString();
+  const lastArena=localStorage.getItem('kv8_lastArena')||'';
+  const wrap=$('arenaChallengerWrap');if(!wrap)return;
+  if(lastArena===today){wrap.style.display='none';return;}
+  // Show challenger
+  const pets=['🐺','🦁','🐯','🦊','🦅','🐙','🦄'];
+  const taunts=['Kom igen! 💪','Du kan inte vinna!','Jag är snabbast!','Ring ring... 🥊','GG inga chanser!'];
+  const cp=$('arenaChallPet');if(cp)cp.textContent=pets[Math.floor(Math.random()*pets.length)];
+  const cs=$('arenaSpeech');if(cs)cs.textContent=taunts[Math.floor(Math.random()*taunts.length)];
+  wrap.style.display='block';
+}
+
+function claimDailyGift(){
+  const today=new Date().toDateString();
+  localStorage.setItem('kv8_lastGift',today);
+  const giftEl=$('petDailyGift');if(giftEl)giftEl.style.display='none';
+  const coins=20+Math.floor(Math.random()*30);
+  const xp=15+Math.floor(Math.random()*20);
+  gainCoins(coins);gainXP(xp,'action');
+  // Big celebration effect
+  showT('🎁 DAGLIG GÅVA! +'+coins+'💎 +'+xp+'XP','g');
+  vibe&&vibe([30,15,60,15,90,15,120]);
+  spawnParticles&&spawnParticles(window.innerWidth/2,window.innerHeight*.35,'stars');
+  save();updateHUD();
+}
+
+// ═══════════════════════
+// ── DAILY ARENA BATTLE ──
+// ═══════════════════════
+function startArenaChallenge(){
+  const today=new Date().toDateString();
+  // Build battle stats
+  const myPower=Math.round((G.mood||100)*.3+(G.hunger||100)*.3+(G.energy||100)*.2+(G.level||1)*5);
+  const enemyPower=Math.round(30+Math.random()*40+(G.level||1)*3);
+  const myPet=G.petEmoji||'🐉';
+  const enemyPets=['🐺','🦁','🐯','🦊','🦅','🐙','🦄'];
+  const ep=enemyPets[Math.floor(Math.random()*enemyPets.length)];
+  // Create battle modal
+  const m=document.createElement('div');
+  m.id='arenaBattleModal';
+  m.style.cssText='position:fixed;inset:0;z-index:9995;background:rgba(0,0,0,.95);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0;padding:24px;backdrop-filter:blur(10px);';
+  let myHp=100,enemyHp=100,round=0,fighting=false;
+  const render=()=>{
+    m.innerHTML=`
+      <div style="font-size:10px;font-weight:900;font-family:var(--mono);color:var(--pk);letter-spacing:3px;margin-bottom:8px">⚔️ ARENA UTMANING</div>
+      <div style="display:flex;align-items:center;gap:20px;margin-bottom:16px">
+        <div style="text-align:center">
+          <div style="font-size:52px;filter:drop-shadow(0 0 16px rgba(57,255,20,.7));animation:petBob 1s ease-in-out infinite">${myPet}</div>
+          <div style="font-size:10px;font-weight:900;color:var(--g);font-family:var(--mono)">${G.petName||'DIN PET'}</div>
+          <div style="width:100px;height:8px;background:rgba(255,255,255,.1);border-radius:4px;overflow:hidden;margin-top:4px"><div style="height:100%;width:${myHp}%;background:linear-gradient(90deg,#39FF14,#00cc40);transition:width .3s;box-shadow:0 0 8px rgba(57,255,20,.6)"></div></div>
+          <div style="font-size:9px;color:var(--g);font-family:var(--mono)">${myHp}HP</div>
+        </div>
+        <div style="font-size:28px;font-weight:900;color:var(--pk);font-family:var(--mono)">VS</div>
+        <div style="text-align:center">
+          <div style="font-size:52px;filter:drop-shadow(0 0 16px rgba(255,45,85,.7));animation:petBob 1.1s ease-in-out infinite .2s">${ep}</div>
+          <div style="font-size:10px;font-weight:900;color:var(--pk);font-family:var(--mono)">UTMANARE</div>
+          <div style="width:100px;height:8px;background:rgba(255,255,255,.1);border-radius:4px;overflow:hidden;margin-top:4px"><div style="height:100%;width:${enemyHp}%;background:linear-gradient(90deg,#FF2D55,#ff5500);transition:width .3s;box-shadow:0 0 8px rgba(255,45,85,.6)"></div></div>
+          <div style="font-size:9px;color:var(--pk);font-family:var(--mono)">${enemyHp}HP</div>
+        </div>
+      </div>
+      <div id="arenaLog" style="font-size:10px;color:rgba(255,255,255,.5);font-family:var(--mono);text-align:center;height:30px;margin-bottom:16px">Tryck ATTACK för att slåss!</div>
+      <button id="arenaAtkBtn" onclick="window._arenaAttack()" style="background:linear-gradient(135deg,#FF2D55,#FF8C00);border:none;border-radius:14px;padding:16px 40px;font-size:16px;font-weight:900;cursor:pointer;font-family:var(--mono);color:#fff;letter-spacing:1px;box-shadow:0 0 24px rgba(255,45,85,.5),0 4px 0 rgba(0,0,0,.5);text-transform:uppercase">⚔️ ATTACK!</button>
+      <button onclick="document.getElementById('arenaBattleModal').remove();$('arenaChallengerWrap').style.display='none';" style="margin-top:12px;background:transparent;border:none;color:rgba(255,255,255,.25);font-size:11px;cursor:pointer;font-family:var(--mono)">flykt</button>`;
+  };
+  render();
+  document.body.appendChild(m);
+  window._arenaAttack=function(){
+    if(fighting)return;fighting=true;
+    const btn=$('arenaAtkBtn');if(btn)btn.style.opacity='.5';
+    // Player attacks
+    const myAtk=Math.round((myPower*.4)*(0.7+Math.random()*.6));
+    enemyHp=Math.max(0,enemyHp-myAtk);
+    const log=$('arenaLog');
+    if(log)log.textContent=(G.petName||'Din pet')+' attackerar för '+myAtk+' skada! 💥';
+    render();
+    if(enemyHp<=0){
+      // WIN
+      const coins=30+Math.floor(Math.random()*50);
+      const xp=25+Math.floor(G.level||1)*3;
+      gainCoins(coins);gainXP(xp,'action');
+      localStorage.setItem('kv8_lastArena',today);
+      const wrap=$('arenaChallengerWrap');if(wrap)wrap.style.display='none';
+      const log2=$('arenaLog');if(log2){log2.textContent='🏆 SEGER! +'+coins+'💎 +'+xp+'XP';log2.style.color='#39FF14';}
+      const btn2=$('arenaAtkBtn');if(btn2){btn2.textContent='🏆 HÄFTIG!';btn2.onclick=()=>m.remove();btn2.style.background='linear-gradient(135deg,#39FF14,#00cc40)';btn2.style.color='#000';btn2.style.opacity='1';}
+      vibe&&vibe([30,15,60,15,90]);spawnParticles&&spawnParticles(window.innerWidth/2,window.innerHeight*.4,'stars');
+      showT('🏆 Arena seger! +'+coins+'💎','g');save();updateHUD();fighting=false;return;
+    }
+    // Enemy counter-attacks
+    setTimeout(()=>{
+      const enAtk=Math.round((enemyPower*.4)*(0.6+Math.random()*.7));
+      myHp=Math.max(0,myHp-enAtk);
+      const log3=$('arenaLog');if(log3)log3.textContent='Utmanaren slår tillbaka för '+enAtk+'! 💢';
+      render();
+      if(myHp<=0){
+        // LOSE
+        localStorage.setItem('kv8_lastArena',today);
+        const wrap=$('arenaChallengerWrap');if(wrap)wrap.style.display='none';
+        const log4=$('arenaLog');if(log4){log4.textContent='💀 Besegrad! Kom tillbaka imorgon!';log4.style.color='#FF2D55';}
+        const btn3=$('arenaAtkBtn');if(btn3){btn3.textContent='💀 NÄSTA GÅNG';btn3.onclick=()=>m.remove();btn3.style.background='rgba(255,45,85,.2)';btn3.style.opacity='1';}
+        vibe&&vibe([60,20,80]);fighting=false;return;
+      }
+      const btn4=$('arenaAtkBtn');if(btn4){btn4.style.opacity='1';}
+      fighting=false;
+    },800);
+  };
+}
 
 // ── PET ROOM ──
 const ROOM_ITEMS=[
@@ -19106,6 +19406,14 @@ const _CARE_FX={
 };
 
 function _careEffect(el,type){
+  // Ripple effect
+  if(el){
+    const ripple=document.createElement('div');
+    ripple.className='chb-ripple';
+    ripple.style.cssText='left:50%;top:50%;width:100%;padding-bottom:100%;margin-left:-50%;margin-top:-50%;';
+    el.appendChild(ripple);
+    setTimeout(()=>ripple.remove(),500);
+  }
   const fx=_CARE_FX[type];if(!fx)return;
   const er=el?el.getBoundingClientRect():{left:window.innerWidth/2-30,top:window.innerHeight/2,width:60,height:60};
   const petEl=$('petHeroEmoji');
