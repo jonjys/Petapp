@@ -3960,6 +3960,16 @@ div[style*="LIVE"]{border-radius:16px!important;background:rgba(57,255,20,.03)!i
             <div style="font-size:8px;color:rgba(255,255,255,.35)">+75 XP craft</div>
           </div>
         </div>
+        <!-- KARMA CATCH -->
+        <div onclick="openKarmaCatch()" ontouchstart="this.style.transform='scale(.94)'" ontouchend="this.style.transform=''" style="border-radius:16px;cursor:pointer;-webkit-tap-highlight-color:transparent;background:linear-gradient(160deg,#16060f 0%,#0c040a 100%);border:1.5px solid rgba(255,0,127,.45);overflow:hidden;box-shadow:0 0 16px rgba(255,0,127,.12);transition:transform .08s;position:relative">
+          <div style="height:2px;background:linear-gradient(90deg,transparent,#FF007F,transparent)"></div>
+          <div style="padding:14px 10px;display:flex;flex-direction:column;align-items:center;gap:6px;text-align:center">
+            <div style="font-size:40px;line-height:1;filter:drop-shadow(0 0 14px rgba(255,0,127,.8))">💗</div>
+            <div style="font-size:11px;font-weight:900;color:#FF007F;font-family:var(--mono);letter-spacing:.5px">KARMA CATCH</div>
+            <div style="font-size:7px;background:rgba(255,0,127,.12);border:1px solid rgba(255,0,127,.3);border-radius:20px;padding:2px 8px;color:#FF007F;font-family:var(--mono)">NEW ✨</div>
+            <div style="font-size:8px;color:rgba(255,255,255,.35)" id="kcatchBestTag">Best: 0</div>
+          </div>
+        </div>
         <!-- DEEP CATCH (Fiskespelet) — spans full width -->
         <div onclick="openFishingGame()" ontouchstart="this.style.transform='scale(.97)'" ontouchend="this.style.transform=''" style="border-radius:16px;cursor:pointer;-webkit-tap-highlight-color:transparent;background:linear-gradient(135deg,#030f1a 0%,#020810 100%);border:1.5px solid rgba(0,200,255,.5);padding:12px 16px;display:flex;align-items:center;gap:12px;box-shadow:0 0 20px rgba(0,200,255,.12);transition:transform .08s;position:relative;overflow:hidden">
           <div style="position:absolute;inset:0;background:radial-gradient(ellipse at 90% 50%,rgba(0,200,255,.1) 0%,transparent 55%);pointer-events:none"></div>
@@ -6720,12 +6730,29 @@ function tdDraw(){
   vgh.addColorStop(0,'rgba(0,0,0,.3)');vgh.addColorStop(.08,'rgba(0,0,0,0)');vgh.addColorStop(.92,'rgba(0,0,0,0)');vgh.addColorStop(1,'rgba(0,0,0,.3)');
   ctx.fillStyle=vgh;ctx.fillRect(0,0,W,H);
 
-  // Spawn zone (start of path)
+  // Spawn portal (start of path) — swirling dimensional rift
   {const [sc2,sr2]=TD_PATH[0];const sx=_tdCX(sc2),sy=_tdCY(sr2);
-  ctx.save();const pulse2=0.4+Math.sin(t*0.06)*0.2;
-  ctx.shadowColor='#FF2D55';ctx.shadowBlur=20*pulse2;
-  ctx.strokeStyle='rgba(255,45,85,'+(.5+pulse2*.3).toFixed(2)+')';ctx.lineWidth=2;
-  ctx.beginPath();ctx.arc(sx,sy,_tdCell*.46,0,Math.PI*2);ctx.stroke();ctx.restore();}
+  const R=_tdCell*.46;
+  ctx.save();
+  // dark void core
+  const voidG=ctx.createRadialGradient(sx,sy,0,sx,sy,R);
+  voidG.addColorStop(0,'rgba(20,0,10,.95)');voidG.addColorStop(.6,'rgba(80,0,30,.5)');voidG.addColorStop(1,'rgba(255,45,85,0)');
+  ctx.fillStyle=voidG;ctx.beginPath();ctx.arc(sx,sy,R,0,Math.PI*2);ctx.fill();
+  // swirling spiral arms
+  ctx.shadowColor='#FF2D55';ctx.shadowBlur=16;
+  for(let arm=0;arm<3;arm++){
+    ctx.strokeStyle='rgba(255,'+(45+arm*40)+',85,'+(.5-arm*.12).toFixed(2)+')';ctx.lineWidth=2-arm*.4;
+    ctx.beginPath();
+    for(let s=0;s<=22;s++){const ang=t*0.05+arm*Math.PI*2/3+s*.34;const rr=R*(s/22);ctx.lineTo(sx+Math.cos(ang)*rr,sy+Math.sin(ang)*rr);}
+    ctx.stroke();
+  }
+  // pulsing rim
+  const pulse2=0.4+Math.sin(t*0.08)*0.25;
+  ctx.shadowBlur=24*pulse2;ctx.strokeStyle='rgba(255,80,120,'+(.6+pulse2*.3).toFixed(2)+')';ctx.lineWidth=2.2;
+  ctx.beginPath();ctx.arc(sx,sy,R*(.9+pulse2*.12),0,Math.PI*2);ctx.stroke();
+  // emerging spark particles
+  for(let p=0;p<5;p++){const pa=t*0.06+p*1.26;const pr=R*((t*.6+p*40)%R)/R;ctx.globalAlpha=1-pr/R;ctx.fillStyle='#FFD0DD';ctx.beginPath();ctx.arc(sx+Math.cos(pa)*pr,sy+Math.sin(pa)*pr,1.4,0,Math.PI*2);ctx.fill();}
+  ctx.restore();}
 
   // Grid lines — ultra faint
   ctx.strokeStyle='rgba(255,255,255,.03)';ctx.lineWidth=.4;
@@ -10861,6 +10888,190 @@ if(!window._prParticles)window._prParticles=[];
 function _prSpawnTrail(x,y,col){
   window._prParticles.push({x,y,vx:(Math.random()-.5)*2,vy:-1-Math.random()*2,life:1,col});
 }
+
+// ════════════════════════════════════════════════════════
+// ── KARMA CATCH — unique catch game tied to KARMA theme ──
+//    Move your pet to absorb falling GOOD karma (hearts,
+//    stars, clovers) and dodge BAD karma (skulls, storms).
+//    Builds a karma-aura combo. 3 lives. Neon everywhere.
+// ════════════════════════════════════════════════════════
+let _kcat={active:false,raf:null,t:0,x:0,W:0,H:0,items:[],particles:[],pops:[],
+  score:0,combo:0,lives:3,aura:0,next:0,best:0,started:false};
+const _KCAT_GOOD=[{em:'💚',pts:10},{em:'✨',pts:15},{em:'🍀',pts:20},{em:'💎',pts:25},{em:'⭐',pts:12}];
+const _KCAT_BAD=[{em:'💀'},{em:'☁️'},{em:'💔'},{em:'⚡'}];
+function openKarmaCatch(){
+  let g=$('karmaCatchGame');
+  if(!g){
+    g=document.createElement('div');g.id='karmaCatchGame';
+    g.style.cssText='position:fixed;inset:0;z-index:9994;background:#06030a;display:flex;flex-direction:column;';
+    g.innerHTML=`
+      <div style="display:flex;align-items:center;gap:8px;padding:10px 12px;background:#0a0410;border-bottom:3px solid #FF007F">
+        <button onclick="closeKarmaCatch()" style="background:#111;border:2px solid rgba(255,255,255,.2);border-radius:4px;color:#fff;font-size:18px;cursor:pointer;padding:4px 10px;font-family:var(--mono)">←</button>
+        <div style="flex:1;text-align:center;font-size:13px;font-weight:900;font-family:var(--mono);color:#FF007F;letter-spacing:2px">💗 KARMA CATCH</div>
+        <div style="background:#0d0d0d;border:2px solid var(--y);border-radius:4px;padding:3px 10px">
+          <span style="font-size:13px;font-weight:900;color:var(--y);font-family:var(--mono)" id="kcatScore">0</span>
+        </div>
+      </div>
+      <div style="position:relative;flex:1;overflow:hidden;min-height:0">
+        <canvas id="kcatCanvas" style="display:block;width:100%;height:100%;touch-action:none"></canvas>
+        <div id="kcatHud" style="position:absolute;top:10px;left:12px;display:flex;gap:8px;align-items:center">
+          <span id="kcatLives" style="font-size:16px">💗💗💗</span>
+        </div>
+        <div id="kcatStart" style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(6,3,10,.95)">
+          <div style="text-align:center;padding:24px">
+            <div style="font-size:74px;animation:petBob 1s ease-in-out infinite;margin-bottom:8px" id="kcatStartPet">🐉</div>
+            <div style="font-size:24px;font-weight:900;color:#FF007F;font-family:var(--mono);letter-spacing:2px;text-shadow:0 0 20px rgba(255,0,127,.5)">KARMA CATCH</div>
+            <div style="font-size:10px;color:rgba(255,255,255,.45);font-family:var(--mono);letter-spacing:1px;margin:8px 0 4px">FÅNGA 💚✨🍀💎 · UNDVIK 💀☁️💔⚡</div>
+            <div style="font-size:9px;color:rgba(255,255,255,.3);font-family:var(--mono);margin-bottom:16px">DRA FÖR ATT FLYTTA DIN PET</div>
+            <div style="display:inline-block;background:#0d0d0d;border:3px solid var(--y);border-radius:6px;box-shadow:4px 4px 0px var(--y);padding:8px 18px;margin-bottom:18px">
+              <span style="font-size:10px;color:rgba(255,255,255,.5);font-family:var(--mono)">BÄST: </span>
+              <span id="kcatBestDisp" style="color:var(--y);font-weight:900;font-family:var(--mono);font-size:16px">0</span>
+            </div>
+            <div style="font-size:12px;color:#FF007F;font-family:var(--mono);letter-spacing:2px;animation:bitePulse .6s ease-in-out infinite">▶ TRYCK FÖR ATT STARTA</div>
+          </div>
+        </div>
+        <div id="kcatOver" style="position:absolute;inset:0;display:none;align-items:center;justify-content:center;background:rgba(6,3,10,.96)">
+          <div style="text-align:center;padding:24px">
+            <div style="font-size:48px;margin-bottom:6px">💗</div>
+            <div style="font-size:20px;font-weight:900;color:#FF007F;font-family:var(--mono);letter-spacing:2px">KARMA SAMLAD!</div>
+            <div style="font-size:38px;font-weight:900;color:var(--y);font-family:var(--mono);margin:8px 0" id="kcatFinal">0</div>
+            <div style="font-size:11px;color:var(--g);font-family:var(--mono);margin-bottom:18px" id="kcatReward"></div>
+            <button onclick="_kcatStart()" style="background:linear-gradient(135deg,#FF007F,#BF5FFF);border:none;border-radius:14px;padding:14px 36px;font-size:15px;font-weight:900;cursor:pointer;font-family:var(--mono);color:#fff;letter-spacing:1px;box-shadow:0 0 24px rgba(255,0,127,.5)">↻ IGEN</button>
+          </div>
+        </div>
+      </div>`;
+    document.body.appendChild(g);
+    const cv=$('kcatCanvas');
+    const onMove=e=>{if(!_kcat.active)return;const r=cv.getBoundingClientRect();const cx=(e.touches?e.touches[0].clientX:e.clientX)-r.left;_kcat.x=Math.max(26,Math.min(_kcat.W-26,cx*(_kcat.W/r.width)));};
+    cv.addEventListener('pointermove',onMove);
+    cv.addEventListener('touchmove',e=>{e.preventDefault();onMove(e);},{passive:false});
+    cv.addEventListener('pointerdown',e=>{if(!_kcat.started){_kcatStart();}else onMove(e);});
+  }
+  g.style.display='flex';
+  _kcat.best=parseInt(localStorage.getItem('kv8_kcatchBest')||'0');
+  const bd=$('kcatBestDisp');if(bd)bd.textContent=_kcat.best;
+  const sp=$('kcatStartPet');if(sp)sp.textContent=(G&&G.petEmoji)||'🐉';
+  $('kcatStart').style.display='flex';$('kcatOver').style.display='none';
+  _kcat.started=false;_kcat.active=false;
+  if(_showPetCorner)try{_showPetCorner('play');}catch(e){}
+}
+function closeKarmaCatch(){
+  _kcat.active=false;if(_kcat.raf){cancelAnimationFrame(_kcat.raf);_kcat.raf=null;}
+  const g=$('karmaCatchGame');if(g)g.style.display='none';
+}
+function _kcatStart(){
+  const cv=$('kcatCanvas');if(!cv)return;
+  const parent=cv.parentElement;
+  cv.width=Math.max(200,parent.offsetWidth);cv.height=Math.max(300,parent.offsetHeight);
+  _kcat.W=cv.width;_kcat.H=cv.height;_kcat.x=cv.width/2;
+  _kcat.items=[];_kcat.particles=[];_kcat.pops=[];
+  _kcat.score=0;_kcat.combo=0;_kcat.lives=3;_kcat.aura=0;_kcat.next=20;
+  _kcat.active=true;_kcat.started=true;_kcat.t=0;
+  $('kcatStart').style.display='none';$('kcatOver').style.display='none';
+  $('kcatLives').textContent='💗💗💗';
+  if(_kcat.raf)cancelAnimationFrame(_kcat.raf);
+  _kcatLoop();
+}
+function _kcatLoop(){
+  if(!_kcat.active){_kcat.raf=null;return;}
+  _kcatUpdate();_kcatDraw();
+  _kcat.raf=requestAnimationFrame(_kcatLoop);
+}
+function _kcatUpdate(){
+  _kcat.t++;const W=_kcat.W,H=_kcat.H;
+  const diff=1+Math.min(2.5,_kcat.score/600);
+  // spawn
+  _kcat.next-=diff;
+  if(_kcat.next<=0){
+    const bad=Math.random()<0.28+Math.min(.12,_kcat.score/4000);
+    if(bad){const b=_KCAT_BAD[Math.floor(Math.random()*_KCAT_BAD.length)];_kcat.items.push({x:30+Math.random()*(W-60),y:-20,vy:2.4+Math.random()*1.6*diff,em:b.em,bad:true});}
+    else{const gd=_KCAT_GOOD[Math.floor(Math.random()*_KCAT_GOOD.length)];_kcat.items.push({x:30+Math.random()*(W-60),y:-20,vy:2+Math.random()*1.4*diff,em:gd.em,pts:gd.pts});}
+    _kcat.next=42-Math.min(22,_kcat.score/120)+Math.random()*20;
+  }
+  const petY=H-46,catchR=34;
+  for(let i=_kcat.items.length-1;i>=0;i--){
+    const it=_kcat.items[i];it.y+=it.vy;
+    // catch
+    if(it.y>petY-catchR&&it.y<petY+catchR&&Math.abs(it.x-_kcat.x)<catchR){
+      if(it.bad){
+        _kcat.lives--;_kcat.combo=0;_kcat.aura=Math.max(0,_kcat.aura-30);
+        $('kcatLives').textContent='💗'.repeat(Math.max(0,_kcat.lives))+'🖤'.repeat(Math.max(0,3-_kcat.lives));
+        vibe&&vibe([50,30,80]);
+        for(let p=0;p<10;p++)_kcat.particles.push({x:it.x,y:it.y,vx:(Math.random()-.5)*5,vy:(Math.random()-.5)*5,life:18,col:'#FF2D55'});
+        _kcat.pops.push({x:it.x,y:it.y-10,txt:'-1 ❤',col:'#FF2D55',life:1});
+        _kcat.items.splice(i,1);
+        if(_kcat.lives<=0){_kcatOver();return;}
+      }else{
+        _kcat.combo++;const mult=1+Math.floor(_kcat.combo/4);
+        const gain=it.pts*mult;_kcat.score+=gain;_kcat.aura=Math.min(100,_kcat.aura+8);
+        const sc=$('kcatScore');if(sc)sc.textContent=_kcat.score;
+        vibe&&vibe(6);
+        const col=mult>=3?'#FF007F':mult>=2?'#FFE600':'#39FF14';
+        for(let p=0;p<8;p++)_kcat.particles.push({x:it.x,y:it.y,vx:(Math.random()-.5)*4,vy:-(1+Math.random()*3),life:16,col});
+        _kcat.pops.push({x:it.x,y:it.y-10,txt:'+'+gain+(mult>1?' ×'+mult:''),col,life:1});
+        _kcat.items.splice(i,1);
+      }
+      continue;
+    }
+    // missed good karma resets combo
+    if(it.y>H+20){if(!it.bad)_kcat.combo=0;_kcat.items.splice(i,1);}
+  }
+  _kcat.particles=_kcat.particles.filter(p=>{p.x+=p.vx;p.y+=p.vy;p.vy+=.15;p.life--;return p.life>0;});
+  _kcat.pops=_kcat.pops.filter(pu=>{pu.y-=1.1;pu.life-=.025;return pu.life>0;});
+}
+function _kcatDraw(){
+  const cv=$('kcatCanvas');if(!cv)return;const ctx=cv.getContext('2d');if(!ctx)return;
+  const W=_kcat.W,H=_kcat.H,t=_kcat.t;
+  // bg
+  const bg=ctx.createLinearGradient(0,0,0,H);
+  bg.addColorStop(0,'#12031a');bg.addColorStop(.5,'#0a0414');bg.addColorStop(1,'#050208');
+  ctx.fillStyle=bg;ctx.fillRect(0,0,W,H);
+  // aura nebula tied to combo/aura meter
+  if(_kcat.aura>2){
+    const ag=ctx.createRadialGradient(W/2,H,10,W/2,H,H*.9);
+    ag.addColorStop(0,`rgba(255,0,127,${(_kcat.aura/100*.25).toFixed(3)})`);ag.addColorStop(1,'transparent');
+    ctx.fillStyle=ag;ctx.fillRect(0,0,W,H);
+  }
+  // drifting stars
+  for(let i=0;i<26;i++){const sx=(i*89.7)%W,sy=((i*53.3+t*.5)%H);ctx.save();ctx.globalAlpha=.12+.1*Math.sin(t*.03+i);ctx.fillStyle='#fff';ctx.beginPath();ctx.arc(sx,sy,i%5===0?1.4:.7,0,Math.PI*2);ctx.fill();ctx.restore();}
+  // falling items
+  _kcat.items.forEach(it=>{
+    ctx.save();ctx.shadowColor=it.bad?'#FF2D55':'#39FF14';ctx.shadowBlur=14;
+    ctx.font='26px serif';ctx.textAlign='center';ctx.textBaseline='middle';
+    ctx.fillText(it.em,it.x,it.y);ctx.restore();
+  });
+  // particles
+  _kcat.particles.forEach(p=>{ctx.save();ctx.globalAlpha=Math.min(1,p.life/16);ctx.fillStyle=p.col;ctx.shadowColor=p.col;ctx.shadowBlur=8;ctx.beginPath();ctx.arc(p.x,p.y,3,0,Math.PI*2);ctx.fill();ctx.restore();});
+  // pet (player) with aura ring
+  const petY=H-46;
+  ctx.save();ctx.globalAlpha=.25+.2*Math.sin(t*.06);ctx.strokeStyle='#FF007F';ctx.lineWidth=2.5;ctx.shadowColor='#FF007F';ctx.shadowBlur=16;
+  ctx.beginPath();ctx.arc(_kcat.x,petY,30+_kcat.aura*.12,0,Math.PI*2);ctx.stroke();ctx.restore();
+  ctx.save();ctx.shadowColor='#FF007F';ctx.shadowBlur=18;ctx.font='40px serif';ctx.textAlign='center';ctx.textBaseline='middle';
+  ctx.fillText((G&&G.petEmoji)||'🐉',_kcat.x,petY);ctx.restore();
+  // pops
+  _kcat.pops.forEach(pu=>{ctx.save();ctx.globalAlpha=Math.max(0,pu.life);ctx.font='bold 14px monospace';ctx.textAlign='center';ctx.fillStyle=pu.col;ctx.shadowColor=pu.col;ctx.shadowBlur=10;ctx.fillText(pu.txt,pu.x,pu.y);ctx.restore();});
+  // combo banner
+  if(_kcat.combo>=4){const m=1+Math.floor(_kcat.combo/4);const cc=m>=3?'#FF007F':m>=2?'#FFE600':'#39FF14';
+    ctx.save();ctx.globalAlpha=.3+.2*Math.sin(t*.012);ctx.font='bold 22px monospace';ctx.textAlign='center';ctx.fillStyle=cc;ctx.shadowColor=cc;ctx.shadowBlur=16;
+    ctx.fillText('×'+m+' KARMA FLOW',W/2,H*.16);ctx.restore();}
+  // aura meter bar
+  ctx.save();ctx.fillStyle='rgba(255,255,255,.08)';ctx.fillRect(12,H-14,W-24,5);
+  const ag2=ctx.createLinearGradient(12,0,W-12,0);ag2.addColorStop(0,'#FF007F');ag2.addColorStop(1,'#BF5FFF');
+  ctx.fillStyle=ag2;ctx.fillRect(12,H-14,(W-24)*(_kcat.aura/100),5);ctx.restore();
+  ctx.textAlign='left';ctx.textBaseline='alphabetic';
+}
+function _kcatOver(){
+  _kcat.active=false;if(_kcat.raf){cancelAnimationFrame(_kcat.raf);_kcat.raf=null;}
+  if(_kcat.score>_kcat.best){_kcat.best=_kcat.score;localStorage.setItem('kv8_kcatchBest',_kcat.score);}
+  const bt=$('kcatchBestTag');if(bt)bt.textContent='Best: '+_kcat.best;
+  const coins=Math.floor(_kcat.score/20),xp=Math.floor(_kcat.score/12);
+  if(coins>0)gainCoins(coins);if(xp>0)gainXP(xp,'action');
+  advanceDailyChallenge&&advanceDailyChallenge('play',1);
+  const f=$('kcatFinal');if(f)f.textContent=_kcat.score;
+  const r=$('kcatReward');if(r)r.textContent='+'+coins+' 💎  ·  +'+xp+' XP';
+  const o=$('kcatOver');if(o)o.style.display='flex';
+  vibe&&vibe([30,15,60,15,90]);save&&save();
+}
 function _prDrawObstacleGD(ctx,ob,t,glowCol){
   const cx=ob.x+ob.w/2,cy=ob.y+ob.h/2;
   const pulse=0.85+0.15*Math.sin(t*.008+ob.x*.03);
@@ -11002,8 +11213,27 @@ function _prDraw(canvas,ctx){
   }
   // Neon aura
   ctx.save();ctx.shadowColor=th.acc2;ctx.shadowBlur=28;ctx.fillStyle=th.acc2+'18';ctx.beginPath();ctx.arc(petX2,petY2-8,18,0,Math.PI*2);ctx.fill();ctx.restore();
+  // Running legs animation (when grounded) — two cycling feet + dust
+  const grounded=_pr.grounded;
+  const runCycle=t*.025;
+  if(grounded){
+    ctx.save();ctx.shadowColor=th.acc;ctx.shadowBlur=8;ctx.fillStyle=th.acc;
+    for(let f=0;f<2;f++){
+      const ph=runCycle+f*Math.PI;
+      const fx=petX2+Math.cos(ph)*7-2;
+      const fy=petY2+4-Math.max(0,Math.sin(ph))*5;
+      ctx.globalAlpha=.85;ctx.beginPath();ctx.ellipse(fx,fy,3.5,2.2,0,0,Math.PI*2);ctx.fill();
+    }
+    ctx.restore();
+    // running dust puffs
+    if(t%5===0)_pr.particles.push({x:petX2-10,y:petY2+4,vx:-(1+Math.random()),vy:-(Math.random()*1.2),life:12,col:th.acc2});
+  }
+  // run-bob + lean
+  const runBob=grounded?-Math.abs(Math.sin(runCycle))*4:0;
+  const runLean=grounded?Math.sin(runCycle)*.06:(_pr.vy<0?-.12:.12);
   // Pet emoji via canvas (works on Android; iOS uses prEmojiOv overlay)
-  ctx.save();const pSz=Math.round(28+Math.sin(t*.008)*2);ctx.font=pSz+'px serif';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText(G.petEmoji||'🐉',petX2,petY2-8);ctx.restore();
+  ctx.save();const pSz=Math.round(28+Math.sin(t*.008)*2);ctx.font=pSz+'px serif';ctx.textAlign='center';ctx.textBaseline='middle';
+  ctx.translate(petX2,petY2-8+runBob);ctx.rotate(runLean);ctx.fillText(G.petEmoji||'🐉',0,0);ctx.restore();
   // Foreground parallax crystals (closest layer, drawn over pet for depth)
   {const gY=_pr.groundY||H*.82;
    (_pr.fg||[]).forEach(f=>{
@@ -12951,6 +13181,7 @@ function renderPlayView(){
   const pbt=$('pbBestTag');if(pbt)pbt.textContent='Best: '+(localStorage.getItem('kv8_pbBest')||0)+'pts';
   // Runner best score + level world name
   const prbt=$('prBestTag');if(prbt)prbt.textContent='Best: '+(localStorage.getItem('kv8_prBest')||0)+'m';
+  const kcbt=$('kcatchBestTag');if(kcbt)kcbt.textContent='Best: '+(localStorage.getItem('kv8_kcatchBest')||0);
   const _prLvNum=parseInt(localStorage.getItem('kv8_prLv')||'1');
   const _prLvNames=['NATT CITY','DEEP SPACE','CRIMSON RUN','NEON JUNGLE','EMBER WORLD'];
   const prLv=$('prLvBadge');if(prLv)prLv.textContent='LV'+_prLvNum+' · '+(_prLvNames[Math.min(_prLvNum-1,_prLvNames.length-1)]);
@@ -12978,6 +13209,7 @@ const _ARENA_GAMES=[
   {id:'fish',nm:'FISKESPELET',ico:'🎣',col:'0,200,255',fn:openFishingGame,desc:'Fånga 3 fiskar → +200 KARMA'},
   {id:'run',nm:'PET RUNNER',ico:'🐉',col:'191,95,255',fn:openPetRunner,desc:'Springa 500m → +150 KARMA'},
   {id:'dna',nm:'DNA BREAKER',ico:'🧬',col:'57,255,20',fn:openPetBlocks,desc:'Rensa 5 rader → 2× Coins'},
+  {id:'kcat',nm:'KARMA CATCH',ico:'💗',col:'255,0,127',fn:openKarmaCatch,desc:'Fånga 50 karma → +150 KARMA'},
   {id:'mix',nm:'DNA MIXER',ico:'🧪',col:'255,159,10',fn:openDNAMixer,desc:'Mixa 2 DNA → +100 XP'},
   {id:'spin',nm:'DAGLIGT SPIN',ico:'🎰',col:'255,215,0',fn:openGacha,desc:'Snurra hjulet → jackpot chans'},
   {id:'fort',nm:'SPÅDOM',ico:'🔮',col:'191,95,255',fn:openFortuneOracle,desc:'Läs din fortune → +50 KARMA'},
