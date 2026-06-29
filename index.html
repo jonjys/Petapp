@@ -3931,13 +3931,13 @@ div[style*="LIVE"]{border-radius:16px!important;background:rgba(57,255,20,.03)!i
           </div>
         </div>
         <!-- DNA BREAKER -->
-        <div onclick="openPetBlocks()" ontouchstart="this.style.transform='scale(.94)'" ontouchend="this.style.transform=''" style="border-radius:16px;cursor:pointer;-webkit-tap-highlight-color:transparent;background:linear-gradient(160deg,#0b180b 0%,#060e06 100%);border:1.5px solid rgba(57,255,20,.45);overflow:hidden;box-shadow:0 0 16px rgba(57,255,20,.1);transition:transform .08s;position:relative">
-          <div style="height:2px;background:linear-gradient(90deg,transparent,#39FF14,transparent)"></div>
+        <div onclick="openKarmaTower()" ontouchstart="this.style.transform='scale(.94)'" ontouchend="this.style.transform=''" style="border-radius:16px;cursor:pointer;-webkit-tap-highlight-color:transparent;background:linear-gradient(160deg,#06141c 0%,#040a12 100%);border:1.5px solid rgba(0,217,255,.45);overflow:hidden;box-shadow:0 0 16px rgba(0,217,255,.1);transition:transform .08s;position:relative">
+          <div style="height:2px;background:linear-gradient(90deg,transparent,#00D9FF,transparent)"></div>
           <div style="padding:14px 10px;display:flex;flex-direction:column;align-items:center;gap:6px;text-align:center">
-            <div style="font-size:40px;line-height:1;filter:drop-shadow(0 0 14px rgba(57,255,20,.8))">🧬</div>
-            <div style="font-size:11px;font-weight:900;color:#39FF14;font-family:var(--mono);letter-spacing:.5px">DNA BREAKER</div>
-            <div style="font-size:7px;background:rgba(57,255,20,.12);border:1px solid rgba(57,255,20,.3);border-radius:20px;padding:2px 8px;color:#39FF14;font-family:var(--mono)">PUZZLE 🔥</div>
-            <div style="font-size:8px;color:rgba(255,255,255,.35)" id="pbBestTag">Best: 0 pts</div>
+            <div style="font-size:40px;line-height:1;filter:drop-shadow(0 0 14px rgba(0,217,255,.8))">🧬</div>
+            <div style="font-size:11px;font-weight:900;color:#00D9FF;font-family:var(--mono);letter-spacing:.5px">KARMA TOWER</div>
+            <div style="font-size:7px;background:rgba(0,217,255,.12);border:1px solid rgba(0,217,255,.3);border-radius:20px;padding:2px 8px;color:#00D9FF;font-family:var(--mono)">STACK ⚡</div>
+            <div style="font-size:8px;color:rgba(255,255,255,.35)" id="pbBestTag">Best: 0 våningar</div>
           </div>
         </div>
         <!-- PET RUNNER -->
@@ -10917,7 +10917,7 @@ function openKarmaCatch(){
         <div id="kcatHud" style="position:absolute;top:10px;left:12px;display:flex;gap:8px;align-items:center">
           <span id="kcatLives" style="font-size:16px">💗💗💗</span>
         </div>
-        <div id="kcatStart" style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(6,3,10,.95)">
+        <div id="kcatStart" onclick="_kcatStart()" style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(6,3,10,.95);cursor:pointer;-webkit-tap-highlight-color:transparent">
           <div style="text-align:center;padding:24px">
             <div style="font-size:74px;animation:petBob 1s ease-in-out infinite;margin-bottom:8px" id="kcatStartPet">🐉</div>
             <div style="font-size:24px;font-weight:900;color:#FF007F;font-family:var(--mono);letter-spacing:2px;text-shadow:0 0 20px rgba(255,0,127,.5)">KARMA CATCH</div>
@@ -11070,6 +11070,225 @@ function _kcatOver(){
   const f=$('kcatFinal');if(f)f.textContent=_kcat.score;
   const r=$('kcatReward');if(r)r.textContent='+'+coins+' 💎  ·  +'+xp+' XP';
   const o=$('kcatOver');if(o)o.style.display='flex';
+  vibe&&vibe([30,15,60,15,90]);save&&save();
+}
+
+// ════════════════════════════════════════════════════════
+// ── KARMA TOWER — precision stack game (replaces DNA Breaker) ──
+//    Tap to drop the sliding DNA slab. Overhang gets sliced.
+//    Perfect stacks build a glowing helix to the stars + combo.
+//    One-more-try addicting. Buttery 60fps (no heavy redraws).
+// ════════════════════════════════════════════════════════
+let _ktw={active:false,raf:null,t:0,W:0,H:0,slabs:[],debris:[],stars:[],
+  moving:null,dir:1,spd:2.2,score:0,perfect:0,best:0,started:false,flash:0,shake:0};
+const _KTW_SLABH=26;
+function openKarmaTower(){
+  let g=$('karmaTowerGame');
+  if(!g){
+    g=document.createElement('div');g.id='karmaTowerGame';
+    g.style.cssText='position:fixed;inset:0;z-index:9994;background:#04060f;display:flex;flex-direction:column;';
+    g.innerHTML=`
+      <div style="display:flex;align-items:center;gap:8px;padding:10px 12px;background:#050810;border-bottom:3px solid #00D9FF">
+        <button onclick="closeKarmaTower()" style="background:#111;border:2px solid rgba(255,255,255,.2);border-radius:4px;color:#fff;font-size:18px;cursor:pointer;padding:4px 10px;font-family:var(--mono)">←</button>
+        <div style="flex:1;text-align:center;font-size:13px;font-weight:900;font-family:var(--mono);color:#00D9FF;letter-spacing:2px">🧬 KARMA TOWER</div>
+        <div style="background:#0d0d0d;border:2px solid var(--y);border-radius:4px;padding:3px 10px">
+          <span style="font-size:13px;font-weight:900;color:var(--y);font-family:var(--mono)" id="ktwScore">0</span>
+        </div>
+      </div>
+      <div style="position:relative;flex:1;overflow:hidden;min-height:0" id="ktwArena">
+        <canvas id="ktwCanvas" style="display:block;width:100%;height:100%;touch-action:none"></canvas>
+        <div id="ktwCombo" style="position:absolute;top:14px;left:50%;transform:translateX(-50%);font-size:12px;font-weight:900;font-family:var(--mono);color:#39FF14;text-shadow:0 0 12px #39FF14;opacity:0;transition:opacity .2s;pointer-events:none"></div>
+        <div id="ktwStart" onclick="_ktwStart()" style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(4,6,15,.95);cursor:pointer;-webkit-tap-highlight-color:transparent">
+          <div style="text-align:center;padding:24px">
+            <div style="font-size:70px;animation:petBob 1s ease-in-out infinite;margin-bottom:8px">🧬</div>
+            <div style="font-size:24px;font-weight:900;color:#00D9FF;font-family:var(--mono);letter-spacing:2px;text-shadow:0 0 20px rgba(0,217,255,.5)">KARMA TOWER</div>
+            <div style="font-size:10px;color:rgba(255,255,255,.45);font-family:var(--mono);letter-spacing:1px;margin:8px 0 4px">STACKA DNA — PERFEKT = COMBO</div>
+            <div style="font-size:9px;color:rgba(255,255,255,.3);font-family:var(--mono);margin-bottom:16px">TRYCK FÖR ATT SLÄPPA SLABEN</div>
+            <div style="display:inline-block;background:#0d0d0d;border:3px solid var(--y);border-radius:6px;box-shadow:4px 4px 0px var(--y);padding:8px 18px;margin-bottom:18px">
+              <span style="font-size:10px;color:rgba(255,255,255,.5);font-family:var(--mono)">BÄST: </span>
+              <span id="ktwBestDisp" style="color:var(--y);font-weight:900;font-family:var(--mono);font-size:16px">0</span>
+            </div>
+            <div style="font-size:12px;color:#00D9FF;font-family:var(--mono);letter-spacing:2px;animation:bitePulse .6s ease-in-out infinite">▶ TRYCK FÖR ATT STARTA</div>
+          </div>
+        </div>
+        <div id="ktwOver" style="position:absolute;inset:0;display:none;align-items:center;justify-content:center;background:rgba(4,6,15,.96)">
+          <div style="text-align:center;padding:24px">
+            <div style="font-size:46px;margin-bottom:6px">🧬</div>
+            <div style="font-size:20px;font-weight:900;color:#00D9FF;font-family:var(--mono);letter-spacing:2px">TORN BYGGT!</div>
+            <div style="font-size:38px;font-weight:900;color:var(--y);font-family:var(--mono);margin:8px 0" id="ktwFinal">0</div>
+            <div style="font-size:11px;color:var(--g);font-family:var(--mono);margin-bottom:18px" id="ktwReward"></div>
+            <button onclick="_ktwStart()" style="background:linear-gradient(135deg,#00D9FF,#39FF14);border:none;border-radius:14px;padding:14px 36px;font-size:15px;font-weight:900;cursor:pointer;font-family:var(--mono);color:#021;letter-spacing:1px;box-shadow:0 0 24px rgba(0,217,255,.5)">↻ IGEN</button>
+          </div>
+        </div>
+      </div>`;
+    document.body.appendChild(g);
+    const cv=$('ktwCanvas');
+    cv.addEventListener('pointerdown',e=>{e.preventDefault();if(_ktw.active)_ktwDrop();},{passive:false});
+  }
+  g.style.display='flex';
+  _ktw.best=parseInt(localStorage.getItem('kv8_ktowerBest')||'0');
+  const bd=$('ktwBestDisp');if(bd)bd.textContent=_ktw.best;
+  $('ktwStart').style.display='flex';$('ktwOver').style.display='none';
+  _ktw.started=false;_ktw.active=false;
+}
+function closeKarmaTower(){
+  _ktw.active=false;if(_ktw.raf){cancelAnimationFrame(_ktw.raf);_ktw.raf=null;}
+  const g=$('karmaTowerGame');if(g)g.style.display='none';
+}
+function _ktwStart(){
+  const cv=$('ktwCanvas');if(!cv)return;
+  const parent=cv.parentElement;
+  cv.width=Math.max(200,parent.offsetWidth);cv.height=Math.max(300,parent.offsetHeight);
+  const W=cv.width,H=cv.height;
+  _ktw.W=W;_ktw.H=H;_ktw.baseY=H*0.82;_ktw.topLineY=H*0.26;
+  _ktw.slabs=[];_ktw.debris=[];_ktw.score=0;_ktw.perfect=0;_ktw.spd=2.2;_ktw.dir=1;
+  _ktw.flash=0;_ktw.shake=0;_ktw.active=true;_ktw.started=true;_ktw.t=0;
+  // starfield
+  _ktw.stars=Array.from({length:46},()=>({x:Math.random()*W,y:Math.random()*H,r:Math.random()*1.4+.3,a:Math.random()*6.28}));
+  // base slab
+  const baseW=Math.min(W*.5,150);
+  _ktw.slabs.push({x:W/2-baseW/2,w:baseW,y:_ktw.baseY,hue:200});
+  _ktwSpawnMoving();
+  $('ktwStart').style.display='none';$('ktwOver').style.display='none';
+  const sc=$('ktwScore');if(sc)sc.textContent='0';
+  if(_ktw.raf)cancelAnimationFrame(_ktw.raf);
+  _ktwLoop();
+}
+function _ktwSpawnMoving(){
+  const top=_ktw.slabs[_ktw.slabs.length-1];
+  _ktw.moving={x:_ktw.dir>0?-top.w:_ktw.W,w:top.w,y:top.y-_KTW_SLABH,hue:(200+_ktw.slabs.length*16)%360};
+}
+function _ktwDrop(){
+  const mv=_ktw.moving,top=_ktw.slabs[_ktw.slabs.length-1];if(!mv||!top)return;
+  const left=Math.max(mv.x,top.x),right=Math.min(mv.x+mv.w,top.x+top.w);
+  const overlap=right-left;
+  if(overlap<=2){
+    // total miss → tumble + game over
+    _ktw.debris.push({x:mv.x,y:mv.y,w:mv.w,h:_KTW_SLABH,vx:_ktw.dir*2,vy:-2,rot:0,vr:.1,hue:mv.hue,life:1});
+    _ktwOver();return;
+  }
+  const off=mv.x-top.x;
+  if(Math.abs(off)<7){
+    // PERFECT — snap, no slice, combo, occasional regrow
+    _ktw.perfect++;
+    const nw=(_ktw.perfect%4===0)?Math.min(top.w+14,_ktw.W*.7):top.w;
+    const nx=top.x-(nw-top.w)/2;
+    _ktw.slabs.push({x:nx,w:nw,y:mv.y,hue:mv.hue,perfect:true,flash:1});
+    _ktw.score+=1+_ktw.perfect;_ktw.flash=1;_ktw.shake=6;
+    const cb=$('ktwCombo');if(cb){cb.textContent='⚡ PERFECT ×'+_ktw.perfect;cb.style.opacity='1';clearTimeout(_ktw._cbT);_ktw._cbT=setTimeout(()=>{cb.style.opacity='0';},700);}
+    vibe&&vibe([12,8,20]);SFX&&SFX.tap&&SFX.tap();
+  }else{
+    _ktw.perfect=0;
+    // slice overhang into debris
+    if(mv.x<top.x){_ktw.debris.push({x:left-(top.x-mv.x),y:mv.y,w:top.x-mv.x,h:_KTW_SLABH,vx:-2,vy:-1,rot:0,vr:-.12,hue:mv.hue,life:1});}
+    else{_ktw.debris.push({x:right,y:mv.y,w:(mv.x+mv.w)-(top.x+top.w),h:_KTW_SLABH,vx:2,vy:-1,rot:0,vr:.12,hue:mv.hue,life:1});}
+    _ktw.slabs.push({x:left,w:overlap,y:mv.y,hue:mv.hue});
+    _ktw.score+=1;_ktw.shake=3;
+    vibe&&vibe(8);
+  }
+  const sc=$('ktwScore');if(sc)sc.textContent=_ktw.score;
+  // speed up + alternate direction
+  _ktw.spd=Math.min(7,2.2+_ktw.slabs.length*.12);
+  _ktw.dir*=-1;
+  _ktwSpawnMoving();
+}
+function _ktwLoop(){
+  if(!_ktw.active){_ktw.raf=null;return;}
+  _ktwUpdate();_ktwDraw();
+  _ktw.raf=requestAnimationFrame(_ktwLoop);
+}
+function _ktwUpdate(){
+  _ktw.t++;const W=_ktw.W;
+  const mv=_ktw.moving;
+  if(mv){
+    mv.x+=_ktw.dir*_ktw.spd;
+    if(mv.x<-mv.w*.6){mv.x=-mv.w*.6;_ktw.dir=1;}
+    if(mv.x>W-mv.w*.4){mv.x=W-mv.w*.4;_ktw.dir=-1;}
+  }
+  if(_ktw.flash>0)_ktw.flash=Math.max(0,_ktw.flash-.06);
+  if(_ktw.shake>0)_ktw.shake=Math.max(0,_ktw.shake-.5);
+  _ktw.debris=_ktw.debris.filter(d=>{d.x+=d.vx;d.y+=d.vy;d.vy+=.5;d.rot+=d.vr;d.life-=.02;return d.life>0&&d.y<_ktw.H+60;});
+}
+function _ktwDraw(){
+  const cv=$('ktwCanvas');if(!cv)return;const ctx=cv.getContext('2d');if(!ctx)return;
+  const W=_ktw.W,H=_ktw.H,t=_ktw.t;
+  ctx.save();
+  if(_ktw.shake>.5)ctx.translate((Math.random()-.5)*_ktw.shake,(Math.random()-.5)*_ktw.shake);
+  // bg gradient (hue drifts with tower height for sense of ascent)
+  const baseHue=(200+_ktw.slabs.length*4)%360;
+  const bg=ctx.createLinearGradient(0,0,0,H);
+  bg.addColorStop(0,`hsl(${baseHue},60%,7%)`);bg.addColorStop(.6,`hsl(${(baseHue+40)%360},50%,5%)`);bg.addColorStop(1,'#02030a');
+  ctx.fillStyle=bg;ctx.fillRect(0,0,W,H);
+  // stars
+  _ktw.stars.forEach(s=>{s.a+=.02;ctx.globalAlpha=.2+.2*Math.sin(s.a);ctx.fillStyle='#fff';ctx.beginPath();ctx.arc(s.x,s.y,s.r,0,Math.PI*2);ctx.fill();});
+  ctx.globalAlpha=1;
+  // camera: keep moving slab around topLineY once tall enough
+  const mv=_ktw.moving;
+  const movingWorldY=mv?mv.y:_ktw.baseY;
+  const camera=Math.max(0,_ktw.topLineY-movingWorldY);
+  // helix connector glow behind slabs
+  ctx.save();ctx.globalAlpha=.5;ctx.strokeStyle=`hsl(${baseHue},90%,60%)`;ctx.lineWidth=2;ctx.shadowColor=`hsl(${baseHue},90%,60%)`;ctx.shadowBlur=10;
+  ctx.beginPath();
+  _ktw.slabs.forEach((s,i)=>{const sy=s.y+camera;const cx=s.x+s.w/2;i===0?ctx.moveTo(cx,sy):ctx.lineTo(cx,sy);});
+  ctx.stroke();ctx.restore();
+  // slabs
+  _ktw.slabs.forEach(s=>{
+    const sy=s.y+camera;if(sy<-_KTW_SLABH||sy>H+_KTW_SLABH)return;
+    if(s.flash>0)s.flash=Math.max(0,s.flash-.05);
+    const grd=ctx.createLinearGradient(s.x,sy,s.x,sy+_KTW_SLABH);
+    grd.addColorStop(0,`hsl(${s.hue},85%,${s.flash>0?78:60}%)`);
+    grd.addColorStop(1,`hsl(${s.hue},80%,${s.flash>0?50:38}%)`);
+    ctx.save();ctx.shadowColor=`hsl(${s.hue},90%,55%)`;ctx.shadowBlur=s.flash>0?22:10;
+    ctx.fillStyle=grd;
+    ctx.beginPath();if(ctx.roundRect)ctx.roundRect(s.x,sy,s.w,_KTW_SLABH-2,5);else ctx.rect(s.x,sy,s.w,_KTW_SLABH-2);ctx.fill();
+    // top sheen
+    ctx.fillStyle='rgba(255,255,255,.18)';
+    ctx.beginPath();if(ctx.roundRect)ctx.roundRect(s.x+2,sy+2,s.w-4,(_KTW_SLABH-2)*.34,3);else ctx.rect(s.x+2,sy+2,s.w-4,(_KTW_SLABH-2)*.34);ctx.fill();
+    // neon edge
+    ctx.shadowBlur=0;ctx.strokeStyle=s.perfect?'rgba(255,255,255,.85)':`hsl(${s.hue},90%,70%)`;ctx.lineWidth=1.2;
+    ctx.beginPath();if(ctx.roundRect)ctx.roundRect(s.x,sy,s.w,_KTW_SLABH-2,5);else ctx.rect(s.x,sy,s.w,_KTW_SLABH-2);ctx.stroke();
+    ctx.restore();
+  });
+  // moving slab + drop guide line
+  if(mv){
+    const sy=mv.y+camera;
+    // guide line down to top slab for aim
+    ctx.save();ctx.globalAlpha=.18;ctx.strokeStyle='#fff';ctx.lineWidth=1;ctx.setLineDash([3,6]);
+    ctx.beginPath();ctx.moveTo(mv.x+mv.w/2,sy);ctx.lineTo(mv.x+mv.w/2,H);ctx.stroke();ctx.setLineDash([]);ctx.restore();
+    const grd=ctx.createLinearGradient(mv.x,sy,mv.x,sy+_KTW_SLABH);
+    grd.addColorStop(0,`hsl(${mv.hue},90%,68%)`);grd.addColorStop(1,`hsl(${mv.hue},85%,44%)`);
+    ctx.save();ctx.shadowColor=`hsl(${mv.hue},95%,60%)`;ctx.shadowBlur=18;ctx.fillStyle=grd;
+    ctx.beginPath();if(ctx.roundRect)ctx.roundRect(mv.x,sy,mv.w,_KTW_SLABH-2,5);else ctx.rect(mv.x,sy,mv.w,_KTW_SLABH-2);ctx.fill();
+    ctx.shadowBlur=0;ctx.strokeStyle='rgba(255,255,255,.7)';ctx.lineWidth=1.4;
+    ctx.beginPath();if(ctx.roundRect)ctx.roundRect(mv.x,sy,mv.w,_KTW_SLABH-2,5);else ctx.rect(mv.x,sy,mv.w,_KTW_SLABH-2);ctx.stroke();
+    ctx.restore();
+  }
+  // debris
+  _ktw.debris.forEach(d=>{
+    const sy=d.y+camera;ctx.save();ctx.globalAlpha=Math.max(0,d.life);
+    ctx.translate(d.x+d.w/2,sy+d.h/2);ctx.rotate(d.rot);
+    ctx.shadowColor=`hsl(${d.hue},90%,55%)`;ctx.shadowBlur=8;ctx.fillStyle=`hsl(${d.hue},80%,52%)`;
+    ctx.fillRect(-d.w/2,-d.h/2,d.w,d.h-2);ctx.restore();
+  });
+  // perfect flash overlay
+  if(_ktw.flash>0){ctx.fillStyle=`rgba(255,255,255,${(_ktw.flash*.12).toFixed(3)})`;ctx.fillRect(0,0,W,H);}
+  // height label
+  ctx.fillStyle='rgba(255,255,255,.5)';ctx.font='bold 10px monospace';ctx.textAlign='right';
+  ctx.fillText(_ktw.score+' VÅN',W-12,H-12);ctx.textAlign='left';
+  ctx.restore();
+}
+function _ktwOver(){
+  _ktw.active=false;if(_ktw.raf){cancelAnimationFrame(_ktw.raf);_ktw.raf=null;}
+  // let debris settle one more frame visually
+  _ktwDraw();
+  if(_ktw.score>_ktw.best){_ktw.best=_ktw.score;localStorage.setItem('kv8_ktowerBest',_ktw.score);}
+  const bt=$('pbBestTag');if(bt)bt.textContent='Best: '+_ktw.best+' våningar';
+  const coins=Math.floor(_ktw.score*1.5),xp=Math.floor(_ktw.score*1.2);
+  if(coins>0)gainCoins(coins);if(xp>0)gainXP(xp,'action');
+  advanceDailyChallenge&&advanceDailyChallenge('play',1);
+  const f=$('ktwFinal');if(f)f.textContent=_ktw.score;
+  const r=$('ktwReward');if(r)r.textContent='+'+coins+' 💎  ·  +'+xp+' XP';
+  const o=$('ktwOver');if(o)o.style.display='flex';
   vibe&&vibe([30,15,60,15,90]);save&&save();
 }
 function _prDrawObstacleGD(ctx,ob,t,glowCol){
@@ -13178,7 +13397,7 @@ function renderPlayView(){
   renderArenaDaily();
   if(!_quests.length)initQuests();
   const sl=$('spinPlayLabel');if(sl)sl.textContent=G.lastSpin===new Date().toDateString()?'✅ Spinnat idag — kom tillbaka imorgon!':'🎰 Gratis spin tillgängligt nu!';
-  const pbt=$('pbBestTag');if(pbt)pbt.textContent='Best: '+(localStorage.getItem('kv8_pbBest')||0)+'pts';
+  const pbt=$('pbBestTag');if(pbt)pbt.textContent='Best: '+(localStorage.getItem('kv8_ktowerBest')||0)+' våningar';
   // Runner best score + level world name
   const prbt=$('prBestTag');if(prbt)prbt.textContent='Best: '+(localStorage.getItem('kv8_prBest')||0)+'m';
   const kcbt=$('kcatchBestTag');if(kcbt)kcbt.textContent='Best: '+(localStorage.getItem('kv8_kcatchBest')||0);
@@ -13208,7 +13427,7 @@ const _ARENA_GAMES=[
   {id:'td',nm:'TOWER DEFENSE',ico:'🏰',col:'255,0,127',fn:openBattle,desc:'Klara wave 5 → 3× XP'},
   {id:'fish',nm:'FISKESPELET',ico:'🎣',col:'0,200,255',fn:openFishingGame,desc:'Fånga 3 fiskar → +200 KARMA'},
   {id:'run',nm:'PET RUNNER',ico:'🐉',col:'191,95,255',fn:openPetRunner,desc:'Springa 500m → +150 KARMA'},
-  {id:'dna',nm:'DNA BREAKER',ico:'🧬',col:'57,255,20',fn:openPetBlocks,desc:'Rensa 5 rader → 2× Coins'},
+  {id:'dna',nm:'KARMA TOWER',ico:'🧬',col:'0,217,255',fn:openKarmaTower,desc:'Stacka 20 våningar → 2× Coins'},
   {id:'kcat',nm:'KARMA CATCH',ico:'💗',col:'255,0,127',fn:openKarmaCatch,desc:'Fånga 50 karma → +150 KARMA'},
   {id:'mix',nm:'DNA MIXER',ico:'🧪',col:'255,159,10',fn:openDNAMixer,desc:'Mixa 2 DNA → +100 XP'},
   {id:'spin',nm:'DAGLIGT SPIN',ico:'🎰',col:'255,215,0',fn:openGacha,desc:'Snurra hjulet → jackpot chans'},
