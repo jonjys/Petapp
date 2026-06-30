@@ -6300,6 +6300,7 @@ function openBattle(){
   // Init score display
   const sc=$('tdScoreDisp');if(sc)sc.textContent='0';
   tdUpdateAbilityUI();
+  _runTrackStart();
   tdStartWave();
   SFX.battle&&SFX.battle();vibe([20,10,20]);
 }
@@ -6464,8 +6465,9 @@ function tdUpdate(dt){
     // Helper: calc damage with armor and weakness
     const calcDmg=(e,baseDmg)=>{
       let d=Math.round(baseDmg*(G._tdDmgMult||1)*(1+_td.wave*0.025));
-      if(e.weakness===tower.type)d=Math.round(d*2.0);
+      if(e.weakness===tower.type)d=Math.round(d*2.2);          // right tool → big bonus
       else if(e.magicImmune&&(tower.type==='mage'||tower.type==='frost'))d=Math.round(d*0.1);
+      else d=Math.round(d*0.62);                                // wrong tool → resist, forces tower variety
       if(e.armor&&tower.type!=='laser'&&tower.type!=='sniper')d=Math.round(d*(1-e.armor));
       // Crit (base + permanent bonus)
       const critChance=(def.crit||0)+(G._tdCritBonus||0);
@@ -7165,7 +7167,8 @@ function tdDefeat(){
     const hs2=$('tdHighscore');if(hs2)hs2.textContent='BEST:'+_td.score;
   }
   SFX.error&&SFX.error();vibe([50,30,100]);
-  const sub=$('tdDefeatSub');if(sub)sub.textContent='Du klarade dig till wave '+_td.wave+'. Försök igen!';
+  const sm=_runTrackSummary();_runTrackStop();
+  const sub=$('tdDefeatSub');if(sub)sub.innerHTML='Du nådde <b style="color:#FF007F">wave '+_td.wave+'</b> · dödade '+(_td.totalKills||0)+' fiender<br><span style="color:#39FF14;font-weight:900">⬆️ +'+sm.xp+' XP'+(sm.levels>0?' · GICK UPP '+sm.levels+' LEVEL'+(sm.levels>1?'S':'')+'! 🎉':'')+'</span>';
   const ds=$('tdDefeatScore');if(ds)ds.textContent=_td.score;
   const d=$('baDefeat');if(d)d.style.display='flex';
 }
@@ -7639,6 +7642,28 @@ function _talentXPMult(stat){
   if(G._talentX19){const _bs=new Set(Object.keys(G.talents||{}).map(id=>TALENT_DEFS.find(n=>n.id===id)?.branch).filter(Boolean));if(_bs.size>=5)m*=1.5;} // Rainbow Master: 5+ branches ×1.5
   return m;
 }
+// ── Is a fullscreen mini-game overlay currently open? ──
+function _gameOverlayActive(){
+  return (typeof _td!=='undefined'&&_td&&_td.active)||
+         (typeof _pr!=='undefined'&&_pr&&_pr.active)||
+         (typeof _kcat!=='undefined'&&_kcat&&_kcat.active)||
+         (typeof _ktw!=='undefined'&&_ktw&&_ktw.active);
+}
+// ── Lightweight high-z level-up toast (works over game overlays) ──
+function _quickLvlToast(lv){
+  const d=document.createElement('div');
+  d.style.cssText='position:fixed;top:64px;left:50%;transform:translateX(-50%) translateY(-20px);z-index:99999;background:linear-gradient(135deg,#FFE600,#FF9F0A);color:#1a1000;font-family:var(--mono);font-weight:900;font-size:14px;letter-spacing:1px;padding:10px 22px;border-radius:14px;box-shadow:0 0 28px rgba(255,200,0,.7),0 6px 20px rgba(0,0,0,.5);opacity:0;transition:transform .35s cubic-bezier(.34,1.56,.64,1),opacity .35s;pointer-events:none;white-space:nowrap';
+  d.textContent='⬆️ LEVEL UP! → LV'+lv;
+  document.body.appendChild(d);
+  requestAnimationFrame(()=>{d.style.opacity='1';d.style.transform='translateX(-50%) translateY(0)';});
+  vibe&&vibe([20,10,40]);SFX&&SFX.lvlup&&SFX.lvlup();
+  setTimeout(()=>{d.style.opacity='0';d.style.transform='translateX(-50%) translateY(-20px)';setTimeout(()=>d.remove(),400);},1800);
+}
+// ── Per-run XP/level tracker (for game-over summaries) ──
+let _runTrack={active:false,startLvl:1,xp:0,startExp:0};
+function _runTrackStart(){_runTrack={active:true,startLvl:G.level,xp:0};}
+function _runTrackSummary(){return{levels:Math.max(0,G.level-_runTrack.startLvl),xp:_runTrack.xp};}
+function _runTrackStop(){_runTrack.active=false;}
 function gainXP(n,stat){
   const _nightMult = typeof getNightXPMult === 'function' ? getNightXPMult() : 1;
   n = Math.round(n * _nightMult * _talentXPMult(stat||'') * (G._evoXPMult||1));
@@ -7651,6 +7676,7 @@ function gainXP(n,stat){
   if(stat==='social'&&G._personalitySocialXPBonus)n=Math.round(n*(1+G._personalitySocialXPBonus)); // Influencer personality
   if(G.premium){n=Math.round(n*(G.premiumTier>=2?2.5:G.premiumTier>=1?1.75:1.25));}
   G.exp+=n;
+  if(_runTrack.active)_runTrack.xp+=n;
   if(stat==='action')G.actionStat+=Math.ceil(n/4);
   else if(stat==='commerce')G.commerceStat+=Math.ceil(n/4);
   else if(stat==='social')G.socialStat+=Math.ceil(n/4);
@@ -7661,7 +7687,10 @@ function gainXP(n,stat){
   // Floating XP number
   const petEl=$('petAvWrap');if(petEl){const r=petEl.getBoundingClientRect();floatNum('+'+n+'XP',r.left+r.width/2,r.top+10,'var(--g)',14);}
   let lvlUps=0;while(G.exp>=xpN(G.level)&&lvlUps<10){G.exp-=xpN(G.level);G.level++;lvlUps++;}
-  if(lvlUps>0){triggerLvlUp();const _nd2=xpN(G.level);const _f2=$('xpBarFill');if(_f2)_f2.style.width=Math.min(100,G.exp/_nd2*100)+'%';const _ln2=$('xpBarNums');if(_ln2)_ln2.textContent=G.exp+' / '+_nd2+' XP';const _ll2=$('xpBarLabel');if(_ll2)_ll2.textContent='LV'+G.level+' PROGRESS';}
+  if(lvlUps>0){
+    // During a fullscreen game, the big splash sits behind it — use a light top toast instead
+    if(_gameOverlayActive())_quickLvlToast(G.level);else triggerLvlUp();
+    const _nd2=xpN(G.level);const _f2=$('xpBarFill');if(_f2)_f2.style.width=Math.min(100,G.exp/_nd2*100)+'%';const _ln2=$('xpBarNums');if(_ln2)_ln2.textContent=G.exp+' / '+_nd2+' XP';const _ll2=$('xpBarLabel');if(_ll2)_ll2.textContent='LV'+G.level+' PROGRESS';}
   checkAchievements();
   if(typeof addSeasonXP==='function')addSeasonXP(Math.max(1,Math.ceil(n*.15)));
   updateHUD();updatePetView();
@@ -10992,6 +11021,7 @@ function _kcatStart(){
   _kcat.active=true;_kcat.started=true;_kcat.t=0;
   $('kcatStart').style.display='none';$('kcatOver').style.display='none';
   $('kcatLives').textContent='💗💗💗';
+  _runTrackStart();
   if(_kcat.raf)cancelAnimationFrame(_kcat.raf);
   _kcatLoop();
 }
@@ -11090,8 +11120,9 @@ function _kcatOver(){
   const coins=Math.floor(_kcat.score/20),xp=Math.floor(_kcat.score/12);
   if(coins>0)gainCoins(coins);if(xp>0)gainXP(xp,'action');
   advanceDailyChallenge&&advanceDailyChallenge('play',1);
+  const sm=_runTrackSummary();_runTrackStop();
   const f=$('kcatFinal');if(f)f.textContent=_kcat.score;
-  const r=$('kcatReward');if(r)r.textContent='+'+coins+' 💎  ·  +'+xp+' XP';
+  const r=$('kcatReward');if(r)r.innerHTML='+'+coins+' 💎 · +'+sm.xp+' XP'+(sm.levels>0?'<br><span style="color:#FFE600;font-weight:900">⬆️ DU GICK UPP '+sm.levels+' LEVEL'+(sm.levels>1?'S':'')+'! 🎉</span>':'');
   const o=$('kcatOver');if(o)o.style.display='flex';
   vibe&&vibe([30,15,60,15,90]);save&&save();
 }
@@ -11165,7 +11196,7 @@ function _ktwStart(){
   const W=cv.width,H=cv.height;
   _ktw.W=W;_ktw.H=H;_ktw.baseY=H*0.82;_ktw.topLineY=H*0.26;
   _ktw.slabs=[];_ktw.debris=[];_ktw.score=0;_ktw.perfect=0;_ktw.spd=2.2;_ktw.dir=1;
-  _ktw.flash=0;_ktw.shake=0;_ktw.active=true;_ktw.started=true;_ktw.t=0;
+  _ktw.flash=0;_ktw.shake=0;_ktw.active=true;_ktw.started=true;_ktw.t=0;_ktw.lastMile=0;_ktw.milestone=null;
   // starfield
   _ktw.stars=Array.from({length:46},()=>({x:Math.random()*W,y:Math.random()*H,r:Math.random()*1.4+.3,a:Math.random()*6.28}));
   // base slab
@@ -11174,6 +11205,7 @@ function _ktwStart(){
   _ktwSpawnMoving();
   $('ktwStart').style.display='none';$('ktwOver').style.display='none';
   const sc=$('ktwScore');if(sc)sc.textContent='0';
+  _runTrackStart();
   if(_ktw.raf)cancelAnimationFrame(_ktw.raf);
   _ktwLoop();
 }
@@ -11210,6 +11242,13 @@ function _ktwDrop(){
     vibe&&vibe(8);
   }
   const sc=$('ktwScore');if(sc)sc.textContent=_ktw.score;
+  // milestone popup every 10 floors — "levels poppa upp ivägen"
+  const mile=Math.floor(_ktw.score/10)*10;
+  if(mile>0&&mile>(_ktw.lastMile||0)){
+    _ktw.lastMile=mile;
+    _ktw.milestone={txt:'🔥 VÅNING '+mile+'!',life:1};
+    gainXP&&gainXP(mile,'action');vibe&&vibe([20,10,40,10,60]);_ktw.flash=1;
+  }
   // speed up + alternate direction
   _ktw.spd=Math.min(7,2.2+_ktw.slabs.length*.12);
   _ktw.dir*=-1;
@@ -11293,6 +11332,15 @@ function _ktwDraw(){
     ctx.shadowColor=`hsl(${d.hue},90%,55%)`;ctx.shadowBlur=8;ctx.fillStyle=`hsl(${d.hue},80%,52%)`;
     ctx.fillRect(-d.w/2,-d.h/2,d.w,d.h-2);ctx.restore();
   });
+  // pet rides the top slab (graphics juice)
+  const topS=_ktw.slabs[_ktw.slabs.length-1];
+  if(topS){const ty=topS.y+camera;ctx.save();ctx.shadowColor='#fff';ctx.shadowBlur=12;ctx.font='22px serif';ctx.textAlign='center';ctx.textBaseline='alphabetic';
+    ctx.fillText((G&&G.petEmoji)||'🐉',topS.x+topS.w/2,ty-4+Math.sin(t*.1)*1.5);ctx.restore();}
+  // milestone banner
+  if(_ktw.milestone){_ktw.milestone.life-=.014;if(_ktw.milestone.life<=0)_ktw.milestone=null;
+    else{const ml=_ktw.milestone;ctx.save();ctx.globalAlpha=Math.min(1,ml.life*1.4);ctx.textAlign='center';
+      ctx.font='bold 26px monospace';ctx.fillStyle='#FFE600';ctx.shadowColor='#FFE600';ctx.shadowBlur=20;
+      ctx.fillText(ml.txt,W/2,H*.4);ctx.restore();}}
   // perfect flash overlay
   if(_ktw.flash>0){ctx.fillStyle=`rgba(255,255,255,${(_ktw.flash*.12).toFixed(3)})`;ctx.fillRect(0,0,W,H);}
   // height label
@@ -11309,8 +11357,9 @@ function _ktwOver(){
   const coins=Math.floor(_ktw.score*1.5),xp=Math.floor(_ktw.score*1.2);
   if(coins>0)gainCoins(coins);if(xp>0)gainXP(xp,'action');
   advanceDailyChallenge&&advanceDailyChallenge('play',1);
+  const sm=_runTrackSummary();_runTrackStop();
   const f=$('ktwFinal');if(f)f.textContent=_ktw.score;
-  const r=$('ktwReward');if(r)r.textContent='+'+coins+' 💎  ·  +'+xp+' XP';
+  const r=$('ktwReward');if(r)r.innerHTML='+'+coins+' 💎 · +'+sm.xp+' XP'+(sm.levels>0?'<br><span style="color:#FFE600;font-weight:900">⬆️ DU GICK UPP '+sm.levels+' LEVEL'+(sm.levels>1?'S':'')+'! 🎉</span>':'');
   const o=$('ktwOver');if(o)o.style.display='flex';
   vibe&&vibe([30,15,60,15,90]);save&&save();
 }
