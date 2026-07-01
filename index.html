@@ -6824,6 +6824,21 @@ function tdDraw(){
     const isFiring=tower.firingT>0;
     const lvl=tower.level||0;
     ctx.save();
+    // ── 3D extruded hex pillar beneath platform (third-person height) ──
+    const PH=sz*0.9;
+    const hexPts=[];for(let k=0;k<6;k++){const a=k*Math.PI/3-Math.PI/6;hexPts.push([tx+Math.cos(a)*(sz+6),ty+Math.sin(a)*(sz+6)]);}
+    // ground shadow
+    ctx.save();ctx.globalAlpha=.3;ctx.fillStyle='#000';ctx.beginPath();ctx.ellipse(tx,ty+PH,sz*.95,sz*.4,0,0,Math.PI*2);ctx.fill();ctx.restore();
+    // front-facing side walls
+    ctx.save();
+    const sideGrad=ctx.createLinearGradient(tx,ty,tx,ty+PH);
+    sideGrad.addColorStop(0,col+'40');sideGrad.addColorStop(.5,'rgba(18,14,10,.95)');sideGrad.addColorStop(1,'rgba(4,3,6,.98)');
+    ctx.fillStyle=sideGrad;ctx.beginPath();
+    for(let k=0;k<6;k++){const[x1,y1]=hexPts[k],[x2,y2]=hexPts[(k+1)%6];if((y1+y2)/2>=ty-1){ctx.moveTo(x1,y1);ctx.lineTo(x2,y2);ctx.lineTo(x2,y2+PH);ctx.lineTo(x1,y1+PH);ctx.closePath();}}
+    ctx.fill();
+    ctx.strokeStyle=col+'50';ctx.lineWidth=1;
+    for(let k=0;k<6;k++){const[x1,y1]=hexPts[k];if(y1>=ty-1){ctx.beginPath();ctx.moveTo(x1,y1);ctx.lineTo(x1,y1+PH);ctx.stroke();}}
+    ctx.restore();
     // Hexagonal base platform
     ctx.beginPath();
     for(let k=0;k<6;k++){const a=k*Math.PI/3-Math.PI/6;ctx.lineTo(tx+Math.cos(a)*(sz+6),ty+Math.sin(a)*(sz+6));}
@@ -11270,6 +11285,34 @@ function _ktwUpdate(){
   if(_ktw.shake>0)_ktw.shake=Math.max(0,_ktw.shake-.5);
   _ktw.debris=_ktw.debris.filter(d=>{d.x+=d.vx;d.y+=d.vy;d.vy+=.5;d.rot+=d.vr;d.life-=.02;return d.life>0&&d.y<_ktw.H+60;});
 }
+// Draw one isometric 3D extruded neon box (top + front + right faces)
+const _KTW_D=20,_KTW_TH=13,_KTW_DY=11; // depth, front thickness, depth vertical rise
+function _ktwIsoBox(ctx,x,sy,w,hue,opt){
+  opt=opt||{};const D=_KTW_D,TH=_KTW_TH,dy=_KTW_DY;
+  const L=opt.L!=null?opt.L:54,sat=opt.sat!=null?opt.sat:82,glow=opt.glow!=null?opt.glow:9;
+  ctx.save();
+  if(glow){ctx.shadowColor=`hsl(${hue},90%,55%)`;ctx.shadowBlur=glow;}
+  // right face (darkest)
+  ctx.fillStyle=`hsl(${hue},${sat}%,${Math.max(8,L-22)}%)`;
+  ctx.beginPath();ctx.moveTo(x+w,sy);ctx.lineTo(x+w+D,sy-dy);ctx.lineTo(x+w+D,sy-dy+TH);ctx.lineTo(x+w,sy+TH);ctx.closePath();ctx.fill();
+  // front face (mid, vertical gradient)
+  const fg=ctx.createLinearGradient(x,sy,x,sy+TH);
+  fg.addColorStop(0,`hsl(${hue},${sat}%,${L-3}%)`);fg.addColorStop(1,`hsl(${hue},${sat}%,${Math.max(10,L-15)}%)`);
+  ctx.fillStyle=fg;
+  ctx.beginPath();ctx.moveTo(x,sy);ctx.lineTo(x+w,sy);ctx.lineTo(x+w,sy+TH);ctx.lineTo(x,sy+TH);ctx.closePath();ctx.fill();
+  // top face (lightest)
+  ctx.shadowBlur=glow?glow*1.4:0;
+  const tg=ctx.createLinearGradient(x,sy-dy,x+w+D,sy);
+  tg.addColorStop(0,`hsl(${hue},${sat}%,${Math.min(92,L+24)}%)`);tg.addColorStop(1,`hsl(${hue},${sat}%,${L+8}%)`);
+  ctx.fillStyle=tg;
+  ctx.beginPath();ctx.moveTo(x,sy);ctx.lineTo(x+w,sy);ctx.lineTo(x+w+D,sy-dy);ctx.lineTo(x+D,sy-dy);ctx.closePath();ctx.fill();
+  ctx.shadowBlur=0;
+  // neon edges
+  ctx.strokeStyle=opt.edge||`hsl(${hue},95%,${Math.min(92,L+32)}%)`;ctx.lineWidth=opt.edgeW||1;ctx.globalAlpha=opt.edgeA!=null?opt.edgeA:.45;
+  ctx.beginPath();ctx.moveTo(x,sy);ctx.lineTo(x+w,sy);ctx.lineTo(x+w+D,sy-dy);ctx.lineTo(x+D,sy-dy);ctx.closePath();ctx.stroke();
+  ctx.beginPath();ctx.moveTo(x,sy);ctx.lineTo(x,sy+TH);ctx.moveTo(x+w,sy);ctx.lineTo(x+w,sy+TH);ctx.moveTo(x+w+D,sy-dy);ctx.lineTo(x+w+D,sy-dy+TH);ctx.stroke();
+  ctx.restore();
+}
 function _ktwDraw(){
   const cv=$('ktwCanvas');if(!cv)return;const ctx=cv.getContext('2d');if(!ctx)return;
   const W=_ktw.W,H=_ktw.H,t=_ktw.t;
@@ -11290,51 +11333,33 @@ function _ktwDraw(){
   // helix connector glow behind slabs
   ctx.save();ctx.globalAlpha=.5;ctx.strokeStyle=`hsl(${baseHue},90%,60%)`;ctx.lineWidth=2;ctx.shadowColor=`hsl(${baseHue},90%,60%)`;ctx.shadowBlur=10;
   ctx.beginPath();
-  _ktw.slabs.forEach((s,i)=>{const sy=s.y+camera;const cx=s.x+s.w/2;i===0?ctx.moveTo(cx,sy):ctx.lineTo(cx,sy);});
+  _ktw.slabs.forEach((s,i)=>{const sy=s.y+camera-_KTW_DY*.5;const cx=s.x+s.w/2+_KTW_D*.5;i===0?ctx.moveTo(cx,sy):ctx.lineTo(cx,sy);});
   ctx.stroke();ctx.restore();
-  // slabs
+  // slabs — isometric 3D neon boxes (painter order: base→top)
   _ktw.slabs.forEach(s=>{
-    const sy=s.y+camera;if(sy<-_KTW_SLABH||sy>H+_KTW_SLABH)return;
+    const sy=s.y+camera;if(sy<-60||sy>H+60)return;
     if(s.flash>0)s.flash=Math.max(0,s.flash-.05);
-    const grd=ctx.createLinearGradient(s.x,sy,s.x,sy+_KTW_SLABH);
-    grd.addColorStop(0,`hsl(${s.hue},85%,${s.flash>0?78:60}%)`);
-    grd.addColorStop(1,`hsl(${s.hue},80%,${s.flash>0?50:38}%)`);
-    ctx.save();ctx.shadowColor=`hsl(${s.hue},90%,55%)`;ctx.shadowBlur=s.flash>0?22:10;
-    ctx.fillStyle=grd;
-    ctx.beginPath();if(ctx.roundRect)ctx.roundRect(s.x,sy,s.w,_KTW_SLABH-2,5);else ctx.rect(s.x,sy,s.w,_KTW_SLABH-2);ctx.fill();
-    // top sheen
-    ctx.fillStyle='rgba(255,255,255,.18)';
-    ctx.beginPath();if(ctx.roundRect)ctx.roundRect(s.x+2,sy+2,s.w-4,(_KTW_SLABH-2)*.34,3);else ctx.rect(s.x+2,sy+2,s.w-4,(_KTW_SLABH-2)*.34);ctx.fill();
-    // neon edge
-    ctx.shadowBlur=0;ctx.strokeStyle=s.perfect?'rgba(255,255,255,.85)':`hsl(${s.hue},90%,70%)`;ctx.lineWidth=1.2;
-    ctx.beginPath();if(ctx.roundRect)ctx.roundRect(s.x,sy,s.w,_KTW_SLABH-2,5);else ctx.rect(s.x,sy,s.w,_KTW_SLABH-2);ctx.stroke();
-    ctx.restore();
+    _ktwIsoBox(ctx,s.x,sy,s.w,s.hue,{L:s.flash>0?76:54,glow:s.flash>0?22:9,edgeA:s.perfect?.85:.4,edge:s.perfect?'rgba(255,255,255,.9)':null});
   });
-  // moving slab + drop guide line
+  // moving slab (brighter iso box + aim guide)
   if(mv){
     const sy=mv.y+camera;
-    // guide line down to top slab for aim
-    ctx.save();ctx.globalAlpha=.18;ctx.strokeStyle='#fff';ctx.lineWidth=1;ctx.setLineDash([3,6]);
-    ctx.beginPath();ctx.moveTo(mv.x+mv.w/2,sy);ctx.lineTo(mv.x+mv.w/2,H);ctx.stroke();ctx.setLineDash([]);ctx.restore();
-    const grd=ctx.createLinearGradient(mv.x,sy,mv.x,sy+_KTW_SLABH);
-    grd.addColorStop(0,`hsl(${mv.hue},90%,68%)`);grd.addColorStop(1,`hsl(${mv.hue},85%,44%)`);
-    ctx.save();ctx.shadowColor=`hsl(${mv.hue},95%,60%)`;ctx.shadowBlur=18;ctx.fillStyle=grd;
-    ctx.beginPath();if(ctx.roundRect)ctx.roundRect(mv.x,sy,mv.w,_KTW_SLABH-2,5);else ctx.rect(mv.x,sy,mv.w,_KTW_SLABH-2);ctx.fill();
-    ctx.shadowBlur=0;ctx.strokeStyle='rgba(255,255,255,.7)';ctx.lineWidth=1.4;
-    ctx.beginPath();if(ctx.roundRect)ctx.roundRect(mv.x,sy,mv.w,_KTW_SLABH-2,5);else ctx.rect(mv.x,sy,mv.w,_KTW_SLABH-2);ctx.stroke();
-    ctx.restore();
+    ctx.save();ctx.globalAlpha=.14;ctx.strokeStyle='#fff';ctx.lineWidth=1;ctx.setLineDash([3,6]);
+    ctx.beginPath();ctx.moveTo(mv.x+mv.w/2,sy+_KTW_TH);ctx.lineTo(mv.x+mv.w/2,H);ctx.stroke();ctx.setLineDash([]);ctx.restore();
+    _ktwIsoBox(ctx,mv.x,sy,mv.w,mv.hue,{L:66,glow:20,edgeA:.8,edge:'rgba(255,255,255,.85)'});
   }
-  // debris
+  // debris — tumbling shaded chunks
   _ktw.debris.forEach(d=>{
     const sy=d.y+camera;ctx.save();ctx.globalAlpha=Math.max(0,d.life);
     ctx.translate(d.x+d.w/2,sy+d.h/2);ctx.rotate(d.rot);
-    ctx.shadowColor=`hsl(${d.hue},90%,55%)`;ctx.shadowBlur=8;ctx.fillStyle=`hsl(${d.hue},80%,52%)`;
-    ctx.fillRect(-d.w/2,-d.h/2,d.w,d.h-2);ctx.restore();
+    ctx.shadowColor=`hsl(${d.hue},90%,55%)`;ctx.shadowBlur=8;
+    const fg=ctx.createLinearGradient(0,-d.h/2,0,d.h/2);fg.addColorStop(0,`hsl(${d.hue},85%,62%)`);fg.addColorStop(1,`hsl(${d.hue},80%,38%)`);
+    ctx.fillStyle=fg;ctx.fillRect(-d.w/2,-d.h/2,d.w,d.h-2);ctx.restore();
   });
-  // pet rides the top slab (graphics juice)
+  // pet rides the top face of the 3D tower (third-person hero)
   const topS=_ktw.slabs[_ktw.slabs.length-1];
-  if(topS){const ty=topS.y+camera;ctx.save();ctx.shadowColor='#fff';ctx.shadowBlur=12;ctx.font='22px serif';ctx.textAlign='center';ctx.textBaseline='alphabetic';
-    ctx.fillText((G&&G.petEmoji)||'🐉',topS.x+topS.w/2,ty-4+Math.sin(t*.1)*1.5);ctx.restore();}
+  if(topS){const ty=topS.y+camera;ctx.save();ctx.shadowColor='#fff';ctx.shadowBlur=14;ctx.font='26px serif';ctx.textAlign='center';ctx.textBaseline='alphabetic';
+    ctx.fillText((G&&G.petEmoji)||'🐉',topS.x+topS.w/2+_KTW_D*.5,ty-_KTW_DY*.4+Math.sin(t*.1)*1.5);ctx.restore();}
   // milestone banner
   if(_ktw.milestone){_ktw.milestone.life-=.014;if(_ktw.milestone.life<=0)_ktw.milestone=null;
     else{const ml=_ktw.milestone;ctx.save();ctx.globalAlpha=Math.min(1,ml.life*1.4);ctx.textAlign='center';
