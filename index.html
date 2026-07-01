@@ -2231,7 +2231,7 @@ button:active{opacity:.85;}
 /* ── DNA BREAKER (Pet Blocks Redesign) ── */
 .pet-blocks-game{position:fixed;inset:0;z-index:800;background:#000;display:flex;flex-direction:column;transform:translateY(100%);transition:transform .32s cubic-bezier(.32,.72,0,1);}
 .pet-blocks-game.open{transform:translateY(0);}
-.pet-runner-game{position:fixed;inset:0;z-index:800;background:#010614;display:flex;flex-direction:column;transform:translateY(100%);transition:transform .32s cubic-bezier(.32,.72,0,1);}
+.pet-runner-game{position:fixed;inset:0;z-index:9994;background:#010614;display:flex;flex-direction:column;transform:translateY(100%);transition:transform .32s cubic-bezier(.32,.72,0,1);}
 .pet-runner-game.open{transform:translateY(0);}
 .pr-hdr{height:52px;display:flex;align-items:center;padding:0 8px;gap:8px;border-bottom:1px solid rgba(57,255,20,.2);flex-shrink:0;background:rgba(0,10,4,.8);}
 .pb-header{height:54px;display:flex;align-items:center;padding:0 12px;gap:10px;border-bottom:3px solid var(--pk);flex-shrink:0;background:#000;}
@@ -11005,7 +11005,6 @@ function openKarmaCatch(){
   const sp=$('kcatStartPet');if(sp)sp.textContent=(G&&G.petEmoji)||'🐉';
   $('kcatStart').style.display='flex';$('kcatOver').style.display='none';
   _kcat.started=false;_kcat.active=false;
-  if(_showPetCorner)try{_showPetCorner('play');}catch(e){}
 }
 function closeKarmaCatch(){
   _kcat.active=false;if(_kcat.raf){cancelAnimationFrame(_kcat.raf);_kcat.raf=null;}
@@ -17555,8 +17554,8 @@ function _loadFromLocalStorage(){
     try{const ev=localStorage.getItem('kv8_expeditionVisits');if(ev)G.expeditionVisits=JSON.parse(ev);}catch(e){}
     try{const ti=localStorage.getItem('kv8_terrLastIncome');if(ti)G.terrLastIncome=JSON.parse(ti);}catch(e){}
     try{const dm=localStorage.getItem('kv8_dnaMixes');if(dm)G.dnaMixes=JSON.parse(dm);}catch(e){}
-    G.petDNA=JSON.parse(localStorage.getItem('kv8_pdna')||'{"body":"base","element":"none","perk":"none"}');
-    G.dnaInventory=JSON.parse(localStorage.getItem('kv8_dinv')||'[]');
+    try{G.petDNA=JSON.parse(localStorage.getItem('kv8_pdna')||'{"body":"base","element":"none","perk":"none"}');}catch(e){G.petDNA={body:'base',element:'none',perk:'none'};}
+    try{G.dnaInventory=JSON.parse(localStorage.getItem('kv8_dinv')||'[]');}catch(e){G.dnaInventory=[];}
     G.lastFlashTime=parseInt(localStorage.getItem('kv8_lft')||'0');
     G.lastFlashDate=localStorage.getItem('kv8_lfd')||'';
     try{const pm=localStorage.getItem('kv8_pmem');if(pm)G.petMemory=JSON.parse(pm);}catch(e){}
@@ -17594,7 +17593,11 @@ function _loadFromLocalStorage(){
     _checkPassiveDecay();
     setTimeout(_scheduleMoodEvent,5000);
     setTimeout(_updatePetAgeSick,500);
-  }catch(e){}
+  }catch(e){
+    // Fail-safe: never leave the user on a blank screen if load partially threw
+    try{const app=$('app');if(app&&getComputedStyle(app).display==='none'){const ob=$('ob');if(ob)ob.style.display='none';app.style.display='flex';if(typeof updateHUD==='function')updateHUD();if(typeof nav==='function')nav('home');}}catch(_){}
+    console.warn('load recovered from error:',e);
+  }
 }
 
 // Bootstrap: Supabase first, localStorage as fallback
