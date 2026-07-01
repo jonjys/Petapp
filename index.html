@@ -13296,7 +13296,7 @@ function updateShareCard(){
   Object.entries(els).forEach(([id,v])=>{const el=$(id);if(el)el.textContent=v;});
   const badge=$('spcStage');if(badge){badge.className='es-badge '+s.badge;badge.textContent=s.ico+' '+s.name;}
 }
-function sharePetCard(){
+function sharePetCardNative(){
   updateShareCard();
   const txt=`🐾 ${G.petName} på KARMA!\n${G.petEmoji} LV${G.level} · ${getEvolStage().name}\n🔥 ${G.streak}d streak · 💰 ${G.coins} coins\nReal life. Game engine. karma-app.se`;
   if(navigator.share)navigator.share({title:'KARMA Pet',text:txt});
@@ -14431,14 +14431,39 @@ function startPetLifeCanvas(){
   _plc.raf=requestAnimationFrame(_plcLoop);
   // Step counter via DeviceMotion
   if(typeof DeviceMotionEvent!=='undefined'){
-    window.removeEventListener('devicemotion',_plcOnMotion);
-    window.addEventListener('devicemotion',_plcOnMotion,{passive:true});
+    // iOS 13+ requires permission from a user gesture; Android registers directly
+    if(typeof DeviceMotionEvent.requestPermission==='function'){
+      if(!_plc._motionOK)_plcArmMotionPermission();
+    }else{
+      window.removeEventListener('devicemotion',_plcOnMotion);
+      window.addEventListener('devicemotion',_plcOnMotion,{passive:true});
+    }
   }
   const today=new Date().toDateString();
   const giftEl=$('petDailyGift');if(giftEl)giftEl.style.display=localStorage.getItem('kv8_lastGift')!==today?'block':'none';
   _plcUpdateUrgent();_plcCheckArena();_plcApplyEvolAura();
 }
 
+// iOS: request motion permission on the user's first tap of the pet area
+function _plcArmMotionPermission(){
+  if(_plc._motionArmed)return;_plc._motionArmed=true;
+  const hero=$('sec-pet')||document.body;
+  const ask=()=>{
+    try{
+      DeviceMotionEvent.requestPermission().then(state=>{
+        if(state==='granted'){
+          _plc._motionOK=true;
+          window.removeEventListener('devicemotion',_plcOnMotion);
+          window.addEventListener('devicemotion',_plcOnMotion,{passive:true});
+          if(typeof showT==='function')showT('👟 Stegräknare aktiverad!','g');
+        }else if(typeof showT==='function')showT('Stegräknare nekad — aktivera i inställningar','y');
+      }).catch(()=>{});
+    }catch(e){}
+    hero.removeEventListener('click',ask);hero.removeEventListener('touchend',ask);
+  };
+  hero.addEventListener('click',ask,{once:true});
+  hero.addEventListener('touchend',ask,{once:true});
+}
 function _plcLoop(){
   if(!_plc.active){_plc.raf=null;return;}
   _plcUpdate();_plcDraw();
