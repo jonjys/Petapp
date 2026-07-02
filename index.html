@@ -5159,8 +5159,13 @@ div[style*="LIVE"]{border-radius:16px!important;background:rgba(57,255,20,.03)!i
           <div style="font-size:7px;color:var(--t3);font-family:var(--mono)">TD PTS</div>
         </div>
       </div>
-      <div class="ba-rewards" id="baRewards" style="display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin-bottom:10px"></div>
-      <button class="btn btn-g btn-lg" style="width:100%;font-size:15px;margin-bottom:6px" onclick="battleContinue()" id="baContBtn">NÄSTA WAVE →</button>
+      <div class="ba-rewards" id="baRewards" style="display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin-bottom:8px"></div>
+      <!-- Roguelite upgrade picker -->
+      <div style="font-size:8px;font-weight:900;color:rgba(57,255,20,.7);font-family:var(--mono);letter-spacing:2px;margin-bottom:6px">⬆️ VÄLJ EN UPPGRADERING</div>
+      <div id="baUpgrades" style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin-bottom:10px"></div>
+      <!-- Auto-advance countdown -->
+      <div style="position:relative;height:5px;background:rgba(255,255,255,.08);border-radius:4px;overflow:hidden;margin-bottom:8px"><div id="baCountFill" style="height:100%;width:100%;background:linear-gradient(90deg,#39FF14,#00D9FF);border-radius:4px;transition:width .1s linear"></div></div>
+      <button class="btn btn-g btn-lg" style="width:100%;font-size:15px;margin-bottom:6px" onclick="battleContinue()" id="baContBtn">▶ STARTA WAVE (<span id="baCountNum">10</span>s)</button>
       <div style="display:flex;gap:6px">
         <button class="btn btn-ghost" style="flex:1;font-size:11px" onclick="openTDShop()">🏪 TD SHOP</button>
         <button class="btn btn-ghost" style="flex:1;font-size:11px" onclick="closeBattle()">← Avsluta</button>
@@ -5990,6 +5995,24 @@ const TD_BOSSES=[
   {id:'chaos',  em:'🌋',name:'CHAOS TITAN',   weakness:'sniper', hp:1100,speed:0.35, gold:250, reward:{xp:200,coins:160},isBoss:true,enrages:true},
   {id:'void',   em:'🌌',name:'VOID HERALD',   weakness:'inferno',hp:1500,speed:0.42, gold:350, reward:{xp:300,coins:220},isBoss:true,magicImmune:true,enrages:true},
 ];
+// ── Difficulty tiers (chosen per run) ──
+const TD_DIFFS={
+  chill:  {nm:'CHILL',  em:'😌', col:'#39FF14', hp:0.65, spd:0.9,  rw:0.85, startGold:60},
+  normal: {nm:'NORMAL', em:'⚔️', col:'#00D9FF', hp:1.0,  spd:1.0,  rw:1.0,  startGold:0},
+  hard:   {nm:'HARD',   em:'🔥', col:'#FF9F0A', hp:1.6,  spd:1.15, rw:1.6,  startGold:-30},
+  insane: {nm:'INSANE', em:'💀', col:'#FF2D55', hp:2.4,  spd:1.3,  rw:2.4,  startGold:-60},
+};
+// ── Roguelite per-run upgrades (pick 1 between waves) ──
+const TD_RUN_UPGRADES=[
+  {id:'dmg',  em:'⚔️', nm:'+25% SKADA',    desc:'Alla torn slår hårdare', fn:t=>{t.runUp.dmg+=0.25;}},
+  {id:'range',em:'🎯', nm:'+20% RÄCKVIDD',  desc:'Torn ser längre',        fn:t=>{t.runUp.range+=0.2;}},
+  {id:'crit', em:'💥', nm:'+15% KRIT',      desc:'Chans till 2.5× skada',  fn:t=>{t.runUp.crit+=0.15;}},
+  {id:'rate', em:'⚡', nm:'+20% ELDHAST.',  desc:'Skjut snabbare',         fn:t=>{t.runUp.fireRate+=0.2;}},
+  {id:'gold', em:'💰', nm:'+35% GULD',      desc:'Mer guld per kill',      fn:t=>{t.runUp.goldMult+=0.35;}},
+  {id:'heal', em:'❤️', nm:'+50 BAS-HP',     desc:'Reparera & höj max',     fn:t=>{t.baseMax+=50;t.baseHp=Math.min(t.baseMax,t.baseHp+50);}},
+  {id:'cash', em:'🪙', nm:'+80 GULD NU',    desc:'Direkt kontant',         fn:t=>{t.gold+=80;}},
+  {id:'aoe',  em:'💣', nm:'+25% AOE',       desc:'Större explosioner',     fn:t=>{t.runUp.aoe+=0.25;}},
+];
 const TD_TOWER_DEFS={
   archer:{em:'🏹',nm:'ARCHER', col:'#39FF14',cost:50, range:2.5,dmg:10,rate:22,type:'single',desc:'Snabb, enkel',
     upgrades:[
@@ -6258,8 +6281,20 @@ function _tdShowMapPicker(){
           </div>
         </div>
       </div>`).join('')}
-    <div style="font-size:9px;color:rgba(255,255,255,.3);font-family:var(--mono)">Svårare bana = mer guld</div>`;
+    <div style="font-size:9px;font-weight:900;color:rgba(255,255,255,.4);font-family:var(--mono);letter-spacing:2px;margin-top:4px">SVÅRIGHETSGRAD</div>
+    <div id="tdDiffRow" style="display:flex;gap:6px;width:100%;max-width:320px">
+      ${Object.entries(TD_DIFFS).map(([k,d])=>`<div onclick="window._tdPickDiff('${k}')" data-diff="${k}" style="flex:1;background:${(G.tdDifficulty||'normal')===k?d.col+'22':'rgba(255,255,255,.04)'};border:1.5px solid ${(G.tdDifficulty||'normal')===k?d.col:'rgba(255,255,255,.12)'};border-radius:12px;padding:9px 4px;text-align:center;cursor:pointer;-webkit-tap-highlight-color:transparent"><div style="font-size:19px">${d.em}</div><div style="font-size:8px;font-weight:900;font-family:var(--mono);color:${(G.tdDifficulty||'normal')===k?d.col:'rgba(255,255,255,.5)'};margin-top:2px">${d.nm}</div><div style="font-size:6.5px;color:rgba(255,255,255,.35);font-family:var(--mono)">${d.rw}× 💰</div></div>`).join('')}
+    </div>
+    <div style="font-size:9px;color:rgba(255,255,255,.3);font-family:var(--mono)">Svårare = tuffare fiender & mer guld</div>`;
   document.body.appendChild(picker);
+  window._tdPickDiff=(k)=>{
+    if(!TD_DIFFS[k])return;G.tdDifficulty=k;save&&save();vibe&&vibe(10);
+    document.querySelectorAll('#tdDiffRow [data-diff]').forEach(el=>{
+      const dk=el.getAttribute('data-diff'),d=TD_DIFFS[dk],on=dk===k;
+      el.style.background=on?d.col+'22':'rgba(255,255,255,.04)';el.style.borderColor=on?d.col:'rgba(255,255,255,.12)';
+      const lbl=el.children[1];if(lbl)lbl.style.color=on?d.col:'rgba(255,255,255,.5)';
+    });
+  };
   window._tdPickMap=(i)=>{
     _tdActiveMap=TD_MAPS_CONFIG[i];
     TD_PATH=_tdActiveMap.path;
@@ -6281,7 +6316,9 @@ function openBattle(){
   _td._mapPicked=false; // reset for next session
   const hs=parseInt(localStorage.getItem('kv8_tdHS')||'0');
   const bonusHp=G._tdBonusHp||0;
-  const startGold=(_tdActiveMap?_tdActiveMap.startGold:200)+(G._tdStartGold||0);
+  const diffKey=G.tdDifficulty&&TD_DIFFS[G.tdDifficulty]?G.tdDifficulty:'normal';
+  const diff=TD_DIFFS[diffKey];
+  const startGold=(_tdActiveMap?_tdActiveMap.startGold:200)+(G._tdStartGold||0)+diff.startGold;
   // Apply active map
   if(_tdActiveMap){TD_PATH=_tdActiveMap.path;}
   _td={active:false,wave:1,gold:startGold,baseHp:100+bonusHp,baseMax:100+bonusHp,
@@ -6291,6 +6328,8 @@ function openBattle(){
     shakeT:0,raf:null,lastT:0,paused:false,t:0,speed:1,
     earnedXp:0,earnedCoins:0,_pathCells:null,
     abilityCD:[0,0,0],waveModifier:null,score:0,highscore:hs,totalKills:0,
+    diff:diffKey,diffHp:diff.hp,diffSpd:diff.spd,diffRw:diff.rw,
+    runUp:{dmg:1,range:1,crit:0,fireRate:1,goldMult:1,aoe:1},_waveTimer:null,
   };
   const _baV=$('baVictory');if(_baV)_baV.style.display='none';
   const _baD=$('baDefeat');if(_baD)_baD.style.display='none';
@@ -6311,6 +6350,7 @@ function closeBattle(){
   const f=$('battleArena');if(f)f.classList.remove('open');
   _td.active=false;_td.paused=true;
   if(_td.raf){cancelAnimationFrame(_td.raf);_td.raf=null;}
+  if(_td._waveTimer){clearInterval(_td._waveTimer);_td._waveTimer=null;}
 }
 
 function tdInitCanvas(){
@@ -6330,7 +6370,8 @@ function tdEnemyDefForWave(wave){
     const bIdx=isMegaBoss?Math.min(Math.floor(wave/15)+3,TD_BOSSES.length-1):Math.min(Math.floor(wave/5)-1,2);
     const b=TD_BOSSES[Math.max(0,Math.min(bIdx,TD_BOSSES.length-1))];
     const bScale=1+Math.floor(wave/5)*0.15;
-    return{...b,hp:Math.round(b.hp*bScale),gold:Math.round(b.gold*Math.min(bScale,3)),isBoss:true,isMegaBoss};
+    const dHp=_td.diffHp||1,dSpd=_td.diffSpd||1;
+    return{...b,hp:Math.round(b.hp*bScale*dHp),speed:b.speed*dSpd,gold:Math.round(b.gold*Math.min(bScale,3)),isBoss:true,isMegaBoss};
   }
   // Unlock harder enemies as waves progress
   const pool=TD_ENEMIES.filter((_,i)=>i<Math.min(TD_ENEMIES.length,3+Math.floor(wave/3)));
@@ -6339,7 +6380,8 @@ function tdEnemyDefForWave(wave){
   const expBonus=wave>10?Math.pow(1.08,wave-10)-1:0;
   const scale=linearScale+expBonus;
   const speedScale=Math.min(3.2,1+(wave-1)*0.05+(wave>15?Math.pow(1.04,wave-15)-1:0));
-  let e={...base,hp:Math.max(6,Math.round(base.hp*scale)),speed:Math.min(3.0,base.speed*speedScale),gold:Math.round((base.gold||8)*(1+wave*0.05)),isBoss:false};
+  const dHp=_td.diffHp||1,dSpd=_td.diffSpd||1;
+  let e={...base,hp:Math.max(6,Math.round(base.hp*scale*dHp)),speed:Math.min(3.6,base.speed*speedScale*dSpd),gold:Math.round((base.gold||8)*(1+wave*0.05)),isBoss:false};
   // Apply wave modifier
   if(_td.waveModifier==='horde')e.speed*=1.4;
   if(_td.waveModifier==='elite'){e.hp=Math.round(e.hp*1.8);e.gold=Math.round(e.gold*2);}
@@ -6457,7 +6499,7 @@ function tdUpdate(dt){
     tower.fireTimer=Math.max(0,(tower.fireTimer||0)-dt);
     if(tower.fireTimer>0)continue;
     const def=tdGetDef(tower);if(!def||!def.range)continue;
-    const rangePx=def.range*(G._tdRngMult||1)*_tdCell;
+    const rangePx=def.range*(G._tdRngMult||1)*((_td.runUp&&_td.runUp.range)||1)*_tdCell;
     const tx=_tdCX(tower.col),ty=_tdCY(tower.row);
     const inRange=_td.enemies.filter(e=>{if(e.progress<0)return false;const{x,y}=tdEnemyPos(e);return Math.hypot(x-tx,y-ty)<=rangePx;}).sort((a,b)=>b.progress-a.progress);
     if(!inRange.length)continue;
@@ -6466,18 +6508,18 @@ function tdUpdate(dt){
     const waveMult=1+_td.wave*0.025+(_td._karmaSurgeActive?(((G.mood||100)/100)*0.15):0);
     // Helper: calc damage with armor and weakness
     const calcDmg=(e,baseDmg)=>{
-      let d=Math.round(baseDmg*(G._tdDmgMult||1)*(1+_td.wave*0.025));
+      let d=Math.round(baseDmg*(G._tdDmgMult||1)*((_td.runUp&&_td.runUp.dmg)||1)*(1+_td.wave*0.025));
       if(e.weakness===tower.type)d=Math.round(d*2.2);          // right tool → big bonus
       else if(e.magicImmune&&(tower.type==='mage'||tower.type==='frost'))d=Math.round(d*0.1);
       else d=Math.round(d*0.62);                                // wrong tool → resist, forces tower variety
       if(e.armor&&tower.type!=='laser'&&tower.type!=='sniper')d=Math.round(d*(1-e.armor));
-      // Crit (base + permanent bonus)
-      const critChance=(def.crit||0)+(G._tdCritBonus||0);
+      // Crit (base + permanent bonus + run upgrade)
+      const critChance=(def.crit||0)+(G._tdCritBonus||0)+((_td.runUp&&_td.runUp.crit)||0);
       if(critChance>0&&Math.random()<critChance)d=Math.round(d*2.5);
       return Math.max(1,d);
     };
     if(tType==='aoe'||tType==='beam'){
-      const{x:px,y:py}=tdEnemyPos(primary);const aR=(def.aoeR||0.9)*(G._tdAoeMult||1)*_tdCell;
+      const{x:px,y:py}=tdEnemyPos(primary);const aR=(def.aoeR||0.9)*(G._tdAoeMult||1)*((_td.runUp&&_td.runUp.aoe)||1)*_tdCell;
       _td.projectiles.push({x:tx,y:ty,tx:px,ty:py,col:tdSafeCol(def.col,'#BF5FFF'),life:8,aoe:aR});
       const hitList=tType==='beam'?inRange:(def.aoeR>0?_td.enemies:inRange.slice(0,1));
       for(const e of hitList){
@@ -6518,7 +6560,7 @@ function tdUpdate(dt){
         });
       }
     }
-    tower.fireTimer=def.rate||30;tower.firingT=8;
+    tower.fireTimer=(def.rate||30)/((_td.runUp&&_td.runUp.fireRate)||1);tower.firingT=8;
   }
   for(const t of _td.towers)if(t.firingT>0)t.firingT=Math.max(0,t.firingT-dt);
   // Ambient
@@ -6558,8 +6600,9 @@ function tdKillEnemy(e){
   _td.killsThisWave++;_td.totalKills=(_td.totalKills||0)+1;
   advanceDailyMission&&advanceDailyMission('tdkill',1);advanceQuest&&advanceQuest('tdkill',1);
   if(e.isBoss){const bk=parseInt(localStorage.getItem('kv8_tdBossKills')||'0');localStorage.setItem('kv8_tdBossKills',bk+1);checkAchievements&&checkAchievements();}
-  const gold=Math.round((e.gold||8)*(G._tdGoldMult||1));_td.gold+=gold;
-  const xp=e.reward?.xp||3,coins=e.reward?.coins||2;
+  const gold=Math.round((e.gold||8)*(G._tdGoldMult||1)*((_td.runUp&&_td.runUp.goldMult)||1));_td.gold+=gold;
+  const _rw=_td.diffRw||1;
+  const xp=Math.round((e.reward?.xp||3)*_rw),coins=Math.round((e.reward?.coins||2)*_rw);
   _td.earnedXp+=xp;_td.earnedCoins+=coins;
   // Score: base 10 pts per kill × wave multiplier × boss bonus
   const scorePts=Math.round((e.isBoss?500:10)*(1+_td.wave*0.1)*(e.isMegaBoss?3:1));
@@ -7116,10 +7159,40 @@ function tdWaveClear(){
     '<div class="ba-reward-chip">+'+_td.earnedXp+' XP</div>'+
     '<div class="ba-reward-chip" style="animation-delay:.15s;color:var(--y)">+'+_td.earnedCoins+' ⚡</div>'+
     (tdPts>0?'<div class="ba-reward-chip" style="animation-delay:.3s;color:#BF5FFF">+'+tdPts+' TD PTS</div>':'');
-  const btn=$('baContBtn');if(btn){btn.textContent='WAVE '+(w+1)+' →';btn.onclick=battleContinue;}
+  const btn=$('baContBtn');if(btn)btn.onclick=battleContinue;
+  // Roguelite: offer 3 random upgrades for this run
+  _tdRenderUpgradeChoices();
+  // Auto-advance countdown (10s) — or tap an upgrade / START to go now
+  _tdStartWaveCountdown(10);
   // Daily mission: wave cleared
   advanceDailyMission&&advanceDailyMission('wave',1);advanceQuest('tdwave',1);
   SFX.win&&SFX.win();vibe([30,20,100,20,80]);
+}
+function _tdRenderUpgradeChoices(){
+  const box=$('baUpgrades');if(!box)return;
+  // pick 3 distinct random upgrades
+  const pool=[...TD_RUN_UPGRADES];const pick=[];
+  for(let i=0;i<3&&pool.length;i++){pick.push(pool.splice(Math.floor(Math.random()*pool.length),1)[0]);}
+  box.innerHTML=pick.map(u=>`<div onclick="_tdPickUpgrade('${u.id}')" style="background:rgba(57,255,20,.06);border:1.5px solid rgba(57,255,20,.3);border-radius:12px;padding:9px 5px;text-align:center;cursor:pointer;-webkit-tap-highlight-color:transparent;transition:transform .1s" ontouchstart="this.style.transform='scale(.93)'" ontouchend="this.style.transform=''"><div style="font-size:22px">${u.em}</div><div style="font-size:8.5px;font-weight:900;color:#39FF14;font-family:var(--mono);margin-top:3px;line-height:1.1">${u.nm}</div><div style="font-size:7px;color:rgba(255,255,255,.4);font-family:var(--mono);margin-top:2px;line-height:1.1">${u.desc}</div></div>`).join('');
+}
+function _tdPickUpgrade(id){
+  const u=TD_RUN_UPGRADES.find(x=>x.id===id);if(!u)return;
+  try{u.fn(_td);}catch(e){}
+  vibe&&vibe([15,10,30]);SFX&&SFX.win&&SFX.win();
+  showT(u.em+' '+u.nm+' aktiverad!','g');
+  tdUpdateGoldUI&&tdUpdateGoldUI();tdUpdateBaseUI&&tdUpdateBaseUI();
+  battleContinue();
+}
+function _tdStartWaveCountdown(sec){
+  if(_td._waveTimer){clearInterval(_td._waveTimer);_td._waveTimer=null;}
+  let remain=sec*10; // decis
+  const fill=$('baCountFill'),num=$('baCountNum');
+  _td._waveTimer=setInterval(()=>{
+    remain--;
+    if(fill)fill.style.width=Math.max(0,remain/(sec*10)*100)+'%';
+    if(num)num.textContent=Math.ceil(remain/10);
+    if(remain<=0){clearInterval(_td._waveTimer);_td._waveTimer=null;const v=$('baVictory');if(v&&v.style.display!=='none')battleContinue();}
+  },100);
 }
 
 function tdFinalRewards(){
@@ -7146,6 +7219,7 @@ function tdFinalRewards(){
 }
 
 function battleContinue(){
+  if(_td._waveTimer){clearInterval(_td._waveTimer);_td._waveTimer=null;}
   const v=$('baVictory');if(v)v.style.display='none';
   tdFinalRewards();_td.wave++;
   const baseRegen=15+(G._tdHpRegen||0);
@@ -7208,7 +7282,7 @@ function _offsetLatLon(lat,lon,distM,bearingDeg){
   }catch(e){return{lat:lat,lon:lon};}
 }
 function fmtD(m){return m<1000?Math.round(m)+'m':+(m/1000).toFixed(1)+'km';}
-function save(){try{const d={n:G.name,p:G.petEmoji,pn:G.petName,l:G.level,c:G.coins,kc:G.kc||0,st:G.streak,x:G.exp,as:G.actionStat,cs:G.commerceStat,ss:G.socialStat,g:JSON.stringify(G.gear),eg:G.equippedGear||'',sek:G.totalSEK,ts:G.trustScore,posts:G.postCount,b:G.bountiesDone,hu:G.hunger,en:G.energy,mo:G.mood,brands:JSON.stringify(G.brands),circles:JSON.stringify(G.circles),sw:JSON.stringify(G.streakWeek),petCfg:JSON.stringify(G.petConfig),pm:G.premium?1:0,pt:G.premiumTier,wld:G.world,bond:JSON.stringify(G.todayBond),bdate:G.bondDate,wp:G.worldPoints,bz:JSON.stringify(G.builtZones),wpc:G.wildPetsCaught,wflash:G.wldFlash,wbattle:G.wldBattle,wmarket:G.wldMarket,wstreak:G.wldStreak,wsocial:G.wldSocial,po:G.packsOpened,col:JSON.stringify(G.collectibles),tp:G.talentPoints,tl:JSON.stringify(G.talents),tlvl:JSON.stringify(G.talentLvls||{}),diary:JSON.stringify(G.diaryEntries.slice(-20)),ls:G.lastSpin,ltt:G.lastTalkTime||0,lwb:G.lastWpBoost||0,castle:JSON.stringify(G.castle||{}),ownedZones:JSON.stringify(G.ownedZones||[]),mapZones:JSON.stringify(G.mapZones||[]),expeditionVisits:JSON.stringify(G.expeditionVisits||[]),terrLastIncome:JSON.stringify(G.terrLastIncome||{}),dnaMixes:JSON.stringify(G.dnaMixes||[]),lastFortune:G.lastFortune||'',lft:G.lastFlashTime||0,lfd:G.lastFlashDate||'',pdna:JSON.stringify(G.petDNA||{body:'base',element:'none',perk:'none'}),dinv:JSON.stringify(G.dnaInventory||[]),pmem:JSON.stringify(G.petMemory||{}),expd:JSON.stringify(G.expedition||{}),pbd:G.birthDate||0,psk:G.petSick?1:0,pmems:JSON.stringify(G.petMemories||[]),lpc:G.lastPassiveCheck||0,dmp:JSON.stringify(G.dmProgress||{}),dmc:JSON.stringify(G.dmCompleted||{}),dmd:G.dmDate||0,tdup:JSON.stringify(G.tdUpgrades||{}),tdpts:G.tdPoints||0,cos:JSON.stringify(G.cosmetics||{skin:null,bg:'default',accessories:[]}),stdt:G.stepsToday||0,sxp:G.seasonXP||0};for(const k in d)localStorage.setItem('kv8_'+k,d[k]);localStorage.setItem('kv8_lastFortune',G.lastFortune||'');}catch(e){}sbQueueSync();}
+function save(){try{const d={n:G.name,p:G.petEmoji,pn:G.petName,l:G.level,c:G.coins,kc:G.kc||0,st:G.streak,x:G.exp,as:G.actionStat,cs:G.commerceStat,ss:G.socialStat,g:JSON.stringify(G.gear),eg:G.equippedGear||'',sek:G.totalSEK,ts:G.trustScore,posts:G.postCount,b:G.bountiesDone,hu:G.hunger,en:G.energy,mo:G.mood,brands:JSON.stringify(G.brands),circles:JSON.stringify(G.circles),sw:JSON.stringify(G.streakWeek),petCfg:JSON.stringify(G.petConfig),pm:G.premium?1:0,pt:G.premiumTier,wld:G.world,bond:JSON.stringify(G.todayBond),bdate:G.bondDate,wp:G.worldPoints,bz:JSON.stringify(G.builtZones),wpc:G.wildPetsCaught,wflash:G.wldFlash,wbattle:G.wldBattle,wmarket:G.wldMarket,wstreak:G.wldStreak,wsocial:G.wldSocial,po:G.packsOpened,col:JSON.stringify(G.collectibles),tp:G.talentPoints,tl:JSON.stringify(G.talents),tlvl:JSON.stringify(G.talentLvls||{}),diary:JSON.stringify(G.diaryEntries.slice(-20)),ls:G.lastSpin,ltt:G.lastTalkTime||0,lwb:G.lastWpBoost||0,castle:JSON.stringify(G.castle||{}),ownedZones:JSON.stringify(G.ownedZones||[]),mapZones:JSON.stringify(G.mapZones||[]),expeditionVisits:JSON.stringify(G.expeditionVisits||[]),terrLastIncome:JSON.stringify(G.terrLastIncome||{}),dnaMixes:JSON.stringify(G.dnaMixes||[]),lastFortune:G.lastFortune||'',lft:G.lastFlashTime||0,lfd:G.lastFlashDate||'',pdna:JSON.stringify(G.petDNA||{body:'base',element:'none',perk:'none'}),dinv:JSON.stringify(G.dnaInventory||[]),pmem:JSON.stringify(G.petMemory||{}),expd:JSON.stringify(G.expedition||{}),pbd:G.birthDate||0,psk:G.petSick?1:0,pmems:JSON.stringify(G.petMemories||[]),lpc:G.lastPassiveCheck||0,dmp:JSON.stringify(G.dmProgress||{}),dmc:JSON.stringify(G.dmCompleted||{}),dmd:G.dmDate||0,tdup:JSON.stringify(G.tdUpgrades||{}),tdpts:G.tdPoints||0,tdd:G.tdDifficulty||'normal',cos:JSON.stringify(G.cosmetics||{skin:null,bg:'default',accessories:[]}),stdt:G.stepsToday||0,sxp:G.seasonXP||0};for(const k in d)localStorage.setItem('kv8_'+k,d[k]);localStorage.setItem('kv8_lastFortune',G.lastFortune||'');}catch(e){}sbQueueSync();}
 
 // ── DNA + MOOD SYSTEM ──
 function getPetDNA(){
@@ -17470,6 +17544,7 @@ async function sbLoadProfile(){
     try{const dmp=localStorage.getItem('kv8_dmp');G.dmProgress=dmp?JSON.parse(dmp):{};const dmc=localStorage.getItem('kv8_dmc');G.dmCompleted=dmc?JSON.parse(dmc):{};G.dmDate=parseInt(localStorage.getItem('kv8_dmd')||'0');}catch(e){G.dmProgress={};G.dmCompleted={};}
     try{const tdup=localStorage.getItem('kv8_tdup');G.tdUpgrades=tdup?JSON.parse(tdup):{};}catch(e){G.tdUpgrades={};}
     G.tdPoints=parseInt(localStorage.getItem('kv8_tdpts')||'0');
+    G.tdDifficulty=localStorage.getItem('kv8_tdd')||'normal';
     _applyTDUpgrades&&_applyTDUpgrades();
     updateEvolBadge&&updateEvolBadge();_applyCosmeticsVisually&&_applyCosmeticsVisually();applyPetSkills&&applyPetSkills();applyPersonalityBonus&&applyPersonalityBonus();initTreasureHunt&&initTreasureHunt();checkRefParam&&checkRefParam();_checkOfflineCoins&&_checkOfflineCoins();localStorage.setItem('kv8_lastOnline',Date.now());setTimeout(()=>{updatePersonalityBadge&&updatePersonalityBadge();openPetSkills&&openPetSkills();_wcUpdateCard&&_wcUpdateCard();_scheduleRandomEvents&&_scheduleRandomEvents();const rt=$('pvpRankTag');if(rt){const r=_pvpGetRank&&_pvpGetRank();if(r)rt.textContent=r.ico+' '+r.nm;}const dt=$('dojoTPTag');if(dt)dt.textContent=(localStorage.getItem('kv8_dojoTP')||'0')+' TP';showTutorial&&showTutorial();},1200);
     save(); // mirror to localStorage cache
@@ -17806,6 +17881,7 @@ function _loadFromLocalStorage(){
     try{const dmp=localStorage.getItem('kv8_dmp');G.dmProgress=dmp?JSON.parse(dmp):{};const dmc=localStorage.getItem('kv8_dmc');G.dmCompleted=dmc?JSON.parse(dmc):{};G.dmDate=parseInt(localStorage.getItem('kv8_dmd')||'0');}catch(e){G.dmProgress={};G.dmCompleted={};}
     try{const tdup=localStorage.getItem('kv8_tdup');G.tdUpgrades=tdup?JSON.parse(tdup):{};}catch(e){G.tdUpgrades={};}
     G.tdPoints=parseInt(localStorage.getItem('kv8_tdpts')||'0');
+    G.tdDifficulty=localStorage.getItem('kv8_tdd')||'normal';
     _applyTDUpgrades&&_applyTDUpgrades();
     updateEvolBadge&&updateEvolBadge();_applyCosmeticsVisually&&_applyCosmeticsVisually();applyPetSkills&&applyPetSkills();applyPersonalityBonus&&applyPersonalityBonus();initTreasureHunt&&initTreasureHunt();checkRefParam&&checkRefParam();_checkOfflineCoins&&_checkOfflineCoins();localStorage.setItem('kv8_lastOnline',Date.now());setTimeout(()=>{updatePersonalityBadge&&updatePersonalityBadge();openPetSkills&&openPetSkills();_wcUpdateCard&&_wcUpdateCard();_scheduleRandomEvents&&_scheduleRandomEvents();const rt=$('pvpRankTag');if(rt){const r=_pvpGetRank&&_pvpGetRank();if(r)rt.textContent=r.ico+' '+r.nm;}const dt=$('dojoTPTag');if(dt)dt.textContent=(localStorage.getItem('kv8_dojoTP')||'0')+' TP';showTutorial&&showTutorial();},1200);
     let _dailyShownToday=false;
