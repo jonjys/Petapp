@@ -1397,15 +1397,16 @@ button:active{opacity:.85;}
 .mkt-cats::-webkit-scrollbar{display:none;}
 .mkt-cat{padding:6px 12px;border-radius:18px;font-size:11px;font-weight:700;cursor:pointer;background:var(--c1);border:1px solid var(--line);white-space:nowrap;flex-shrink:0;-webkit-tap-highlight-color:transparent;transition:all .1s;}
 .mkt-cat.on{background:var(--g);color:var(--bg);border-color:var(--g);}
-.mkt-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:8px 14px;}
-.mkt-card{background:var(--c1);border:1px solid var(--line);border-radius:14px;padding:11px 10px;cursor:pointer;transition:transform .1s;-webkit-tap-highlight-color:transparent;overflow:hidden;}
-.mkt-card:active{transform:scale(.95);}
-.mkt-em{font-size:30px;display:block;margin-bottom:5px;}
-.mkt-nm{font-size:12px;font-weight:800;margin-bottom:2px;}
-.mkt-desc{font-size:9px;color:var(--t3);margin-bottom:7px;}
-.mkt-footer{display:flex;align-items:center;justify-content:space-between;}
-.mkt-price{font-size:13px;font-weight:900;color:var(--y);font-family:var(--mono);}
-.mkt-buy{font-size:10px;font-weight:900;padding:5px 11px;border-radius:8px;background:var(--g);color:var(--bg);border:none;cursor:pointer;font-family:var(--ff);transition:transform .1s;}
+.mkt-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:7px;padding:8px 12px;}
+.mkt-card{background:var(--c1);border:1px solid var(--line);border-radius:13px;padding:9px 7px 8px;cursor:pointer;transition:transform .1s,border-color .15s;-webkit-tap-highlight-color:transparent;overflow:hidden;display:flex;flex-direction:column;align-items:center;text-align:center;}
+.mkt-card:active{transform:scale(.94);}
+.mkt-card:hover{border-color:rgba(255,255,255,.2);}
+.mkt-em{font-size:26px;display:block;margin-bottom:3px;}
+.mkt-nm{font-size:10px;font-weight:800;margin-bottom:1px;line-height:1.15;}
+.mkt-desc{font-size:8px;color:var(--t3);margin-bottom:5px;line-height:1.2;}
+.mkt-footer{display:flex;flex-direction:column;align-items:center;gap:4px;width:100%;margin-top:auto;}
+.mkt-price{font-size:12px;font-weight:900;color:var(--y);font-family:var(--mono);}
+.mkt-buy{font-size:9px;font-weight:900;padding:4px 0;width:100%;border-radius:8px;background:var(--g);color:var(--bg);border:none;cursor:pointer;font-family:var(--ff);transition:transform .1s;}
 .mkt-buy:active{transform:scale(.88);}
 .mkt-sell-row{display:flex;gap:6px;padding:8px 14px;}
 .mkt-sell-btn{flex:1;padding:11px;border-radius:12px;background:var(--c1);border:1.5px dashed rgba(57,255,20,.35);font-size:13px;font-weight:800;color:var(--g);cursor:pointer;font-family:var(--ff);text-align:center;-webkit-tap-highlight-color:transparent;transition:all .1s;}
@@ -2290,8 +2291,9 @@ button:active{opacity:.85;}
 .cw-bld-btn{background:#101828;border:1.5px solid rgba(255,255,255,.12);border-radius:12px;padding:8px 12px;cursor:pointer;min-width:70px;text-align:center;flex-shrink:0;-webkit-tap-highlight-color:transparent;color:var(--t1);}
 .cw-bld-btn.owned{border-color:rgba(255,200,0,.5);background:rgba(255,200,0,.06);}
 .cw-bld-btn:active{transform:scale(.93);}
-.cw-popup{position:absolute;bottom:140px;left:50%;transform:translateX(-50%);z-index:10;min-width:200px;}
-.cw-popup-inner{background:#101828;border:1.5px solid rgba(255,200,0,.4);border-radius:18px;padding:16px 20px;text-align:center;box-shadow:0 0 30px rgba(255,200,0,.15);}
+.cw-popup{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);z-index:30;width:min(86%,300px);animation:cwPopIn .28s cubic-bezier(.34,1.56,.64,1) both;}
+@keyframes cwPopIn{from{opacity:0;transform:translate(-50%,-50%) scale(.82)}to{opacity:1;transform:translate(-50%,-50%) scale(1)}}
+.cw-popup-inner{background:linear-gradient(160deg,rgba(20,26,44,.98),rgba(10,12,26,.98));border:1.5px solid rgba(255,255,255,.14);border-radius:22px;padding:22px 20px;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,.6),0 0 40px rgba(0,217,255,.12),inset 0 1px 0 rgba(255,255,255,.08);backdrop-filter:blur(12px);}
 
 /* ═══════════════════════════════════════════════════
    PREMIUM REDESIGN — bort med neo-brutalism, in med glow
@@ -10833,6 +10835,7 @@ function _prInitGame(){
   _pr.buildings=Array.from({length:14},()=>({x:Math.random()*W,h:40+Math.random()*200,w:28+Math.random()*80,spd:0.3+Math.random()*.5,col:`hsl(${200+Math.random()*60},55%,${3+Math.random()*7}%)`}));
   _pr.stars=Array.from({length:30},()=>({x:Math.random()*W,y:Math.random()*H*.55,r:Math.random()*1.5+.3,a:Math.random()*6.28}));
   _pr.popups=[];
+  _pr.surge=0;_pr.surgeActive=0;
   // Foreground parallax crystals (fast scroll = depth)
   _pr.fg=Array.from({length:10},()=>({x:Math.random()*W,h:14+Math.random()*30,w:8+Math.random()*16,spd:1.6+Math.random()*.8}));
   _pr.level=parseInt(localStorage.getItem('kv8_prLv')||'1');
@@ -10899,6 +10902,12 @@ function _prUpdate(canvas){
     const oy=ob.y;
     const hitX=ob.x<_pr.x+petR&&ob.x+ob.w>_pr.x-petR;
     const hitY=Math.abs(_pr.y-oy)<petR+ob.h*.5;
+    // KARMA SURGE: smash through obstacles for bonus instead of taking damage
+    if(hitX&&hitY&&_pr.surgeActive>0){
+      _pr.score+=15;(_pr.popups||(_pr.popups=[])).push({x:ob.x,y:oy-14,txt:'+15 💥',col:'#FFE600',life:1});
+      for(let p=0;p<8;p++)_pr.particles.push({x:ob.x+14,y:oy,vx:(Math.random()-.5)*6,vy:-(1+Math.random()*4),life:16,col:['#FF007F','#FFE600','#00D9FF','#39FF14'][p%4]});
+      _pr.obstacles.splice(i,1);vibe&&vibe(6);continue;
+    }
     if(hitX&&hitY&&!_pr.shield&&!(_pr.shieldTimer>0)&&(now-(_pr.lastHitT||0))>700){
       _pr.pHp--;_pr.lastHitT=now;vibe&&vibe([40,20,60]);
       _pr.combo=0;_pr.comboMult=1;_pr.comboColor=null;
@@ -10921,6 +10930,9 @@ function _prUpdate(canvas){
       else{_pr.combo=1;_pr.comboColor=gm.ci;_pr.comboMult=1;}
       const pts=10*_pr.comboMult;
       _pr.score+=pts;
+      // Charge KARMA SURGE meter
+      if(_pr.surgeActive<=0){_pr.surge=Math.min(100,(_pr.surge||0)+9);
+        if(_pr.surge>=100){_pr.surge=0;_pr.surgeActive=260;showT&&showT('🌈 KARMA SURGE!','pk');vibe&&vibe([30,15,60,15,90]);}}
       (_pr.popups||(_pr.popups=[])).push({x:gm.x,y:gm.y-12,txt:'+'+pts+(_pr.comboMult>1?' ×'+_pr.comboMult:''),col:gm.col,life:1});
       for(let p=0;p<5;p++)_pr.particles.push({x:gm.x,y:gm.y,vx:(Math.random()-.5)*4,vy:-(1+Math.random()*3),life:18,col:gm.col});
       if(_pr.comboMult>1){const cb=$('prComboBar');if(cb){cb.style.display='block';$('prComboMult').textContent=_pr.comboMult;}}
@@ -10943,6 +10955,11 @@ function _prUpdate(canvas){
   }
   if(_pr.shieldTimer>0){_pr.shieldTimer--;if(_pr.shieldTimer<=0)_pr.shield=false;}
   if(_pr.magnetTimer>0)_pr.magnetTimer--;
+  if(_pr.surgeActive>0){_pr.surgeActive--;
+    // rainbow trail while surging
+    if(_pr.t%2===0)_pr.particles.push({x:_pr.x,y:_pr.y-8,vx:-(2+Math.random()*2),vy:(Math.random()-.5)*2,life:16,col:`hsl(${(_pr.t*12)%360},90%,60%)`});
+  }
+  _pr.t=(_pr.t||0)+1;
   // Foreground crystals scroll (fast parallax)
   (_pr.fg||[]).forEach(f=>{f.x-=f.spd*spd;if(f.x+f.w<0){f.x=W+f.w;f.h=14+Math.random()*30;f.w=8+Math.random()*16;}});
   // Score popups rise & fade
@@ -11362,9 +11379,9 @@ function _ktwDraw(){
     ctx.fillText((G&&G.petEmoji)||'🐉',topS.x+topS.w/2+_KTW_D*.5,ty-_KTW_DY*.4+Math.sin(t*.1)*1.5);ctx.restore();}
   // milestone banner
   if(_ktw.milestone){_ktw.milestone.life-=.014;if(_ktw.milestone.life<=0)_ktw.milestone=null;
-    else{const ml=_ktw.milestone;ctx.save();ctx.globalAlpha=Math.min(1,ml.life*1.4);ctx.textAlign='center';
-      ctx.font='bold 26px monospace';ctx.fillStyle='#FFE600';ctx.shadowColor='#FFE600';ctx.shadowBlur=20;
-      ctx.fillText(ml.txt,W/2,H*.4);ctx.restore();}}
+    else{const ml=_ktw.milestone;ctx.save();ctx.globalAlpha=Math.min(1,ml.life*1.4);ctx.textAlign='center';ctx.textBaseline='middle';
+      ctx.font='bold 22px monospace';ctx.fillStyle='#FFE600';ctx.shadowColor='#FFE600';ctx.shadowBlur=20;
+      ctx.fillText(ml.txt,W/2,H*.11);ctx.restore();}}
   // perfect flash overlay
   if(_ktw.flash>0){ctx.fillStyle=`rgba(255,255,255,${(_ktw.flash*.12).toFixed(3)})`;ctx.fillRect(0,0,W,H);}
   // height label
@@ -11526,8 +11543,17 @@ function _prDraw(canvas,ctx){
     ctx.save();ctx.globalAlpha=.25+.1*Math.sin(t*.02);ctx.strokeStyle='#FFE040';ctx.lineWidth=1.5;ctx.setLineDash([4,4]);
     ctx.beginPath();ctx.arc(petX2,petY2-8,60,0,Math.PI*2);ctx.stroke();ctx.setLineDash([]);ctx.restore();
   }
-  // Neon aura
-  ctx.save();ctx.shadowColor=th.acc2;ctx.shadowBlur=28;ctx.fillStyle=th.acc2+'18';ctx.beginPath();ctx.arc(petX2,petY2-8,18,0,Math.PI*2);ctx.fill();ctx.restore();
+  // Neon aura (rainbow when KARMA SURGE active)
+  if(_pr.surgeActive>0){
+    const hue=((_pr.t||0)*4)%360;
+    ctx.save();ctx.shadowColor=`hsl(${hue},95%,60%)`;ctx.shadowBlur=34;
+    ctx.strokeStyle=`hsl(${hue},95%,65%)`;ctx.lineWidth=3;ctx.globalAlpha=.8;
+    ctx.beginPath();ctx.arc(petX2,petY2-8,24,0,Math.PI*2);ctx.stroke();
+    ctx.strokeStyle=`hsl(${(hue+120)%360},95%,65%)`;ctx.globalAlpha=.5;
+    ctx.beginPath();ctx.arc(petX2,petY2-8,30,0,Math.PI*2);ctx.stroke();ctx.restore();
+  }else{
+    ctx.save();ctx.shadowColor=th.acc2;ctx.shadowBlur=28;ctx.fillStyle=th.acc2+'18';ctx.beginPath();ctx.arc(petX2,petY2-8,18,0,Math.PI*2);ctx.fill();ctx.restore();
+  }
   // Running legs animation (when grounded) — two cycling feet + dust
   const grounded=_pr.grounded;
   const runCycle=t*.025;
@@ -11564,14 +11590,26 @@ function _prDraw(canvas,ctx){
     ctx.shadowColor=pu.col;ctx.shadowBlur=10;ctx.fillText(pu.txt,pu.x,pu.y);
     ctx.restore();
   });
+  // KARMA SURGE charge meter (top-left, under HP HUD — never collides with combo chip)
+  {const mw=Math.min(110,W*.32),mx=12,my=32;
+   if(_pr.surgeActive>0){
+     const p=_pr.surgeActive/260;const hue=((_pr.t||0)*4)%360;
+     ctx.save();ctx.fillStyle='rgba(0,0,0,.35)';ctx.fillRect(mx,my,mw,5);
+     ctx.fillStyle=`hsl(${hue},95%,60%)`;ctx.shadowColor=`hsl(${hue},95%,60%)`;ctx.shadowBlur=8;ctx.fillRect(mx,my,mw*p,5);
+     ctx.shadowBlur=0;ctx.font='bold 8px monospace';ctx.textAlign='left';ctx.fillStyle=`hsl(${hue},95%,70%)`;ctx.fillText('🌈 SURGE!',mx,my+15);ctx.restore();
+   }else if((_pr.surge||0)>0){
+     ctx.save();ctx.fillStyle='rgba(255,255,255,.08)';ctx.fillRect(mx,my,mw,5);
+     ctx.fillStyle='#FF007F';ctx.shadowColor='#FF007F';ctx.shadowBlur=6;ctx.fillRect(mx,my,mw*(_pr.surge/100),5);
+     ctx.shadowBlur=0;ctx.font='bold 8px monospace';ctx.textAlign='left';ctx.fillStyle='rgba(255,255,255,.4)';ctx.fillText('SURGE '+Math.floor(_pr.surge)+'%',mx,my+15);ctx.restore();
+   }}
   // Combo bar at bottom
   if((_pr.comboColor!==null)&&_pr.comboMult>1){
     const cc=_PR_GEM_COLS[_pr.comboColor]||'#fff';
     ctx.save();ctx.globalAlpha=.55;ctx.fillStyle=cc;ctx.fillRect(0,H-4,W*Math.min(1,(_pr.combo%3+.1)/3),4);ctx.restore();
     // Big combo multiplier flash center-top
     if(_pr.comboMult>=2){
-      ctx.save();ctx.globalAlpha=.35+.25*Math.sin(t*.012);ctx.font='bold 26px monospace';ctx.textAlign='center';
-      ctx.fillStyle=cc;ctx.shadowColor=cc;ctx.shadowBlur=16;ctx.fillText('×'+_pr.comboMult+' COMBO',W/2,H*.22);ctx.restore();
+      ctx.save();ctx.globalAlpha=.35+.25*Math.sin(t*.012);ctx.font='bold 20px monospace';ctx.textAlign='center';
+      ctx.fillStyle=cc;ctx.shadowColor=cc;ctx.shadowBlur=16;ctx.fillText('×'+_pr.comboMult+' COMBO',W/2,H*.11);ctx.restore();
     }
   }
   // iOS emoji overlay
