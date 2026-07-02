@@ -1177,9 +1177,9 @@ button:active{opacity:.85;}
 .nb[data-v="play"].on .nb-inner{background:rgba(255,159,10,.22);}
 .nb[data-v="play"].on .nl{color:#FF9F0A;}
 .nb[data-v="play"].on .ni{transform:scale(1.1);}
-.nb[data-v="world"].on .nb-inner{background:rgba(57,255,20,.22);}
-.nb[data-v="world"].on .nl{color:#39FF14;}
-.nb[data-v="world"].on .ni{transform:scale(1.1);}
+.nb[data-v="world"].on .nb-inner,.nb[data-v="map"].on .nb-inner{background:rgba(57,255,20,.22);}
+.nb[data-v="world"].on .nl,.nb[data-v="map"].on .nl{color:#39FF14;}
+.nb[data-v="world"].on .ni,.nb[data-v="map"].on .ni{transform:scale(1.1);}
 .nb[data-v="me"].on .nb-inner{background:rgba(191,95,255,.22);}
 .nb[data-v="me"].on .nl{color:#BF5FFF;}
 .nb[data-v="me"].on .ni{transform:scale(1.1);}
@@ -2457,7 +2457,7 @@ button:active{opacity:.85;}
 .nb[data-v="play"].on .nb-inner{--nav-glow:rgba(255,159,10,.2);}
 .nb[data-v="social"].on .nb-inner{--nav-glow:rgba(0,217,255,.2);}
 .nb[data-v="explore"].on .nb-inner{--nav-glow:rgba(191,95,255,.2);}
-.nb[data-v="world"].on .nb-inner{--nav-glow:rgba(255,0,127,.2);}
+.nb[data-v="world"].on .nb-inner,.nb[data-v="map"].on .nb-inner{--nav-glow:rgba(255,0,127,.2);}
 .nb[data-v="me"].on .nb-inner{--nav-glow:rgba(255,230,0,.2);}
 .arena-speech{position:absolute;right:100%;top:0;background:rgba(0,0,0,.85);border:1.5px solid rgba(255,45,85,.6);border-radius:10px 10px 0 10px;padding:5px 8px;font-size:9px;font-family:var(--mono);color:#FF2D55;white-space:nowrap;backdrop-filter:blur(4px);}
 
@@ -3367,7 +3367,7 @@ div[style*="LIVE"]{border-radius:16px!important;background:rgba(57,255,20,.03)!i
           <div class="kw-map-badge" id="kwTerrBadge">🌍 TERRITORIUM LV1</div>
           <div class="kw-map-badge pk" id="kwWildBadge" onclick="nav('world')" style="cursor:pointer">🎯 3 WILD PETS HÄR</div>
         </div>
-        <div class="map-ctrls"><div class="mctrl" id="locBtn" onclick="locateMe()">◎</div><div class="mctrl" onclick="nav('world')">🌍</div><div class="mctrl" onclick="nav('uppdrag')">🎯</div></div>
+        <div class="map-ctrls"><div class="mctrl" id="locBtn" onclick="locateMe()">◎</div><div class="mctrl" onclick="openKarmaHome()" style="font-size:17px">🏠</div><div class="mctrl" onclick="nav('world')">🌍</div><div class="mctrl" onclick="nav('uppdrag')">🎯</div></div>
           </div>
         </div>
         <div class="gps-bar">
@@ -4225,7 +4225,7 @@ div[style*="LIVE"]{border-radius:16px!important;background:rgba(57,255,20,.03)!i
     <button class="nb" data-v="play"><div class="nb-inner"><div class="ni">🎮</div><div class="nb-notif" id="playNotif"></div></div><div class="nl">SPELA</div></button>
     <button class="nb" data-v="social"><div class="nb-inner"><div class="ni">💬</div><div class="nb-notif" id="socialNotif"></div></div><div class="nl">SOCIAL</div></button>
     <button class="nb" data-v="explore"><div class="nb-inner"><div class="ni">🔍</div></div><div class="nl">UTFORSKA</div></button>
-    <button class="nb" data-v="world"><div class="nb-inner"><div class="ni">🌍</div></div><div class="nl">VÄRLD</div></button>
+    <button class="nb" data-v="map"><div class="nb-inner"><div class="ni">🌍</div></div><div class="nl">VÄRLD</div></button>
     <button class="nb" data-v="me"><div class="nb-inner"><div class="ni">👤</div></div><div class="nl">JAG</div></button>
   </div>
   <!-- Floating create button -->
@@ -13652,7 +13652,7 @@ function nav(name){
     social:()=>switchSocial('activity',document.querySelector('#socialTabs .tab')),
     uppdrag:()=>{if(!_quests.length)initQuests();renderKmbDaily();renderKmbBoss();_kmbUpdateTimer();},
     shop:()=>{renderSrcFilter();renderShop();},
-    map:()=>{setTimeout(()=>{if(!G.mapInit)locateMe();},200);renderNearby();},
+    map:()=>{setTimeout(()=>{if(!G.mapInit)locateMe();else if(window._leafletMap){try{window._leafletMap.invalidateSize();}catch(e){}}},250);renderNearby();},
     lb:()=>renderLB2('level',document.querySelector('#lbTabs .tab')),
     profile:()=>{updateHUD();renderHistList();renderBadges();const pc=$('view-profile .prof-cover');if(pc){const wc={cosmic:'linear-gradient(135deg,#0d0520 0%,#07040f 50%,#0a0520 100%)',nature:'linear-gradient(135deg,#041a04 0%,#030d03 50%,#071207 100%)',city:'linear-gradient(135deg,#04060f 0%,#030415 50%,#040612 100%)',pixel:'linear-gradient(135deg,#0a0800 0%,#0a0800 50%,#060500 100%)'};pc.style.background=wc[G.world||'cosmic']||wc.cosmic;}},
     explore:()=>{const el=$('explorePetLv');if(el)el.textContent='LV '+G.level;const en=$('explorePetEmoji');if(en)en.textContent=G.petEmoji||'🐾';const enm=$('explorePetName');if(enm)enm.textContent=G.petName||'Din pet';renderWeeklyChallenges();renderCraftGrid();const tp=$('talentTeaserPts');if(tp)tp.textContent=(G.talentPoints||0)+' TP';const ts=$('talentTeaserSub');if(ts)ts.textContent=(G.talents&&G.talents.length>0?G.talents.length+' av 147 förmågor inlärda':'Tjäna Talent Points genom att levla upp');},
@@ -14541,7 +14541,7 @@ const _TOUR=[
   {sel:'.chb.chb-feed',title:'🍖 MATA VARJE DAG!',desc:'Tryck MATA för att ge din pet mat. Dagliga streaks ger bonus-coins!',blink:true,nav:'home'},
   {sel:'.nb[data-v="play"]',title:'🎮 SPELA SPEL',desc:'4 unika spel: Pet Runner (hoppa!), DNA Breaker, Tower Defense + KARMA CITY!',blink:true},
   {sel:'.nb[data-v="explore"]',title:'🔍 UTFORSKA',desc:'KARMA CITY — en levande stad med din pet och tusentals andra spelare. Ta kontroll över zoner!',blink:true,nav:'explore'},
-  {sel:'.nb[data-v="world"]',title:'🌍 VÄRLDEN',desc:'Dagliga uppdrag, vilda pets att fånga och spännande världshändelser.',nav:'world'},
+  {sel:'.nb[data-v="map"]',title:'🌍 KARMA VÄRLDEN',desc:'Din pet och ditt kastel lever på riktiga kartan! Claima zoner, bygg ditt imperium och tryck 🏠 för ditt KARMA HEM.',nav:'map'},
   {sel:'.nb[data-v="me"]',title:'👤 DIN PROFIL',desc:'Se dina stats, achievements och KARMA-poäng — bygg upp din legend!'},
   {noSpot:true,emoji:'💚',title:'DU ÄR REDO!',desc:'Mata din pet varje dag, spela spelen och bygg upp ditt KARMA-imperium!',cta:'SÄTT IGÅNG! 🚀',last:true},
 ];
