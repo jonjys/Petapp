@@ -3917,7 +3917,7 @@ div[style*="LIVE"]{border-radius:16px!important;background:rgba(57,255,20,.03)!i
         </div>
       </div>
       <!-- 2x2 MINI CARDS -->
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:0 14px 10px">
+      <div id="playGamesGrid" style="display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:0 14px 10px">
         <!-- KARMA CITY -->
         <div onclick="openKarmaCity()" ontouchstart="this.style.transform='scale(.94)'" ontouchend="this.style.transform=''" style="border-radius:16px;cursor:pointer;-webkit-tap-highlight-color:transparent;background:linear-gradient(160deg,#010d1a 0%,#020810 100%);border:2px solid rgba(57,255,20,.5);overflow:hidden;box-shadow:0 0 24px rgba(57,255,20,.15);transition:transform .08s;position:relative;grid-column:span 2">
           <div style="padding:16px">
@@ -9617,7 +9617,10 @@ function initMap(lat,lon){
   const m=window._leafletMap=L.map('realMap',{zoomControl:false,attributionControl:false}).setView([lat,lon],15);G.lMap=m;
   L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png',{maxZoom:19,subdomains:'abcd'}).addTo(m);
   const yIco=L.divIcon({html:`<div style="width:48px;height:48px;position:relative;display:flex;align-items:center;justify-content:center"><div style="position:absolute;inset:0;border-radius:50%;border:2px solid rgba(57,255,20,.4);animation:mapPulse 1.8s ease-out infinite"></div><div style="width:42px;height:42px;background:rgba(57,255,20,.15);border:2.5px solid #39FF14;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:22px;box-shadow:0 0 20px rgba(57,255,20,.4),inset 0 0 10px rgba(57,255,20,.1)">${gS().e||'🐉'}</div></div>`,className:'',iconAnchor:[24,24]});
-  G.uMarker=L.marker([lat,lon],{icon:yIco}).addTo(m).bindPopup(`<b>${G.name||'Du'}</b><br>LV${G.level}`);
+  G.uMarker=L.marker([lat,lon],{icon:yIco}).addTo(m).on('click',()=>openKarmaHome());
+  // Castle marker beside you — your KARMA WORLD home base
+  const castleIco=L.divIcon({html:`<div style="width:40px;height:40px;background:rgba(255,230,0,.12);border:2.5px solid #FFE600;border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:20px;box-shadow:0 0 18px rgba(255,230,0,.4)">🏰</div>`,className:'',iconAnchor:[20,20]});
+  G.castleMarker=L.marker([lat+.0006,lon+.0006],{icon:castleIco}).addTo(m).on('click',()=>openKarmaHome());
   [{em:'☕',nm:'Espresso House',lat:lat+.003,lon:lon+.004,sek:150,id:'u1'},{em:'👤',nm:'Anna Berg',lat:lat+.001,lon:lon-.003,sek:500,id:'u2'},{em:'👟',nm:'Stadium Nike',lat:lat-.005,lon:lon+.006,sek:500,id:'u3'}].forEach(p=>{
     const ico=L.divIcon({html:`<div style="position:relative"><div style="width:36px;height:36px;background:rgba(255,204,0,.2);border:2px solid #ffcc00;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:16px">${p.em}</div><div style="position:absolute;top:-13px;right:-8px;background:#ffcc00;color:#04040a;font-size:9px;font-weight:900;padding:1px 4px;border-radius:3px">${p.sek}SEK</div><div style="width:0;height:0;border-left:5px solid transparent;border-right:5px solid transparent;border-top:6px solid #ffcc00;margin:0 auto"></div></div>`,className:'',iconAnchor:[18,42]});
     L.marker([p.lat,p.lon],{icon:ico}).addTo(m).bindPopup(`<b>${p.nm}</b>`).on('click',()=>openUppdragDetail(p.id));
@@ -9697,6 +9700,47 @@ function _spawnPublicPets(){
 function _clearPublicPets(){
   _publicPetMarkers.forEach(m=>{try{window._leafletMap.removeLayer(m);}catch(e){}});
   _publicPetMarkers=[];
+}
+
+// ═══════════════════════════════════════════════════════════
+// ── KARMA HOME HUB — the living world unified in one card ──
+//    Opened by tapping your pet on the real map. Merges pet
+//    care + castle + room + profile via one touch of the pet.
+// ═══════════════════════════════════════════════════════════
+function openKarmaHome(){
+  let m=$('karmaHomeModal');
+  if(!m){
+    m=document.createElement('div');m.id='karmaHomeModal';
+    m.style.cssText='position:fixed;inset:0;z-index:9993;background:rgba(2,4,10,.86);backdrop-filter:blur(8px);display:flex;align-items:center;justify-content:center;padding:20px;';
+    m.addEventListener('click',e=>{if(e.target===m)m.remove();});
+    document.body.appendChild(m);
+  }else{m.innerHTML='';m.style.display='flex';}
+  const cLvl=(G.castle&&G.castle.level)||1;
+  const bcount=Object.values((G.castle&&G.castle.buildings)||{}).filter(v=>v>0).length;
+  const btn='display:flex;flex-direction:column;align-items:center;gap:4px;padding:13px 6px;border-radius:15px;cursor:pointer;font-family:var(--mono);font-weight:900;font-size:10px;-webkit-tap-highlight-color:transparent;border:1.5px solid;';
+  const card=document.createElement('div');
+  card.style.cssText='width:min(90%,360px);background:linear-gradient(160deg,rgba(16,22,40,.98),rgba(8,10,22,.98));border:1.5px solid rgba(255,255,255,.14);border-radius:24px;overflow:hidden;box-shadow:0 24px 70px rgba(0,0,0,.6),0 0 50px rgba(0,217,255,.12);animation:cwPopIn .3s cubic-bezier(.34,1.56,.64,1) both;';
+  card.innerHTML=`
+    <div style="position:relative;padding:20px 18px 14px;text-align:center;background:radial-gradient(ellipse at 50% 0%,rgba(0,217,255,.18),transparent 70%)">
+      <div style="font-size:8px;letter-spacing:3px;color:rgba(0,217,255,.75);font-family:var(--mono);font-weight:900">KARMA WORLD · DITT HEM</div>
+      <div style="font-size:64px;line-height:1;margin:6px 0;filter:drop-shadow(0 0 20px rgba(0,217,255,.5));animation:petBob 1.6s ease-in-out infinite">${G.petEmoji||'🐉'}</div>
+      <div style="font-size:17px;font-weight:900;color:#fff;font-family:var(--mono)">${G.petName||'Min Pet'}</div>
+      <div style="font-size:10px;color:var(--g);font-family:var(--mono);font-weight:900;margin-top:2px">LV ${G.level} · 🏰 KASTEL LV${cLvl} · ${bcount} byggnader</div>
+      <div style="display:flex;gap:6px;justify-content:center;margin-top:10px">
+        <div style="background:rgba(255,159,10,.12);border:1px solid rgba(255,159,10,.3);border-radius:8px;padding:4px 9px;font-size:9px;font-family:var(--mono);color:#FF9F0A;font-weight:900">🍖 ${G.hunger||0}</div>
+        <div style="background:rgba(0,217,255,.12);border:1px solid rgba(0,217,255,.3);border-radius:8px;padding:4px 9px;font-size:9px;font-family:var(--mono);color:#00D9FF;font-weight:900">⚡ ${G.energy||0}</div>
+        <div style="background:rgba(57,255,20,.12);border:1px solid rgba(57,255,20,.3);border-radius:8px;padding:4px 9px;font-size:9px;font-family:var(--mono);color:#39FF14;font-weight:900">😊 ${G.mood||0}</div>
+      </div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:14px 14px 6px">
+      <div onclick="document.getElementById('karmaHomeModal').remove();nav('home')" style="${btn}background:rgba(57,255,20,.08);border-color:rgba(57,255,20,.3);color:#39FF14"><span style="font-size:24px">🐾</span>SKÖT PET</div>
+      <div onclick="document.getElementById('karmaHomeModal').remove();openCastle()" style="${btn}background:rgba(255,230,0,.08);border-color:rgba(255,230,0,.3);color:#FFE600"><span style="font-size:24px">🏰</span>KASTEL</div>
+      <div onclick="document.getElementById('karmaHomeModal').remove();nav('me')" style="${btn}background:rgba(0,217,255,.08);border-color:rgba(0,217,255,.3);color:#00D9FF"><span style="font-size:24px">🛋️</span>MITT RUM</div>
+      <div onclick="document.getElementById('karmaHomeModal').remove();(window.openPetCard||openPetProfileCard||function(){})()" style="${btn}background:rgba(191,95,255,.08);border-color:rgba(191,95,255,.3);color:#BF5FFF"><span style="font-size:24px">✨</span>PROFIL</div>
+    </div>
+    <button onclick="document.getElementById('karmaHomeModal').remove()" style="width:100%;padding:12px;background:rgba(255,255,255,.03);border:none;border-top:1px solid rgba(255,255,255,.08);color:rgba(255,255,255,.5);font-family:var(--mono);font-size:11px;font-weight:900;cursor:pointer;letter-spacing:1px">STÄNG</button>`;
+  m.appendChild(card);
+  vibe&&vibe(12);
 }
 
 // ── LEADERBOARD ──
@@ -13529,6 +13573,8 @@ $('flashBtn').addEventListener('click',()=>openModal('flashModal'));
 // ── PLAY VIEW ──
 function renderPlayView(){
   renderArenaDaily();
+  // Declutter: games front-and-center — move the arena/leaderboard block below the game grid
+  try{const g=$('playGamesGrid'),a=$('arenaDailyWrap');if(g&&a&&!g.parentNode._arenaMoved){g.after(a);g.parentNode._arenaMoved=true;}}catch(e){}
   if(!_quests.length)initQuests();
   const sl=$('spinPlayLabel');if(sl)sl.textContent=G.lastSpin===new Date().toDateString()?'✅ Spinnat idag — kom tillbaka imorgon!':'🎰 Gratis spin tillgängligt nu!';
   const pbt=$('pbBestTag');if(pbt)pbt.textContent='Best: '+(localStorage.getItem('kv8_ktowerBest')||0)+' våningar';
