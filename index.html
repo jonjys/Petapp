@@ -2775,6 +2775,7 @@ div[style*="LIVE"]{border-radius:16px!important;background:rgba(57,255,20,.03)!i
       <div class="pill" style="background:linear-gradient(135deg,rgba(191,95,255,.25),rgba(0,217,255,.15));border:1px solid rgba(191,95,255,.5);border-radius:100px;padding:3px 8px;font-size:11px;font-weight:900;font-family:var(--mono);color:#BF5FFF;display:flex;align-items:center;gap:3px">🔮<b id="hKC">0</b></div>
       <div class="pill pill-r">🔥<b id="hStreak">0</b>d</div>
       <div class="pill" id="premiumBadge" style="display:none;background:linear-gradient(135deg,#FFE600,#FF9F0A);color:#000;font-weight:900;cursor:pointer;border:none" onclick="openModal('premiumModal')">👑</div>
+      <button id="tbHomeHub" onclick="openKarmaHome()" title="KARMA Hem" style="background:linear-gradient(135deg,rgba(0,217,255,.2),rgba(57,255,20,.12));border:1px solid rgba(0,217,255,.45);border-radius:9px;width:32px;height:32px;display:flex;align-items:center;justify-content:center;font-size:15px;cursor:pointer;flex-shrink:0;-webkit-tap-highlight-color:transparent;">🏠</button>
       <button onclick="openSettings()" style="background:var(--c2);border:1px solid var(--line);border-radius:9px;width:32px;height:32px;display:flex;align-items:center;justify-content:center;font-size:16px;cursor:pointer;flex-shrink:0;-webkit-tap-highlight-color:transparent;">⚙️</button>
     </div>
     <div class="mw" style="display:none">
@@ -4221,7 +4222,6 @@ div[style*="LIVE"]{border-radius:16px!important;background:rgba(57,255,20,.03)!i
     <button class="nb" data-v="social"><div class="nb-inner"><div class="ni">💬</div><div class="nb-notif" id="socialNotif"></div></div><div class="nl">SOCIAL</div></button>
     <button class="nb" data-v="explore"><div class="nb-inner"><div class="ni">🔍</div></div><div class="nl">UTFORSKA</div></button>
     <button class="nb" data-v="map"><div class="nb-inner"><div class="ni">🌍</div></div><div class="nl">VÄRLD</div></button>
-    <button class="nb" data-v="me"><div class="nb-inner"><div class="ni">👤</div></div><div class="nl">JAG</div></button>
   </div>
   <!-- Floating create button -->
   <button id="flashBtn" onclick="openModal('flashModal')" style="position:fixed;bottom:calc(var(--sab,0px) + 72px);right:14px;z-index:200;width:54px;height:54px;border-radius:18px;background:linear-gradient(135deg,#FF2D55 0%,#ff007f 50%,#BF5FFF 100%);border:2px solid rgba(255,255,255,.22);font-size:26px;cursor:pointer;box-shadow:0 6px 28px rgba(255,45,85,.65),0 0 50px rgba(255,45,85,.2),0 0 0 1.5px rgba(255,255,255,.1),inset 0 1px 0 rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center;-webkit-tap-highlight-color:transparent;animation:fabPulse 2.5s ease-in-out infinite">⚡</button>
@@ -9730,11 +9730,14 @@ function openKarmaHome(){
         <div style="background:rgba(57,255,20,.12);border:1px solid rgba(57,255,20,.3);border-radius:8px;padding:4px 9px;font-size:9px;font-family:var(--mono);color:#39FF14;font-weight:900">😊 ${G.mood||0}</div>
       </div>
     </div>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:14px 14px 6px">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:14px 14px 4px">
       <div onclick="document.getElementById('karmaHomeModal').remove();nav('home')" style="${btn}background:rgba(57,255,20,.08);border-color:rgba(57,255,20,.3);color:#39FF14"><span style="font-size:24px">🐾</span>SKÖT PET</div>
       <div onclick="document.getElementById('karmaHomeModal').remove();openCastle()" style="${btn}background:rgba(255,230,0,.08);border-color:rgba(255,230,0,.3);color:#FFE600"><span style="font-size:24px">🏰</span>KASTEL</div>
-      <div onclick="document.getElementById('karmaHomeModal').remove();nav('me')" style="${btn}background:rgba(0,217,255,.08);border-color:rgba(0,217,255,.3);color:#00D9FF"><span style="font-size:24px">🛋️</span>MITT RUM</div>
-      <div onclick="document.getElementById('karmaHomeModal').remove();(window.openPetCard||openPetProfileCard||function(){})()" style="${btn}background:rgba(191,95,255,.08);border-color:rgba(191,95,255,.3);color:#BF5FFF"><span style="font-size:24px">✨</span>PROFIL</div>
+      <div onclick="document.getElementById('karmaHomeModal').remove();nav('me');switchMeTab&&switchMeTab('rum',document.querySelector('.me-stab'))" style="${btn}background:rgba(0,217,255,.08);border-color:rgba(0,217,255,.3);color:#00D9FF"><span style="font-size:24px">🛋️</span>MITT RUM</div>
+      <div onclick="document.getElementById('karmaHomeModal').remove();nav('me');switchMeTab&&switchMeTab('profil')" style="${btn}background:rgba(191,95,255,.08);border-color:rgba(191,95,255,.3);color:#BF5FFF"><span style="font-size:24px">✨</span>PROFIL</div>
+    </div>
+    <div style="display:flex;gap:6px;padding:4px 14px 12px;flex-wrap:wrap">
+      ${[['shop','🛍️','SHOP','#39FF14'],['gave','🎁','GÅVA','#FF9F0A'],['dagbok','📖','DAGBOK','#00D9FF'],['event','🌞','EVENT','#FFE600']].map(([t,e,n,c])=>`<div onclick="document.getElementById('karmaHomeModal').remove();nav('me');switchMeTab&&switchMeTab('${t}')" style="flex:1;min-width:60px;display:flex;flex-direction:column;align-items:center;gap:2px;padding:9px 4px;border-radius:12px;cursor:pointer;background:${c}10;border:1px solid ${c}33;color:${c};font-family:var(--mono);font-weight:900;font-size:8px;-webkit-tap-highlight-color:transparent"><span style="font-size:17px">${e}</span>${n}</div>`).join('')}
     </div>
     <button onclick="document.getElementById('karmaHomeModal').remove()" style="width:100%;padding:12px;background:rgba(255,255,255,.03);border:none;border-top:1px solid rgba(255,255,255,.08);color:rgba(255,255,255,.5);font-family:var(--mono);font-size:11px;font-weight:900;cursor:pointer;letter-spacing:1px">STÄNG</button>`;
   m.appendChild(card);
@@ -14537,7 +14540,7 @@ const _TOUR=[
   {sel:'.nb[data-v="play"]',title:'🎮 SPELA SPEL',desc:'4 unika spel: Pet Runner (hoppa!), DNA Breaker, Tower Defense + KARMA CITY!',blink:true},
   {sel:'.nb[data-v="explore"]',title:'🔍 UTFORSKA',desc:'KARMA CITY — en levande stad med din pet och tusentals andra spelare. Ta kontroll över zoner!',blink:true,nav:'explore'},
   {sel:'.nb[data-v="map"]',title:'🌍 KARMA VÄRLDEN',desc:'Din pet och ditt kastel lever på riktiga kartan! Claima zoner, bygg ditt imperium och tryck 🏠 för ditt KARMA HEM.',nav:'map'},
-  {sel:'.nb[data-v="me"]',title:'👤 DIN PROFIL',desc:'Se dina stats, achievements och KARMA-poäng — bygg upp din legend!'},
+  {sel:'#tbHomeHub',title:'🏠 KARMA HEM',desc:'Ditt nav för allt — pet, kastel, rum, profil, shop, gåvor & dagbok, samlat i en hubb. Öppnas även genom att trycka på din pet på kartan!'},
   {noSpot:true,emoji:'💚',title:'DU ÄR REDO!',desc:'Mata din pet varje dag, spela spelen och bygg upp ditt KARMA-imperium!',cta:'SÄTT IGÅNG! 🚀',last:true},
 ];
 let _tourSt=0;let _tourEl=null;let _tourSp=null;let _tourTp=null;
