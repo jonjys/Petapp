@@ -1177,9 +1177,9 @@ button:active{opacity:.85;}
 .nb[data-v="play"].on .nb-inner{background:rgba(255,159,10,.22);}
 .nb[data-v="play"].on .nl{color:#FF9F0A;}
 .nb[data-v="play"].on .ni{transform:scale(1.1);}
-.nb[data-v="world"].on .nb-inner{background:rgba(57,255,20,.22);}
-.nb[data-v="world"].on .nl{color:#39FF14;}
-.nb[data-v="world"].on .ni{transform:scale(1.1);}
+.nb[data-v="world"].on .nb-inner,.nb[data-v="map"].on .nb-inner{background:rgba(57,255,20,.22);}
+.nb[data-v="world"].on .nl,.nb[data-v="map"].on .nl{color:#39FF14;}
+.nb[data-v="world"].on .ni,.nb[data-v="map"].on .ni{transform:scale(1.1);}
 .nb[data-v="me"].on .nb-inner{background:rgba(191,95,255,.22);}
 .nb[data-v="me"].on .nl{color:#BF5FFF;}
 .nb[data-v="me"].on .ni{transform:scale(1.1);}
@@ -2457,7 +2457,7 @@ button:active{opacity:.85;}
 .nb[data-v="play"].on .nb-inner{--nav-glow:rgba(255,159,10,.2);}
 .nb[data-v="social"].on .nb-inner{--nav-glow:rgba(0,217,255,.2);}
 .nb[data-v="explore"].on .nb-inner{--nav-glow:rgba(191,95,255,.2);}
-.nb[data-v="world"].on .nb-inner{--nav-glow:rgba(255,0,127,.2);}
+.nb[data-v="world"].on .nb-inner,.nb[data-v="map"].on .nb-inner{--nav-glow:rgba(255,0,127,.2);}
 .nb[data-v="me"].on .nb-inner{--nav-glow:rgba(255,230,0,.2);}
 .arena-speech{position:absolute;right:100%;top:0;background:rgba(0,0,0,.85);border:1.5px solid rgba(255,45,85,.6);border-radius:10px 10px 0 10px;padding:5px 8px;font-size:9px;font-family:var(--mono);color:#FF2D55;white-space:nowrap;backdrop-filter:blur(4px);}
 
@@ -3367,7 +3367,7 @@ div[style*="LIVE"]{border-radius:16px!important;background:rgba(57,255,20,.03)!i
           <div class="kw-map-badge" id="kwTerrBadge">🌍 TERRITORIUM LV1</div>
           <div class="kw-map-badge pk" id="kwWildBadge" onclick="nav('world')" style="cursor:pointer">🎯 3 WILD PETS HÄR</div>
         </div>
-        <div class="map-ctrls"><div class="mctrl" id="locBtn" onclick="locateMe()">◎</div><div class="mctrl" onclick="nav('world')">🌍</div><div class="mctrl" onclick="nav('uppdrag')">🎯</div></div>
+        <div class="map-ctrls"><div class="mctrl" id="locBtn" onclick="locateMe()">◎</div><div class="mctrl" onclick="openKarmaHome()" style="font-size:17px">🏠</div><div class="mctrl" onclick="nav('world')">🌍</div><div class="mctrl" onclick="nav('uppdrag')">🎯</div></div>
           </div>
         </div>
         <div class="gps-bar">
@@ -3874,7 +3874,7 @@ div[style*="LIVE"]{border-radius:16px!important;background:rgba(57,255,20,.03)!i
       <!-- GAME HUB SECTION HEADER -->
       <div style="padding:10px 14px 4px;display:flex;align-items:center;justify-content:space-between">
         <div style="font-size:9px;font-weight:900;font-family:var(--mono);color:rgba(191,95,255,.6);letter-spacing:2px">🎮 GAME HUB</div>
-        <div style="font-size:8px;color:rgba(255,255,255,.3);font-family:var(--mono)">5 spel · daily rewards</div>
+        <div style="font-size:8px;color:rgba(255,255,255,.3);font-family:var(--mono)">8+ spel · daily rewards</div>
       </div>
       <!-- SPIN portal -->
       <div class="game-portal" onclick="openGacha()" style="--pc:255,159,10">
@@ -4039,11 +4039,6 @@ div[style*="LIVE"]{border-radius:16px!important;background:rgba(57,255,20,.03)!i
       <div style="margin:0 14px 10px;display:flex;gap:8px">
         <button onclick="openPetProfileCard()" style="flex:1;background:linear-gradient(135deg,rgba(191,95,255,.15),rgba(0,217,255,.1));border:1.5px solid rgba(191,95,255,.4);border-radius:14px;padding:11px;cursor:pointer;color:var(--p);font-size:12px;font-weight:900;font-family:var(--mono);display:flex;align-items:center;justify-content:center;gap:7px">✨ MITT PET-KORT</button>
         <button onclick="openCosmeticsShop()" style="background:linear-gradient(135deg,rgba(255,215,0,.12),rgba(255,159,10,.08));border:1.5px solid rgba(255,215,0,.4);border-radius:14px;padding:11px 13px;cursor:pointer;color:#FFD700;font-size:12px;font-weight:900;font-family:var(--mono)">🎨 GARDEROB</button>
-        <button onclick="sharePet()" style="background:rgba(57,255,20,.1);border:1.5px solid rgba(57,255,20,.35);border-radius:14px;padding:11px 14px;cursor:pointer;color:var(--g);font-size:12px;font-weight:900;font-family:var(--mono)">📤 DELA</button>
-      </div>
-      <!-- PET PROFILE CARD + SHARE -->
-      <div style="margin:0 14px 10px;display:flex;gap:8px">
-        <button onclick="openPetProfileCard()" style="flex:1;background:linear-gradient(135deg,rgba(191,95,255,.15),rgba(0,217,255,.1));border:1.5px solid rgba(191,95,255,.4);border-radius:14px;padding:11px;cursor:pointer;color:var(--p);font-size:12px;font-weight:900;font-family:var(--mono);display:flex;align-items:center;justify-content:center;gap:7px">✨ MITT PET-KORT</button>
         <button onclick="sharePet()" style="background:rgba(57,255,20,.1);border:1.5px solid rgba(57,255,20,.35);border-radius:14px;padding:11px 14px;cursor:pointer;color:var(--g);font-size:12px;font-weight:900;font-family:var(--mono)">📤 DELA</button>
       </div>
       <!-- ACHIEVEMENTS -->
@@ -4225,7 +4220,7 @@ div[style*="LIVE"]{border-radius:16px!important;background:rgba(57,255,20,.03)!i
     <button class="nb" data-v="play"><div class="nb-inner"><div class="ni">🎮</div><div class="nb-notif" id="playNotif"></div></div><div class="nl">SPELA</div></button>
     <button class="nb" data-v="social"><div class="nb-inner"><div class="ni">💬</div><div class="nb-notif" id="socialNotif"></div></div><div class="nl">SOCIAL</div></button>
     <button class="nb" data-v="explore"><div class="nb-inner"><div class="ni">🔍</div></div><div class="nl">UTFORSKA</div></button>
-    <button class="nb" data-v="world"><div class="nb-inner"><div class="ni">🌍</div></div><div class="nl">VÄRLD</div></button>
+    <button class="nb" data-v="map"><div class="nb-inner"><div class="ni">🌍</div></div><div class="nl">VÄRLD</div></button>
     <button class="nb" data-v="me"><div class="nb-inner"><div class="ni">👤</div></div><div class="nl">JAG</div></button>
   </div>
   <!-- Floating create button -->
@@ -5215,6 +5210,7 @@ const G={
   lastFlashTime:0,lastFlashDate:'',
   castle:{lvl:1,buildings:{home:1,farm:0,arena:0,market:0,stable:0,tower:0},lastIncome:0},
   ownedZones:[],
+  mapZones:[],
   expeditionVisits:[],
   terrLastIncome:{},
   dnaMixes:[],
@@ -7208,7 +7204,7 @@ function _offsetLatLon(lat,lon,distM,bearingDeg){
   }catch(e){return{lat:lat,lon:lon};}
 }
 function fmtD(m){return m<1000?Math.round(m)+'m':+(m/1000).toFixed(1)+'km';}
-function save(){try{const d={n:G.name,p:G.petEmoji,pn:G.petName,l:G.level,c:G.coins,kc:G.kc||0,st:G.streak,x:G.exp,as:G.actionStat,cs:G.commerceStat,ss:G.socialStat,g:JSON.stringify(G.gear),eg:G.equippedGear||'',sek:G.totalSEK,ts:G.trustScore,posts:G.postCount,b:G.bountiesDone,hu:G.hunger,en:G.energy,mo:G.mood,brands:JSON.stringify(G.brands),circles:JSON.stringify(G.circles),sw:JSON.stringify(G.streakWeek),petCfg:JSON.stringify(G.petConfig),pm:G.premium?1:0,pt:G.premiumTier,wld:G.world,bond:JSON.stringify(G.todayBond),bdate:G.bondDate,wp:G.worldPoints,bz:JSON.stringify(G.builtZones),wpc:G.wildPetsCaught,wflash:G.wldFlash,wbattle:G.wldBattle,wmarket:G.wldMarket,wstreak:G.wldStreak,wsocial:G.wldSocial,po:G.packsOpened,col:JSON.stringify(G.collectibles),tp:G.talentPoints,tl:JSON.stringify(G.talents),tlvl:JSON.stringify(G.talentLvls||{}),diary:JSON.stringify(G.diaryEntries.slice(-20)),ls:G.lastSpin,ltt:G.lastTalkTime||0,lwb:G.lastWpBoost||0,castle:JSON.stringify(G.castle||{}),ownedZones:JSON.stringify(G.ownedZones||[]),expeditionVisits:JSON.stringify(G.expeditionVisits||[]),terrLastIncome:JSON.stringify(G.terrLastIncome||{}),dnaMixes:JSON.stringify(G.dnaMixes||[]),lastFortune:G.lastFortune||'',lft:G.lastFlashTime||0,lfd:G.lastFlashDate||'',pdna:JSON.stringify(G.petDNA||{body:'base',element:'none',perk:'none'}),dinv:JSON.stringify(G.dnaInventory||[]),pmem:JSON.stringify(G.petMemory||{}),expd:JSON.stringify(G.expedition||{}),pbd:G.birthDate||0,psk:G.petSick?1:0,pmems:JSON.stringify(G.petMemories||[]),lpc:G.lastPassiveCheck||0,dmp:JSON.stringify(G.dmProgress||{}),dmc:JSON.stringify(G.dmCompleted||{}),dmd:G.dmDate||0,tdup:JSON.stringify(G.tdUpgrades||{}),tdpts:G.tdPoints||0,cos:JSON.stringify(G.cosmetics||{skin:null,bg:'default',accessories:[]}),stdt:G.stepsToday||0,sxp:G.seasonXP||0};for(const k in d)localStorage.setItem('kv8_'+k,d[k]);localStorage.setItem('kv8_lastFortune',G.lastFortune||'');}catch(e){}sbQueueSync();}
+function save(){try{const d={n:G.name,p:G.petEmoji,pn:G.petName,l:G.level,c:G.coins,kc:G.kc||0,st:G.streak,x:G.exp,as:G.actionStat,cs:G.commerceStat,ss:G.socialStat,g:JSON.stringify(G.gear),eg:G.equippedGear||'',sek:G.totalSEK,ts:G.trustScore,posts:G.postCount,b:G.bountiesDone,hu:G.hunger,en:G.energy,mo:G.mood,brands:JSON.stringify(G.brands),circles:JSON.stringify(G.circles),sw:JSON.stringify(G.streakWeek),petCfg:JSON.stringify(G.petConfig),pm:G.premium?1:0,pt:G.premiumTier,wld:G.world,bond:JSON.stringify(G.todayBond),bdate:G.bondDate,wp:G.worldPoints,bz:JSON.stringify(G.builtZones),wpc:G.wildPetsCaught,wflash:G.wldFlash,wbattle:G.wldBattle,wmarket:G.wldMarket,wstreak:G.wldStreak,wsocial:G.wldSocial,po:G.packsOpened,col:JSON.stringify(G.collectibles),tp:G.talentPoints,tl:JSON.stringify(G.talents),tlvl:JSON.stringify(G.talentLvls||{}),diary:JSON.stringify(G.diaryEntries.slice(-20)),ls:G.lastSpin,ltt:G.lastTalkTime||0,lwb:G.lastWpBoost||0,castle:JSON.stringify(G.castle||{}),ownedZones:JSON.stringify(G.ownedZones||[]),mapZones:JSON.stringify(G.mapZones||[]),expeditionVisits:JSON.stringify(G.expeditionVisits||[]),terrLastIncome:JSON.stringify(G.terrLastIncome||{}),dnaMixes:JSON.stringify(G.dnaMixes||[]),lastFortune:G.lastFortune||'',lft:G.lastFlashTime||0,lfd:G.lastFlashDate||'',pdna:JSON.stringify(G.petDNA||{body:'base',element:'none',perk:'none'}),dinv:JSON.stringify(G.dnaInventory||[]),pmem:JSON.stringify(G.petMemory||{}),expd:JSON.stringify(G.expedition||{}),pbd:G.birthDate||0,psk:G.petSick?1:0,pmems:JSON.stringify(G.petMemories||[]),lpc:G.lastPassiveCheck||0,dmp:JSON.stringify(G.dmProgress||{}),dmc:JSON.stringify(G.dmCompleted||{}),dmd:G.dmDate||0,tdup:JSON.stringify(G.tdUpgrades||{}),tdpts:G.tdPoints||0,cos:JSON.stringify(G.cosmetics||{skin:null,bg:'default',accessories:[]}),stdt:G.stepsToday||0,sxp:G.seasonXP||0};for(const k in d)localStorage.setItem('kv8_'+k,d[k]);localStorage.setItem('kv8_lastFortune',G.lastFortune||'');}catch(e){}sbQueueSync();}
 
 // ── DNA + MOOD SYSTEM ──
 function getPetDNA(){
@@ -9641,6 +9637,8 @@ function initMap(lat,lon){
   });
   // Permanent proof-of-visit markers from completed expeditions (current + previous sessions)
   _renderExpeditionVisitMarkers();
+  // Buildable KARMA empire zones on the real map
+  _renderMapZones(lat,lon,m);
   renderNearby(lat,lon);
 }
 function locateMe(){
@@ -9652,7 +9650,7 @@ function locateMe(){
     const lat=pos.coords.latitude,lon=pos.coords.longitude;G.userLat=lat;G.userLon=lon;
     dot.className='gps-dot active';txt.textContent='📍 '+lat.toFixed(4)+', '+lon.toFixed(4);
     btn.textContent='◎';btn.classList.remove('on');showT('📍 Position hittad!','g');vibe(30);
-    if(!G.mapInit){initMap(lat,lon);}else if(G.lMap){G.lMap.setView([lat,lon],16);if(G.uMarker)G.uMarker.setLatLng([lat,lon]);}
+    if(!G.mapInit){initMap(lat,lon);}else if(G.lMap){G.lMap.setView([lat,lon],16);if(G.uMarker)G.uMarker.setLatLng([lat,lon]);if(G.castleMarker)G.castleMarker.setLatLng([lat+.0006,lon+.0006]);_renderMapZones(lat,lon,G.lMap);}
     renderNearby(lat,lon);addH('📍 GPS hittad');
   },fallback,{timeout:10000,enableHighAccuracy:true});
 }
@@ -9741,6 +9739,116 @@ function openKarmaHome(){
     <button onclick="document.getElementById('karmaHomeModal').remove()" style="width:100%;padding:12px;background:rgba(255,255,255,.03);border:none;border-top:1px solid rgba(255,255,255,.08);color:rgba(255,255,255,.5);font-family:var(--mono);font-size:11px;font-weight:900;cursor:pointer;letter-spacing:1px">STÄNG</button>`;
   m.appendChild(card);
   vibe&&vibe(12);
+}
+
+// ═══════════════════════════════════════════════════════════
+// ── BUILD ON THE REAL MAP — claim zones at real locations ──
+//    Your KARMA empire grows on top of actual Google-style map
+//    areas around you. Claim → build → collect passive income.
+// ═══════════════════════════════════════════════════════════
+const _MAP_ZONE_DEFS=[
+  {nm:'Norra Fältet',dlat:.0017,dlon:.0005},
+  {nm:'Öst Distriktet',dlat:.0006,dlon:.0019},
+  {nm:'Syd Kvarteret',dlat:-.0016,dlon:.0007},
+  {nm:'Väst Parken',dlat:.0003,dlon:-.0018},
+  {nm:'Nordöst Höjden',dlat:.0014,dlon:.0016},
+  {nm:'Sydväst Hamnen',dlat:-.0013,dlon:-.0014},
+];
+const _MAP_BUILDS={
+  castle:{em:'🏰',nm:'Kastel',cost:120,rate:14,col:'#FFE600'},
+  tower:{em:'🗼',nm:'Vakttorn',cost:80,rate:9,col:'#00D9FF'},
+  farm:{em:'🌾',nm:'Karma-farm',cost:60,rate:7,col:'#39FF14'},
+  shop:{em:'🏪',nm:'Butik',cost:100,rate:11,col:'#BF5FFF'},
+};
+let _mapZoneLayers=[];
+function _renderMapZones(lat,lon,map){
+  if(!map||typeof L==='undefined')return;
+  _mapZoneLayers.forEach(l=>{try{map.removeLayer(l);}catch(e){}});_mapZoneLayers=[];
+  G.mapZones=G.mapZones||[];
+  _MAP_ZONE_DEFS.forEach((z,i)=>{
+    const zlat=lat+z.dlat,zlon=lon+z.dlon;
+    const owned=G.mapZones.find(mz=>mz.i===i);
+    const bd=owned&&owned.build?_MAP_BUILDS[owned.build]:null;
+    const col=bd?bd.col:(owned?'#00D9FF':'#556');
+    const circle=L.circle([zlat,zlon],{radius:105,color:col,weight:owned?2:1.5,opacity:owned?.8:.4,fillColor:col,fillOpacity:owned?.14:.05,dashArray:owned?null:'5,6'}).addTo(map);
+    const label=bd?bd.em:(owned?'⚑':'➕');
+    const ico=L.divIcon({html:`<div style="width:36px;height:36px;background:rgba(8,10,20,.85);border:2px solid ${col};border-radius:${bd?'10px':'50%'};display:flex;align-items:center;justify-content:center;font-size:${bd?'18px':'15px'};box-shadow:0 0 14px ${col}66;${bd?'':'opacity:.85'}">${label}</div>`,className:'',iconAnchor:[18,18]});
+    const mk=L.marker([zlat,zlon],{icon:ico}).addTo(map).on('click',()=>openMapZoneCard(i));
+    circle.on('click',()=>openMapZoneCard(i));
+    _mapZoneLayers.push(circle,mk);
+  });
+}
+function openMapZoneCard(i){
+  const z=_MAP_ZONE_DEFS[i];if(!z)return;
+  G.mapZones=G.mapZones||[];
+  const owned=G.mapZones.find(mz=>mz.i===i);
+  let m=$('mapZoneModal');
+  if(!m){m=document.createElement('div');m.id='mapZoneModal';m.style.cssText='position:fixed;inset:0;z-index:9993;background:rgba(2,4,10,.86);backdrop-filter:blur(8px);display:flex;align-items:center;justify-content:center;padding:20px;';m.addEventListener('click',e=>{if(e.target===m)m.remove();});document.body.appendChild(m);}else{m.innerHTML='';m.style.display='flex';}
+  const card=document.createElement('div');
+  card.style.cssText='width:min(90%,360px);background:linear-gradient(160deg,rgba(16,22,40,.98),rgba(8,10,22,.98));border:1.5px solid rgba(255,255,255,.14);border-radius:24px;overflow:hidden;box-shadow:0 24px 70px rgba(0,0,0,.6),0 0 50px rgba(0,217,255,.12);animation:cwPopIn .3s cubic-bezier(.34,1.56,.64,1) both;';
+  let body;
+  if(!owned){
+    body=`
+      <div style="padding:22px 18px;text-align:center">
+        <div style="font-size:48px;filter:drop-shadow(0 0 16px rgba(0,217,255,.5))">📍</div>
+        <div style="font-size:16px;font-weight:900;color:#fff;font-family:var(--mono);margin-top:6px">${z.nm}</div>
+        <div style="font-size:9px;color:rgba(255,255,255,.4);font-family:var(--mono);margin:4px 0 14px">Oclaimad zon nära dig · claima för att bygga ditt imperium</div>
+        <button onclick="claimMapZone(${i})" style="width:100%;background:linear-gradient(135deg,#00D9FF,#39FF14);border:none;border-radius:14px;padding:14px;font-size:14px;font-weight:900;font-family:var(--mono);color:#021;cursor:pointer;letter-spacing:1px;box-shadow:0 0 22px rgba(0,217,255,.4)">🚩 CLAIMA ZON · 50 💎</button>
+      </div>`;
+  }else if(!owned.build){
+    body=`
+      <div style="padding:20px 16px">
+        <div style="text-align:center;font-size:14px;font-weight:900;color:#00D9FF;font-family:var(--mono);margin-bottom:3px">🚩 ${z.nm}</div>
+        <div style="text-align:center;font-size:9px;color:rgba(255,255,255,.4);font-family:var(--mono);margin-bottom:14px">Bygg en struktur — ger passiv 💎-inkomst</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+          ${Object.entries(_MAP_BUILDS).map(([k,b])=>`<div onclick="buildMapZone(${i},'${k}')" style="background:${b.col}14;border:1.5px solid ${b.col}55;border-radius:14px;padding:12px 8px;text-align:center;cursor:pointer;-webkit-tap-highlight-color:transparent"><div style="font-size:28px">${b.em}</div><div style="font-size:10px;font-weight:900;color:${b.col};font-family:var(--mono);margin-top:3px">${b.nm}</div><div style="font-size:8px;color:rgba(255,255,255,.4);font-family:var(--mono);margin-top:2px">${b.cost}💎 · +${b.rate}/h</div></div>`).join('')}
+        </div>
+      </div>`;
+  }else{
+    const b=_MAP_BUILDS[owned.build];
+    const hrs=Math.min(12,(Date.now()-(owned.t0||Date.now()))/3600000);
+    const income=Math.floor(b.rate*hrs);
+    body=`
+      <div style="padding:22px 16px;text-align:center">
+        <div style="font-size:52px;filter:drop-shadow(0 0 18px ${b.col}88)">${b.em}</div>
+        <div style="font-size:15px;font-weight:900;color:${b.col};font-family:var(--mono);margin-top:6px">${b.nm} · ${z.nm}</div>
+        <div style="font-size:9px;color:rgba(255,255,255,.4);font-family:var(--mono);margin:4px 0 14px">Genererar +${b.rate} 💎/timme (max 12h)</div>
+        <button onclick="collectMapZone(${i})" style="width:100%;background:${income>0?'linear-gradient(135deg,#FFE600,#FF9F0A)':'rgba(255,255,255,.06)'};border:none;border-radius:14px;padding:13px;font-size:14px;font-weight:900;font-family:var(--mono);color:${income>0?'#1a1000':'rgba(255,255,255,.4)'};cursor:pointer;letter-spacing:1px">${income>0?'💰 SAMLA '+income+' 💎':'Inget att samla än'}</button>
+      </div>`;
+  }
+  card.innerHTML=body+`<button onclick="document.getElementById('mapZoneModal').remove()" style="width:100%;padding:11px;background:rgba(255,255,255,.03);border:none;border-top:1px solid rgba(255,255,255,.08);color:rgba(255,255,255,.5);font-family:var(--mono);font-size:11px;font-weight:900;cursor:pointer;letter-spacing:1px">STÄNG</button>`;
+  m.appendChild(card);vibe&&vibe(10);
+}
+function claimMapZone(i){
+  if((G.coins||0)<50){showT('❌ Behöver 50 💎','r');SFX&&SFX.error&&SFX.error();return;}
+  G.coins-=50;G.mapZones=G.mapZones||[];G.mapZones.push({i,build:null,t0:Date.now()});
+  gainXP&&gainXP(15,'commerce');vibe&&vibe([30,15,60]);showT('🚩 Zon claimad!','g');
+  save&&save();updateHUD&&updateHUD();
+  if(G.userLat&&window._leafletMap)_renderMapZones(G.userLat,G.userLon,window._leafletMap);
+  openMapZoneCard(i);
+}
+function buildMapZone(i,type){
+  const b=_MAP_BUILDS[type];if(!b)return;
+  if((G.coins||0)<b.cost){showT('❌ Behöver '+b.cost+' 💎','r');SFX&&SFX.error&&SFX.error();return;}
+  const mz=(G.mapZones||[]).find(z=>z.i===i);if(!mz)return;
+  G.coins-=b.cost;mz.build=type;mz.t0=Date.now();
+  gainXP&&gainXP(25,'commerce');addWorldPoints&&addWorldPoints(15,'build');
+  vibe&&vibe([30,15,80,15,100]);SFX&&SFX.win&&SFX.win();showT(b.em+' '+b.nm+' byggd!','g');
+  spawnParticles&&spawnParticles(window.innerWidth/2,window.innerHeight*.4,'stars');
+  save&&save();updateHUD&&updateHUD();
+  if(G.userLat&&window._leafletMap)_renderMapZones(G.userLat,G.userLon,window._leafletMap);
+  openMapZoneCard(i);
+}
+function collectMapZone(i){
+  const mz=(G.mapZones||[]).find(z=>z.i===i);if(!mz||!mz.build)return;
+  const b=_MAP_BUILDS[mz.build];
+  const hrs=Math.min(12,(Date.now()-(mz.t0||Date.now()))/3600000);
+  const income=Math.floor(b.rate*hrs);
+  if(income<=0){showT('⏳ Inget att samla än','y');return;}
+  gainCoins&&gainCoins(income);mz.t0=Date.now();
+  vibe&&vibe([20,10,40]);SFX&&SFX.coin&&SFX.coin();showT('💰 +'+income+' 💎 från '+_MAP_ZONE_DEFS[i].nm+'!','g');
+  save&&save();updateHUD&&updateHUD();
+  const mdl=$('mapZoneModal');if(mdl)mdl.remove();
 }
 
 // ── LEADERBOARD ──
@@ -13539,7 +13647,7 @@ function nav(name){
     social:()=>switchSocial('activity',document.querySelector('#socialTabs .tab')),
     uppdrag:()=>{if(!_quests.length)initQuests();renderKmbDaily();renderKmbBoss();_kmbUpdateTimer();},
     shop:()=>{renderSrcFilter();renderShop();},
-    map:()=>{setTimeout(()=>{if(!G.mapInit)locateMe();},200);renderNearby();},
+    map:()=>{setTimeout(()=>{if(!G.mapInit)locateMe();else if(window._leafletMap){try{window._leafletMap.invalidateSize();}catch(e){}}},250);renderNearby();},
     lb:()=>renderLB2('level',document.querySelector('#lbTabs .tab')),
     profile:()=>{updateHUD();renderHistList();renderBadges();const pc=$('view-profile .prof-cover');if(pc){const wc={cosmic:'linear-gradient(135deg,#0d0520 0%,#07040f 50%,#0a0520 100%)',nature:'linear-gradient(135deg,#041a04 0%,#030d03 50%,#071207 100%)',city:'linear-gradient(135deg,#04060f 0%,#030415 50%,#040612 100%)',pixel:'linear-gradient(135deg,#0a0800 0%,#0a0800 50%,#060500 100%)'};pc.style.background=wc[G.world||'cosmic']||wc.cosmic;}},
     explore:()=>{const el=$('explorePetLv');if(el)el.textContent='LV '+G.level;const en=$('explorePetEmoji');if(en)en.textContent=G.petEmoji||'🐾';const enm=$('explorePetName');if(enm)enm.textContent=G.petName||'Din pet';renderWeeklyChallenges();renderCraftGrid();const tp=$('talentTeaserPts');if(tp)tp.textContent=(G.talentPoints||0)+' TP';const ts=$('talentTeaserSub');if(ts)ts.textContent=(G.talents&&G.talents.length>0?G.talents.length+' av 147 förmågor inlärda':'Tjäna Talent Points genom att levla upp');},
@@ -14428,7 +14536,7 @@ const _TOUR=[
   {sel:'.chb.chb-feed',title:'🍖 MATA VARJE DAG!',desc:'Tryck MATA för att ge din pet mat. Dagliga streaks ger bonus-coins!',blink:true,nav:'home'},
   {sel:'.nb[data-v="play"]',title:'🎮 SPELA SPEL',desc:'4 unika spel: Pet Runner (hoppa!), DNA Breaker, Tower Defense + KARMA CITY!',blink:true},
   {sel:'.nb[data-v="explore"]',title:'🔍 UTFORSKA',desc:'KARMA CITY — en levande stad med din pet och tusentals andra spelare. Ta kontroll över zoner!',blink:true,nav:'explore'},
-  {sel:'.nb[data-v="world"]',title:'🌍 VÄRLDEN',desc:'Dagliga uppdrag, vilda pets att fånga och spännande världshändelser.',nav:'world'},
+  {sel:'.nb[data-v="map"]',title:'🌍 KARMA VÄRLDEN',desc:'Din pet och ditt kastel lever på riktiga kartan! Claima zoner, bygg ditt imperium och tryck 🏠 för ditt KARMA HEM.',nav:'map'},
   {sel:'.nb[data-v="me"]',title:'👤 DIN PROFIL',desc:'Se dina stats, achievements och KARMA-poäng — bygg upp din legend!'},
   {noSpot:true,emoji:'💚',title:'DU ÄR REDO!',desc:'Mata din pet varje dag, spela spelen och bygg upp ditt KARMA-imperium!',cta:'SÄTT IGÅNG! 🚀',last:true},
 ];
@@ -17660,6 +17768,7 @@ function _loadFromLocalStorage(){
     G.lastWpBoost=parseInt(localStorage.getItem('kv8_lwb')||'0');
     try{const cs=localStorage.getItem('kv8_castle');if(cs)G.castle=JSON.parse(cs);}catch(e){G.castle={lvl:1,buildings:{home:1},lastIncome:0};}
     try{const oz=localStorage.getItem('kv8_ownedZones');if(oz)G.ownedZones=JSON.parse(oz);}catch(e){}
+    try{const mz=localStorage.getItem('kv8_mapZones');if(mz)G.mapZones=JSON.parse(mz);}catch(e){}
     try{const ev=localStorage.getItem('kv8_expeditionVisits');if(ev)G.expeditionVisits=JSON.parse(ev);}catch(e){}
     try{const ti=localStorage.getItem('kv8_terrLastIncome');if(ti)G.terrLastIncome=JSON.parse(ti);}catch(e){}
     try{const dm=localStorage.getItem('kv8_dnaMixes');if(dm)G.dnaMixes=JSON.parse(dm);}catch(e){}
