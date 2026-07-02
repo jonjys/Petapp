@@ -6283,7 +6283,7 @@ function _tdShowMapPicker(){
       </div>`).join('')}
     <div style="font-size:9px;font-weight:900;color:rgba(255,255,255,.4);font-family:var(--mono);letter-spacing:2px;margin-top:4px">SVÅRIGHETSGRAD</div>
     <div id="tdDiffRow" style="display:flex;gap:6px;width:100%;max-width:320px">
-      ${Object.entries(TD_DIFFS).map(([k,d])=>`<div onclick="window._tdPickDiff('${k}')" data-diff="${k}" style="flex:1;background:${(G.tdDifficulty||'normal')===k?d.col+'22':'rgba(255,255,255,.04)'};border:1.5px solid ${(G.tdDifficulty||'normal')===k?d.col:'rgba(255,255,255,.12)'};border-radius:12px;padding:9px 4px;text-align:center;cursor:pointer;-webkit-tap-highlight-color:transparent"><div style="font-size:19px">${d.em}</div><div style="font-size:8px;font-weight:900;font-family:var(--mono);color:${(G.tdDifficulty||'normal')===k?d.col:'rgba(255,255,255,.5)'};margin-top:2px">${d.nm}</div><div style="font-size:6.5px;color:rgba(255,255,255,.35);font-family:var(--mono)">${d.rw}× 💰</div></div>`).join('')}
+      ${Object.entries(TD_DIFFS).map(([k,d])=>{const bw=parseInt(localStorage.getItem('kv8_tdbw_'+k)||'0');return`<div onclick="window._tdPickDiff('${k}')" data-diff="${k}" style="flex:1;background:${(G.tdDifficulty||'normal')===k?d.col+'22':'rgba(255,255,255,.04)'};border:1.5px solid ${(G.tdDifficulty||'normal')===k?d.col:'rgba(255,255,255,.12)'};border-radius:12px;padding:9px 4px;text-align:center;cursor:pointer;-webkit-tap-highlight-color:transparent"><div style="font-size:19px">${d.em}</div><div style="font-size:8px;font-weight:900;font-family:var(--mono);color:${(G.tdDifficulty||'normal')===k?d.col:'rgba(255,255,255,.5)'};margin-top:2px">${d.nm}</div><div style="font-size:6.5px;color:rgba(255,255,255,.35);font-family:var(--mono)">${d.rw}× 💰</div>${bw>0?`<div style="font-size:6.5px;color:${d.col};font-family:var(--mono);font-weight:900;margin-top:1px">🏆W${bw}</div>`:''}</div>`}).join('')}
     </div>
     <div style="font-size:9px;color:rgba(255,255,255,.3);font-family:var(--mono)">Svårare = tuffare fiender & mer guld</div>`;
   document.body.appendChild(picker);
@@ -6450,8 +6450,25 @@ function tdLoop(t){
   _td.raf=requestAnimationFrame(tdLoop);
 }
 
+// ── TOWER SYNERGIES — adjacent towers form energy links & buff each other ──
+function _tdComputeSynergies(){
+  const T=_td.towers;if(!T)return;
+  for(const t of T)t._syn=0;
+  const maxD=_tdCell*1.55;const links=[];
+  for(let i=0;i<T.length;i++){
+    for(let j=i+1;j<T.length;j++){
+      const a=T[i],b=T[j];
+      const d=Math.hypot(_tdCX(a.col)-_tdCX(b.col),_tdCY(a.row)-_tdCY(b.row));
+      if(d<=maxD){a._syn++;b._syn++;links.push({a,b,elem:a.type!==b.type});}
+    }
+  }
+  for(const t of T)if(t._syn>4)t._syn=4;
+  _td._synLinks=links;
+  if(links.length>0&&!_td._synHintShown){_td._synHintShown=true;showT('⚡ SYNERGI! Närliggande torn boostar varann','b');}
+}
 function tdUpdate(dt){
   _td.t+=dt;
+  _tdComputeSynergies();
   const totalLen=tdTotalLen();
   // Ability cooldowns
   for(let i=0;i<3;i++){if(_td.abilityCD[i]>0){_td.abilityCD[i]=Math.max(0,_td.abilityCD[i]-dt);if(i===(_td._lastAbilityIdx??-1))tdUpdateAbilityUI();}}
@@ -6499,7 +6516,7 @@ function tdUpdate(dt){
     tower.fireTimer=Math.max(0,(tower.fireTimer||0)-dt);
     if(tower.fireTimer>0)continue;
     const def=tdGetDef(tower);if(!def||!def.range)continue;
-    const rangePx=def.range*(G._tdRngMult||1)*((_td.runUp&&_td.runUp.range)||1)*_tdCell;
+    const rangePx=def.range*(G._tdRngMult||1)*((_td.runUp&&_td.runUp.range)||1)*(1+(tower._syn||0)*0.05)*_tdCell;
     const tx=_tdCX(tower.col),ty=_tdCY(tower.row);
     const inRange=_td.enemies.filter(e=>{if(e.progress<0)return false;const{x,y}=tdEnemyPos(e);return Math.hypot(x-tx,y-ty)<=rangePx;}).sort((a,b)=>b.progress-a.progress);
     if(!inRange.length)continue;
@@ -6508,7 +6525,7 @@ function tdUpdate(dt){
     const waveMult=1+_td.wave*0.025+(_td._karmaSurgeActive?(((G.mood||100)/100)*0.15):0);
     // Helper: calc damage with armor and weakness
     const calcDmg=(e,baseDmg)=>{
-      let d=Math.round(baseDmg*(G._tdDmgMult||1)*((_td.runUp&&_td.runUp.dmg)||1)*(1+_td.wave*0.025));
+      let d=Math.round(baseDmg*(G._tdDmgMult||1)*((_td.runUp&&_td.runUp.dmg)||1)*(1+(tower._syn||0)*0.09)*(1+_td.wave*0.025));
       if(e.weakness===tower.type)d=Math.round(d*2.2);          // right tool → big bonus
       else if(e.magicImmune&&(tower.type==='mage'||tower.type==='frost'))d=Math.round(d*0.1);
       else d=Math.round(d*0.62);                                // wrong tool → resist, forces tower variety
@@ -6859,6 +6876,21 @@ function tdDraw(){
     ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fill();ctx.restore();
   });
 
+  // ── TOWER SYNERGY ENERGY LINKS (unique visual) ──
+  (_td._synLinks||[]).forEach(l=>{
+    const ax=_tdCX(l.a.col),ay=_tdCY(l.a.row),bx=_tdCX(l.b.col),by=_tdCY(l.b.row);
+    const col=l.elem?'#00FFEA':'#9CFF57';
+    const pulse=0.35+0.28*Math.sin(t*0.06+(ax+ay)*0.02);
+    ctx.save();ctx.globalAlpha=pulse;ctx.strokeStyle=col;ctx.lineWidth=l.elem?2:1.4;
+    ctx.shadowColor=col;ctx.shadowBlur=12;ctx.lineCap='round';
+    ctx.beginPath();ctx.moveTo(ax,ay);ctx.lineTo(bx,by);ctx.stroke();
+    // energy pip travelling along the link
+    const tt=((t*0.02)%1);const px=ax+(bx-ax)*tt,py=ay+(by-ay)*tt;
+    ctx.globalAlpha=Math.min(1,pulse+0.4);ctx.fillStyle='#fff';
+    ctx.beginPath();ctx.arc(px,py,l.elem?2.4:1.8,0,Math.PI*2);ctx.fill();
+    ctx.restore();
+  });
+
   // ── TOWERS ──
   _td.towers.forEach(tower=>{
     const def=tdGetDef(tower);
@@ -6929,6 +6961,14 @@ function tdDraw(){
       ctx.save();const fAlpha=Math.min(.7,tower.firingT/8*.7);
       ctx.globalAlpha=fAlpha;ctx.fillStyle=col;ctx.shadowColor=col;ctx.shadowBlur=24;
       ctx.beginPath();ctx.arc(tx,ty,sz*.5,0,Math.PI*2);ctx.fill();ctx.restore();
+    }
+    // Synergy badge — shows the adjacency buff
+    if(tower._syn>0){
+      ctx.save();
+      ctx.fillStyle='#00FFEA';ctx.shadowColor='#00FFEA';ctx.shadowBlur=8;
+      ctx.font='bold 9px monospace';ctx.textAlign='center';ctx.textBaseline='middle';
+      ctx.fillText('⚡'+tower._syn,tx,ty-sz-9);
+      ctx.restore();
     }
 
     // Selected range circle (dashed, colored)
@@ -7251,12 +7291,15 @@ function tdDefeat(){
     tdUpdateBaseUI();return;
   }
   _td.active=false;
+  if(_td._waveTimer){clearInterval(_td._waveTimer);_td._waveTimer=null;}
   // Update highscore on defeat too
   if(_td.score>_td.highscore){
     _td.highscore=_td.score;
     localStorage.setItem('kv8_tdHS',_td.score);
     const hs2=$('tdHighscore');if(hs2)hs2.textContent='BEST:'+_td.score;
   }
+  // Best wave per difficulty (bragging rights)
+  try{const bwk='kv8_tdbw_'+(_td.diff||'normal');if(_td.wave>+(localStorage.getItem(bwk)||0))localStorage.setItem(bwk,_td.wave);}catch(e){}
   SFX.error&&SFX.error();vibe([50,30,100]);
   const sm=_runTrackSummary();_runTrackStop();
   const sub=$('tdDefeatSub');if(sub)sub.innerHTML='Du nådde <b style="color:#FF007F">wave '+_td.wave+'</b> · dödade '+(_td.totalKills||0)+' fiender<br><span style="color:#39FF14;font-weight:900">⬆️ +'+sm.xp+' XP'+(sm.levels>0?' · GICK UPP '+sm.levels+' LEVEL'+(sm.levels>1?'S':'')+'! 🎉':'')+'</span>';
