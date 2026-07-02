@@ -52,7 +52,11 @@ html,body{height:100%;width:100%;overflow:hidden;background:var(--bg);font-famil
 .main{flex:1;overflow:hidden;position:relative;}
 .view{position:absolute;inset:0;overflow-y:auto;overflow-x:hidden;display:none;flex-direction:column;scrollbar-width:none;background:var(--bg);scroll-behavior:smooth;}
 .view::-webkit-scrollbar{display:none;}
-.view.active{display:flex;}
+.view.active{display:flex;animation:viewIn .34s cubic-bezier(.22,.61,.36,1);}
+@keyframes viewIn{from{opacity:0;transform:translateY(10px) scale(.995)}to{opacity:1;transform:none}}
+#view-map.active{animation:viewFade .3s ease;}
+@keyframes viewFade{from{opacity:0}to{opacity:1}}
+@media (prefers-reduced-motion:reduce){.view.active{animation:none;}#view-map.active{animation:none;}}
 .vend{height:76px;flex-shrink:0;}
 .bnav{display:flex;align-items:center;background:rgba(0,0,0,.97);border-top:1px solid rgba(57,255,20,.3);padding:6px 0;padding-bottom:calc(6px + var(--sab));flex-shrink:0;z-index:100;backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);box-shadow:0 -4px 30px rgba(0,0,0,.8),0 -1px 0 rgba(57,255,20,.15);}
 .nb{flex:1;background:none;border:none;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:2px;padding:4px;}
@@ -3425,8 +3429,8 @@ div[style*="LIVE"]{border-radius:16px!important;background:rgba(57,255,20,.03)!i
       </div>
       <!-- STORIES BAR -->
       <div style="padding:12px 14px 0;overflow:hidden">
-        <div style="display:flex;gap:12px;overflow-x:auto;scrollbar-width:none;padding-bottom:2px" id="storiesBar">
-          <!-- Populated by renderStoriesBarSocial() -->
+        <div style="display:flex;gap:12px;overflow-x:auto;scrollbar-width:none;padding-bottom:2px" id="storiesBarSocial">
+          <!-- Populated by renderStoriesBar() -->
         </div>
       </div>
       <div id="socialContent" style="flex:1;overflow-y:auto;scrollbar-width:none"></div>
@@ -5464,7 +5468,7 @@ const ACHIEVEMENTS=[
   {id:'cosm_first',ico:'🎨',nm:'Första Kosmetikan Köpt!',coins:30,check:()=>G.cosmetics&&(G.cosmetics.bg!=='default'||G.cosmetics.skin||((G.cosmetics.accessories||[]).length>0))},
   {id:'cosm_collector',ico:'🌈',nm:'5 Kosmetikor Samlade!',coins:100,check:()=>{const c=G.cosmetics||{};const n=(c.bg&&c.bg!=='default'?1:0)+(c.skin?1:0)+((c.accessories||[]).length);return n>=5;}},
 ];
-let _earnedAchs=new Set(JSON.parse(localStorage.getItem('kv8_achs')||'[]'));
+let _earnedAchs;try{_earnedAchs=new Set(JSON.parse(localStorage.getItem('kv8_achs')||'[]'));}catch(e){_earnedAchs=new Set();}
 let _achTimer=null;
 function checkAchievements(){
   ACHIEVEMENTS.forEach(a=>{if(!_earnedAchs.has(a.id)&&a.check()){_earnedAchs.add(a.id);localStorage.setItem('kv8_achs',JSON.stringify([..._earnedAchs]));if(a.coins&&a.coins>0){gainCoins(a.coins);}showAchievement(a.ico,a.nm,a.coins);}});
@@ -5592,7 +5596,7 @@ const KMB_BOUNTY_POOL=[
   {ico:'👑',txt:'Nå en 5× combo i fiske',goal:5,reward:{xp:130,coins:85}},
   {ico:'🔥',txt:'Vinn 3 battles på rad',goal:3,reward:{xp:200,coins:120}},
 ];
-let _kmbBountyAccepted=JSON.parse(localStorage.getItem('kv8_bounties')||'[]');
+let _kmbBountyAccepted;try{_kmbBountyAccepted=JSON.parse(localStorage.getItem('kv8_bounties')||'[]');}catch(e){_kmbBountyAccepted=[];}
 function kmbSwitchTab(t,el){
   document.querySelectorAll('.kmb-tab').forEach(x=>{x.style.color='rgba(255,255,255,.35)';x.style.borderBottomColor='transparent';});
   el.style.color='#BF5FFF';el.style.borderBottomColor='#BF5FFF';
@@ -8571,6 +8575,7 @@ function renderStoriesBar() {
     </div>`)
   ].join('');
   bar.innerHTML = html;
+  const bar2 = $('storiesBarSocial'); if (bar2) bar2.innerHTML = html;
 }
 
 function _buildMyStory() {
@@ -13642,12 +13647,15 @@ function nav(name){
   document.querySelectorAll('.nb[data-v]').forEach(b=>b.classList.remove('on'));
   const v=$('view-'+name);if(v){v.classList.add('active');v.scrollTop=0;}
   const btn=document.querySelector('.nb[data-v="'+name+'"]');if(btn)btn.classList.add('on');
+  // Stop always-on canvases when leaving their view (major battery win)
+  if(name!=='home'&&typeof stopPetLifeCanvas==='function')stopPetLifeCanvas();
+  if(name!=='me'&&typeof _stopRoomStars==='function')_stopRoomStars();
   vibe(8);
   ({
     home:()=>{updateDailyGreeting();updatePetView();renderSocialPower();renderFriendCarePackages();renderCareNotifs();renderStreakMilestones();renderFriendLB();updatePetStatusRings();updatePetWeather();if(!_speechTimer)schedulePetSpeech();startKarmaPulse();renderJackpot();renderDailyMissions();const st=$('spinTeaserSub');if(st)st.textContent=G.lastSpin===new Date().toDateString()?'✅ Spinnat idag — kom tillbaka imorgon':'🎰 Gratis spin tillgängligt nu!';startPetLifeCanvas();setTimeout(_plcUpdateUrgent,100);setTimeout(_plcApplyEvolAura,150);setTimeout(_plcCheckArena,200);},
     flash:()=>{renderFlashFeed();renderStoriesBar();startFlashTimeReward();renderDailyChallenges();},
     circles:renderCircles,
-    social:()=>switchSocial('activity',document.querySelector('#socialTabs .tab')),
+    social:()=>{switchSocial('activity',document.querySelector('#socialTabs .tab'));renderStoriesBar();},
     uppdrag:()=>{if(!_quests.length)initQuests();renderKmbDaily();renderKmbBoss();_kmbUpdateTimer();},
     shop:()=>{renderSrcFilter();renderShop();},
     map:()=>{setTimeout(()=>{if(!G.mapInit)locateMe();else if(window._leafletMap){try{window._leafletMap.invalidateSize();}catch(e){}}},250);renderNearby();},
@@ -13867,13 +13875,15 @@ function renderMeRum(){
   }
   // Animated star canvas
   const sc=$('meRumStarsCanvas');
-  if(sc&&!sc._init){
-    sc._init=true;
-    const ctx=sc.getContext('2d');
-    sc.width=sc.offsetWidth||380;sc.height=sc.offsetHeight||300;
-    const stars=Array.from({length:80},()=>({x:Math.random()*sc.width,y:Math.random()*sc.height,r:Math.random()*1.8+.2,a:Math.random(),da:0.002+Math.random()*.005,col:Math.random()<.15?'57,255,20':Math.random()<.15?'0,217,255':'255,255,255'}));
-    const animS=()=>{ctx.clearRect(0,0,sc.width,sc.height);stars.forEach(s=>{s.a+=s.da;if(s.a>1||s.a<.05)s.da*=-1;ctx.beginPath();ctx.arc(s.x,s.y,s.r,0,Math.PI*2);ctx.fillStyle='rgba('+s.col+','+s.a.toFixed(2)+')';ctx.fill();});requestAnimationFrame(animS);};
-    animS();
+  if(sc){
+    if(!sc._stars){
+      const ctx0=sc.getContext('2d');
+      sc.width=sc.offsetWidth||380;sc.height=sc.offsetHeight||300;
+      sc._stars=Array.from({length:80},()=>({x:Math.random()*sc.width,y:Math.random()*sc.height,r:Math.random()*1.8+.2,a:Math.random(),da:0.002+Math.random()*.005,col:Math.random()<.15?'57,255,20':Math.random()<.15?'0,217,255':'255,255,255'}));
+    }
+    const ctx=sc.getContext('2d');const stars=sc._stars;
+    const animS=()=>{if(!window._meStarsOn){sc._raf=null;return;}ctx.clearRect(0,0,sc.width,sc.height);stars.forEach(s=>{s.a+=s.da;if(s.a>1||s.a<.05)s.da*=-1;ctx.beginPath();ctx.arc(s.x,s.y,s.r,0,Math.PI*2);ctx.fillStyle='rgba('+s.col+','+s.a.toFixed(2)+')';ctx.fill();});sc._raf=requestAnimationFrame(animS);};
+    window._meStarsOn=true;if(!sc._raf)sc._raf=requestAnimationFrame(animS);
   }
   // Floating dust particles
   const pp=$('meRumParticles');
@@ -14639,6 +14649,14 @@ function _plcOnMotion(e){
   if(now-_plc.lastStep>1500)_plc.isWalking=false;
 }
 
+function stopPetLifeCanvas(){
+  _plc.active=false;
+  if(_plc.raf){cancelAnimationFrame(_plc.raf);_plc.raf=null;}
+}
+function _stopRoomStars(){
+  window._meStarsOn=false;
+  const sc=$('meRumStarsCanvas');if(sc&&sc._raf){cancelAnimationFrame(sc._raf);sc._raf=null;}
+}
 function startPetLifeCanvas(){
   const canvas=$('petLifeCanvas');if(!canvas)return;
   const hero=$('sec-pet');if(!hero)return;
@@ -17852,7 +17870,7 @@ function initDailyChallenges(){
   _dailyChallenges=[];
   for(let i=0;i<3;i++){_dailyChallenges.push(_DC_TEMPLATES[(rng+i)%_DC_TEMPLATES.length]);}
   const saved=localStorage.getItem('kv8_dcp_'+today);
-  _dcProgress=saved?JSON.parse(saved):{};
+  try{_dcProgress=saved?JSON.parse(saved):{};}catch(e){_dcProgress={};}
 }
 function advanceDailyChallenge(stat,n){
   initDailyChallenges();
@@ -20873,6 +20891,11 @@ document.addEventListener('visibilitychange',()=>{
     const timeToday=parseInt(localStorage.getItem('kv8_tt')||'0');
     localStorage.setItem('kv8_tt',timeToday+Math.round((Date.now()-_sessionStart)/1000));
     _sessionStart=Date.now();
+    // Pause all always-on canvas loops in background (battery)
+    try{stopPetLifeCanvas();_stopRoomStars();}catch(e){}
+  }else{
+    // Resume the pet-life canvas if we're back on the home view
+    try{const hv=$('view-home');if(hv&&hv.classList.contains('active'))startPetLifeCanvas();}catch(e){}
   }
 });
 
