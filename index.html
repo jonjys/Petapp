@@ -2792,6 +2792,7 @@ div[style*="LIVE"]{border-radius:16px!important;background:rgba(57,255,20,.03)!i
         </div>
         <div class="dd-sec">
           <div class="ddr" onclick="cM();openKarmaPay()" style="background:linear-gradient(135deg,rgba(57,255,20,.1),rgba(0,180,120,.06));border:1px solid rgba(57,255,20,.25)"><div class="ddr-i">💸</div>KARMA+ Super-App<div class="dd-bdg" style="background:#39FF14;color:#000">NY</div></div>
+          <div class="ddr" onclick="cM();openKarmaReels()" style="background:linear-gradient(135deg,rgba(255,45,85,.1),rgba(191,95,255,.06));border:1px solid rgba(255,45,85,.25)"><div class="ddr-i">📱</div>KARMA Reels<div class="dd-bdg" style="background:#FF2D55;color:#fff">NY</div></div>
           <div class="ddr" onclick="cM();nav('home')"><div class="ddr-i">🐾</div>Din Pet</div>
           <div class="ddr" onclick="cM();nav('flash')"><div class="ddr-i">⚡</div>Flash Feed</div>
           <div class="ddr" onclick="cM();nav('social')"><div class="ddr-i">💬</div>Social & Chat<div class="dd-bdg" id="circleDot" style="display:none">!</div></div>
@@ -9989,7 +9990,7 @@ function openKarmaPay(){
   else{m.innerHTML='';m.style.display='flex';}
   const coins=G.coins||0,kc=G.kc||0;
   const games=[['⚔️','Tower Def','openBattle'],['🧬','Karma Tower','openKarmaTower'],['💗','Karma Catch','openKarmaCatch'],['🐉','Pet Runner','openPetRunner'],['🎣','Fiske','openFishingGame'],['🧪','DNA Mixer','openDNAMixer'],['🎰','Spin','openGacha'],['🔮','Spådom','openFortuneOracle']];
-  const services=[['🛍️','Marknad',"nav('market')"],['🏰','Kastel','openCastle()'],['🌍','Världen',"nav('map')"],['🛒','Shop',"nav('shop')"]];
+  const services=[['📱','Reels','openKarmaReels()'],['🛍️','Marknad',"nav('market')"],['🏰','Kastel','openCastle()'],['🌍','Världen',"nav('map')"]];
   const friends=(typeof FRIENDS_DATA!=='undefined'?FRIENDS_DATA:[]).slice(0,6);
   const gGrid=games.map(g=>`<div onclick="document.getElementById('karmaPayModal').remove();${g[2]}()" style="display:flex;flex-direction:column;align-items:center;gap:5px;cursor:pointer;-webkit-tap-highlight-color:transparent"><div style="width:52px;height:52px;border-radius:16px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);display:flex;align-items:center;justify-content:center;font-size:26px">${g[0]}</div><div style="font-size:8px;color:rgba(255,255,255,.55);font-family:var(--mono);text-align:center;line-height:1.1">${g[1]}</div></div>`).join('');
   const sGrid=services.map(s=>`<div onclick="document.getElementById('karmaPayModal').remove();${s[2]}" style="display:flex;flex-direction:column;align-items:center;gap:5px;cursor:pointer;-webkit-tap-highlight-color:transparent"><div style="width:52px;height:52px;border-radius:16px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);display:flex;align-items:center;justify-content:center;font-size:26px">${s[0]}</div><div style="font-size:8px;color:rgba(255,255,255,.55);font-family:var(--mono);text-align:center">${s[1]}</div></div>`).join('');
@@ -10131,6 +10132,76 @@ function _karmaQRScan(){
   gainXP&&gainXP(15,'social');addWorldPoints&&addWorldPoints(10,'social');
   vibe&&vibe([30,15,60,15,90]);spawnParticles&&spawnParticles(window.innerWidth/2,window.innerHeight*.4,'stars');
   save&&save();updateHUD&&updateHUD();
+}
+
+// ═══════════════════════════════════════════════════════════
+// ── KARMA REELS — TikTok-style vertical pet-moment feed ──
+// ═══════════════════════════════════════════════════════════
+let _reelLiked={};
+function _reelFmt(n){return n>=1000?(n/1000).toFixed(n>=10000?0:1)+'k':(''+n);}
+function openKarmaReels(){
+  let m=$('karmaReels');
+  if(m){m.style.display='block';const sc=$('reelsScroll');if(sc)sc.scrollTop=0;return;}
+  if(!document.querySelector('#reelKf')){const s=document.createElement('style');s.id='reelKf';s.textContent='@keyframes reelBob{0%,100%{transform:translateY(0)}50%{transform:translateY(-14px)}}@keyframes reelSpin{to{transform:rotate(360deg)}}@keyframes reelHeartPop{0%{transform:translate(-50%,-50%) scale(0) rotate(-15deg);opacity:0}30%{transform:translate(-50%,-50%) scale(1.3) rotate(8deg);opacity:1}100%{transform:translate(-50%,-90%) scale(1.1);opacity:0}}#reelsScroll::-webkit-scrollbar{display:none}';document.head.appendChild(s);}
+  const myPet=G.petEmoji||'🐉',myName=(G.petName||G.name||'Du');
+  const trend=[
+    {h:'luna_sthlm',p:'🦊',cap:'POV: din pet vaknar och vill leka 🌅 #karmapet',hue:280,music:'chill beats · luna',likes:12400},
+    {h:'maxruns',p:'🐺',cap:'Streak x30 gänget 🔥 var e ni?? #streakgang',hue:20,music:'hype trap',likes:8900},
+    {h:'pixelpaw',p:'🐸',cap:'nya skinet är CLEAN 💎 rate 1-10',hue:160,music:'synthwave nights',likes:23100},
+    {h:'zeke.99',p:'🦄',cap:'Tower Defense INSANE wave 47 💀 orkar ni?',hue:330,music:'boss theme remix',likes:5400},
+    {h:'mira_g',p:'🐨',cap:'karma-kuvert regn idag 🧧✨ tack alla',hue:190,music:'lofi karma',likes:15600},
+    {h:'neonpup',p:'🐙',cap:'min pet dansar bättre än jag ngl 😭',hue:130,music:'dance pop',likes:31200},
+  ];
+  const reels=[{h:myName,p:myPet,cap:'Min '+myPet+' är LV'+(G.level||1)+' nu! 🚀 hur långt har ni kommit? #karma',hue:145,music:'KARMA original sound',likes:Math.floor((G.level||1)*40+120),mine:true},...trend];
+  window._reelData=reels;
+  m=document.createElement('div');m.id='karmaReels';m.style.cssText='position:fixed;inset:0;z-index:9995;background:#000;';
+  m.innerHTML=`
+    <div style="position:absolute;top:0;left:0;right:0;z-index:6;display:flex;align-items:center;justify-content:space-between;padding:12px 14px;background:linear-gradient(180deg,rgba(0,0,0,.55),transparent);pointer-events:none">
+      <button onclick="closeKarmaReels()" style="background:rgba(0,0,0,.4);border:none;border-radius:50%;width:34px;height:34px;color:#fff;font-size:18px;cursor:pointer;pointer-events:auto">←</button>
+      <div style="font-size:14px;font-weight:900;color:#fff;font-family:var(--mono);letter-spacing:1px;text-shadow:0 0 10px rgba(0,0,0,.8)">KARMA <span style="color:#FF2D55">REELS</span></div>
+      <div style="width:34px"></div>
+    </div>
+    <div id="reelsScroll" style="height:100%;overflow-y:scroll;scroll-snap-type:y mandatory;scrollbar-width:none;-webkit-overflow-scrolling:touch">
+      ${reels.map((r,i)=>`
+        <div class="reel-card" data-i="${i}" ondblclick="_reelLike(${i},event)" style="height:100%;scroll-snap-align:start;position:relative;overflow:hidden;background:radial-gradient(ellipse at 50% 38%,hsl(${r.hue},70%,24%),hsl(${(r.hue+40)%360},60%,7%) 72%,#000)">
+          <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center"><div style="font-size:118px;filter:drop-shadow(0 0 40px hsla(${r.hue},90%,60%,.7));animation:reelBob 2.6s ease-in-out infinite">${r.p}</div></div>
+          <div style="position:absolute;right:10px;bottom:118px;display:flex;flex-direction:column;gap:17px;align-items:center;z-index:3">
+            <div style="width:46px;height:46px;border-radius:50%;background:hsl(${r.hue},55%,32%);border:2px solid #fff;display:flex;align-items:center;justify-content:center;font-size:24px">${r.p}</div>
+            <div onclick="_reelLike(${i})" style="cursor:pointer;text-align:center"><div id="reelHeart${i}" style="font-size:32px;filter:drop-shadow(0 0 6px rgba(0,0,0,.6))">🤍</div><div id="reelLikes${i}" style="font-size:11px;font-weight:900;color:#fff;font-family:var(--mono)">${_reelFmt(r.likes)}</div></div>
+            <div onclick="showT('💬 Kommentarer kommer snart!','b')" style="cursor:pointer;text-align:center"><div style="font-size:29px">💬</div><div style="font-size:11px;font-weight:900;color:#fff;font-family:var(--mono)">${_reelFmt(Math.floor(r.likes*0.08))}</div></div>
+            <div onclick="_reelShare(${i})" style="cursor:pointer;text-align:center"><div style="font-size:29px">📤</div><div style="font-size:11px;font-weight:900;color:#fff;font-family:var(--mono)">Dela</div></div>
+            <div style="width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,hsl(${r.hue},60%,40%),#111);display:flex;align-items:center;justify-content:center;font-size:20px;animation:reelSpin 3.5s linear infinite;border:2px solid rgba(255,255,255,.3)">♫</div>
+          </div>
+          <div style="position:absolute;left:14px;right:70px;bottom:92px;z-index:3">
+            <div style="font-size:14px;font-weight:900;color:#fff;font-family:var(--mono);text-shadow:0 1px 6px rgba(0,0,0,.9)">@${r.h}${r.mine?' <span style="background:#FF2D55;font-size:8px;padding:1px 6px;border-radius:6px;vertical-align:middle">DU</span>':''}</div>
+            <div style="font-size:13px;color:#fff;margin-top:5px;text-shadow:0 1px 6px rgba(0,0,0,.9);line-height:1.35">${r.cap}</div>
+            <div style="display:flex;align-items:center;gap:6px;margin-top:8px;font-size:11px;color:#fff;font-family:var(--mono);text-shadow:0 1px 6px rgba(0,0,0,.9)">♫ ${r.music}</div>
+          </div>
+        </div>`).join('')}
+    </div>`;
+  document.body.appendChild(m);
+  vibe&&vibe(8);
+}
+function closeKarmaReels(){const m=$('karmaReels');if(m)m.style.display='none';}
+function _reelLike(i,ev){
+  const heart=$('reelHeart'+i),cnt=$('reelLikes'+i);
+  const r=(window._reelData||[])[i];if(!r)return;
+  if(!_reelLiked[i]){
+    _reelLiked[i]=true;r.likes++;
+    if(heart){heart.textContent='❤️';heart.style.transform='scale(1.3)';setTimeout(()=>{if(heart)heart.style.transform='';},180);}
+    if(cnt)cnt.textContent=_reelFmt(r.likes);
+    gainXP&&gainXP(3,'social');addWorldPoints&&addWorldPoints(2,'social');vibe&&vibe(10);
+  }
+  // double-tap heart burst at the card
+  const card=document.querySelector('.reel-card[data-i="'+i+'"]');
+  if(card){const b=document.createElement('div');b.textContent='❤️';b.style.cssText='position:absolute;left:50%;top:50%;font-size:90px;pointer-events:none;z-index:4;animation:reelHeartPop 0.8s ease-out forwards;filter:drop-shadow(0 0 20px rgba(255,45,85,.9))';card.appendChild(b);setTimeout(()=>b.remove(),800);}
+}
+function _reelShare(i){
+  const r=(window._reelData||[])[i];if(!r)return;
+  const txt='Kolla @'+r.h+' på KARMA REELS 🔥 '+r.cap;
+  if(navigator.share)navigator.share({title:'KARMA REELS',text:txt}).catch(()=>{});
+  else{try{navigator.clipboard&&navigator.clipboard.writeText(txt);}catch(e){}showT('📋 Reel-länk kopierad!','g');}
+  gainXP&&gainXP(5,'social');vibe&&vibe([15,10,30]);
 }
 
 // ── LEADERBOARD ──
