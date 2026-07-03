@@ -2793,6 +2793,7 @@ div[style*="LIVE"]{border-radius:16px!important;background:rgba(57,255,20,.03)!i
         <div class="dd-sec">
           <div class="ddr" onclick="cM();openKarmaPay()" style="background:linear-gradient(135deg,rgba(57,255,20,.1),rgba(0,180,120,.06));border:1px solid rgba(57,255,20,.25)"><div class="ddr-i">💸</div>KARMA+ Super-App<div class="dd-bdg" style="background:#39FF14;color:#000">NY</div></div>
           <div class="ddr" onclick="cM();openKarmaReels()" style="background:linear-gradient(135deg,rgba(255,45,85,.1),rgba(191,95,255,.06));border:1px solid rgba(255,45,85,.25)"><div class="ddr-i">📱</div>KARMA Reels<div class="dd-bdg" style="background:#FF2D55;color:#fff">NY</div></div>
+          <div class="ddr" onclick="cM();openKarmaCam()" style="background:linear-gradient(135deg,rgba(255,230,0,.1),rgba(255,159,10,.06));border:1px solid rgba(255,230,0,.25)"><div class="ddr-i">📸</div>KARMA Cam · AR<div class="dd-bdg" style="background:#FFE600;color:#000">NY</div></div>
           <div class="ddr" onclick="cM();nav('home')"><div class="ddr-i">🐾</div>Din Pet</div>
           <div class="ddr" onclick="cM();nav('flash')"><div class="ddr-i">⚡</div>Flash Feed</div>
           <div class="ddr" onclick="cM();nav('social')"><div class="ddr-i">💬</div>Social & Chat<div class="dd-bdg" id="circleDot" style="display:none">!</div></div>
@@ -9990,7 +9991,7 @@ function openKarmaPay(){
   else{m.innerHTML='';m.style.display='flex';}
   const coins=G.coins||0,kc=G.kc||0;
   const games=[['⚔️','Tower Def','openBattle'],['🧬','Karma Tower','openKarmaTower'],['💗','Karma Catch','openKarmaCatch'],['🐉','Pet Runner','openPetRunner'],['🎣','Fiske','openFishingGame'],['🧪','DNA Mixer','openDNAMixer'],['🎰','Spin','openGacha'],['🔮','Spådom','openFortuneOracle']];
-  const services=[['📱','Reels','openKarmaReels()'],['🛍️','Marknad',"nav('market')"],['🏰','Kastel','openCastle()'],['🌍','Världen',"nav('map')"]];
+  const services=[['📸','Kamera','openKarmaCam()'],['📱','Reels','openKarmaReels()'],['🛍️','Marknad',"nav('market')"],['🏰','Kastel','openCastle()'],['🌍','Världen',"nav('map')"],['🛒','Shop',"nav('shop')"],['🏆','Rankings',"nav('lb')"],['🎯','Uppdrag',"nav('uppdrag')"]];
   const friends=(typeof FRIENDS_DATA!=='undefined'?FRIENDS_DATA:[]).slice(0,6);
   const gGrid=games.map(g=>`<div onclick="document.getElementById('karmaPayModal').remove();${g[2]}()" style="display:flex;flex-direction:column;align-items:center;gap:5px;cursor:pointer;-webkit-tap-highlight-color:transparent"><div style="width:52px;height:52px;border-radius:16px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);display:flex;align-items:center;justify-content:center;font-size:26px">${g[0]}</div><div style="font-size:8px;color:rgba(255,255,255,.55);font-family:var(--mono);text-align:center;line-height:1.1">${g[1]}</div></div>`).join('');
   const sGrid=services.map(s=>`<div onclick="document.getElementById('karmaPayModal').remove();${s[2]}" style="display:flex;flex-direction:column;align-items:center;gap:5px;cursor:pointer;-webkit-tap-highlight-color:transparent"><div style="width:52px;height:52px;border-radius:16px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);display:flex;align-items:center;justify-content:center;font-size:26px">${s[0]}</div><div style="font-size:8px;color:rgba(255,255,255,.55);font-family:var(--mono);text-align:center">${s[1]}</div></div>`).join('');
@@ -10159,7 +10160,7 @@ function openKarmaReels(){
     <div style="position:absolute;top:0;left:0;right:0;z-index:6;display:flex;align-items:center;justify-content:space-between;padding:12px 14px;background:linear-gradient(180deg,rgba(0,0,0,.55),transparent);pointer-events:none">
       <button onclick="closeKarmaReels()" style="background:rgba(0,0,0,.4);border:none;border-radius:50%;width:34px;height:34px;color:#fff;font-size:18px;cursor:pointer;pointer-events:auto">←</button>
       <div style="font-size:14px;font-weight:900;color:#fff;font-family:var(--mono);letter-spacing:1px;text-shadow:0 0 10px rgba(0,0,0,.8)">KARMA <span style="color:#FF2D55">REELS</span></div>
-      <div style="width:34px"></div>
+      <button onclick="closeKarmaReels();openKarmaCam()" style="background:rgba(0,0,0,.4);border:none;border-radius:50%;width:34px;height:34px;color:#fff;font-size:17px;cursor:pointer;pointer-events:auto">📸</button>
     </div>
     <div id="reelsScroll" style="height:100%;overflow-y:scroll;scroll-snap-type:y mandatory;scrollbar-width:none;-webkit-overflow-scrolling:touch">
       ${reels.map((r,i)=>`
@@ -10202,6 +10203,173 @@ function _reelShare(i){
   if(navigator.share)navigator.share({title:'KARMA REELS',text:txt}).catch(()=>{});
   else{try{navigator.clipboard&&navigator.clipboard.writeText(txt);}catch(e){}showT('📋 Reel-länk kopierad!','g');}
   gainXP&&gainXP(5,'social');vibe&&vibe([15,10,30]);
+}
+
+// ═══════════════════════════════════════════════════════════
+// ── KARMA CAM — Snap-style camera with AR pet filters ──
+//    Live camera + your pet as an AR buddy + neon filters.
+//    Capture → share. Graceful fallback if camera is denied.
+// ═══════════════════════════════════════════════════════════
+let _kcam={stream:null,raf:null,filter:0,t:0,captured:false};
+const _KCAM_FILTERS=[
+  {id:'none',   nm:'CLEAN',   em:'✨', css:'',                                          tint:null},
+  {id:'neon',   nm:'NEON',    em:'💚', css:'saturate(1.5) contrast(1.15)',              tint:'rgba(57,255,20,.10)'},
+  {id:'vapor',  nm:'VAPOR',   em:'💜', css:'hue-rotate(35deg) saturate(1.6)',           tint:'rgba(191,95,255,.14)'},
+  {id:'gold',   nm:'GOLDEN',  em:'🌇', css:'sepia(.45) saturate(1.6) contrast(1.05)',   tint:'rgba(255,159,10,.12)'},
+  {id:'frost',  nm:'FROST',   em:'❄️', css:'hue-rotate(-25deg) brightness(1.1)',        tint:'rgba(0,217,255,.12)'},
+  {id:'noir',   nm:'NOIR',    em:'🖤', css:'grayscale(1) contrast(1.25)',               tint:null},
+];
+function openKarmaCam(){
+  let m=$('karmaCam');
+  if(!m){
+    m=document.createElement('div');m.id='karmaCam';
+    m.style.cssText='position:fixed;inset:0;z-index:9995;background:#000;display:flex;flex-direction:column;';
+    m.innerHTML=`
+      <div style="position:relative;flex:1;overflow:hidden;background:#05060f">
+        <video id="kcamVideo" autoplay playsinline muted style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transform:scaleX(-1)"></video>
+        <canvas id="kcamFx" style="position:absolute;inset:0;width:100%;height:100%;pointer-events:none"></canvas>
+        <div id="kcamTint" style="position:absolute;inset:0;pointer-events:none"></div>
+        <div style="position:absolute;top:0;left:0;right:0;display:flex;align-items:center;justify-content:space-between;padding:12px 14px;background:linear-gradient(180deg,rgba(0,0,0,.5),transparent);z-index:5">
+          <button onclick="closeKarmaCam()" style="background:rgba(0,0,0,.4);border:none;border-radius:50%;width:34px;height:34px;color:#fff;font-size:18px;cursor:pointer">←</button>
+          <div style="font-size:14px;font-weight:900;color:#fff;font-family:var(--mono);letter-spacing:1px;text-shadow:0 0 10px rgba(0,0,0,.8)">KARMA <span style="color:#FFE600">CAM</span></div>
+          <div style="width:34px"></div>
+        </div>
+        <div id="kcamNoCamera" style="display:none;position:absolute;inset:0;align-items:center;justify-content:center;flex-direction:column;gap:8px;background:radial-gradient(ellipse at 50% 40%,#14203a,#05060f)">
+          <div style="font-size:60px">📷</div>
+          <div style="font-size:11px;color:rgba(255,255,255,.5);font-family:var(--mono);text-align:center;padding:0 30px;line-height:1.5">Kameran nekad eller saknas —<br>men din pet poserar ändå! 👇</div>
+        </div>
+        <div id="kcamFlash" style="position:absolute;inset:0;background:#fff;opacity:0;pointer-events:none;transition:opacity .25s;z-index:6"></div>
+      </div>
+      <div style="flex-shrink:0;background:#05060f;padding:10px 0 18px;border-top:1px solid rgba(255,255,255,.08)">
+        <div id="kcamFilters" style="display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;padding:0 14px 12px"></div>
+        <div style="display:flex;align-items:center;justify-content:center;gap:34px">
+          <button onclick="_kcamSwitchPetSide()" title="Flytta pet" style="background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.15);border-radius:50%;width:44px;height:44px;font-size:20px;cursor:pointer">🐾</button>
+          <button onclick="_kcamCapture()" style="background:#fff;border:5px solid rgba(255,255,255,.35);border-radius:50%;width:72px;height:72px;cursor:pointer;box-shadow:0 0 24px rgba(255,255,255,.35)"></button>
+          <button onclick="openKarmaReels()" title="Reels" style="background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.15);border-radius:50%;width:44px;height:44px;font-size:20px;cursor:pointer">📱</button>
+        </div>
+      </div>`;
+    document.body.appendChild(m);
+  }else{m.style.display='flex';}
+  _kcam.captured=false;_kcam.petSide=_kcam.petSide||'right';
+  _kcamRenderFilters();
+  _kcamApplyFilter(_kcam.filter||0);
+  // start camera (best effort — fallback keeps the feature alive)
+  const vid=$('kcamVideo'),noCam=$('kcamNoCamera');
+  if(navigator.mediaDevices&&navigator.mediaDevices.getUserMedia){
+    navigator.mediaDevices.getUserMedia({video:{facingMode:'user'},audio:false}).then(st=>{
+      _kcam.stream=st;if(vid){vid.srcObject=st;vid.style.display='';}if(noCam)noCam.style.display='none';
+    }).catch(()=>{if(vid)vid.style.display='none';if(noCam)noCam.style.display='flex';});
+  }else{if(vid)vid.style.display='none';if(noCam)noCam.style.display='flex';}
+  // AR overlay loop
+  const fx=$('kcamFx');
+  if(fx){
+    const host=fx.parentElement;
+    fx.width=host.offsetWidth||window.innerWidth;fx.height=host.offsetHeight||Math.round(window.innerHeight*.8);
+  }
+  _kcam.t=0;
+  if(_kcam.raf)cancelAnimationFrame(_kcam.raf);
+  _kcam.raf=requestAnimationFrame(_kcamLoop);
+  vibe&&vibe(8);
+}
+function closeKarmaCam(){
+  if(_kcam.raf){cancelAnimationFrame(_kcam.raf);_kcam.raf=null;}
+  if(_kcam.stream){try{_kcam.stream.getTracks().forEach(t=>t.stop());}catch(e){}_kcam.stream=null;}
+  const v=$('kcamVideo');if(v)v.srcObject=null;
+  const m=$('karmaCam');if(m)m.style.display='none';
+}
+function _kcamRenderFilters(){
+  const row=$('kcamFilters');if(!row)return;
+  row.innerHTML=_KCAM_FILTERS.map((f,i)=>`<div onclick="_kcamApplyFilter(${i})" data-f="${i}" style="flex-shrink:0;display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer;-webkit-tap-highlight-color:transparent"><div style="width:44px;height:44px;border-radius:50%;background:rgba(255,255,255,.06);border:2px solid ${i===_kcam.filter?'#FFE600':'rgba(255,255,255,.15)'};display:flex;align-items:center;justify-content:center;font-size:20px">${f.em}</div><div style="font-size:7px;font-weight:900;font-family:var(--mono);color:${i===_kcam.filter?'#FFE600':'rgba(255,255,255,.4)'}">${f.nm}</div></div>`).join('');
+}
+function _kcamApplyFilter(i){
+  _kcam.filter=i;const f=_KCAM_FILTERS[i]||_KCAM_FILTERS[0];
+  const vid=$('kcamVideo');if(vid)vid.style.filter=f.css;
+  const tint=$('kcamTint');if(tint)tint.style.background=f.tint||'transparent';
+  _kcamRenderFilters();vibe&&vibe(5);
+}
+function _kcamSwitchPetSide(){_kcam.petSide=_kcam.petSide==='right'?'left':'right';vibe&&vibe(6);}
+function _kcamLoop(){
+  const m=$('karmaCam');
+  if(!m||m.style.display==='none'){_kcam.raf=null;return;}
+  _kcam.t++;const t=_kcam.t;
+  const fx=$('kcamFx');if(!fx){_kcam.raf=requestAnimationFrame(_kcamLoop);return;}
+  const ctx=fx.getContext('2d');if(!ctx){_kcam.raf=requestAnimationFrame(_kcamLoop);return;}
+  const W=fx.width,H=fx.height;
+  ctx.clearRect(0,0,W,H);
+  const f=_KCAM_FILTERS[_kcam.filter]||_KCAM_FILTERS[0];
+  // ambient sparkles per filter
+  if(f.id!=='none'&&f.id!=='noir'){
+    for(let i=0;i<10;i++){
+      const sx=((i*97.3+t*.6)%W),sy=((i*57.7+t*.35)%H);
+      ctx.save();ctx.globalAlpha=.25+.2*Math.sin(t*.05+i);ctx.fillStyle='#fff';
+      ctx.beginPath();ctx.arc(sx,sy,i%3===0?1.6:.9,0,Math.PI*2);ctx.fill();ctx.restore();
+    }
+  }
+  // AR pet buddy — bobs at the chosen side, reacts to filter hue
+  const petEm=(typeof G!=='undefined'&&G.petEmoji)||'🐉';
+  const px=_kcam.petSide==='right'?W*.78:W*.22;
+  const py=H*.72+Math.sin(t*.05)*10;
+  ctx.save();
+  ctx.shadowColor=f.id==='neon'?'#39FF14':f.id==='vapor'?'#BF5FFF':f.id==='frost'?'#00D9FF':f.id==='gold'?'#FF9F0A':'rgba(255,255,255,.7)';
+  ctx.shadowBlur=22;
+  ctx.font='64px serif';ctx.textAlign='center';ctx.textBaseline='middle';
+  ctx.translate(px,py);ctx.rotate(Math.sin(t*.04)*.08);
+  ctx.fillText(petEm,0,0);
+  ctx.restore();
+  // pet speech bubble occasionally
+  if(Math.floor(t/240)%2===1){
+    const msgs=['SNAP! 📸','du är snygg idag ✨','skicka till gänget!','🔥🔥🔥'];
+    const msg=msgs[Math.floor(t/480)%msgs.length];
+    ctx.save();ctx.font='bold 11px monospace';ctx.textAlign='center';
+    const tw=ctx.measureText(msg).width;
+    const bx=px,by=py-58;
+    ctx.fillStyle='rgba(0,0,0,.55)';
+    ctx.beginPath();if(ctx.roundRect)ctx.roundRect(bx-tw/2-9,by-13,tw+18,24,10);else ctx.rect(bx-tw/2-9,by-13,tw+18,24);ctx.fill();
+    ctx.fillStyle='#fff';ctx.fillText(msg,bx,by+3);ctx.restore();
+  }
+  // KARMA watermark
+  ctx.save();ctx.globalAlpha=.4;ctx.font='bold 9px monospace';ctx.textAlign='left';
+  ctx.fillStyle='#fff';ctx.fillText('⚡ KARMA CAM',10,H-12);ctx.restore();
+  _kcam.raf=requestAnimationFrame(_kcamLoop);
+}
+function _kcamCapture(){
+  const fl=$('kcamFlash');
+  if(fl){fl.style.opacity='.9';setTimeout(()=>{fl.style.opacity='0';},140);}
+  vibe&&vibe([25,10,40]);SFX&&SFX.click&&SFX.click();
+  // composite video frame + AR overlay to a share canvas
+  try{
+    const vid=$('kcamVideo'),fx=$('kcamFx');
+    const cv=document.createElement('canvas');
+    cv.width=(fx&&fx.width)||720;cv.height=(fx&&fx.height)||1080;
+    const c=cv.getContext('2d');
+    const f=_KCAM_FILTERS[_kcam.filter]||_KCAM_FILTERS[0];
+    if(vid&&vid.srcObject&&vid.videoWidth){
+      c.save();c.filter=f.css||'none';c.translate(cv.width,0);c.scale(-1,1);
+      const vr=vid.videoWidth/vid.videoHeight,cr=cv.width/cv.height;
+      let sw=vid.videoWidth,sh=vid.videoHeight,sx=0,sy=0;
+      if(vr>cr){sw=vid.videoHeight*cr;sx=(vid.videoWidth-sw)/2;}else{sh=vid.videoWidth/cr;sy=(vid.videoHeight-sh)/2;}
+      c.drawImage(vid,sx,sy,sw,sh,0,0,cv.width,cv.height);c.restore();
+      if(f.tint){c.fillStyle=f.tint;c.fillRect(0,0,cv.width,cv.height);}
+    }else{
+      const g=c.createLinearGradient(0,0,0,cv.height);g.addColorStop(0,'#14203a');g.addColorStop(1,'#05060f');
+      c.fillStyle=g;c.fillRect(0,0,cv.width,cv.height);
+    }
+    if(fx)c.drawImage(fx,0,0,cv.width,cv.height);
+    gainXP&&gainXP(8,'social');addWorldPoints&&addWorldPoints(5,'social');
+    G.snapsTaken=(G.snapsTaken||0)+1;save&&save();
+    cv.toBlob(blob=>{
+      if(!blob){showT('📸 Snap tagen! +8 XP','g');return;}
+      const file=new File([blob],'karma-snap.png',{type:'image/png'});
+      if(navigator.canShare&&navigator.canShare({files:[file]})){
+        navigator.share({files:[file],title:'KARMA CAM'}).catch(()=>{});
+        showT('📸 Snap redo att delas! +8 XP','g');
+      }else{
+        const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='karma-snap.png';a.click();
+        setTimeout(()=>URL.revokeObjectURL(a.href),4000);
+        showT('📸 Snap sparad! +8 XP','g');
+      }
+    },'image/png');
+  }catch(e){showT('📸 Snap tagen! +8 XP','g');}
 }
 
 // ── LEADERBOARD ──
