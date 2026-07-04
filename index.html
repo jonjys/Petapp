@@ -20852,21 +20852,24 @@ function _dojoRender(){
       <div style="background:rgba(255,45,85,.06);border:1.5px solid rgba(255,45,85,.25);border-radius:18px;padding:14px">
         <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
           <div style="font-size:30px">⚡</div>
-          <div><div style="font-weight:900;font-size:13px">SNABB TAP</div><div style="font-size:10px;color:var(--t3)">Tryck så snabbt du kan i 5 sekunder</div></div>
+          <div><div style="font-weight:900;font-size:13px">SNABB TAP</div><div style="font-size:10px;color:var(--t3)">Välj tid — tryck så snabbt du kan</div></div>
+        </div>
+        <div style="display:flex;gap:5px;margin-bottom:9px;overflow-x:auto;scrollbar-width:none" id="dojoTapDurRow">
+          ${[5,10,15,20,25,30,35].map(d=>`<button onclick="window._dojoTapDur=${d};document.querySelectorAll('#dojoTapDurRow button').forEach(b=>{b.style.background='rgba(255,255,255,.05)';b.style.color='rgba(255,255,255,.5)';b.style.borderColor='rgba(255,255,255,.12)'});this.style.background='rgba(255,45,85,.25)';this.style.color='#FF2D55';this.style.borderColor='#FF2D55'" style="flex-shrink:0;padding:6px 10px;border-radius:10px;font-size:10px;font-weight:900;font-family:var(--mono);border:1.5px solid ${d===(window._dojoTapDur||10)?'#FF2D55':'rgba(255,255,255,.12)'};background:${d===(window._dojoTapDur||10)?'rgba(255,45,85,.25)':'rgba(255,255,255,.05)'};color:${d===(window._dojoTapDur||10)?'#FF2D55':'rgba(255,255,255,.5)'};cursor:pointer">${d}s</button>`).join('')}
         </div>
         <button onclick="_dojoStartDrill('tap')" ${left<=0?'disabled':''} style="width:100%;padding:10px;border-radius:12px;font-size:13px;font-weight:900;cursor:${left>0?'pointer':'not-allowed'};font-family:var(--ff);border:none;background:${left>0?'rgba(255,45,85,.2)':'rgba(255,255,255,.04)'};color:${left>0?'#FF2D55':'var(--t3)'}">🚀 STARTA DRILL</button>
       </div>
       <div style="background:rgba(57,255,20,.06);border:1.5px solid rgba(57,255,20,.25);border-radius:18px;padding:14px">
         <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
           <div style="font-size:30px">💪</div>
-          <div><div style="font-weight:900;font-size:13px">UTHÅLLIGHET</div><div style="font-size:10px;color:var(--t3)">Håll knappen intryckt i 8 sekunder</div></div>
+          <div><div style="font-weight:900;font-size:13px">PRECISION HOLD</div><div style="font-size:10px;color:var(--t3)">Släpp på EXAKT 8.000s — tusendelar räknas! Bästa: <span style="color:var(--g);font-weight:900">${localStorage.getItem('kv8_dojoHoldBest')?('±'+localStorage.getItem('kv8_dojoHoldBest')+'ms'):'–'}</span></div></div>
         </div>
         <button id="dojoHoldBtn" onmousedown="_dojoHoldStart(event)" ontouchstart="_dojoHoldStart(event)" onmouseup="_dojoHoldEnd()" ontouchend="_dojoHoldEnd()" ${left<=0?'disabled':''} style="width:100%;padding:10px;border-radius:12px;font-size:13px;font-weight:900;cursor:${left>0?'pointer':'not-allowed'};font-family:var(--ff);border:none;background:${left>0?'rgba(57,255,20,.15)':'rgba(255,255,255,.04)'};color:${left>0?'var(--g)':'var(--t3)'}">💪 HÅLL INNE</button>
       </div>
       <div style="background:rgba(0,217,255,.06);border:1.5px solid rgba(0,217,255,.25);border-radius:18px;padding:14px">
         <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
           <div style="font-size:30px">🧠</div>
-          <div><div style="font-weight:900;font-size:13px">MINNESTEST</div><div style="font-size:10px;color:var(--t3)">Memorera sekvensen och upprepa</div></div>
+          <div><div style="font-weight:900;font-size:13px">MINNESTEST</div><div style="font-size:10px;color:var(--t3)">+1 symbol per rond — hur långt når du? Bästa: <span style="color:var(--b);font-weight:900">${localStorage.getItem('kv8_memBest')||0} ronder</span></div></div>
         </div>
         <button onclick="_dojoStartDrill('memory')" ${left<=0?'disabled':''} style="width:100%;padding:10px;border-radius:12px;font-size:13px;font-weight:900;cursor:${left>0?'pointer':'not-allowed'};font-family:var(--ff);border:none;background:${left>0?'rgba(0,217,255,.15)':'rgba(255,255,255,.04)'};color:${left>0?'var(--b)':'var(--t3)'}">🎯 STARTA DRILL</button>
       </div>
@@ -20890,73 +20893,123 @@ function _dojoStartDrill(type){
   const area=$('dojoExArea');if(!area)return;
   if(type==='tap'){
     _dojoTapCount=0;
+    const dur=window._dojoTapDur||10;
     area.innerHTML=`<div style="text-align:center;padding:20px;animation:pvpSlide .3s ease">
-      <div style="font-size:18px;font-weight:900;color:var(--pk);margin-bottom:6px">SNABB TAP DRILL</div>
+      <div style="font-size:18px;font-weight:900;color:var(--pk);margin-bottom:6px">SNABB TAP · ${dur}s</div>
       <div style="font-size:56px;font-weight:900;font-family:var(--mono);color:var(--b);line-height:1" id="dojoTapCount">0</div>
-      <div style="font-size:10px;color:var(--t3);margin:4px 0 12px">TRYCK SÅ SNABBT DU KAN!</div>
+      <div style="font-size:10px;color:var(--t3);margin:4px 0 12px"><span id="dojoTapRate">0.0</span> tryck/sek · Bästa (${dur}s): ${localStorage.getItem('kv8_tapBest_'+dur)||0}</div>
       <div style="height:8px;background:rgba(255,255,255,.08);border-radius:100px;overflow:hidden;margin-bottom:14px"><div id="dojoTapBar" style="height:100%;width:100%;background:linear-gradient(90deg,var(--pk),var(--p));border-radius:100px;transition:width .1s"></div></div>
       <button id="dojoTapBtn" onclick="_dojoTap()" style="width:100%;height:90px;border-radius:20px;font-size:28px;font-weight:900;cursor:pointer;background:linear-gradient(135deg,rgba(255,45,85,.3),rgba(191,95,255,.3));border:2px solid rgba(255,45,85,.6);color:#fff;font-family:var(--ff);-webkit-tap-highlight-color:transparent;user-select:none;letter-spacing:2px">TAP!</button>
     </div>`;
-    let timeLeft=5;
+    let timeLeft=dur;const t0=Date.now();
     _dojoActiveTimer=setInterval(()=>{
-      timeLeft-=0.05;
-      const bar=$('dojoTapBar');if(bar)bar.style.width=Math.max(0,timeLeft/5*100)+'%';
-      if(timeLeft<=0){clearInterval(_dojoActiveTimer);_dojoActiveTimer=null;_dojoFinishDrill('tap',_dojoTapCount);}
+      timeLeft=dur-(Date.now()-t0)/1000;
+      const bar=$('dojoTapBar');if(bar)bar.style.width=Math.max(0,timeLeft/dur*100)+'%';
+      const rt=$('dojoTapRate');if(rt&&(dur-timeLeft)>0.5)rt.textContent=(_dojoTapCount/(dur-timeLeft)).toFixed(1);
+      if(timeLeft<=0){clearInterval(_dojoActiveTimer);_dojoActiveTimer=null;_dojoFinishDrill('tap',{taps:_dojoTapCount,dur});}
     },50);
   } else if(type==='memory'){
-    const emojis=['🌟','🎮','🐲','⚡','🎣','🏆','🧬','💎'];
-    _dojoMemPattern=Array.from({length:4},()=>emojis[Math.floor(Math.random()*emojis.length)]);
-    _dojoMemUserPattern=[];
-    area.innerHTML=`<div style="text-align:center;padding:20px;animation:pvpSlide .3s ease">
-      <div style="font-size:18px;font-weight:900;color:var(--b);margin-bottom:12px">MINNESTEST</div>
-      <div style="font-size:10px;color:var(--t3);margin-bottom:14px">Kom ihåg sekvensen!</div>
-      <div id="dojoMemPat" style="display:flex;justify-content:center;gap:10px;margin-bottom:20px">${_dojoMemPattern.map(e=>`<span style="font-size:36px;opacity:0;transition:opacity .3s">${e}</span>`).join('')}</div>
-      <div id="dojoMemBtns" style="display:none;flex-wrap:wrap;justify-content:center;gap:8px;margin-bottom:12px"></div>
-      <div id="dojoMemSt" style="font-size:11px;color:var(--y);min-height:18px"></div>
-    </div>`;
-    const spans=$('dojoMemPat').querySelectorAll('span');
-    spans.forEach((s,i)=>setTimeout(()=>{
-      s.style.opacity='1';
-      if(i===spans.length-1)setTimeout(()=>{
-        spans.forEach(x=>x.style.opacity='.1');
-        _dojoShowMemBtns();
-      },900);
-    },i*600));
+    window._dojoMemRounds=0;
+    _dojoMemNextRound(3);
   }
 }
 function _dojoTap(){_dojoTapCount++;const tc=$('dojoTapCount');if(tc)tc.textContent=_dojoTapCount;}
+function _dojoMemNextRound(len){
+  const area=$('dojoExArea');if(!area)return;
+  const emojis=['🌟','🎮','🐲','⚡','🎣','🏆','🧬','💎','🔥','🌊'];
+  _dojoMemPattern=Array.from({length:len},()=>emojis[Math.floor(Math.random()*emojis.length)]);
+  _dojoMemUserPattern=[];
+  const round=(window._dojoMemRounds||0)+1;
+  const flashMs=Math.max(260,620-round*45); // faster each round
+  area.innerHTML=`<div style="text-align:center;padding:20px;animation:pvpSlide .3s ease">
+    <div style="font-size:18px;font-weight:900;color:var(--b);margin-bottom:4px">MINNESTEST · ROND ${round}</div>
+    <div style="font-size:10px;color:var(--t3);margin-bottom:14px">${len} symboler — snabbare för varje rond!</div>
+    <div id="dojoMemPat" style="display:flex;justify-content:center;gap:8px;margin-bottom:20px;flex-wrap:wrap">${_dojoMemPattern.map(e=>`<span style="font-size:32px;opacity:0;transition:opacity .2s">${e}</span>`).join('')}</div>
+    <div id="dojoMemBtns" style="display:none;flex-wrap:wrap;justify-content:center;gap:8px;margin-bottom:12px"></div>
+    <div id="dojoMemSt" style="font-size:11px;color:var(--y);min-height:18px"></div>
+  </div>`;
+  const spans=$('dojoMemPat').querySelectorAll('span');
+  spans.forEach((s,i)=>setTimeout(()=>{
+    s.style.opacity='1';
+    if(i===spans.length-1)setTimeout(()=>{spans.forEach(x=>x.style.opacity='.08');_dojoShowMemBtns();},650);
+  },i*flashMs));
+}
 function _dojoShowMemBtns(){
   const btns=$('dojoMemBtns');const st=$('dojoMemSt');
   if(st)st.textContent='Tryck i rätt ordning!';
   if(!btns)return;btns.style.display='flex';
-  const emojis=['🌟','🎮','🐲','⚡','🎣','🏆','🧬','💎'];
-  const choices=[..._dojoMemPattern,...emojis.filter(e=>!_dojoMemPattern.includes(e)).slice(0,2)].sort(()=>Math.random()-.5).slice(0,6);
-  btns.innerHTML=choices.map(e=>`<button onclick="_dojoMemTap('${e}')" style="font-size:30px;background:rgba(0,217,255,.1);border:1.5px solid rgba(0,217,255,.3);border-radius:14px;padding:10px 14px;cursor:pointer;-webkit-tap-highlight-color:transparent">${e}</button>`).join('');
+  const emojis=['🌟','🎮','🐲','⚡','🎣','🏆','🧬','💎','🔥','🌊'];
+  const distractors=emojis.filter(e=>!_dojoMemPattern.includes(e)).slice(0,3);
+  const choices=[...new Set([..._dojoMemPattern,...distractors])].sort(()=>Math.random()-.5);
+  btns.innerHTML=choices.map(e=>`<button onclick="_dojoMemTap('${e}')" style="font-size:28px;background:rgba(0,217,255,.1);border:1.5px solid rgba(0,217,255,.3);border-radius:14px;padding:9px 12px;cursor:pointer;-webkit-tap-highlight-color:transparent">${e}</button>`).join('');
 }
 function _dojoMemTap(em){
   _dojoMemUserPattern.push(em);
   const idx=_dojoMemUserPattern.length-1;
   if(_dojoMemUserPattern[idx]!==_dojoMemPattern[idx]){
-    const st=$('dojoMemSt');if(st){st.textContent='❌ Fel! +5TP tröst';st.style.color='var(--pk)';}
-    setTimeout(()=>_dojoFinishDrill('memory',0),800);return;
+    const st=$('dojoMemSt');if(st){st.textContent='❌ Fel! Du klarade '+(window._dojoMemRounds||0)+' ronder';st.style.color='var(--pk)';}
+    setTimeout(()=>_dojoFinishDrill('memory',window._dojoMemRounds||0),800);return;
   }
-  if(_dojoMemUserPattern.length===_dojoMemPattern.length)_dojoFinishDrill('memory',1);
+  if(_dojoMemUserPattern.length===_dojoMemPattern.length){
+    window._dojoMemRounds=(window._dojoMemRounds||0)+1;
+    const st=$('dojoMemSt');if(st){st.textContent='✅ Rond '+window._dojoMemRounds+' klar! Nästa...';st.style.color='var(--g)';}
+    vibe&&vibe([15,10,30]);
+    setTimeout(()=>_dojoMemNextRound(3+window._dojoMemRounds),700);
+  }
 }
-function _dojoHoldStart(e){if(e)e.preventDefault();const left=parseInt(localStorage.getItem('kv8_dojoLeft')||'0');if(left<=0){showT('Inga träningspass kvar idag!','r');return;}_dojoHoldTs=Date.now();const btn=$('dojoHoldBtn');if(btn){btn.style.background='rgba(57,255,20,.35)';btn.textContent='HÅLLER... ⏱️';}}
-function _dojoHoldEnd(){if(!_dojoHoldTs)return;const held=Math.min((Date.now()-_dojoHoldTs)/1000,8);_dojoHoldTs=0;const btn=$('dojoHoldBtn');if(btn){btn.style.background='';btn.textContent='💪 HÅLL INNE';}_dojoFinishDrill('hold',held);}
+function _dojoHoldStart(e){
+  if(e)e.preventDefault();
+  const left=parseInt(localStorage.getItem('kv8_dojoLeft')||'0');if(left<=0){showT('Inga träningspass kvar idag!','r');return;}
+  _dojoHoldTs=Date.now();
+  if(_dojoHoldInt)clearInterval(_dojoHoldInt);
+  // Live-timer med TUSENDELAR så du kan pricka 8.000 exakt
+  _dojoHoldInt=setInterval(()=>{
+    const btn=$('dojoHoldBtn');if(!btn||!_dojoHoldTs)return;
+    const el=(Date.now()-_dojoHoldTs)/1000;
+    btn.style.background=el>7.5&&el<8.5?'rgba(57,255,20,.5)':'rgba(57,255,20,.25)';
+    btn.textContent='⏱️ '+el.toFixed(3)+' s — SLÄPP PÅ 8.000!';
+  },33);
+}
+function _dojoHoldEnd(){
+  if(!_dojoHoldTs)return;
+  const heldMs=Date.now()-_dojoHoldTs;_dojoHoldTs=0;
+  if(_dojoHoldInt){clearInterval(_dojoHoldInt);_dojoHoldInt=null;}
+  const btn=$('dojoHoldBtn');if(btn){btn.style.background='';btn.textContent='💪 HÅLL INNE';}
+  const diffMs=Math.abs(heldMs-8000);
+  _dojoFinishDrill('hold',{heldMs,diffMs});
+}
 function _dojoFinishDrill(type,score){
   if(_dojoActiveTimer){clearInterval(_dojoActiveTimer);_dojoActiveTimer=null;}
   const left=parseInt(localStorage.getItem('kv8_dojoLeft')||'0');if(left<=0)return;
   localStorage.setItem('kv8_dojoLeft',Math.max(0,left-1));
   let tp=0,xp=0,msg='';
   if(type==='tap'){
-    tp=score>=30?25:score>=20?15:score>=10?8:3;xp=score*2;
-    msg=score>=30?'🔥 LEGENDAR! '+score+' tryck!':score>=20?'💪 IMPONERANDE! '+score:score>=10?'⚡ BRA! '+score:'👋 '+score+' tryck';
+    const taps=score.taps||0,dur=score.dur||10,rate=taps/dur;
+    tp=rate>=7?30:rate>=5.5?20:rate>=4?10:4;xp=Math.round(taps*1.5);
+    msg=(rate>=7?'🔥 LEGENDAR!':rate>=5.5?'💪 IMPONERANDE!':rate>=4?'⚡ BRA!':'👋')+' '+taps+' tryck ('+rate.toFixed(1)+'/s)';
+    const bk='kv8_tapBest_'+dur;const prev=parseInt(localStorage.getItem(bk)||'0');
+    if(taps>prev){localStorage.setItem(bk,taps);msg+=' · 🏆 NYTT REKORD!';}
+    // mini-leaderboard för vald tid
+    const ra=$('dojoResultArea');
+    if(ra){
+      const best=Math.max(taps,prev);
+      const rivals=[['blixt_kalle',Math.round(dur*6.8)],['tapqueen',Math.round(dur*6.1)],['snabbast_i_stan',Math.round(dur*5.2)],['medelmåttan',Math.round(dur*4.1)]];
+      const rows=[...rivals,['DU 🫵',best]].sort((a,b)=>b[1]-a[1]);
+      ra.innerHTML='<div style="margin-top:12px;background:rgba(255,45,85,.05);border:1.5px solid rgba(255,45,85,.2);border-radius:14px;padding:11px"><div style="font-size:9px;font-weight:900;color:var(--pk);font-family:var(--mono);letter-spacing:2px;margin-bottom:7px">🏆 TOPPLISTA · '+dur+'s</div>'+rows.map((r,i)=>'<div style="display:flex;justify-content:space-between;font-size:11px;font-family:var(--mono);padding:3px 0;color:'+(r[0].startsWith('DU')?'#39FF14':'rgba(255,255,255,.55)')+';font-weight:'+(r[0].startsWith('DU')?'900':'400')+'"><span>'+(i+1)+'. '+r[0]+'</span><span>'+r[1]+' tryck</span></div>').join('')+'</div>';
+    }
   }else if(type==='memory'){
-    tp=score?35:5;xp=score?90:15;msg=score?'🧠 EXAKT RÄTT! PERFEKT!':'😅 BRA FÖRSÖK! +5TP';
+    const rounds=score||0;
+    tp=Math.min(60,rounds*12);xp=rounds*25;
+    msg=rounds>=6?'🧠 GALAXHJÄRNA! '+rounds+' ronder!':rounds>=4?'🧠 VASST! '+rounds+' ronder':rounds>=1?'🧠 '+rounds+' ronder':'😅 Rond 1 — öva!';
+    const prev=parseInt(localStorage.getItem('kv8_memBest')||'0');
+    if(rounds>prev){localStorage.setItem('kv8_memBest',rounds);msg+=' · 🏆 REKORD!';}
   }else{
-    tp=score>=8?30:score>=5?18:Math.max(2,Math.floor(score*3));xp=Math.floor(score*8);
-    msg=score>=8?'💪 8 SEK! BEAST MODE!':score>=5?`⏱️ ${score.toFixed(1)}s - BRA!`:`⏱️ ${score.toFixed(1)}s - Öva mer!`;
+    const diffMs=Math.round(score.diffMs!=null?score.diffMs:99999);
+    tp=diffMs<=30?45:diffMs<=80?30:diffMs<=200?15:diffMs<=500?7:2;
+    xp=Math.max(5,60-Math.floor(diffMs/20));
+    msg=diffMs<=30?'🎯 PERFEKT! ±'+diffMs+'ms!':diffMs<=80?'🔥 GRYMT! ±'+diffMs+'ms':diffMs<=200?'⏱️ ±'+diffMs+'ms — nära!':'⏱️ ±'+diffMs+'ms — öva!';
+    const prev=parseInt(localStorage.getItem('kv8_dojoHoldBest')||'99999');
+    if(diffMs<prev){localStorage.setItem('kv8_dojoHoldBest',diffMs);msg+=' · 🏆 REKORD!';}
   }
   const totalTP=(parseInt(localStorage.getItem('kv8_dojoTP')||'0'))+tp;
   localStorage.setItem('kv8_dojoTP',totalTP);
