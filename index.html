@@ -3970,13 +3970,13 @@ div[style*="LIVE"]{border-radius:16px!important;background:rgba(57,255,20,.03)!i
             <div style="font-size:8px;color:rgba(255,255,255,.35)">+75 XP craft</div>
           </div>
         </div>
-        <!-- KARMA CATCH -->
-        <div onclick="openKarmaCatch()" ontouchstart="this.style.transform='scale(.94)'" ontouchend="this.style.transform=''" style="border-radius:16px;cursor:pointer;-webkit-tap-highlight-color:transparent;background:linear-gradient(160deg,#16060f 0%,#0c040a 100%);border:1.5px solid rgba(255,0,127,.45);overflow:hidden;box-shadow:0 0 16px rgba(255,0,127,.12);transition:transform .08s;position:relative">
-          <div style="height:2px;background:linear-gradient(90deg,transparent,#FF007F,transparent)"></div>
+        <!-- KARMA WINGS -->
+        <div onclick="openKarmaCatch()" ontouchstart="this.style.transform='scale(.94)'" ontouchend="this.style.transform=''" style="border-radius:16px;cursor:pointer;-webkit-tap-highlight-color:transparent;background:linear-gradient(160deg,#041420 0%,#03101c 100%);border:1.5px solid rgba(0,217,255,.45);overflow:hidden;box-shadow:0 0 16px rgba(0,217,255,.12);transition:transform .08s;position:relative">
+          <div style="height:2px;background:linear-gradient(90deg,transparent,#00D9FF,transparent)"></div>
           <div style="padding:14px 10px;display:flex;flex-direction:column;align-items:center;gap:6px;text-align:center">
-            <div style="font-size:40px;line-height:1;filter:drop-shadow(0 0 14px rgba(255,0,127,.8))">💗</div>
-            <div style="font-size:11px;font-weight:900;color:#FF007F;font-family:var(--mono);letter-spacing:.5px">KARMA CATCH</div>
-            <div style="font-size:7px;background:rgba(255,0,127,.12);border:1px solid rgba(255,0,127,.3);border-radius:20px;padding:2px 8px;color:#FF007F;font-family:var(--mono)">NEW ✨</div>
+            <div style="font-size:40px;line-height:1;filter:drop-shadow(0 0 14px rgba(0,217,255,.8))">🚀</div>
+            <div style="font-size:11px;font-weight:900;color:#00D9FF;font-family:var(--mono);letter-spacing:.5px">KARMA WINGS</div>
+            <div style="font-size:7px;background:rgba(0,217,255,.12);border:1px solid rgba(0,217,255,.3);border-radius:20px;padding:2px 8px;color:#00D9FF;font-family:var(--mono)">SHOOTER ♾️</div>
             <div style="font-size:8px;color:rgba(255,255,255,.35)" id="kcatchBestTag">Best: 0</div>
           </div>
         </div>
@@ -11707,10 +11707,46 @@ function _prSpawnTrail(x,y,col){
 //    stars, clovers) and dodge BAD karma (skulls, storms).
 //    Builds a karma-aura combo. 3 lives. Neon everywhere.
 // ════════════════════════════════════════════════════════
-let _kcat={active:false,raf:null,t:0,x:0,W:0,H:0,items:[],particles:[],pops:[],
-  score:0,combo:0,lives:3,aura:0,next:0,best:0,started:false};
-const _KCAT_GOOD=[{em:'💚',pts:10},{em:'✨',pts:15},{em:'🍀',pts:20},{em:'💎',pts:25},{em:'⭐',pts:12}];
-const _KCAT_BAD=[{em:'💀'},{em:'☁️'},{em:'💔'},{em:'⚡'}];
+let _kcat={active:false,raf:null,t:0,x:0,W:0,H:0,items:[],particles:[],pops:[],bullets:[],
+  score:0,combo:0,lives:3,aura:0,next:0,best:0,started:false,fireCd:0,up:null};
+// Targets to shoot (hp scales with score) + 💎 bonus target
+const _KW_FOES=[
+  {em:'👾',hp:1, pts:10,spd:1.5},
+  {em:'🤖',hp:3, pts:25,spd:1.05},
+  {em:'👹',hp:6, pts:50,spd:0.8},
+  {em:'💀',hp:10,pts:90,spd:0.62},
+  {em:'💨',hp:1, pts:20,spd:2.5},
+];
+// ENDLESS upgrades — infinite levels, cost grows 1.45x per level (persisted)
+const _KW_UPS={
+  dmg:  {nm:'SKADA',    em:'💥',base:40, desc:'+1 skada'},
+  rate: {nm:'ELDHAST.', em:'⚡',base:60, desc:'-8% cooldown'},
+  multi:{nm:'MULTI',    em:'🔱',base:150,desc:'+1 skott / 3 nivåer'},
+  crit: {nm:'KRIT',     em:'🎯',base:90, desc:'+5% chans ×3 dmg'},
+};
+function _kwLoadUp(){try{return JSON.parse(localStorage.getItem('kv8_kwUp')||'{}')||{};}catch(e){return{};}}
+function _kwCost(key){const lvl=(_kcat.up&&_kcat.up[key])||0;return Math.round(_KW_UPS[key].base*Math.pow(1.45,lvl));}
+function _kwBuyUp(key){
+  if(!_kcat.up)_kcat.up=_kwLoadUp();
+  const cost=_kwCost(key);
+  if((G.coins||0)<cost){showT('❌ Behöver '+cost+' 💎','r');SFX&&SFX.error&&SFX.error();return;}
+  G.coins-=cost;_kcat.up[key]=(_kcat.up[key]||0)+1;
+  try{localStorage.setItem('kv8_kwUp',JSON.stringify(_kcat.up));}catch(e){}
+  vibe&&vibe([15,10,30]);SFX&&SFX.coin&&SFX.coin();
+  showT(_KW_UPS[key].em+' '+_KW_UPS[key].nm+' → LV'+_kcat.up[key]+'!','g');
+  save&&save();updateHUD&&updateHUD();_kwRenderShop();
+}
+function _kwRenderShop(){
+  if(!_kcat.up)_kcat.up=_kwLoadUp();
+  ['kwShop','kwShopOver'].forEach(id=>{
+    const el=$(id);if(!el)return;
+    el.innerHTML='<div style="font-size:8px;font-weight:900;color:rgba(0,217,255,.7);font-family:var(--mono);letter-spacing:2px;margin-bottom:7px">♾️ OÄNDLIGA UPPGRADERINGAR · '+(G.coins||0).toLocaleString('sv')+' 💎</div>'+
+      '<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:6px">'+
+      Object.entries(_KW_UPS).map(([k,u])=>{const lvl=_kcat.up[k]||0;const cost=_kwCost(k);const can=(G.coins||0)>=cost;
+        return `<div onclick="event.stopPropagation();_kwBuyUp('${k}')" style="background:${can?'rgba(0,217,255,.1)':'rgba(255,255,255,.04)'};border:1.5px solid ${can?'rgba(0,217,255,.4)':'rgba(255,255,255,.1)'};border-radius:12px;padding:9px 3px;text-align:center;cursor:pointer;-webkit-tap-highlight-color:transparent"><div style="font-size:19px">${u.em}</div><div style="font-size:7.5px;font-weight:900;color:${can?'#00D9FF':'rgba(255,255,255,.4)'};font-family:var(--mono);margin-top:2px">${u.nm} <span style="color:#FFE600">LV${lvl}</span></div><div style="font-size:7px;color:rgba(255,255,255,.4);font-family:var(--mono)">${u.desc}</div><div style="font-size:8px;font-weight:900;color:${can?'#FFE600':'rgba(255,255,255,.25)'};font-family:var(--mono);margin-top:3px">${cost} 💎</div></div>`;
+      }).join('')+'</div>';
+  });
+}
 function openKarmaCatch(){
   let g=$('karmaCatchGame');
   if(!g){
@@ -11719,7 +11755,7 @@ function openKarmaCatch(){
     g.innerHTML=`
       <div style="display:flex;align-items:center;gap:8px;padding:10px 12px;background:#0a0410;border-bottom:3px solid #FF007F">
         <button onclick="closeKarmaCatch()" style="background:#111;border:2px solid rgba(255,255,255,.2);border-radius:4px;color:#fff;font-size:18px;cursor:pointer;padding:4px 10px;font-family:var(--mono)">←</button>
-        <div style="flex:1;text-align:center;font-size:13px;font-weight:900;font-family:var(--mono);color:#FF007F;letter-spacing:2px">💗 KARMA CATCH</div>
+        <div style="flex:1;text-align:center;font-size:13px;font-weight:900;font-family:var(--mono);color:#00D9FF;letter-spacing:2px">🚀 KARMA WINGS</div>
         <div style="background:#0d0d0d;border:2px solid var(--y);border-radius:4px;padding:3px 10px">
           <span style="font-size:13px;font-weight:900;color:var(--y);font-family:var(--mono)" id="kcatScore">0</span>
         </div>
@@ -11732,23 +11768,25 @@ function openKarmaCatch(){
         <div id="kcatStart" onclick="_kcatStart()" style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(6,3,10,.95);cursor:pointer;-webkit-tap-highlight-color:transparent">
           <div style="text-align:center;padding:24px">
             <div style="font-size:74px;animation:petBob 1s ease-in-out infinite;margin-bottom:8px" id="kcatStartPet">🐉</div>
-            <div style="font-size:24px;font-weight:900;color:#FF007F;font-family:var(--mono);letter-spacing:2px;text-shadow:0 0 20px rgba(255,0,127,.5)">KARMA CATCH</div>
-            <div style="font-size:10px;color:rgba(255,255,255,.45);font-family:var(--mono);letter-spacing:1px;margin:8px 0 4px">FÅNGA 💚✨🍀💎 · UNDVIK 💀☁️💔⚡</div>
-            <div style="font-size:9px;color:rgba(255,255,255,.3);font-family:var(--mono);margin-bottom:16px">DRA FÖR ATT FLYTTA DIN PET</div>
-            <div style="display:inline-block;background:#0d0d0d;border:3px solid var(--y);border-radius:6px;box-shadow:4px 4px 0px var(--y);padding:8px 18px;margin-bottom:18px">
+            <div style="font-size:24px;font-weight:900;color:#00D9FF;font-family:var(--mono);letter-spacing:2px;text-shadow:0 0 20px rgba(0,217,255,.5)">KARMA WINGS</div>
+            <div style="font-size:10px;color:rgba(255,255,255,.45);font-family:var(--mono);letter-spacing:1px;margin:8px 0 4px">FLYG MED DIN PET · AUTO-SKJUT MÅLEN 👾🤖👹💀</div>
+            <div style="font-size:9px;color:rgba(255,255,255,.3);font-family:var(--mono);margin-bottom:12px">DRA FÖR ATT FLYGA — SKJUTER SJÄLV</div>
+            <div style="display:inline-block;background:#0d0d0d;border:3px solid var(--y);border-radius:6px;box-shadow:4px 4px 0px var(--y);padding:8px 18px;margin-bottom:12px">
               <span style="font-size:10px;color:rgba(255,255,255,.5);font-family:var(--mono)">BÄST: </span>
               <span id="kcatBestDisp" style="color:var(--y);font-weight:900;font-family:var(--mono);font-size:16px">0</span>
             </div>
-            <div style="font-size:12px;color:#FF007F;font-family:var(--mono);letter-spacing:2px;animation:bitePulse .6s ease-in-out infinite">▶ TRYCK FÖR ATT STARTA</div>
+            <div id="kwShop" onclick="event.stopPropagation()" style="margin:0 auto 14px;max-width:330px;background:rgba(0,0,0,.35);border:1px solid rgba(0,217,255,.2);border-radius:14px;padding:10px"></div>
+            <div style="font-size:12px;color:#00D9FF;font-family:var(--mono);letter-spacing:2px;animation:bitePulse .6s ease-in-out infinite">▶ TRYCK FÖR ATT LYFTA</div>
           </div>
         </div>
         <div id="kcatOver" style="position:absolute;inset:0;display:none;align-items:center;justify-content:center;background:rgba(6,3,10,.96)">
-          <div style="text-align:center;padding:24px">
-            <div style="font-size:48px;margin-bottom:6px">💗</div>
-            <div style="font-size:20px;font-weight:900;color:#FF007F;font-family:var(--mono);letter-spacing:2px">KARMA SAMLAD!</div>
+          <div style="text-align:center;padding:24px;max-width:360px">
+            <div style="font-size:48px;margin-bottom:6px">🚀</div>
+            <div style="font-size:20px;font-weight:900;color:#00D9FF;font-family:var(--mono);letter-spacing:2px">FLYGNING SLUT!</div>
             <div style="font-size:38px;font-weight:900;color:var(--y);font-family:var(--mono);margin:8px 0" id="kcatFinal">0</div>
-            <div style="font-size:11px;color:var(--g);font-family:var(--mono);margin-bottom:18px" id="kcatReward"></div>
-            <button onclick="_kcatStart()" style="background:linear-gradient(135deg,#FF007F,#BF5FFF);border:none;border-radius:14px;padding:14px 36px;font-size:15px;font-weight:900;cursor:pointer;font-family:var(--mono);color:#fff;letter-spacing:1px;box-shadow:0 0 24px rgba(255,0,127,.5)">↻ IGEN</button>
+            <div style="font-size:11px;color:var(--g);font-family:var(--mono);margin-bottom:12px" id="kcatReward"></div>
+            <div id="kwShopOver" style="margin:0 auto 14px;background:rgba(0,0,0,.35);border:1px solid rgba(0,217,255,.2);border-radius:14px;padding:10px"></div>
+            <button onclick="_kcatStart()" style="background:linear-gradient(135deg,#00D9FF,#39FF14);border:none;border-radius:14px;padding:14px 36px;font-size:15px;font-weight:900;cursor:pointer;font-family:var(--mono);color:#021;letter-spacing:1px;box-shadow:0 0 24px rgba(0,217,255,.5)">↻ FLYG IGEN</button>
           </div>
         </div>
       </div>`;
@@ -11765,6 +11803,7 @@ function openKarmaCatch(){
   const sp=$('kcatStartPet');if(sp)sp.textContent=(G&&G.petEmoji)||'🐉';
   $('kcatStart').style.display='flex';$('kcatOver').style.display='none';
   _kcat.started=false;_kcat.active=false;
+  _kcat.up=_kwLoadUp();_kwRenderShop();
 }
 function closeKarmaCatch(){
   _kcat.active=false;if(_kcat.raf){cancelAnimationFrame(_kcat.raf);_kcat.raf=null;}
@@ -11775,8 +11814,9 @@ function _kcatStart(){
   const parent=cv.parentElement;
   cv.width=Math.max(200,parent.offsetWidth);cv.height=Math.max(300,parent.offsetHeight);
   _kcat.W=cv.width;_kcat.H=cv.height;_kcat.x=cv.width/2;
-  _kcat.items=[];_kcat.particles=[];_kcat.pops=[];
-  _kcat.score=0;_kcat.combo=0;_kcat.lives=3;_kcat.aura=0;_kcat.next=20;
+  _kcat.items=[];_kcat.particles=[];_kcat.pops=[];_kcat.bullets=[];
+  _kcat.score=0;_kcat.combo=0;_kcat.lives=3;_kcat.aura=0;_kcat.next=20;_kcat.fireCd=0;
+  if(!_kcat.up)_kcat.up=_kwLoadUp();
   _kcat.active=true;_kcat.started=true;_kcat.t=0;
   $('kcatStart').style.display='none';$('kcatOver').style.display='none';
   $('kcatLives').textContent='💗💗💗';
@@ -11791,42 +11831,81 @@ function _kcatLoop(){
 }
 function _kcatUpdate(){
   _kcat.t++;const W=_kcat.W,H=_kcat.H;
-  const diff=1+Math.min(2.5,_kcat.score/600);
-  // spawn
+  const up=_kcat.up||{};
+  const diff=1+Math.min(3,_kcat.score/800);
+  const hpMult=1+_kcat.score/1500;
+  // spawn targets
   _kcat.next-=diff;
   if(_kcat.next<=0){
-    const bad=Math.random()<0.28+Math.min(.12,_kcat.score/4000);
-    if(bad){const b=_KCAT_BAD[Math.floor(Math.random()*_KCAT_BAD.length)];_kcat.items.push({x:30+Math.random()*(W-60),y:-20,vy:2.4+Math.random()*1.6*diff,em:b.em,bad:true});}
-    else{const gd=_KCAT_GOOD[Math.floor(Math.random()*_KCAT_GOOD.length)];_kcat.items.push({x:30+Math.random()*(W-60),y:-20,vy:2+Math.random()*1.4*diff,em:gd.em,pts:gd.pts});}
-    _kcat.next=42-Math.min(22,_kcat.score/120)+Math.random()*20;
-  }
-  const petY=H-46,catchR=34;
-  for(let i=_kcat.items.length-1;i>=0;i--){
-    const it=_kcat.items[i];it.y+=it.vy;
-    // catch
-    if(it.y>petY-catchR&&it.y<petY+catchR&&Math.abs(it.x-_kcat.x)<catchR){
-      if(it.bad){
-        _kcat.lives--;_kcat.combo=0;_kcat.aura=Math.max(0,_kcat.aura-30);
-        $('kcatLives').textContent='💗'.repeat(Math.max(0,_kcat.lives))+'🖤'.repeat(Math.max(0,3-_kcat.lives));
-        vibe&&vibe([50,30,80]);
-        for(let p=0;p<10;p++)_kcat.particles.push({x:it.x,y:it.y,vx:(Math.random()-.5)*5,vy:(Math.random()-.5)*5,life:18,col:'#FF2D55'});
-        _kcat.pops.push({x:it.x,y:it.y-10,txt:'-1 ❤',col:'#FF2D55',life:1});
-        _kcat.items.splice(i,1);
-        if(_kcat.lives<=0){_kcatOver();return;}
-      }else{
-        _kcat.combo++;const mult=1+Math.floor(_kcat.combo/4);
-        const gain=it.pts*mult;_kcat.score+=gain;_kcat.aura=Math.min(100,_kcat.aura+8);
-        const sc=$('kcatScore');if(sc)sc.textContent=_kcat.score;
-        vibe&&vibe(6);
-        const col=mult>=3?'#FF007F':mult>=2?'#FFE600':'#39FF14';
-        for(let p=0;p<8;p++)_kcat.particles.push({x:it.x,y:it.y,vx:(Math.random()-.5)*4,vy:-(1+Math.random()*3),life:16,col});
-        _kcat.pops.push({x:it.x,y:it.y-10,txt:'+'+gain+(mult>1?' ×'+mult:''),col,life:1});
-        _kcat.items.splice(i,1);
-      }
-      continue;
+    if(Math.random()<0.08){ // bonus gem — shoot for instant coins
+      _kcat.items.push({x:30+Math.random()*(W-60),y:-20,vy:1.6,em:'💎',hp:1,maxHp:1,pts:0,gem:true,wob:Math.random()*6});
+    }else{
+      const pool=_KW_FOES.filter((f,fi)=>fi<=Math.min(_KW_FOES.length-1,1+Math.floor(_kcat.score/400)));
+      const f=pool[Math.floor(Math.random()*pool.length)];
+      const hp=Math.max(1,Math.round(f.hp*hpMult));
+      _kcat.items.push({x:30+Math.random()*(W-60),y:-20,vy:f.spd*(0.8+diff*0.25),em:f.em,hp,maxHp:hp,pts:f.pts,wob:Math.random()*6});
     }
-    // missed good karma resets combo
-    if(it.y>H+20){if(!it.bad)_kcat.combo=0;_kcat.items.splice(i,1);}
+    _kcat.next=40-Math.min(24,_kcat.score/150)+Math.random()*16;
+  }
+  const petY=H-56;
+  // ── AUTO-FIRE (upgrades: rate, multi) ──
+  _kcat.fireCd--;
+  if(_kcat.fireCd<=0){
+    const interval=Math.max(6,Math.round(24*Math.pow(0.92,up.rate||0)));
+    _kcat.fireCd=interval;
+    const shots=1+Math.floor((up.multi||0)/3);
+    for(let s=0;s<shots;s++){
+      const off=shots===1?0:(s-(shots-1)/2)*14;
+      _kcat.bullets.push({x:_kcat.x+off,y:petY-24,vy:-9,vx:off*0.06});
+    }
+    _kcat.particles.push({x:_kcat.x,y:petY-20,vx:(Math.random()-.5),vy:-2,life:6,col:'#00D9FF'});
+  }
+  // bullets move + hit targets
+  const dmgBase=1+(up.dmg||0);
+  const critCh=Math.min(.6,(up.crit||0)*0.05);
+  for(let b=_kcat.bullets.length-1;b>=0;b--){
+    const bl=_kcat.bullets[b];bl.y+=bl.vy;bl.x+=bl.vx;
+    if(bl.y<-20){_kcat.bullets.splice(b,1);continue;}
+    for(let i=_kcat.items.length-1;i>=0;i--){
+      const it=_kcat.items[i];
+      if(Math.abs(bl.x-it.x)<22&&Math.abs(bl.y-it.y)<22){
+        const crit=Math.random()<critCh;
+        const dmg=crit?dmgBase*3:dmgBase;
+        it.hp-=dmg;it.flash=4;
+        _kcat.bullets.splice(b,1);
+        _kcat.particles.push({x:it.x,y:it.y,vx:(Math.random()-.5)*3,vy:-1,life:8,col:crit?'#FFE600':'#00D9FF'});
+        if(crit)_kcat.pops.push({x:it.x,y:it.y-16,txt:'KRIT!',col:'#FFE600',life:.8});
+        if(it.hp<=0){
+          _kcat.combo++;const mult=1+Math.floor(_kcat.combo/5);
+          if(it.gem){gainCoins&&gainCoins(5);_kcat.pops.push({x:it.x,y:it.y-10,txt:'+5 💎',col:'#FFE600',life:1});}
+          else{
+            const gain=it.pts*mult;_kcat.score+=gain;
+            const sc=$('kcatScore');if(sc)sc.textContent=_kcat.score;
+            const col=mult>=3?'#FF007F':mult>=2?'#FFE600':'#39FF14';
+            _kcat.pops.push({x:it.x,y:it.y-10,txt:'+'+gain+(mult>1?' ×'+mult:''),col,life:1});
+          }
+          _kcat.aura=Math.min(100,_kcat.aura+5);
+          for(let p=0;p<10;p++)_kcat.particles.push({x:it.x,y:it.y,vx:(Math.random()-.5)*5,vy:(Math.random()-.5)*4-1,life:16,col:['#00D9FF','#39FF14','#FFE600','#FF007F'][p%4]});
+          _kcat.items.splice(i,1);vibe&&vibe(5);
+        }
+        break;
+      }
+    }
+  }
+  // targets descend — reaching pet/bottom costs a life
+  for(let i=_kcat.items.length-1;i>=0;i--){
+    const it=_kcat.items[i];it.y+=it.vy;it.x+=Math.sin((_kcat.t+it.wob*40)*.03)*.5;
+    const hitPet=Math.abs(it.x-_kcat.x)<30&&Math.abs(it.y-petY)<30;
+    if(it.y>H-14||hitPet){
+      if(it.gem){_kcat.items.splice(i,1);continue;} // missed gem = no harm
+      _kcat.lives--;_kcat.combo=0;_kcat.aura=Math.max(0,_kcat.aura-25);
+      const lv=$('kcatLives');if(lv)lv.textContent='💗'.repeat(Math.max(0,_kcat.lives))+'🖤'.repeat(Math.max(0,3-_kcat.lives));
+      vibe&&vibe([50,30,80]);
+      for(let p=0;p<12;p++)_kcat.particles.push({x:it.x,y:it.y,vx:(Math.random()-.5)*5,vy:(Math.random()-.5)*5,life:18,col:'#FF2D55'});
+      _kcat.pops.push({x:it.x,y:it.y-10,txt:'-1 ❤',col:'#FF2D55',life:1});
+      _kcat.items.splice(i,1);
+      if(_kcat.lives<=0){_kcatOver();return;}
+    }
   }
   _kcat.particles=_kcat.particles.filter(p=>{p.x+=p.vx;p.y+=p.vy;p.vy+=.15;p.life--;return p.life>0;});
   _kcat.pops=_kcat.pops.filter(pu=>{pu.y-=1.1;pu.life-=.025;return pu.life>0;});
@@ -11838,27 +11917,53 @@ function _kcatDraw(){
   const bg=ctx.createLinearGradient(0,0,0,H);
   bg.addColorStop(0,'#12031a');bg.addColorStop(.5,'#0a0414');bg.addColorStop(1,'#050208');
   ctx.fillStyle=bg;ctx.fillRect(0,0,W,H);
-  // aura nebula tied to combo/aura meter
+  // speed-line starfield (flying feeling — lines streak downward)
+  for(let i=0;i<22;i++){
+    const sx=(i*89.7)%W,sy=((i*53.3+t*(2.2+i%3))%H);
+    ctx.save();ctx.globalAlpha=.1+.12*Math.sin(t*.03+i);ctx.strokeStyle='#9fd8ff';ctx.lineWidth=i%5===0?1.4:.7;
+    ctx.beginPath();ctx.moveTo(sx,sy);ctx.lineTo(sx,sy+8+(i%4)*4);ctx.stroke();ctx.restore();
+  }
+  // aura nebula tied to combo meter
   if(_kcat.aura>2){
     const ag=ctx.createRadialGradient(W/2,H,10,W/2,H,H*.9);
-    ag.addColorStop(0,`rgba(255,0,127,${(_kcat.aura/100*.25).toFixed(3)})`);ag.addColorStop(1,'transparent');
+    ag.addColorStop(0,`rgba(0,217,255,${(_kcat.aura/100*.22).toFixed(3)})`);ag.addColorStop(1,'transparent');
     ctx.fillStyle=ag;ctx.fillRect(0,0,W,H);
   }
-  // drifting stars
-  for(let i=0;i<26;i++){const sx=(i*89.7)%W,sy=((i*53.3+t*.5)%H);ctx.save();ctx.globalAlpha=.12+.1*Math.sin(t*.03+i);ctx.fillStyle='#fff';ctx.beginPath();ctx.arc(sx,sy,i%5===0?1.4:.7,0,Math.PI*2);ctx.fill();ctx.restore();}
-  // falling items
+  // bullets — neon streaks
+  _kcat.bullets.forEach(b=>{
+    ctx.save();ctx.strokeStyle='#00D9FF';ctx.lineWidth=3;ctx.lineCap='round';ctx.shadowColor='#00D9FF';ctx.shadowBlur=10;
+    ctx.beginPath();ctx.moveTo(b.x,b.y);ctx.lineTo(b.x-b.vx*1.4,b.y+12);ctx.stroke();
+    ctx.fillStyle='#fff';ctx.beginPath();ctx.arc(b.x,b.y,2,0,Math.PI*2);ctx.fill();ctx.restore();
+  });
+  // targets with HP-ring
   _kcat.items.forEach(it=>{
-    ctx.save();ctx.shadowColor=it.bad?'#FF2D55':'#39FF14';ctx.shadowBlur=14;
-    ctx.font='26px serif';ctx.textAlign='center';ctx.textBaseline='middle';
-    ctx.fillText(it.em,it.x,it.y);ctx.restore();
+    if(it.flash>0)it.flash--;
+    ctx.save();
+    ctx.shadowColor=it.gem?'#FFE600':'#FF2D55';ctx.shadowBlur=it.flash>0?24:13;
+    ctx.font='27px serif';ctx.textAlign='center';ctx.textBaseline='middle';
+    if(it.flash>0){ctx.globalAlpha=.75;}
+    ctx.fillText(it.em,it.x,it.y);
+    if(!it.gem&&it.maxHp>1){
+      const pct=Math.max(0,it.hp/it.maxHp);
+      ctx.shadowBlur=0;ctx.globalAlpha=.9;ctx.lineWidth=2.5;
+      ctx.strokeStyle=pct>.5?'#39FF14':pct>.25?'#FFE600':'#FF2D55';
+      ctx.beginPath();ctx.arc(it.x,it.y,20,-Math.PI/2,-Math.PI/2+Math.PI*2*pct);ctx.stroke();
+    }
+    ctx.restore();
   });
   // particles
   _kcat.particles.forEach(p=>{ctx.save();ctx.globalAlpha=Math.min(1,p.life/16);ctx.fillStyle=p.col;ctx.shadowColor=p.col;ctx.shadowBlur=8;ctx.beginPath();ctx.arc(p.x,p.y,3,0,Math.PI*2);ctx.fill();ctx.restore();});
-  // pet (player) with aura ring
-  const petY=H-46;
-  ctx.save();ctx.globalAlpha=.25+.2*Math.sin(t*.06);ctx.strokeStyle='#FF007F';ctx.lineWidth=2.5;ctx.shadowColor='#FF007F';ctx.shadowBlur=16;
-  ctx.beginPath();ctx.arc(_kcat.x,petY,30+_kcat.aura*.12,0,Math.PI*2);ctx.stroke();ctx.restore();
-  ctx.save();ctx.shadowColor='#FF007F';ctx.shadowBlur=18;ctx.font='40px serif';ctx.textAlign='center';ctx.textBaseline='middle';
+  // pet ship (player) — thruster flame + cyan aura
+  const petY=H-56;
+  ctx.save();ctx.globalAlpha=.7;
+  const fl=6+Math.sin(t*.5)*3;
+  const fg2=ctx.createLinearGradient(_kcat.x,petY+16,_kcat.x,petY+16+fl+10);
+  fg2.addColorStop(0,'rgba(0,217,255,.9)');fg2.addColorStop(.5,'rgba(57,255,20,.5)');fg2.addColorStop(1,'transparent');
+  ctx.fillStyle=fg2;
+  ctx.beginPath();ctx.moveTo(_kcat.x-6,petY+15);ctx.lineTo(_kcat.x+6,petY+15);ctx.lineTo(_kcat.x,petY+16+fl+10);ctx.closePath();ctx.fill();ctx.restore();
+  ctx.save();ctx.globalAlpha=.22+.16*Math.sin(t*.06);ctx.strokeStyle='#00D9FF';ctx.lineWidth=2.5;ctx.shadowColor='#00D9FF';ctx.shadowBlur=16;
+  ctx.beginPath();ctx.arc(_kcat.x,petY,30+_kcat.aura*.1,0,Math.PI*2);ctx.stroke();ctx.restore();
+  ctx.save();ctx.shadowColor='#00D9FF';ctx.shadowBlur=18;ctx.font='40px serif';ctx.textAlign='center';ctx.textBaseline='middle';
   ctx.fillText((G&&G.petEmoji)||'🐉',_kcat.x,petY);ctx.restore();
   // pops
   _kcat.pops.forEach(pu=>{ctx.save();ctx.globalAlpha=Math.max(0,pu.life);ctx.font='bold 14px monospace';ctx.textAlign='center';ctx.fillStyle=pu.col;ctx.shadowColor=pu.col;ctx.shadowBlur=10;ctx.fillText(pu.txt,pu.x,pu.y);ctx.restore();});
@@ -11882,6 +11987,7 @@ function _kcatOver(){
   const sm=_runTrackSummary();_runTrackStop();
   const f=$('kcatFinal');if(f)f.textContent=_kcat.score;
   const r=$('kcatReward');if(r)r.innerHTML='+'+coins+' 💎 · +'+sm.xp+' XP'+(sm.levels>0?'<br><span style="color:#FFE600;font-weight:900">⬆️ DU GICK UPP '+sm.levels+' LEVEL'+(sm.levels>1?'S':'')+'! 🎉</span>':'');
+  _kwRenderShop();
   const o=$('kcatOver');if(o)o.style.display='flex';
   vibe&&vibe([30,15,60,15,90]);save&&save();
 }
@@ -14355,7 +14461,7 @@ const _ARENA_GAMES=[
   {id:'fish',nm:'FISKESPELET',ico:'🎣',col:'0,200,255',fn:openFishingGame,desc:'Fånga 3 fiskar → +200 KARMA'},
   {id:'run',nm:'PET RUNNER',ico:'🐉',col:'191,95,255',fn:openPetRunner,desc:'Springa 500m → +150 KARMA'},
   {id:'dna',nm:'KARMA TOWER',ico:'🧬',col:'0,217,255',fn:openKarmaTower,desc:'Stacka 20 våningar → 2× Coins'},
-  {id:'kcat',nm:'KARMA CATCH',ico:'💗',col:'255,0,127',fn:openKarmaCatch,desc:'Fånga 50 karma → +150 KARMA'},
+  {id:'kcat',nm:'KARMA WINGS',ico:'🚀',col:'0,217,255',fn:openKarmaCatch,desc:'Skjut 30 mål → +150 KARMA'},
   {id:'mix',nm:'DNA MIXER',ico:'🧪',col:'255,159,10',fn:openDNAMixer,desc:'Mixa 2 DNA → +100 XP'},
   {id:'spin',nm:'DAGLIGT SPIN',ico:'🎰',col:'255,215,0',fn:openGacha,desc:'Snurra hjulet → jackpot chans'},
   {id:'fort',nm:'SPÅDOM',ico:'🔮',col:'191,95,255',fn:openFortuneOracle,desc:'Läs din fortune → +50 KARMA'},
