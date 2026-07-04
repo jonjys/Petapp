@@ -13546,31 +13546,54 @@ function _fcStartReel(fishObj){
   // Start pull duel — give a head-start buffer so the player isn't insta-failed
   // before they can physically react to the bite (decay loop's first tick used
   // to fire on a progress of exactly 0, killing the catch instantly).
-  _fishPull={active:true,progress:30,tension:0,fish:ft,animFrame:null,fishX:50,fishDir:1};
+  // SKILL: green zone — tap only when the fish is inside. Rarer fish =
+  // smaller zone + faster swimming. Spam-tapping now snaps the line.
+  const zoneW={ultra:16,mythic:18,legendary:20,epic:26,rare:32,uncommon:40,common:46}[ft.rarity]||40;
+  const fSpd={ultra:3.4,mythic:3.1,legendary:2.9,epic:2.4,rare:2.0,uncommon:1.6,common:1.3}[ft.rarity]||1.6;
+  _fishPull={active:true,progress:30,tension:0,fish:ft,animFrame:null,fishX:50,fishDir:1,zoneC:50,zoneW,fSpd,zoneDrift:Math.random()*6.28};
+  // zone visual band (created once)
+  const ovEl=$('fishReelOverlay');
+  let zEl=$('fishReelZone');
+  if(!zEl&&ovEl){
+    zEl=document.createElement('div');zEl.id='fishReelZone';
+    zEl.style.cssText='position:absolute;top:10%;height:24%;background:rgba(57,255,20,.10);border-left:2px solid rgba(57,255,20,.55);border-right:2px solid rgba(57,255,20,.55);border-radius:10px;pointer-events:none;transition:left .12s linear;z-index:0';
+    ovEl.insertBefore(zEl,ovEl.firstChild);
+  }
+  _fishZoneUpdate();
   cancelAnimationFrame(_fishPull.animFrame);
   _fishPullUpdate();
   setTimeout(()=>{if(_fc.phase==='reel')_fishPullLoop();},650);
   const btn=$('fishCastBtn');if(btn){btn.className='fish-cast-btn biting';btn.textContent='🎣 DRAS!';}
-  _fishSetStatus('🎣 NAPP! TAP SNABBT FÖR ATT DRAS IN!');
+  _fishSetStatus('🎯 TAP NÄR FISKEN ÄR I GRÖNA ZONEN!');
   vibe([30,20,50]);
 }
 
+function _fishZoneUpdate(){
+  const p=_fishPull;const zEl=$('fishReelZone');if(!zEl||!p)return;
+  const L=35+(p.zoneC-(p.zoneW||40)/2)*30/100, Wd=(p.zoneW||40)*30/100;
+  zEl.style.left=L+'%';zEl.style.width=Wd+'%';
+}
 function fishReelTap(){
   if(_fc.phase!=='reel')return;
   const p=_fishPull;
-  // Each tap adds pull progress
-  const tapBoost=8+Math.floor(Math.random()*6);
-  p.progress=Math.min(100,p.progress+tapBoost);
-  // Tension increases with rapid taps (fish fights)
-  p.tension=Math.min(100,p.tension+4+Math.random()*4);
-  // Update visuals
-  _fishPullUpdate();
-  // TAP button pulse animation
+  const inZone=Math.abs(p.fishX-(p.zoneC||50))<=(p.zoneW||40)/2;
   const btn=$('fishReelBtn');
-  if(btn){btn.style.transform='scale(.93)';btn.style.boxShadow='0 0 12px rgba(57,255,20,.2),0 1px 0 rgba(0,0,0,.5)';setTimeout(()=>{btn.style.transform='';btn.style.boxShadow='0 0 40px rgba(57,255,20,.5),0 4px 0 rgba(0,0,0,.5)';},80);}
-  // Check snap (line breaks if tension too high)
+  if(inZone){
+    // PRECISION HIT — real progress, low tension
+    p.progress=Math.min(100,p.progress+11);
+    p.tension=Math.min(100,p.tension+2);
+    if(btn){btn.style.transform='scale(.93)';setTimeout(()=>{if(btn)btn.style.transform='';},80);}
+    vibe&&vibe(6);
+  }else{
+    // MISS — fish rips line: lose progress, big tension spike
+    p.progress=Math.max(0,p.progress-6);
+    p.tension=Math.min(100,p.tension+14);
+    if(btn){btn.style.background='linear-gradient(135deg,#FF2D55,#FF6B00)';btn.textContent='❌ UTANFÖR ZONEN!';setTimeout(()=>{if(btn){btn.style.background='linear-gradient(135deg,#39FF14,#00D9FF)';btn.textContent='🎯 TAP I ZONEN!';}},260);}
+    const tfl=$('fishReelTensionFlash');if(tfl){tfl.style.opacity='0.3';setTimeout(()=>{if(tfl)tfl.style.opacity='0';},160);}
+    vibe&&vibe([30,15,40]);
+  }
+  _fishPullUpdate();
   if(p.tension>=100){_fishPullSnap();return;}
-  // Check catch
   if(p.progress>=100){_fishPullCatch();return;}
 }
 
@@ -13601,13 +13624,18 @@ function _fishPullLoop(){
   const p=_fishPull;
   // Natural decay: progress slowly decreases as fish pulls back
   const fishStrength=p.fish?.wt||1;
-  p.progress=Math.max(0,p.progress-(0.4+fishStrength*0.06));
-  // Tension decays slowly
-  p.tension=Math.max(0,p.tension-0.8);
-  // Fish swims
-  p.fishX+=p.fishDir*1.5;
+  p.progress=Math.max(0,p.progress-(0.35+fishStrength*0.05));
+  // Tension decays slowly (slower than before — misses have real cost)
+  p.tension=Math.max(0,p.tension-0.45);
+  // Fish swims — rarer fish are faster & jinkier
+  p.fishX+=p.fishDir*(p.fSpd||1.6);
+  if(Math.random()<0.02)p.fishDir*=-1; // sudden direction feints
   if(p.fishX>100){p.fishX=100;p.fishDir=-1;}
   if(p.fishX<0){p.fishX=0;p.fishDir=1;}
+  // green zone drifts slowly — keeps you tracking
+  p.zoneDrift=(p.zoneDrift||0)+0.012;
+  p.zoneC=50+Math.sin(p.zoneDrift)*22;
+  _fishZoneUpdate();
   _fishPullUpdate();
   if(p.progress<=0&&_fc.phase==='reel'){fishReelMiss();return;}
   p.animFrame=requestAnimationFrame(_fishPullLoop);
@@ -13660,6 +13688,10 @@ function _fcCatch(ft){
   if(_fc.score>_fc.best){_fc.best=_fc.score;localStorage.setItem('kv8_fishBest',_fc.score);}
   if(_fc.streak>_fc.streakRecord){_fc.streakRecord=_fc.streak;localStorage.setItem('kv8_fishStreak',_fc.streakRecord);}
   if(!G.fishJournal)G.fishJournal={};G.fishJournal[ft.nm]=(G.fishJournal[ft.nm]||0)+1;
+  // FIX: fisken hamnar nu i fångstlådan (var tidigare bara i sessions-minnet)
+  if(!G.fishInventoryBox)G.fishInventoryBox=[];
+  if(G.fishInventoryBox.length<20)G.fishInventoryBox.push({...ft,caughtAt:Date.now(),loc:G.fishLocation||'malaren'});
+  else showT('📦 Lådan full! Sälj fiskar i 📦 Låda','y');
   gainCoins(earnedCoins);gainXP(earnedXP,'action');
   advanceDailyMission&&advanceDailyMission('fish',1);
   if(ft.petFood){G.hunger=Math.min(100,G.hunger+30);updatePetView();}
