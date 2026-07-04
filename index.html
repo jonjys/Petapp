@@ -9788,7 +9788,7 @@ function initMap(lat,lon){
   const yIco=L.divIcon({html:`<div style="width:48px;height:48px;position:relative;display:flex;align-items:center;justify-content:center"><div style="position:absolute;inset:0;border-radius:50%;border:2px solid rgba(57,255,20,.4);animation:mapPulse 1.8s ease-out infinite"></div><div style="width:42px;height:42px;background:rgba(57,255,20,.15);border:2.5px solid #39FF14;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:22px;box-shadow:0 0 20px rgba(57,255,20,.4),inset 0 0 10px rgba(57,255,20,.1)">${gS().e||'🐉'}</div></div>`,className:'',iconAnchor:[24,24]});
   G.uMarker=L.marker([lat,lon],{icon:yIco}).addTo(m).on('click',()=>openKarmaHome());
   // Castle marker beside you — your KARMA WORLD home base
-  const castleIco=L.divIcon({html:`<div style="width:40px;height:40px;background:rgba(255,230,0,.12);border:2.5px solid #FFE600;border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:20px;box-shadow:0 0 18px rgba(255,230,0,.4)">🏰</div>`,className:'',iconAnchor:[20,20]});
+  const castleIco=L.divIcon({html:`<div style="position:relative"><div style="width:40px;height:40px;background:rgba(255,230,0,.12);border:2.5px solid #FFE600;border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:20px;box-shadow:0 0 18px rgba(255,230,0,.4)">🏰</div><div style="position:absolute;top:-9px;right:-10px;background:#FFE600;color:#000;font-size:8px;font-weight:900;border-radius:8px;padding:1px 5px;font-family:monospace;box-shadow:0 1px 4px rgba(0,0,0,.5)">LV${(G.castle&&(G.castle.lvl||G.castle.level))||1}</div></div>`,className:'',iconAnchor:[20,20]});
   G.castleMarker=L.marker([lat+.0006,lon+.0006],{icon:castleIco}).addTo(m).on('click',()=>openKarmaHome());
   [{em:'☕',nm:'Espresso House',lat:lat+.003,lon:lon+.004,sek:150,id:'u1'},{em:'👤',nm:'Anna Berg',lat:lat+.001,lon:lon-.003,sek:500,id:'u2'},{em:'👟',nm:'Stadium Nike',lat:lat-.005,lon:lon+.006,sek:500,id:'u3'}].forEach(p=>{
     const ico=L.divIcon({html:`<div style="position:relative"><div style="width:36px;height:36px;background:rgba(255,204,0,.2);border:2px solid #ffcc00;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:16px">${p.em}</div><div style="position:absolute;top:-13px;right:-8px;background:#ffcc00;color:#04040a;font-size:9px;font-weight:900;padding:1px 4px;border-radius:3px">${p.sek}SEK</div><div style="width:0;height:0;border-left:5px solid transparent;border-right:5px solid transparent;border-top:6px solid #ffcc00;margin:0 auto"></div></div>`,className:'',iconAnchor:[18,42]});
@@ -9965,12 +9965,23 @@ function openMapZoneCard(i){
   card.style.cssText='width:min(90%,360px);background:linear-gradient(160deg,rgba(16,22,40,.98),rgba(8,10,22,.98));border:1.5px solid rgba(255,255,255,.14);border-radius:24px;overflow:hidden;box-shadow:0 24px 70px rgba(0,0,0,.6),0 0 50px rgba(0,217,255,.12);animation:cwPopIn .3s cubic-bezier(.34,1.56,.64,1) both;';
   let body;
   if(!owned){
+    let walkHtml='';
+    try{
+      const wz=JSON.parse(localStorage.getItem('kv8_walkZone')||'null');
+      if(wz&&wz.i===i){
+        const prog=Math.min(60,Math.max(0,(G.stepsToday||0)-wz.base));
+        walkHtml=`<div style="margin-top:10px;background:rgba(57,255,20,.08);border:1.5px solid rgba(57,255,20,.35);border-radius:14px;padding:12px"><div style="font-size:10px;font-weight:900;color:#39FF14;font-family:var(--mono)">🚶 DU GÅR RUNT OMRÅDET — ${prog}/60 STEG</div><div style="height:6px;background:rgba(255,255,255,.08);border-radius:4px;overflow:hidden;margin-top:7px"><div style="height:100%;width:${Math.round(prog/60*100)}%;background:linear-gradient(90deg,#39FF14,#00D9FF);border-radius:4px"></div></div></div>`;
+      }else{
+        walkHtml=`<button onclick="startZoneWalk(${i})" style="width:100%;margin-top:8px;background:rgba(57,255,20,.1);border:1.5px solid rgba(57,255,20,.4);border-radius:14px;padding:13px;font-size:12px;font-weight:900;font-family:var(--mono);color:#39FF14;cursor:pointer;letter-spacing:.5px">🚶 GÅ RUNT OMRÅDET (60 steg) · GRATIS</button>`;
+      }
+    }catch(e){}
     body=`
       <div style="padding:22px 18px;text-align:center">
         <div style="font-size:48px;filter:drop-shadow(0 0 16px rgba(0,217,255,.5))">📍</div>
         <div style="font-size:16px;font-weight:900;color:#fff;font-family:var(--mono);margin-top:6px">${z.nm}</div>
-        <div style="font-size:9px;color:rgba(255,255,255,.4);font-family:var(--mono);margin:4px 0 14px">Oclaimad zon nära dig · claima för att bygga ditt imperium</div>
-        <button onclick="claimMapZone(${i})" style="width:100%;background:linear-gradient(135deg,#00D9FF,#39FF14);border:none;border-radius:14px;padding:14px;font-size:14px;font-weight:900;font-family:var(--mono);color:#021;cursor:pointer;letter-spacing:1px;box-shadow:0 0 22px rgba(0,217,255,.4)">🚩 CLAIMA ZON · 50 💎</button>
+        <div style="font-size:9px;color:rgba(255,255,255,.4);font-family:var(--mono);margin:4px 0 14px">Oclaimad zon nära dig · ta över genom att GÅ eller betala</div>
+        <button onclick="claimMapZone(${i})" style="width:100%;background:linear-gradient(135deg,#00D9FF,#39FF14);border:none;border-radius:14px;padding:14px;font-size:14px;font-weight:900;font-family:var(--mono);color:#021;cursor:pointer;letter-spacing:1px;box-shadow:0 0 22px rgba(0,217,255,.4)">🚩 CLAIMA DIREKT · 50 💎</button>
+        ${walkHtml}
       </div>`;
   }else if(!owned.build){
     body=`
@@ -9995,6 +10006,32 @@ function openMapZoneCard(i){
   }
   card.innerHTML=body+`<button onclick="document.getElementById('mapZoneModal').remove()" style="width:100%;padding:11px;background:rgba(255,255,255,.03);border:none;border-top:1px solid rgba(255,255,255,.08);color:rgba(255,255,255,.5);font-family:var(--mono);font-size:11px;font-weight:900;cursor:pointer;letter-spacing:1px">STÄNG</button>`;
   m.appendChild(card);vibe&&vibe(10);
+}
+function startZoneWalk(i){
+  try{localStorage.setItem('kv8_walkZone',JSON.stringify({i,base:G.stepsToday||0,day:new Date().toDateString()}));}catch(e){}
+  const mdl=$('mapZoneModal');if(mdl)mdl.remove();
+  showT('🚶 Gå 60 steg för att ta över '+(_MAP_ZONE_DEFS[i]?_MAP_ZONE_DEFS[i].nm:'zonen')+'!','b');
+  vibe&&vibe([15,10,30]);
+}
+function _checkZoneWalk(){
+  // Called on every IRL step — captures the zone when 60 steps are walked
+  try{
+    const wz=JSON.parse(localStorage.getItem('kv8_walkZone')||'null');if(!wz)return;
+    if(wz.day&&wz.day!==new Date().toDateString()){localStorage.removeItem('kv8_walkZone');return;}
+    if((G.stepsToday||0)-wz.base>=60){
+      localStorage.removeItem('kv8_walkZone');
+      G.mapZones=G.mapZones||[];
+      if(!G.mapZones.find(z=>z.i===wz.i)){
+        G.mapZones.push({i:wz.i,build:null,t0:Date.now()});
+        gainXP&&gainXP(30,'action');addWorldPoints&&addWorldPoints(20,'walk');
+        showT('🚩 OMRÅDE TAGET GENOM ATT GÅ! +30 XP','g');
+        vibe&&vibe([40,20,80,20,120]);SFX&&SFX.win&&SFX.win();
+        spawnParticles&&spawnParticles(window.innerWidth/2,window.innerHeight*.4,'stars');
+        save&&save();
+        if(G.userLat&&window._leafletMap)_renderMapZones(G.userLat,G.userLon,window._leafletMap);
+      }
+    }
+  }catch(e){}
 }
 function claimMapZone(i){
   if((G.coins||0)<50){showT('❌ Behöver 50 💎','r');SFX&&SFX.error&&SFX.error();return;}
@@ -15408,7 +15445,7 @@ function _plcOnMotion(e){
   if(tot>13.5&&_plc.lastAccMag<=13.5&&now-_plc.lastStep>280){
     _plc.lastStep=now;_plc.stepsSession++;_plc.worldX+=10;
     _plc.walkPhase=(_plc.walkPhase+1)%4;_plc.isWalking=true;
-    if(G){G.stepsToday=(G.stepsToday||0)+1;if(G.stepsToday%10===0)gainXP(2,'steps');}
+    if(G){G.stepsToday=(G.stepsToday||0)+1;if(G.stepsToday%10===0)gainXP(2,'steps');if(typeof _checkZoneWalk==='function')_checkZoneWalk();}
   }
   _plc.lastAccMag=tot;
   // Auto-stop walking after 1.5s of no steps
