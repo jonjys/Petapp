@@ -6583,6 +6583,31 @@ function tdUpdate(dt){
     tower.fireTimer=(def.rate||30)/((_td.runUp&&_td.runUp.fireRate)||1);tower.firingT=8;
   }
   for(const t of _td.towers)if(t.firingT>0)t.firingT=Math.max(0,t.firingT-dt);
+  // ── PET GUARDIAN — your real pet defends the base (unique KARMA twist) ──
+  if(!_td.petG)_td.petG={cd:0,hitT:0,lungeX:0,lungeY:0};
+  const pg=_td.petG;
+  pg.cd=Math.max(0,pg.cd-dt);if(pg.hitT>0)pg.hitT=Math.max(0,pg.hitT-dt);
+  {
+    const [bc,br]=TD_PATH[TD_PATH.length-1];
+    const bx=_tdCX(bc),by=_tdCY(br);
+    pg.homeX=bx+_tdCell*0.75;pg.homeY=by-_tdCell*0.55;
+    if(pg.cd<=0){
+      const guardR=_tdCell*2.6;
+      let best=null,bestD=1e9;
+      for(const e of _td.enemies){if(e.progress<0)continue;const{x,y}=tdEnemyPos(e);const d=Math.hypot(x-pg.homeX,y-pg.homeY);if(d<guardR&&d<bestD){best=e;bestD=d;}}
+      if(best){
+        const{x:ex,y:ey}=tdEnemyPos(best);
+        // damage grows with your REAL pet: level + mood bonus
+        const moodMult=(G.mood||100)>70?1.35:(G.mood||100)>40?1:0.75;
+        const dmg=Math.round((10+(G.level||1)*2)*moodMult*(1+_td.wave*0.02));
+        tdHitEnemy(best,dmg,'pet');
+        pg.hitT=9;pg.lungeX=(ex-pg.homeX)*0.4;pg.lungeY=(ey-pg.homeY)*0.4;
+        _td.projectiles.push({x:pg.homeX,y:pg.homeY,tx:ex,ty:ey,col:'#39FF14',life:6});
+        for(let i=0;i<5;i++)_td.particles.push({x:ex,y:ey,vx:(Math.random()-.5)*3,vy:-(Math.random()*2+1),col:'#39FF14',r:Math.random()*2.5+1,life:14});
+        pg.cd=42;
+      }
+    }
+  }
   // Ambient
   for(const a of (_td.ambient||[])){a.y+=a.vy*dt;a.x+=a.vx*dt;a.life-=dt;if(a.life<=0){a.y=_tdCell*TD_ROWS;a.x=Math.random()*_tdCell*TD_COLS;a.life=60+Math.random()*80;a.vy=-(0.2+Math.random()*0.5);a.vx=(Math.random()-.5)*0.3;}}
   // Decay
@@ -6988,6 +7013,24 @@ function tdDraw(){
     ctx.restore();
   });
 
+  // ── PET GUARDIAN (your real pet at the base) ──
+  if(_td.petG&&_td.petG.homeX){
+    const pg=_td.petG;
+    const lf=pg.hitT>0?pg.hitT/9:0;
+    const px=pg.homeX+(pg.lungeX||0)*lf,py=pg.homeY+(pg.lungeY||0)*lf+Math.sin(t*0.06)*3;
+    ctx.save();
+    // guard ring
+    ctx.globalAlpha=.14+.06*Math.sin(t*0.05);ctx.strokeStyle='#39FF14';ctx.lineWidth=1.5;ctx.setLineDash([5,7]);
+    ctx.beginPath();ctx.arc(pg.homeX,pg.homeY,_tdCell*2.6,0,Math.PI*2);ctx.stroke();ctx.setLineDash([]);
+    // shadow + aura + pet
+    ctx.globalAlpha=.3;ctx.fillStyle='#000';ctx.beginPath();ctx.ellipse(px,py+14,13,4.5,0,0,Math.PI*2);ctx.fill();
+    ctx.globalAlpha=1;ctx.shadowColor='#39FF14';ctx.shadowBlur=lf>0?26:14;
+    ctx.font='26px serif';ctx.textAlign='center';ctx.textBaseline='middle';
+    ctx.fillText((G&&G.petEmoji)||'🐉',px,py);
+    ctx.shadowBlur=0;ctx.font='bold 7px monospace';ctx.fillStyle='rgba(57,255,20,.8)';
+    ctx.fillText('DIN PET',pg.homeX,pg.homeY+24);
+    ctx.restore();
+  }
   // ── PROJECTILES ──
   _td.projectiles.forEach(pr=>{
     const alpha=Math.min(1,pr.life/5);
@@ -7216,7 +7259,7 @@ function _tdRenderUpgradeChoices(){
   // pick 3 distinct random upgrades
   const pool=[...TD_RUN_UPGRADES];const pick=[];
   for(let i=0;i<3&&pool.length;i++){pick.push(pool.splice(Math.floor(Math.random()*pool.length),1)[0]);}
-  box.innerHTML=pick.map(u=>`<div onclick="_tdPickUpgrade('${u.id}')" style="background:rgba(57,255,20,.06);border:1.5px solid rgba(57,255,20,.3);border-radius:12px;padding:9px 5px;text-align:center;cursor:pointer;-webkit-tap-highlight-color:transparent;transition:transform .1s" ontouchstart="this.style.transform='scale(.93)'" ontouchend="this.style.transform=''"><div style="font-size:22px">${u.em}</div><div style="font-size:8.5px;font-weight:900;color:#39FF14;font-family:var(--mono);margin-top:3px;line-height:1.1">${u.nm}</div><div style="font-size:7px;color:rgba(255,255,255,.4);font-family:var(--mono);margin-top:2px;line-height:1.1">${u.desc}</div></div>`).join('');
+  box.innerHTML=pick.map((u,idx)=>`<div onclick="_tdPickUpgrade('${u.id}')" style="background:linear-gradient(160deg,rgba(57,255,20,.12),rgba(0,40,10,.35));border:2px solid rgba(57,255,20,.55);border-radius:16px;padding:14px 6px 12px;text-align:center;cursor:pointer;-webkit-tap-highlight-color:transparent;transition:transform .1s;box-shadow:0 0 18px rgba(57,255,20,.12);animation:cwPopIn .3s ${(idx*0.07).toFixed(2)}s cubic-bezier(.34,1.56,.64,1) both" ontouchstart="this.style.transform='scale(.93)'" ontouchend="this.style.transform=''"><div style="font-size:30px;filter:drop-shadow(0 0 10px rgba(57,255,20,.6))">${u.em}</div><div style="font-size:11px;font-weight:900;color:#39FF14;font-family:var(--mono);margin-top:6px;line-height:1.15">${u.nm}</div><div style="font-size:8.5px;color:rgba(255,255,255,.55);font-family:var(--mono);margin-top:3px;line-height:1.2">${u.desc}</div><div style="margin-top:8px;background:rgba(57,255,20,.18);border-radius:8px;padding:4px 0;font-size:8px;font-weight:900;color:#39FF14;font-family:var(--mono)">VÄLJ →</div></div>`).join('');
 }
 function _tdPickUpgrade(id){
   const u=TD_RUN_UPGRADES.find(x=>x.id===id);if(!u)return;
@@ -7825,8 +7868,13 @@ function gainXP(n,stat){
   const petEl=$('petAvWrap');if(petEl){const r=petEl.getBoundingClientRect();floatNum('+'+n+'XP',r.left+r.width/2,r.top+10,'var(--g)',14);}
   let lvlUps=0;while(G.exp>=xpN(G.level)&&lvlUps<10){G.exp-=xpN(G.level);G.level++;lvlUps++;}
   if(lvlUps>0){
-    // During a fullscreen game, the big splash sits behind it — use a light top toast instead
-    if(_gameOverlayActive())_quickLvlToast(G.level);else triggerLvlUp();
+    // In-game: NO popup (it disturbs play) — grant rewards silently; the
+    // game-over summary shows 'DU GICK UPP X LEVELS'. Outside games: full splash.
+    if(_gameOverlayActive()){
+      const tpGain=G._talentM6a?2:1;G.talentPoints=(G.talentPoints||0)+tpGain;
+      checkEvolution&&checkEvolution(G.level-lvlUps,G.level);updateEvolBadge&&updateEvolBadge();
+      addH&&addH('⬆️ Level '+G.level+'!');vibe&&vibe(15);
+    }else triggerLvlUp();
     const _nd2=xpN(G.level);const _f2=$('xpBarFill');if(_f2)_f2.style.width=Math.min(100,G.exp/_nd2*100)+'%';const _ln2=$('xpBarNums');if(_ln2)_ln2.textContent=G.exp+' / '+_nd2+' XP';const _ll2=$('xpBarLabel');if(_ll2)_ll2.textContent='LV'+G.level+' PROGRESS';}
   checkAchievements();
   if(typeof addSeasonXP==='function')addSeasonXP(Math.max(1,Math.ceil(n*.15)));
