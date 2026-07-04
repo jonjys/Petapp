@@ -11524,7 +11524,7 @@ function openPetRunner(){
   const sp=$('prStartPet');if(sp)sp.textContent=G.petEmoji||'🐉';
   const bd=$('prBestDisp');if(bd)bd.textContent=_pr.best+'m';
   _pr.level=parseInt(localStorage.getItem('kv8_prLv')||'1');
-  const ls=$('prLvShow');if(ls)ls.textContent='RUNNER LV'+_pr.level;
+  const ls=$('prLvShow');if(ls){const bn=Math.max(1,parseInt(localStorage.getItem('kv8_prBana')||'1'));ls.textContent=bn<=100?('🏁 BANA '+bn+' / 100'):'👑 MASTER MODE ∞';}
   const ss=$('prStartScreen');if(ss)ss.style.display='flex';
   const go=$('prGameOver');if(go)go.style.display='none';
   _pr.active=false;_pr.started=false;
@@ -11560,7 +11560,12 @@ function _prInitGame(){
   // Foreground parallax crystals (fast scroll = depth)
   _pr.fg=Array.from({length:10},()=>({x:Math.random()*W,h:14+Math.random()*30,w:8+Math.random()*16,spd:1.6+Math.random()*.8}));
   _pr.level=parseInt(localStorage.getItem('kv8_prLv')||'1');
-  const lb2=$('prLvBadge2');if(lb2)lb2.textContent='LV'+_pr.level;
+  // ── BANA-läge: 100 banor med mål-distans, stigande svårighet ──
+  _pr.bana=Math.max(1,parseInt(localStorage.getItem('kv8_prBana')||'1'));
+  _pr.targetScore=_pr.bana<=100?(200+_pr.bana*20)*10:0; // 0 = MASTER endless efter bana 100
+  _pr.banaDone=false;
+  const lb2=$('prLvBadge2');if(lb2)lb2.textContent=_pr.bana<=100?('BANA '+_pr.bana):'MASTER ∞';
+  _runTrackStart&&_runTrackStart();
 }
 function _prLoop(){
   if(!_pr.active){_pr.raf=null;return;}
@@ -11573,9 +11578,11 @@ function _prUpdate(canvas){
   const W=canvas.width,H=canvas.height;
   _pr.H=H;_pr.W=W;
   if(!_pr.groundY)_pr.groundY=Math.round(H*.82);
-  const spd=2.8+Math.min((_pr.score/500)*0.6,4.5)+(_pr.level-1)*.4;
+  const spd=2.8+Math.min((_pr.score/500)*0.6,4.5)+(_pr.level-1)*.4+Math.min(2.5,((_pr.bana||1)-1)*0.045);
   _pr.score++;
   const sc=$('prScore');if(sc)sc.textContent=Math.floor(_pr.score/10)+'m';
+  // Bana complete?
+  if(!_pr.banaDone&&_pr.targetScore>0&&_pr.score>=_pr.targetScore){_prBanaClear();return;}
   const hp=$('prHpDots');if(hp)hp.textContent='❤️'.repeat(_pr.pHp)+'🤍'.repeat(Math.max(0,(_pr.maxHp||3)-_pr.pHp));
   const newLv=Math.floor(_pr.score/2500)+1;
   if(newLv>(_pr.level||1)){
@@ -12172,7 +12179,7 @@ function _prDraw(canvas,ctx){
     {bg1:'#140000',bg2:'#2a0008',acc:'#FF2D55',acc2:'#FF8C00'},
     {bg1:'#001410',bg2:'#002820',acc:'#39FF14',acc2:'#00D9FF'},
   ];
-  const th=themes[Math.min(lvl-1,themes.length-1)];
+  const th=themes[((_pr.bana||lvl||1)-1)%themes.length];
   // Sky
   const sky=ctx.createLinearGradient(0,0,0,H);
   sky.addColorStop(0,th.bg1);sky.addColorStop(1,th.bg2);
@@ -12311,6 +12318,32 @@ function _prDraw(canvas,ctx){
     ctx.shadowColor=pu.col;ctx.shadowBlur=10;ctx.fillText(pu.txt,pu.x,pu.y);
     ctx.restore();
   });
+  // ── BANA progress bar (top-center) + finish line when close ──
+  if(_pr.targetScore>0){
+    const prog=Math.min(1,_pr.score/_pr.targetScore);
+    const bw=Math.min(150,W*.4),bx=W/2-bw/2;
+    ctx.save();
+    ctx.fillStyle='rgba(0,0,0,.45)';
+    ctx.beginPath();if(ctx.roundRect)ctx.roundRect(bx-6,6,bw+12,17,9);else ctx.rect(bx-6,6,bw+12,17);ctx.fill();
+    ctx.fillStyle='rgba(255,255,255,.1)';ctx.fillRect(bx,14,bw,4);
+    ctx.fillStyle=th.acc;ctx.shadowColor=th.acc;ctx.shadowBlur=6;ctx.fillRect(bx,14,bw*prog,4);
+    ctx.shadowBlur=0;ctx.font='bold 7.5px monospace';ctx.textAlign='center';ctx.fillStyle='rgba(255,255,255,.85)';
+    ctx.fillText('BANA '+_pr.bana+' · '+Math.floor(prog*100)+'%',W/2,11.5);
+    // flag when < 60m left
+    const remain=_pr.targetScore-_pr.score;
+    if(remain<600){
+      const spd2=2.8+Math.min((_pr.score/500)*0.6,4.5)+((_pr.level||1)-1)*.4;
+      const fx2=_pr.x+remain*spd2;
+      if(fx2<W+30){
+        const gY=_pr.groundY||H*.82;
+        ctx.save();ctx.strokeStyle='#fff';ctx.lineWidth=3;ctx.shadowColor='#fff';ctx.shadowBlur=8;
+        ctx.beginPath();ctx.moveTo(fx2,gY);ctx.lineTo(fx2,gY-70);ctx.stroke();
+        for(let ry=0;ry<3;ry++)for(let rx=0;rx<3;rx++){ctx.fillStyle=(rx+ry)%2?'#fff':'#000';ctx.fillRect(fx2+rx*8,gY-70+ry*7,8,7);}
+        ctx.restore();
+      }
+    }
+    ctx.restore();
+  }
   // KARMA SURGE charge meter (top-left, under HP HUD — never collides with combo chip)
   {const mw=Math.min(110,W*.32),mx=12,my=32;
    if(_pr.surgeActive>0){
@@ -12340,6 +12373,40 @@ function _prDraw(canvas,ctx){
     _prOv.innerHTML=oh;
   }
   ctx.textAlign='left';ctx.textBaseline='alphabetic';ctx.setLineDash([]);
+}
+function _prBanaClear(){
+  _pr.banaDone=true;_pr.active=false;
+  if(_pr.raf){cancelAnimationFrame(_pr.raf);_pr.raf=null;}
+  const bana=_pr.bana;
+  const stars=_pr.pHp>=3?3:_pr.pHp===2?2:1;
+  const coins=20+bana*3+_pr.gemsCollected*2,xp=15+bana*2;
+  gainCoins&&gainCoins(coins);gainXP&&gainXP(xp,'action');
+  if(bana<100)localStorage.setItem('kv8_prBana',bana+1);
+  else localStorage.setItem('kv8_prBana',101); // MASTER unlocked
+  const sm=_runTrackSummary?_runTrackSummary():{xp:0,levels:0};_runTrackStop&&_runTrackStop();
+  let ov=$('prBanaClear');
+  if(!ov){
+    ov=document.createElement('div');ov.id='prBanaClear';
+    ov.style.cssText='position:absolute;inset:0;z-index:8;display:flex;align-items:center;justify-content:center;background:rgba(1,6,20,.94);backdrop-filter:blur(6px)';
+    const host=$('petRunnerGame');(host||document.body).appendChild(ov);
+  }
+  ov.style.display='flex';
+  ov.innerHTML=`<div style="text-align:center;padding:24px;animation:cwPopIn .35s cubic-bezier(.34,1.56,.64,1) both">
+    <div style="font-size:34px;letter-spacing:6px">${'⭐'.repeat(stars)}${'☆'.repeat(3-stars)}</div>
+    <div style="font-size:24px;font-weight:900;color:#39FF14;font-family:var(--mono);letter-spacing:2px;margin-top:8px;text-shadow:0 0 20px rgba(57,255,20,.5)">BANA ${bana} KLARAD!</div>
+    <div style="font-size:11px;color:rgba(255,255,255,.5);font-family:var(--mono);margin-top:6px">+${coins} 💎 · +${sm.xp||xp} XP${sm.levels>0?' · ⬆️ '+sm.levels+' LEVEL'+(sm.levels>1?'S':'')+'! 🎉':''}</div>
+    ${bana<100?`<div style="font-size:10px;color:#00D9FF;font-family:var(--mono);margin-top:10px">NÄSTA: BANA ${bana+1} / 100 — snabbare & tuffare!</div>`:`<div style="font-size:12px;color:#FFE600;font-family:var(--mono);margin-top:10px;font-weight:900">👑 ALLA 100 BANOR KLARADE — MASTER MODE ∞ UPPLÅST!</div>`}
+    <button onclick="_prNextBana()" style="margin-top:18px;background:linear-gradient(135deg,#39FF14,#00D9FF);border:none;border-radius:14px;padding:14px 34px;font-size:14px;font-weight:900;font-family:var(--mono);color:#021;cursor:pointer;letter-spacing:1px;box-shadow:0 0 24px rgba(57,255,20,.4)">▶ ${bana<100?'BANA '+(bana+1):'MASTER MODE'}</button>
+    <div><button onclick="document.getElementById('prBanaClear').style.display='none';closePetRunner()" style="margin-top:10px;background:transparent;border:none;color:rgba(255,255,255,.35);font-size:11px;cursor:pointer;font-family:var(--mono)">← avsluta</button></div>
+  </div>`;
+  vibe&&vibe([30,20,60,20,120]);SFX&&SFX.win&&SFX.win();
+  spawnParticles&&spawnParticles(window.innerWidth/2,window.innerHeight*.35,'stars');
+  advanceDailyChallenge&&advanceDailyChallenge('play',1);save&&save();
+  const bt=$('prBestTag');if(bt)bt.textContent='Bana '+Math.min(101,bana+1)+(bana<100?' / 100':' · MASTER');
+}
+function _prNextBana(){
+  const ov=$('prBanaClear');if(ov)ov.style.display='none';
+  _pr.started=true;_prInitGame();_prLoop();
 }
 function _prGameOver(){
   _pr.active=false;
@@ -14259,7 +14326,7 @@ function renderPlayView(){
   const sl=$('spinPlayLabel');if(sl)sl.textContent=G.lastSpin===new Date().toDateString()?'✅ Spinnat idag — kom tillbaka imorgon!':'🎰 Gratis spin tillgängligt nu!';
   const pbt=$('pbBestTag');if(pbt)pbt.textContent='Best: '+(localStorage.getItem('kv8_ktowerBest')||0)+' våningar';
   // Runner best score + level world name
-  const prbt=$('prBestTag');if(prbt)prbt.textContent='Best: '+(localStorage.getItem('kv8_prBest')||0)+'m';
+  const prbt=$('prBestTag');if(prbt){const bn=Math.max(1,parseInt(localStorage.getItem('kv8_prBana')||'1'));prbt.textContent=bn<=100?('Bana '+bn+' / 100'):'👑 MASTER';}
   const kcbt=$('kcatchBestTag');if(kcbt)kcbt.textContent='Best: '+(localStorage.getItem('kv8_kcatchBest')||0);
   const _prLvNum=parseInt(localStorage.getItem('kv8_prLv')||'1');
   const _prLvNames=['NATT CITY','DEEP SPACE','CRIMSON RUN','NEON JUNGLE','EMBER WORLD'];
