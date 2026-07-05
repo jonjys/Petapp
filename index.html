@@ -2794,22 +2794,15 @@ div[style*="LIVE"]{border-radius:16px!important;background:rgba(57,255,20,.03)!i
           <div class="ddr" onclick="cM();openKarmaPay()" style="background:linear-gradient(135deg,rgba(57,255,20,.1),rgba(0,180,120,.06));border:1px solid rgba(57,255,20,.25)"><div class="ddr-i">💸</div>KARMA+ Super-App<div class="dd-bdg" style="background:#39FF14;color:#000">NY</div></div>
           <div class="ddr" onclick="cM();openKarmaReels()" style="background:linear-gradient(135deg,rgba(255,45,85,.1),rgba(191,95,255,.06));border:1px solid rgba(255,45,85,.25)"><div class="ddr-i">📱</div>KARMA Reels<div class="dd-bdg" style="background:#FF2D55;color:#fff">NY</div></div>
           <div class="ddr" onclick="cM();openKarmaCam()" style="background:linear-gradient(135deg,rgba(255,230,0,.1),rgba(255,159,10,.06));border:1px solid rgba(255,230,0,.25)"><div class="ddr-i">📸</div>KARMA Cam · AR<div class="dd-bdg" style="background:#FFE600;color:#000">NY</div></div>
-          <div class="ddr" onclick="cM();nav('home')"><div class="ddr-i">🐾</div>Din Pet</div>
+          <div class="ddr" onclick="cM();nav('map')"><div class="ddr-i">🌍</div>Min Värld · Live Karta</div>
+          <div class="ddr" onclick="cM();openKarmaHome()"><div class="ddr-i">🏠</div>KARMA Hem<span style="font-size:9px;color:rgba(255,255,255,.35);margin-left:6px">pet · slott · rum · profil</span></div>
           <div class="ddr" onclick="cM();nav('flash')"><div class="ddr-i">⚡</div>Flash Feed</div>
           <div class="ddr" onclick="cM();nav('social')"><div class="ddr-i">💬</div>Social & Chat<div class="dd-bdg" id="circleDot" style="display:none">!</div></div>
           <div class="ddr" onclick="cM();nav('uppdrag')"><div class="ddr-i">🎯</div>Uppdrag &amp; Bounties</div>
-          <div class="ddr" onclick="cM();nav('home');setTimeout(()=>{const el=$('dailyChallengesContainer');if(el)el.scrollIntoView({behavior:'smooth'});},400)"><div class="ddr-i">📅</div>Dagliga Utmaningar</div>
-          <div class="ddr" onclick="cM();nav('shop')"><div class="ddr-i">🛍️</div>Marketplace</div>
-          <div class="ddr" onclick="cM();nav('map')"><div class="ddr-i">🗺️</div>Live Karta</div>
         </div>
         <div class="dd-sec">
-          <div class="ddr" onclick="cM();nav('lb')"><div class="ddr-i">🏆</div>Leaderboard</div>
-          <div class="ddr" onclick="cM();nav('profile')"><div class="ddr-i">👤</div>Profil</div>
           <div class="ddr" onclick="cM();oWin('aiWin')"><div class="ddr-i">🤖</div>KARMA AI</div>
           <div class="ddr" style="background:linear-gradient(135deg,#FFE60022,#FF9F0A11);border:1px solid #FFE60055" onclick="cM();openModal('premiumModal')"><div class="ddr-i">👑</div><span style="color:var(--y);font-weight:900">KARMA PRO</span></div>
-        </div>
-        <div class="dd-sec">
-          <div class="ddr" onclick="openFortuneOracle();toggleMenu()"><div class="ddr-i">🔮</div>Fortune Oracle</div>
         </div>
         <div class="dd-sec" id="ddAuthSection">
           <div id="ddLoginRow" class="ddr" onclick="cM();showAuthScreen()" style="display:none"><div class="ddr-i">🔑</div>Logga in / Registrera</div>
@@ -4159,17 +4152,11 @@ div[style*="LIVE"]{border-radius:16px!important;background:rgba(57,255,20,.03)!i
         </div>
         <div id="meRumGearList" style="display:flex;gap:8px;overflow-x:auto;padding:0 14px 10px;scrollbar-width:none;min-height:68px"></div>
 
-        <!-- ══ QUICK LAUNCH ══ -->
-        <div style="padding:0 14px 4px;margin-bottom:8px;display:flex;align-items:center;gap:10px">
-          <div style="height:1px;flex:1;background:linear-gradient(90deg,rgba(0,217,255,.3),transparent)"></div>
-          <div style="font-size:9px;font-weight:900;color:rgba(255,255,255,.3);letter-spacing:1.5px">SNABBSTART</div>
-          <div style="height:1px;flex:1;background:linear-gradient(270deg,rgba(0,217,255,.3),transparent)"></div>
-        </div>
-        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;padding:0 14px 16px">
-          <button onclick="nav('social')" style="background:rgba(0,217,255,.06);border:1.5px solid rgba(0,217,255,.18);border-radius:16px;padding:14px 6px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:5px;transition:all .15s;-webkit-tap-highlight-color:transparent"><span style="font-size:26px">💬</span><span style="font-size:8px;font-weight:900;color:var(--b);letter-spacing:.5px">SOCIAL</span></button>
-          <button onclick="nav('explore')" style="background:rgba(191,95,255,.06);border:1.5px solid rgba(191,95,255,.18);border-radius:16px;padding:14px 6px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:5px;transition:all .15s;-webkit-tap-highlight-color:transparent"><span style="font-size:26px">🔍</span><span style="font-size:8px;font-weight:900;color:var(--p);letter-spacing:.5px">UTFORSKA</span></button>
-          <button onclick="openCastle()" style="background:rgba(255,215,0,.06);border:1.5px solid rgba(255,215,0,.18);border-radius:16px;padding:14px 6px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:5px;transition:all .15s;-webkit-tap-highlight-color:transparent"><span style="font-size:26px">🏰</span><span style="font-size:8px;font-weight:900;color:#FFD700;letter-spacing:.5px">SLOTT</span></button>
-          <button onclick="openBattle()" style="background:rgba(255,45,85,.06);border:1.5px solid rgba(255,45,85,.18);border-radius:16px;padding:14px 6px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:5px;transition:all .15s;-webkit-tap-highlight-color:transparent"><span style="font-size:26px">⚔️</span><span style="font-size:8px;font-weight:900;color:var(--pk);letter-spacing:.5px">BATTLE</span></button>
+        <!-- Rummet lever i KARMA VÄRLDEN — en genväg tillbaka till kartan -->
+        <div onclick="nav('map')" style="margin:4px 14px 16px;background:linear-gradient(135deg,rgba(57,255,20,.08),rgba(0,217,255,.06));border:1.5px solid rgba(57,255,20,.3);border-radius:16px;padding:13px 16px;display:flex;align-items:center;gap:12px;cursor:pointer;-webkit-tap-highlight-color:transparent">
+          <span style="font-size:26px">🌍</span>
+          <div style="flex:1"><div style="font-size:12px;font-weight:900;color:#39FF14;font-family:var(--mono)">DITT RUM LEVER I KARMA VÄRLDEN</div><div style="font-size:9px;color:rgba(255,255,255,.5);font-family:var(--mono)">kastel · zoner · pet — allt på live-kartan</div></div>
+          <span style="font-size:18px;color:#39FF14">▶</span>
         </div>
         <div class="vend"></div>
       </div>
@@ -10195,7 +10182,7 @@ function _confirmSendEnvelope(amount,friendUser){
 function _spawnIncomingEnvelope(from,amount){
   if($('incEnv'))return; // one at a time
   const d=document.createElement('div');d.id='incEnv';
-  d.style.cssText='position:fixed;bottom:150px;right:14px;z-index:9996;cursor:pointer;filter:drop-shadow(0 0 14px rgba(255,45,85,.8));animation:petBob 1s ease-in-out infinite;';
+  d.style.cssText='position:fixed;bottom:calc(var(--sab,0px) + 140px);left:12px;z-index:199;cursor:pointer;filter:drop-shadow(0 0 14px rgba(255,45,85,.8));animation:petBob 1s ease-in-out infinite;';
   d.innerHTML='<div style="position:relative;font-size:46px">🧧<div style="position:absolute;top:-4px;right:-4px;background:#FF2D55;color:#fff;font-size:9px;font-weight:900;border-radius:50%;width:17px;height:17px;display:flex;align-items:center;justify-content:center;font-family:var(--mono)">1</div></div>';
   d.onclick=()=>{d.remove();_openReceivedEnvelope(from,amount);};
   document.body.appendChild(d);
