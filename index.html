@@ -11898,6 +11898,9 @@ function _kcatStart(){
   _kcat.items=[];_kcat.particles=[];_kcat.pops=[];_kcat.bullets=[];
   _kcat.score=0;_kcat.combo=0;_kcat.lives=3;_kcat.aura=0;_kcat.next=20;_kcat.fireCd=0;
   if(!_kcat.up)_kcat.up=_kwLoadUp();
+  // BANA-läge: rensa X mål per bana, stigande svårighet, skärmen nollas mellan banor
+  _kcat.bana=Math.max(1,parseInt(localStorage.getItem('kv8_kwBana')||'1'));
+  _kcat.kills=0;_kcat.targetKills=8+_kcat.bana*2;_kcat.interT=0;_kcat.interTxt='';
   _kcat.active=true;_kcat.started=true;_kcat.t=0;
   $('kcatStart').style.display='none';$('kcatOver').style.display='none';
   $('kcatLives').textContent='💗💗💗';
@@ -11913,20 +11916,28 @@ function _kcatLoop(){
 function _kcatUpdate(){
   _kcat.t++;const W=_kcat.W,H=_kcat.H;
   const up=_kcat.up||{};
-  const diff=1+Math.min(3,_kcat.score/800);
-  const hpMult=1+_kcat.score/1500;
-  // spawn targets
+  // ── BANA-interlude: skärmen är rensad, visa banner, auto-starta nästa ──
+  if(_kcat.interT>0){
+    _kcat.interT--;
+    _kcat.particles=_kcat.particles.filter(p=>{p.x+=p.vx;p.y+=p.vy;p.vy+=.15;p.life--;return p.life>0;});
+    _kcat.pops=_kcat.pops.filter(pu=>{pu.y-=1.1;pu.life-=.025;return pu.life>0;});
+    return;
+  }
+  const bana=_kcat.bana||1;
+  const diff=1+Math.min(3.5,(bana-1)*0.18);
+  const hpMult=1+(bana-1)*0.3;
+  // spawn targets (max 18 på skärmen — håller 60fps)
   _kcat.next-=diff;
-  if(_kcat.next<=0){
+  if(_kcat.next<=0&&_kcat.items.length<18){
     if(Math.random()<0.08){ // bonus gem — shoot for instant coins
       _kcat.items.push({x:30+Math.random()*(W-60),y:-20,vy:1.6,em:'💎',hp:1,maxHp:1,pts:0,gem:true,wob:Math.random()*6});
     }else{
-      const pool=_KW_FOES.filter((f,fi)=>fi<=Math.min(_KW_FOES.length-1,1+Math.floor(_kcat.score/400)));
+      const pool=_KW_FOES.filter((f,fi)=>fi<=Math.min(_KW_FOES.length-1,Math.floor(bana/2)));
       const f=pool[Math.floor(Math.random()*pool.length)];
       const hp=Math.max(1,Math.round(f.hp*hpMult));
-      _kcat.items.push({x:30+Math.random()*(W-60),y:-20,vy:f.spd*(0.8+diff*0.25),em:f.em,hp,maxHp:hp,pts:f.pts,wob:Math.random()*6});
+      _kcat.items.push({x:30+Math.random()*(W-60),y:-20,vy:f.spd*(0.75+diff*0.22),em:f.em,hp,maxHp:hp,pts:f.pts,wob:Math.random()*6});
     }
-    _kcat.next=40-Math.min(24,_kcat.score/150)+Math.random()*16;
+    _kcat.next=Math.max(14,42-bana*1.4)+Math.random()*16;
   }
   const petY=H-56;
   // ── AUTO-FIRE (upgrades: rate, multi) ──
@@ -11966,8 +11977,9 @@ function _kcatUpdate(){
             _kcat.pops.push({x:it.x,y:it.y-10,txt:'+'+gain+(mult>1?' ×'+mult:''),col,life:1});
           }
           _kcat.aura=Math.min(100,_kcat.aura+5);
-          for(let p=0;p<10;p++)_kcat.particles.push({x:it.x,y:it.y,vx:(Math.random()-.5)*5,vy:(Math.random()-.5)*4-1,life:16,col:['#00D9FF','#39FF14','#FFE600','#FF007F'][p%4]});
+          for(let p=0;p<8;p++)_kcat.particles.push({x:it.x,y:it.y,vx:(Math.random()-.5)*5,vy:(Math.random()-.5)*4-1,life:16,col:['#00D9FF','#39FF14','#FFE600','#FF007F'][p%4]});
           _kcat.items.splice(i,1);vibe&&vibe(5);
+          if(!it.gem){_kcat.kills++;if(_kcat.kills>=_kcat.targetKills){_kwBanaClear();return;}}
         }
         break;
       }
@@ -11990,6 +12002,22 @@ function _kcatUpdate(){
   }
   _kcat.particles=_kcat.particles.filter(p=>{p.x+=p.vx;p.y+=p.vy;p.vy+=.15;p.life--;return p.life>0;});
   _kcat.pops=_kcat.pops.filter(pu=>{pu.y-=1.1;pu.life-=.025;return pu.life>0;});
+  // Hårda tak — förhindrar lagg-ackumulering
+  if(_kcat.particles.length>70)_kcat.particles.splice(0,_kcat.particles.length-70);
+  if(_kcat.bullets.length>50)_kcat.bullets.splice(0,_kcat.bullets.length-50);
+  if(_kcat.pops.length>14)_kcat.pops.splice(0,_kcat.pops.length-14);
+}
+function _kwBanaClear(){
+  const bana=_kcat.bana;
+  const coins=10+bana*4,xp=8+bana*2;
+  gainCoins&&gainCoins(coins);gainXP&&gainXP(xp,'action');
+  _kcat.items=[];_kcat.bullets=[];          // skärmen nollas = laggen nollas
+  _kcat.bana++;localStorage.setItem('kv8_kwBana',_kcat.bana);
+  _kcat.kills=0;_kcat.targetKills=8+_kcat.bana*2;
+  _kcat.lives=Math.min(3,_kcat.lives+1);    // +1 liv tillbaka per bana
+  const lv=$('kcatLives');if(lv)lv.textContent='💗'.repeat(_kcat.lives)+'🖤'.repeat(3-_kcat.lives);
+  _kcat.interT=130;_kcat.interTxt='🏁 BANA '+bana+' KLAR!  +'+coins+' 💎';
+  vibe&&vibe([30,20,60,20,100]);SFX&&SFX.win&&SFX.win();save&&save();
 }
 function _kcatDraw(){
   const cv=$('kcatCanvas');if(!cv)return;const ctx=cv.getContext('2d');if(!ctx)return;
@@ -12010,19 +12038,20 @@ function _kcatDraw(){
     ag.addColorStop(0,`rgba(0,217,255,${(_kcat.aura/100*.22).toFixed(3)})`);ag.addColorStop(1,'transparent');
     ctx.fillStyle=ag;ctx.fillRect(0,0,W,H);
   }
-  // bullets — neon streaks
+  // bullets — neon streaks (ingen shadowBlur i het loop = 60fps)
+  ctx.save();ctx.lineWidth=3;ctx.lineCap='round';
   _kcat.bullets.forEach(b=>{
-    ctx.save();ctx.strokeStyle='#00D9FF';ctx.lineWidth=3;ctx.lineCap='round';ctx.shadowColor='#00D9FF';ctx.shadowBlur=10;
-    ctx.beginPath();ctx.moveTo(b.x,b.y);ctx.lineTo(b.x-b.vx*1.4,b.y+12);ctx.stroke();
-    ctx.fillStyle='#fff';ctx.beginPath();ctx.arc(b.x,b.y,2,0,Math.PI*2);ctx.fill();ctx.restore();
+    ctx.strokeStyle='rgba(0,217,255,.35)';ctx.beginPath();ctx.moveTo(b.x,b.y+2);ctx.lineTo(b.x-b.vx*1.4,b.y+14);ctx.stroke();
+    ctx.strokeStyle='#7deaff';ctx.beginPath();ctx.moveTo(b.x,b.y);ctx.lineTo(b.x-b.vx*1.4,b.y+10);ctx.stroke();
+    ctx.fillStyle='#fff';ctx.beginPath();ctx.arc(b.x,b.y,2,0,Math.PI*2);ctx.fill();
   });
-  // targets with HP-ring
+  ctx.restore();
+  // targets with HP-ring (glöd endast vid träff-flash)
+  ctx.save();ctx.font='27px serif';ctx.textAlign='center';ctx.textBaseline='middle';
   _kcat.items.forEach(it=>{
     if(it.flash>0)it.flash--;
-    ctx.save();
-    ctx.shadowColor=it.gem?'#FFE600':'#FF2D55';ctx.shadowBlur=it.flash>0?24:13;
-    ctx.font='27px serif';ctx.textAlign='center';ctx.textBaseline='middle';
-    if(it.flash>0){ctx.globalAlpha=.75;}
+    if(it.flash>0){ctx.shadowColor=it.gem?'#FFE600':'#FF2D55';ctx.shadowBlur=20;ctx.globalAlpha=.8;}
+    else{ctx.shadowBlur=0;ctx.globalAlpha=1;}
     ctx.fillText(it.em,it.x,it.y);
     if(!it.gem&&it.maxHp>1){
       const pct=Math.max(0,it.hp/it.maxHp);
@@ -12030,10 +12059,12 @@ function _kcatDraw(){
       ctx.strokeStyle=pct>.5?'#39FF14':pct>.25?'#FFE600':'#FF2D55';
       ctx.beginPath();ctx.arc(it.x,it.y,20,-Math.PI/2,-Math.PI/2+Math.PI*2*pct);ctx.stroke();
     }
-    ctx.restore();
   });
-  // particles
-  _kcat.particles.forEach(p=>{ctx.save();ctx.globalAlpha=Math.min(1,p.life/16);ctx.fillStyle=p.col;ctx.shadowColor=p.col;ctx.shadowBlur=8;ctx.beginPath();ctx.arc(p.x,p.y,3,0,Math.PI*2);ctx.fill();ctx.restore();});
+  ctx.restore();
+  // particles (ingen shadowBlur — bara alfa, mycket billigare)
+  ctx.save();
+  _kcat.particles.forEach(p=>{ctx.globalAlpha=Math.min(1,p.life/16);ctx.fillStyle=p.col;ctx.beginPath();ctx.arc(p.x,p.y,3,0,Math.PI*2);ctx.fill();});
+  ctx.restore();
   // pet ship (player) — thruster flame + cyan aura
   const petY=H-56;
   ctx.save();ctx.globalAlpha=.7;
@@ -12052,10 +12083,27 @@ function _kcatDraw(){
   if(_kcat.combo>=4){const m=1+Math.floor(_kcat.combo/4);const cc=m>=3?'#FF007F':m>=2?'#FFE600':'#39FF14';
     ctx.save();ctx.globalAlpha=.3+.2*Math.sin(t*.012);ctx.font='bold 22px monospace';ctx.textAlign='center';ctx.fillStyle=cc;ctx.shadowColor=cc;ctx.shadowBlur=16;
     ctx.fillText('×'+m+' KARMA FLOW',W/2,H*.16);ctx.restore();}
-  // aura meter bar
-  ctx.save();ctx.fillStyle='rgba(255,255,255,.08)';ctx.fillRect(12,H-14,W-24,5);
-  const ag2=ctx.createLinearGradient(12,0,W-12,0);ag2.addColorStop(0,'#FF007F');ag2.addColorStop(1,'#BF5FFF');
-  ctx.fillStyle=ag2;ctx.fillRect(12,H-14,(W-24)*(_kcat.aura/100),5);ctx.restore();
+  // BANA-progress (topp-center): mål kvar i denna bana
+  {const prog=Math.min(1,(_kcat.kills||0)/(_kcat.targetKills||10));
+   const bw=Math.min(150,W*.4),bx=W/2-bw/2;
+   ctx.save();
+   ctx.fillStyle='rgba(0,0,0,.45)';
+   ctx.beginPath();if(ctx.roundRect)ctx.roundRect(bx-6,6,bw+12,17,9);else ctx.rect(bx-6,6,bw+12,17);ctx.fill();
+   ctx.fillStyle='rgba(255,255,255,.1)';ctx.fillRect(bx,14,bw,4);
+   ctx.fillStyle='#00D9FF';ctx.fillRect(bx,14,bw*prog,4);
+   ctx.font='bold 7.5px monospace';ctx.textAlign='center';ctx.fillStyle='rgba(255,255,255,.85)';
+   ctx.fillText('BANA '+(_kcat.bana||1)+' · '+(_kcat.kills||0)+'/'+(_kcat.targetKills||10)+' MÅL',W/2,11.5);
+   ctx.restore();}
+  // Interlude-banner (bana klar — ingen popup, allt i canvas)
+  if(_kcat.interT>0){
+    ctx.save();ctx.textAlign='center';ctx.textBaseline='middle';
+    ctx.globalAlpha=Math.min(1,_kcat.interT/20);
+    ctx.font='bold 20px monospace';ctx.fillStyle='#FFE600';ctx.shadowColor='#FFE600';ctx.shadowBlur=18;
+    ctx.fillText(_kcat.interTxt||'',W/2,H*.42);
+    ctx.shadowBlur=0;ctx.font='bold 11px monospace';ctx.fillStyle='rgba(255,255,255,.6)';
+    ctx.fillText('BANA '+_kcat.bana+' startar... ❤️ +1 liv',W/2,H*.42+28);
+    ctx.restore();
+  }
   ctx.textAlign='left';ctx.textBaseline='alphabetic';
 }
 function _kcatOver(){
