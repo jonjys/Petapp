@@ -11800,11 +11800,45 @@ const _KW_FOES=[
 ];
 // ENDLESS upgrades — infinite levels, cost grows 1.45x per level (persisted)
 const _KW_UPS={
-  dmg:  {nm:'SKADA',    em:'💥',base:40, desc:'+1 skada'},
-  rate: {nm:'ELDHAST.', em:'⚡',base:60, desc:'-8% cooldown'},
-  multi:{nm:'MULTI',    em:'🔱',base:150,desc:'+1 skott / 3 nivåer'},
-  crit: {nm:'KRIT',     em:'🎯',base:90, desc:'+5% chans ×3 dmg'},
+  dmg:   {nm:'SKADA',    em:'💥',base:40, desc:'+1 skada'},
+  rate:  {nm:'ELDHAST.', em:'⚡',base:60, desc:'-8% cooldown'},
+  multi: {nm:'MULTI',    em:'🔱',base:150,desc:'+1 skott / 3 nivåer'},
+  crit:  {nm:'KRIT',     em:'🎯',base:90, desc:'+5% chans ×3 dmg'},
+  pierce:{nm:'PIERCE',   em:'🗡️',base:120,desc:'+1 genomslag / 2 niv.'},
+  shield:{nm:'SKÖLD',    em:'🛡️',base:200,desc:'+1 träfftålighet/bana'},
 };
+// ── VAPEN — köps en gång, byts när som helst (📡 laser!) ──
+const _KW_WEAPONS={
+  pulse: {nm:'PULS',  em:'🔫',cost:0,   desc:'Klassiska neon-skott'},
+  spread:{nm:'SPREAD',em:'🌪️',cost:400, desc:'3-vägs solfjäder'},
+  laser: {nm:'LASER', em:'📡',cost:900, desc:'Konstant stråle — smälter allt rakt upp'},
+  homing:{nm:'HOMING',em:'🛰️',cost:1600,desc:'Målsökande plasma'},
+};
+function _kwOwnedWeapons(){try{const a=JSON.parse(localStorage.getItem('kv8_kwWeapons')||'["pulse"]');return Array.isArray(a)&&a.length?a:['pulse'];}catch(e){return['pulse'];}}
+function _kwBuyWeapon(key){
+  const w=_KW_WEAPONS[key];if(!w)return;
+  const owned=_kwOwnedWeapons();
+  if(owned.includes(key)){_kwSelectWeapon(key);return;}
+  if((G.coins||0)<w.cost){showT('❌ Behöver '+w.cost+' 💎','r');SFX&&SFX.error&&SFX.error();return;}
+  G.coins-=w.cost;owned.push(key);
+  try{localStorage.setItem('kv8_kwWeapons',JSON.stringify(owned));}catch(e){}
+  vibe&&vibe([20,10,40,10,60]);SFX&&SFX.win&&SFX.win();
+  showT(w.em+' '+w.nm+' UPPLÅST!','g');save&&save();updateHUD&&updateHUD();
+  _kwSelectWeapon(key);
+}
+function _kwSelectWeapon(key){
+  if(!_kwOwnedWeapons().includes(key))return;
+  _kcat.weapon=key;try{localStorage.setItem('kv8_kwWeapSel',key);}catch(e){}
+  const wb=$('kcatWeapBtn');if(wb)wb.textContent=_KW_WEAPONS[key].em;
+  _kwRenderShop();
+}
+function _kwCycleWeapon(){
+  const owned=_kwOwnedWeapons();
+  const cur=owned.indexOf(_kcat.weapon||'pulse');
+  const next=owned[(cur+1)%owned.length];
+  _kwSelectWeapon(next);
+  showT(_KW_WEAPONS[next].em+' '+_KW_WEAPONS[next].nm,'b');vibe&&vibe(8);
+}
 function _kwLoadUp(){try{return JSON.parse(localStorage.getItem('kv8_kwUp')||'{}')||{};}catch(e){return{};}}
 function _kwCost(key){const lvl=(_kcat.up&&_kcat.up[key])||0;return Math.round(_KW_UPS[key].base*Math.pow(1.45,lvl));}
 function _kwBuyUp(key){
@@ -11825,6 +11859,14 @@ function _kwRenderShop(){
       '<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:6px">'+
       Object.entries(_KW_UPS).map(([k,u])=>{const lvl=_kcat.up[k]||0;const cost=_kwCost(k);const can=(G.coins||0)>=cost;
         return `<div onclick="event.stopPropagation();_kwBuyUp('${k}')" style="background:${can?'rgba(0,217,255,.1)':'rgba(255,255,255,.04)'};border:1.5px solid ${can?'rgba(0,217,255,.4)':'rgba(255,255,255,.1)'};border-radius:12px;padding:9px 3px;text-align:center;cursor:pointer;-webkit-tap-highlight-color:transparent"><div style="font-size:19px">${u.em}</div><div style="font-size:7.5px;font-weight:900;color:${can?'#00D9FF':'rgba(255,255,255,.4)'};font-family:var(--mono);margin-top:2px">${u.nm} <span style="color:#FFE600">LV${lvl}</span></div><div style="font-size:7px;color:rgba(255,255,255,.4);font-family:var(--mono)">${u.desc}</div><div style="font-size:8px;font-weight:900;color:${can?'#FFE600':'rgba(255,255,255,.25)'};font-family:var(--mono);margin-top:3px">${cost} 💎</div></div>`;
+      }).join('')+'</div>'
+      +'<div style="font-size:8px;font-weight:900;color:rgba(255,159,10,.75);font-family:var(--mono);letter-spacing:2px;margin:9px 0 6px">🔫 VAPEN — tryck för att välja</div>'
+      +'<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:6px">'
+      +Object.entries(_KW_WEAPONS).map(([k,w])=>{
+        const owned=_kwOwnedWeapons().includes(k);
+        const sel=(_kcat.weapon||localStorage.getItem('kv8_kwWeapSel')||'pulse')===k;
+        const can=owned||(G.coins||0)>=w.cost;
+        return `<div onclick="event.stopPropagation();_kwBuyWeapon('${k}')" style="background:${sel?'rgba(255,159,10,.18)':owned?'rgba(255,159,10,.07)':can?'rgba(255,255,255,.05)':'rgba(255,255,255,.03)'};border:1.5px solid ${sel?'#FF9F0A':owned?'rgba(255,159,10,.4)':'rgba(255,255,255,.1)'};border-radius:12px;padding:8px 3px;text-align:center;cursor:pointer;-webkit-tap-highlight-color:transparent"><div style="font-size:19px">${w.em}</div><div style="font-size:7.5px;font-weight:900;color:${sel?'#FF9F0A':owned?'rgba(255,159,10,.8)':'rgba(255,255,255,.4)'};font-family:var(--mono);margin-top:2px">${w.nm}</div><div style="font-size:7px;color:rgba(255,255,255,.35);font-family:var(--mono);line-height:1.15">${w.desc}</div><div style="font-size:8px;font-weight:900;color:${sel?'#39FF14':owned?'rgba(255,255,255,.4)':'#FFE600'};font-family:var(--mono);margin-top:3px">${sel?'✓ VALD':owned?'ÄGD':w.cost+' 💎'}</div></div>`;
       }).join('')+'</div>';
   });
 }
@@ -11845,6 +11887,7 @@ function openKarmaCatch(){
         <canvas id="kcatCanvas" style="display:block;width:100%;height:100%;touch-action:none"></canvas>
         <div id="kcatHud" style="position:absolute;top:10px;left:12px;display:flex;gap:8px;align-items:center">
           <span id="kcatLives" style="font-size:16px">💗💗💗</span>
+          <button id="kcatWeapBtn" onclick="_kwCycleWeapon()" title="Byt vapen" style="background:rgba(255,159,10,.15);border:1.5px solid rgba(255,159,10,.45);border-radius:10px;font-size:16px;padding:3px 9px;cursor:pointer;-webkit-tap-highlight-color:transparent">🔫</button>
         </div>
         <div id="kcatStart" onclick="_kcatStart()" style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(6,3,10,.95);cursor:pointer;-webkit-tap-highlight-color:transparent">
           <div style="text-align:center;padding:24px">
@@ -11901,6 +11944,11 @@ function _kcatStart(){
   // BANA-läge: rensa X mål per bana, stigande svårighet, skärmen nollas mellan banor
   _kcat.bana=Math.max(1,parseInt(localStorage.getItem('kv8_kwBana')||'1'));
   _kcat.kills=0;_kcat.targetKills=8+_kcat.bana*2;_kcat.interT=0;_kcat.interTxt='';
+  _kcat.ebullets=[];
+  _kcat.weapon=localStorage.getItem('kv8_kwWeapSel')||'pulse';
+  if(!_kwOwnedWeapons().includes(_kcat.weapon))_kcat.weapon='pulse';
+  const wb=$('kcatWeapBtn');if(wb)wb.textContent=(_KW_WEAPONS[_kcat.weapon]||_KW_WEAPONS.pulse).em;
+  _kcat.shieldCharges=Math.min(3,(_kcat.up&&_kcat.up.shield)||0);
   _kcat.active=true;_kcat.started=true;_kcat.t=0;
   $('kcatStart').style.display='none';$('kcatOver').style.display='none';
   $('kcatLives').textContent='💗💗💗';
@@ -11935,36 +11983,75 @@ function _kcatUpdate(){
       const pool=_KW_FOES.filter((f,fi)=>fi<=Math.min(_KW_FOES.length-1,Math.floor(bana/2)));
       const f=pool[Math.floor(Math.random()*pool.length)];
       const hp=Math.max(1,Math.round(f.hp*hpMult));
-      _kcat.items.push({x:30+Math.random()*(W-60),y:-20,vy:f.spd*(0.75+diff*0.22),em:f.em,hp,maxHp:hp,pts:f.pts,wob:Math.random()*6});
+      // Från bana 2: tanks skjuter riktade skott mot dig — stå inte still!
+      const shooter=bana>=2&&f.hp>=3;
+      _kcat.items.push({x:30+Math.random()*(W-60),y:-20,vy:f.spd*(0.75+diff*0.22),em:f.em,hp,maxHp:hp,pts:f.pts,wob:Math.random()*6,shooter,scd:70+Math.random()*90});
     }
     _kcat.next=Math.max(14,42-bana*1.4)+Math.random()*16;
   }
   const petY=H-56;
-  // ── AUTO-FIRE (upgrades: rate, multi) ──
+  const weap=_kcat.weapon||'pulse';
+  const dmgBase=1+(up.dmg||0);
+  const critCh=Math.min(.6,(up.crit||0)*0.05);
+  // ── AUTO-FIRE — vapenberoende (puls/spread/laser/homing) ──
   _kcat.fireCd--;
-  if(_kcat.fireCd<=0){
-    const interval=Math.max(6,Math.round(24*Math.pow(0.92,up.rate||0)));
-    _kcat.fireCd=interval;
+  _kcat.laserHit=null;
+  if(weap==='laser'){
+    // LASER: konstant stråle rakt upp — smälter närmaste målet i kolumnen
+    let tgt=null,ty=-1;
+    for(const it of _kcat.items){if(Math.abs(it.x-_kcat.x)<26&&it.y<petY&&it.y>ty){tgt=it;ty=it.y;}}
+    if(tgt){
+      tgt.hp-=dmgBase*0.16;tgt.flash=2;_kcat.laserHit=tgt;
+      if(_kcat.t%5===0)_kcat.particles.push({x:tgt.x+(Math.random()-.5)*10,y:tgt.y+8,vx:(Math.random()-.5)*2,vy:-1,life:8,col:'#FF2D55'});
+      if(tgt.hp<=0){
+        const i=_kcat.items.indexOf(tgt);
+        if(i>=0){
+          _kcat.combo++;const mult=1+Math.floor(_kcat.combo/5);
+          if(tgt.gem){gainCoins&&gainCoins(5);_kcat.pops.push({x:tgt.x,y:tgt.y-10,txt:'+5 💎',col:'#FFE600',life:1});}
+          else{const gain=tgt.pts*mult;_kcat.score+=gain;const sc2=$('kcatScore');if(sc2)sc2.textContent=_kcat.score;
+            _kcat.pops.push({x:tgt.x,y:tgt.y-10,txt:'+'+gain+(mult>1?' ×'+mult:''),col:'#FF2D55',life:1});}
+          for(let p=0;p<8;p++)_kcat.particles.push({x:tgt.x,y:tgt.y,vx:(Math.random()-.5)*5,vy:(Math.random()-.5)*4-1,life:16,col:['#FF2D55','#FFE600','#fff','#FF9F0A'][p%4]});
+          _kcat.items.splice(i,1);vibe&&vibe(5);
+          if(!tgt.gem){_kcat.kills++;if(_kcat.kills>=_kcat.targetKills){_kwBanaClear();return;}}
+        }
+      }
+    }
+  }else if(_kcat.fireCd<=0){
+    const rateMul=weap==='spread'?1.25:weap==='homing'?1.6:1;
+    _kcat.fireCd=Math.max(6,Math.round(24*rateMul*Math.pow(0.92,up.rate||0)));
     const shots=1+Math.floor((up.multi||0)/3);
-    for(let s=0;s<shots;s++){
-      const off=shots===1?0:(s-(shots-1)/2)*14;
-      _kcat.bullets.push({x:_kcat.x+off,y:petY-24,vy:-9,vx:off*0.06});
+    const pierce=Math.floor((up.pierce||0)/2);
+    if(weap==='spread'){
+      for(let s=0;s<shots;s++)for(const a of [-1.8,0,1.8])
+        _kcat.bullets.push({x:_kcat.x+s*8-((shots-1)*4),y:petY-24,vy:-8.4,vx:a,dm:Math.max(1,Math.ceil(dmgBase*0.7)),pierce});
+    }else if(weap==='homing'){
+      for(let s=0;s<shots;s++)
+        _kcat.bullets.push({x:_kcat.x+(s-(shots-1)/2)*14,y:petY-24,vy:-6.5,vx:0,dm:Math.ceil(dmgBase*1.5),pierce,homing:true});
+    }else{
+      for(let s=0;s<shots;s++){
+        const off=shots===1?0:(s-(shots-1)/2)*14;
+        _kcat.bullets.push({x:_kcat.x+off,y:petY-24,vy:-9,vx:off*0.06,dm:dmgBase,pierce});
+      }
     }
     _kcat.particles.push({x:_kcat.x,y:petY-20,vx:(Math.random()-.5),vy:-2,life:6,col:'#00D9FF'});
   }
   // bullets move + hit targets
-  const dmgBase=1+(up.dmg||0);
-  const critCh=Math.min(.6,(up.crit||0)*0.05);
   for(let b=_kcat.bullets.length-1;b>=0;b--){
-    const bl=_kcat.bullets[b];bl.y+=bl.vy;bl.x+=bl.vx;
-    if(bl.y<-20){_kcat.bullets.splice(b,1);continue;}
+    const bl=_kcat.bullets[b];
+    if(bl.homing){ // styr mot närmaste mål
+      let best=null,bd=1e9;
+      for(const it of _kcat.items){const d=Math.hypot(it.x-bl.x,it.y-bl.y);if(d<bd){bd=d;best=it;}}
+      if(best)bl.vx=Math.max(-4,Math.min(4,bl.vx+(best.x-bl.x)*0.012));
+    }
+    bl.y+=bl.vy;bl.x+=bl.vx;
+    if(bl.y<-20||bl.x<-20||bl.x>W+20){_kcat.bullets.splice(b,1);continue;}
     for(let i=_kcat.items.length-1;i>=0;i--){
       const it=_kcat.items[i];
       if(Math.abs(bl.x-it.x)<22&&Math.abs(bl.y-it.y)<22){
         const crit=Math.random()<critCh;
-        const dmg=crit?dmgBase*3:dmgBase;
+        const dmg=crit?(bl.dm||dmgBase)*3:(bl.dm||dmgBase);
         it.hp-=dmg;it.flash=4;
-        _kcat.bullets.splice(b,1);
+        if((bl.pierce||0)>0){bl.pierce--;}else{_kcat.bullets.splice(b,1);}
         _kcat.particles.push({x:it.x,y:it.y,vx:(Math.random()-.5)*3,vy:-1,life:8,col:crit?'#FFE600':'#00D9FF'});
         if(crit)_kcat.pops.push({x:it.x,y:it.y-16,txt:'KRIT!',col:'#FFE600',life:.8});
         if(it.hp<=0){
@@ -11985,19 +12072,48 @@ function _kcatUpdate(){
       }
     }
   }
-  // targets descend — reaching pet/bottom costs a life
+  // Skada spelaren (sköld absorberar först)
+  const _kwHurt=(x,y)=>{
+    if((_kcat.shieldCharges||0)>0){
+      _kcat.shieldCharges--;
+      _kcat.pops.push({x:_kcat.x,y:petY-34,txt:'🛡️ BLOCK!',col:'#00D9FF',life:1});
+      for(let p=0;p<8;p++)_kcat.particles.push({x:_kcat.x,y:petY,vx:(Math.random()-.5)*5,vy:(Math.random()-.5)*4,life:14,col:'#00D9FF'});
+      vibe&&vibe([20,10,30]);return false;
+    }
+    _kcat.lives--;_kcat.combo=0;_kcat.aura=Math.max(0,_kcat.aura-25);
+    const lv=$('kcatLives');if(lv)lv.textContent='💗'.repeat(Math.max(0,_kcat.lives))+'🖤'.repeat(Math.max(0,3-_kcat.lives));
+    vibe&&vibe([50,30,80]);
+    for(let p=0;p<12;p++)_kcat.particles.push({x,y,vx:(Math.random()-.5)*5,vy:(Math.random()-.5)*5,life:18,col:'#FF2D55'});
+    _kcat.pops.push({x,y:y-10,txt:'-1 ❤',col:'#FF2D55',life:1});
+    return _kcat.lives<=0;
+  };
+  // targets descend + shooters fire aimed shots — reaching pet/bottom costs a life
   for(let i=_kcat.items.length-1;i>=0;i--){
     const it=_kcat.items[i];it.y+=it.vy;it.x+=Math.sin((_kcat.t+it.wob*40)*.03)*.5;
+    if(it.shooter&&it.y>30&&it.y<H*0.62&&_kcat.ebullets.length<14){
+      it.scd--;
+      if(it.scd<=0){
+        it.scd=120+Math.random()*100;
+        const dx=_kcat.x-it.x,dy=petY-it.y,d=Math.hypot(dx,dy)||1;
+        const sp=2.6+Math.min(1.6,(bana-1)*0.12);
+        _kcat.ebullets.push({x:it.x,y:it.y+12,vx:dx/d*sp,vy:dy/d*sp});
+        _kcat.particles.push({x:it.x,y:it.y+12,vx:0,vy:1,life:8,col:'#FF2D55'});
+      }
+    }
     const hitPet=Math.abs(it.x-_kcat.x)<30&&Math.abs(it.y-petY)<30;
     if(it.y>H-14||hitPet){
       if(it.gem){_kcat.items.splice(i,1);continue;} // missed gem = no harm
-      _kcat.lives--;_kcat.combo=0;_kcat.aura=Math.max(0,_kcat.aura-25);
-      const lv=$('kcatLives');if(lv)lv.textContent='💗'.repeat(Math.max(0,_kcat.lives))+'🖤'.repeat(Math.max(0,3-_kcat.lives));
-      vibe&&vibe([50,30,80]);
-      for(let p=0;p<12;p++)_kcat.particles.push({x:it.x,y:it.y,vx:(Math.random()-.5)*5,vy:(Math.random()-.5)*5,life:18,col:'#FF2D55'});
-      _kcat.pops.push({x:it.x,y:it.y-10,txt:'-1 ❤',col:'#FF2D55',life:1});
       _kcat.items.splice(i,1);
-      if(_kcat.lives<=0){_kcatOver();return;}
+      if(_kwHurt(it.x,it.y)){_kcatOver();return;}
+    }
+  }
+  // fiendens riktade skott — VÄJ! (unik flyg+väj+skjut-loop)
+  for(let b=_kcat.ebullets.length-1;b>=0;b--){
+    const eb=_kcat.ebullets[b];eb.x+=eb.vx;eb.y+=eb.vy;
+    if(eb.y>H+16||eb.x<-16||eb.x>W+16){_kcat.ebullets.splice(b,1);continue;}
+    if(Math.abs(eb.x-_kcat.x)<20&&Math.abs(eb.y-petY)<24){
+      _kcat.ebullets.splice(b,1);
+      if(_kwHurt(eb.x,eb.y)){_kcatOver();return;}
     }
   }
   _kcat.particles=_kcat.particles.filter(p=>{p.x+=p.vx;p.y+=p.vy;p.vy+=.15;p.life--;return p.life>0;});
@@ -12011,9 +12127,10 @@ function _kwBanaClear(){
   const bana=_kcat.bana;
   const coins=10+bana*4,xp=8+bana*2;
   gainCoins&&gainCoins(coins);gainXP&&gainXP(xp,'action');
-  _kcat.items=[];_kcat.bullets=[];          // skärmen nollas = laggen nollas
+  _kcat.items=[];_kcat.bullets=[];_kcat.ebullets=[]; // skärmen nollas = laggen nollas
   _kcat.bana++;localStorage.setItem('kv8_kwBana',_kcat.bana);
   _kcat.kills=0;_kcat.targetKills=8+_kcat.bana*2;
+  _kcat.shieldCharges=Math.min(3,(_kcat.up&&_kcat.up.shield)||0); // sköld laddas om per bana
   _kcat.lives=Math.min(3,_kcat.lives+1);    // +1 liv tillbaka per bana
   const lv=$('kcatLives');if(lv)lv.textContent='💗'.repeat(_kcat.lives)+'🖤'.repeat(3-_kcat.lives);
   _kcat.interT=130;_kcat.interTxt='🏁 BANA '+bana+' KLAR!  +'+coins+' 💎';
@@ -12022,14 +12139,22 @@ function _kwBanaClear(){
 function _kcatDraw(){
   const cv=$('kcatCanvas');if(!cv)return;const ctx=cv.getContext('2d');if(!ctx)return;
   const W=_kcat.W,H=_kcat.H,t=_kcat.t;
-  // bg
+  // bg — 5 MILJÖER som roterar per bana (nebula/djungel/sunset/is/inferno)
+  const ENVS=[
+    {top:'#12031a',mid:'#0a0414',bot:'#050208',star:'#9fd8ff'},
+    {top:'#03140a',mid:'#062012',bot:'#020a05',star:'#a8ffcf'},
+    {top:'#1a0a03',mid:'#221004',bot:'#0a0402',star:'#ffd9a0'},
+    {top:'#03101c',mid:'#061a28',bot:'#020810',star:'#c8ecff'},
+    {top:'#1a0304',mid:'#220607',bot:'#0a0202',star:'#ffb0b0'},
+  ];
+  const env=ENVS[((_kcat.bana||1)-1)%ENVS.length];
   const bg=ctx.createLinearGradient(0,0,0,H);
-  bg.addColorStop(0,'#12031a');bg.addColorStop(.5,'#0a0414');bg.addColorStop(1,'#050208');
+  bg.addColorStop(0,env.top);bg.addColorStop(.5,env.mid);bg.addColorStop(1,env.bot);
   ctx.fillStyle=bg;ctx.fillRect(0,0,W,H);
   // speed-line starfield (flying feeling — lines streak downward)
   for(let i=0;i<22;i++){
     const sx=(i*89.7)%W,sy=((i*53.3+t*(2.2+i%3))%H);
-    ctx.save();ctx.globalAlpha=.1+.12*Math.sin(t*.03+i);ctx.strokeStyle='#9fd8ff';ctx.lineWidth=i%5===0?1.4:.7;
+    ctx.save();ctx.globalAlpha=.1+.12*Math.sin(t*.03+i);ctx.strokeStyle=env.star;ctx.lineWidth=i%5===0?1.4:.7;
     ctx.beginPath();ctx.moveTo(sx,sy);ctx.lineTo(sx,sy+8+(i%4)*4);ctx.stroke();ctx.restore();
   }
   // aura nebula tied to combo meter
@@ -12038,6 +12163,25 @@ function _kcatDraw(){
     ag.addColorStop(0,`rgba(0,217,255,${(_kcat.aura/100*.22).toFixed(3)})`);ag.addColorStop(1,'transparent');
     ctx.fillStyle=ag;ctx.fillRect(0,0,W,H);
   }
+  // LASER-stråle (ingen bullet-kostnad alls — bara två linjer)
+  if((_kcat.weapon||'pulse')==='laser'){
+    const petY2=H-56;
+    const beamTop=_kcat.laserHit?_kcat.laserHit.y+14:0;
+    ctx.save();ctx.lineCap='round';
+    ctx.strokeStyle='rgba(255,45,85,.25)';ctx.lineWidth=9;
+    ctx.beginPath();ctx.moveTo(_kcat.x,petY2-22);ctx.lineTo(_kcat.x,beamTop);ctx.stroke();
+    ctx.strokeStyle='rgba(255,120,150,.9)';ctx.lineWidth=2.5+Math.sin(t*.5)*1;
+    ctx.beginPath();ctx.moveTo(_kcat.x,petY2-22);ctx.lineTo(_kcat.x,beamTop);ctx.stroke();
+    if(_kcat.laserHit){ctx.fillStyle='#fff';ctx.beginPath();ctx.arc(_kcat.x,beamTop,3+Math.sin(t*.6)*1.5,0,Math.PI*2);ctx.fill();}
+    ctx.restore();
+  }
+  // fiendens riktade skott — röda orbs att väja för
+  ctx.save();
+  (_kcat.ebullets||[]).forEach(eb=>{
+    ctx.fillStyle='rgba(255,45,85,.35)';ctx.beginPath();ctx.arc(eb.x,eb.y,6,0,Math.PI*2);ctx.fill();
+    ctx.fillStyle='#FF5C7A';ctx.beginPath();ctx.arc(eb.x,eb.y,3,0,Math.PI*2);ctx.fill();
+  });
+  ctx.restore();
   // bullets — neon streaks (ingen shadowBlur i het loop = 60fps)
   ctx.save();ctx.lineWidth=3;ctx.lineCap='round';
   _kcat.bullets.forEach(b=>{
@@ -12075,6 +12219,12 @@ function _kcatDraw(){
   ctx.beginPath();ctx.moveTo(_kcat.x-6,petY+15);ctx.lineTo(_kcat.x+6,petY+15);ctx.lineTo(_kcat.x,petY+16+fl+10);ctx.closePath();ctx.fill();ctx.restore();
   ctx.save();ctx.globalAlpha=.22+.16*Math.sin(t*.06);ctx.strokeStyle='#00D9FF';ctx.lineWidth=2.5;ctx.shadowColor='#00D9FF';ctx.shadowBlur=16;
   ctx.beginPath();ctx.arc(_kcat.x,petY,30+_kcat.aura*.1,0,Math.PI*2);ctx.stroke();ctx.restore();
+  // sköld-ring (visar antal laddningar)
+  if((_kcat.shieldCharges||0)>0){
+    ctx.save();ctx.globalAlpha=.7;ctx.strokeStyle='#7deaff';ctx.lineWidth=2;
+    for(let s=0;s<_kcat.shieldCharges;s++){ctx.beginPath();ctx.arc(_kcat.x,petY,36+s*5,-.5+Math.sin(t*.03)*.2,2.2+Math.sin(t*.03)*.2);ctx.stroke();}
+    ctx.restore();
+  }
   ctx.save();ctx.shadowColor='#00D9FF';ctx.shadowBlur=18;ctx.font='40px serif';ctx.textAlign='center';ctx.textBaseline='middle';
   ctx.fillText((G&&G.petEmoji)||'🐉',_kcat.x,petY);ctx.restore();
   // pops
@@ -14587,8 +14737,9 @@ $('flashBtn').addEventListener('click',()=>openModal('flashModal'));
 // ── PLAY VIEW ──
 function renderPlayView(){
   renderArenaDaily();
-  // Declutter: games front-and-center — move the arena/leaderboard block below the game grid
+  // Declutter: games front-and-center — move arena/leaderboard AND season banner below the game grid (mindre scroll till spelen)
   try{const g=$('playGamesGrid'),a=$('arenaDailyWrap');if(g&&a&&!g.parentNode._arenaMoved){g.after(a);g.parentNode._arenaMoved=true;}}catch(e){}
+  try{const a=$('arenaDailyWrap'),sb=$('seasonBanner');if(a&&sb&&!sb._moved){a.after(sb);sb._moved=true;}}catch(e){}
   if(!_quests.length)initQuests();
   const sl=$('spinPlayLabel');if(sl)sl.textContent=G.lastSpin===new Date().toDateString()?'✅ Spinnat idag — kom tillbaka imorgon!':'🎰 Gratis spin tillgängligt nu!';
   const pbt=$('pbBestTag');if(pbt)pbt.textContent='Best: '+(localStorage.getItem('kv8_ktowerBest')||0)+' våningar';
