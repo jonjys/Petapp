@@ -18,6 +18,7 @@
   --p:#BF5FFF;--r:#FF007F;--o:#FF9F0A;--tl:#00D9FF;
   --ff:'DM Sans',sans-serif;--mono:'Space Mono',monospace;
   --sab:env(safe-area-inset-bottom,0px);
+  --sat:env(safe-area-inset-top,0px);
 }
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
 html,body{height:100%;width:100%;overflow:hidden;background:var(--bg);font-family:var(--ff);color:var(--t1);overscroll-behavior:none;-webkit-font-smoothing:antialiased;}
@@ -2779,7 +2780,7 @@ div[style*="LIVE"]{border-radius:16px!important;background:rgba(57,255,20,.03)!i
       <div class="pill" style="background:linear-gradient(135deg,rgba(191,95,255,.25),rgba(0,217,255,.15));border:1px solid rgba(191,95,255,.5);border-radius:100px;padding:3px 8px;font-size:11px;font-weight:900;font-family:var(--mono);color:#BF5FFF;display:flex;align-items:center;gap:3px">🔮<b id="hKC">0</b></div>
       <div class="pill pill-r">🔥<b id="hStreak">0</b>d</div>
       <div class="pill" id="premiumBadge" style="display:none;background:linear-gradient(135deg,#FFE600,#FF9F0A);color:#000;font-weight:900;cursor:pointer;border:none" onclick="openModal('premiumModal')">👑</div>
-      <button id="tbHomeHub" onclick="openKarmaHome()" title="KARMA Hem" style="background:linear-gradient(135deg,rgba(0,217,255,.2),rgba(57,255,20,.12));border:1px solid rgba(0,217,255,.45);border-radius:9px;width:32px;height:32px;display:flex;align-items:center;justify-content:center;font-size:15px;cursor:pointer;flex-shrink:0;-webkit-tap-highlight-color:transparent;">🏠</button>
+      <button id="tbHomeHub" onclick="openKarmaBase()" title="KARMA Base" style="background:linear-gradient(135deg,rgba(0,217,255,.2),rgba(57,255,20,.12));border:1px solid rgba(0,217,255,.45);border-radius:9px;width:32px;height:32px;display:flex;align-items:center;justify-content:center;font-size:15px;cursor:pointer;flex-shrink:0;-webkit-tap-highlight-color:transparent;">🏝️</button>
       <button onclick="openSettings()" style="background:var(--c2);border:1px solid var(--line);border-radius:9px;width:32px;height:32px;display:flex;align-items:center;justify-content:center;font-size:16px;cursor:pointer;flex-shrink:0;-webkit-tap-highlight-color:transparent;">⚙️</button>
     </div>
     <div class="mw" style="display:none">
@@ -2791,6 +2792,7 @@ div[style*="LIVE"]{border-radius:16px!important;background:rgba(57,255,20,.03)!i
           <div id="ddCloudBadge" style="display:none;margin-top:4px;font-size:9px;font-weight:900;color:var(--g);font-family:var(--mono);">☁️ SYNKAT MED MOLNET</div>
         </div>
         <div class="dd-sec">
+          <div class="ddr" onclick="cM();openKarmaBase()" style="background:linear-gradient(135deg,rgba(0,217,255,.12),rgba(57,255,20,.07));border:1px solid rgba(0,217,255,.3)"><div class="ddr-i">🏝️</div>KARMA Base · din värld<div class="dd-bdg" style="background:#00D9FF;color:#000">NY</div></div>
           <div class="ddr" onclick="cM();openKarmaPay()" style="background:linear-gradient(135deg,rgba(57,255,20,.1),rgba(0,180,120,.06));border:1px solid rgba(57,255,20,.25)"><div class="ddr-i">💸</div>KARMA+ Super-App<div class="dd-bdg" style="background:#39FF14;color:#000">NY</div></div>
           <div class="ddr" onclick="cM();openKarmaReels()" style="background:linear-gradient(135deg,rgba(255,45,85,.1),rgba(191,95,255,.06));border:1px solid rgba(255,45,85,.25)"><div class="ddr-i">📱</div>KARMA Reels<div class="dd-bdg" style="background:#FF2D55;color:#fff">NY</div></div>
           <div class="ddr" onclick="cM();openKarmaCam()" style="background:linear-gradient(135deg,rgba(255,230,0,.1),rgba(255,159,10,.06));border:1px solid rgba(255,230,0,.25)"><div class="ddr-i">📸</div>KARMA Cam · AR<div class="dd-bdg" style="background:#FFE600;color:#000">NY</div></div>
@@ -9798,10 +9800,10 @@ function initMap(lat,lon){
   const m=window._leafletMap=L.map('realMap',{zoomControl:false,attributionControl:false}).setView([lat,lon],15);G.lMap=m;
   L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png',{maxZoom:19,subdomains:'abcd'}).addTo(m);
   const yIco=L.divIcon({html:`<div style="width:48px;height:48px;position:relative;display:flex;align-items:center;justify-content:center"><div style="position:absolute;inset:0;border-radius:50%;border:2px solid rgba(57,255,20,.4);animation:mapPulse 1.8s ease-out infinite"></div><div style="width:42px;height:42px;background:rgba(57,255,20,.15);border:2.5px solid #39FF14;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:22px;box-shadow:0 0 20px rgba(57,255,20,.4),inset 0 0 10px rgba(57,255,20,.1)">${gS().e||'🐉'}</div></div>`,className:'',iconAnchor:[24,24]});
-  G.uMarker=L.marker([lat,lon],{icon:yIco}).addTo(m).on('click',()=>openKarmaHome());
+  G.uMarker=L.marker([lat,lon],{icon:yIco}).addTo(m).on('click',()=>openKarmaBase());
   // Castle marker beside you — your KARMA WORLD home base
   const castleIco=L.divIcon({html:`<div style="position:relative"><div style="width:40px;height:40px;background:rgba(255,230,0,.12);border:2.5px solid #FFE600;border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:20px;box-shadow:0 0 18px rgba(255,230,0,.4)">🏰</div><div style="position:absolute;top:-9px;right:-10px;background:#FFE600;color:#000;font-size:8px;font-weight:900;border-radius:8px;padding:1px 5px;font-family:monospace;box-shadow:0 1px 4px rgba(0,0,0,.5)">LV${(G.castle&&(G.castle.lvl||G.castle.level))||1}</div></div>`,className:'',iconAnchor:[20,20]});
-  G.castleMarker=L.marker([lat+.0006,lon+.0006],{icon:castleIco}).addTo(m).on('click',()=>openKarmaHome());
+  G.castleMarker=L.marker([lat+.0006,lon+.0006],{icon:castleIco}).addTo(m).on('click',()=>openKarmaBase());
   [{em:'☕',nm:'Espresso House',lat:lat+.003,lon:lon+.004,sek:150,id:'u1'},{em:'👤',nm:'Anna Berg',lat:lat+.001,lon:lon-.003,sek:500,id:'u2'},{em:'👟',nm:'Stadium Nike',lat:lat-.005,lon:lon+.006,sek:500,id:'u3'}].forEach(p=>{
     const ico=L.divIcon({html:`<div style="position:relative"><div style="width:36px;height:36px;background:rgba(255,204,0,.2);border:2px solid #ffcc00;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:16px">${p.em}</div><div style="position:absolute;top:-13px;right:-8px;background:#ffcc00;color:#04040a;font-size:9px;font-weight:900;padding:1px 4px;border-radius:3px">${p.sek}SEK</div><div style="width:0;height:0;border-left:5px solid transparent;border-right:5px solid transparent;border-top:6px solid #ffcc00;margin:0 auto"></div></div>`,className:'',iconAnchor:[18,42]});
     L.marker([p.lat,p.lon],{icon:ico}).addTo(m).bindPopup(`<b>${p.nm}</b>`).on('click',()=>openUppdragDetail(p.id));
@@ -9931,7 +9933,195 @@ function openKarmaHome(){
 }
 
 // ═══════════════════════════════════════════════════════════
-// ── BUILD ON THE REAL MAP — claim zones at real locations ──
+// ── KARMA BASE — cinematic living-world hub you move through ──
+//   A floating pet-island rendered on canvas: your pet at the
+//   centre, glowing structures you tap to travel, drag to pan
+//   the camera, real day/night. The heart of the whole app.
+// ═══════════════════════════════════════════════════════════
+let _kb={raf:null,t:0,camX:0,camY:0,tCamX:0,tCamY:0,down:false,sx:0,sy:0,moved:0,W:0,H:0,dpr:1,bgGrad:null,bgKey:'',hit:[]};
+const _KB_STRUCTS=[
+  {em:'🏰',x:-.62,y:-.10,lbl:'SLOTT',col:'#FFE600',act:()=>{openCastle&&openCastle();}},
+  {em:'⚔️',x:.62,y:-.10,lbl:'ARENA',col:'#FF2D55',act:()=>{closeKarmaBase();openBattle&&openBattle();}},
+  {em:'🏪',x:-.72,y:.34,lbl:'SHOP',col:'#39FF14',act:()=>{closeKarmaBase();nav('market');}},
+  {em:'🎮',x:.72,y:.34,lbl:'SPELA',col:'#BF5FFF',act:()=>{closeKarmaBase();nav('play');}},
+  {em:'💬',x:-.30,y:.60,lbl:'VÄNNER',col:'#00D9FF',act:()=>{closeKarmaBase();nav('social');}},
+  {em:'📱',x:.30,y:.60,lbl:'REELS',col:'#FF6B9D',act:()=>{closeKarmaBase();openKarmaReels&&openKarmaReels();}},
+  {em:'🌍',x:0,y:-.52,lbl:'KARTAN',col:'#7CFF4D',act:()=>{closeKarmaBase();nav('map');}},
+];
+function openKarmaBase(){
+  let m=$('karmaBase');
+  if(!m){
+    m=document.createElement('div');m.id='karmaBase';
+    m.style.cssText='position:fixed;inset:0;z-index:9994;background:#02030a;overflow:hidden;';
+    m.innerHTML=`
+      <canvas id="kbCanvas" style="position:absolute;inset:0;width:100%;height:100%;touch-action:none"></canvas>
+      <div style="position:absolute;top:0;left:0;right:0;z-index:3;display:flex;align-items:center;justify-content:space-between;padding:calc(var(--sat,0px) + 12px) 14px 10px;pointer-events:none">
+        <button onclick="closeKarmaBase()" style="pointer-events:auto;background:rgba(0,0,0,.45);border:1.5px solid rgba(255,255,255,.15);border-radius:12px;width:38px;height:38px;color:#fff;font-size:18px;cursor:pointer">←</button>
+        <div style="text-align:center"><div style="font-size:13px;font-weight:900;color:#fff;font-family:var(--mono);letter-spacing:2px;text-shadow:0 0 12px rgba(0,0,0,.9)">KARMA <span style="color:#39FF14">BASE</span></div><div style="font-size:8px;color:rgba(255,255,255,.5);font-family:var(--mono)">din levande värld</div></div>
+        <div style="pointer-events:auto;display:flex;gap:6px">
+          <div style="background:rgba(0,0,0,.45);border:1.5px solid rgba(255,215,0,.35);border-radius:12px;padding:8px 10px;font-size:11px;font-weight:900;color:#FFE600;font-family:var(--mono)">⚡<span id="kbCoins">0</span></div>
+        </div>
+      </div>
+      <div id="kbHint" style="position:absolute;bottom:calc(var(--sab,0px) + 20px);left:0;right:0;text-align:center;z-index:3;font-size:10px;color:rgba(255,255,255,.55);font-family:var(--mono);pointer-events:none;text-shadow:0 0 8px #000">✋ dra för att panorera · tryck på en byggnad för att resa dit</div>`;
+    document.body.appendChild(m);
+    const cv=m.querySelector('#kbCanvas');
+    const down=e=>{_kb.down=true;_kb.moved=0;const p=e.touches?e.touches[0]:e;_kb.sx=p.clientX;_kb.sy=p.clientY;};
+    const move=e=>{if(!_kb.down)return;const p=e.touches?e.touches[0]:e;const dx=p.clientX-_kb.sx,dy=p.clientY-_kb.sy;_kb.moved+=Math.abs(dx)+Math.abs(dy);_kb.tCamX=Math.max(-70,Math.min(70,_kb.tCamX+dx*0.5));_kb.tCamY=Math.max(-45,Math.min(45,_kb.tCamY+dy*0.4));_kb.sx=p.clientX;_kb.sy=p.clientY;if(e.cancelable)e.preventDefault();};
+    const up=e=>{if(!_kb.down)return;_kb.down=false;if(_kb.moved<9){const p=(e.changedTouches?e.changedTouches[0]:e);_kbTap(p.clientX,p.clientY);}};
+    cv.addEventListener('pointerdown',down);cv.addEventListener('pointermove',move);cv.addEventListener('pointerup',up);
+    cv.addEventListener('touchstart',down,{passive:false});cv.addEventListener('touchmove',move,{passive:false});cv.addEventListener('touchend',up);
+  }else{m.style.display='block';}
+  _kbResize();
+  const cc=$('kbCoins');if(cc)cc.textContent=(G.coins||0).toLocaleString('sv');
+  _kb.t=0;
+  if(_kb.raf)cancelAnimationFrame(_kb.raf);
+  _kb.raf=requestAnimationFrame(_kbLoop);
+  vibe&&vibe(10);
+}
+function closeKarmaBase(){
+  if(_kb.raf){cancelAnimationFrame(_kb.raf);_kb.raf=null;}
+  const m=$('karmaBase');if(m)m.style.display='none';
+}
+function _kbResize(){
+  const cv=$('kbCanvas');if(!cv)return;
+  const dpr=Math.min(2,window.devicePixelRatio||1);_kb.dpr=dpr;
+  _kb.W=cv.clientWidth;_kb.H=cv.clientHeight;
+  cv.width=_kb.W*dpr;cv.height=_kb.H*dpr;
+  const ctx=cv.getContext('2d');ctx.setTransform(dpr,0,0,dpr,0,0);
+  _kb.bgGrad=null;
+}
+function _kbProject(sx,sy){
+  // island-local (-1..1) -> screen, with camera pan + gentle perspective
+  const cx=_kb.W/2+_kb.camX, cy=_kb.H*0.52+_kb.camY;
+  const rw=Math.min(_kb.W*0.42,230), rh=rw*0.5;
+  const depth=1+sy*0.12; // farther-down = a touch bigger (fake perspective)
+  return {x:cx+sx*rw, y:cy+sy*rh, s:depth, cx, cy, rw, rh};
+}
+function _kbTap(clientX,clientY){
+  const cv=$('kbCanvas');if(!cv)return;const r=cv.getBoundingClientRect();
+  const px=clientX-r.left, py=clientY-r.top;
+  // check structures (nearest first)
+  let best=null,bd=44;
+  for(const h of _kb.hit){const d=Math.hypot(px-h.x,py-h.y);if(d<bd){bd=d;best=h;}}
+  if(best){vibe&&vibe([15,10,30]);SFX&&SFX.click&&SFX.click();best.act();return;}
+  // tap centre pet -> quick hub menu
+  const pc=_kbProject(0,0.06);
+  if(Math.hypot(px-pc.x,py-pc.y)<58){vibe&&vibe(12);openKarmaHome&&openKarmaHome();}
+}
+function _kbLoop(){
+  const m=$('karmaBase');if(!m||m.style.display==='none'){_kb.raf=null;return;}
+  const cv=$('kbCanvas');if(!cv){_kb.raf=null;return;}
+  const ctx=cv.getContext('2d');if(!ctx){_kb.raf=null;return;}
+  _kb.t++;const t=_kb.t,W=_kb.W,H=_kb.H;
+  _kb.camX+=(_kb.tCamX-_kb.camX)*0.08;_kb.camY+=(_kb.tCamY-_kb.camY)*0.08;
+  // idle drift so it feels alive
+  const driftX=Math.sin(t*0.006)*10, driftY=Math.cos(t*0.005)*6;
+  const camX=_kb.camX+driftX, camY=_kb.camY+driftY;
+  const hour=(new Date().getHours());
+  const night=hour<6||hour>=20, dusk=(hour>=18&&hour<20)||(hour>=6&&hour<8);
+  // ── background (cached gradient) ──
+  const key=night?'n':dusk?'d':'day';
+  if(!_kb.bgGrad||_kb.bgKey!==key){
+    const g=ctx.createLinearGradient(0,0,0,H);
+    if(night){g.addColorStop(0,'#0a0620');g.addColorStop(.55,'#0a0e28');g.addColorStop(1,'#04060f');}
+    else if(dusk){g.addColorStop(0,'#2a1030');g.addColorStop(.5,'#1a0f2e');g.addColorStop(1,'#0a0818');}
+    else{g.addColorStop(0,'#0a1838');g.addColorStop(.5,'#0e1a3a');g.addColorStop(1,'#050a18');}
+    _kb.bgGrad=g;_kb.bgKey=key;
+  }
+  ctx.fillStyle=_kb.bgGrad;ctx.fillRect(0,0,W,H);
+  // parallax stars (two layers)
+  for(let i=0;i<40;i++){
+    const lay=i%2?0.3:0.7;
+    const sx=((i*97.3 - camX*lay*0.4)%(W+20)+W+20)%(W+20);
+    const sy=(i*61.7)%(H*0.6);
+    ctx.globalAlpha=(i%2?0.35:0.6)*(0.6+0.4*Math.sin(t*0.03+i));
+    ctx.fillStyle=night?'#cfe3ff':'#ffffff';
+    ctx.beginPath();ctx.arc(sx,sy,i%5===0?1.5:0.8,0,Math.PI*2);ctx.fill();
+  }
+  ctx.globalAlpha=1;
+  // glow moon/sun
+  const orbX=W*0.78-camX*0.2, orbY=H*0.2+camY*0.1;
+  const og=ctx.createRadialGradient(orbX,orbY,2,orbX,orbY,70);
+  const oc=night?'rgba(180,200,255,':dusk?'rgba(255,150,90,':'rgba(255,240,180,';
+  og.addColorStop(0,oc+'.5)');og.addColorStop(1,oc+'0)');
+  ctx.fillStyle=og;ctx.fillRect(orbX-70,orbY-70,140,140);
+  ctx.fillStyle=oc+'.9)';ctx.beginPath();ctx.arc(orbX,orbY,18,0,Math.PI*2);ctx.fill();
+  // ── FLOATING ISLAND ──
+  const P=_kbProject.bind(null);
+  const base=_kbProject(0,0);const cx=base.cx,cy=base.cy,rw=base.rw,rh=base.rh;
+  const bob=Math.sin(t*0.02)*6;
+  // island underside (rock cone) for depth
+  ctx.save();ctx.translate(0,bob);
+  ctx.fillStyle='#0a0715';
+  ctx.beginPath();ctx.moveTo(cx-rw*0.75,cy);ctx.lineTo(cx+rw*0.75,cy);ctx.lineTo(cx,cy+rh*2.4);ctx.closePath();ctx.fill();
+  // island top disc
+  const ig=ctx.createLinearGradient(cx,cy-rh,cx,cy+rh);
+  ig.addColorStop(0,'#20304f');ig.addColorStop(.5,'#16233c');ig.addColorStop(1,'#0d1626');
+  ctx.fillStyle=ig;ctx.beginPath();ctx.ellipse(cx,cy,rw*0.82,rh*0.9,0,0,Math.PI*2);ctx.fill();
+  // rim glow
+  ctx.strokeStyle='rgba(57,255,20,.35)';ctx.lineWidth=2.5;ctx.shadowColor='#39FF14';ctx.shadowBlur=16;
+  ctx.beginPath();ctx.ellipse(cx,cy,rw*0.82,rh*0.9,0,0,Math.PI*2);ctx.stroke();ctx.shadowBlur=0;
+  // tech grid on the disc
+  ctx.strokeStyle='rgba(120,180,255,.12)';ctx.lineWidth=1;
+  for(let gx=-3;gx<=3;gx++){ctx.beginPath();ctx.moveTo(cx+gx*rw*0.24,cy-rh*0.7);ctx.lineTo(cx+gx*rw*0.24,cy+rh*0.7);ctx.stroke();}
+  for(let gy=-2;gy<=2;gy++){ctx.beginPath();ctx.ellipse(cx,cy+gy*rh*0.28,rw*0.8*(1-Math.abs(gy)*0.04),rh*0.86*(1-Math.abs(gy)*0.04),0,0,Math.PI*2);ctx.stroke();}
+  ctx.restore();
+  // ── STRUCTURES (sorted back-to-front by y) + PET ──
+  _kb.hit=[];
+  const items=_KB_STRUCTS.map(s=>({...s,py:s.y})).sort((a,b)=>a.py-b.py);
+  const drawStruct=(s)=>{
+    const pr=_kbProject(s.x,s.y);const x=pr.x,y=pr.y+bob,sc=pr.s;
+    // pad
+    ctx.save();ctx.globalAlpha=.9;
+    ctx.fillStyle='rgba(0,0,0,.35)';ctx.beginPath();ctx.ellipse(x,y+14*sc,20*sc,7*sc,0,0,Math.PI*2);ctx.fill();
+    const pulse=0.5+0.5*Math.sin(t*0.05+s.x*4);
+    ctx.strokeStyle=s.col;ctx.globalAlpha=.4+pulse*0.4;ctx.lineWidth=2;ctx.shadowColor=s.col;ctx.shadowBlur=12;
+    ctx.beginPath();ctx.ellipse(x,y+12*sc,18*sc,6*sc,0,0,Math.PI*2);ctx.stroke();ctx.shadowBlur=0;
+    // emoji
+    ctx.globalAlpha=1;ctx.shadowColor=s.col;ctx.shadowBlur=14;
+    ctx.font=(30*sc)+'px serif';ctx.textAlign='center';ctx.textBaseline='alphabetic';
+    ctx.fillText(s.em,x,y+6*sc);ctx.shadowBlur=0;
+    // label chip
+    ctx.font='bold '+(8.5)+'px monospace';const lw=ctx.measureText(s.lbl).width;
+    ctx.fillStyle='rgba(0,0,0,.55)';ctx.beginPath();
+    const ly=y+24*sc;if(ctx.roundRect)ctx.roundRect(x-lw/2-6,ly-9,lw+12,15,7);else ctx.rect(x-lw/2-6,ly-9,lw+12,15);ctx.fill();
+    ctx.fillStyle=s.col;ctx.textAlign='center';ctx.fillText(s.lbl,x,ly+2);
+    ctx.restore();
+    _kb.hit.push({x,y,act:s.act});
+  };
+  // draw structures behind pet (y<0.06) then pet then front ones
+  items.filter(s=>s.py<0.06).forEach(drawStruct);
+  // PET at centre pedestal
+  const pp=_kbProject(0,0.06);const px=pp.x,py=pp.y+bob;
+  ctx.save();
+  ctx.fillStyle='rgba(0,0,0,.4)';ctx.beginPath();ctx.ellipse(px,py+20,26,8,0,0,Math.PI*2);ctx.fill();
+  const petBobY=Math.sin(t*0.06)*5;
+  const aur=ctx.createRadialGradient(px,py-14+petBobY,4,px,py-14+petBobY,54);
+  aur.addColorStop(0,'rgba(57,255,20,.28)');aur.addColorStop(1,'rgba(57,255,20,0)');
+  ctx.fillStyle=aur;ctx.fillRect(px-54,py-68+petBobY,108,108);
+  ctx.shadowColor='#39FF14';ctx.shadowBlur=24;
+  ctx.font='56px serif';ctx.textAlign='center';ctx.textBaseline='alphabetic';
+  ctx.fillText(G.petEmoji||'🐉',px,py+petBobY);
+  ctx.shadowBlur=0;ctx.font='bold 9px monospace';ctx.fillStyle='#fff';
+  ctx.fillText((G.petName||'Din pet')+' · LV'+(G.level||1),px,py+36);
+  ctx.restore();
+  items.filter(s=>s.py>=0.06).forEach(drawStruct);
+  // rising sparks
+  if(t%4===0)_kb._sparks=(_kb._sparks||[]).concat([{x:cx+(Math.random()-.5)*rw,y:cy+rh*0.6,vy:-(0.4+Math.random()*0.8),life:60,c:['#39FF14','#00D9FF','#FFE600'][Math.floor(Math.random()*3)]}]);
+  _kb._sparks=(_kb._sparks||[]).filter(sp=>{sp.y+=sp.vy;sp.life--;ctx.globalAlpha=Math.max(0,sp.life/60)*.7;ctx.fillStyle=sp.c;ctx.beginPath();ctx.arc(sp.x+camX*0.1,sp.y,1.6,0,Math.PI*2);ctx.fill();return sp.life>0;});
+  ctx.globalAlpha=1;
+  if(_kb._sparks.length>60)_kb._sparks.splice(0,_kb._sparks.length-60);
+  // vignette
+  ctx.fillStyle='rgba(0,0,0,0)';
+  const vg=ctx.createRadialGradient(W/2,H/2,H*0.3,W/2,H/2,H*0.75);
+  vg.addColorStop(0,'rgba(0,0,0,0)');vg.addColorStop(1,'rgba(0,0,0,.55)');
+  ctx.fillStyle=vg;ctx.fillRect(0,0,W,H);
+  // fade the hint after a bit
+  if(t===180){const h=$('kbHint');if(h)h.style.transition='opacity 1s',h.style.opacity='0';}
+  _kb.raf=requestAnimationFrame(_kbLoop);
+}
+
+
 //    Your KARMA empire grows on top of actual Google-style map
 //    areas around you. Claim → build → collect passive income.
 // ═══════════════════════════════════════════════════════════
@@ -10113,7 +10303,7 @@ function openKarmaPay(){
   const sGrid=services.map(s=>`<div onclick="document.getElementById('karmaPayModal').remove();${s[2]}" style="display:flex;flex-direction:column;align-items:center;gap:5px;cursor:pointer;-webkit-tap-highlight-color:transparent"><div style="width:52px;height:52px;border-radius:16px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);display:flex;align-items:center;justify-content:center;font-size:26px">${s[0]}</div><div style="font-size:8px;color:rgba(255,255,255,.55);font-family:var(--mono);text-align:center">${s[1]}</div></div>`).join('');
   const fList=friends.map(f=>`<div onclick="document.getElementById('karmaPayModal').remove();nav('social');openDM&&openDM('${f.id}')" style="display:flex;align-items:center;gap:12px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:10px 14px;cursor:pointer"><div style="font-size:26px">${f.pet}</div><div style="flex:1;min-width:0"><div style="font-size:12px;font-weight:900;color:#fff;font-family:var(--mono)">${f.user}</div><div style="font-size:9px;color:rgba(255,255,255,.4);font-family:var(--mono)">LV${f.lvl} · ${f.status==='online'?'🟢 online':'⚪ offline'}</div></div><div style="text-align:right"><div style="font-size:14px;font-weight:900;color:#FF9F0A;font-family:var(--mono)">🔥${f.streak}</div><div style="font-size:7px;color:rgba(255,255,255,.3);font-family:var(--mono)">STREAK</div></div><button onclick="event.stopPropagation();sendEnvelopeTo('${f.user}')" style="background:rgba(255,45,85,.15);border:1px solid rgba(255,45,85,.35);border-radius:10px;padding:6px 9px;font-size:15px;cursor:pointer">🧧</button></div>`).join('');
   m.innerHTML=`
-    <div style="position:sticky;top:0;z-index:2;display:flex;align-items:center;gap:10px;padding:12px 14px;background:#080a16;border-bottom:1px solid rgba(255,255,255,.08)">
+    <div style="position:sticky;top:0;z-index:2;display:flex;align-items:center;gap:10px;padding:calc(var(--sat,0px) + 12px) 14px 12px;background:#080a16;border-bottom:1px solid rgba(255,255,255,.08)">
       <button onclick="document.getElementById('karmaPayModal').remove()" style="background:#111;border:2px solid rgba(255,255,255,.2);border-radius:9px;color:#fff;font-size:18px;cursor:pointer;padding:3px 11px;font-family:var(--mono)">←</button>
       <div style="flex:1;font-size:16px;font-weight:900;font-family:var(--mono);color:#fff;letter-spacing:1px">KARMA<span style="color:#39FF14">+</span> <span style="font-size:8px;color:rgba(255,255,255,.35);letter-spacing:2px">SUPER-APP</span></div>
       <div onclick="showKarmaQR()" title="Min QR" style="cursor:pointer;font-size:20px;color:#39FF14">▦</div>
@@ -10273,7 +10463,7 @@ function openKarmaReels(){
   window._reelData=reels;
   m=document.createElement('div');m.id='karmaReels';m.style.cssText='position:fixed;inset:0;z-index:9995;background:#000;';
   m.innerHTML=`
-    <div style="position:absolute;top:0;left:0;right:0;z-index:6;display:flex;align-items:center;justify-content:space-between;padding:12px 14px;background:linear-gradient(180deg,rgba(0,0,0,.55),transparent);pointer-events:none">
+    <div style="position:absolute;top:0;left:0;right:0;z-index:6;display:flex;align-items:center;justify-content:space-between;padding:calc(var(--sat,0px) + 12px) 14px 12px;background:linear-gradient(180deg,rgba(0,0,0,.6),transparent);pointer-events:none">
       <button onclick="closeKarmaReels()" style="background:rgba(0,0,0,.4);border:none;border-radius:50%;width:34px;height:34px;color:#fff;font-size:18px;cursor:pointer;pointer-events:auto">←</button>
       <div style="font-size:14px;font-weight:900;color:#fff;font-family:var(--mono);letter-spacing:1px;text-shadow:0 0 10px rgba(0,0,0,.8)">KARMA <span style="color:#FF2D55">REELS</span></div>
       <button onclick="closeKarmaReels();openKarmaCam()" style="background:rgba(0,0,0,.4);border:none;border-radius:50%;width:34px;height:34px;color:#fff;font-size:17px;cursor:pointer;pointer-events:auto">📸</button>
