@@ -2780,7 +2780,7 @@ div[style*="LIVE"]{border-radius:16px!important;background:rgba(57,255,20,.03)!i
       <div class="pill" style="background:linear-gradient(135deg,rgba(191,95,255,.25),rgba(0,217,255,.15));border:1px solid rgba(191,95,255,.5);border-radius:100px;padding:3px 8px;font-size:11px;font-weight:900;font-family:var(--mono);color:#BF5FFF;display:flex;align-items:center;gap:3px">🔮<b id="hKC">0</b></div>
       <div class="pill pill-r">🔥<b id="hStreak">0</b>d</div>
       <div class="pill" id="premiumBadge" style="display:none;background:linear-gradient(135deg,#FFE600,#FF9F0A);color:#000;font-weight:900;cursor:pointer;border:none" onclick="openModal('premiumModal')">👑</div>
-      <button id="tbHomeHub" onclick="openKarmaBase()" title="KARMA Base" style="background:linear-gradient(135deg,rgba(0,217,255,.2),rgba(57,255,20,.12));border:1px solid rgba(0,217,255,.45);border-radius:9px;width:32px;height:32px;display:flex;align-items:center;justify-content:center;font-size:15px;cursor:pointer;flex-shrink:0;-webkit-tap-highlight-color:transparent;">🏝️</button>
+      <button id="tbHomeHub" onclick="openKarmaBase()" title="KARMA Base" style="position:relative;background:linear-gradient(135deg,rgba(0,217,255,.2),rgba(57,255,20,.12));border:1px solid rgba(0,217,255,.45);border-radius:9px;width:32px;height:32px;display:flex;align-items:center;justify-content:center;font-size:15px;cursor:pointer;flex-shrink:0;-webkit-tap-highlight-color:transparent;">🏝️<span id="tbHomeBadge" style="display:none;position:absolute;top:-4px;right:-4px;min-width:9px;height:9px;background:#FFE600;border:1.5px solid #04040a;border-radius:50%;box-shadow:0 0 8px rgba(255,215,0,.9);animation:fabPulse 1.6s ease-in-out infinite"></span></button>
       <button onclick="openSettings()" style="background:var(--c2);border:1px solid var(--line);border-radius:9px;width:32px;height:32px;display:flex;align-items:center;justify-content:center;font-size:16px;cursor:pointer;flex-shrink:0;-webkit-tap-highlight-color:transparent;">⚙️</button>
     </div>
     <div class="mw" style="display:none">
@@ -6324,8 +6324,11 @@ function openBattle(){
     earnedXp:0,earnedCoins:0,_pathCells:null,
     abilityCD:[0,0,0],waveModifier:null,score:0,highscore:hs,totalKills:0,
     diff:diffKey,diffHp:diff.hp,diffSpd:diff.spd,diffRw:diff.rw,
-    runUp:{dmg:1,range:1,crit:0,fireRate:1,goldMult:1,aoe:1},_waveTimer:null,
+    // KARMA BASE perk: Arena-byggnadens nivå ger mer TD-guld (+8%/nivå)
+    runUp:{dmg:1,range:1,crit:0,fireRate:1,goldMult:1+Math.max(0,(((G.baseLvl||{}).arena||1)-1))*0.08,aoe:1},_waveTimer:null,
   };
+  const _arenaLvl=((G.baseLvl||{}).arena||1);
+  if(_arenaLvl>1)setTimeout(()=>showT('🏰 Arena LV'+_arenaLvl+': +'+((_arenaLvl-1)*8)+'% guld!','y'),400);
   const _baV=$('baVictory');if(_baV)_baV.style.display='none';
   const _baD=$('baDefeat');if(_baD)_baD.style.display='none';
   if(!$('battleArena')){showT('Tower Defense laddas...','b');return;}
@@ -9988,6 +9991,13 @@ function _kbUpdateCollectBtn(){
   else{b.style.display='none';}
 }
 function _kbFmt(n){return n>=1000?(n/1000).toFixed(1)+'k':(''+n);}
+// Surface pending base income app-wide — pulls you back from anywhere
+function _kbUpdateHomeBadge(){
+  const b=$('tbHomeBadge');if(!b)return;
+  let p=0,rate=0;try{p=_kbPending();rate=_kbIncomeRate();}catch(e){}
+  b.style.display=(p>=Math.max(20,rate))?'block':'none';
+}
+setInterval(()=>{try{_kbUpdateHomeBadge();}catch(e){}},60000);
 function _kbTravel(id){const s=_KB_STRUCTS.find(x=>x.id===id);const m=$('kbStructModal');if(m)m.remove();if(s&&s.act)s.act();}
 function _kbUpgrade(id){
   const cost=_kbCost(id);
@@ -10015,6 +10025,7 @@ function _kbStructCard(id){
       <div style="font-size:60px;line-height:1;filter:drop-shadow(0 0 18px ${s.col}88)">${s.em}</div>
       <div style="font-size:17px;font-weight:900;color:#fff;font-family:var(--mono);margin-top:6px">${s.lbl}</div>
       <div style="font-size:10px;color:${s.col};font-family:var(--mono);font-weight:900;margin-top:2px">BYGGNAD · LV ${lvl} · +${lvl*3}💎/h</div>
+      ${id==='arena'?`<div style="font-size:9px;color:rgba(255,215,0,.8);font-family:var(--mono);margin-top:3px">⚔️ +${(lvl-1)*8}% TD-guld</div>`:''}
     </div>
     <div style="padding:12px 16px 16px;display:flex;flex-direction:column;gap:8px">
       <button onclick="_kbTravel('${id}')" style="width:100%;background:linear-gradient(135deg,${s.col},${s.col}aa);border:none;border-radius:14px;padding:14px;font-size:14px;font-weight:900;font-family:var(--mono);color:#08101c;cursor:pointer;letter-spacing:1px;box-shadow:0 0 20px ${s.col}55">🚀 RESA DIT →</button>
@@ -14986,6 +14997,7 @@ function nav(name){
   const v=$('view-'+name);if(v){v.classList.add('active');v.scrollTop=0;}
   const btn=document.querySelector('.nb[data-v="'+name+'"]');if(btn)btn.classList.add('on');
   // Stop always-on canvases when leaving their view (major battery win)
+  if(typeof _kbUpdateHomeBadge==='function')_kbUpdateHomeBadge();
   if(name!=='home'&&typeof stopPetLifeCanvas==='function')stopPetLifeCanvas();
   if(name!=='me'&&typeof _stopRoomStars==='function')_stopRoomStars();
   vibe(8);
@@ -22292,6 +22304,7 @@ document.addEventListener('visibilitychange',()=>{
   }else{
     // Resume the pet-life canvas if we're back on the home view
     try{const hv=$('view-home');if(hv&&hv.classList.contains('active'))startPetLifeCanvas();}catch(e){}
+    try{_kbUpdateHomeBadge();}catch(e){}
   }
 });
 
