@@ -5213,6 +5213,8 @@ const G={
   ownedZones:[],
   mapZones:[],
   baseLvl:{},
+  baseLastCollect:0,
+  baseTotalEarned:0,
   expeditionVisits:[],
   terrLastIncome:{},
   dnaMixes:[],
@@ -7372,7 +7374,7 @@ function _offsetLatLon(lat,lon,distM,bearingDeg){
   }catch(e){return{lat:lat,lon:lon};}
 }
 function fmtD(m){return m<1000?Math.round(m)+'m':+(m/1000).toFixed(1)+'km';}
-function save(){try{const d={n:G.name,p:G.petEmoji,pn:G.petName,l:G.level,c:G.coins,kc:G.kc||0,st:G.streak,x:G.exp,as:G.actionStat,cs:G.commerceStat,ss:G.socialStat,g:JSON.stringify(G.gear),eg:G.equippedGear||'',sek:G.totalSEK,ts:G.trustScore,posts:G.postCount,b:G.bountiesDone,hu:G.hunger,en:G.energy,mo:G.mood,brands:JSON.stringify(G.brands),circles:JSON.stringify(G.circles),sw:JSON.stringify(G.streakWeek),petCfg:JSON.stringify(G.petConfig),pm:G.premium?1:0,pt:G.premiumTier,wld:G.world,bond:JSON.stringify(G.todayBond),bdate:G.bondDate,wp:G.worldPoints,bz:JSON.stringify(G.builtZones),wpc:G.wildPetsCaught,wflash:G.wldFlash,wbattle:G.wldBattle,wmarket:G.wldMarket,wstreak:G.wldStreak,wsocial:G.wldSocial,po:G.packsOpened,col:JSON.stringify(G.collectibles),tp:G.talentPoints,tl:JSON.stringify(G.talents),tlvl:JSON.stringify(G.talentLvls||{}),diary:JSON.stringify(G.diaryEntries.slice(-20)),ls:G.lastSpin,ltt:G.lastTalkTime||0,lwb:G.lastWpBoost||0,castle:JSON.stringify(G.castle||{}),ownedZones:JSON.stringify(G.ownedZones||[]),mapZones:JSON.stringify(G.mapZones||[]),blv:JSON.stringify(G.baseLvl||{}),expeditionVisits:JSON.stringify(G.expeditionVisits||[]),terrLastIncome:JSON.stringify(G.terrLastIncome||{}),dnaMixes:JSON.stringify(G.dnaMixes||[]),lastFortune:G.lastFortune||'',lft:G.lastFlashTime||0,lfd:G.lastFlashDate||'',pdna:JSON.stringify(G.petDNA||{body:'base',element:'none',perk:'none'}),dinv:JSON.stringify(G.dnaInventory||[]),pmem:JSON.stringify(G.petMemory||{}),expd:JSON.stringify(G.expedition||{}),pbd:G.birthDate||0,psk:G.petSick?1:0,pmems:JSON.stringify(G.petMemories||[]),lpc:G.lastPassiveCheck||0,dmp:JSON.stringify(G.dmProgress||{}),dmc:JSON.stringify(G.dmCompleted||{}),dmd:G.dmDate||0,tdup:JSON.stringify(G.tdUpgrades||{}),tdpts:G.tdPoints||0,tdd:G.tdDifficulty||'normal',cos:JSON.stringify(G.cosmetics||{skin:null,bg:'default',accessories:[]}),stdt:G.stepsToday||0,sxp:G.seasonXP||0};for(const k in d)localStorage.setItem('kv8_'+k,d[k]);localStorage.setItem('kv8_lastFortune',G.lastFortune||'');}catch(e){}sbQueueSync();}
+function save(){try{const d={n:G.name,p:G.petEmoji,pn:G.petName,l:G.level,c:G.coins,kc:G.kc||0,st:G.streak,x:G.exp,as:G.actionStat,cs:G.commerceStat,ss:G.socialStat,g:JSON.stringify(G.gear),eg:G.equippedGear||'',sek:G.totalSEK,ts:G.trustScore,posts:G.postCount,b:G.bountiesDone,hu:G.hunger,en:G.energy,mo:G.mood,brands:JSON.stringify(G.brands),circles:JSON.stringify(G.circles),sw:JSON.stringify(G.streakWeek),petCfg:JSON.stringify(G.petConfig),pm:G.premium?1:0,pt:G.premiumTier,wld:G.world,bond:JSON.stringify(G.todayBond),bdate:G.bondDate,wp:G.worldPoints,bz:JSON.stringify(G.builtZones),wpc:G.wildPetsCaught,wflash:G.wldFlash,wbattle:G.wldBattle,wmarket:G.wldMarket,wstreak:G.wldStreak,wsocial:G.wldSocial,po:G.packsOpened,col:JSON.stringify(G.collectibles),tp:G.talentPoints,tl:JSON.stringify(G.talents),tlvl:JSON.stringify(G.talentLvls||{}),diary:JSON.stringify(G.diaryEntries.slice(-20)),ls:G.lastSpin,ltt:G.lastTalkTime||0,lwb:G.lastWpBoost||0,castle:JSON.stringify(G.castle||{}),ownedZones:JSON.stringify(G.ownedZones||[]),mapZones:JSON.stringify(G.mapZones||[]),blv:JSON.stringify(G.baseLvl||{}),blc:G.baseLastCollect||0,bte:G.baseTotalEarned||0,expeditionVisits:JSON.stringify(G.expeditionVisits||[]),terrLastIncome:JSON.stringify(G.terrLastIncome||{}),dnaMixes:JSON.stringify(G.dnaMixes||[]),lastFortune:G.lastFortune||'',lft:G.lastFlashTime||0,lfd:G.lastFlashDate||'',pdna:JSON.stringify(G.petDNA||{body:'base',element:'none',perk:'none'}),dinv:JSON.stringify(G.dnaInventory||[]),pmem:JSON.stringify(G.petMemory||{}),expd:JSON.stringify(G.expedition||{}),pbd:G.birthDate||0,psk:G.petSick?1:0,pmems:JSON.stringify(G.petMemories||[]),lpc:G.lastPassiveCheck||0,dmp:JSON.stringify(G.dmProgress||{}),dmc:JSON.stringify(G.dmCompleted||{}),dmd:G.dmDate||0,tdup:JSON.stringify(G.tdUpgrades||{}),tdpts:G.tdPoints||0,tdd:G.tdDifficulty||'normal',cos:JSON.stringify(G.cosmetics||{skin:null,bg:'default',accessories:[]}),stdt:G.stepsToday||0,sxp:G.seasonXP||0};for(const k in d)localStorage.setItem('kv8_'+k,d[k]);localStorage.setItem('kv8_lastFortune',G.lastFortune||'');}catch(e){}sbQueueSync();}
 
 // ── DNA + MOOD SYSTEM ──
 function getPetDNA(){
@@ -9953,6 +9955,39 @@ const _KB_ZONE_PROPS=['🏠','🌳','🗼','🏭','⛲','🎡','🏟️','🌉',
 function _kbLvl(id){G.baseLvl=G.baseLvl||{};return G.baseLvl[id]||1;}
 function _kbCost(id){const s=_KB_STRUCTS.find(x=>x.id===id);return Math.round((s?s.cost:80)*Math.pow(1.7,_kbLvl(id)-1));}
 function _kbBaseLevel(){return _KB_STRUCTS.reduce((a,s)=>a+_kbLvl(s.id),0)+((G.mapZones||[]).length)*2;}
+// ── IDLE ECONOMY — din bas tjänar 💎 medan du är borta ──
+function _kbIncomeRate(){
+  let r=0;_KB_STRUCTS.forEach(s=>{r+=_kbLvl(s.id)*3;});   // varje byggnadsnivå = +3/h
+  r+=(G.mapZones||[]).length*2;                            // varje IRL-zon = +2/h
+  const streakMul=1+Math.min(1,(G.streak||0)*0.02);        // streak boostar upp till 2×
+  return Math.max(1,Math.round(r*streakMul));
+}
+function _kbCapHours(){return 8+Math.floor(_kbBaseLevel()/4);} // högre bas = längre offline-tak
+function _kbPending(){
+  const last=G.baseLastCollect||Date.now();
+  const hrs=Math.min(_kbCapHours(),(Date.now()-last)/3600000);
+  return Math.floor(_kbIncomeRate()*hrs);
+}
+function _kbCollect(){
+  const amt=_kbPending();
+  if(amt<=0){showT('⏳ Basen samlar fortfarande...','y');return;}
+  gainCoins&&gainCoins(amt);G.baseLastCollect=Date.now();
+  G.baseTotalEarned=(G.baseTotalEarned||0)+amt;
+  save&&save();updateHUD&&updateHUD();
+  const cc=$('kbCoins');if(cc)cc.textContent=(G.coins||0).toLocaleString('sv');
+  showT('💎 +'+amt.toLocaleString('sv')+' från din bas!','g');
+  vibe&&vibe([20,10,50,10,110]);SFX&&SFX.coin&&SFX.coin();
+  spawnParticles&&spawnParticles(window.innerWidth/2,window.innerHeight*.4,'stars');
+  _kbUpdateCollectBtn();
+  const wh=$('kbWelcome');if(wh)wh.remove();
+}
+function _kbUpdateCollectBtn(){
+  const b=$('kbCollectBtn');if(!b)return;
+  const amt=_kbPending();
+  if(amt>0){b.style.display='flex';b.querySelector('span').textContent='+'+_kbFmt(amt);}
+  else{b.style.display='none';}
+}
+function _kbFmt(n){return n>=1000?(n/1000).toFixed(1)+'k':(''+n);}
 function _kbTravel(id){const s=_KB_STRUCTS.find(x=>x.id===id);const m=$('kbStructModal');if(m)m.remove();if(s&&s.act)s.act();}
 function _kbUpgrade(id){
   const cost=_kbCost(id);
@@ -9979,11 +10014,11 @@ function _kbStructCard(id){
     <div style="padding:22px 18px 12px;text-align:center;background:radial-gradient(ellipse at 50% 0%,${s.col}22,transparent 70%)">
       <div style="font-size:60px;line-height:1;filter:drop-shadow(0 0 18px ${s.col}88)">${s.em}</div>
       <div style="font-size:17px;font-weight:900;color:#fff;font-family:var(--mono);margin-top:6px">${s.lbl}</div>
-      <div style="font-size:10px;color:${s.col};font-family:var(--mono);font-weight:900;margin-top:2px">BYGGNAD · LV ${lvl}</div>
+      <div style="font-size:10px;color:${s.col};font-family:var(--mono);font-weight:900;margin-top:2px">BYGGNAD · LV ${lvl} · +${lvl*3}💎/h</div>
     </div>
     <div style="padding:12px 16px 16px;display:flex;flex-direction:column;gap:8px">
       <button onclick="_kbTravel('${id}')" style="width:100%;background:linear-gradient(135deg,${s.col},${s.col}aa);border:none;border-radius:14px;padding:14px;font-size:14px;font-weight:900;font-family:var(--mono);color:#08101c;cursor:pointer;letter-spacing:1px;box-shadow:0 0 20px ${s.col}55">🚀 RESA DIT →</button>
-      <button onclick="_kbUpgrade('${id}')" ${can?'':'disabled'} style="width:100%;background:${can?'rgba(255,230,0,.12)':'rgba(255,255,255,.04)'};border:1.5px solid ${can?'rgba(255,230,0,.4)':'rgba(255,255,255,.1)'};border-radius:14px;padding:13px;font-size:13px;font-weight:900;font-family:var(--mono);color:${can?'#FFE600':'rgba(255,255,255,.35)'};cursor:${can?'pointer':'not-allowed'}">⬆️ UPPGRADERA · ${cost} 💎</button>
+      <button onclick="_kbUpgrade('${id}')" ${can?'':'disabled'} style="width:100%;background:${can?'rgba(255,230,0,.12)':'rgba(255,255,255,.04)'};border:1.5px solid ${can?'rgba(255,230,0,.4)':'rgba(255,255,255,.1)'};border-radius:14px;padding:13px;font-size:13px;font-weight:900;font-family:var(--mono);color:${can?'#FFE600':'rgba(255,255,255,.35)'};cursor:${can?'pointer':'not-allowed'}">⬆️ UPPGRADERA · ${cost} 💎 <span style="opacity:.7;font-size:10px">(+3💎/h)</span></button>
       <button onclick="document.getElementById('kbStructModal').remove()" style="width:100%;background:transparent;border:none;color:rgba(255,255,255,.4);font-family:var(--mono);font-size:11px;font-weight:900;cursor:pointer;padding:4px">STÄNG</button>
     </div>`;
   m.appendChild(card);vibe&&vibe(8);
@@ -10003,7 +10038,8 @@ function openKarmaBase(){
           <div style="background:rgba(0,0,0,.45);border:1.5px solid rgba(255,215,0,.35);border-radius:12px;padding:8px 10px;font-size:11px;font-weight:900;color:#FFE600;font-family:var(--mono)">⚡<span id="kbCoins">0</span></div>
         </div>
       </div>
-      <div id="kbHint" style="position:absolute;bottom:calc(var(--sab,0px) + 20px);left:0;right:0;text-align:center;z-index:3;font-size:10px;color:rgba(255,255,255,.55);font-family:var(--mono);pointer-events:none;text-shadow:0 0 8px #000">✋ dra för att panorera · tryck på en byggnad för att resa dit</div>`;
+      <button id="kbCollectBtn" onclick="_kbCollect()" style="display:none;position:absolute;bottom:calc(var(--sab,0px) + 54px);left:50%;transform:translateX(-50%);z-index:4;align-items:center;gap:7px;background:linear-gradient(135deg,#FFE600,#FF9F0A);border:none;border-radius:16px;padding:12px 22px;font-size:14px;font-weight:900;font-family:var(--mono);color:#1a1000;cursor:pointer;box-shadow:0 0 26px rgba(255,215,0,.5);animation:fabPulse 2s ease-in-out infinite">🎁 SAMLA <span>+0</span> 💎</button>
+      <div id="kbHint" style="position:absolute;bottom:calc(var(--sab,0px) + 20px);left:0;right:0;text-align:center;z-index:3;font-size:10px;color:rgba(255,255,255,.55);font-family:var(--mono);pointer-events:none;text-shadow:0 0 8px #000">✋ dra för att panorera · tryck på en byggnad · basen tjänar 💎 åt dig</div>`;
     document.body.appendChild(m);
     const cv=m.querySelector('#kbCanvas');
     const down=e=>{_kb.down=true;_kb.moved=0;const p=e.touches?e.touches[0]:e;_kb.sx=p.clientX;_kb.sy=p.clientY;};
@@ -10014,10 +10050,30 @@ function openKarmaBase(){
   }else{m.style.display='block';}
   _kbResize();
   const cc=$('kbCoins');if(cc)cc.textContent=(G.coins||0).toLocaleString('sv');
+  const bl=$('kbBaseLvl');if(bl)bl.textContent=_kbBaseLevel();
+  if(!G.baseLastCollect)G.baseLastCollect=Date.now();
+  _kbUpdateCollectBtn();
+  _kbWelcomeHome();
   _kb.t=0;
   if(_kb.raf)cancelAnimationFrame(_kb.raf);
   _kb.raf=requestAnimationFrame(_kbLoop);
   vibe&&vibe(10);
+}
+function _kbWelcomeHome(){
+  const amt=_kbPending();
+  const mins=(Date.now()-(G.baseLastCollect||Date.now()))/60000;
+  if(amt<=0||mins<3)return; // bara efter en meningsfull frånvaro
+  let w=$('kbWelcome');
+  if(!w){w=document.createElement('div');w.id='kbWelcome';w.style.cssText='position:absolute;inset:0;z-index:5;background:rgba(2,4,10,.82);backdrop-filter:blur(6px);display:flex;align-items:center;justify-content:center;padding:24px;';const host=$('karmaBase');(host||document.body).appendChild(w);}
+  const rate=_kbIncomeRate();
+  w.innerHTML=`<div style="width:min(90%,330px);text-align:center;background:linear-gradient(160deg,rgba(16,22,40,.98),rgba(8,10,22,.98));border:1.5px solid rgba(255,215,0,.35);border-radius:24px;padding:24px 20px;box-shadow:0 24px 70px rgba(0,0,0,.6),0 0 50px rgba(255,215,0,.15);animation:cwPopIn .35s cubic-bezier(.34,1.56,.64,1) both">
+    <div style="font-size:9px;letter-spacing:3px;color:rgba(255,215,0,.75);font-family:var(--mono);font-weight:900">VÄLKOMMEN HEM</div>
+    <div style="font-size:52px;margin:8px 0;animation:petBob 1.6s ease-in-out infinite">🏝️</div>
+    <div style="font-size:12px;color:rgba(255,255,255,.7);font-family:var(--mono);line-height:1.4">Medan du var borta tjänade<br>din bas åt dig:</div>
+    <div style="font-size:38px;font-weight:900;color:#FFE600;font-family:var(--mono);margin:8px 0;text-shadow:0 0 22px rgba(255,215,0,.5)">+${amt.toLocaleString('sv')} 💎</div>
+    <div style="font-size:9px;color:rgba(255,255,255,.4);font-family:var(--mono)">${rate}/h · ${_KB_STRUCTS.reduce((a,s)=>a+_kbLvl(s.id),0)} byggnadsnivåer · ${(G.mapZones||[]).length} zoner</div>
+    <button onclick="_kbCollect()" style="width:100%;margin-top:16px;background:linear-gradient(135deg,#FFE600,#FF9F0A);border:none;border-radius:14px;padding:15px;font-size:15px;font-weight:900;font-family:var(--mono);color:#1a1000;cursor:pointer;letter-spacing:1px;box-shadow:0 0 24px rgba(255,215,0,.4)">🎁 HÄMTA</button>
+  </div>`;
 }
 function closeKarmaBase(){
   if(_kb.raf){cancelAnimationFrame(_kb.raf);_kb.raf=null;}
@@ -10177,6 +10233,7 @@ function _kbLoop(){
   ctx.fillStyle=vg;ctx.fillRect(0,0,W,H);
   // fade the hint after a bit
   if(t===180){const h=$('kbHint');if(h)h.style.transition='opacity 1s',h.style.opacity='0';}
+  if(t%60===0)_kbUpdateCollectBtn(); // live income tick
   _kb.raf=requestAnimationFrame(_kbLoop);
 }
 
@@ -19074,6 +19131,7 @@ function _loadFromLocalStorage(){
     try{const oz=localStorage.getItem('kv8_ownedZones');if(oz)G.ownedZones=JSON.parse(oz);}catch(e){}
     try{const mz=localStorage.getItem('kv8_mapZones');if(mz)G.mapZones=JSON.parse(mz);}catch(e){}
     try{const blv=localStorage.getItem('kv8_blv');if(blv)G.baseLvl=JSON.parse(blv);}catch(e){}
+    try{G.baseLastCollect=parseInt(localStorage.getItem('kv8_blc')||'0')||0;G.baseTotalEarned=parseInt(localStorage.getItem('kv8_bte')||'0')||0;}catch(e){}
     try{const ev=localStorage.getItem('kv8_expeditionVisits');if(ev)G.expeditionVisits=JSON.parse(ev);}catch(e){}
     try{const ti=localStorage.getItem('kv8_terrLastIncome');if(ti)G.terrLastIncome=JSON.parse(ti);}catch(e){}
     try{const dm=localStorage.getItem('kv8_dnaMixes');if(dm)G.dnaMixes=JSON.parse(dm);}catch(e){}
