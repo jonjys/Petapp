@@ -5212,6 +5212,7 @@ const G={
   castle:{lvl:1,buildings:{home:1,farm:0,arena:0,market:0,stable:0,tower:0},lastIncome:0},
   ownedZones:[],
   mapZones:[],
+  baseLvl:{},
   expeditionVisits:[],
   terrLastIncome:{},
   dnaMixes:[],
@@ -7371,7 +7372,7 @@ function _offsetLatLon(lat,lon,distM,bearingDeg){
   }catch(e){return{lat:lat,lon:lon};}
 }
 function fmtD(m){return m<1000?Math.round(m)+'m':+(m/1000).toFixed(1)+'km';}
-function save(){try{const d={n:G.name,p:G.petEmoji,pn:G.petName,l:G.level,c:G.coins,kc:G.kc||0,st:G.streak,x:G.exp,as:G.actionStat,cs:G.commerceStat,ss:G.socialStat,g:JSON.stringify(G.gear),eg:G.equippedGear||'',sek:G.totalSEK,ts:G.trustScore,posts:G.postCount,b:G.bountiesDone,hu:G.hunger,en:G.energy,mo:G.mood,brands:JSON.stringify(G.brands),circles:JSON.stringify(G.circles),sw:JSON.stringify(G.streakWeek),petCfg:JSON.stringify(G.petConfig),pm:G.premium?1:0,pt:G.premiumTier,wld:G.world,bond:JSON.stringify(G.todayBond),bdate:G.bondDate,wp:G.worldPoints,bz:JSON.stringify(G.builtZones),wpc:G.wildPetsCaught,wflash:G.wldFlash,wbattle:G.wldBattle,wmarket:G.wldMarket,wstreak:G.wldStreak,wsocial:G.wldSocial,po:G.packsOpened,col:JSON.stringify(G.collectibles),tp:G.talentPoints,tl:JSON.stringify(G.talents),tlvl:JSON.stringify(G.talentLvls||{}),diary:JSON.stringify(G.diaryEntries.slice(-20)),ls:G.lastSpin,ltt:G.lastTalkTime||0,lwb:G.lastWpBoost||0,castle:JSON.stringify(G.castle||{}),ownedZones:JSON.stringify(G.ownedZones||[]),mapZones:JSON.stringify(G.mapZones||[]),expeditionVisits:JSON.stringify(G.expeditionVisits||[]),terrLastIncome:JSON.stringify(G.terrLastIncome||{}),dnaMixes:JSON.stringify(G.dnaMixes||[]),lastFortune:G.lastFortune||'',lft:G.lastFlashTime||0,lfd:G.lastFlashDate||'',pdna:JSON.stringify(G.petDNA||{body:'base',element:'none',perk:'none'}),dinv:JSON.stringify(G.dnaInventory||[]),pmem:JSON.stringify(G.petMemory||{}),expd:JSON.stringify(G.expedition||{}),pbd:G.birthDate||0,psk:G.petSick?1:0,pmems:JSON.stringify(G.petMemories||[]),lpc:G.lastPassiveCheck||0,dmp:JSON.stringify(G.dmProgress||{}),dmc:JSON.stringify(G.dmCompleted||{}),dmd:G.dmDate||0,tdup:JSON.stringify(G.tdUpgrades||{}),tdpts:G.tdPoints||0,tdd:G.tdDifficulty||'normal',cos:JSON.stringify(G.cosmetics||{skin:null,bg:'default',accessories:[]}),stdt:G.stepsToday||0,sxp:G.seasonXP||0};for(const k in d)localStorage.setItem('kv8_'+k,d[k]);localStorage.setItem('kv8_lastFortune',G.lastFortune||'');}catch(e){}sbQueueSync();}
+function save(){try{const d={n:G.name,p:G.petEmoji,pn:G.petName,l:G.level,c:G.coins,kc:G.kc||0,st:G.streak,x:G.exp,as:G.actionStat,cs:G.commerceStat,ss:G.socialStat,g:JSON.stringify(G.gear),eg:G.equippedGear||'',sek:G.totalSEK,ts:G.trustScore,posts:G.postCount,b:G.bountiesDone,hu:G.hunger,en:G.energy,mo:G.mood,brands:JSON.stringify(G.brands),circles:JSON.stringify(G.circles),sw:JSON.stringify(G.streakWeek),petCfg:JSON.stringify(G.petConfig),pm:G.premium?1:0,pt:G.premiumTier,wld:G.world,bond:JSON.stringify(G.todayBond),bdate:G.bondDate,wp:G.worldPoints,bz:JSON.stringify(G.builtZones),wpc:G.wildPetsCaught,wflash:G.wldFlash,wbattle:G.wldBattle,wmarket:G.wldMarket,wstreak:G.wldStreak,wsocial:G.wldSocial,po:G.packsOpened,col:JSON.stringify(G.collectibles),tp:G.talentPoints,tl:JSON.stringify(G.talents),tlvl:JSON.stringify(G.talentLvls||{}),diary:JSON.stringify(G.diaryEntries.slice(-20)),ls:G.lastSpin,ltt:G.lastTalkTime||0,lwb:G.lastWpBoost||0,castle:JSON.stringify(G.castle||{}),ownedZones:JSON.stringify(G.ownedZones||[]),mapZones:JSON.stringify(G.mapZones||[]),blv:JSON.stringify(G.baseLvl||{}),expeditionVisits:JSON.stringify(G.expeditionVisits||[]),terrLastIncome:JSON.stringify(G.terrLastIncome||{}),dnaMixes:JSON.stringify(G.dnaMixes||[]),lastFortune:G.lastFortune||'',lft:G.lastFlashTime||0,lfd:G.lastFlashDate||'',pdna:JSON.stringify(G.petDNA||{body:'base',element:'none',perk:'none'}),dinv:JSON.stringify(G.dnaInventory||[]),pmem:JSON.stringify(G.petMemory||{}),expd:JSON.stringify(G.expedition||{}),pbd:G.birthDate||0,psk:G.petSick?1:0,pmems:JSON.stringify(G.petMemories||[]),lpc:G.lastPassiveCheck||0,dmp:JSON.stringify(G.dmProgress||{}),dmc:JSON.stringify(G.dmCompleted||{}),dmd:G.dmDate||0,tdup:JSON.stringify(G.tdUpgrades||{}),tdpts:G.tdPoints||0,tdd:G.tdDifficulty||'normal',cos:JSON.stringify(G.cosmetics||{skin:null,bg:'default',accessories:[]}),stdt:G.stepsToday||0,sxp:G.seasonXP||0};for(const k in d)localStorage.setItem('kv8_'+k,d[k]);localStorage.setItem('kv8_lastFortune',G.lastFortune||'');}catch(e){}sbQueueSync();}
 
 // ── DNA + MOOD SYSTEM ──
 function getPetDNA(){
@@ -9940,14 +9941,53 @@ function openKarmaHome(){
 // ═══════════════════════════════════════════════════════════
 let _kb={raf:null,t:0,camX:0,camY:0,tCamX:0,tCamY:0,down:false,sx:0,sy:0,moved:0,W:0,H:0,dpr:1,bgGrad:null,bgKey:'',hit:[]};
 const _KB_STRUCTS=[
-  {em:'🏰',x:-.62,y:-.10,lbl:'SLOTT',col:'#FFE600',act:()=>{openCastle&&openCastle();}},
-  {em:'⚔️',x:.62,y:-.10,lbl:'ARENA',col:'#FF2D55',act:()=>{closeKarmaBase();openBattle&&openBattle();}},
-  {em:'🏪',x:-.72,y:.34,lbl:'SHOP',col:'#39FF14',act:()=>{closeKarmaBase();nav('market');}},
-  {em:'🎮',x:.72,y:.34,lbl:'SPELA',col:'#BF5FFF',act:()=>{closeKarmaBase();nav('play');}},
-  {em:'💬',x:-.30,y:.60,lbl:'VÄNNER',col:'#00D9FF',act:()=>{closeKarmaBase();nav('social');}},
-  {em:'📱',x:.30,y:.60,lbl:'REELS',col:'#FF6B9D',act:()=>{closeKarmaBase();openKarmaReels&&openKarmaReels();}},
-  {em:'🌍',x:0,y:-.52,lbl:'KARTAN',col:'#7CFF4D',act:()=>{closeKarmaBase();nav('map');}},
+  {id:'castle',em:'🏰',x:-.62,y:-.10,lbl:'SLOTT',col:'#FFE600',cost:100,act:()=>{closeKarmaBase();openCastle&&openCastle();}},
+  {id:'arena', em:'⚔️',x:.62,y:-.10,lbl:'ARENA',col:'#FF2D55',cost:100,act:()=>{closeKarmaBase();openBattle&&openBattle();}},
+  {id:'shop',  em:'🏪',x:-.72,y:.34,lbl:'SHOP',col:'#39FF14',cost:80, act:()=>{closeKarmaBase();nav('market');}},
+  {id:'games', em:'🎮',x:.72,y:.34,lbl:'SPELA',col:'#BF5FFF',cost:80, act:()=>{closeKarmaBase();nav('play');}},
+  {id:'social',em:'💬',x:-.30,y:.60,lbl:'VÄNNER',col:'#00D9FF',cost:70,act:()=>{closeKarmaBase();nav('social');}},
+  {id:'reels', em:'📱',x:.30,y:.60,lbl:'REELS',col:'#FF6B9D',cost:70, act:()=>{closeKarmaBase();openKarmaReels&&openKarmaReels();}},
+  {id:'world', em:'🌍',x:0,y:-.52,lbl:'KARTAN',col:'#7CFF4D',cost:120,act:()=>{closeKarmaBase();nav('map');}},
 ];
+const _KB_ZONE_PROPS=['🏠','🌳','🗼','🏭','⛲','🎡','🏟️','🌉','🏬','🎢'];
+function _kbLvl(id){G.baseLvl=G.baseLvl||{};return G.baseLvl[id]||1;}
+function _kbCost(id){const s=_KB_STRUCTS.find(x=>x.id===id);return Math.round((s?s.cost:80)*Math.pow(1.7,_kbLvl(id)-1));}
+function _kbBaseLevel(){return _KB_STRUCTS.reduce((a,s)=>a+_kbLvl(s.id),0)+((G.mapZones||[]).length)*2;}
+function _kbTravel(id){const s=_KB_STRUCTS.find(x=>x.id===id);const m=$('kbStructModal');if(m)m.remove();if(s&&s.act)s.act();}
+function _kbUpgrade(id){
+  const cost=_kbCost(id);
+  if((G.coins||0)<cost){showT('❌ Behöver '+cost+' 💎','r');SFX&&SFX.error&&SFX.error();return;}
+  G.coins-=cost;G.baseLvl=G.baseLvl||{};G.baseLvl[id]=_kbLvl(id)+1;
+  const s=_KB_STRUCTS.find(x=>x.id===id);
+  gainXP&&gainXP(10,'commerce');addWorldPoints&&addWorldPoints(6,'build');
+  vibe&&vibe([30,15,80,15,110]);SFX&&SFX.win&&SFX.win();
+  showT((s?s.em+' '+s.lbl:'Byggnad')+' → LV '+G.baseLvl[id]+'!','g');
+  save&&save();updateHUD&&updateHUD();
+  const cc=$('kbCoins');if(cc)cc.textContent=(G.coins||0).toLocaleString('sv');
+  const bl=$('kbBaseLvl');if(bl)bl.textContent=_kbBaseLevel();
+  _kbStructCard(id); // refresh card
+}
+function _kbStructCard(id){
+  const s=_KB_STRUCTS.find(x=>x.id===id);if(!s)return;
+  let m=$('kbStructModal');
+  if(!m){m=document.createElement('div');m.id='kbStructModal';m.style.cssText='position:fixed;inset:0;z-index:9996;background:rgba(2,4,10,.8);backdrop-filter:blur(7px);display:flex;align-items:center;justify-content:center;padding:22px;';m.addEventListener('click',e=>{if(e.target===m)m.remove();});document.body.appendChild(m);}
+  else{m.innerHTML='';m.style.display='flex';}
+  const lvl=_kbLvl(id),cost=_kbCost(id),can=(G.coins||0)>=cost;
+  const card=document.createElement('div');
+  card.style.cssText=`width:min(88%,330px);background:linear-gradient(160deg,rgba(16,22,40,.98),rgba(8,10,22,.98));border:1.5px solid ${s.col}55;border-radius:24px;overflow:hidden;box-shadow:0 24px 70px rgba(0,0,0,.6),0 0 50px ${s.col}22;animation:cwPopIn .3s cubic-bezier(.34,1.56,.64,1) both;`;
+  card.innerHTML=`
+    <div style="padding:22px 18px 12px;text-align:center;background:radial-gradient(ellipse at 50% 0%,${s.col}22,transparent 70%)">
+      <div style="font-size:60px;line-height:1;filter:drop-shadow(0 0 18px ${s.col}88)">${s.em}</div>
+      <div style="font-size:17px;font-weight:900;color:#fff;font-family:var(--mono);margin-top:6px">${s.lbl}</div>
+      <div style="font-size:10px;color:${s.col};font-family:var(--mono);font-weight:900;margin-top:2px">BYGGNAD · LV ${lvl}</div>
+    </div>
+    <div style="padding:12px 16px 16px;display:flex;flex-direction:column;gap:8px">
+      <button onclick="_kbTravel('${id}')" style="width:100%;background:linear-gradient(135deg,${s.col},${s.col}aa);border:none;border-radius:14px;padding:14px;font-size:14px;font-weight:900;font-family:var(--mono);color:#08101c;cursor:pointer;letter-spacing:1px;box-shadow:0 0 20px ${s.col}55">🚀 RESA DIT →</button>
+      <button onclick="_kbUpgrade('${id}')" ${can?'':'disabled'} style="width:100%;background:${can?'rgba(255,230,0,.12)':'rgba(255,255,255,.04)'};border:1.5px solid ${can?'rgba(255,230,0,.4)':'rgba(255,255,255,.1)'};border-radius:14px;padding:13px;font-size:13px;font-weight:900;font-family:var(--mono);color:${can?'#FFE600':'rgba(255,255,255,.35)'};cursor:${can?'pointer':'not-allowed'}">⬆️ UPPGRADERA · ${cost} 💎</button>
+      <button onclick="document.getElementById('kbStructModal').remove()" style="width:100%;background:transparent;border:none;color:rgba(255,255,255,.4);font-family:var(--mono);font-size:11px;font-weight:900;cursor:pointer;padding:4px">STÄNG</button>
+    </div>`;
+  m.appendChild(card);vibe&&vibe(8);
+}
 function openKarmaBase(){
   let m=$('karmaBase');
   if(!m){
@@ -9959,6 +9999,7 @@ function openKarmaBase(){
         <button onclick="closeKarmaBase()" style="pointer-events:auto;background:rgba(0,0,0,.45);border:1.5px solid rgba(255,255,255,.15);border-radius:12px;width:38px;height:38px;color:#fff;font-size:18px;cursor:pointer">←</button>
         <div style="text-align:center"><div style="font-size:13px;font-weight:900;color:#fff;font-family:var(--mono);letter-spacing:2px;text-shadow:0 0 12px rgba(0,0,0,.9)">KARMA <span style="color:#39FF14">BASE</span></div><div style="font-size:8px;color:rgba(255,255,255,.5);font-family:var(--mono)">din levande värld</div></div>
         <div style="pointer-events:auto;display:flex;gap:6px">
+          <div style="background:rgba(0,0,0,.45);border:1.5px solid rgba(57,255,20,.35);border-radius:12px;padding:8px 10px;font-size:11px;font-weight:900;color:#39FF14;font-family:var(--mono)">🏝️ LV<span id="kbBaseLvl">1</span></div>
           <div style="background:rgba(0,0,0,.45);border:1.5px solid rgba(255,215,0,.35);border-radius:12px;padding:8px 10px;font-size:11px;font-weight:900;color:#FFE600;font-family:var(--mono)">⚡<span id="kbCoins">0</span></div>
         </div>
       </div>
@@ -10003,7 +10044,7 @@ function _kbTap(clientX,clientY){
   // check structures (nearest first)
   let best=null,bd=44;
   for(const h of _kb.hit){const d=Math.hypot(px-h.x,py-h.y);if(d<bd){bd=d;best=h;}}
-  if(best){vibe&&vibe([15,10,30]);SFX&&SFX.click&&SFX.click();best.act();return;}
+  if(best){vibe&&vibe([15,10,30]);SFX&&SFX.click&&SFX.click();_kbStructCard(best.id);return;}
   // tap centre pet -> quick hub menu
   const pc=_kbProject(0,0.06);
   if(Math.hypot(px-pc.x,py-pc.y)<58){vibe&&vibe(12);openKarmaHome&&openKarmaHome();}
@@ -10070,25 +10111,43 @@ function _kbLoop(){
   _kb.hit=[];
   const items=_KB_STRUCTS.map(s=>({...s,py:s.y})).sort((a,b)=>a.py-b.py);
   const drawStruct=(s)=>{
-    const pr=_kbProject(s.x,s.y);const x=pr.x,y=pr.y+bob,sc=pr.s;
+    const lvl=_kbLvl(s.id);
+    const grow=1+Math.min(0.6,(lvl-1)*0.12); // buildings visibly grow with level
+    const pr=_kbProject(s.x,s.y);const x=pr.x,y=pr.y+bob,sc=pr.s*grow;
     // pad
     ctx.save();ctx.globalAlpha=.9;
     ctx.fillStyle='rgba(0,0,0,.35)';ctx.beginPath();ctx.ellipse(x,y+14*sc,20*sc,7*sc,0,0,Math.PI*2);ctx.fill();
     const pulse=0.5+0.5*Math.sin(t*0.05+s.x*4);
-    ctx.strokeStyle=s.col;ctx.globalAlpha=.4+pulse*0.4;ctx.lineWidth=2;ctx.shadowColor=s.col;ctx.shadowBlur=12;
+    ctx.strokeStyle=s.col;ctx.globalAlpha=.4+pulse*0.4;ctx.lineWidth=2;ctx.shadowColor=s.col;ctx.shadowBlur=12+lvl*2;
     ctx.beginPath();ctx.ellipse(x,y+12*sc,18*sc,6*sc,0,0,Math.PI*2);ctx.stroke();ctx.shadowBlur=0;
     // emoji
     ctx.globalAlpha=1;ctx.shadowColor=s.col;ctx.shadowBlur=14;
     ctx.font=(30*sc)+'px serif';ctx.textAlign='center';ctx.textBaseline='alphabetic';
     ctx.fillText(s.em,x,y+6*sc);ctx.shadowBlur=0;
+    // level badge (top-right of building)
+    if(lvl>1){
+      ctx.fillStyle=s.col;ctx.beginPath();ctx.arc(x+15*sc,y-15*sc,8,0,Math.PI*2);ctx.fill();
+      ctx.fillStyle='#08101c';ctx.font='bold 9px monospace';ctx.textAlign='center';ctx.textBaseline='middle';
+      ctx.fillText(lvl,x+15*sc,y-14*sc);ctx.textBaseline='alphabetic';
+    }
     // label chip
     ctx.font='bold '+(8.5)+'px monospace';const lw=ctx.measureText(s.lbl).width;
     ctx.fillStyle='rgba(0,0,0,.55)';ctx.beginPath();
     const ly=y+24*sc;if(ctx.roundRect)ctx.roundRect(x-lw/2-6,ly-9,lw+12,15,7);else ctx.rect(x-lw/2-6,ly-9,lw+12,15);ctx.fill();
     ctx.fillStyle=s.col;ctx.textAlign='center';ctx.fillText(s.lbl,x,ly+2);
     ctx.restore();
-    _kb.hit.push({x,y,act:s.act});
+    _kb.hit.push({x,y:y+6*sc,id:s.id});
   };
+  // ── CAPTURED ZONES as growing props around the rim (walk-to-capture pays off visually) ──
+  const zones=(G.mapZones||[]);
+  zones.forEach((z,i)=>{
+    const ang=(i/Math.max(6,zones.length))*Math.PI*2+t*0.002;
+    const zx=cx+Math.cos(ang)*rw*0.66, zy=cy+Math.sin(ang)*rh*0.7+bob;
+    const em=_KB_ZONE_PROPS[i%_KB_ZONE_PROPS.length];
+    ctx.save();ctx.globalAlpha=.95;ctx.shadowColor='#7CFF4D';ctx.shadowBlur=8;
+    ctx.font='17px serif';ctx.textAlign='center';ctx.textBaseline='alphabetic';
+    ctx.fillText(em,zx,zy);ctx.restore();
+  });
   // draw structures behind pet (y<0.06) then pet then front ones
   items.filter(s=>s.py<0.06).forEach(drawStruct);
   // PET at centre pedestal
@@ -19014,6 +19073,7 @@ function _loadFromLocalStorage(){
     try{const cs=localStorage.getItem('kv8_castle');if(cs)G.castle=JSON.parse(cs);}catch(e){G.castle={lvl:1,buildings:{home:1},lastIncome:0};}
     try{const oz=localStorage.getItem('kv8_ownedZones');if(oz)G.ownedZones=JSON.parse(oz);}catch(e){}
     try{const mz=localStorage.getItem('kv8_mapZones');if(mz)G.mapZones=JSON.parse(mz);}catch(e){}
+    try{const blv=localStorage.getItem('kv8_blv');if(blv)G.baseLvl=JSON.parse(blv);}catch(e){}
     try{const ev=localStorage.getItem('kv8_expeditionVisits');if(ev)G.expeditionVisits=JSON.parse(ev);}catch(e){}
     try{const ti=localStorage.getItem('kv8_terrLastIncome');if(ti)G.terrLastIncome=JSON.parse(ti);}catch(e){}
     try{const dm=localStorage.getItem('kv8_dnaMixes');if(dm)G.dnaMixes=JSON.parse(dm);}catch(e){}
