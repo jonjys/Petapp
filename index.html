@@ -9890,7 +9890,7 @@ function _kbIncomeRate(){
 function _kbCapHours(){return 8+Math.floor(_kbBaseLevel()/4);} // högre bas = längre offline-tak
 function _kbPending(){
   const last=G.baseLastCollect||Date.now();
-  const hrs=Math.min(_kbCapHours(),(Date.now()-last)/3600000);
+  const hrs=Math.max(0,Math.min(_kbCapHours(),(Date.now()-last)/3600000)); // klampa mot klock-skev
   return Math.floor(_kbIncomeRate()*hrs);
 }
 function _kbCollect(){
@@ -21747,6 +21747,7 @@ save=function(){
     localStorage.setItem('kv8_evc',String(_eventMyContrib));
     localStorage.setItem('kv8_ci',JSON.stringify(G.customRoomItems||[]));
     localStorage.setItem('kv8_fj',JSON.stringify(G.fishJournal||{}));
+    localStorage.setItem('kv8_fishBox',JSON.stringify(G.fishInventoryBox||[])); // FIX: lådan lästes men sparades aldrig
     if(G.fishRod)localStorage.setItem('kv8_fr',G.fishRod);
     if(G.fishRods)localStorage.setItem('kv8_frs',JSON.stringify(G.fishRods));
     if(G.roomTheme)localStorage.setItem('kv8_rt',G.roomTheme);
